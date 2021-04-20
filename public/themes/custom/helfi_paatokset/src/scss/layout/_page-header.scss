@@ -1,0 +1,30 @@
+//
+// @file
+//
+// This file includes everything related to the page header styling.
+//
+
+.page-header {
+  border-bottom: 1px solid $color-black-20;
+}
+
+.page-header__container {
+  display: flex;
+  padding-bottom: $spacing-s;
+  padding-top: $spacing-s;
+}
+
+.page-header__actions {
+  align-items: center;
+  display: inline-flex;
+  margin-left: auto;
+
+  .login-link,
+  .user-action {
+    margin-right: $spacing-l;
+  }
+
+  .search-link {
+    margin-right: $spacing-s;
+  }
+}

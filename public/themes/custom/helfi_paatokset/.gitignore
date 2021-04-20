@@ -1,0 +1,10 @@
+# Node and npm
+node_modules
+npm-debug.log
+.gulp
+
+# HDS icons
+src/icons/hds
+
+# Other
+.DS_Store
