@@ -31,6 +31,13 @@ Stop project:
 $ make stop
 ``
 
+Stop project and remove app container:
+
+``
+$ make down
+``
+
+
 Start project, rebuild and update configuration:
 
 ``
