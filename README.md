@@ -102,4 +102,68 @@ $ make shell
 
 # Login with Drush
 $ make drush-uli
+
+# Check Drupal coding style
+$ make lint-drupal
+
+# Automatically fix Drupal coding style errors
+$ make fix-drupal
 ```
+
+## Development best practices
+Documented in more detail on the project's Confluence page: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2682126339/Kehitysk+yt+nn+t (in finnish, requires access.)
+
+### Coding standards
+Follow Drupal's coding standards: https://www.drupal.org/docs/develop/standards
+
+City of Helsinki's coding standars and best practices: https://dev.hel.fi/
+
+Check for coding style violantions by running `$ make lint-drupal`
+
+### Commit messages
+Commit message format: "PP-123: Update development documentation with Git instructions."
+
+Start with the ticket ID. If there's no ticket, start with PP-0. The description should be brief and complete the sentence: "If applied, this commit will..".
+
+Additional information can be added in a multiline message, where the first line includes the ticket ID and description.
+### Gitflow workflow
+The Gitflow workflow is followed, with the following conventions:
+
+**Main branch**: `develop`. All feature branches are created from `develop` and merged back with pull requests. All new code must be added with pull requests, not committed directly.
+
+**Production branch:** `main`. Code running in production. Code is merged to `main` with release and hotfix branches.
+
+**Feature branches**: For example, `PP-123-add-search-functionality`, Always created from and merged back to `develop` with pull requests after code review and testing. Should contain the Jira ticket ID or `PP-0` if a ticket doesn't exist.
+
+**Release branches**: Code for future and currently developed releases. Should include the version number, for example: `1.1.0-release`
+
+**Hotfix branches**: Branches for small fixes to production code. Should include the ticket number and the word hotfix, for example: `PP-124-hotfix-drupal-updates`. Remember to also merge these back to `develop`.
+
+### Pull requests
+The pull request should contain:
+* A link to relevant information (Jira ticket, documentation, etc)
+* Description of what it will do if merged
+* Steps to get the branch running locally
+* Importing / creating test content
+* Detailed steps on how to test the pull request
+* Specific things to pay attention to when reading the code
+
+Additional steps for frontend related PRs:
+* A link to the designs / screenshots of what the functionality should look like (if applicable, mainly for frontend tickets)
+
+Additional steps for bugfix PRs:
+* Detailed steps on how to reproduce issue before installing the fix
+
+### Reviewing pull requests
+* Assign yourself to the PR before you do anything.
+* Check possible issues with code quality checks and automated tests
+* Follow the steps for reproducing and testing the issue. If anything is unclear, ask for clarifications in the comments
+* The code should have passed basic code quality checks and linters already, so focus on code quality issues that can't be automated. Pay attention to maintainability, readability and extendability
+* Ideally, code should be self documenting, but always ask for more documentation and comments in the code if something is unclear. Comments should answer WHY something is done the way it is.
+* Always review exported configuration, if included in the change set:
+  * Does this configuration include everything that it should?
+  * Does this configuration include something that it should not?
+    * Exported configuration not relevant to the feature
+    * Exported local values (enabled devel or kint, etc)
+    * Sensitive information (passwords, api keys and secrets)
+* Are the configuration splits handled correctly?
