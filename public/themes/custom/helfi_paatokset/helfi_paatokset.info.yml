@@ -1,8 +1,8 @@
 name: City of Helsinki - Päätökset
-description: A Drupal 9 theme - Based on stable.
+description: HDBT based subtheme for Päätökset service.
 type: theme
 core_version_requirement: ^8 || ^9
-screenshot: helfi_paatokset.jpg
+screenshot: helfi_paatokset.png
 base theme: hdbt
 
 # Define Libraries

@@ -1,4 +1,4 @@
-# helfi_paatokset Theme
+# Päätökset Theme
 
 ## Introduction
 
