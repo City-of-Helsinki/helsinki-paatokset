@@ -10,6 +10,9 @@ libraries:
   - helfi_paatokset/global-styling
   - helfi_paatokset/global-scripting
 
+libraries-override:
+  hdbt/hyphenopoly: false
+
 # Regions
 regions:
   header_top: Header - Top
