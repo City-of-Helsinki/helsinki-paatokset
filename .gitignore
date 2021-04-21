@@ -8,6 +8,10 @@ public/themes/contrib
 public/sites/default/files
 vendor
 
+# Ignore files that are only for the current local environment
+public/sites/default/local.settings.php
+public/sites/default/local.services.yml
+
 # Ignore the folder created by PhpStorm
 .idea/*
 
