@@ -36,6 +36,8 @@ helfi_paatokset
 │   │   │   styles.scss
 │   └───js
 │   │   │   common.js
+|    └───fonts
+|   |    │   Open_Sans
 │   └───icons
 │       |   sprite.svg
 │       └───subdir
