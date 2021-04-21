@@ -4,9 +4,11 @@
 // This file includes everything related to the page footer styling.
 //
 .footer {
-  a:hover,
-  a:focus {
-    background: $color-white;
+  a:not(.hds-button) {
+    &:hover,
+    &:focus {
+      color: $color-white;
+    }
   }
 }
 
