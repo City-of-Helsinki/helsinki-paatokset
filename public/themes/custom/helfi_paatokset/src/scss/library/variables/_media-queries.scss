@@ -1,0 +1,36 @@
+//
+// @file
+//
+// This file includes all variables related to media queries
+//
+
+$breakpoint-xs: 320px;
+$breakpoint-s: 576px;
+$breakpoint-m: 768px;
+$breakpoint-l: 992px;
+$breakpoint-xl: 1248px;
+
+// Adjust value of container
+$container-width-xs: 288px;
+$container-width-s: 544px;
+$container-width-m: 720px;
+$container-width-l: 944px;
+$container-width-xl: 1200px;
+
+$gutter: 16px;
+
+$spacing-4-xs: $gutter * 0.125; // 2px
+$spacing-3-xs: $gutter * 0.25; // 4px
+$spacing-2-xs: $gutter * 0.5; // 8px
+$spacing-xs: $gutter * 0.75; // 12px
+$spacing-s: $gutter; // 16px
+$spacing-m: $gutter * 1.5; // 24px
+$spacing-l: $gutter * 2; // 32px
+$spacing-xl: $gutter * 2.5; // 40px
+$spacing-2-xl: $gutter * 3; // 48px
+$spacing-3-xl: $gutter * 3.5; // 56px
+$spacing-4-xl: $gutter * 4; // 64px
+$spacing-5-xl: $gutter * 4.5; // 72px
+
+$spacing-layout-x: $gutter * 6; // 96px
+$spacing-layout-2-xl: $gutter * 8; // 128px

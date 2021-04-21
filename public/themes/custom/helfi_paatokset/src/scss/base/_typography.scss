@@ -1,0 +1,183 @@
+//
+// @file
+//
+// This file includes everything related to the basic typography
+//
+
+// Open Sans
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 400;
+  src: url("../fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/Open_Sans/OpenSans-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 600;
+  src: url("../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: 600;
+  src: url("../fonts/Open_Sans/OpenSans-SemiBoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 700;
+  src: url("../fonts/Open_Sans/OpenSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: 700;
+  src: url("../fonts/Open_Sans/OpenSans-BoldItalic.ttf") format("truetype");
+}
+
+// ########## General ########## //
+body {
+  @include font-size($fontsize-body-l);
+  @include font-weight($regular);
+  color: $color-black;
+  font-family: $default-font-family;
+  line-height: $lineheight-l;
+}
+
+a {
+  color: $gray-dark;
+  transition: all 150ms linear;
+
+  &:hover,
+  &:focus {
+    color: $color-black;
+    text-decoration: underline;
+  }
+}
+
+strong {
+  @include font-weight($semibold);
+}
+
+small {
+  font-size: 80%;
+}
+
+// ########## Headings ########## //
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include font-weight($bold);
+  font-family: $heading-font-family;
+  hyphens: auto;
+  line-height: $lineheight-m;
+  margin-top: 0;
+  word-break: break-word;
+
+  a {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+  }
+}
+
+h1,
+.h1 {
+  @include font-size($font-size-heading-1);
+}
+
+h2,
+.h2 {
+  @include font-size($font-size-heading-2);
+}
+
+h3,
+.h3 {
+  @include font-size($font-size-heading-3);
+}
+
+h4,
+.h4 {
+  @include font-size($font-size-heading-4);
+}
+
+h5,
+.h5 {
+  @include font-size($font-size-heading-5);
+}
+
+h6,
+.h6 {
+  @include font-size($font-size-heading-6);
+}
+
+p {
+  @include font-size($fontsize-body-l);
+  @include font-weight($regular);
+  line-height: $lineheight-l;
+  margin-bottom: $spacing-m;
+  margin-top: 0;
+}
+
+p,
+ul,
+ol {
+  + h2 {
+    margin-top: $spacing-l;
+  }
+
+  + h3 {
+    margin-top: $spacing-m;
+  }
+
+  + h4 {
+    margin-top: $spacing-s;
+  }
+}
+
+ul,
+ol {
+  ul,
+  ol {
+    margin-top: $spacing-2-xs;
+  }
+
+  + p {
+    margin-top: $spacing-s;
+  }
+}
+
+ul {
+  padding-left: $spacing-s;
+}
+
+ol {
+  padding-left: $spacing-s;
+}
+
+blockquote {
+  @include font-size(24px, 36px);
+  @include font-weight($regular);
+  border-left: 5px solid $gray;
+  color: $gray-dark;
+  letter-spacing: 0;
+  margin: $spacing-2-xl;
+  padding-left: 25px;
+
+  p {
+    @include font-size(24px, 36px);
+    @include font-weight($regular);
+  }
+}

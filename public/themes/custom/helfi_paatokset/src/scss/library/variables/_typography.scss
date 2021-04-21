@@ -1,0 +1,42 @@
+//
+// @file
+//
+// This file includes all variables related to typography
+//
+
+// Font sizes
+$rembase: 16;
+$base-font-size: 16px; // Leave at 16px for correct container width
+$base-font-size-rem: 1rem;
+$base-line-height: 27px; // For relative line-height (1.385), see http://cssleading.com/
+
+$font-size-heading-1: 52px;
+$font-size-heading-2: 36px;
+$font-size-heading-3: 24px;
+$font-size-heading-4: 20px;
+$font-size-heading-5: 18px;
+$font-size-heading-6: 16px;
+
+$font-size-ingress: 22px;
+$font-size-body: 18px;
+
+$fontsize-body-s: 14px;
+$fontsize-body-m: 16px;
+$fontsize-body-l: 18px;
+$fontsize-body-xl: 20px;
+
+$lineheight-s: 1;
+$lineheight-m: 1.2;
+$lineheight-l: 1.5;
+$lineheight-xl: 1.75;
+
+// Font families
+$open-sans: "Open Sans", sans-serif;
+
+$default-font-family: $open-sans;
+$heading-font-family: $open-sans;
+
+// Font weights
+$regular: 400;
+$semibold: 600;
+$bold: 700;

@@ -1,0 +1,35 @@
+helfi_paatokset.mobile:
+  label: mobile
+  mediaQuery: '(min-width: 0px)'
+  weight: 0
+  multipliers:
+   - 1x
+   - 2x
+helfi_paatokset.narrow:
+  label: narrow
+  mediaQuery: 'all and (min-width: 480px) and (max-width: 767px)'
+  weight: 1
+  multipliers:
+    - 1x
+    - 2x
+helfi_paatokset.medium:
+  label: medium
+  mediaQuery: 'all and (min-width: 768px) and (max-width: 959px)'
+  weight: 2
+  multipliers:
+    - 1x
+    - 2x
+helfi_paatokset.wide:
+  label: wide
+  mediaQuery: 'all and (min-width: 960px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 2x
+helfi_paatokset.extrawide:
+  label: extrawide
+  mediaQuery: 'all and (min-width: 1200px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 2x

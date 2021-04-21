@@ -1,0 +1,34 @@
+//
+// @file
+//
+// This file includes styles for a page layout.
+//
+.page-content {
+  padding: $spacing-s 0;
+
+  @include breakpoint($breakpoint-l) {
+    padding: $spacing-xl 0;
+  }
+}
+
+.content__wrapper {
+  display: block;
+
+  @include breakpoint($breakpoint-l) {
+    display: flex;
+  }
+}
+
+.sidebar--first {
+  @include breakpoint($breakpoint-l) {
+    margin-right: $spacing-l;
+    max-width: 270px;
+    min-width: 270px;
+    padding: 35px 0 0 0;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    max-width: 300px;
+    min-width: 300px;
+  }
+}

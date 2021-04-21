@@ -1,0 +1,30 @@
+name: City of Helsinki - Päätökset
+description: HDBT based subtheme for Päätökset service.
+type: theme
+core_version_requirement: ^8 || ^9
+screenshot: helfi_paatokset.png
+base theme: hdbt
+
+# Define Libraries
+libraries:
+  - helfi_paatokset/global-styling
+  - helfi_paatokset/global-scripting
+
+libraries-override:
+  hdbt/hyphenopoly: false
+
+# Regions
+regions:
+  header_top: Header - Top
+  header_bottom: Header - Bottom
+  messages: Messages
+  tools: Tools
+  breadcrumb: Breadcrumb
+  sidebar_first: First sidebar
+  sidebar_second: Second sidebar
+  before_content: Before content
+  content: Content
+  after_content: After content
+  before_footer: Before footer
+  footer_top: Footer - Top
+  footer_bottom: Footer - Bottom

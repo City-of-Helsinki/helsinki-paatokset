@@ -1,0 +1,134 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the City of Helsinki - Päätökset theme.
+ */
+
+use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
+
+/**
+ * Helper function to get the icons path.
+ *
+ * @return string|null
+ *   Returns path for the icons SVG or null.
+ */
+function helfi_paatokset_get_icons_path() {
+  static $icon_path;
+  if (!isset($icon_path)) {
+    global $base_secure_url;
+    $theme_handler = \Drupal::service('theme_handler');
+    $icon_path = $base_secure_url . '/' . $theme_handler->getTheme('helfi_paatokset')->getPath() . '/dist/icons/sprite.svg';
+
+    if (!empty($icon_path)) {
+      // Add icons path as a global variable.
+      return $icon_path;
+    }
+  }
+  return $icon_path;
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function helfi_paatokset_preprocess(&$variables) {
+  $variables['helfi_paatokset_icons_path'] = helfi_paatokset_get_icons_path();
+  $variables['current_language'] = Drupal::languageManager()
+    ->getCurrentLanguage()
+    ->getId();
+  $variables['#attached']['drupalSettings']['iconsPath'] = $variables['icons_path'];
+}
+
+/**
+ * Implements hook_preprocess_html() for HTML document templates.
+ *
+ * Create path to default theme for mobile icons (favicon, apple touch icon,
+ * Android icons, ... defined in html tpl.
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_preprocess_html(&$variables) {
+  global $base_secure_url;
+  $variables['theme_path'] = file_create_url($base_secure_url . '/' . drupal_get_path('theme', 'helfi_paatokset'));
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function helfi_paatokset_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    // Retrieve the node object for revisions.
+    $node = (is_numeric($node) && !$node instanceof Node) ? Node::load($node) : $node;
+    $suggestions[] = 'page__' . $node->bundle();
+  }
+
+  if ($taxonomy_term = \Drupal::routeMatch()->getParameter('taxonomy_term')) {
+    $suggestions[] = 'page__taxonomy__term__' . $taxonomy_term->bundle();
+  }
+
+  $request = \Drupal::request();
+
+  if ($exception = $request->attributes->get('exception')) {
+    $status_code = $exception->getStatusCode();
+    if (in_array($status_code, [401, 403, 404])) {
+      $suggestions[] = 'page__' . $status_code;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_preprocess_links__language_block(&$variables) {
+  foreach ($variables['links'] as $langCode => &$link) {
+    switch ($langCode) {
+      case 'en':
+        $link['text'] = 'English';
+        break;
+
+      case 'sv':
+        $link['text'] = 'Svenska';
+        break;
+
+      case 'fi':
+        $link['text'] = 'Suomi';
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_region().
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_preprocess_region(&$variables) {
+  $user = User::load(\Drupal::currentUser()->id());
+  $variables['username'] = $user->getAccountName();
+  $variables['logged_in'] = \Drupal::currentUser()->isAuthenticated();
+}
+
+/**
+ * Implements hook_theme_suggestions_menu_alter().
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_theme_suggestions_menu_alter(&$suggestions, $variables) {
+  if (!empty($variables['menu_block_configuration']['custom_suggestion']) && $variables['menu_block_configuration']['custom_suggestion'] === 'block__menu_block__main__desktop') {
+    $suggestions[] = 'menu__main__desktop';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function helfi_paatokset_theme_suggestions_block_alter(&$suggestions, $variables) {
+  $element = $variables['elements'];
+
+  if (isset($element['#configuration']['custom_suggestion'])) {
+    $suggestions[] = $element['#configuration']['custom_suggestion'];
+  }
+}

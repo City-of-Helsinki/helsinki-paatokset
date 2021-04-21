@@ -1,0 +1,16 @@
+.skip-link.focusable {
+  &:focus {
+    @include font-weight($semibold);
+    background-color: $color-white;
+    border-radius: 0 0 10px 10px;
+    color: $blue;
+    display: block;
+    left: calc(50% - 150px / 2);
+    min-height: 20px;
+    min-width: 150px;
+    padding: 5px 20px;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+  }
+}
