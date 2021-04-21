@@ -3,9 +3,13 @@
 //
 // This file includes everything related to the page footer styling.
 //
-.page-footer {
-  background-color: $color-black;
-  color: $color-white;
-  margin-top: $spacing-s;
-  width: 100%;
+.footer {
+  a:hover,
+  a:focus {
+    background: $color-white;
+  }
+}
+
+.footer-top .menu {
+  flex-direction: column;
 }
