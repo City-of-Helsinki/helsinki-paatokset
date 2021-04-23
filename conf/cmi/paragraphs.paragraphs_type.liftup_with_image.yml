@@ -1,0 +1,12 @@
+uuid: 672cde7a-323c-4d1f-9586-ccedbe6bd041
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: oTntLu4hOI-a_bRMPM6I79X4Ah0MldQKR2YxFjFwLqw
+id: liftup_with_image
+label: 'Liftup with image'
+icon_uuid: null
+icon_default: null
+description: 'Liftup with image is a fairly large element that you can use to promote content with large image next to the text.'
+behavior_plugins: {  }

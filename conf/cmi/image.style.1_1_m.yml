@@ -1,0 +1,19 @@
+uuid: 5a8fd702-63e5-4b1f-9ac5-5e3637f014d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+_core:
+  default_config_hash: te0fJa8EjjRR28dq70PW70R1q4HPyajWJkS5p0fPf1I
+name: 1_1_m
+label: '1:1 M'
+effects:
+  e7da735e-aa35-463b-b99a-b61aba89a53f:
+    uuid: e7da735e-aa35-463b-b99a-b61aba89a53f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 1024
+      height: 1024
+      crop_type: focal_point

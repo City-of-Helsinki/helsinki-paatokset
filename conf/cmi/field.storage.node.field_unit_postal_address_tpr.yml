@@ -1,0 +1,22 @@
+uuid: 2b1cd33f-cb50-4d16-89e5-f413ac2d176b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+_core:
+  default_config_hash: TD_ZzSjK1Dgbf2bMgr1xSAmt62WrnZiZ35WC-CRIKFo
+id: node.field_unit_postal_address_tpr
+field_name: field_unit_postal_address_tpr
+entity_type: node
+type: text
+settings:
+  max_length: 2048
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

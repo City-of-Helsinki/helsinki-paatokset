@@ -1,0 +1,22 @@
+uuid: 1b81894d-6d38-4946-8c4f-6da167de69a7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: _UoTG8MagibHn89173NtrwtSq5ylXJRanQkHTZmRGe4
+id: helfi_paatokset_local_tasks
+theme: helfi_paatokset
+region: tools
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Välilehdet
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

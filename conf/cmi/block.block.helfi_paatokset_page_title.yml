@@ -1,0 +1,30 @@
+uuid: bee81765-99fa-4d65-8f3e-676bdc896ec1
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: 5_V2WQ9wdcP4x39Te28tg1RHycozD8sMNiZXudiwqYE
+id: helfi_paatokset_page_title
+theme: helfi_paatokset
+region: content
+weight: -3
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Sivun otsikko'
+  provider: core
+  label_display: '0'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      unit: unit
+      service: service
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'

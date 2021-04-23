@@ -1,0 +1,21 @@
+uuid: ab0924fa-b095-482d-853f-4ac514a91a57
+langcode: en
+status: true
+dependencies:
+  module:
+    - address
+    - node
+_core:
+  default_config_hash: 5qUlGILlt3wT1jvdYmzYv-JosgU0NGCzj3eH2gpIWCg
+id: node.field_unit_alt_address
+field_name: field_unit_alt_address
+entity_type: node
+type: address
+settings: {  }
+module: address
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

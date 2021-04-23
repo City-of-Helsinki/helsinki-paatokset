@@ -1,0 +1,20 @@
+uuid: 2a1984c5-d4a0-4250-8961-eeb130766cf1
+langcode: en
+status: true
+dependencies:
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: H69FvwR04I2gfiz-9B_vOzX7lLLZrz-6FJvXMvMR1yc
+id: helfi_paatokset_local_actions
+theme: helfi_paatokset
+region: tools
+weight: -3
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Ensisijaiset ylläpidon toimenpiteet'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,17 @@
+uuid: 85b2bd6c-efe4-4e90-8b66-f0c40a464098
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: HEf7C8xiNJV0fEuGWDoTgLvAhDxAw-0Z-EbvkSEazXo
+name: original_m
+label: 'Original M'
+effects:
+  d223a0ce-9eaa-472d-89ef-d1d82b407a66:
+    uuid: d223a0ce-9eaa-472d-89ef-d1d82b407a66
+    id: image_scale
+    weight: 1
+    data:
+      width: 943
+      height: null
+      upscale: true

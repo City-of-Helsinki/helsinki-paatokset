@@ -1,0 +1,23 @@
+uuid: 06990fb7-2f1c-465c-8db0-8df67f655676
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unit_visible_title
+    - node.type.unit
+  module:
+    - text
+_core:
+  default_config_hash: eoJHQEHuoz_yG73Cc-xZnNAAd7uWKAWjr9pyKnH3_n0
+id: node.unit.field_unit_visible_title
+field_name: field_unit_visible_title
+entity_type: node
+bundle: unit
+label: 'Visible title'
+description: 'The title that is shown on the unit page.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

@@ -1,0 +1,11 @@
+country:
+  default: FI
+first_day: 1
+timezone:
+  default: Europe/Helsinki
+  user:
+    configurable: false
+    warn: false
+    default: 0
+_core:
+  default_config_hash: kvKBKphg2fP_lgIMlf8VVQt3sY55xYEhs9UZeRqkZTE

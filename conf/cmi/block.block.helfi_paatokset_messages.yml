@@ -1,0 +1,22 @@
+uuid: f6ac7cb6-aa50-455c-a820-048421430eee
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: cIXgZqCUh5llJLOsOxqd5Tfm0ExTbsfImZVx3yS_jsA
+id: helfi_paatokset_messages
+theme: helfi_paatokset
+region: messages
+weight: -3
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Tilaviestit
+  provider: system
+  label_display: '0'
+visibility: {  }

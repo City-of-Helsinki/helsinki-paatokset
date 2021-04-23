@@ -1,0 +1,19 @@
+uuid: 189eb7ec-75c8-420f-9ac9-505c23a8db61
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+_core:
+  default_config_hash: zirluWryC277Nzw88qPdh-e64E_qX7wBBBVNf5my1XI
+name: og_image
+label: 'OG Image'
+effects:
+  828a0b3f-55e7-4534-9248-c3e02c1fd93c:
+    uuid: 828a0b3f-55e7-4534-9248-c3e02c1fd93c
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 1200
+      height: 630
+      crop_type: focal_point

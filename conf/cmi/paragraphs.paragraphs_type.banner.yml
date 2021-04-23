@@ -1,0 +1,12 @@
+uuid: 099932a1-1dc6-4935-a843-512113e0b301
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: zaZVGfy2puLJ985O9lxNqODW1qzpWSQ66LahLMxozow
+id: banner
+label: Banner
+icon_uuid: null
+icon_default: null
+description: 'Banner is a simple full-width element that you can use to promote for example important links or phone numbers. '
+behavior_plugins: {  }
