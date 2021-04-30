@@ -1,4 +1,4 @@
-uuid: 5f4c5ce5-0cc4-4170-a784-c4509a7e301a
+uuid: 17c30a2a-875b-4534-a677-afcc59cd9387
 langcode: en
 status: true
 dependencies:
@@ -21,8 +21,8 @@ content:
     type: paragraphs
     weight: 2
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: Lohko
+      title_plural: Lohkot
       edit_mode: closed_expand_nested
       closed_mode: summary
       autocollapse: none

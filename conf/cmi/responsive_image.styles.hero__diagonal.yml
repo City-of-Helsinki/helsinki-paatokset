@@ -1,4 +1,4 @@
-uuid: b8abb2f0-b79a-4371-b0a6-6f400c3fc9ec
+uuid: ab0da36d-f29c-452e-aa4c-099be31c5dec
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,10 @@ dependencies:
     - image.style.23_10_s_2x
     - image.style.23_10_xs
     - image.style.23_10_xs_2x
+    - image.style.23_10_xxs
+    - image.style.23_10_xxs_2x
 _core:
-  default_config_hash: 0Yy2pmmwzexmNBoKHRnGDFjdElTw08Z6iilmYGSuuNg
+  default_config_hash: sqxPwEOHDHbmSWO75WNVWlTSQ5yyV_PYHC7vxrA5LoQ
 id: hero__diagonal
 label: 'Hero Diagonal'
 image_style_mappings:
@@ -60,11 +62,11 @@ image_style_mappings:
     breakpoint_id: hdbt.xxs
     multiplier: 1x
     image_mapping_type: image_style
-    image_mapping: 23_10_xs
+    image_mapping: 23_10_xxs
   -
     breakpoint_id: hdbt.xxs
     multiplier: 2x
     image_mapping_type: image_style
-    image_mapping: 23_10_xs_2x
+    image_mapping: 23_10_xxs_2x
 breakpoint_group: hdbt
 fallback_image_style: 23_10_m

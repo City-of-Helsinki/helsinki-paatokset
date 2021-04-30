@@ -16,9 +16,6 @@ display:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
-          tags:
-            previous: ‹‹
-            next: ››
       fields:
         media_bulk_form:
           action_title: Åtgärd
@@ -36,6 +33,11 @@ display:
         name:
           expose:
             label: Namn
+        bundle:
+          expose:
+            label: 'Media type'
+          group_info:
+            label: 'Media type'
         langcode:
           expose:
             label: Språk
@@ -49,7 +51,6 @@ display:
         name_1:
           expose:
             label: 'Namn (Z-A)'
-      title: Media
       empty:
         area_text_custom:
           content: 'Ingen media tillgänglig.'
@@ -59,8 +60,6 @@ display:
       fields:
         media_bulk_form:
           action_title: Åtgärd
-        name:
-          separator: ', '
         edit_media:
           alter:
             text: 'Redigera {{ name }}'
@@ -72,7 +71,6 @@ display:
             alt: 'Radera {{ name }}'
           text: Radera
   widget:
-    display_title: Widget
     display_options:
       filters:
         name:

@@ -22,12 +22,10 @@ display:
           label: Otsikko
         type:
           label: Sisältötyyppi
-          separator: ', '
         name:
           label: Kirjoittaja
         langcode:
           label: Kieli
-          separator: ', '
         status:
           label: Tila
           settings:

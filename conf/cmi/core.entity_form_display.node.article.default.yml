@@ -1,4 +1,4 @@
-uuid: 01615e06-fba5-40ab-aac4-bdebf923a92d
+uuid: 5b01661e-675b-407d-97c5-6e68bcaea0df
 langcode: en
 status: true
 dependencies:
@@ -18,7 +18,7 @@ dependencies:
     - scheduler
     - select2
 _core:
-  default_config_hash: ci36Vj4Gz7i06wtvANfxIt9RjRaZYSymowLSk3x2d-8
+  default_config_hash: vE1ebRQw1g5wxCHlrC52xufxcAnGWkut8bOLaO37CyE
 id: node.article.default
 targetEntityType: node
 bundle: article
@@ -41,8 +41,8 @@ content:
   field_content:
     weight: 5
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: Lohko
+      title_plural: Lohkot
       edit_mode: open
       closed_mode: summary
       autocollapse: none
@@ -165,7 +165,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden: {  }

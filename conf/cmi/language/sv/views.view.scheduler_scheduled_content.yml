@@ -20,25 +20,18 @@ display:
           action_title: Åtgärd
         title:
           label: Titel
-          separator: ', '
         type:
           label: Innehållstyp
-          separator: ', '
         name:
           label: Författare
-          separator: ', '
         status:
-          label: Status
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
-          separator: ', '
         publish_on:
           label: 'Publicera den'
-          separator: ', '
         unpublish_on:
           label: 'Avpublicera den'
-          separator: ', '
         operations:
           label: Funktioner
       filters:
@@ -49,8 +42,6 @@ display:
           expose:
             label: Innehållstyp
         status:
-          expose:
-            label: Status
           group_info:
             label: 'Status för publicering'
             group_items:
