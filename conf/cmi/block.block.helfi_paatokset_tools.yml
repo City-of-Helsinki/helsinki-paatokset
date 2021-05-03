@@ -1,0 +1,27 @@
+uuid: d78c54b0-3421-451c-a87d-dc9c1c7bb876
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.tools
+  module:
+    - system
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: z1s_0oxpOjcA1atdCgI_EmNSXDJj76BuQclUwezMmcw
+id: helfi_paatokset_tools
+theme: helfi_paatokset
+region: tools
+weight: -3
+provider: null
+plugin: 'system_menu_block:tools'
+settings:
+  id: 'system_menu_block:tools'
+  label: Työkalut
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

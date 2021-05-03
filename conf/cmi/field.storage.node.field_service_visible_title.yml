@@ -1,0 +1,22 @@
+uuid: 68b8bad3-5d47-4af5-a9be-749ab036ca1d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+_core:
+  default_config_hash: d3nRL_vdE7lnqV09jUiMqolPyEdXph8Q1jfhhkzQb2g
+id: node.field_service_visible_title
+field_name: field_service_visible_title
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,18 @@
+uuid: 064c15eb-4686-4197-8a80-5e5fbf38ad55
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.file
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: rup-w6uPAmGhsqOpxHkoHNx1E2nof8peWIMR3CHUOu8
+id: media.file
+target_entity_type_id: media
+target_bundle: file
+default_langcode: fi
+language_alterable: true

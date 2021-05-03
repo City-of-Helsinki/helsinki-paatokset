@@ -1,0 +1,34 @@
+uuid: 3cf083d1-9a2c-421a-9cdb-06c1bcd2d8b0
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - scheduler
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  scheduler:
+    expand_fieldset: when_required
+    fields_display_mode: vertical_tab
+    publish_enable: true
+    publish_past_date: error
+    publish_past_date_created: false
+    publish_required: false
+    publish_revision: false
+    publish_touch: true
+    show_message_after_update: true
+    unpublish_enable: true
+    unpublish_required: false
+    unpublish_revision: false
+_core:
+  default_config_hash: z49By9yN9TXE4xL5ZY8x0XpXeUOR_5ZrVN0H5kGC6QE
+name: Page
+type: page
+description: 'Content type for pages that include information that doesn''t age as quickly as for example article or news content.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

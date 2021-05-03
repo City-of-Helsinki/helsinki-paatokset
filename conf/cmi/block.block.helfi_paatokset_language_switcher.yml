@@ -1,0 +1,22 @@
+uuid: 0f95b021-19b1-403b-b085-aa807e0b916b
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: jDpKvB-ZNjf7l-dHk_CINYgToXHW1HAv6Yf9ZBphRYQ
+id: helfi_paatokset_language_switcher
+theme: helfi_paatokset
+region: header_top
+weight: 0
+provider: null
+plugin: 'language_block:language_content'
+settings:
+  id: 'language_block:language_content'
+  label: 'Kielen vaihtaja'
+  provider: language
+  label_display: '0'
+visibility: {  }

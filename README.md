@@ -128,9 +128,11 @@ City of Helsinki's coding standars and best practices: https://dev.hel.fi/
 Check for coding style violantions by running `$ make lint-drupal`
 
 ### Commit messages
-Commit message format: "PP-123: Update development documentation with Git instructions."
+Commit message format: "Update development documentation with Git instructions."
 
-Start with the ticket ID. If there's no ticket, start with PP-0. The description should be brief and complete the sentence: "If applied, this commit will..".
+The ticket ID is automatically added to the message based on the branch name.
+
+The description should be brief and complete the sentence: "If applied, this commit will..".
 
 Additional information can be added in a multiline message, where the first line includes the ticket ID and description.
 ### Gitflow workflow

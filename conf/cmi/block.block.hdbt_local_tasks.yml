@@ -1,0 +1,22 @@
+uuid: 40640187-722e-48b0-b9e4-9592e744dbe6
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hdbt
+_core:
+  default_config_hash: _UoTG8MagibHn89173NtrwtSq5ylXJRanQkHTZmRGe4
+id: hdbt_local_tasks
+theme: hdbt
+region: tools
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
