@@ -1,0 +1,22 @@
+uuid: 1f5ceba3-fc8e-4e6c-827a-2a72834f891b
+langcode: en
+status: true
+dependencies:
+  module:
+    - hdbt_content
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: IsZxrQIR5fs_5xZDQ1BJ8K5LXwiaRAM3Gk-HY4vuVb4
+id: helfi_paatokset_footertopblock
+theme: helfi_paatokset
+region: footer_top
+weight: -3
+provider: null
+plugin: footer_top_block
+settings:
+  id: footer_top_block
+  label: 'Footer top block'
+  provider: hdbt_content
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 745bc15a-7499-4dfd-9318-3ab723c6e1be
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - helfi_paatokset
+_core:
+  default_config_hash: X6F3oSAls1r1jwOVU5n7EG6Uaz0yFqo-GQcEXDzxxLk
+id: helfi_paatokset_breadcrumbs
+theme: helfi_paatokset
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Murupolku
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -28,6 +28,7 @@ display:
         name:
           label: Användarnamn
         status:
+          label: Status
           settings:
             format_custom_true: Aktiv
             format_custom_false: Spärrad
@@ -39,12 +40,15 @@ display:
           label: 'Senast åtkomst'
         operations:
           label: Funktioner
+        mail:
+          separator: ', '
       filters:
         combine:
           expose:
             label: 'Namn eller e-post innehåller'
         status:
           group_info:
+            label: Status
             group_items:
               1:
                 title: Aktiv
@@ -57,9 +61,6 @@ display:
           expose:
             label: Behörighet
       title: Personer
-      empty:
-        area_text_custom:
-          content: 'Inga personer tillgängliga.'
       use_more_text: mer
   page_1:
     display_title: Sida

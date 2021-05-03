@@ -8,18 +8,22 @@ display:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+          tags:
+            previous: ‹‹
+            next: ››
       fields:
         title:
           label: Otsikko
         name:
-          label: Kirjoittaja
+          label: Tekijä
         changed:
           label: 'Viimeksi päivitetty'
   attachment_1:

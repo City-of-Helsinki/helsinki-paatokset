@@ -1,5 +1,3 @@
-label: Omdirigera
-description: 'Lista över omdirigeringar'
 display:
   default:
     display_title: Huvud
@@ -23,10 +21,9 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
       fields:
-        redirect_bulk_form:
-          action_title: 'Med urval'
         redirect_source__path:
           label: Från
+          separator: ', '
         created:
           label: Skapad
       filters:
@@ -36,17 +33,8 @@ display:
         redirect_redirect__uri:
           expose:
             label: Till
-        status_code:
-          expose:
-            label: Statuskod
-          group_info:
-            label: Statuskod
         language:
           expose:
             label: Ursprungsspråk
-      title: Omdirigera
-      empty:
-        area_text_custom:
-          content: 'Det finns ingen omdirigering ännu.'
   page_1:
     display_title: Sida

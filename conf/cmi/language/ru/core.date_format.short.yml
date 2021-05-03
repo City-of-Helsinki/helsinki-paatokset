@@ -1,2 +1,2 @@
 label: 'Короткая дата по умолчанию'
-pattern: j.n.Y
+pattern: 'm/d/Y - H:i'
