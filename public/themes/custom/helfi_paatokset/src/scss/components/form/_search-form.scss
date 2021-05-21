@@ -1,0 +1,95 @@
+// Hero section search form
+.paatokset__search-form {
+  .hds-text-input__label {
+    font-weight: bold;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    margin-bottom: 115px;
+  }
+
+  .hds-text-input__input-wrapper {
+    display: block;
+
+    @include breakpoint($breakpoint-xl) {
+      display: flex;
+    }
+  }
+
+  .hds-text-input__input {
+    @include breakpoint($breakpoint-xl) {
+      width: 894px;
+    }
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    margin-bottom: 24px;
+    height: var(--input-height);
+
+    @include breakpoint($breakpoint-xl) {
+      max-width: 258px;
+      margin-left: 24px;
+    }
+  }
+
+  .advanced-search-link-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    @include breakpoint($breakpoint-xl) {
+      max-width: 894px
+    };
+  }
+
+  .advanced-fields-container {
+    @include breakpoint($breakpoint-xl) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 894px;
+    }
+
+    label {
+      display: none;
+
+      @include breakpoint($breakpoint-xl) {
+        display: inline;
+        font-weight: bold;
+      }
+    }
+
+    select {
+      width: 100%;
+
+      @include breakpoint($breakpoint-xl) {
+        max-width: 282px;
+      }
+    }
+  }
+
+  .advanced-search__tags-container {
+    border-top: 1px solid #000;
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    
+    > * {
+      margin-right: 15px;
+    }
+
+    .tags-container__title {
+      display: none;
+
+      @include breakpoint($breakpoint-xl) {
+        display: inline;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .advanced-search__search-watcher {
+    width: 100%;
+  }
+}

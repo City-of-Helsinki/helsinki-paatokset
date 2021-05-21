@@ -34,6 +34,12 @@ settings:
     -
       value: diagonal
       label: Diagonal
+    -
+      value: paatokset-search-bar
+      label: 'Search bar'
+    -
+      value: advanced-search-form
+      label: 'Advanced search form'
   allowed_values_function: ''
 module: options
 locked: false
