@@ -1,0 +1,33 @@
+id: paatokset_news_images
+label: 'Paatokset imported news images'
+source:
+  constants:
+    uri_file: 'public://imported_article/image'
+  plugin: imported_article
+  url: 'https://www.hel.fi/wps/wcmjspv2/filtered-news-listing.jsp?rss=rss&categories=helsinkishared%2FPaatokset'
+  ids:
+    guid:
+      type: string
+      max_length: 1024
+process:
+  source_path: source_path
+  filename: filename
+  guid: guid
+  uri_file:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/uri_file
+        - filename
+    -
+      plugin: urlencode
+  uri:
+    plugin: file_copy
+    source:
+      - '@source_path'
+      - '@uri_file'
+    file_exists: 'use existing'
+    move: FALSE
+destination:
+  plugin: 'entity:file'
