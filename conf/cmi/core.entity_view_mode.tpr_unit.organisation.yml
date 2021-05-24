@@ -1,0 +1,10 @@
+uuid: a3254dcf-3cf1-48a1-8704-e14b99e50c7a
+langcode: fi
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.organisation
+label: Organisaatio
+targetEntityType: tpr_unit
+cache: true
