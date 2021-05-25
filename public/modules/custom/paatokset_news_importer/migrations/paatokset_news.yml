@@ -20,7 +20,7 @@ process:
     plugin: callback
     callable: html_entity_decode
     source: content
-  body/summary: description
+  body/summary: lead
   body/format:
     plugin: default_value
     default_value: 'full_html'

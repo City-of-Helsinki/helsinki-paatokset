@@ -59,11 +59,9 @@ class ImportedArticle extends SourcePluginBase implements ContainerFactoryPlugin
   public function prepareRow(Row $row) {
     if ($row->hasSourceProperty('description')) {
       $description = $row->getSourceProperty('description');
-
       $doc = new \DOMDocument();
       $doc->loadHTML($description);
       $images = $doc->getElementsByTagName('img');
-
       if (count($images) > 0) {
         $row->setSourceProperty('source_path', $images[0]->getAttribute('src'));
         $path_parts = preg_replace('/\?.*/', '', pathinfo($images[0]->getAttribute('src')));
@@ -116,15 +114,12 @@ class ImportedArticle extends SourcePluginBase implements ContainerFactoryPlugin
     if (isset($content->channel->item)) {
       foreach ($content->channel->item as $item) {
         $transformedItem = [];
-
         foreach ($item as $key => $value) {
           if ($key === 'description') {
             // If there is no image, there is extra '/>' in the description.
-            $transformedItem[$key] = preg_replace('/\/>/', '', strip_tags($value));
+            $transformedItem['lead'] = preg_replace('/\/>/', '', strip_tags((string) $value));
           }
-          else {
-            $transformedItem[$key] = (string) $value;
-          }
+          $transformedItem[$key] = (string) $value;
         }
         $transformedItem['content'] = (string) $item->xpath('content:encoded')[0];
         $result[] = $transformedItem;
