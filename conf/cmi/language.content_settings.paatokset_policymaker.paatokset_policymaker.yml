@@ -1,0 +1,19 @@
+uuid: d84b3356-5f9f-488d-8c12-fe4d22afe819
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_translation
+    - paatokset_ahjo
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: gKD9rNub4kMJCvZmtS7cz7Gq0gqSJoAI2PH2d9aoE-A
+id: paatokset_policymaker.paatokset_policymaker
+target_entity_type_id: paatokset_policymaker
+target_bundle: paatokset_policymaker
+default_langcode: site_default
+language_alterable: false

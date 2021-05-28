@@ -1,0 +1,19 @@
+uuid: ead8b6d3-8745-4f51-854f-ebeddcedef0d
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_translation
+    - paatokset_ahjo
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: 8e1BHF22LYB1LCdZn45EJ8QY_8FcbORHJV29AVlZUBk
+id: paatokset_meeting_document.paatokset_meeting_document
+target_entity_type_id: paatokset_meeting_document
+target_bundle: paatokset_meeting_document
+default_langcode: site_default
+language_alterable: false

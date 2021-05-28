@@ -1,0 +1,19 @@
+uuid: 621770ba-5323-4034-ae2f-9939f57eaf65
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_translation
+    - paatokset_ahjo
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: NOjV9PIt8bjleZwyif86BfixlEuzHyClAL5c2tnxutk
+id: paatokset_issue.paatokset_issue
+target_entity_type_id: paatokset_issue
+target_bundle: paatokset_issue
+default_langcode: site_default
+language_alterable: false
