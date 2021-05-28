@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a028ae79fdfb99fdbd65246d023f517",
+    "content-hash": "8599453a939ccff1dad7a8ef3bb3f405",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -2410,7 +2410,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-3.5",
-                    "datestamp": "1618592931",
+                    "datestamp": "1620838181",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3329,39 +3329,6 @@
             "time": "2021-04-20T08:08:19+00:00"
         },
         {
-            "name": "drupal/helfi_ahjo",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-ahjo.git",
-                "reference": "45edfaf143edd5a5d47a3df86100b64b1b2158a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-ahjo/zipball/45edfaf143edd5a5d47a3df86100b64b1b2158a1",
-                "reference": "45edfaf143edd5a5d47a3df86100b64b1b2158a1",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/helfi_api_base": "*",
-                "ext-json": "*"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-                "drupal/coder": "^8.3"
-            },
-            "type": "drupal-custom-module",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "OpenAhjo integration",
-            "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-ahjo/tree/1.0.3",
-                "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-ahjo/issues"
-            },
-            "time": "2021-03-09T10:11:17+00:00"
-        },
-        {
             "name": "drupal/helfi_api_base",
             "version": "1.0.18",
             "source": {
@@ -3541,7 +3508,7 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/latest",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/1.1.24",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
             "time": "2021-04-29T14:35:06+00:00"
@@ -4068,6 +4035,15 @@
                 "source": "https://git.drupalcode.org/project/openid_connect",
                 "issues": "https://www.drupal.org/project/issues/openid_connect"
             }
+        },
+        {
+            "name": "drupal/paatokset_ahjo",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.0.zip"
+            },
+            "type": "drupal-custom-module"
         },
         {
             "name": "drupal/paragraphs",
@@ -4903,7 +4879,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.8",
-                    "datestamp": "1614959012",
+                    "datestamp": "1615218916",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6633,21 +6609,21 @@
             "version": "7.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nodespark/des-connector.git",
+                "url": "https://github.com/tuutti/des-connector.git",
                 "reference": "bd6a566ea2d44c638281510fc5f8ab016a0df844"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nodespark/des-connector/zipball/bd6a566ea2d44c638281510fc5f8ab016a0df844",
+                "url": "https://api.github.com/repos/tuutti/des-connector/zipball/bd6a566ea2d44c638281510fc5f8ab016a0df844",
                 "reference": "bd6a566ea2d44c638281510fc5f8ab016a0df844",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
+                "php": "^7.2 || ^8.0",
                 "ruflin/elastica": "dev-master"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.3"
+                "phpunit/phpunit": "^8.4.1 || ^9"
             },
             "type": "library",
             "autoload": {
@@ -6655,7 +6631,11 @@
                     "nodespark\\DESConnector\\": "src/DESConnector/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "nodespark\\DESConnector\\Test\\": "tests/"
+                }
+            },
             "license": [
                 "LGPL-2.1"
             ],
@@ -6676,10 +6656,9 @@
             "description": "An abstraction library for Elasticsearch Connector module for Drupal.",
             "homepage": "https://github.com/nodespark/des-connector",
             "support": {
-                "issues": "https://github.com/nodespark/des-connector/issues",
                 "source": "https://github.com/nodespark/des-connector"
             },
-            "time": "2019-08-06T06:19:40+00:00"
+            "time": "2021-05-12T13:05:02+00:00"
         },
         {
             "name": "nyholm/dsn",
@@ -7426,7 +7405,7 @@
                 "issues": "https://github.com/ruflin/Elastica/issues",
                 "source": "https://github.com/ruflin/Elastica/tree/master"
             },
-            "time": "2021-04-26T08:59:22+00:00"
+            "time": "2021-05-26T18:15:28+00:00"
         },
         {
             "name": "stack/builder",
