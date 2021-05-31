@@ -64,6 +64,7 @@ module:
   node: 0
   options: 0
   paatokset_news_importer: 0
+  paatokset_search_form: 0
   page_cache: 0
   paragraphs_asymmetric_translation_widgets: 0
   path: 0
