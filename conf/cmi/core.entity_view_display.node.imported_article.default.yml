@@ -1,0 +1,34 @@
+uuid: 04172a5f-0fd7-4c79-af3c-96a1c2c6d046
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.node.imported_article.body
+    - field.field.node.imported_article.field_image
+    - node.type.imported_article
+  enforced:
+    module:
+      - paatokset_news_importer
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: A4sceLgPjOPsvAE06zxeJCG3fd0xjMkYLmxl4Ak-9n4
+id: node.imported_article.default
+targetEntityType: node
+bundle: imported_article
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_image: true
+  langcode: true

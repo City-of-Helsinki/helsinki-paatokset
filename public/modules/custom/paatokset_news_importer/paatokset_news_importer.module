@@ -1,0 +1,19 @@
+<?php
+
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_news_importer_theme($exitsting, $type, $theme, $path) {
+  return [
+    'node__imported_article' => [
+      'base hook' => 'node'
+    ],
+    'page__imported_article' => [
+      'base hook' => 'page'
+    ],
+    'views_view_unformatted__imported_articles' => [
+      'base hook' => 'view'
+    ]
+  ];
+}

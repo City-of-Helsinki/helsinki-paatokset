@@ -1,0 +1,52 @@
+langcode: fi
+id: paatokset_news
+label: 'Päätökset news RSS feed import'
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_news_importer
+source:
+  plugin: imported_article
+  url: 'https://www.hel.fi/wps/wcmjspv2/filtered-news-listing.jsp?rss=rss&categories=helsinkishared%2FPaatokset'
+  ids:
+    guid:
+      type: string
+      max_length: 1024
+process:
+  title: title
+  guid: guid
+  body/value:
+    plugin: callback
+    callable: html_entity_decode
+    source: content
+  body/summary: lead
+  body/format:
+    plugin: default_value
+    default_value: 'full_html'
+  uid/target_id:
+    plugin: default_value
+    default_value: '1'
+  field_image/target_id:
+    plugin: migration_lookup
+    migration: paatokset_news_images
+    source: guid
+  field_image/alt: image_alt
+  field_image/title: image_title
+  created:
+    plugin: format_date
+    from_format: 'd M Y H:i:s O'
+    to_format: 'U'
+    source: pubDate
+  status:
+    plugin: default_value
+    default_value: 1
+  type:
+    plugin: default_value
+    default_value: imported_article
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:node'
+migration_dependencies: { }
