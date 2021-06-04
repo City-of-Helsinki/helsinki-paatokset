@@ -15,10 +15,7 @@ use Drupal\Core\Url;
  * )
  */
 class MeetingsSubmenuBlock extends BlockBase {
-
-  /**
-   * @{inheritdoc}
-   */
+  
   public function build() {
     return [
       '#attributes' => [
@@ -29,7 +26,7 @@ class MeetingsSubmenuBlock extends BlockBase {
   }
 
   /**
-   * TODO: we should use a policymaker ID and not just the name
+   * @todo we should use a policymaker ID and not just the name.
    */
   private function getPolicymaker() {
 
@@ -43,9 +40,6 @@ class MeetingsSubmenuBlock extends BlockBase {
     return $code->policymaker;
   }
 
-  /**
-   *
-   */
   private function getMeetingTree() {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pm')
