@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function paatokset_submenus_preprocess_block(&$variables) {
+  if($variables['plugin_id'] === 'meetings_submenu') {
+    $variables['title'] = $variables['elements']['#attributes']['#title'];
+    $variables['tree'] = $variables['elements']['#attributes']['#tree'];
+  }
+  if($variables['plugin_id'] === 'agendas_submenu') {
+    $variables['title'] = $variables['elements']['#attributes']['#title'];
+    $variables['tree'] = $variables['elements']['#attributes']['#tree'];
+  }
+}
+
+

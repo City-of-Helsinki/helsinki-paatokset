@@ -1,20 +1,20 @@
 <?php
 
-namespace Drupal\paatokset_decisions_submenu\Plugin\Block;
+namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 
 /**
- * Provides Decisions Submenu Block.
+ * Provides Agendas Submenu Block.
  *
  * @Block(
- *    id = "decisions_submenu",
- *    admin_label = @Translation("Decisions Submenu"),
+ *    id = "agendas_submenu",
+ *    admin_label = @Translation("Agendas Submenu"),
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class DecisionsSubmenuBlock extends BlockBase {
+class AgendasSubmenuBlock extends BlockBase {
 
   /**
    * @{inheritdoc}
@@ -22,7 +22,7 @@ class DecisionsSubmenuBlock extends BlockBase {
   public function build() {
     return [
       '#attributes' => [
-        '#title' => $this->getCurrentNodeTitle(),
+        '#title' => 'Viranhaltijapäätökset',
         '#tree' => $this->getDecisionTree(),
       ],
     ];
@@ -31,8 +31,15 @@ class DecisionsSubmenuBlock extends BlockBase {
   /**
    *
    */
-  private function getCurrentNodeTitle() {
-    return \Drupal::routeMatch()->getParameter('node')->getTitle();
+  private function getClassificationCode() {
+
+    $id = \Drupal::routeMatch()->getRawParameter('paatokset_agenda_item');
+    $database = \Drupal::database();
+    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
+      ->fields('aifd', ['classification_code'])
+      ->condition('id', $id);
+    $code = $query->execute()->fetchObject();
+    return $code->classification_code;
   }
 
   /**
@@ -41,12 +48,13 @@ class DecisionsSubmenuBlock extends BlockBase {
   private function getDecisionTree() {
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'p')
-      ->fields('p', ['classification_description']);
+      ->fields('p', ['classification_description'])
+      ->condition('classification_code', $this->getClassificationCode());
     $query->addExpression('YEAR(FROM_UNIXTIME(created))', 'created_year');
     $query->groupBy('classification_description');
     $query->groupBy('created_year');
 
-    $queryResult = $query->execute();
+    $queryResult = $query->execute()->fetchAll();
     $result = [];
 
     foreach ($queryResult as $row) {

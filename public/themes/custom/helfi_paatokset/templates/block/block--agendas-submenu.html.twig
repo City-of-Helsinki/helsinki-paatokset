@@ -28,13 +28,14 @@
 <div{{ attributes.addClass('accordion') }}>
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
-      <h4>{{ title }}</h4>
+      <h4>
+          {{ title }}</h4>
     </div>
     {% for title, item in tree %}
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}
           <div class="accordion__wrapper handorgel">
-            <p class="accordion-item__header handorgel__header">
+            <p class="accordion-item__header handorgel__header decision-tree__subtitle">
               <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
                 {{ title }}
               </button>
@@ -43,6 +44,7 @@
               <div class="accordion-item__content__inner handorgel__content__inner">
                 {% for subtitle in item %}
                   {{ subtitle }}
+                  <br />
                 {% endfor %}
               </div>
             </div>
