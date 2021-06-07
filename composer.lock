@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8599453a939ccff1dad7a8ef3bb3f405",
+    "content-hash": "b195b7f2eec1be2688415ab9aef10ad6",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -3678,7 +3678,7 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/1.1.24",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/latest",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
             "time": "2021-06-07T08:21:11+00:00"
@@ -4262,10 +4262,10 @@
         },
         {
             "name": "drupal/paatokset_ahjo",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.0.zip"
+                "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.1.zip"
             },
             "type": "drupal-custom-module"
         },

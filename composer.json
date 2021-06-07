@@ -90,10 +90,10 @@
             "type": "package",
             "package": {
                 "name": "drupal/paatokset_ahjo",
-                "version": "1.0.0",
+                "version": "1.0.1",
                 "type": "drupal-custom-module",
                 "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.0.zip",
+                    "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.1.zip",
                     "type": "zip"
                 }
             }
