@@ -16,6 +16,9 @@ use Drupal\Core\Url;
  */
 class AgendasSubmenuBlock extends BlockBase {
 
+  /*
+   * Build the attributes.
+   */
   public function build() {
     return [
       '#attributes' => [
@@ -25,6 +28,9 @@ class AgendasSubmenuBlock extends BlockBase {
     ];
   }
 
+  /*
+   * Get classification code so we can search with it.
+   */
   private function getClassificationCode() {
 
     $id = \Drupal::routeMatch()->getRawParameter('paatokset_agenda_item');
@@ -36,6 +42,9 @@ class AgendasSubmenuBlock extends BlockBase {
     return $code->classification_code;
   }
 
+  /*
+   * Get all the decisions for one classification code.
+   */
   private function getDecisionTree() {
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'p')

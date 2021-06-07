@@ -15,7 +15,10 @@ use Drupal\Core\Url;
  * )
  */
 class MeetingsSubmenuBlock extends BlockBase {
-  
+
+  /*
+   * Build the attributes.
+   */
   public function build() {
     return [
       '#attributes' => [
@@ -40,6 +43,9 @@ class MeetingsSubmenuBlock extends BlockBase {
     return $code->policymaker;
   }
 
+  /*
+   * Get all the meetings for one policymaker
+   */
   private function getMeetingTree() {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pm')
