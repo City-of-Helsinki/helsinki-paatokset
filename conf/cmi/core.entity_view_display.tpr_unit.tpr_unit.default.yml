@@ -22,6 +22,7 @@ content:
 hidden:
   accessibility_email: true
   accessibility_phone: true
+  accessibility_sentences: true
   accessibility_www: true
   address: true
   address_postal: true
@@ -33,8 +34,11 @@ hidden:
   latitude: true
   longitude: true
   name: true
+  name_override: true
+  opening_hours: true
   phone: true
   picture_url: true
+  picture_url_override: true
   services: true
   streetview_entrance_url: true
   www: true
