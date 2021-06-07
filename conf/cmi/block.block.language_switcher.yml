@@ -7,10 +7,10 @@ dependencies:
   theme:
     - hdbt
 _core:
-  default_config_hash: jDpKvB-ZNjf7l-dHk_CINYgToXHW1HAv6Yf9ZBphRYQ
+  default_config_hash: Uuu_zSgNUiZnHJ6QM013sNH5MUrF9vyWiwQAOWGyZvU
 id: language_switcher
 theme: hdbt
-region: header_top
+region: header_branding
 weight: 0
 provider: null
 plugin: 'language_block:language_content'
