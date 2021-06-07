@@ -29,7 +29,8 @@ class MeetingsSubmenuBlock extends BlockBase {
   }
 
   /**
-   * Get the policymaker
+   * Get the policymaker.
+   *
    * @todo we should use a policymaker ID and not just the name.
    */
   private function getPolicymaker() {
@@ -45,7 +46,7 @@ class MeetingsSubmenuBlock extends BlockBase {
   }
 
   /**
-   * Get all the meetings for one policymaker
+   * Get all the meetings for one policymaker.
    */
   private function getMeetingTree() {
     $database = \Drupal::database();
