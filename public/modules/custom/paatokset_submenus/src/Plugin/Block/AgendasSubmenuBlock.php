@@ -16,7 +16,7 @@ use Drupal\Core\Url;
  */
 class AgendasSubmenuBlock extends BlockBase {
 
-  /*
+  /**
    * Build the attributes.
    */
   public function build() {
@@ -28,7 +28,7 @@ class AgendasSubmenuBlock extends BlockBase {
     ];
   }
 
-  /*
+  /**
    * Get classification code so we can search with it.
    */
   private function getClassificationCode() {
@@ -42,7 +42,7 @@ class AgendasSubmenuBlock extends BlockBase {
     return $code->classification_code;
   }
 
-  /*
+  /**
    * Get all the decisions for one classification code.
    */
   private function getDecisionTree() {

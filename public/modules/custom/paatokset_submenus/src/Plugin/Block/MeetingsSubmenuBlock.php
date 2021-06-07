@@ -16,7 +16,7 @@ use Drupal\Core\Url;
  */
 class MeetingsSubmenuBlock extends BlockBase {
 
-  /*
+  /**
    * Build the attributes.
    */
   public function build() {
@@ -29,6 +29,7 @@ class MeetingsSubmenuBlock extends BlockBase {
   }
 
   /**
+   * Get the policymaker
    * @todo we should use a policymaker ID and not just the name.
    */
   private function getPolicymaker() {
@@ -43,7 +44,7 @@ class MeetingsSubmenuBlock extends BlockBase {
     return $code->policymaker;
   }
 
-  /*
+  /**
    * Get all the meetings for one policymaker
    */
   private function getMeetingTree() {
