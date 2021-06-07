@@ -6,7 +6,7 @@ Drupal 9 Website for the Helsinki Päätökset project.
 
 Env | Branch | Drush alias | URL | Notes
 --- | ------ | ----------- | --- | -----
-development | * | - | http://helsinki-paatokset.docker.sh/ | Local development environment
+development | * | - | http://helsinki-paatokset.docker.so/ | Local development environment
 ~~production~~ | main | @main | TBD | Not implemented yet
 
 ## Requirements
