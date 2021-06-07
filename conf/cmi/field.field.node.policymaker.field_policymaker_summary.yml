@@ -1,0 +1,23 @@
+uuid: 0b6406dc-7575-4803-8fc0-70e9d9d98f60
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_summary
+    - node.type.policymaker
+  module:
+    - text
+_core:
+  default_config_hash: 2Efw5WH8Z5cxm5omR0GUTLNdvUZloEOejzWmBkbQh90
+id: node.policymaker.field_policymaker_summary
+field_name: field_policymaker_summary
+entity_type: node
+bundle: policymaker
+label: Summary
+description: 'Summary from Open Ahjo'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

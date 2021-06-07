@@ -1,0 +1,23 @@
+uuid: 697911af-cc48-4d80-8068-ab853fbd257a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_long_descr
+    - node.type.policymaker
+  module:
+    - text
+_core:
+  default_config_hash: vnE0T6Eyaz85KNmcuhlbcFBPTCCIcSE_cj5moENu8Ik
+id: node.policymaker.field_policymaker_long_descr
+field_name: field_policymaker_long_descr
+entity_type: node
+bundle: policymaker
+label: 'Long description'
+description: 'Long description for the policymaker. The default value is retrieved from TPR.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
