@@ -19,7 +19,7 @@
   }
 }
 
-.sidebar--first {
+.container.sidebar-first__container {
   @include breakpoint($breakpoint-l) {
     margin-right: $spacing-l;
     max-width: 270px;
@@ -31,4 +31,5 @@
     max-width: 300px;
     min-width: 300px;
   }
+  float:left;
 }
