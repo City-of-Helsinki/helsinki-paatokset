@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b195b7f2eec1be2688415ab9aef10ad6",
+    "content-hash": "a178cbed0c694c89eebfe88385d0c416",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -4262,10 +4262,10 @@
         },
         {
             "name": "drupal/paatokset_ahjo",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.1.zip"
+                "url": "https://github.com/City-of-Helsinki/paatokset_ahjo/archive/refs/tags/1.0.2.zip"
             },
             "type": "drupal-custom-module"
         },
@@ -7344,12 +7344,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "f63d1798cadc8cc4244c85892c370ac3d9977ab3"
+                "reference": "cbc962e22060cf7b1bafd403cf3027943e20ae15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/f63d1798cadc8cc4244c85892c370ac3d9977ab3",
-                "reference": "f63d1798cadc8cc4244c85892c370ac3d9977ab3",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/cbc962e22060cf7b1bafd403cf3027943e20ae15",
+                "reference": "cbc962e22060cf7b1bafd403cf3027943e20ae15",
                 "shasum": ""
             },
             "require": {
@@ -7405,7 +7405,7 @@
                 "issues": "https://github.com/ruflin/Elastica/issues",
                 "source": "https://github.com/ruflin/Elastica/tree/master"
             },
-            "time": "2021-06-02T16:00:20+00:00"
+            "time": "2021-06-07T15:17:59+00:00"
         },
         {
             "name": "stack/builder",
@@ -10537,16 +10537,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.2.9",
+            "version": "1.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "78a0e288fdcebf92aa2318a8d3656168da6ac1a5"
+                "reference": "9fdb22c2e97a614657716178093cd1da90a64aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/78a0e288fdcebf92aa2318a8d3656168da6ac1a5",
-                "reference": "78a0e288fdcebf92aa2318a8d3656168da6ac1a5",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/9fdb22c2e97a614657716178093cd1da90a64aa8",
+                "reference": "9fdb22c2e97a614657716178093cd1da90a64aa8",
                 "shasum": ""
             },
             "require": {
@@ -10593,7 +10593,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.2.9"
+                "source": "https://github.com/composer/ca-bundle/tree/1.2.10"
             },
             "funding": [
                 {
@@ -10609,20 +10609,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-12T12:10:35+00:00"
+            "time": "2021-06-07T13:58:28+00:00"
         },
         {
             "name": "composer/composer",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "e338749d4e6cc97e1136c210ce0212d4a59e3a58"
+                "reference": "1845e6854aa3f37f2c6c24bc525541b00b8b28e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/e338749d4e6cc97e1136c210ce0212d4a59e3a58",
-                "reference": "e338749d4e6cc97e1136c210ce0212d4a59e3a58",
+                "url": "https://api.github.com/repos/composer/composer/zipball/1845e6854aa3f37f2c6c24bc525541b00b8b28e4",
+                "reference": "1845e6854aa3f37f2c6c24bc525541b00b8b28e4",
                 "shasum": ""
             },
             "require": {
@@ -10691,7 +10691,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.1.1"
+                "source": "https://github.com/composer/composer/tree/2.1.2"
             },
             "funding": [
                 {
@@ -10707,7 +10707,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-04T06:46:46+00:00"
+            "time": "2021-06-07T14:03:06+00:00"
         },
         {
             "name": "composer/metadata-minifier",
