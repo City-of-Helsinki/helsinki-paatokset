@@ -3457,7 +3457,7 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/latest",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/1.3.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
             "time": "2021-06-07T08:07:15+00:00"
