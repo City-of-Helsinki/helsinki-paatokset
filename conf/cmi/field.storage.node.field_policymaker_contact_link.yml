@@ -1,0 +1,21 @@
+uuid: aa11ddf8-f202-47f0-b2a6-14fec3c3f9d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+_core:
+  default_config_hash: ANuzQYOI4x4OLOddInZS1q-iwzeOm_06ZAg6mFwTc3k
+id: node.field_policymaker_contact_link
+field_name: field_policymaker_contact_link
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
