@@ -33,7 +33,7 @@ class AgendasSubmenuBlock extends BlockBase {
    * Set cache age to zero.
    */
   public function getCacheMaxAge() {
-    // If you need to redefine the Max Age for that block
+    // If you need to redefine the Max Age for that block.
     return 0;
   }
 
@@ -47,11 +47,13 @@ class AgendasSubmenuBlock extends BlockBase {
   /**
    * Get all the decisions for one classification code.
    *
-   * @return array of results.
+   * @return array
+   * of results.
    */
   private function getAgendasTree(): array {
 
-    // We need to get a link so we can get teh right agenda items, since we dont have the plain ID in agenda items.
+    // We need to get a link so we can get the
+    // right agenda items, since we dont have the plain ID in agenda items.
     $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
@@ -77,7 +79,8 @@ class AgendasSubmenuBlock extends BlockBase {
   /**
    * Get policymaker code so we can search with it.
    *
-   * @return int as the policymaker ID.
+   * @return int
+   * as the policymaker ID.
    */
   private function getPolicymakerId(): int {
     return intval(\Drupal::routeMatch()->getRawParameter('node'));
