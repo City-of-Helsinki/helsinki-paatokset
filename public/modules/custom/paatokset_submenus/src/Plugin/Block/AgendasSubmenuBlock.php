@@ -48,7 +48,7 @@ class AgendasSubmenuBlock extends BlockBase {
    * Get all the decisions for one classification code.
    *
    * @return array
-   * of results.
+   *   of results.
    */
   private function getAgendasTree(): array {
 
@@ -80,7 +80,7 @@ class AgendasSubmenuBlock extends BlockBase {
    * Get policymaker code so we can search with it.
    *
    * @return int
-   * as the policymaker ID.
+   *   as the policymaker ID.
    */
   private function getPolicymakerId(): int {
     return intval(\Drupal::routeMatch()->getRawParameter('node'));
