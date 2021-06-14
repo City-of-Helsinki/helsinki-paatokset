@@ -1,95 +1,37 @@
-.language-switcher__wrapper {
-  display: inline-flex;
+.language-switcher {
   position: relative;
-}
 
-.language-switcher__button {
-  @include font-size(16px);
-  @include font-weight($bold);
-  align-items: center;
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  padding: 0 $spacing-4-xs;
-  text-align: center;
+  .language-link {
+    @include font-size(14px);
+    color: #000000;
+    font-weight: 400;
+    margin: 0 $spacing-half;
+    text-decoration: underline;
 
-  &:focus {
-    outline: 2px solid $color-black;
-  }
-
-  &[aria-expanded="true"] {
-    outline: 2px solid $color-black;
-  }
-}
-
-.language-switcher__button-expand {
-  display: flex;
-  height: 24px;
-  width: 24px;
-
-  svg {
-    fill: $color-black;
-    height: 100%;
-    width: 100%;
-  }
-}
-
-.language-switcher__dropdown {
-  background: $color-white;
-  border: 2px solid $color-black;
-  top: 100%;
-  opacity: 1;
-  position: absolute;
-  right: -2px;
-  z-index: 1000;
-
-  &:not(.is-active) {
-    display: none;
-  }
-
-  .language-links__link {
-    @include font-size(16px);
-    align-items: center;
-    display: inline-flex;
-    justify-content: space-between;
-    line-height: 24px;
-    min-width: 125px;
-    padding: $spacing-xs $spacing-s;
-    text-decoration: none;
-    transition: none;
-    white-space: nowrap;
-    width: 100%;
+    &:first-child {
+      margin-left: 0;
+    }
 
     &.is-active {
-      cursor: not-allowed;
+      cursor: default;
+      font-weight: 500;
+      text-decoration: none;
     }
 
-    &:focus,
-    &:hover {
-      background-color: $color-bus;
-      color: $color-white;
-
-      > svg {
-        fill: $color-white;
-      }
+    &.is-disabled {
+      cursor: default;
+      text-decoration: none;
     }
 
-    &:focus {
-      outline: none;
-    }
-
-    > svg {
-      margin-left: $spacing-s;
+    // TODO: Needs functionality for alternative menu items.
+    &.is-alternative {
+      display: none;
     }
   }
-}
 
-.language-links {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

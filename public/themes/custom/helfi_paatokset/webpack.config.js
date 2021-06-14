@@ -7,11 +7,19 @@ const SVGSpritemapPlugin = require("svg-spritemap-webpack-plugin");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const globImporter = require("node-sass-glob-importer");
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
+const glob = require("glob");
 
 module.exports = {
   entry: {
     styles: ["./src/scss/styles.scss"],
-    bundle: ["./src/js/common.js"],
+    bundle: glob.sync("./src/js/**/*.js",{
+      ignore: [
+        './src/js/component-library.js',
+        './src/js/gallery-settings.js',
+        './src/js/accordion-settings.js',
+        './src/js/menu-toggle.js',
+      ]
+    }),
   },
   output: {
     devtoolLineToLine: true,
