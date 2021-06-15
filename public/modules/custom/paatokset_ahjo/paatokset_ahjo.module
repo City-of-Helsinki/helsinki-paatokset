@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file
+ * Contains paatokset_ahjo.
+ */
+
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_ahjo_theme() {
+  return [
+    'paatokset_issue' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-issue',
+    ],
+    'paatokset_meeting' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-meeting',
+    ],
+    'paatokset_policymaker' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-policymaker',
+    ],
+    'paatokset_organization' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-organization',
+    ],
+    'paatokset_meeting_document' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-meeting-document',
+    ],
+    'paatokset_agenda_item' => [
+      'render element' => 'elements',
+      'template' => 'paatokset-agenda-item',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_issue(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_issue__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_meeting(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_meeting__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_policymaker(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_policymaker__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_organization(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_organization__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_meeting_document(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_meeting_document__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_paatokset_agenda_item(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'paatokset_agenda_item__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-issue.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_issue(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_issue'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_issue'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-meeting.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_meeting(array &$variables)
+{
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_meeting'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_meeting'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-policymaker.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_policymaker(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_policymaker'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_policymaker'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-organization.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_organization(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_organization'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_organization'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-meeting-document.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_meeting_document(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_meeting_document'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_meeting_document'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-agenda-item.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_paatokset_agenda_item(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_agenda_item'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_agenda_item'];
+  }
+}

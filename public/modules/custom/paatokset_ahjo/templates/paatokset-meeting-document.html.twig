@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Theme for organization entity.
+ *
+ */
+#}
+
+{%
+  set classes = [
+  'meeting-document',
+  view_mode ? 'meeting-document--view-mode-' ~ view_mode|clean_class,
+]
+%}
+  <article{{ attributes.addClass(classes) }}>
+    <div class="meeting-document-header__container container">
+      <div{{ content_attributes.addClass('meeting-document__header') }}>
+        <h1{{ title_attributes.addClass('meeting-document__title') }}>
+          {{ entity.id.value }}
+        </h1>
+        <span class="meeting-document__divider"></span>
+        {% if entity.origin_url.value|render %}
+          <div class="meeting-document__category">
+            <p>Linkki:  {{ entity.origin_url.value }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>

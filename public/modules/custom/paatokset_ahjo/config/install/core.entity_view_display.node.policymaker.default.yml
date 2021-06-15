@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.policymaker.field_policymaker_long_descr
+    - node.type.policymaker
+  module:
+    - text
+    - user
+id: node.policymaker.default
+targetEntityType: node
+bundle: policymaker
+mode: default
+content:
+  field_policymaker_long_descr:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_policymaker_summary:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_policymaker_image:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_policymaker_contact_link:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  langcode: true

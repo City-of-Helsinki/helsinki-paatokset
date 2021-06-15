@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_policymakers
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Policymakers'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/policymaker/'
+  track_changes: true
+process:
+  id: id
+  title:
+    plugin: substr
+    source: name
+    start: 0
+    length: 255
+  field_policymaker_long_descr:
+    plugin: substr
+    source: org_type
+    start: 0
+    lenght: 255
+  resource_uri:
+    plugin: substr
+    source: resource_uri
+    start: 0
+    lenght: 255
+  field_policymaker_summary:
+    plugin: substr
+    source: summary
+    start: 0
+    default_value: 'full_html'
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: entity:node
+  default_bundle: policymaker
+migration_dependencies: {  }

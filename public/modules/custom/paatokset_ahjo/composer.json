@@ -1,0 +1,15 @@
+{
+    "name": "drupal/paatokset_ahjo",
+    "description": "OpenAhjo integration",
+    "type": "drupal-custom-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/helfi_api_base": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "drupal/coder": "^8.3"
+    }
+}

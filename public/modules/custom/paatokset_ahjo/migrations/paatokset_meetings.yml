@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_meetings
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Meeting'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/meeting/'
+  track_changes: true
+process:
+  id: id
+  policymaker:
+    plugin: substr
+    source: policymaker_name
+    start: 0
+    length: 255
+  meeting_date:
+    plugin: substr
+    source: date
+    start: 0
+    lenght: 255
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:paatokset_meeting'
+migration_dependencies: {  }

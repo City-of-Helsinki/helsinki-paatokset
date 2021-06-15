@@ -1,0 +1,51 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_issues
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Issue'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi/paatokset/v1/issue/?order_by=-last_modified_time'
+  track_changes: true
+process:
+  id: id
+  title:
+    plugin: substr
+    source: subject
+    start: 0
+    length: 255
+  category:
+    plugin: substr
+    source: category_name
+    start: 0
+    lenght: 255
+  summary:
+    plugin: get
+    source: summary
+    start: 0
+    lenght: 255
+  diarynumber:
+    plugin: get
+    source: register_id
+  langcode:
+    plugin: default_value
+    default_value: fi
+  changed:
+    -
+      plugin: format_date
+      source: last_modified_time
+      from_format: 'Y-m-d\TH:i:s.u'
+      to_format: 'U'
+      from_timezone: 'Europe/Helsinki'
+      to_timezone: 'UTC'
+destination:
+  plugin: 'entity:paatokset_issue'
+migration_dependencies: {  }

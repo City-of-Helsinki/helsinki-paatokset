@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_image
+    - node.type.policymaker
+  module:
+    - image
+id: node.policymaker.field_policymaker_image
+field_name: field_policymaker_image
+entity_type: node
+bundle: policymaker
+label: 'Image'
+description: 'Image for policy maker'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  rows: ''
+  placeholder: ''
+field_type: image
