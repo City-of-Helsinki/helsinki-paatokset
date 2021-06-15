@@ -24,6 +24,9 @@ public/modules/custom/helfi_*
 .phpunit.result.cache
 public/sites/simpletest
 
+# Ignore local database dumps
+dump.sql
+
 # Ignore OSX generated files
 ._*
 .DS_Store
