@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_id
+    - node.type.policymaker
+  module:
+    - text
+id: node.policymaker.field_policymaker_id
+field_name: field_policymaker_id
+entity_type: node
+bundle: policymaker
+label: 'ID'
+description: 'ID from Open Ahjo'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

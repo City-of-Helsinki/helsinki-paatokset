@@ -17,6 +17,7 @@ source:
   track_changes: true
 process:
   id: id
+  field_policymaker_id: id
   title:
     plugin: substr
     source: name

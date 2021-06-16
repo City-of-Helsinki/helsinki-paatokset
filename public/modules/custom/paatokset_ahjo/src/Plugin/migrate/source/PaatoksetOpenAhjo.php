@@ -116,7 +116,7 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
       $totalPages = ($totalPages > $limitPages) ? $limitPages : $totalPages;
       $count = ($totalPages * $this->limit);
     }
-    return $count;
+    return intval($count);
   }
 
   /**

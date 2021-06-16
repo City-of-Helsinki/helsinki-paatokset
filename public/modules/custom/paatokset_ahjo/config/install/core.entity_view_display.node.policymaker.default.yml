@@ -12,6 +12,13 @@ targetEntityType: node
 bundle: policymaker
 mode: default
 content:
+  field_policymaker_id:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_policymaker_long_descr:
     weight: 5
     label: hidden

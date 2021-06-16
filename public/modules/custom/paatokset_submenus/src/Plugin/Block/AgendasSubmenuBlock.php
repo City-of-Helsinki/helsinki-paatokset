@@ -45,7 +45,7 @@ class AgendasSubmenuBlock extends BlockBase {
   }
 
   /**
-   * Get all the decisions for one classification code.
+   * Get all the decisions for one policymaker id.
    *
    * @return array
    *   of results.
@@ -57,15 +57,12 @@ class AgendasSubmenuBlock extends BlockBase {
     $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->fields('aifd', ['meeting_policymaker_link'])
       ->condition('meeting_policymaker_link', $link);
     $query->addExpression('YEAR(meeting_date)', 'date');
-    $query->groupBy('meeting_policymaker_link');
     $query->groupBy('date');
     $query->orderBy('date', 'DESC');
-    $queryResult = $query->execute()->fetchAll();
+    $queryResult = $query->distinct()->execute()->fetchAll();
     $result = [];
-
     foreach ($queryResult as $row) {
       $result[$row->meeting_policymaker_link][] = [
         '#type' => 'link',
@@ -83,7 +80,8 @@ class AgendasSubmenuBlock extends BlockBase {
    *   as the policymaker ID.
    */
   private function getPolicymakerId(): int {
-    return intval(\Drupal::routeMatch()->getRawParameter('node'));
+    $node =\Drupal::routeMatch()->getParameter('node');
+    return intval($node->field_policymaker_id->getString());
   }
 
 }
