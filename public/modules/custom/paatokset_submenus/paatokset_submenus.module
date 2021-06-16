@@ -8,8 +8,8 @@ function paatokset_submenus_preprocess_block(&$variables) {
     return;
   }
 
-  $variables['title'] = $variables['elements']['#attributes']['#title'];
-  $variables['tree'] = $variables['elements']['#attributes']['#tree'];
+  $variables['title'] = $variables['content']['#title'];
+  $variables['tree'] = $variables['content']['#tree'];
 }
 
 

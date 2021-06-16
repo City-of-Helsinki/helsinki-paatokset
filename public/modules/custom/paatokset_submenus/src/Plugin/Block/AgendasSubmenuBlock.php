@@ -22,10 +22,8 @@ class AgendasSubmenuBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#attributes' => [
-        '#title' => 'Viranhaltijapäätökset',
-        '#tree' => $this->getAgendasTree(),
-      ],
+      '#title' => 'Viranhaltijapäätökset',
+      '#tree' => $this->getAgendasTree(),
     ];
   }
 
@@ -73,6 +71,7 @@ class AgendasSubmenuBlock extends BlockBase {
         '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),
       ];
     }
+
     return $result;
   }
 
