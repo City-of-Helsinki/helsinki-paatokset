@@ -79,7 +79,7 @@ class AgendasSubmenuBlock extends BlockBase {
    *   as the policymaker ID.
    */
   private function getPolicymakerId(): int {
-    $node =\Drupal::routeMatch()->getParameter('node');
+    $node = \Drupal::routeMatch()->getParameter('node');
     return intval($node->field_policymaker_id->getString());
   }
 
