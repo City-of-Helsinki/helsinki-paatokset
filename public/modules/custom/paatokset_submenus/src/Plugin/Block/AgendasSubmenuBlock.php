@@ -49,13 +49,17 @@ class AgendasSubmenuBlock extends BlockBase {
    *   of results.
    */
   private function getAgendasTree(): array {
-
     // We need to get a link so we can get the
     // right agenda items, since we dont have the plain ID in agenda items.
+    $policymaker_id = $this->getPolicymakerId();
+    if (!$policymaker_id) {
+      return [];
+    }
     $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
       ->condition('meeting_policymaker_link', $link);
+    $query->fields('aifd', ['meeting_policymaker_link']);
     $query->addExpression('YEAR(meeting_date)', 'date');
     $query->groupBy('date');
     $query->orderBy('date', 'DESC');
@@ -78,9 +82,12 @@ class AgendasSubmenuBlock extends BlockBase {
    * @return int
    *   as the policymaker ID.
    */
-  private function getPolicymakerId(): int {
+  private function getPolicymakerId(): ?int {
     $node = \Drupal::routeMatch()->getParameter('node');
-    return intval($node->field_policymaker_id->getString());
+    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+      return (int) $node->field_policymaker_id->value;
+    }
+    return NULL;
   }
 
 }
