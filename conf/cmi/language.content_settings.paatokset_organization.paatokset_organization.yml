@@ -10,8 +10,6 @@ third_party_settings:
     enabled: false
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: 5_b3_JHuYKCPP7HXcLFmXCgw6tzbpuKo5ymgvzb9WnI
 id: paatokset_organization.paatokset_organization
 target_entity_type_id: paatokset_organization
 target_bundle: paatokset_organization

@@ -3,18 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.policymaker.field_policymaker_contact_link
-    - field.field.node.policymaker.field_policymaker_image
     - field.field.node.policymaker.field_policymaker_long_descr
-    - field.field.node.policymaker.field_policymaker_summary
     - node.type.policymaker
   module:
-    - image
-    - link
     - text
     - user
-_core:
-  default_config_hash: 5UnWF3POKOAGpUO_mB80h-WT84oqzw-Zc5-boIh2BZo
 id: node.policymaker.default
 targetEntityType: node
 bundle: policymaker
@@ -26,6 +19,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: link
+    region: content
+  field_policymaker_id:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_policymaker_image:
     weight: 5

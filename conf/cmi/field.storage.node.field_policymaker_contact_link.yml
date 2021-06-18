@@ -3,16 +3,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-_core:
-  default_config_hash: ANuzQYOI4x4OLOddInZS1q-iwzeOm_06ZAg6mFwTc3k
+    - text
 id: node.field_policymaker_contact_link
 field_name: field_policymaker_contact_link
 entity_type: node
 type: link
 settings: {  }
-module: link
+module: text
 locked: false
 cardinality: 1
 translatable: true

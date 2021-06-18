@@ -7,8 +7,6 @@ dependencies:
     - node.type.policymaker
   module:
     - image
-_core:
-  default_config_hash: bEEicBOAIysmEDenbmAK6gTMc05w-DeuWZUteuEKEOM
 id: node.policymaker.field_policymaker_image
 field_name: field_policymaker_image
 entity_type: node
@@ -35,6 +33,6 @@ settings:
     height: null
   file_directory: '[date:custom:Y]-[date:custom:m]'
   max_filesize: ''
-  handler: 'default:file'
+  handler: default
   handler_settings: {  }
 field_type: image

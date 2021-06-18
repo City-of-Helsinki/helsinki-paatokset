@@ -10,8 +10,6 @@ third_party_settings:
     enabled: false
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: toqWWjorgjKjnYbkYrVWqrS_u0I1zdk_XhNK8yZQ7Y0
 id: paatokset_meeting.paatokset_meeting
 target_entity_type_id: paatokset_meeting
 target_bundle: paatokset_meeting
