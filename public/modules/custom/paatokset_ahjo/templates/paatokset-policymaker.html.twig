@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Theme for policymaker entity.
+ *
+ */
+#}
+
+{%
+  set classes = [
+  'policymaker',
+  view_mode ? 'policymaker--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+  <article{{ attributes.addClass(classes) }}>
+    <div class="policymaker-header__container container">
+      <div{{ content_attributes.addClass('policymaker__header') }}>
+        <h1{{ title_attributes.addClass('policymaker__title') }}>
+          {{ entity.policymaker_name.value }}
+        </h1>
+        <span class="policymaker__divider"></span>
+        {% if entity.department.value|render %}
+          <div class="policymaker__category">
+            <p>Osasto:  {{ entity.department.value }}</p>
+          </div>
+        {% endif %}
+        <span class="policymaker__divider"></span>
+        {% if entity.organization_type.value|render %}
+          <div class="policymaker__category">
+            <p>Organisaatio tyyppi:  {{ entity.organization_type.value }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>

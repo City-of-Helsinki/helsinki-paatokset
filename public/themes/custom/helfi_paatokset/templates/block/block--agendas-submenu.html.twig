@@ -25,27 +25,38 @@
  * @see template_preprocess_block()
  */
 #}
-<div{{ attributes.addClass('accordion') }}>
+<div{{ attributes.addClass('container') }}>
+  {% if (tree is not empty ) %}
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
-      <h4>
-          {{ title }}</h4>
+      <h4>Valitse vuosi</h4>
     </div>
+    <br/>
     {% for title, item in tree %}
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}
           <div class="accordion__wrapper handorgel">
-            <p class="accordion-item__header handorgel__header decision-tree__subtitle">
-              <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-                {{ title }}
-              </button>
-            </p>
             <div class="accordion-item__content handorgel__content">
               <div class="accordion-item__content__inner handorgel__content__inner">
-                {% for subtitle in item %}
-                  {{ subtitle }}
-                  <br />
-                {% endfor %}
+                <ul class="menu">
+                  {% for subtitle in item %}
+                    <li class="item"> {{ subtitle }}</li>
+                  {% endfor %}
+                </ul>
+                <div class="paddles">
+                  <button class="left-paddle paddle hidden">
+                    <svg aria-labelledby="angle-left-994028988" class="icon">
+                      <title id="angle-left-994028988">Test label for the angle-right</title>
+                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-left"></use>
+                    </svg>
+                  </button>
+                  <button class="right-paddle paddle">
+                    <svg aria-labelledby="angle-right-994028988" class="icon">
+                      <title id="angle-right-994028988">Test label for the angle-right</title>
+                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-right"></use>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -53,4 +64,6 @@
       {% endembed %}
     {% endfor %}
   </div>
+  {% endif %}
+
 </div>

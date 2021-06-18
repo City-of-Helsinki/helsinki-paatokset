@@ -21,51 +21,73 @@ class AgendasSubmenuBlock extends BlockBase {
    */
   public function build() {
     return [
-      '#attributes' => [
-        '#title' => 'Viranhaltijapäätökset',
-        '#tree' => $this->getDecisionTree(),
-      ],
+      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
+      '#title' => 'Viranhaltijapäätökset',
+      '#tree' => $this->getAgendasTree(),
     ];
   }
 
   /**
-   * Get classification code so we can search with it.
+   * Set cache age to zero.
    */
-  private function getClassificationCode() {
-
-    $id = \Drupal::routeMatch()->getRawParameter('paatokset_agenda_item');
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->fields('aifd', ['classification_code'])
-      ->condition('id', $id);
-    $code = $query->execute()->fetchObject();
-    return $code->classification_code;
+  public function getCacheMaxAge() {
+    // If you need to redefine the Max Age for that block.
+    return 0;
   }
 
   /**
-   * Get all the decisions for one classification code.
+   * Get cache contexts.
    */
-  private function getDecisionTree() {
+  public function getCacheContexts() {
+    return ['url.path', 'url.query_args'];
+  }
+
+  /**
+   * Get all the decisions for one policymaker id.
+   *
+   * @return array
+   *   of results.
+   */
+  private function getAgendasTree(): array {
+    // We need to get a link so we can get the
+    // right agenda items, since we dont have the plain ID in agenda items.
+    $policymaker_id = $this->getPolicymakerId();
+    if (!$policymaker_id) {
+      return [];
+    }
+    $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
     $database = \Drupal::database();
-    $query = $database->select('paatokset_agenda_item_field_data', 'p')
-      ->fields('p', ['classification_description'])
-      ->condition('classification_code', $this->getClassificationCode());
-    $query->addExpression('YEAR(FROM_UNIXTIME(created))', 'created_year');
-    $query->groupBy('classification_description');
-    $query->groupBy('created_year');
-
-    $queryResult = $query->execute()->fetchAll();
+    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
+      ->condition('meeting_policymaker_link', $link);
+    $query->fields('aifd', ['meeting_policymaker_link']);
+    $query->addExpression('YEAR(meeting_date)', 'date');
+    $query->groupBy('date');
+    $query->orderBy('date', 'DESC');
+    $queryResult = $query->distinct()->execute()->fetchAll();
     $result = [];
-
     foreach ($queryResult as $row) {
-      $result[$row->classification_description][] = [
+      $result[$row->meeting_policymaker_link][] = [
         '#type' => 'link',
-        '#title' => $row->created_year,
-        '#url' => Url::fromRoute('entity.node.canonical', ['node' => 1]),
+        '#title' => $row->date,
+        '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),
       ];
     }
 
     return $result;
+  }
+
+  /**
+   * Get policymaker code so we can search with it.
+   *
+   * @return int
+   *   as the policymaker ID.
+   */
+  private function getPolicymakerId(): ?int {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+      return (int) $node->field_policymaker_id->value;
+    }
+    return NULL;
   }
 
 }

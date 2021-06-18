@@ -5,8 +5,6 @@ dependencies:
   module:
     - node
     - text
-_core:
-  default_config_hash: melAgv6b6r-DcXgw-hdTaGP8i6CrGgxA0ALsINSEz1A
 id: node.field_policymaker_long_descr
 field_name: field_policymaker_long_descr
 entity_type: node

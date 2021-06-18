@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_organizations
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Organizations'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/organization'
+  track_changes: true
+process:
+  id: id
+  organization_name_fi:
+    plugin: substr
+    source: name_fi
+    start: 0
+    length: 255
+  organization_name_sv:
+    plugin: substr
+    source: name_sv
+    start: 0
+    lenght: 255
+  parents:
+    plugin: extract
+    source: parents
+    index:
+      - 0
+  organization_type:
+    plugin: substr
+    source: type
+    start: 0
+    lenght: 255
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:paatokset_organization'
+migration_dependencies: {  }

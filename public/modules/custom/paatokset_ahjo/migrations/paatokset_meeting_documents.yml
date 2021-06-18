@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_meeting_documents
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Meeting Documents'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/meeting_document/'
+  track_changes: true
+process:
+  id: id
+  last_modified_time:
+    plugin: substr
+    source: last_modified_time
+    start: 0
+    length: 255
+  publish_time:
+    plugin: substr
+    source: publish_time
+    start: 0
+    lenght: 255
+  xml_uri:
+    plugin: substr
+    source: xml_uri
+    start: 0
+    lenght: 255
+  origin_url:
+    plugin: substr
+    source: origin_url
+    start: 0
+    lenght: 255
+  meeting_id:
+    plugin: extract
+    source: meeting
+    index:
+      - id
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:paatokset_meeting_document'
+migration_dependencies: {  }

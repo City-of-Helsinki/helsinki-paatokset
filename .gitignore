@@ -19,11 +19,13 @@ public/sites/default/local.services.yml
 public/themes/custom/hdbt*
 # Ignore modules with own repositories
 public/modules/custom/helfi_*
-public/modules/custom/paatokset_ahjo
 
 # Ignore test related files
 .phpunit.result.cache
 public/sites/simpletest
+
+# Ignore local database dumps
+dump.sql
 
 # Ignore OSX generated files
 ._*

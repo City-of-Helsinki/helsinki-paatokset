@@ -10,8 +10,6 @@ third_party_settings:
     enabled: false
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: Mz4Ery_yB1X2X89whn4vt17qENW8FHOZAloKN-zBid4
 id: paatokset_agenda_item.paatokset_agenda_item
 target_entity_type_id: paatokset_agenda_item
 target_bundle: paatokset_agenda_item

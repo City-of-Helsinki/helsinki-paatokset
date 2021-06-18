@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Theme for meeting entity.
+ *
+ */
+#}
+
+{%
+  set classes = [
+  'meeting',
+  view_mode ? 'meeting--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+  <article{{ attributes.addClass(classes) }}>
+    <div class="meeting-header__container container">
+      <div{{ content_attributes.addClass('meeting__header') }}>
+        <h1{{ title_attributes.addClass('meeting__title') }}>
+          {{ entity.policymaker.value }}
+        </h1>
+        <span class="meeting__divider"></span>
+        {% if entity.meeting_date.value|render %}
+          <div class="meeting__category">
+            <p>Päivämäärä:  {{ entity.meeting_date.value }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>

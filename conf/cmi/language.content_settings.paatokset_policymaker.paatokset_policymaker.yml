@@ -10,8 +10,6 @@ third_party_settings:
     enabled: false
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: gKD9rNub4kMJCvZmtS7cz7Gq0gqSJoAI2PH2d9aoE-A
 id: paatokset_policymaker.paatokset_policymaker
 target_entity_type_id: paatokset_policymaker
 target_bundle: paatokset_policymaker

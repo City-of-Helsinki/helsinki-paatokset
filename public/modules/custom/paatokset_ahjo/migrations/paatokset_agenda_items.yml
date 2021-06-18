@@ -1,0 +1,81 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_agenda_items
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Agenda Items'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/agenda_item/'
+  track_changes: true
+process:
+  id: id
+  file_name:
+    plugin: extract
+    source: attachments
+    index:
+      - 0
+      - name
+  file_url:
+    plugin: extract
+    source: attachments
+    index:
+      - 0
+      - file_uri
+  classification_description:
+    plugin: substr
+    source: classification_description
+    start: 0
+    lenght: 255
+  classification_code:
+    plugin: substr
+    source: classification_code
+    start: 0
+    lenght: 255
+  content_text:
+    plugin: get
+    source: content
+  introducer:
+    plugin: substr
+    source: introducer
+    start: 0
+    lenght: 255
+  subject:
+    plugin: substr
+    source: subject
+    start: 0
+    lenght: 255
+  meeting_id:
+    plugin: extract
+    source: meeting
+    index:
+      - id
+  meeting_policymaker_link:
+    plugin: extract
+    source: meeting
+    index:
+      - policymaker
+  meeting_date:
+    plugin: extract
+    source: meeting
+    index:
+      - date
+  subject_resolution:
+    plugin: substr
+    source: resolution
+    start: 0
+    lenght: 255
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:paatokset_agenda_item'
+migration_dependencies: {  }
+

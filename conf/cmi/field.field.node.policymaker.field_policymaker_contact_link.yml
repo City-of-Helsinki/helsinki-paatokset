@@ -6,9 +6,8 @@ dependencies:
     - field.storage.node.field_policymaker_contact_link
     - node.type.policymaker
   module:
+    - text
     - link
-_core:
-  default_config_hash: sMNKU5TRV-tM-6NDerInqnrwF5JkZFNaoSp_9wZUAHY
 id: node.policymaker.field_policymaker_contact_link
 field_name: field_policymaker_contact_link
 entity_type: node

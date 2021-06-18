@@ -10,8 +10,6 @@ third_party_settings:
     enabled: false
     bundle_settings:
       untranslatable_fields_hide: '0'
-_core:
-  default_config_hash: NOjV9PIt8bjleZwyif86BfixlEuzHyClAL5c2tnxutk
 id: paatokset_issue.paatokset_issue
 target_entity_type_id: paatokset_issue
 target_bundle: paatokset_issue

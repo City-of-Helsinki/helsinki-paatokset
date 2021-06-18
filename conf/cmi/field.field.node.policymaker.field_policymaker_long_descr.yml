@@ -7,8 +7,6 @@ dependencies:
     - node.type.policymaker
   module:
     - text
-_core:
-  default_config_hash: vnE0T6Eyaz85KNmcuhlbcFBPTCCIcSE_cj5moENu8Ik
 id: node.policymaker.field_policymaker_long_descr
 field_name: field_policymaker_long_descr
 entity_type: node
