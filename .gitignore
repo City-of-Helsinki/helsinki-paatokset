@@ -25,6 +25,9 @@ public/modules/custom/paatokset_ahjo
 .phpunit.result.cache
 public/sites/simpletest
 
+# Ignore local database dumps
+dump.sql
+
 # Ignore OSX generated files
 ._*
 .DS_Store
