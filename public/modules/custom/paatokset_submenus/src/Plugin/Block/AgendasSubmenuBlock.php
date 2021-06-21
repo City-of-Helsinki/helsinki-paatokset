@@ -23,7 +23,8 @@ class AgendasSubmenuBlock extends BlockBase {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => 'Viranhaltijapäätökset',
-      '#tree' => $this->getAgendasTree(),
+      '#years' => $this->getAgendasYears(),
+      '#list' => $this->getAgendasList()
     ];
   }
 
@@ -48,7 +49,7 @@ class AgendasSubmenuBlock extends BlockBase {
    * @return array
    *   of results.
    */
-  private function getAgendasTree(): array {
+  private function getAgendasYears(): array {
     // We need to get a link so we can get the
     // right agenda items, since we dont have the plain ID in agenda items.
     $policymaker_id = $this->getPolicymakerId();
@@ -66,13 +67,43 @@ class AgendasSubmenuBlock extends BlockBase {
     $queryResult = $query->distinct()->execute()->fetchAll();
     $result = [];
     foreach ($queryResult as $row) {
-      $result[$row->meeting_policymaker_link][] = [
+      $result[$row->date][] = [
         '#type' => 'link',
         '#title' => $row->date,
-        '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),
       ];
     }
 
+    return $result;
+  }
+
+  /**
+   * Get all the decisions for one classification code.
+   *
+   * @return array
+   *   of results.
+   */
+  private function getAgendasList(): array {
+
+    // We need to get a link so we can get the
+    // right agenda items, since we dont have the plain ID in agenda items.
+    $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
+    $database = \Drupal::database();
+    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
+      ->fields('aifd', ['subject', 'meeting_date']);
+    $query->addExpression('YEAR(meeting_date)', 'year');
+    $query->condition('meeting_policymaker_link', $link, '=');
+    $query->orderBy('meeting_date', 'DESC');
+    $queryResult = $query->execute()->fetchAll();
+    $result = [];
+    foreach ($queryResult as $row) {
+      $result[$row->year][] = [
+        '#type' => 'link',
+        '#date' => date("d.m.Y", strtotime($row->meeting_date)),
+        '#year' => $row->year,
+        '#title' => $row->subject,
+        '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),
+      ];
+    }
     return $result;
   }
 

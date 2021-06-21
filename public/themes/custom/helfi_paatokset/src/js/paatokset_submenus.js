@@ -29,12 +29,6 @@ jQuery(function($) {
     return itemsLength * itemSize;
   };
   var menuSize = getMenuSize();
-  console.log('MENU')
-  console.log(menuSize);
-  console.log('ITEM');
-  console.log(itemsLength);
-  console.log('ITEM AMOUT');
-  console.log(itemSize)
   if (menuSize >= menuWrapperSize) {
     $(".paddle").addClass("hidden")
   }
@@ -91,5 +85,42 @@ jQuery(function($) {
   $(leftPaddle).on('click', function() {
     $('.menu').animate( { scrollLeft: '0' }, scrollDuration);
   });
+console.log(document.querySelectorAll("input[type=button]")[0].value);
+handleClick(document.querySelectorAll("input[type=button]")[0].id)
+  $("input[type=button]").click(function(e){
+    handleClick(this.id)
+  });
+  function handleClick(buttonID) {
+    $("input[type=button]").parent('li').css({
+      'border': 'none',
+      'padding-bottom': '19px'
+    });
+    $('#'+buttonID).parent('li').css({
+      'border-bottom': '6px solid #000',
+    'padding-bottom': '19px'
+    });
+    // Declare variables
+    var table, tr, td, i, txtValue, pDate, clickedYear;
+    clickedYear = buttonID.split('_')[1];
+    table = document.getElementById("listTable");
+    tr = table.getElementsByTagName("tr");
+
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        pDate = td.getElementsByTagName("p")[0].innerHTML;
+        var d = new Date(pDate);
+        var pYear = d.getFullYear();
+        if (pYear.toString() === clickedYear.toString()) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
 })
 

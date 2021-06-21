@@ -26,22 +26,24 @@
  */
 #}
 <div{{ attributes.addClass('container') }}>
-  {% if (tree is not empty ) %}
+  {% if (years is not empty ) %}
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
       <h4>Valitse vuosi</h4>
     </div>
     <br/>
-    {% for title, item in tree %}
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}
           <div class="accordion__wrapper handorgel">
             <div class="accordion-item__content handorgel__content">
               <div class="accordion-item__content__inner handorgel__content__inner">
                 <ul class="menu">
+                  {% for item in years %}
                   {% for subtitle in item %}
-                    <li class="item"> {{ subtitle }}</li>
+                    <li class="item"><input type="button" id="yearSelection_{{ subtitle['#title']}}"  value="{{ subtitle['#title']}}"/></li>
                   {% endfor %}
+                  {% endfor %}
+
                 </ul>
                 <div class="paddles">
                   <button class="left-paddle paddle hidden">
@@ -62,8 +64,19 @@
           </div>
         {% endblock %}
       {% endembed %}
-    {% endfor %}
+    <br/>
+    <table id="listTable">
+      {% for item in list %}
+        {% for i in item %}
+          <tr {{ attributes.addClass(i['#year']) }}>
+            <td>
+              <p>{{ i['#date'] }}</p>
+              <h5> <a href="{{ i['#url'] }}">{{ i['#title'] }}</a></h5>
+            </td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+    </table>
   </div>
   {% endif %}
-
 </div>

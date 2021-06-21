@@ -33,20 +33,21 @@
      overflow-y: hidden;
     border-bottom: 1px solid black;
    }
-  .accordion-item__content__inner.handorgel__content__inner a {
+  .accordion-item__content__inner.handorgel__content__inner input {
     color: rgb(6, 6, 6);
     font-size: 20px;
     font-weight: normal;
     letter-spacing: 0;
-    width: 46px;
     text-decoration: none;
+    background: none;
+    border: none;
 
   }
   .menu	{
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    margin: 0 70px;
+    //margin: 0 70px;
 
     .item {
       display: inline-block;
@@ -54,17 +55,16 @@
       font-size: 20px;
       font-weight: bold;
       letter-spacing: 0.29px;
-      width: 43px;
       text-decoration: none;
       margin-right: 22px;
     }
     .item:first-child {
-
       border-bottom: 6px solid #000;
       padding-bottom: 19px;
     }
   }
   .paddles {
+    display:none;
   }
   .paddle {
     position: absolute;
@@ -89,5 +89,35 @@
 
   .container.accordion__container {
     padding:0;
+  }
+
+}
+#block-agendassubmenu {
+  table {
+    width: 100%;
+  }
+  p {
+    color: rgb(102, 102, 102);
+    font-size: 16px;
+    font-weight: normal;
+    height: 24px;
+    line-height: 24px;
+    width: 128px;
+    margin-bottom: 10px;
+  }
+  h5 {
+    color: rgb(26, 26, 26);
+    font-size: 24px;
+    height: 87px;
+    line-height: 29px;
+    text-decoration: none;
+    a:hover {
+      text-decoration:none;
+    }
+  }
+  td {
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+    padding-top: 25px;
   }
 }

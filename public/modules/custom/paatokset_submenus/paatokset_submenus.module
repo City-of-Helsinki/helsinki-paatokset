@@ -9,7 +9,8 @@ function paatokset_submenus_preprocess_block(&$variables) {
   }
 
   $variables['title'] = $variables['content']['#title'];
-  $variables['tree'] = $variables['content']['#tree'];
+  $variables['years'] = $variables['content']['#years'];
+  $variables['list'] = $variables['content']['#list'];
 }
 
 
