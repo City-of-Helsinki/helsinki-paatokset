@@ -48,13 +48,11 @@
                 <div class="paddles">
                   <button class="left-paddle paddle hidden">
                     <svg aria-labelledby="angle-left-994028988" class="icon">
-                      <title id="angle-left-994028988">Test label for the angle-right</title>
                       <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-left"></use>
                     </svg>
                   </button>
                   <button class="right-paddle paddle">
                     <svg aria-labelledby="angle-right-994028988" class="icon">
-                      <title id="angle-right-994028988">Test label for the angle-right</title>
                       <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-right"></use>
                     </svg>
                   </button>
@@ -69,9 +67,14 @@
       {% for item in list %}
         {% for i in item %}
           <tr {{ attributes.addClass(i['#year']) }}>
-            <td>
+            <td class="desktopTd">
               <p>{{ i['#date'] }}</p>
               <h5> <a href="{{ i['#url'] }}">{{ i['#title'] }}</a></h5>
+            </td>
+            <td class="mobileTd">
+              <p>{{ i['#date'] }}</p>
+              <h5> <a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] }}</a></h5>
+              <h5> <a href="{{ i['#url'] }}">{{ i['#responsiveDate'] }}</a></h5>
             </td>
           </tr>
         {% endfor %}

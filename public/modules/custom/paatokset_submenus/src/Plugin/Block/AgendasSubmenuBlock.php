@@ -24,7 +24,7 @@ class AgendasSubmenuBlock extends BlockBase {
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => 'Viranhaltijapäätökset',
       '#years' => $this->getAgendasYears(),
-      '#list' => $this->getAgendasList()
+      '#list' => $this->getAgendasList(),
     ];
   }
 
@@ -99,6 +99,8 @@ class AgendasSubmenuBlock extends BlockBase {
       $result[$row->year][] = [
         '#type' => 'link',
         '#date' => date("d.m.Y", strtotime($row->meeting_date)),
+        '#responsiveDate' => date("m-Y", strtotime($row->meeting_date)),
+        '#responsiveTitle' => 'Pöytäkirja', // For now all of them are asiakirjas
         '#year' => $row->year,
         '#title' => $row->subject,
         '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),

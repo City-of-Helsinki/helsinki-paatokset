@@ -120,4 +120,15 @@
     border-bottom: 1px solid black;
     padding-top: 25px;
   }
+  @include breakpoint($container-width-s) {
+    .mobileTd {
+      display: block;
+    }
+    .desktopTd {
+      display: none;
+    }
+  }
+  .mobileTd {
+    display: none;
+  }
 }

@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-console.log('HEREEEEEEE');
 jQuery(function($) {
   var scrollDuration = 300;
 // paddles
@@ -19,7 +18,6 @@ jQuery(function($) {
 // the wrapper is responsive
   $(window).on('resize', function() {
     menuWrapperSize = getMenuWrapperSize();
-    console.log(menuWrapperSize)
   });
 // size of the visible part of the menu is equal as the wrapper size
   var menuVisibleSize = menuWrapperSize;
@@ -85,8 +83,31 @@ jQuery(function($) {
   $(leftPaddle).on('click', function() {
     $('.menu').animate( { scrollLeft: '0' }, scrollDuration);
   });
-console.log(document.querySelectorAll("input[type=button]")[0].value);
-handleClick(document.querySelectorAll("input[type=button]")[0].id)
+  function handleResponsive(maxWidth) {
+    var allDesktop = document.getElementsByClassName('desktopTd');
+    var allMobile = document.getElementsByClassName('mobileTd');
+
+    if (maxWidth.matches) { // If media query matches
+      for (var i = 0; i < allDesktop.length; i++) {
+        allDesktop[i].style.display = 'none';
+      }
+      for (var i = 0; i < allMobile.length; i++) {
+        allMobile[i].style.display = 'block';
+      }
+    } else {
+      for (var i = 0; i < allDesktop.length; i++) {
+        allDesktop[i].style.display = 'block';
+      }
+      for (var i = 0; i < allMobile.length; i++) {
+        allMobile[i].style.display = 'none';
+      }
+    }
+  }
+
+  var maxWidth = window.matchMedia("(max-width: 544px)")
+  handleResponsive(maxWidth) // Call listener function at run time
+  maxWidth.addListener(handleResponsive)
+  handleClick(document.querySelectorAll("input[type=button]")[0].id)
   $("input[type=button]").click(function(e){
     handleClick(this.id)
   });
@@ -97,14 +118,13 @@ handleClick(document.querySelectorAll("input[type=button]")[0].id)
     });
     $('#'+buttonID).parent('li').css({
       'border-bottom': '6px solid #000',
-    'padding-bottom': '19px'
+      'padding-bottom': '19px'
     });
     // Declare variables
     var table, tr, td, i, txtValue, pDate, clickedYear;
     clickedYear = buttonID.split('_')[1];
     table = document.getElementById("listTable");
     tr = table.getElementsByTagName("tr");
-
 
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
@@ -123,4 +143,3 @@ handleClick(document.querySelectorAll("input[type=button]")[0].id)
     }
   }
 })
-
