@@ -1,4 +1,4 @@
-uuid: ed9d25dd-9bae-463c-8d1a-8d3f5cd672ef
+uuid: eeba2446-6349-496f-9286-f8c0508a14ab
 langcode: en
 status: true
 dependencies:
@@ -6,15 +6,15 @@ dependencies:
     - hdbt_content
   theme:
     - helfi_paatokset
-id: helfi_paatokset_footertopblock
+id: helfi_paatokset_lowercontentblock
 theme: helfi_paatokset
-region: footer_top
-weight: -3
+region: after_content
+weight: -6
 provider: null
-plugin: footer_top_block
+plugin: lower_content_block
 settings:
-  id: footer_top_block
-  label: 'Footer top block'
+  id: lower_content_block
+  label: 'Lower content block'
   provider: hdbt_content
   label_display: '0'
 visibility: {  }

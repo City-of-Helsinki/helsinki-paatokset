@@ -6,8 +6,6 @@ dependencies:
     - system
   theme:
     - hdbt_admin
-_core:
-  default_config_hash: 5oKV7WUX4bEdF0mcX9QU5wnk8mD0a0oWP3c4XudMHbE
 id: hdbt_admin_branding
 theme: hdbt_admin
 region: header

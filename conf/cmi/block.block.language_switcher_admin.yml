@@ -7,8 +7,6 @@ dependencies:
     - system
   theme:
     - hdbt_admin
-_core:
-  default_config_hash: ntmZUU6zd3hffeZ3BZg2HQP_rzfaf_-arlxtI5PGbjc
 id: language_switcher_admin
 theme: hdbt_admin
 region: header
@@ -23,5 +21,5 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: '/node/*'
+    pages: "/node/*\r\n/admin/content/integrations/tpr-unit/*/edit\r\n/admin/content/integrations/tpr-service/*/edit"
     negate: true

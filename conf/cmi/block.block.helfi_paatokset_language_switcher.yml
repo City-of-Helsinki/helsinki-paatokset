@@ -1,4 +1,4 @@
-uuid: 0f95b021-19b1-403b-b085-aa807e0b916b
+uuid: 7b56b9c7-a2b4-42be-ba9f-c337113706c9
 langcode: en
 status: true
 dependencies:
@@ -6,12 +6,10 @@ dependencies:
     - language
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: jDpKvB-ZNjf7l-dHk_CINYgToXHW1HAv6Yf9ZBphRYQ
 id: helfi_paatokset_language_switcher
 theme: helfi_paatokset
-region: header_top
-weight: 0
+region: header_branding
+weight: 2
 provider: null
 plugin: 'language_block:language_content'
 settings:

@@ -1,19 +1,16 @@
-uuid: 36f94ab9-7b0e-4324-85e6-ef35e0b1b9d0
+uuid: 882f9fba-9507-4677-bfe3-9ae35df603bc
 langcode: en
 status: true
 dependencies:
   module:
-    - ctools
     - eu_cookie_compliance
     - system
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: Ofp5Nv8E3DryORBw9DXtbN860LdYomjt-klGkC0fCHs
 id: helfi_paatokset_eucookiecomplianceblock
 theme: helfi_paatokset
-region: after_content
-weight: -5
+region: content
+weight: 10
 provider: null
 plugin: eu_cookie_compliance_block
 settings:
@@ -26,14 +23,7 @@ settings:
       value: ''
       format: full_html
 visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      page: page
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: /node/1
+    pages: /cookie-information-and-settings
     negate: false

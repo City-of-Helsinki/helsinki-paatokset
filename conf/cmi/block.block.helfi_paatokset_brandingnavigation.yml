@@ -1,4 +1,4 @@
-uuid: 498db19c-ef07-43b7-b824-0b17d1a2a606
+uuid: 510df179-6291-42db-b588-c0c117de6e87
 langcode: en
 status: true
 dependencies:
@@ -7,9 +7,9 @@ dependencies:
   module:
     - menu_block_current_language
   theme:
-    - hdbt
-id: brandingnavigation
-theme: hdbt
+    - helfi_paatokset
+id: helfi_paatokset_brandingnavigation
+theme: helfi_paatokset
 region: header_branding
 weight: 3
 provider: null

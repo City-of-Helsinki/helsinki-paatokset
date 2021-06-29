@@ -1,22 +1,22 @@
-uuid: 146fdb31-a2ed-4cf5-be26-6a0485874196
+uuid: 1ad44ccf-604a-4599-852d-dafcb4c7f2ec
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.footer-bottom-navigation
+    - system.menu.header-top-navigation
   module:
     - menu_block_current_language
   theme:
     - helfi_paatokset
-id: helfi_paatokset_footerbottomnavigation
+id: helfi_paatokset_headertopnavigation
 theme: helfi_paatokset
-region: footer_bottom
+region: header_top
 weight: 0
 provider: null
-plugin: 'menu_block_current_language:footer-bottom-navigation'
+plugin: 'menu_block_current_language:header-top-navigation'
 settings:
-  id: 'menu_block_current_language:footer-bottom-navigation'
-  label: 'Footer - Bottom navigation'
+  id: 'menu_block_current_language:header-top-navigation'
+  label: 'Header - Top navigation'
   provider: menu_block_current_language
   label_display: '0'
   translation_providers:
