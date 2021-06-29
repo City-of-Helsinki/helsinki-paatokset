@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Theme for issue entity.
+ *
+ */
+#}
+
+{%
+  set classes = [
+  'issue',
+  view_mode ? 'issue--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+  <article{{ attributes.addClass(classes) }}>
+    <div class="issue-header__container container">
+      <div{{ content_attributes.addClass('issue__header') }}>
+        <h1{{ title_attributes.addClass('issue__title') }}>
+          {{ entity.label }}
+        </h1>
+      </div>
+      {% if entity.diarynumber.value %}
+        <div class="issue__diarynumber">
+          <label>
+            {{ 'Diary number'|trans }}
+          </label>
+          <span>{{ entity.diarynumber.value }}</span>
+        </div>
+      {% endif %}
+      {% if entity.top_category_name.value %}
+        <div class="issue__category">
+          {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
+        </div>
+      {% endif %}
+    </div>
+  </article>
