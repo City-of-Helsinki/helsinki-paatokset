@@ -89,7 +89,7 @@ class AgendasSubmenuBlock extends BlockBase {
     $link = '/paatokset/v1/policymaker/' . $this->getPolicymakerId() . '/';
     $database = \Drupal::database();
     $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->fields('aifd', ['subject', 'meeting_date']);
+      ->fields('aifd', ['subject', 'meeting_date', 'meeting_number']);
     $query->addExpression('YEAR(meeting_date)', 'year');
     $query->condition('meeting_policymaker_link', $link, '=');
     $query->orderBy('meeting_date', 'DESC');
@@ -99,8 +99,9 @@ class AgendasSubmenuBlock extends BlockBase {
       $result[$row->year][] = [
         '#type' => 'link',
         '#date' => date("d.m.Y", strtotime($row->meeting_date)),
+        '#meetingNumber' => $row->meeting_number,
         '#responsiveDate' => date("m-Y", strtotime($row->meeting_date)),
-        '#responsiveTitle' => 'Pöytäkirja', // For now all of them are asiakirjas
+        '#responsiveTitle' => 'Pöytäkirja',
         '#year' => $row->year,
         '#title' => $row->subject,
         '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),

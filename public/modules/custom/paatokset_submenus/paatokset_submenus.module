@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Contains paatokset_submenus.
+ */
+
+/**
  * Implements hook_preprocess_block().
  */
 function paatokset_submenus_preprocess_block(&$variables) {
@@ -12,5 +17,3 @@ function paatokset_submenus_preprocess_block(&$variables) {
   $variables['years'] = $variables['content']['#years'];
   $variables['list'] = $variables['content']['#list'];
 }
-
-

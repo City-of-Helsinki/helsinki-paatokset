@@ -39,25 +39,26 @@
               <div class="accordion-item__content__inner handorgel__content__inner">
                 <ul class="menu">
                   {% for item in years %}
-                  {% for subtitle in item %}
-                    <li class="item"><input type="button" id="yearSelection_{{ subtitle['#title']}}"  value="{{ subtitle['#title']}}"/></li>
+                    {% for subtitle in item %}
+                      <li class="item"><input type="button" id="yearSelection_{{ subtitle['#title']}}"  value="{{ subtitle['#title']}}"/></li>
+                    {% endfor %}
                   {% endfor %}
-                  {% endfor %}
-
                 </ul>
-                <div class="paddles">
-                  <button class="left-paddle paddle hidden">
-                    <svg aria-labelledby="angle-left-994028988" class="icon">
-                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-left"></use>
-                    </svg>
-                  </button>
-                  <button class="right-paddle paddle">
-                    <svg aria-labelledby="angle-right-994028988" class="icon">
-                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-right"></use>
-                    </svg>
-                  </button>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select">
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">Näytä lisää</span>
+                      <div class="arrow">
+                        <svg aria-labelledby="arrow-down-994028988" class="icon" id="arrow-down">
+                          <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#arrow-down"></use>
+                        </svg>
+                        <svg aria-labelledby="arrow-up-994028988" class="icon" id="arrow-up">
+                          <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#arrow-up"></use>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="custom-options" id="custom-options"></div>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         {% endblock %}
@@ -73,8 +74,8 @@
             </td>
             <td class="mobileTd">
               <p>{{ i['#date'] }}</p>
-              <h5> <a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] }}</a></h5>
-              <h5> <a href="{{ i['#url'] }}">{{ i['#responsiveDate'] }}</a></h5>
+              <h5><a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] }}</a></h5>
+              <h5><a href="{{ i['#url'] }}">{{ i['#meetingNumber'] }} - {{ i['#year'] }}</a></h5>
             </td>
           </tr>
         {% endfor %}
@@ -83,3 +84,8 @@
   </div>
   {% endif %}
 </div>
+</div>
+
+<noscript>
+  <style>.custom-select-wrapper {display:none}</style>
+</noscript>
