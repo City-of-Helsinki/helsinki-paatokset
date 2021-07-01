@@ -29,7 +29,7 @@
   {% if (years is not empty ) %}
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
-      <h4>Valitse vuosi</h4>
+      <h4>{{ 'Select year' |trans }}</h4>
     </div>
     <br/>
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
@@ -46,7 +46,7 @@
                 </ul>
                 <div class="custom-select-wrapper">
                   <div class="custom-select">
-                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">Näytä lisää</span>
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
                       <div class="arrow">
                         <svg aria-labelledby="arrow-down-994028988" class="icon" id="arrow-down">
                           <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#arrow-down"></use>
@@ -74,7 +74,7 @@
             </td>
             <td class="mobileTd">
               <p>{{ i['#date'] }}</p>
-              <h5><a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] }}</a></h5>
+              <h5><a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] | trans}}</a></h5>
               <h5><a href="{{ i['#url'] }}">{{ i['#meetingNumber'] }} - {{ i['#year'] }}</a></h5>
             </td>
           </tr>
