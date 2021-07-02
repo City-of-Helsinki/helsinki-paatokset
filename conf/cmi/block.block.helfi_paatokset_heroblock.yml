@@ -1,4 +1,4 @@
-uuid: 026233d1-364e-404f-b7d2-4d2af7faff84
+uuid: f23362c5-af0c-484d-8fc8-09d83bf4d56f
 langcode: en
 status: true
 dependencies:
@@ -6,9 +6,9 @@ dependencies:
     - ctools
     - hdbt_content
   theme:
-    - hdbt
-id: heroblock
-theme: hdbt
+    - helfi_paatokset
+id: helfi_paatokset_heroblock
+theme: helfi_paatokset
 region: before_content
 weight: -5
 provider: null

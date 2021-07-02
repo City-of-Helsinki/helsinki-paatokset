@@ -16,6 +16,7 @@ libraries-override:
 # Regions
 regions:
   header_top: Header - Top
+  header_branding: Header - Branding
   header_bottom: Header - Bottom
   messages: Messages
   tools: Tools
@@ -28,3 +29,4 @@ regions:
   before_footer: Before footer
   footer_top: Footer - Top
   footer_bottom: Footer - Bottom
+  attachments: Attachments

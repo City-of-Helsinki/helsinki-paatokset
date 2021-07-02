@@ -1,11 +1,9 @@
-uuid: e6723efd-be0e-4143-bc83-04de19d9f5b6
+uuid: 2c74f7a9-030f-464d-bfd8-6fbd3d8a1a68
 langcode: en
 status: true
 dependencies:
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: H69FvwR04I2gfiz-9B_vOzX7lLLZrz-6FJvXMvMR1yc
 id: helfi_paatokset_local_actions
 theme: helfi_paatokset
 region: tools

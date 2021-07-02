@@ -1,4 +1,4 @@
-uuid: b4e973f3-b430-4363-9a0a-d8998739c4c2
+uuid: f21ff65d-fc0a-4ac2-87fa-f3adb7170bb0
 langcode: en
 status: true
 dependencies:
@@ -6,12 +6,10 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: ZzdJcSkjBoQgZejw_QMj17rr48OGJ1nrMTff0Ll9Hhw
 id: helfi_paatokset_sitebranding
 theme: helfi_paatokset
-region: header_top
-weight: -4
+region: header_branding
+weight: 1
 provider: null
 plugin: system_branding_block
 settings:

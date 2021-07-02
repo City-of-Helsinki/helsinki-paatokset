@@ -1,4 +1,4 @@
-uuid: d78c54b0-3421-451c-a87d-dc9c1c7bb876
+uuid: eab6e7da-c984-43da-a2be-838f3e6f014a
 langcode: en
 status: false
 dependencies:
@@ -8,8 +8,6 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: z1s_0oxpOjcA1atdCgI_EmNSXDJj76BuQclUwezMmcw
 id: helfi_paatokset_tools
 theme: helfi_paatokset
 region: tools

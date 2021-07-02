@@ -1,4 +1,4 @@
-uuid: 745bc15a-7499-4dfd-9318-3ab723c6e1be
+uuid: 4b721b65-59e6-4b76-b699-522263497e3c
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: X6F3oSAls1r1jwOVU5n7EG6Uaz0yFqo-GQcEXDzxxLk
 id: helfi_paatokset_breadcrumbs
 theme: helfi_paatokset
 region: breadcrumb
