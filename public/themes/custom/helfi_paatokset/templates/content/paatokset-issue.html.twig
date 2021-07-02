@@ -34,4 +34,6 @@
         </div>
       {% endif %}
     </div>
+    {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings } %}
+
   </article>

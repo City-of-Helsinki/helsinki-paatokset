@@ -1,0 +1,45 @@
+{#
+  Values that should be passed:
+    - Options: array containing title, value and class for an option
+    - Selected: currently selected option
+#}
+
+
+{% if options %}
+<div class="issue__meetings-container container">
+  <label>{{ 'Process history'|trans }}</label>
+  <div class="issue__meetings-dropdown">
+    {% if selected %}
+      {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: selected.title, icon_last: true, icon_last_type: 'angle-down' } %}
+    {% else %}
+      {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
+    {% endif %}
+    <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" aria-haspopup='listbox'>
+      {% for option in options %}
+        {% if selected == option %}
+          <li
+            data-styleclass="{{option.class}}"
+            data-link="{{option.link}}"
+            role="option" aria-selected="true"
+            tabindex="0"
+            class="option selected {{option.class}}"
+          >
+            {{ option.title }}
+          </li>
+        {% else %}
+          <li
+            data-styleclass="{{option.class}}"
+            data-link="{{option.link}}"
+            role="option"
+            aria-selected="false"
+            tabindex="0"
+            class="option {{option.class}}"
+          >
+            {{ option.title }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}

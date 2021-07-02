@@ -1,0 +1,19 @@
+uuid: 697a38ce-6361-4abb-a63a-ad7526446171
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_resource_uri
+    - node.type.policymaker
+id: node.policymaker.field_resource_uri
+field_name: field_resource_uri
+entity_type: node
+bundle: policymaker
+label: 'Resource uri'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -8,6 +8,7 @@
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_ahjo\Entity\Issue;
 
 /**
  * Implements hook_theme().
@@ -130,7 +131,42 @@ function template_preprocess_paatokset_issue(array &$variables) {
   }
   if (isset($variables['elements']['#paatokset_issue'])) {
     $variables['entity'] = $variables['elements']['#paatokset_issue'];
+    if (isset($variables['elements']['#paatokset_issue'])) {
+      $variables['entity'] = $variables['elements']['#paatokset_issue'];
+      $handlings = paatokset_ahjo_get_handlings($variables['entity']);
+      if($handlings) {
+        $variables['current_handling'] = $handlings[0];
+        $variables['handlings'] = paatokset_ahjo_get_handlings($variables['entity']);
+      }
+    }
   }
+}
+
+function paatokset_ahjo_get_handlings(Issue $entity) {
+  $issue_id = $entity->get('id')->value;
+  $database = \Drupal::database();
+  $query = $database->select('paatokset_meeting_field_data', 'pmfd')
+    ->fields('pmfd', ['meeting_date', 'policymaker'])
+    ->fields('paifd', ['id'])
+    ->fields('nfot', ['field_organization_type_value']);
+  $query->join('paatokset_agenda_item_field_data', 'paifd', 'pmfd.id = paifd.meeting_id');
+  $query->join('node__field_resource_uri', 'nfru', 'nfru.field_resource_uri_value = pmfd.policymaker_uri');
+  $query->join('node__field_organization_type', 'nfot', 'nfot.entity_id = nfru.entity_id');
+  $query->condition('paifd.issue_id', $issue_id);
+  $query->orderBy('pmfd.meeting_date', 'DESC');
+  $results = $query->execute()->fetchAll();
+
+  $transformed_result = [];
+  foreach($results as $result) {
+    $date = date('d.m.Y', strtotime($result->meeting_date));
+    $transformed_result[] = [
+      'title' => "$result->policymaker/$date",
+      'class' => str_replace('_', '-', $result->field_organization_type_value),
+      'link' =>  $result->id
+    ];
+  }
+
+  return $transformed_result;
 }
 
 /**
@@ -248,4 +284,30 @@ function paatokset_ahjo_update_8001() {
     ]);
 
     \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('top_category_name', $entity_type_id, $entity_type_id, $field_storage_definition);
+}
+
+function paatokset_ahjo_update_9002() {
+  $entity_type_id = 'paatokset_agenda_item';
+  $field_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('issue_id'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setDefaultValue('')
+    ->setCardinality(1)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('issue_id', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+  $entity_type_id = 'paatokset_meeting';
+  $field_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('policymaker_uri'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setDefaultValue('')
+    ->setCardinality(1)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('policymaker_uri', $entity_type_id, $entity_type_id, $field_storage_definition);
 }

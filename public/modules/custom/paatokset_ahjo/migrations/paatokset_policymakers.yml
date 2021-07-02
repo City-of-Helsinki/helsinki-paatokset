@@ -27,17 +27,22 @@ process:
     plugin: substr
     source: org_type
     start: 0
-    lenght: 255
-  resource_uri:
+    length: 255
+  field_resource_uri:
     plugin: substr
     source: resource_uri
     start: 0
-    lenght: 255
+    length: 255
   field_policymaker_summary:
     plugin: substr
     source: summary
     start: 0
     default_value: 'full_html'
+  field_organization_type:
+    plugin: substr
+    source: org_type
+    start: 0
+    length: 255
   langcode:
     plugin: default_value
     default_value: fi

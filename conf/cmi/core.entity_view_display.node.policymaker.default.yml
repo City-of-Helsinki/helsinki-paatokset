@@ -3,9 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.policymaker.field_organization_type
+    - field.field.node.policymaker.field_policymaker_contact_link
+    - field.field.node.policymaker.field_policymaker_id
+    - field.field.node.policymaker.field_policymaker_image
     - field.field.node.policymaker.field_policymaker_long_descr
+    - field.field.node.policymaker.field_policymaker_summary
+    - field.field.node.policymaker.field_resource_uri
     - node.type.policymaker
   module:
+    - helfi_tpr
+    - image
+    - link
     - text
     - user
 id: node.policymaker.default
@@ -14,44 +23,56 @@ bundle: policymaker
 mode: default
 content:
   field_policymaker_contact_link:
-    weight: 5
+    weight: 0
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
     type: link
     region: content
   field_policymaker_id:
-    weight: 5
+    weight: 1
     label: hidden
-    settings: {  }
+    settings:
+      iframe_title: 'Service map'
+      link_title: 'View larger map'
+      target: true
     third_party_settings: {  }
-    type: text_default
+    type: service_map_embed
     region: content
   field_policymaker_image:
-    weight: 5
+    weight: 2
     label: hidden
-    settings: {  }
+    settings:
+      image_style: ''
+      image_link: ''
     third_party_settings: {  }
     type: image
     region: content
   field_policymaker_long_descr:
-    weight: 5
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_policymaker_summary:
-    weight: 5
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   links:
-    weight: 100
+    weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_organization_type: true
+  field_resource_uri: true
   langcode: true
