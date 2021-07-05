@@ -1,0 +1,23 @@
+uuid: 9b1f8252-37fe-43e9-9b3e-19cb63b06b4c
+langcode: fi
+status: true
+dependencies:
+  module:
+    - file
+    - media
+id: media.field_media_file_2
+field_name: field_media_file_2
+entity_type: media
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

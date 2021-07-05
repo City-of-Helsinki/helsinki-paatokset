@@ -32,7 +32,7 @@ display:
         message:
           label: Meddelande
           alter:
-            alt: '{{ message }}'
+            alt: '{{ meddelande }}'
         name:
           label: Användare
           separator: ', '

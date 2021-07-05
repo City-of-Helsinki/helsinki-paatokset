@@ -1,0 +1,13 @@
+uuid: 80ac8cd7-1fff-422c-b19e-54c77217fdfb
+langcode: fi
+status: true
+dependencies: {  }
+id: declaration_of_affiliation
+label: 'Declaration of affiliation'
+description: ''
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file_1
+field_map: {  }

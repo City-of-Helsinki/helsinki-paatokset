@@ -1,0 +1,19 @@
+uuid: 316c9a2d-d2bd-4df9-a4c0-e1253bf2618e
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_first_name
+    - media.type.declaration_of_affiliation
+id: media.declaration_of_affiliation.field_first_name
+field_name: field_first_name
+entity_type: media
+bundle: declaration_of_affiliation
+label: 'first name'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,19 @@
+uuid: dc1c310c-497d-407b-949e-7e53fe229d2b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_title
+    - media.type.declaration_of_affiliation
+id: media.declaration_of_affiliation.field_title
+field_name: field_title
+entity_type: media
+bundle: declaration_of_affiliation
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

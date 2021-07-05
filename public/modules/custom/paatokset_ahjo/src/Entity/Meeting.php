@@ -42,7 +42,8 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *     "revision" = "revision_id",
  *     "langcode" = "langcode",
  *      "uuid" = "uuid",
- *      "uid" = "uid"
+ *      "uid" = "uid",
+ *      "label" = "policymaker"
  *   },
  *   revision_metadata_keys = {
  *     "revision_created" = "revision_timestamp",

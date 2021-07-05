@@ -5,17 +5,18 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Suodatus
+          submit_button: Suodatin
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
             previous: '‹ Edellinen'
             next: 'Seuraava ›'
             first: '« Ensimmäinen'
+            last: 'Viimeinen »'
       fields:
         title:
           label: Otsikko
@@ -23,7 +24,7 @@ display:
           label: Sisältötyyppi
           separator: ', '
         name:
-          label: Tekijä
+          label: Kirjoittaja
         langcode:
           label: Kieli
           separator: ', '
@@ -67,4 +68,5 @@ display:
         title: Sisältö
       tab_options:
         title: Sisältö
+        description: 'Etsi ja hallitse sisältöä'
     display_title: Sivu

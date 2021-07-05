@@ -1,0 +1,19 @@
+uuid: 344bcb92-58c2-4ba1-ba1c-abd12bb8ae08
+langcode: fi
+status: true
+dependencies:
+  module:
+    - link
+    - media
+id: media.field_contact_url
+field_name: field_contact_url
+entity_type: media
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

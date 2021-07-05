@@ -1,3 +1,4 @@
+label: 'TPR units'
 display:
   default:
     display_title: Основной
@@ -39,5 +40,6 @@ display:
         langcode:
           expose:
             label: Язык
+      title: 'TPR units'
   page_1:
     display_title: Страница

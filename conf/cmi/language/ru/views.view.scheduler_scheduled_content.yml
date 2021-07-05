@@ -22,6 +22,7 @@ display:
           label: Заголовок
           separator: ', '
         type:
+          label: 'Тип материала'
           separator: ', '
         name:
           label: Автор
@@ -33,8 +34,10 @@ display:
             format_custom_false: 'Снято с публикации'
           separator: ', '
         publish_on:
+          label: Опубликовать
           separator: ', '
         unpublish_on:
+          label: 'Снять с публикации'
           separator: ', '
         operations:
           label: Операции
@@ -61,10 +64,14 @@ display:
     display_title: Основной
   overview:
     display_options:
+      menu:
+        title: Запланировано
       tab_options:
         title: Содержимое
   user_page:
     display_options:
+      menu:
+        title: Запланировано
       tab_options:
         title: Содержимое
       arguments:

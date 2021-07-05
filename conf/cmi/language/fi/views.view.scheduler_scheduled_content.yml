@@ -1,13 +1,15 @@
+label: 'Ajastettu sisältö'
+description: 'Etsi ja ylläpidä ajastettua sisältöä.'
 display:
   default:
     display_options:
       exposed_form:
         options:
-          submit_button: Suodatus
+          submit_button: Suodatin
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
@@ -22,9 +24,10 @@ display:
           label: Otsikko
           separator: ', '
         type:
+          label: Sisältötyyppi
           separator: ', '
         name:
-          label: Tekijä
+          label: Kirjoittaja
           separator: ', '
         status:
           label: Tila
@@ -33,8 +36,10 @@ display:
             format_custom_false: Julkaisematon
           separator: ', '
         publish_on:
+          label: Julkaisupäivämäärä
           separator: ', '
         unpublish_on:
+          label: 'Julkaisun peruutuspäivämäärä'
           separator: ', '
         operations:
           label: Toimenpiteet
@@ -58,16 +63,30 @@ display:
         langcode:
           expose:
             label: Kieli
+      title: 'Ajastettu sisältö'
+      empty:
+        area_text_custom:
+          content: 'Ei vielä ajastettua sisältöä.'
     display_title: Isäntä
   overview:
     display_options:
+      menu:
+        title: Ajastettu
       tab_options:
         title: Sisältö
+      display_description: 'Yleiskatsaus koko ajoitetusta sisällöstä.'
+    display_title: Sisältö
   user_page:
     display_options:
+      menu:
+        title: Ajastettu
       tab_options:
         title: Sisältö
       arguments:
         uid:
           exception:
             title: Kaikki
+      empty:
+        area_text_custom:
+          content: '{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä.'
+    display_title: Käyttäjäprofiili

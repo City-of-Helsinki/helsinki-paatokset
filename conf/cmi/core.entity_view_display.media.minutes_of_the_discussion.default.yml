@@ -1,0 +1,37 @@
+uuid: f9e2eb4b-ccc1-4d48-ad02-c183beeb8893
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.media.minutes_of_the_discussion.field_media_file_2
+    - field.field.media.minutes_of_the_discussion.field_meetings_reference
+    - media.type.minutes_of_the_discussion
+  module:
+    - file
+id: media.minutes_of_the_discussion.default
+targetEntityType: media
+bundle: minutes_of_the_discussion
+mode: default
+content:
+  field_media_file_2:
+    label: visually_hidden
+    weight: 0
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_meetings_reference:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

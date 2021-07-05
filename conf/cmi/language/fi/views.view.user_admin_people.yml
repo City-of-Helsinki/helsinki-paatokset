@@ -2,21 +2,22 @@ label: Käyttäjät
 description: 'Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä.'
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
       exposed_form:
         options:
-          submit_button: Suodatus
+          submit_button: Suodatin
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
             previous: '‹ Edellinen'
             next: 'Seuraava ›'
             first: '« Ensimmäinen'
+            last: 'Viimeinen »'
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
@@ -29,7 +30,7 @@ display:
         status:
           label: Tila
           settings:
-            format_custom_true: Voimassa
+            format_custom_true: Aktiivinen
             format_custom_false: Suljettu
         roles_target_id:
           label: Käyttäjäroolit
@@ -50,7 +51,7 @@ display:
             label: Tila
             group_items:
               1:
-                title: Voimassa
+                title: Aktiivinen
               2:
                 title: Suljettu
         roles_target_id:

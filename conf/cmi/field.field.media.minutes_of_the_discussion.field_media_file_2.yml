@@ -1,0 +1,27 @@
+uuid: 40452b1e-aa26-4995-b4a5-cf471e8da81f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_file_2
+    - media.type.minutes_of_the_discussion
+  module:
+    - file
+id: media.minutes_of_the_discussion.field_media_file_2
+field_name: field_media_file_2
+entity_type: media
+bundle: minutes_of_the_discussion
+label: Tiedosto
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: pdf
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

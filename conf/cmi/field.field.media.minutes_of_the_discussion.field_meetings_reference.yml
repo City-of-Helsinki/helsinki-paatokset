@@ -1,0 +1,26 @@
+uuid: 12e1c25b-527a-44b6-aa2d-6327d581d770
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_meetings_reference
+    - media.type.minutes_of_the_discussion
+id: media.minutes_of_the_discussion.field_meetings_reference
+field_name: field_meetings_reference
+entity_type: media
+bundle: minutes_of_the_discussion
+label: 'Meetings reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paatokset_meeting'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference
