@@ -47,7 +47,7 @@
     text-decoration: none;
     background: none;
     border: none;
-
+    cursor: pointer;
   }
   .menu	{
     overflow-x: auto;
@@ -96,7 +96,6 @@
   h5 {
     color: rgb(26, 26, 26);
     font-size: 24px;
-    height: 87px;
     line-height: 29px;
     text-decoration: none;
     a:hover {
@@ -158,7 +157,7 @@
   margin-top: 56px;
   border: 1px solid black;
   background-color: white;
-  width: 136px;
+  width: 148px;
   text-align: center;
 }
 
