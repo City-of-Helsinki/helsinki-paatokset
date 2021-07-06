@@ -131,6 +131,11 @@ function helfi_paatokset_theme_suggestions_block_alter(&$suggestions, $variables
   if (isset($element['#configuration']['custom_suggestion'])) {
     $suggestions[] = $element['#configuration']['custom_suggestion'];
   }
+
+  // Load theme suggestions for blocks from parent theme.
+  foreach ($suggestions as &$suggestion) {
+    $suggestion = str_replace('helfi_paatokset_', '', $suggestion);
+  }
 }
 
 /**

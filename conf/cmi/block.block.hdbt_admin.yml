@@ -1,4 +1,4 @@
-uuid: edb9c9e1-c4e6-49f6-aa3f-c85109503216
+uuid: 857e9af3-14b3-418a-9d81-78aa951560ce
 langcode: en
 status: true
 dependencies:
@@ -7,9 +7,9 @@ dependencies:
   module:
     - system
   theme:
-    - hdbt_admin
-id: hdbt_admin_admin
-theme: hdbt_admin
+    - hdbt
+id: hdbt_admin
+theme: hdbt
 region: sidebar_first
 weight: 1
 provider: null

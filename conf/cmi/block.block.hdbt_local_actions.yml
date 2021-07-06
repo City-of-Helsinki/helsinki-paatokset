@@ -4,8 +4,6 @@ status: true
 dependencies:
   theme:
     - hdbt
-_core:
-  default_config_hash: H69FvwR04I2gfiz-9B_vOzX7lLLZrz-6FJvXMvMR1yc
 id: hdbt_local_actions
 theme: hdbt
 region: tools

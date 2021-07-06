@@ -58,6 +58,14 @@ $ make fresh
 
 **Note:** Will not work at this point, since the production environment has not been set up.
 
+To create a local SQL dump to save your site's state, run:
+
+``
+$ make drush-create-dump
+``
+
+After this, the `make fresh` command should use it instead.
+
 ## Update Drupal and composer modules
 
 Update all modules and composer packages:

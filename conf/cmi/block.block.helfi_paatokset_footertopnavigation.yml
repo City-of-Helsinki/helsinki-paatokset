@@ -1,4 +1,4 @@
-uuid: 4ffe3eb2-a379-4600-80b7-b10513942ae3
+uuid: c04d3f7e-a372-458c-aa3e-bfad4d394de8
 langcode: en
 status: true
 dependencies:
@@ -8,8 +8,6 @@ dependencies:
     - menu_block_current_language
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: BcYtE1a1a0HAZb1HQdR-Qh5xb9-pDKS9lqkDHSv6Pdw
 id: helfi_paatokset_footertopnavigation
 theme: helfi_paatokset
 region: footer_top
@@ -18,7 +16,7 @@ provider: null
 plugin: 'menu_block_current_language:footer-top-navigation'
 settings:
   id: 'menu_block_current_language:footer-top-navigation'
-  label: Päätökset
+  label: 'Footer top navigation'
   provider: menu_block_current_language
   label_display: visible
   translation_providers:

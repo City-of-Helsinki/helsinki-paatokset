@@ -1,4 +1,4 @@
-uuid: 09434483-2a8c-418a-afe1-873e9779db56
+uuid: 8f29a3dd-5f69-4dc3-bd5a-d1d2670906ee
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-_core:
-  default_config_hash: cIXgZqCUh5llJLOsOxqd5Tfm0ExTbsfImZVx3yS_jsA
 id: helfi_paatokset_messages
 theme: helfi_paatokset
 region: messages

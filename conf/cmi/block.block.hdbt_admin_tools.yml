@@ -8,8 +8,6 @@ dependencies:
     - system
   theme:
     - hdbt_admin
-_core:
-  default_config_hash: atce5PmAgiEg8e3P2xLrzfOrI1xbYYJ-CbmWOZgiy3w
 id: hdbt_admin_tools
 theme: hdbt_admin
 region: sidebar_first

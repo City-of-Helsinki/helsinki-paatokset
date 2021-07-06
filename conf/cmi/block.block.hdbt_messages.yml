@@ -6,8 +6,6 @@ dependencies:
     - system
   theme:
     - hdbt
-_core:
-  default_config_hash: cIXgZqCUh5llJLOsOxqd5Tfm0ExTbsfImZVx3yS_jsA
 id: hdbt_messages
 theme: hdbt
 region: messages

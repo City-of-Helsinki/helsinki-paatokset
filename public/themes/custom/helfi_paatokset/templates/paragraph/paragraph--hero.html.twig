@@ -39,7 +39,19 @@
  */
 #}
 
-{% extends "@hdbt/paragraphs/paragraph--hero.html.twig" %}
+{% set background_color = content.field_hero_bg_color[0]['#markup'] %}
+{% set design = content.field_hero_design[0]['#markup'] %}
+{% set description = content.field_hero_desc %}
+
+{%
+  set classes = [
+    'hero',
+    view_mode ? 'hero--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'hero--unpublished',
+    design ? 'hero--' ~ design,
+    background_color ? 'hero--bg-color--' ~ background_color
+  ]
+%}
 
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
@@ -92,7 +104,7 @@
             </div>
           {% endif %}
         </div>
-        
+
         {% if design == 'paatokset-search-bar' %}
           {{ drupal_block('search_form_block') }}
         {% endif %}
@@ -109,10 +121,9 @@
       design == "background-image" or
       design == "diagonal"
     %}
-      {% set image_id = content.field_hero_image[0]['#media'].id %}
-
+      {% set image_uri = content.field_hero_image[0]['#media'].field_media_image.entity.uri.value %}
       {# This check should be done in edit form. #}
-      {% if image_id %}
+      {% if image_uri %}
         {% set image_style = 'hero__background' %}
 
         {% if design == "with-image-right" or design == "with-image-left" %}
@@ -125,10 +136,10 @@
 
         <div class="hero__image-container">
           {% include '@hdbt/misc/koro.twig' with {koro: koro, flip: true } %}
-          {{ drupal_image(image_id, image_style, responsive=true) }}
+          {{ drupal_image(image_uri, image_style, responsive=true) }}
         </div>
       {% endif %}
     {% endif %}
     {% include '@hdbt/misc/koro.twig' with {koro: koro, flip: false } %}
   </div>
-{% endblock %}
+{% endblock paragraph %}
