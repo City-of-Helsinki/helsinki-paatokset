@@ -127,7 +127,7 @@ jQuery(function($) {
       if (td) {
         txtValue = td.textContent || td.innerText;
         pDate = tr[i].getElementsByTagName("p")[0].innerText;
-        var d = new Date(pDate);
+        var d = new Date(pDate.replace(/\./g, '/'));
         var pYear = d.getFullYear();
         if (pYear.toString() === clickedYear.toString()) {
           tr[i].style.display = "";
