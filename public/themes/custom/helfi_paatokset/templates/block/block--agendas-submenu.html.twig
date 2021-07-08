@@ -26,44 +26,66 @@
  */
 #}
 <div{{ attributes.addClass('container') }}>
-  {% if (tree is not empty ) %}
+  {% if (years is not empty ) %}
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
-      <h4>Valitse vuosi</h4>
+      <h4>{{ 'Select year' |trans }}</h4>
     </div>
     <br/>
-    {% for title, item in tree %}
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}
           <div class="accordion__wrapper handorgel">
             <div class="accordion-item__content handorgel__content">
               <div class="accordion-item__content__inner handorgel__content__inner">
                 <ul class="menu">
-                  {% for subtitle in item %}
-                    <li class="item"> {{ subtitle }}</li>
+                  {% for item in years %}
+                    {% for subtitle in item %}
+                      <li class="item"><input type="button" id="yearSelection_{{ subtitle['#title']}}"  value="{{ subtitle['#title']}}"/></li>
+                    {% endfor %}
                   {% endfor %}
                 </ul>
-                <div class="paddles">
-                  <button class="left-paddle paddle hidden">
-                    <svg aria-labelledby="angle-left-994028988" class="icon">
-                      <title id="angle-left-994028988">Test label for the angle-right</title>
-                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-left"></use>
-                    </svg>
-                  </button>
-                  <button class="right-paddle paddle">
-                    <svg aria-labelledby="angle-right-994028988" class="icon">
-                      <title id="angle-right-994028988">Test label for the angle-right</title>
-                      <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#angle-right"></use>
-                    </svg>
-                  </button>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select">
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
+                      <div class="arrow">
+                        <svg aria-labelledby="arrow-down-994028988" class="icon" id="arrow-down">
+                          <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#arrow-down"></use>
+                        </svg>
+                        <svg aria-labelledby="arrow-up-994028988" class="icon" id="arrow-up">
+                          <use xlink:href="/themes/contrib/hdbt/dist/icons/sprite.svg#arrow-up"></use>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="custom-options" id="custom-options"></div>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         {% endblock %}
       {% endembed %}
-    {% endfor %}
+    <br/>
+    <table id="listTable">
+      {% for item in list %}
+        {% for i in item %}
+          <tr {{ attributes.addClass(i['#year']) }}>
+            <td class="desktopTd">
+              <p>{{ i['#date'] }}</p>
+              <h5> <a href="{{ i['#url'] }}">{{ i['#title'] }}</a></h5>
+            </td>
+            <td class="mobileTd">
+              <p>{{ i['#date'] }}</p>
+              <h5><a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] | trans}}</a></h5>
+              <h5><a href="{{ i['#url'] }}">{{ i['#meetingNumber'] }} - {{ i['#year'] }}</a></h5>
+            </td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+    </table>
   </div>
   {% endif %}
-
 </div>
+</div>
+
+<noscript>
+  <style>.custom-select-wrapper {display:none}</style>
+</noscript>

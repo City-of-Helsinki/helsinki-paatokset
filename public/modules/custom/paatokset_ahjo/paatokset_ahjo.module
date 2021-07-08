@@ -87,7 +87,6 @@ function paatokset_ahjo_theme_suggestions_paatokset_organization(array $variable
   return $suggestions;
 }
 
-
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
@@ -99,7 +98,6 @@ function paatokset_ahjo_theme_suggestions_paatokset_meeting_document(array $vari
 
   return $suggestions;
 }
-
 
 /**
  * Implements hook_theme_suggestions_HOOK().
@@ -142,8 +140,7 @@ function template_preprocess_paatokset_issue(array &$variables) {
  *   An associative array containing:
  *   - elements: An array of elements to display in view mode.
  */
-function template_preprocess_paatokset_meeting(array &$variables)
-{
+function template_preprocess_paatokset_meeting(array &$variables) {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
