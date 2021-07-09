@@ -27,6 +27,11 @@ process:
     source: category_name
     start: 0
     lenght: 255
+  top_category_name:
+    plugin: substr
+    source: top_category_name
+    start: 0
+    lenght: 255
   summary:
     plugin: get
     source: summary

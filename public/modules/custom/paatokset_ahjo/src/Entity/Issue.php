@@ -118,6 +118,18 @@ final class Issue extends RemoteEntityBase {
         'text_processing' => 0,
       ]);
 
+    $fields['top_category_name'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(new TranslatableMarkup('top_category_name'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ]);
+
     return $fields;
   }
 
