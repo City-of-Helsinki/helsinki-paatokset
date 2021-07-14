@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.media.minutes_of_the_discussion.field_document
-    - field.field.media.minutes_of_the_discussion.field_media_file_2
     - field.field.media.minutes_of_the_discussion.field_meetings_reference
     - media.type.minutes_of_the_discussion
   module:
@@ -23,13 +22,6 @@ content:
     third_party_settings: {  }
   field_document:
     weight: 2
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
-    region: content
-  field_media_file_2:
-    weight: 1
     settings:
       progress_indicator: throbber
     third_party_settings: {  }

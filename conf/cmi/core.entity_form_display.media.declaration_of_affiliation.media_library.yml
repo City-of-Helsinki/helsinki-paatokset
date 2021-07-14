@@ -10,7 +10,6 @@ dependencies:
     - field.field.media.declaration_of_affiliation.field_first_name
     - field.field.media.declaration_of_affiliation.field_interest_statement_categor
     - field.field.media.declaration_of_affiliation.field_lastname
-    - field.field.media.declaration_of_affiliation.field_media_file_1
     - field.field.media.declaration_of_affiliation.field_title
     - media.type.declaration_of_affiliation
 id: media.declaration_of_affiliation.media_library
@@ -34,7 +33,6 @@ hidden:
   field_first_name: true
   field_interest_statement_categor: true
   field_lastname: true
-  field_media_file_1: true
   field_title: true
   langcode: true
   path: true

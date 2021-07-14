@@ -9,7 +9,6 @@ dependencies:
     - field.field.media.declaration_of_affiliation.field_first_name
     - field.field.media.declaration_of_affiliation.field_interest_statement_categor
     - field.field.media.declaration_of_affiliation.field_lastname
-    - field.field.media.declaration_of_affiliation.field_media_file_1
     - field.field.media.declaration_of_affiliation.field_title
     - media.type.declaration_of_affiliation
   module:
@@ -71,14 +70,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_media_file_1:
-    label: visually_hidden
-    weight: 0
-    settings:
-      use_description_as_link_text: true
-    third_party_settings: {  }
-    type: file_default
     region: content
   field_title:
     weight: 6

@@ -9,5 +9,5 @@ source: file
 queue_thumbnail_downloads: false
 new_revision: true
 source_configuration:
-  source_field: field_media_file_2
+  source_field: field_document
 field_map: {  }
