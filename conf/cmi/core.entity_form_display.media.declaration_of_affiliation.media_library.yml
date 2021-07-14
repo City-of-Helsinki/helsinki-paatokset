@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.media.media_library
     - field.field.media.declaration_of_affiliation.field__policymaker_reference
     - field.field.media.declaration_of_affiliation.field_contact_url
+    - field.field.media.declaration_of_affiliation.field_document
     - field.field.media.declaration_of_affiliation.field_first_name
     - field.field.media.declaration_of_affiliation.field_interest_statement_categor
     - field.field.media.declaration_of_affiliation.field_lastname
@@ -29,6 +30,7 @@ hidden:
   created: true
   field__policymaker_reference: true
   field_contact_url: true
+  field_document: true
   field_first_name: true
   field_interest_statement_categor: true
   field_lastname: true

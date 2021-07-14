@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.media.declaration_of_affiliation.field__policymaker_reference
     - field.field.media.declaration_of_affiliation.field_contact_url
+    - field.field.media.declaration_of_affiliation.field_document
     - field.field.media.declaration_of_affiliation.field_first_name
     - field.field.media.declaration_of_affiliation.field_interest_statement_categor
     - field.field.media.declaration_of_affiliation.field_lastname
@@ -22,12 +23,12 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field__policymaker_reference:
-    weight: 107
+    weight: 13
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -37,15 +38,22 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_contact_url:
-    weight: 104
+    weight: 11
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_document:
+    weight: 2
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
   field_first_name:
-    weight: 101
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -53,7 +61,7 @@ content:
     type: string_textfield
     region: content
   field_interest_statement_categor:
-    weight: 103
+    weight: 10
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -63,7 +71,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_lastname:
-    weight: 102
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -71,14 +79,14 @@ content:
     type: string_textfield
     region: content
   field_media_file_1:
-    weight: 0
+    weight: 1
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_title:
-    weight: 106
+    weight: 12
     settings:
       size: 60
       placeholder: ''
@@ -87,14 +95,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -102,7 +110,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -110,12 +118,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 100
+    weight: 7
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60

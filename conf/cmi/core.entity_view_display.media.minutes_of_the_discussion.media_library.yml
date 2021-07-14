@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.media_library
+    - field.field.media.minutes_of_the_discussion.field_document
     - field.field.media.minutes_of_the_discussion.field_media_file_2
     - field.field.media.minutes_of_the_discussion.field_meetings_reference
     - image.style.medium
@@ -26,6 +27,7 @@ content:
     region: content
 hidden:
   created: true
+  field_document: true
   field_media_file_2: true
   field_meetings_reference: true
   langcode: true
