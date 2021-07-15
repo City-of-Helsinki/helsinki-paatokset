@@ -1,0 +1,19 @@
+uuid: f0f1421d-67aa-422b-842b-438a1a0c8d8b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organization_type
+    - node.type.policymaker
+id: node.policymaker.field_organization_type
+field_name: field_organization_type
+entity_type: node
+bundle: policymaker
+label: 'Organization type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

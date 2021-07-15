@@ -90,6 +90,15 @@ final class Meeting extends RemoteEntityBase {
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['policymaker_uri'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('policymaker_uri'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 

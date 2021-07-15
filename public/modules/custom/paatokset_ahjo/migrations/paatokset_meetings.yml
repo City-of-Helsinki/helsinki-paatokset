@@ -30,6 +30,11 @@ process:
   langcode:
     plugin: default_value
     default_value: fi
+  policymaker_uri:
+    plugin: substr
+    source: policymaker
+    start: 0
+    length: 255
 destination:
   plugin: 'entity:paatokset_meeting'
 migration_dependencies: {  }

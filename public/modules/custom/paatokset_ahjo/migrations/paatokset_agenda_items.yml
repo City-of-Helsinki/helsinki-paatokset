@@ -72,6 +72,11 @@ process:
     source: meeting
     index:
       - number
+  issue_id:
+    plugin: extract
+    source: issue
+    index:
+      - id
   subject_resolution:
     plugin: substr
     source: resolution
