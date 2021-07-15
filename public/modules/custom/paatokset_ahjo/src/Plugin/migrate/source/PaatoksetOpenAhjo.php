@@ -9,6 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\MigrateTrait;
 use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
+use Drupal\migrate\Row;
 use GuzzleHttp\ClientInterface;
 
 /**
@@ -117,6 +118,36 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
       $count = ($totalPages * $this->limit);
     }
     return intval($count);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    if ($row->hasSourceProperty('content')) {
+      $content = $row->getSourceProperty('content');
+
+      foreach ($content as $section) {
+        switch ($section['type']) {
+          case 'resolution':
+            $row->setSourceProperty('content_resolution', $section['text']);
+            break;
+
+          case 'draft proposal':
+            $row->setSourceProperty('content_draft_proposal', $section['text']);
+            break;
+
+          case 'presenter':
+            $row->setSourceProperty('content_presenter', $section['text']);
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+    return parent::prepareRow($row);
   }
 
   /**

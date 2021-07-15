@@ -35,5 +35,51 @@
       {% endif %}
     </div>
     {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings } %}
+    <div class="issue-content-top__container container">
+      <div{{ content_attributes.addClass('issue-content-top') }}>
+        {% if entity.diarynumber.value %}
+          <div class="issue-content__indices">
+            {{ entity.diarynumber.value }}
+          </div>
+        {% endif %}
+        {% if current_agenda_item.subject.value %}
+          <div class="issue-content__title">
+            <h2>{{ current_agenda_item.subject.value }}</h2>
+          </div>
+        {% endif %}
+        {% if current_handling.policymaker_name %}
+          <div class="issue-content__policymaker-label">
+            <span>{{ current_handling.policymaker_name }} </span>
+          </div>
+        {% endif %}
+        <div class="issue__favorite-button">
+          {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
+        </div>
+      </div>
+    </div>
+    <div class="issue-content__container container">
+      <div{{ content_attributes.addClass('issue-content') }}>
+        {% if current_agenda_item %}
+          {% if current_agenda_item.content_resolution.value %}
+            <div class="issue-content__section">
+              <h2>{{ 'Resolution'|trans }}</h2>
+              {{ current_agenda_item.content_resolution.value|raw }}
+            </div>
+          {% endif %}
+          {% if current_agenda_item.content_draft_proposal.value %}
+            <div class="issue-content__section">
+              <h2>{{ 'Draft proposal'|trans }}</h2>
+              {{ current_agenda_item.content_draft_proposal.value|raw }}
+            </div>
+          {% endif %}
+          {% if current_agenda_item.content_presenter.value %}
+            <div class="issue-content__section">
+              <h2>{{ 'Presenter'|trans }}</h2>
+              {{ current_agenda_item.content_presenter.value|raw }}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
 
   </article>

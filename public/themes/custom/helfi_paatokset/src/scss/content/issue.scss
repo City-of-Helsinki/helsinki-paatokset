@@ -27,3 +27,49 @@
     padding: 6px 16px;
   }
 }
+
+.issue-content__title h2 {
+  font-size: 52px;
+  line-height: 62px;
+  margin-bottom: 32px;
+}
+
+.issue-content__indices {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.issue-content__policymaker-label {
+  margin-bottom: 36px;
+}
+
+.issue__favorite-button button.hds-button {
+  color: $color-black;
+  padding-left: 0;
+
+  .hds-icon:first-of-type:not(:last-of-type) {
+    margin-left: 0;
+    margin-right: 13px;
+  }
+}
+
+.issue-content-top__container {
+  margin-top: 48px;
+}
+
+.issue-content__section {
+  h2 {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  p, h3 {
+    margin-bottom: 30px;
+  }
+
+  p, ul {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  margin-bottom: 64px;
+}

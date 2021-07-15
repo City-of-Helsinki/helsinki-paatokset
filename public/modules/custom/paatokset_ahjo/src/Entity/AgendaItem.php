@@ -179,12 +179,48 @@ final class AgendaItem extends RemoteEntityBase {
       ->setCardinality(1)
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+    $fields['content_resolution'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_resolution'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', [
+        'type'   => 'text_textarea',
+        'weight' => -6,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
     $fields['issue_id'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('issue_id'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
       ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['content_draft_proposal'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_draft_proposal'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', [
+        'type'   => 'text_textarea',
+        'weight' => -6,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['content_presenter'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_presenter'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', [
+        'type'   => 'text_textarea',
+        'weight' => -6,
+      ])
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
