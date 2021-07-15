@@ -39,9 +39,18 @@ process:
     source: classification_code
     start: 0
     lenght: 255
-  content_text:
-    plugin: get
-    source: content
+  content_resolution/value: content_resolution
+  content_resolution/format:
+    plugin: default_value
+    default_value: full_html
+  content_draft_proposal/value: content_draft_proposal
+  content_draft_proposal/format:
+    plugin: default_value
+    default_value: full_html
+  content_presenter/value: content_presenter
+  content_presenter/format:
+    plugin: default_value
+    default_value: full_html
   introducer:
     plugin: substr
     source: introducer

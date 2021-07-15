@@ -9,6 +9,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo\Entity\Issue;
+use Drupal\paatokset_ahjo\Entity\AgendaItem;
 
 /**
  * Implements hook_theme().
@@ -138,6 +139,9 @@ function template_preprocess_paatokset_issue(array &$variables) {
         $variables['current_handling'] = $handlings[0];
         $variables['handlings'] = paatokset_ahjo_get_handlings($variables['entity']);
       }
+      if(isset($variables['current_handling'])) {
+        $variables['current_agenda_item'] = AgendaItem::load($variables['current_handling']['link']);
+      }
     }
   }
 }
@@ -162,7 +166,9 @@ function paatokset_ahjo_get_handlings(Issue $entity) {
     $transformed_result[] = [
       'title' => "$result->policymaker/$date",
       'class' => str_replace('_', '-', $result->field_organization_type_value),
-      'link' =>  $result->id
+      'link' =>  $result->id,
+      'id' => $result->id,
+      'policymaker_name' => $result->policymaker
     ];
   }
 
@@ -310,4 +316,54 @@ function paatokset_ahjo_update_9002() {
     ->setDisplayConfigurable('form', TRUE);
 
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('policymaker_uri', $entity_type_id, $entity_type_id, $field_storage_definition);
+}
+
+function paatokset_ahjo_update_9003() {
+  $entity_type_id = 'paatokset_agenda_item';
+  $field_storage_definition = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_resolution'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', array(
+        'type'   => 'text_textarea',
+        'weight' => -6
+      ))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('content_resolution', $entity_type_id, $entity_type_id, $field_storage_definition);
+  
+  $entity_type_id = 'paatokset_agenda_item';
+  $field_storage_definition = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_draft_proposal'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', array(
+        'type'   => 'text_textarea',
+        'weight' => -6
+      ))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('content_draft_proposal', $entity_type_id, $entity_type_id, $field_storage_definition);
+    
+    $entity_type_id = 'paatokset_agenda_item';
+    $field_storage_definition = BaseFieldDefinition::create('text_long')
+      ->setLabel(new TranslatableMarkup('content_presenter'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayOptions('form', array(
+        'type'   => 'text_textarea',
+        'weight' => -6
+      ))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('content_presenter', $entity_type_id, $entity_type_id, $field_storage_definition);
 }
