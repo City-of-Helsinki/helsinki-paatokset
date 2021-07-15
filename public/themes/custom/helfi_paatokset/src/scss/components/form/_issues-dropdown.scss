@@ -13,6 +13,7 @@
     border: none;
     color: $color-black;
     justify-content: flex-start;
+    overflow: hidden;
 
     &:focus, &:hover {
       background-color: transparent;
@@ -65,6 +66,7 @@
     align-items: center;
     padding-left: 30px;
     position: relative;
+    overflow: hidden;
   }
 
   .option:before {
@@ -79,23 +81,23 @@
   }
 
   .council::before {
-    border-left-color: #00d7a7;
+    border-left-color: $council-green;
   }
   
   .board-division::before, .board::before {
-    border-left-color: #dedfe1;
+    border-left-color: $board-grey;
   }
   
   .traffic::before {
-    border-left-color: #ffe977;
+    border-left-color: $traffic-yellow;
   }
   
   .committee::before {
-    border-left-color: #9fc9eb;
+    border-left-color: $committee-blue;
   }
   
   .trustee::before {
-    border-left-color: #0072c6;
+    border-left-color: $trustee-blue;
   }
 
   .option:hover, .option:focus {
@@ -111,4 +113,27 @@
   padding-top: 0;
   margin-top: 0;
   padding-left: 0;
+}
+
+.issue__meetings-labels {
+  @include breakpoint($breakpoint-s) {
+    display: flex;
+    align-items: center;
+  
+    .issue__new-handlings-warning {
+      margin-left: auto;
+    }
+  }
+}
+
+.issue__new-handlings-warning {
+  display: inline-block;
+  background-color: $yellow-light;
+  padding: 2.5px 5px;
+  margin-bottom: 5px;
+}
+
+.new-handlings-warning__container {
+  display: flex;
+  align-items: center;
 }

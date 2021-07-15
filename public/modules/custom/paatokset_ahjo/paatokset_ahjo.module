@@ -136,8 +136,18 @@ function template_preprocess_paatokset_issue(array &$variables) {
       $variables['entity'] = $variables['elements']['#paatokset_issue'];
       $handlings = paatokset_ahjo_get_handlings($variables['entity']);
       if($handlings) {
-        $variables['current_handling'] = $handlings[0];
+        $current_handling = $handlings[0];
+        $variables['current_handling'] = $current_handling;
         $variables['handlings'] = paatokset_ahjo_get_handlings($variables['entity']);
+
+        if(count($handlings) > 1) {
+          if($current_handling['date'] < $handlings[0]['date']) {
+            $variables['has_next_handling'] = true;
+          }
+          if($current_handling['date'] > $handlings[count($handlings)-1]['date']) {
+            $variables['has_previous_handling'] = true;
+          }
+        }
       }
       if(isset($variables['current_handling'])) {
         $variables['current_agenda_item'] = AgendaItem::load($variables['current_handling']['link']);
@@ -168,7 +178,8 @@ function paatokset_ahjo_get_handlings(Issue $entity) {
       'class' => str_replace('_', '-', $result->field_organization_type_value),
       'link' =>  $result->id,
       'id' => $result->id,
-      'policymaker_name' => $result->policymaker
+      'policymaker_name' => $result->policymaker,
+      'date' => $result->meeting_date
     ];
   }
 

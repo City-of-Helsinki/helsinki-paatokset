@@ -7,7 +7,17 @@
 
 {% if options %}
 <div class="issue__meetings-container container">
-  <label>{{ 'Process history'|trans }}</label>
+  <div class="issue__meetings-labels">
+    <label>{{ 'Process history'|trans }}</label>
+    {% if show_warning %}
+      <div class="issue__new-handlings-warning">
+        <div class="new-handlings-warning__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'More recent handlings'|t } %}
+          <span>{{ warning_label }}</span>
+        </div>
+      </div>
+    {% endif %}
+  </div>
   <div class="issue__meetings-dropdown">
     {% if selected %}
       {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: selected.title, icon_last: true, icon_last_type: 'angle-down' } %}
@@ -23,6 +33,7 @@
             role="option" aria-selected="true"
             tabindex="0"
             class="option selected {{option.class}}"
+            title="{{option.title}}"
           >
             {{ option.title }}
           </li>
@@ -34,6 +45,7 @@
             aria-selected="false"
             tabindex="0"
             class="option {{option.class}}"
+            title="{{option.title}}"
           >
             {{ option.title }}
           </li>
