@@ -17,14 +17,139 @@
   margin-bottom: 32px;
 }
 
-.issue__category {
+.issue-header__footer {
   margin-bottom: 32px;
 
-  .hds-tag {
-    border-radius: 24px;
-    background: $color-black;
-    color: $color-white;
-    padding: 6px 16px;
+  .issue__category {
+    margin-bottom: 32px;
+  }
+
+  @include breakpoint($breakpoint-m) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  
+    .issue__category {
+      margin-bottom: 0;
+    }
+    
+    .issue__favorite-button {
+      margin-left: auto;
+    }
+  }
+}
+
+.issue__category .hds-tag {
+  border-radius: 24px;
+  background: $color-black;
+  color: $color-white;
+  padding: 6px 16px;
+}
+
+.issue-content__title h2 {
+  font-size: 52px;
+  line-height: 62px;
+  margin-bottom: 32px;
+}
+
+.issue-content__indices {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.issue-content__policymaker-label {
+  margin-bottom: 36px;
+}
+
+.issue__favorite-button button.hds-button {
+  color: $color-black;
+  padding-left: 0;
+
+  .hds-icon:first-of-type:not(:last-of-type) {
+    margin-left: 0;
+    margin-right: 13px;
+  }
+}
+
+.issue-content-top__container {
+  margin-top: 48px;
+}
+
+.issue-content__section {
+  h2 {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  p, h3 {
+    margin-bottom: 30px;
+  }
+
+  p, ul {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  margin-bottom: 64px;
+}
+
+.issue__pfd {
+  button.hds-button {
+    background-color: $color-black;
+    border: none;
+
+    &:hover {
+      background-color: $color-black-20;
+    }
+  }
+}
+
+.issue__decision-navigation {
+  .decision-navigation-button button.hds-button {
+    color: $color-black;
+    width: 100%;
+  }
+
+  .decision-navigation-button--next {
+    margin-left: auto;
+  }
+
+  @include breakpoint($breakpoint-s) {
+    display: flex;
+    align-items: center;
+
+    .decision-navigation-button button.hds-button {
+      width: auto;
+    }
+  }
+}
+
+.issue-content__policymaker-label {
+  text-align: center;
+  padding: 10px 0;
+
+  &.council {
+    background-color: $council-green;
+  }
+  
+  &.board-division, .board {
+    background-color: $board-grey;
+  }
+  
+  &.traffic {
+    background-color: $traffic-yellow;
+  }
+  
+  &.committee {
+    background-color: $committee-blue;
+  }
+  
+  &.trustee {
+    background-color: $trustee-blue;
+  }
+
+  @include breakpoint($breakpoint-m) {
+    display: inline-block;
+    padding: 10px 55px;
   }
 }
 

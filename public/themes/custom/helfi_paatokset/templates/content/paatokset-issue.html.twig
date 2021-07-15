@@ -28,13 +28,28 @@
           <span>{{ entity.diarynumber.value }}</span>
         </div>
       {% endif %}
-      {% if entity.top_category_name.value %}
-        <div class="issue__category">
-          {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
+      <div class="issue-header__footer">
+        {% if entity.top_category_name.value %}
+          <div class="issue__category">
+            {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
+          </div>
+        {% endif %}
+        <div class="issue__favorite-button">
+          {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
         </div>
+      </div>
+    </div>
+    <div class="issue__decision-navigation container">
+      {% if has_previous_handling %}
+        <span class="decision-navigation-button decision-navigation-button--previous">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'arrow-left', label: 'Previous handling'|t } %}</span>
+      {% endif %}
+      {% if has_next_handling %}
+        <span class="decision-navigation-button decision-navigation-button--next">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', label: 'Next handling'|t } %}</span>
       {% endif %}
     </div>
-    {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings } %}
+    <div class="issue-dropdown container">
+      {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings, show_warning: has_next_handling, warning_label: 'More recent handlings'|trans } %}
+    </div>
     <div class="issue-content-top__container container">
       <div{{ content_attributes.addClass('issue-content-top') }}>
         {% if entity.diarynumber.value %}
@@ -48,7 +63,7 @@
           </div>
         {% endif %}
         {% if current_handling.policymaker_name %}
-          <div class="issue-content__policymaker-label">
+          <div class="issue-content__policymaker-label {{ current_handling.class }}">
             <span>{{ current_handling.policymaker_name }} </span>
           </div>
         {% endif %}
@@ -81,5 +96,8 @@
         {% endif %}
       </div>
     </div>
-
+    {# PDF button is going to move to sidebar once it is completed #}
+    <div class="issue__pfd container">
+      {% include '@hdbt/button/button.html.twig' with {type: 'primary', icon_last: true, icon_last_type: 'download', disabled: false, label: 'Download decision (pdf)'|t } %}
+    </div>
   </article>
