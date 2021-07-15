@@ -1,0 +1,23 @@
+uuid: bdb4b6d2-a4e6-4bb0-8b46-b9879a8a9f56
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_contact_url
+    - media.type.declaration_of_affiliation
+  module:
+    - link
+id: media.declaration_of_affiliation.field_contact_url
+field_name: field_contact_url
+entity_type: media
+bundle: declaration_of_affiliation
+label: 'Contact url'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link

@@ -1,0 +1,29 @@
+uuid: 07a1fee7-498b-493b-a785-0f75f5e51a4d
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field__policymaker_reference
+    - media.type.declaration_of_affiliation
+    - node.type.policymaker
+id: media.declaration_of_affiliation.field__policymaker_reference
+field_name: field__policymaker_reference
+entity_type: media
+bundle: declaration_of_affiliation
+label: ' Policymaker reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      policymaker: policymaker
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

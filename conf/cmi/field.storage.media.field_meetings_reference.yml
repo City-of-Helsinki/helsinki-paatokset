@@ -1,0 +1,20 @@
+uuid: 51f319de-61b5-43a6-b465-f9a7d39cbbd7
+langcode: fi
+status: true
+dependencies:
+  module:
+    - media
+    - paatokset_ahjo
+id: media.field_meetings_reference
+field_name: field_meetings_reference
+entity_type: media
+type: entity_reference
+settings:
+  target_type: paatokset_meeting
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,16 @@
+uuid: a3d1b576-06aa-41e6-8c46-c3e1ab566920
+langcode: fi
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.pdf_categories
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.pdf_categories
+target_entity_type_id: taxonomy_term
+target_bundle: pdf_categories
+default_langcode: fi
+language_alterable: true

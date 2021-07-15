@@ -1,0 +1,30 @@
+uuid: dfb877a9-6f2e-4217-9886-487c54a6e047
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.minutes_of_the_discussion.field_document
+    - field.field.media.minutes_of_the_discussion.field_meetings_reference
+    - media.type.minutes_of_the_discussion
+id: media.minutes_of_the_discussion.media_library
+targetEntityType: media
+bundle: minutes_of_the_discussion
+mode: media_library
+content:
+  name:
+    type: string_textfield
+    settings:
+      size: 60
+      placeholder: ''
+    weight: 0
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  field_document: true
+  field_meetings_reference: true
+  langcode: true
+  path: true
+  status: true
+  uid: true

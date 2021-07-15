@@ -1,0 +1,11 @@
+uuid: 794ed228-35cf-4caf-bac0-6fa508b31521
+langcode: fi
+status: true
+dependencies:
+  config:
+    - media.type.declaration_of_affiliation
+id: media.declaration_of_affiliation
+target_entity_type_id: media
+target_bundle: declaration_of_affiliation
+default_langcode: site_default
+language_alterable: false

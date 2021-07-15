@@ -1,0 +1,11 @@
+uuid: 55f2034d-0baf-40a6-9420-96443de26958
+langcode: fi
+status: true
+dependencies:
+  config:
+    - media.type.minutes_of_the_discussion
+id: media.minutes_of_the_discussion
+target_entity_type_id: media
+target_bundle: minutes_of_the_discussion
+default_langcode: site_default
+language_alterable: false

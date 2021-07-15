@@ -6,11 +6,11 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Suodatus
+          submit_button: Suodatin
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           expose:
@@ -18,8 +18,8 @@ display:
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
           tags:
-            previous: ‹‹
-            next: ››
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
       fields:
         nothing:
           admin_label: Ikoni

@@ -1,3 +1,4 @@
+label: 'TPR Toimipisteet'
 display:
   default:
     display_title: Isäntä
@@ -7,14 +8,15 @@ display:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
-            previous: ‹‹
-            next: ››
+            previous: '‹ Edellinen'
+            next: 'Seuraava ›'
             first: '« Ensimmäinen'
+            last: 'Viimeinen »'
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
@@ -38,5 +40,10 @@ display:
         langcode:
           expose:
             label: Kieli
+      title: 'TPR Toimipisteet'
+      empty:
+        area:
+          content:
+            value: 'Ei tuloksia.'
   page_1:
     display_title: Sivu

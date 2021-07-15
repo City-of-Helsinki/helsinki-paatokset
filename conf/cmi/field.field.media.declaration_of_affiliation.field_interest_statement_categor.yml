@@ -1,0 +1,29 @@
+uuid: 16a334bf-34a7-4419-91ae-c7672ae9d746
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_interest_statement_categor
+    - media.type.declaration_of_affiliation
+    - taxonomy.vocabulary.pdf_categories
+id: media.declaration_of_affiliation.field_interest_statement_categor
+field_name: field_interest_statement_categor
+entity_type: media
+bundle: declaration_of_affiliation
+label: 'Interest statement category'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      pdf_categories: pdf_categories
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

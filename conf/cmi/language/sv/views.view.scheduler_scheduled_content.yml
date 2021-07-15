@@ -22,6 +22,7 @@ display:
           label: Titel
           separator: ', '
         type:
+          label: Innehållstyp
           separator: ', '
         name:
           label: Författare
@@ -33,8 +34,10 @@ display:
             format_custom_false: 'Ej publicerad'
           separator: ', '
         publish_on:
+          label: 'Publicera den'
           separator: ', '
         unpublish_on:
+          label: 'Avpublicera den'
           separator: ', '
         operations:
           label: Funktioner
@@ -61,12 +64,16 @@ display:
     display_title: Huvud
   overview:
     display_options:
+      menu:
+        title: Schemalagd
       tab_options:
-        title: Innehåll
+        title: Content
   user_page:
     display_options:
+      menu:
+        title: Schemalagd
       tab_options:
-        title: Innehåll
+        title: Content
       arguments:
         uid:
           exception:
