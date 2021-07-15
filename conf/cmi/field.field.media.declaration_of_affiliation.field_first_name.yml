@@ -9,7 +9,7 @@ id: media.declaration_of_affiliation.field_first_name
 field_name: field_first_name
 entity_type: media
 bundle: declaration_of_affiliation
-label: 'first name'
+label: 'First name'
 description: ''
 required: true
 translatable: true

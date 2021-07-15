@@ -10,7 +10,7 @@ id: media.declaration_of_affiliation.field_interest_statement_categor
 field_name: field_interest_statement_categor
 entity_type: media
 bundle: declaration_of_affiliation
-label: 'Sidonnaisuusilmoitus kategoria'
+label: 'Interest statement category'
 description: ''
 required: false
 translatable: true

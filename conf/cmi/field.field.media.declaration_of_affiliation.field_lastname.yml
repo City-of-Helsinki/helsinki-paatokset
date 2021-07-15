@@ -9,7 +9,7 @@ id: media.declaration_of_affiliation.field_lastname
 field_name: field_lastname
 entity_type: media
 bundle: declaration_of_affiliation
-label: Lastname
+label: 'Last name'
 description: ''
 required: true
 translatable: true
