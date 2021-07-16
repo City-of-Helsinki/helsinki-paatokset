@@ -14,7 +14,7 @@
 %}
 
   <article{{ attributes.addClass(classes) }}>
-    <div class="issue-header__container container">
+    <header class="issue-header__container container">
       <div{{ content_attributes.addClass('issue__header') }}>
         <h1{{ title_attributes.addClass('issue__title') }}>
           {{ entity.label }}
@@ -30,7 +30,7 @@
       {% endif %}
       <div class="issue-header__footer">
         {% if entity.top_category_name.value %}
-          <div class="issue__category">
+          <div class="issue__category issue__left-column__container">
             {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
           </div>
         {% endif %}
@@ -38,66 +38,100 @@
           {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
         </div>
       </div>
-    </div>
+    </header>
     <div class="issue__decision-navigation container">
-      {% if has_previous_handling %}
-        <span class="decision-navigation-button decision-navigation-button--previous">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'arrow-left', label: 'Previous handling'|t } %}</span>
-      {% endif %}
-      {% if has_next_handling %}
-        <span class="decision-navigation-button decision-navigation-button--next">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', label: 'Next handling'|t } %}</span>
-      {% endif %}
+      <div class="issue__decision-navigation issue__left-column__container">
+        {% if has_previous_handling %}
+          <span class="decision-navigation-button decision-navigation-button--previous">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'arrow-left', label: 'Previous handling'|t } %}</span>
+        {% endif %}
+        {% if has_next_handling %}
+          <span class="decision-navigation-button decision-navigation-button--next">{% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', label: 'Next handling'|t } %}</span>
+        {% endif %}
+      </div>
+      <div class="issue__pdf issue__right-column__container">
+        {% include '@hdbt/button/button.html.twig' with {type: 'primary', icon_last: true, icon_last_type: 'download', disabled: false, label: 'Download decision (pdf)'|t } %}
+      </div>
     </div>
-    <div class="issue-dropdown container">
-      {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings, show_warning: has_next_handling, warning_label: 'More recent handlings'|trans } %}
-    </div>
-    <div class="issue-content-top__container container">
-      <div{{ content_attributes.addClass('issue-content-top') }}>
-        {% if entity.diarynumber.value %}
-          <div class="issue-content__indices">
-            {{ entity.diarynumber.value }}
+    <div class="issue__container container">
+      <div class="issue__left-column__container">
+        <div class="issue-dropdown">
+          {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings, show_warning: has_next_handling, warning_label: 'More recent handlings'|trans } %}
+          {% if all_decisions_link %}
+          <div class="issue-dropdown__show-more">
+            <a href="{{ all_decisions_link }}">
+              {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', disabled: false, label: 'Other decisions for the meeting'|t } %}
+            </a>
           </div>
-        {% endif %}
-        {% if current_agenda_item.subject.value %}
-          <div class="issue-content__title">
-            <h2>{{ current_agenda_item.subject.value }}</h2>
+          {% endif %}
+        </div>
+        <div class="issue-content-top__container">
+          <div{{ content_attributes.addClass('issue-content-top') }}>
+            {% if entity.diarynumber.value %}
+              <div class="issue-content__indices">
+                {{ entity.diarynumber.value }}
+              </div>
+            {% endif %}
+            {% if current_agenda_item.subject.value %}
+              <div class="issue-content__title">
+                <h2>{{ current_agenda_item.subject.value }}</h2>
+              </div>
+            {% endif %}
+            {% if current_handling.policymaker_name %}
+              <div class="issue-content__policymaker-label {{ current_handling.class }}">
+                <span>{{ current_handling.policymaker_name }} </span>
+              </div>
+            {% endif %}
+            <div class="issue__favorite-button">
+              {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
+            </div>
           </div>
-        {% endif %}
-        {% if current_handling.policymaker_name %}
-          <div class="issue-content__policymaker-label {{ current_handling.class }}">
-            <span>{{ current_handling.policymaker_name }} </span>
           </div>
-        {% endif %}
-        <div class="issue__favorite-button">
-          {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
+        <div class="issue-content__container">
+          <div{{ content_attributes.addClass('issue-content') }}>
+            {% if current_agenda_item %}
+              {% if current_agenda_item.content_resolution.value %}
+                <div class="issue-content__section">
+                  <h2>{{ 'Resolution'|trans }}</h2>
+                  {{ current_agenda_item.content_resolution.value|raw }}
+                </div>
+              {% endif %}
+              {% if current_agenda_item.content_draft_proposal.value %}
+                <div class="issue-content__section">
+                  <h2>{{ 'Draft proposal'|trans }}</h2>
+                  {{ current_agenda_item.content_draft_proposal.value|raw }}
+                </div>
+              {% endif %}
+              {% if current_agenda_item.content_presenter.value %}
+                <div class="issue-content__section">
+                  <h2>{{ 'Presenter'|trans }}</h2>
+                  {{ current_agenda_item.content_presenter.value|raw }}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="issue-content__container container">
-      <div{{ content_attributes.addClass('issue-content') }}>
-        {% if current_agenda_item %}
-          {% if current_agenda_item.content_resolution.value %}
-            <div class="issue-content__section">
-              <h2>{{ 'Resolution'|trans }}</h2>
-              {{ current_agenda_item.content_resolution.value|raw }}
-            </div>
-          {% endif %}
-          {% if current_agenda_item.content_draft_proposal.value %}
-            <div class="issue-content__section">
-              <h2>{{ 'Draft proposal'|trans }}</h2>
-              {{ current_agenda_item.content_draft_proposal.value|raw }}
-            </div>
-          {% endif %}
-          {% if current_agenda_item.content_presenter.value %}
-            <div class="issue-content__section">
-              <h2>{{ 'Presenter'|trans }}</h2>
-              {{ current_agenda_item.content_presenter.value|raw }}
-            </div>
-          {% endif %}
-        {% endif %}
+
+      <div class="issue-right-column__container">
+        <div class="issue__attachments">
+          <h3>{{ 'Attachments'|trans }}</h3>
+          <table>
+            <tbody></tbody>
+            {% for attachment in attachments %}
+              <tr>
+                <td>
+                  {% if attachment.public.value %}
+                    <i class="hds-icon hds-icon--download hds-icon--size-s" aria-hidden="true" style="vertical-align: middle"></i>
+                  {% else %}
+                    <i class="hds-icon hds-icon--eye-crossed hds-icon--size-s" aria-hidden="true" style="vertical-align: middle"></i>
+                  {% endif %}
+                <td>
+                <td>{{ attachment.file_name.value }}</td>
+              <tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
-    </div>
-    {# PDF button is going to move to sidebar once it is completed #}
-    <div class="issue__pfd container">
-      {% include '@hdbt/button/button.html.twig' with {type: 'primary', icon_last: true, icon_last_type: 'download', disabled: false, label: 'Download decision (pdf)'|t } %}
+
     </div>
   </article>

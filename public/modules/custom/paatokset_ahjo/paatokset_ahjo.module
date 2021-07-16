@@ -10,6 +10,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Entity\AgendaItem;
+use Drupal\paatokset_ahjo\Service\IssueService;
 
 /**
  * Implements hook_theme().
@@ -125,33 +126,22 @@ function paatokset_ahjo_theme_suggestions_paatokset_agenda_item(array $variables
  *   - elements: An array of elements to display in view mode.
  */
 function template_preprocess_paatokset_issue(array &$variables) {
+  $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
+  $entity = \Drupal::routeMatch()->getParameter($entityTypeIndicator);
+  if (is_object($entity) && $entity instanceof \Drupal\Core\Entity\ContentEntityInterface) {
+    $variables['entity'] = $entity;
+    $issueService = \Drupal::getContainer()->get(IssueService::class);
+    $data = $issueService->getData($entity->get('id')->value);
+  }
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
-  if (isset($variables['elements']['#paatokset_issue'])) {
-    $variables['entity'] = $variables['elements']['#paatokset_issue'];
-    if (isset($variables['elements']['#paatokset_issue'])) {
-      $variables['entity'] = $variables['elements']['#paatokset_issue'];
-      $handlings = paatokset_ahjo_get_handlings($variables['entity']);
-      if($handlings) {
-        $current_handling = $handlings[0];
-        $variables['current_handling'] = $current_handling;
-        $variables['handlings'] = paatokset_ahjo_get_handlings($variables['entity']);
 
-        if(count($handlings) > 1) {
-          if($current_handling['date'] < $handlings[0]['date']) {
-            $variables['has_next_handling'] = true;
-          }
-          if($current_handling['date'] > $handlings[count($handlings)-1]['date']) {
-            $variables['has_previous_handling'] = true;
-          }
-        }
-      }
-      if(isset($variables['current_handling'])) {
-        $variables['current_agenda_item'] = AgendaItem::load($variables['current_handling']['link']);
-      }
+  if($data) {
+    foreach($data as $key => $value) {
+      $variables[$key] = $data[$key];
     }
   }
 }
@@ -377,4 +367,76 @@ function paatokset_ahjo_update_9003() {
       ->setDisplayConfigurable('form', TRUE);
 
     \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('content_presenter', $entity_type_id, $entity_type_id, $field_storage_definition);
+}
+
+function paatokset_ahjo_update_9004() {
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityDefinitionUpdateManager()
+      ->installEntityType(\Drupal::entityTypeManager()->getDefinition('paatokset_attachment'));
+}
+
+function paatokset_ahjo_update_9005() {
+  $entity_type_id = 'paatokset_agenda_item';
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('origin_last_modifed_time'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('origin_last_modifed_time', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('last_modifed_time'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('last_modifed_time', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('resource_uri'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('resource_uri', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('preparer'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('preparer', $entity_type_id, $entity_type_id, $field_storage_definition);
+      
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('from_minutes'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('from_minutes', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('index'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('index', $entity_type_id, $entity_type_id, $field_storage_definition); 
 }

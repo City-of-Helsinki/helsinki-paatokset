@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo
+id: paatokset_attachments
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo
+migration_group: ahjo
+label: 'Päätökset - Attachments'
+source:
+  plugin: paatokset_open_ahjo
+  url: 'https://dev.hel.fi:443/paatokset/v1/attachment/?hash__isnull=false'
+  track_changes: true
+process:
+  id: id
+  agenda_item_url:
+    plugin: substr
+    source: agenda_item
+    start: 0
+    lenght: 255
+  file_url:
+    plugin: substr
+    source: file_uri
+    start: 0
+    lenght: 255
+  file_name:
+    plugin: substr
+    source: name
+    start: 0
+    lenght: 255
+  public:
+    plugin: get
+    source: public
+destination:
+  plugin: 'entity:paatokset_attachment'
+migration_dependencies: {  }
+

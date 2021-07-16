@@ -17,23 +17,11 @@ source:
   track_changes: true
 process:
   id: id
-  file_name:
-    plugin: extract
-    source: attachments
-    index:
-      - 0
-      - name
-  file_url:
-    plugin: extract
-    source: attachments
-    index:
-      - 0
-      - file_uri
   classification_description:
     plugin: substr
     source: classification_description
     start: 0
-    lenght: 255
+    length: 255
   classification_code:
     plugin: substr
     source: classification_code
@@ -60,7 +48,7 @@ process:
     plugin: substr
     source: subject
     start: 0
-    lenght: 255
+    length: 255
   meeting_id:
     plugin: extract
     source: meeting
@@ -91,6 +79,17 @@ process:
     source: resolution
     start: 0
     lenght: 255
+  diary_number:
+    plugin: extract
+    source: issue
+    index:
+      - register_id
+  origin_last_modifed_time: origin_last_modifed_time
+  resource_uri: resource_uri
+  preparer: preparer
+  last_modified_time: last_modified_time
+  from_minutes: from_minutes
+  index: index
   langcode:
     plugin: default_value
     default_value: fi

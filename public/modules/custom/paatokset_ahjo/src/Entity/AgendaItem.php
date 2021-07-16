@@ -179,6 +179,14 @@ final class AgendaItem extends RemoteEntityBase {
       ->setCardinality(1)
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+    $fields['origin_last_modifed_time'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
     $fields['content_resolution'] = BaseFieldDefinition::create('text_long')
       ->setLabel(new TranslatableMarkup('content_resolution'))
       ->setTranslatable(TRUE)
@@ -191,8 +199,24 @@ final class AgendaItem extends RemoteEntityBase {
       ])
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+    $fields['last_modifed_time'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
     $fields['issue_id'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('issue_id'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['resource_uri'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
@@ -211,6 +235,14 @@ final class AgendaItem extends RemoteEntityBase {
       ])
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+    $fields['preparer'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
     $fields['content_presenter'] = BaseFieldDefinition::create('text_long')
       ->setLabel(new TranslatableMarkup('content_presenter'))
       ->setTranslatable(TRUE)
@@ -221,6 +253,30 @@ final class AgendaItem extends RemoteEntityBase {
         'type'   => 'text_textarea',
         'weight' => -6,
       ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['preparer'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['from_minutes'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('from_minutes'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['index'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('preparer'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 

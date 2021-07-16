@@ -13,7 +13,8 @@ migration_group: ahjo
 label: 'Päätökset - Issue'
 source:
   plugin: paatokset_open_ahjo
-  url: 'https://dev.hel.fi/paatokset/v1/issue/?order_by=-last_modified_time'
+  limit_pages: 100
+  url: 'https://dev.hel.fi/paatokset/v1/issue/?order_by=-last_modified_time&limit=100'
   track_changes: true
 process:
   id: id
