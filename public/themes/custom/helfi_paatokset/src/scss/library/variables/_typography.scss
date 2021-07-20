@@ -40,3 +40,8 @@ $heading-font-family: $open-sans;
 $regular: 400;
 $semibold: 600;
 $bold: 700;
+
+.paatokset__link-plain {
+  color: $color-black;
+  text-decoration: none;
+}

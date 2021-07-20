@@ -1,0 +1,28 @@
+uuid: 7cc673c0-97de-43f7-8e49-bf21aaca7676
+langcode: fi
+status: true
+dependencies:
+  module:
+    - ctools
+    - paatokset_submenus
+  theme:
+    - helfi_paatokset
+id: agendassubmenu
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: agendas_submenu
+settings:
+  id: agendas_submenu
+  label: 'Agendas Submenu'
+  provider: paatokset_submenus
+  label_display: visible
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      policymaker: policymaker
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
