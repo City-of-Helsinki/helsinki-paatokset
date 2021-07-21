@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.policymaker.field_resource_uri
     - node.type.policymaker
   module:
-    - helfi_tpr
     - image
     - link
     - text
@@ -38,11 +37,9 @@ content:
     weight: 1
     label: hidden
     settings:
-      iframe_title: 'Service map'
-      link_title: 'View larger map'
-      target: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: service_map_embed
+    type: string
     region: content
   field_policymaker_image:
     weight: 2

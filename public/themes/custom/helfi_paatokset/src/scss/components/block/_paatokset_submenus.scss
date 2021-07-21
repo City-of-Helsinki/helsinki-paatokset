@@ -195,4 +195,15 @@
   }
 }
 
+.paatokset_download-link-container .paatokset__link-plain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 22px;
+
+  svg {
+    margin-right: 12px;
+  }
+}
+
 

@@ -11,7 +11,7 @@ id: media.minutes_of_the_discussion.field_document
 field_name: field_document
 entity_type: media
 bundle: minutes_of_the_discussion
-label: 'Document'
+label: Document
 description: ''
 required: false
 translatable: true

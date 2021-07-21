@@ -67,15 +67,31 @@
     <table id="listTable">
       {% for item in list %}
         {% for i in item %}
-          <tr {{ attributes.addClass(i['#year']) }}>
-            <td class="desktopTd">
+          <tr {{ attributes.addClass(i['#year']) }} data-timestamp={{ i['#timestamp'] }}>
+            <td class="desktopTd" >
               <p>{{ i['#date'] }}</p>
               <h5> <a href="{{ i['#url'] }}">{{ i['#title'] }}</a></h5>
+              {% if i['#download_link'] %}
+                <div class="paatokset_download-link-container">
+                  <a class="paatokset__link-plain" href="{{ i['#download_link'] }}" download>
+                    {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
+                    {{ 'Lataa tulostettava versio (PDF)'|trans }}
+                  </a>
+                </div>
+              {% endif %}
             </td>
             <td class="mobileTd">
-              <p>{{ i['#date'] }}</p>
+              <p>{{ i['#responsiveDate'] }}</p>
               <h5><a href="{{ i['#url'] }}">{{ i['#responsiveTitle'] | trans}}</a></h5>
               <h5><a href="{{ i['#url'] }}">{{ i['#meetingNumber'] }} - {{ i['#year'] }}</a></h5>
+              {% if i['#download_link'] %}
+                <div class="paatokset_download-link-container">
+                  <a class="paatokset__link-plain" href="{{ i['#download_link'] }}" download>
+                    {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
+                    {{ 'Lataa tulostettava versio (PDF)'|trans }}
+                  </a>
+                </div>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}
