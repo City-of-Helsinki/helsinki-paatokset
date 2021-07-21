@@ -113,3 +113,26 @@ entity.paatokset_agenda_item.content_list:
   base_route: helfi_api_base.integrations
   weight: 10
 
+  paatokset_attachment.settings:
+    title: Settings
+    route_name: paatokset_attachment.settings
+    base_route: paatokset_attachment.settings
+  entity.paatokset_attachment.view:
+    title: View
+    route_name: entity.paatokset_attachment.canonical
+    base_route: entity.paatokset_attachment.canonical
+  entity.paatokset_attachment.edit_form:
+    title: Edit
+    route_name: entity.paatokset_attachment.edit_form
+    base_route: entity.paatokset_attachment.canonical
+  entity.paatokset_attachment.delete_form:
+    title: Delete
+    route_name: entity.paatokset_attachment.delete_form
+    base_route: entity.paatokset_attachment.canonical
+    weight: 10
+  entity.paatokset_agenda_item.content_list:
+    title: Päätökset - Attachment
+    route_name: entity.paatokset_attachment.collection
+    base_route: helfi_api_base.integrations
+    weight: 10
+

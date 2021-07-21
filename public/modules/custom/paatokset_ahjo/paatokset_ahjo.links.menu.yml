@@ -58,3 +58,15 @@ entity.paatokset_agenda_item.collection:
   route_name: entity.paatokset_agenda_item.collection
   parent: helfi_api_base.integrations
 
+  entity.paatokset_agenda_item.settings:
+    title: Päätökset - Attachment settings
+    description: Configure Päätökset Attachment entity type
+    route_name:  paatokset_attachment.settings
+    parent: system.admin_structure
+
+  entity.paatokset_agenda_item.collection:
+    title: Päätökset - Attachment entities
+    description: List of Attachment entities
+    route_name: entity.paatokset_attachment.collection
+    parent: helfi_api_base.integrations
+
