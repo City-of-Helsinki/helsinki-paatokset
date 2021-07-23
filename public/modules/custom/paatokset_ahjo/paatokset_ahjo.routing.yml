@@ -1,0 +1,6 @@
+ajax_issue.event:
+  path: 'paatokset-issue/{issue_id}/ajax'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo\Controller\IssueController::loadDecision'
+  requirements:
+    _access: 'TRUE'

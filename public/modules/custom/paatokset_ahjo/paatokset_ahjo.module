@@ -139,41 +139,11 @@ function template_preprocess_paatokset_issue(array &$variables) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
 
-  if($data) {
+  if(isset($data)) {
     foreach($data as $key => $value) {
       $variables[$key] = $data[$key];
     }
   }
-}
-
-function paatokset_ahjo_get_handlings(Issue $entity) {
-  $issue_id = $entity->get('id')->value;
-  $database = \Drupal::database();
-  $query = $database->select('paatokset_meeting_field_data', 'pmfd')
-    ->fields('pmfd', ['meeting_date', 'policymaker'])
-    ->fields('paifd', ['id'])
-    ->fields('nfot', ['field_organization_type_value']);
-  $query->join('paatokset_agenda_item_field_data', 'paifd', 'pmfd.id = paifd.meeting_id');
-  $query->join('node__field_resource_uri', 'nfru', 'nfru.field_resource_uri_value = pmfd.policymaker_uri');
-  $query->join('node__field_organization_type', 'nfot', 'nfot.entity_id = nfru.entity_id');
-  $query->condition('paifd.issue_id', $issue_id);
-  $query->orderBy('pmfd.meeting_date', 'DESC');
-  $results = $query->execute()->fetchAll();
-
-  $transformed_result = [];
-  foreach($results as $result) {
-    $date = date('d.m.Y', strtotime($result->meeting_date));
-    $transformed_result[] = [
-      'title' => "$result->policymaker/$date",
-      'class' => str_replace('_', '-', $result->field_organization_type_value),
-      'link' =>  $result->id,
-      'id' => $result->id,
-      'policymaker_name' => $result->policymaker,
-      'date' => $result->meeting_date
-    ];
-  }
-
-  return $transformed_result;
 }
 
 /**

@@ -1,3 +1,7 @@
+.issue__wrapper .ajax-progress-throbber {
+  display: none;
+}
+
 .issue__meetings-container {
   label {
     font-size: 16px;
@@ -68,6 +72,10 @@
     padding-left: 30px;
     position: relative;
     overflow: hidden;
+
+    a:hover {
+      text-decoration: none;
+    }
   }
 
   .option:before {
@@ -101,7 +109,7 @@
     border-left-color: $trustee-pink;
   }
 
-  .option:hover, .option:focus {
+  .option:hover, .option:focus, .option.selected {
     cursor: pointer;
     background-color: $color-black-20;
   }
@@ -117,13 +125,18 @@
 }
 
 .issue__meetings-labels {
-  @include breakpoint($breakpoint-s) {
-    display: flex;
-    align-items: center;
+  display: flex;
+  flex-direction: column-reverse;
   
-    .issue__new-handlings-warning {
-      margin-left: auto;
-    }
+  @include breakpoint($breakpoint-l) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.new-handlings-warning__wrapper {
+  @include breakpoint($breakpoint-l) {
+    margin-left: auto;
   }
 }
 
@@ -132,6 +145,17 @@
   background-color: $yellow-light;
   padding: 2.5px 5px;
   margin-bottom: 5px;
+  visibility: hidden;
+  margin-bottom: 24px;
+  display: inline-block;
+
+  &.visible {
+    visibility: visible;
+  }
+
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: 2px;
+  }
 }
 
 .new-handlings-warning__container {
