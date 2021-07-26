@@ -6,15 +6,15 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\paatokset_submenus\Services\AgendaItemService;
 
 /**
- * Provides Agendas Submenu Block.
+ * Provides Agendas Submenu Documents Block.
  *
  * @Block(
- *    id = "agendas_submenu",
- *    admin_label = @Translation("Agendas Submenu"),
+ *    id = "paatokset_minutes_of_discussion",
+ *    admin_label = @Translation("Paatokset minutes of discussion block"),
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class AgendasSubmenuBlock extends BlockBase {
+class MinutesOfDiscussionBlock extends BlockBase {
   /**
    * AgendaItemService instance.
    *
@@ -34,14 +34,13 @@ class AgendasSubmenuBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $years = $this->agendaItemService->getAgendasYears();
-    $list = $this->agendaItemService->getAgendasList();
+    $data = $this->agendaItemService->getMinutesOfDiscussion();
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => 'Viranhaltijapäätökset',
-      '#years' => $years,
-      '#list' => $list,
+      '#years' => $data['years'],
+      '#list' => $data['list'],
     ];
   }
 

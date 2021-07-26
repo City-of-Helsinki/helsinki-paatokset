@@ -1,0 +1,33 @@
+uuid: 6ac66458-7aef-4724-9216-e583217dbf66
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: policymaker_pattern
+label: 'Policymaker pattern'
+type: 'canonical_entities:node'
+pattern: 'paattajat/[node:title]'
+selection_criteria:
+  c774b07d-5721-47af-a03a-13dfc9c7a273:
+    id: node_type
+    bundles:
+      policymaker: policymaker
+    negate: false
+    context_mapping:
+      node: node
+    uuid: c774b07d-5721-47af-a03a-13dfc9c7a273
+  4ac25b42-154b-4024-9b5a-8ab45adf3044:
+    id: language
+    langcodes:
+      fi: fi
+    negate: false
+    context_mapping:
+      language: 'node:langcode:language'
+    uuid: 4ac25b42-154b-4024-9b5a-8ab45adf3044
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli
