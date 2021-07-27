@@ -30,6 +30,17 @@ process:
   langcode:
     plugin: default_value
     default_value: fi
+  formatted_date:
+    plugin: format_date
+    source: date
+    from_format: 'Y-m-d'
+    to_format: 'd.m.Y'
+  display_name:
+    plugin: concat
+    source:
+      - policymaker_name
+      - '@formatted_date'
+    delimiter: ' - '
   policymaker_uri:
     plugin: substr
     source: policymaker
