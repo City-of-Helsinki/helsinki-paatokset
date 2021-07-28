@@ -5,6 +5,7 @@ namespace Drupal\paatokset_ahjo\Service;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\paatokset_ahjo\Entity\AgendaItem;
 use Drupal\paatokset_ahjo\Entity\Attachment;
+use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Entity\Meeting;
 
 /**
@@ -22,6 +23,20 @@ class IssueService {
   protected $currentUser;
 
   /**
+   * Currently selected decision.
+   *
+   * @var selectedHandling
+   */
+  private $selectedHandling;
+
+  /**
+   * Current issue entity.
+   *
+   * @var entity
+   */
+  private $entity;
+
+  /**
    * CustomService constructor.
    *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
@@ -29,25 +44,39 @@ class IssueService {
    */
   public function __construct(AccountInterface $currentUser) {
     $this->currentUser = $currentUser;
+    $this->selectedHandling = \Drupal::request()->query->get('decision');
+    $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
+    $entity = \Drupal::routeMatch()->getParameter($entityTypeIndicator);
+    if (!is_object($entity)) {
+      $entity = Issue::load($entity);
+    }
+    $this->entity = $entity;
   }
 
   /**
    * Return issue-related data and agenda item-related attachments.
    *
-   * @param string|int $issueId
-   *   Id value of the issue.
-   *
    * @return array
    *   Queried data
    */
-  public function getData($issueId) {
-    $handlings = $this->getMasterQuery($issueId);
+  public function getData() {
+    $handlings = $this->getMasterQuery($this->entity->get('id')->value);
     if (count($handlings) > 0) {
-      $currentHandling = $handlings[0];
+      $currentHandlingKey = 0;
+      if ($this->selectedHandling) {
+        $currentHandlingKey = array_search($this->selectedHandling, array_column($handlings, 'id'));
+      }
+      $currentHandling = $handlings[$currentHandlingKey];
+
       $currentAgendaItem = AgendaItem::load($currentHandling['link']);
       $attachments = $this->getAttachments($currentHandling['resource_uri']);
-      $hasNextHandling = $currentHandling['date'] < $handlings[0]['date'];
-      $hasPreviousHandling = $currentHandling['date'] > $handlings[count($handlings) - 1]['date'];
+
+      if ($currentHandlingKey > 0 && array_key_exists((string) $currentHandlingKey - 1, $handlings)) {
+        $nextHandling = $handlings[$currentHandlingKey - 1];
+      }
+      if (array_key_exists((string) $currentHandlingKey + 1, $handlings)) {
+        $previousHandling = $handlings[$currentHandlingKey + 1];
+      }
       $allDecisionsLink = $this->getMeetingUrl($currentAgendaItem->get('meeting_id')->value);
     }
 
@@ -55,11 +84,21 @@ class IssueService {
       'handlings' => $handlings,
       'current_handling' => $currentHandling ?? NULL,
       'current_agenda_item' => $currentAgendaItem ?? NULL,
-      'attachments' => $attachments,
-      'has_next_handling' => $hasNextHandling ?? FALSE,
-      'has_previous_handling' => $hasPreviousHandling ?? FALSE,
-      'all_decisions_link' => $allDecisionsLink,
+      'attachments' => $attachments ?? [],
+      'next_handling' => $nextHandling ?? FALSE,
+      'previous_handling' => $previousHandling ?? FALSE,
+      'all_decisions_link' => $allDecisionsLink ?? NULL,
     ];
+  }
+
+  /**
+   * Return current Issue's diarynumber.
+   *
+   * @return string
+   *   Diarynumber value
+   */
+  public function getDiaryNumber() {
+    return $this->entity->get('diarynumber')->value;
   }
 
   /**

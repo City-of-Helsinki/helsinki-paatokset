@@ -1,0 +1,26 @@
+{#
+  Template for issue attachments
+
+  Variable attachments should be passed.
+#}
+
+{% if attachments %}
+  <div class="issue__attachments">
+    <h3>{{ 'Attachments'|trans }}</h3>
+    <table>
+      <tbody></tbody>
+      {% for attachment in attachments %}
+        <tr>
+          <td>
+            {% if attachment.public.value %}
+              <i class="hds-icon hds-icon--download hds-icon--size-s" aria-hidden="true" style="vertical-align: middle"></i>
+            {% else %}
+              <i class="hds-icon hds-icon--eye-crossed hds-icon--size-s" aria-hidden="true" style="vertical-align: middle"></i>
+            {% endif %}
+          <td>
+          <td>{{ attachment.file_name.value }}</td>
+        <tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endif %}

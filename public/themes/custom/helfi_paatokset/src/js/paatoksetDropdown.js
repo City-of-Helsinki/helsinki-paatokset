@@ -55,6 +55,11 @@ jQuery(function($) {
     });
 
     container.on('keydown', arrowHandler);
+
+    $('body').on('click', '.decision-navigation-button', function(event) {
+      const link = $(event.target).parent('a').data('link');
+      selectOption($(optionList).find(`[data-link='${link}']`));
+    });
   });
 
   function closeOptions(focusHandle = true) {
@@ -92,13 +97,13 @@ jQuery(function($) {
   }
 
   function selectOption(selected) {
-    if($(selected)[0].dataset.link === $(handle)[0].dataset.link) {
+    if($(selected).data('link') === $(handle).data('link')) {
       closeOptions();
       return;
     }
 
     if($(selected).length > 0) {
-      transformButton($(selected)[0]);
+      transformButton(selected);
       $('.issue__meetings-dropdown .hds-button__label').html($(selected).text());
       $('.issue__meetings-select li.selected').attr('aria-selected', 'false');
       $('.issue__meetings-select li.selected').removeClass('selected');
@@ -106,11 +111,13 @@ jQuery(function($) {
       $(selected).attr('aria-selected', 'true');
       closeOptions();
     }
+
+    loadDecision($(selected).data('link'));
   }
 
   function transformButton(selected) {
-    const styleClass = selected.dataset.styleclass;
-    const link = selected.dataset.link;
+    const styleClass = $(selected).data('styleclass');
+    const link = $(selected).data('link');
 
     const buttonClasses = [
       'hds-button',
@@ -122,6 +129,58 @@ jQuery(function($) {
     buttonClasses.forEach(function(className) {
       $(handle).addClass(className);
     })
-    $(handle)[0].dataset.link = link;
+    $(handle).data('link', link);
+  }
+
+  /**
+   * Load decision content via ajax and update URL
+   */
+  function loadDecision(id) {
+    const { baseUrl, pathPrefix, currentPath } = window.drupalSettings.path;
+    const path = `${baseUrl}${pathPrefix}${currentPath}`;
+    $.ajax({
+      url: `${path}/ajax?decision=${id}`,
+      beforeSend: function() {
+        $('.issue__wrapper .ajax-progress-throbber').show();
+      },
+      success: function(response) {
+        const data = JSON.parse(response);
+        
+        if(data.content) {
+          $('.issue__ajax-container').html(data.content);
+        }
+        if(data.attachments) {
+          $('.issue__container .issue-right-column__container').html(data.attachments);
+        }
+        if(data.decision_navigation) {
+          $('.issue__decision-navigation').html(data.decision_navigation);
+        }
+        if(data.all_decisions_link) {
+          $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
+        }
+        if(data.show_warning) {
+          showWarning();
+        }
+        else {
+          hideWarning();
+        }
+        $('.issue-ajax-error__container').hide();
+      },
+      error: function() {
+        $('.issue-ajax-error__container').show();
+      },
+      complete: function() {
+        $('.issue__wrapper .ajax-progress-throbber').hide();
+      }
+    });
+    window.history.pushState({}, '', `${path}?decision=${id}`);
+  }
+
+  function hideWarning() {
+    $('.issue__new-handlings-warning').removeClass('visible');
+  }
+
+  function showWarning() {
+    $('.issue__new-handlings-warning').addClass('visible');
   }
 });

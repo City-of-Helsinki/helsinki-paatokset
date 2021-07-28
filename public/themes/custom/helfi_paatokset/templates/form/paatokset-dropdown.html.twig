@@ -6,17 +6,24 @@
 
 
 {% if options %}
+<div id="testing-ground"></div>
 <div class="issue__meetings-container">
   <div class="issue__meetings-labels">
     <label>{{ 'Process history'|trans }}</label>
-    {% if show_warning %}
-      <div class="issue__new-handlings-warning">
+    <div class="new-handlings-warning__wrapper">
+      {%
+        set warning_classes = [
+          'issue__new-handlings-warning',
+          show_warning ? 'visible'
+        ]
+      %}
+      <div{{ attributes.addClass(warning_classes) }}>   
         <div class="new-handlings-warning__container">
           {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'More recent handlings'|t } %}
           <span>{{ warning_label }}</span>
         </div>
       </div>
-    {% endif %}
+    </div>
   </div>
   <div class="issue__meetings-dropdown">
     {% if selected %}
@@ -35,7 +42,7 @@
             class="option selected {{option.class}}"
             title="{{option.title}}"
           >
-            {{ option.title }}
+            <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
           </li>
         {% else %}
           <li
@@ -47,11 +54,26 @@
             class="option {{option.class}}"
             title="{{option.title}}"
           >
-            {{ option.title }}
+            <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
           </li>
         {% endif %}
       {% endfor %}
     </ul>
   </div>
+  <noscript>
+    <style>
+      .issue__meetings-select {
+        display: block;
+      }
+
+      .issue__meetings-dropdown button.hds-button {
+        display: none;
+      }
+
+      .issue__meetings-container .option.selected {
+        display: none;
+      }
+    </style>
+  </noscript>
 </div>
 {% endif %}
