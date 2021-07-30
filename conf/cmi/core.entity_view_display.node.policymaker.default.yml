@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.policymaker.field_first_name
+    - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_policymaker_contact_link
     - field.field.node.policymaker.field_policymaker_id
@@ -21,6 +23,22 @@ targetEntityType: node
 bundle: policymaker
 mode: default
 content:
+  field_first_name:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_last_name:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_policymaker_contact_link:
     weight: 0
     label: hidden
