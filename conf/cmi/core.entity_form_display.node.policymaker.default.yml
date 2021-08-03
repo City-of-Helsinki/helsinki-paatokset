@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.policymaker.field_first_name
+    - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_policymaker_contact_link
     - field.field.node.policymaker.field_policymaker_id
@@ -30,6 +32,22 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_first_name:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_last_name:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_policymaker_contact_link:
     weight: 3
     settings:
