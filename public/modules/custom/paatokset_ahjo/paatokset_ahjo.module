@@ -410,3 +410,22 @@ function paatokset_ahjo_update_9005() {
   ->setDisplayConfigurable('form', TRUE);
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('index', $entity_type_id, $entity_type_id, $field_storage_definition); 
 }
+
+function paatokset_ahjo_update_9006() {
+  $entity_type_id = 'paatokset_meeting';
+
+  $field_storage_definition =  BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('Display name'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setDefaultValue('')
+    ->setCardinality(1)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ]);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('display_name', $entity_type_id, $entity_type_id, $field_storage_definition);
+}
+

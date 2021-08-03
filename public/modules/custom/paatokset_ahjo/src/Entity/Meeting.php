@@ -43,7 +43,7 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *     "langcode" = "langcode",
  *      "uuid" = "uuid",
  *      "uid" = "uid",
- *      "label" = "policymaker"
+ *      "label" = "display_name"
  *   },
  *   revision_metadata_keys = {
  *     "revision_created" = "revision_timestamp",
@@ -68,6 +68,19 @@ final class Meeting extends RemoteEntityBase {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    $fields['display_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Display name'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ]);
 
     $fields['policymaker'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('policymaker'))
