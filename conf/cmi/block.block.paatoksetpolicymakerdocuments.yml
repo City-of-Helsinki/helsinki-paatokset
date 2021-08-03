@@ -1,0 +1,25 @@
+uuid: f69b9f7e-280c-4c6a-a7d0-e886333b3fa9
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_submenus
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetpolicymakerdocuments
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: agendas_submenu_documents
+settings:
+  id: agendas_submenu_documents
+  label: 'Paatokset policymaker documents'
+  provider: paatokset_submenus
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/paattajat/*/asiakirjat'
+    negate: false

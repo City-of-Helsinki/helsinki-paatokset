@@ -1,0 +1,3 @@
+services:
+  Drupal\paatokset_submenus\Services\AgendaItemService:
+    class: Drupal\paatokset_submenus\Services\AgendaItemService
