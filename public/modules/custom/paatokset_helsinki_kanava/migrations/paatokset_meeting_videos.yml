@@ -1,0 +1,25 @@
+langcode: en
+id: paatokset_meeting_videos
+label: 'Päätökset Helsinki Kanava videos'
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_helsinki_kanava
+source:
+  plugin: helsinki_kanava
+  url: https://suite.icareus.com/api/events
+  ids:
+    eventId:
+      type: string
+      max_length: 1024
+process:
+  id: eventId
+  name: publicName
+  embed_url: defaultEmbedUrl
+  langcode:
+    plugin: default_value
+    default_value: fi
+destination:
+  plugin: 'entity:meeting_video'
+migration_dependencies: { }

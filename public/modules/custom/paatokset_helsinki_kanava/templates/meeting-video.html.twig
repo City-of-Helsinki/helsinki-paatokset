@@ -1,0 +1,20 @@
+<div class="meeting-video">
+  <div class="meeting-video__video-container">
+    {{ content.embed_url }}
+  </div>
+
+  {% if content.name|render %}
+    <p class="video__name">
+      {{ content.name }}
+    </p>
+  {% endif %}
+  
+  {% if all_recordings_link %}
+    <div class="view-all view-all--recordings">
+      <a class="paatokset-button-link" href="{{ all_recordings_link }}">
+        <span>{{ 'All recordings' }}</span>
+        <i class="hds-icon hds-icon--arrow-right"></i>
+      </a>
+    </div>
+  {% endif %}
+</div>
