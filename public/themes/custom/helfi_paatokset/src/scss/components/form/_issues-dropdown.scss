@@ -10,6 +10,7 @@
 }
 
 .issue__meetings-dropdown {
+  background: $color-white;;
   border: 1px solid #808080;
   margin-bottom: 14px;
 
@@ -30,6 +31,7 @@
 
     .hds-icon.hds-icon--angle-down {
       margin-left: auto;
+      margin-right: 4px;
     }
 
     .hds-button__label {

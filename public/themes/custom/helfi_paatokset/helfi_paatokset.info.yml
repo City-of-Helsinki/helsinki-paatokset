@@ -9,6 +9,7 @@ base theme: hdbt
 libraries:
   - helfi_paatokset/global-styling
   - helfi_paatokset/global-scripting
+  - helfi_paatokset/litepicker
 
 libraries-override:
   hdbt/hyphenopoly: false

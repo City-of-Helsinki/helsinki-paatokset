@@ -10,3 +10,54 @@
 @mixin font-weight($font-weight) {
   font-weight: $font-weight;
 }
+
+@mixin department-colors {
+  &.council {
+    background-color: $council-green;
+  }
+  
+  &.board-division, &.board {
+    background-color: $board-grey;
+  }
+  
+  &.traffic {
+    background-color: $traffic-yellow;
+  }
+  
+  &.committee {
+    background-color: $committee-blue;
+  }
+  
+  &.trustee {
+    background-color: $trustee-pink;
+  }
+}
+
+@mixin department-colors-before {
+  &.council:before {
+    background-color: $council-green;
+  }
+  
+  &.board-division:before, &.board:before {
+    background-color: $board-grey;
+  }
+  
+  &.traffic:before {
+    background-color: $traffic-yellow;
+  }
+  
+  &.committee:before {
+    background-color: $committee-blue;
+  }
+  
+  &.trustee:before {
+    background-color: $trustee-pink;
+  }
+}
+
+@mixin paatokset-tag {
+  border-radius: 24px;
+  background: $color-black;
+  color: $color-white;
+  padding: 6px 16px;
+}

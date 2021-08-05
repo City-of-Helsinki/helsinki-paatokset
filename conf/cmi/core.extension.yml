@@ -3,6 +3,7 @@ module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
   aet: 0
+  better_exposed_filters: 0
   block: 0
   breakpoint: 0
   ckeditor: 0
@@ -50,6 +51,10 @@ module:
   image: 0
   image_style_quality: 0
   imagecache_external: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
   language: 0
   link: 0
   linkit: 0
@@ -81,6 +86,8 @@ module:
   redirect: 0
   responsive_image: 0
   scheduler: 0
+  search_api: 0
+  search_api_db: 0
   select2: 0
   select2_icon: 0
   serialization: 0

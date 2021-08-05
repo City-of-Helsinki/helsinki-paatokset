@@ -1,0 +1,25 @@
+uuid: b2a3a0f5-036f-43a4-86fd-5fedf4449d6b
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_search_form
+    - system
+  theme:
+    - helfi_paatokset
+id: policymakersearchformblock
+theme: helfi_paatokset
+region: after_content
+weight: -8
+provider: null
+plugin: policymaker_search_form_block
+settings:
+  id: policymaker_search_form_block
+  label: 'Policymaker search form block'
+  provider: paatokset_search_form
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/69
+    negate: false

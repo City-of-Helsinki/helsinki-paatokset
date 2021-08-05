@@ -171,31 +171,14 @@
 
 .issue-content__policymaker-label {
   text-align: center;
+  text-transform: uppercase;
   padding: 10px 0;
 
-  &.council {
-    background-color: $council-green;
-  }
-  
-  &.board-division, .board {
-    background-color: $board-grey;
-  }
-  
-  &.traffic {
-    background-color: $traffic-yellow;
-  }
-  
-  &.committee {
-    background-color: $committee-blue;
-  }
-  
-  &.trustee {
-    background-color: $trustee-pink;
-  }
+  @include department-colors;
 
   @include breakpoint($breakpoint-m) {
     display: inline-block;
-    padding: 10px 55px;
+    padding: 10px;
   }
 }
 

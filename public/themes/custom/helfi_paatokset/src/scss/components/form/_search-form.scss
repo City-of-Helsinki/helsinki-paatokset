@@ -1,31 +1,38 @@
-// Hero section search form
+.paatokset-search-page {
+  background: #f7f7f8;
+
+  .layout-content {
+    margin: 0;
+  }
+
+  .hds-koros {
+    display: none;
+
+    @include breakpoint($breakpoint-xl) {
+      display: block;
+      color: #f7f7f8;
+    }
+  }
+}
+
 .paatokset__search-form {
   .hds-text-input__label {
     font-weight: bold;
+  }
+
+  .form-item.hds-text-input {
+    margin-bottom: 0;
   }
 
   @include breakpoint($breakpoint-xl) {
     margin-bottom: 115px;
   }
 
-  .hds-text-input__input-wrapper {
-    display: block;
-
-    @include breakpoint($breakpoint-xl) {
-      display: flex;
-    }
-  }
-
-  .hds-text-input__input {
-    @include breakpoint($breakpoint-xl) {
-      width: 894px;
-    }
-  }
-
   input[type="submit"] {
     width: 100%;
-    margin-bottom: 24px;
     height: var(--input-height);
+    background: #000;
+    font-size: 16px;
 
     @include breakpoint($breakpoint-xl) {
       max-width: 258px;
@@ -44,11 +51,23 @@
   }
 
   .advanced-fields-container {
+    margin-bottom: 22.5px;
+
+    @include breakpoint($breakpoint-xl) {
+      max-width: 894px;
+    }
+  }
+
+  .advanced-search__fields-container {
     @include breakpoint($breakpoint-xl) {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       max-width: 894px;
+
+      & > div {
+        flex-basis: 33.3%;
+        max-width: 282px;
+      }
     }
 
     label {
@@ -60,25 +79,15 @@
       }
     }
 
-    select {
-      width: 100%;
-
-      @include breakpoint($breakpoint-xl) {
-        max-width: 282px;
-      }
+    .datepicker-fields label {
+      display: inline;
     }
   }
 
   .advanced-search__tags-container {
     border-top: 1px solid #000;
-    display: flex;
-    align-items: center;
     padding-top: 10px;
     
-    > * {
-      margin-right: 15px;
-    }
-
     .tags-container__title {
       display: none;
 
@@ -87,9 +96,332 @@
         font-weight: 500;
       }
     }
+
+    .paatokset-tag-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .paatokset-tag--unselect {
+      cursor: pointer;
+    }
   }
 
   .advanced-search__search-watcher {
     width: 100%;
+    display: flex;
+    font-size: 16px;
+
+    .hds-button--supplementary {
+      margin-left: 0;
+      padding: 0;
+    }
+
+    .hds-button .hds-icon {
+      margin-left: 0;
+    }
+  }
+
+  .submit__desktop {
+    display: none;
+    @include breakpoint($breakpoint-xl) {
+      display: block;
+    }
+  }
+  
+  .submit__mobile {
+    @include breakpoint($breakpoint-xl) {
+      display: none;
+    }
+  }
+}
+
+.select2-selection__rendered, .paatokset-tag-container {
+  .hds-tag {
+    @include paatokset-tag;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  .hds-button--supplementary {
+    margin-bottom: 5px;
+    color: $color-black;
+  }
+  
+  .hds-button--supplementary .hds-button__label {
+    padding: 6px 16px;
+  }
+}
+
+.select2-selection__rendered .hds-tag {
+  align-items: center;
+  font-size: 14px;
+  padding:0px 16px 0px 8px;
+  flex-direction: row;
+}
+
+.search-wrapper {
+  margin-bottom: 32px;
+}
+
+.search-bar__input-wrapper {
+  display: block;
+
+  @include breakpoint($breakpoint-xl) {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .hds-text-input__input.search-bar {
+    @include breakpoint($breakpoint-xl) {
+      width: 894px;
+    }
+  }
+}
+
+.select2-container--paatokset {
+  border: 1px solid #808080;
+  background-color: $color-white;
+  margin-bottom: 14px;
+  min-height: 52px;
+
+  .select2-selection--single, .select2-selection__arrow {
+    height: 100%;
+  }
+
+  .select2-selection, .select2-selection--multiple {
+    min-height: 52px;
+    padding-left: 12px;
+    padding-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+
+    .select2-selection__choice {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    .select2-selection__choice .hds-icon {
+      width: 14px;
+      height: 14px;
+      color: $color-white;
+    }
+
+    div.select2-selection__choice__remove {
+      display: flex;
+      align-items: center;
+  
+      .hds-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .select2-selection__rendered {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .select2-selection__clear {
+    display: none;
+  }
+
+  .select2-selection__arrow .hds-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .paatokset-checked-dropdown__option {
+    padding: 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  .select2-search.select2-search--inline {
+    float: none;
+    width: 100%;
+  }
+
+  span.select2-selection__choice__remove {
+    display: none;
+  }
+}
+
+span.checkbox {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #808080;
+  margin-right: 14px;
+
+  .hds-icon--check {
+    display: none;
+  }
+}
+
+.select2-results__option[aria-selected="true"] span.checkbox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: $color-black;
+  border: 2px solid $color-black;
+
+  .hds-icon--check {
+    display: inline;
+    color: #fff;
+  }
+}
+
+.issue__meetings-dropdown--datepicker {
+  background: $color-white;
+
+  .hds-button::before {
+    content: none;
+  }
+
+  .option::before {
+    content: none;
+  }
+  
+  .hds-button .hds-button__label {
+    padding-left: 0;
+  }
+}
+
+.toggle-calendar-option.hds-button {
+  width: 100%;
+  color: $color-black;
+  justify-content: flex-start;
+  padding: 0;
+  margin-top: 1px solid $color-black;
+
+  .hds-icon.hds-icon--calendar-clock {
+    margin-left: 0;
+    margin-right: 11px;
+  }
+
+  .hds-icon.hds-icon--angle-right {
+    margin-left: auto;
+  }
+}
+
+.datepicker-fields {
+  display: flex;
+  margin: 22px 16px;
+
+  .datepicker-fields__divider {
+    margin: 0 12px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      color: $color-black;
+    }
+  }
+
+  .hds-text-input__input-wrapper {
+    position: relative;
+  }
+
+  .hds-text-input__input {
+    z-index: 1;
+    background: transparent;;
+  }
+
+  .datefield__icon {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+
+    .hds-icon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  input.has-input + .datefield__icon, input:focus + .datefield__icon {
+    display: none;
+  }
+}
+
+.date-picker-container {
+  padding-bottom: 14px;
+}
+
+.datepicker__widget .litepicker {
+  width: 100%;
+  font-family: $default-font-family;
+
+  .container__months, .month-item {
+    width: 100%;
+  }
+
+  .container__months {
+    box-shadow: none;
+  }
+
+  .month-item-header button {
+    color: $color-black;
+  }
+
+  .month-item-name, .month-item-year {
+    font-weight: 500;
+    font-size: 18px;
+    text-transform: capitalize;
+  }
+  
+  .month-item-weekdays-row div {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $color-black;
+  }
+}
+
+.datepicker__closer {
+  padding-right: 30px;
+  justify-content: center;
+  border-top: 1px solid $color-black;
+}
+
+.date-range__container {
+  display: none;
+}
+
+.checked-dropdown + .select2-container--paatokset {
+  .selec2-selection--multiple {
+    padding-right: 36px;
+  }
+
+  .select2-selection__arrow {
+    position: absolute;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+  }
+    
+  .select2-search__field {
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-top: 0;
+
+    &:focus, &:focus-visible {
+      outline: none;;
+    }
   }
 }

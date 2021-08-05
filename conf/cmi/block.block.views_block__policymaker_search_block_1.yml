@@ -1,0 +1,29 @@
+uuid: a512fbe0-8c35-41dc-bf7c-203afd5ff652
+langcode: fi
+status: true
+dependencies:
+  config:
+    - views.view.policymaker_search
+  module:
+    - system
+    - views
+  theme:
+    - helfi_paatokset
+id: views_block__policymaker_search_block_1
+theme: helfi_paatokset
+region: after_content
+weight: -7
+provider: null
+plugin: 'views_block:policymaker_search-block_1'
+settings:
+  id: 'views_block:policymaker_search-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/69
+    negate: false

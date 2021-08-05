@@ -1,0 +1,29 @@
+uuid: 048e9da8-b32c-44b3-8867-f7526fb9fd66
+langcode: fi
+status: true
+dependencies:
+  config:
+    - views.view.decisions_search
+  module:
+    - system
+    - views
+  theme:
+    - helfi_paatokset
+id: views_block__decisions_search_block_1
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: 'views_block:decisions_search-block_1'
+settings:
+  id: 'views_block:decisions_search-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/70
+    negate: false

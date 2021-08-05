@@ -1,0 +1,15 @@
+paatokset.search.decisions:
+  path: '/search-decisions'
+  defaults:
+    _controller: 'Drupal\paatokset_search_form\Controller\SearchViewController::decisions'
+    _title: 'Decisions search'
+  requirements:
+    _permission: 'access content'
+
+paatokset.search.policymakers:
+  path: '/search-policymakers'
+  defaults:
+    _controller: 'Drupal\paatokset_search_form\Controller\SearchViewController::policymakers'
+    _title: 'Policymakers search'
+  requirements:
+    _permission: 'access content'

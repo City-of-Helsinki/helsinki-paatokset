@@ -1,0 +1,166 @@
+<?php
+
+use Drupal\Component\DateTime\DateTimePlus;
+use Drupal\Core\Url;
+use Drupal\search_api\Query\QueryInterface;
+use Drupal\node\Entity\Node;
+use Drupal\paatokset_ahjo\Entity\AgendaItem;
+use Drupal\paatokset_ahjo\Entity\Issue;
+use Drupal\paatokset_ahjo\Entity\Meeting;
+use Drupal\paatokset_ahjo\Service\PolicymakerService;
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function paatokset_search_form_preprocess(&$variables, $hook) {
+  if (isset($variables['entity']) && $variables['entity'] instanceof AgendaItem && $variables['view_mode'] === 'search_result') {
+    $entity = $variables['entity'];
+    $nodes = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['field_resource_uri' => $entity->get('meeting_policymaker_link')->value]);
+    
+    if($node = reset($nodes)) {
+      $variables['policymaker_name'] = $node->getTitle();
+      $variables['organization_type'] = PolicymakerService::transformType($node->get('field_organization_type')->value);
+    }
+
+    $options = [
+      'query' => ['decision' => $entity->id()]
+    ];
+    $issue_id = $entity->get('issue_id')->value;
+    $href = Url::fromUri("entity:paatokset_issue/$issue_id", $options);
+
+    if($href) {
+      $variables['href'] = $href;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function paatokset_search_form_views_pre_render($view) {
+  if($view->id() === 'decisions_search') {
+    $results = $view->result;
+    $issue_ids = [];
+    $filteredResults = [];
+
+    foreach ($results as $result) {
+      $agenda_item = $result->_object->getValue();
+      if($agenda_item && $agenda_item->get('issue_id')) {
+        $issue_id = $agenda_item->get('issue_id')->value;
+        if(!in_array($issue_id, $issue_ids)) {
+          $filteredResults[] = $result;
+          $issue_ids[] = $issue_id;
+        }
+      } else {
+        $filteredResults[] = $result;
+      }
+    }
+
+    $view->result = $filteredResults;
+    $view->total_rows = count($filteredResults);
+
+    return $view;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_search_form_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+
+  if($view->id() === 'policymaker_search') {
+    foreach($variables['rows'] as $id => $row) {
+      if(isset($row['content']['#row']->_object)) {
+        $orgType = $row['content']['#row']->_object->get('field_organization_type')->value;
+        $className = PolicymakerService::transformType($orgType);
+        $variables['rows'][$id]['attributes']->addClass($className);
+      }
+    }
+  }
+}
+
+/**
+ * Implemens hook_views_query_alter().
+ */
+function paatokset_search_form_search_api_query_alter(QueryInterface &$query) {
+  $fields = $query->getIndex()->getFields();
+  if(isset($fields['meeting_date'])) {
+    $date_from = \Drupal::request()->query->get('date_from');
+    $date_to = \Drupal::request()->query->get('date_to');
+
+    if($date_from) {
+      $date = DateTimePlus::createFromFormat('Y-m-d', $date_from)->getTimeStamp();
+      $query->addCondition('meeting_date', $date, '>=');
+    }
+    if($date_to) {
+      $date = DateTimePlus::createFromFormat('Y-m-d', $date_to)->getTimeStamp();
+      $query->addCondition('meeting_date', $date, '<=');
+    }
+  }
+  if(isset($fields['meeting_policymaker_link'])) {
+    $policymakers = \Drupal::request()->query->get('policymakers');
+    if($policymakers) {
+      if(in_array('trustees', $policymakers)) {
+        $connection = \Drupal::database();
+        $dbQuery = $connection->select('node_field_data', 'nfd');
+        $dbQuery->join('node__field_resource_uri', 'nfru', 'nfd.nid = nfru.entity_id');
+        $dbQuery->join('node__field_organization_type', 'nfot', 'nfd.nid = nfot.entity_id');
+        $dbQuery->fields('nfd', ['nid']);
+        $dbQuery->fields('nfru', ['field_resource_uri_value']);
+        $dbQuery->condition('nfot.field_organization_type_value', 'trustee', '!=');
+        $results = $dbQuery->distinct()->execute()->fetchAllKeyed();
+
+        $policymakers = array_merge($policymakers, $results);
+      }
+      $query->addCondition('meeting_policymaker_link', $policymakers, 'IN');
+    }
+  }
+  if(isset($fields['top_category_name'])) {
+    $topics = \Drupal::request()->query->get('topics');
+    if($topics) {
+      $query->addCondition('top_category_name', $topics, 'IN');
+    }
+  }
+}
+
+function paatokset_search_form_theme($existing, $type, $theme, $path) {
+  return [		
+    'paatokset_search_form_decisions' => [
+      'render element' => 'children',
+      'template' => 'decisions-search',
+      'variables' => [
+        'view' => [
+          '#type' =>  'view',
+          '#name' => 'decisions_search',
+          '#display_id' => 'block_1',
+          '#embed' => true
+        ]
+      ]
+    ],
+    'paatokset_search_form_policymakers' => [
+      'render_element' => 'children',
+      'template' => 'policymakers-search',
+      'variables' => [
+        'view' => [
+          '#type' => 'view',
+          '#name' => 'policymaker_search',
+          '#display_id' => 'block_1',
+          '#embed' => true
+        ]
+      ]
+    ]
+  ];
+}
+
+function paatokset_search_form_preprocess_html(array &$variables) {
+  $routename = \Drupal::routeMatch()->getRouteName();
+  if(in_array($routename, ['paatokset.search.decisions', 'paatokset.search.policymakers'])) {
+    $variables['attributes']['class'][] = 'paatokset-search-page';
+  }
+  if($routename === 'paatokset.search.policymakers') {
+    $variables['attributes']['class'][] = 'paatokset-search-page--policymakers';
+  }
+}

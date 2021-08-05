@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.imported_article.body
+    - field.field.node.imported_article.field_123123
     - field.field.node.imported_article.field_image
     - image.style.thumbnail
     - node.type.imported_article
@@ -38,6 +39,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_123123:
+    weight: 121
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_image:
     type: image_image
     weight: 13

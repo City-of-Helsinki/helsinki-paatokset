@@ -9,7 +9,7 @@ dependencies:
 id: helfi_paatokset_lowercontentblock
 theme: helfi_paatokset
 region: after_content
-weight: -6
+weight: -11
 provider: null
 plugin: lower_content_block
 settings:

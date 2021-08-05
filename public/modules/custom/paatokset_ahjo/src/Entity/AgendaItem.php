@@ -279,6 +279,22 @@ final class AgendaItem extends RemoteEntityBase {
       ->setCardinality(1)
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
+    $fields['top_category_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('top_category_name'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+    $fields['issue_subject'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('issue_subject'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
   }

@@ -1,0 +1,16 @@
+.policymaker-search-form__wrapper {
+  background: $color-white;
+
+  .paatokset__search-form {
+    @include breakpoint($breakpoint-xl) {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .org-type__container {
+    @include breakpoint($breakpoint-xl) {
+      max-width: 282px;
+    }
+  }
+}

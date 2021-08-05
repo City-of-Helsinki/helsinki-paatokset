@@ -1,0 +1,19 @@
+uuid: c1b3fec1-984e-4c83-a3a2-27e3b23877fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_123123
+    - node.type.imported_article
+id: node.imported_article.field_123123
+field_name: field_123123
+entity_type: node
+bundle: imported_article
+label: '123123'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

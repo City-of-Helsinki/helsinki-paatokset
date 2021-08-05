@@ -1,0 +1,10 @@
+uuid: e22625e0-986b-48c3-ae57-d80a8dc0a540
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo
+id: paatokset_agenda_item.search_result
+label: 'Search result'
+targetEntityType: paatokset_agenda_item
+cache: true

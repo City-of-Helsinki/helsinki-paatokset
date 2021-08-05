@@ -1,8 +1,12 @@
 {#
-  
+/**
+ * @file
+ * Template for issue content
+ */
 #}
 
 <div class="issue-content-top__container">
+{{ current_agenda_item.issue_id.value }}
   <div{{ content_attributes.addClass('issue-content-top') }}>
     {% if diarynumber %}
       <div class="issue-content__indices">

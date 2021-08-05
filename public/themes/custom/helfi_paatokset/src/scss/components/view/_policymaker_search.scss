@@ -1,0 +1,46 @@
+.paatokset-search-page--policymakers {
+  background: #f7f7f8;
+
+  .hero__container {
+    @include breakpoint($breakpoint-xl) {
+      padding-top: 112px;
+      padding-bottom: 78px;
+    }
+  }
+
+  .hds-koros {
+    @include breakpoint($breakpoint-xl) {
+      color: $color-white;
+    }
+  }
+
+  footer .hds-koros {
+    color: #f7f7f8;
+  }
+}
+
+.views--policymaker-search {
+  background:#f7f7f8;
+
+  .results__wrapper {
+    margin: 24px 0 48px;
+  }
+
+  .views-row {
+    padding: 50px 24px;
+    margin-bottom: 16px;
+    background: $color-white;
+    position: relative;
+
+    @include department-colors-before;
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 16px;
+      height: 100%;
+    }
+  }
+}

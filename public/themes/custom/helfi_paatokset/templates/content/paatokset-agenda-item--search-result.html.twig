@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Template for agenda items' search results
+ */
+#}
+
+{% 
+  set classes = [
+    'search-result__wrapper'
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
+  {%
+    set label_classes = [
+      'search-result__label',
+      'issue-content__policymaker-label',
+      organization_type
+    ]
+  %}
+  <div class="{{ label_classes|join(' ') }}">
+    {{ policymaker_name }}
+  </div>
+  <div class="search-result__container">
+    <div class="search-result__header">
+      <div class="search-result__date">
+        {{ entity.meeting_date.value|date('d.m.Y') }}
+      </div>
+      <div class="search-result__favorite-button issue__favorite-button">
+        {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false } %}
+      </div>
+    </div>
+    <div class="search-result__title">
+      <h2>{{ entity.subject.value }}</h2>
+    </div>
+    <div class="search-result__footer">
+      <div class="search-result__tag-container paatokset-tag-container">
+        {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
+      </div>
+      <div class="search-result__issue-link">
+        <a href="{{href}}">
+          <span aria-hidden="true" class="hds-icon hds-icon--arrow-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

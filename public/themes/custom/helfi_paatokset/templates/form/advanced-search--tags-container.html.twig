@@ -25,12 +25,18 @@
     has_parent ? 'form-wrapper',
   ]
 %}
-<div{{ attributes.addClass(classes) }}>
-  <span class="tags-container__title">{{ 'Filters:'|trans }}</span>
-  {% for tag in tags %}
-    {% include '@hdbt/misc/tag.html.twig' with { type: 'deletable', label: tag} %}
-  {% endfor %}
-  {% if tags is not empty %}
-    {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', disabled: false, label: 'Reset filters'|t } %}
-  {% endif %}
-</div>
+{% if tags is not empty %}
+  <div{{ attributes.addClass(classes) }}>
+    <span class='tags-container__title'>{{ 'Filters:'|trans }}</span>
+      <div class='paatokset-tag-container'>
+        {% for origin, values in tags %}
+          {% for key, value in values %}
+            <span class='paatokset-tag--unselect' data-origin='{{ origin }}' data-key='{{ key }}'>
+              {% include '@hdbt/misc/tag.html.twig' with { type: 'deletable', label: value} %}
+            </span>
+          {% endfor %}
+        {% endfor %}
+        {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', disabled: false, label: 'Reset filters'|t } %}
+      </div>
+  </div>
+{% endif %}

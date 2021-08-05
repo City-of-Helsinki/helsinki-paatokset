@@ -1,0 +1,57 @@
+.views .pager {
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    padding-top: 0;
+    list-style: none;
+  }
+
+  .pager__item {
+    display: none;
+    margin-right: 16px;
+
+    a {
+      font-weight: bold;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    &.pager__item--next, &.pager__item--previous {
+      display: inline;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    li:not(.pager__item--last):not(.pager__item--first):not(.is-active) {
+      display: inline;
+    }
+  }
+
+  .is-active {
+    width: 36px;
+    height: 36px;
+    background: $color-black;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: $color-white;
+    }
+  }
+
+  .hds-icon {
+    width: 24px;
+    height: 24px;
+  }
+}

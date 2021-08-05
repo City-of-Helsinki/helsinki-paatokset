@@ -1,0 +1,89 @@
+{#
+  Template for calendar element in decisions search
+#}
+
+{%
+  set wrapper_classes = [
+    'js-form-item',
+    'form-item',
+    'js-form-type-' ~ type|clean_class,
+    'form-item-' ~ name|clean_class,
+    'js-form-item-' ~ name|clean_class,
+    title_display not in ['after', 'before'] ? 'form-no-label',
+    disabled == 'disabled' ? 'form-disabled',
+    errors ? 'form-item--error',
+    'date-picker-container'
+  ]
+%}
+
+<div class="{% for class in wrapper_classes %}{{ class }}{{ ' ' }}{% endfor %}">
+  <div class="issue__meetings-container">
+    <div class="issue__meetings-labels">
+      <label>{{ 'Date'|t }}</label>
+    </div>
+    {%
+      set classes = [
+        'issue__meetings-dropdown',
+        'issue__meetings-dropdown--datepicker'
+      ]
+    %}
+    <div {{ attributes.addClass(classes) }}>
+      <span class="opener">
+        {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose date'|t, icon_first: true, icon_first_type: 'calendar', icon_last: true, icon_last_type: 'angle-down' } %}
+      </span>
+      <span class="navigate-back">
+        {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: 'Back'|t, icon_first: true, icon_first_type: 'angle-left' } %}
+      </span>
+      <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" aria-haspopup='listbox'>
+        <li>
+          <div class="datepicker-fields">
+            <div class="datepicker-fields__to">
+              <div class="hds-text-input">
+                <label for="date-from" class="hds-text-input__label">{{ 'Date from'|t }}</label>
+                <div class="hds-text-input__input-wrapper">
+                  <input type="text" name="date-from" class="hds-text-input__input" />
+                  <div class="datefield__icon">
+                    <span class="hds-icon hds-icon--calendar-plus"></span>
+                  </div>
+                </div>
+                <span class="hds-text-input__helper-text">pp.kk.vvvv</span>
+              </div>
+            </div>
+            <div class="datepicker-fields__divider">
+              {% include '@hdbt/misc/icon.twig' with {icon: 'minus'} %}
+            </div>
+            <div class="datepicker-fields__to">
+              <div class="hds-text-input">
+                <label for="date-to" class="hds-text-input__label">{{ 'Date to'|t }}</label>
+                <div class="hds-text-input__input-wrapper">
+                  <input type="text" name="date-to" class="hds-text-input__input" />
+                  <div class="datefield__icon">
+                    <span class="hds-icon hds-icon--calendar-plus"></span>
+                  </div>
+                </div>
+                <span class="hds-text-input__helper-text">pp.kk.vvvv</span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="datepicker__widget"></li>
+        <li class="datepicker__closer option" >{{ 'Close'|t }}</li>
+      </ul>
+    </div>
+    <noscript>
+      <style>
+        .issue__meetings-select {
+          display: block;
+        }
+
+        .issue__meetings-dropdown button.hds-button {
+          display: none;
+        }
+
+        .issue__meetings-container .option.selected {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </div>
+</div>

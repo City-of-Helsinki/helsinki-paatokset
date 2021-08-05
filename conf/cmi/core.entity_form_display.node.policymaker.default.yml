@@ -15,12 +15,29 @@ dependencies:
     - image.style.thumbnail
     - node.type.policymaker
   module:
+    - field_group
     - image
     - link
     - path
     - readonly_field_widget
     - scheduler
     - text
+third_party_settings:
+  field_group:
+    group_integration_data:
+      children:
+        - field_organization_type
+        - field_resource_uri
+      parent_name: ''
+      weight: 16
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        description: 'Data from OpenAhjo integration. You may not change these values.'
+        required_fields: false
+      label: 'Integration data'
 id: node.policymaker.default
 targetEntityType: node
 bundle: policymaker
@@ -28,12 +45,12 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_first_name:
-    weight: 26
+    weight: 3
     settings:
       size: 60
       placeholder: ''
@@ -41,15 +58,25 @@ content:
     type: string_textfield
     region: content
   field_last_name:
-    weight: 27
+    weight: 4
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_organization_type:
+    type: readonly_field_widget
+    weight: 17
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
+    third_party_settings: {  }
   field_policymaker_contact_link:
-    weight: 3
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -67,7 +94,7 @@ content:
       show_description: false
     third_party_settings: {  }
   field_policymaker_image:
-    weight: 8
+    weight: 10
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -75,14 +102,6 @@ content:
     type: image_image
     region: content
   field_policymaker_long_descr:
-    weight: 4
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_policymaker_summary:
     weight: 6
     settings:
       rows: 5
@@ -90,6 +109,24 @@ content:
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_policymaker_summary:
+    weight: 8
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_resource_uri:
+    type: readonly_field_widget
+    weight: 18
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 1
@@ -99,13 +136,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 9
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -113,7 +150,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 13
     region: content
     third_party_settings: {  }
   title:
@@ -126,7 +163,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 13
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60
@@ -136,18 +173,16 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 10
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_organization_type: true
-  field_resource_uri: true
   promote: true
   sticky: true
   translation: true

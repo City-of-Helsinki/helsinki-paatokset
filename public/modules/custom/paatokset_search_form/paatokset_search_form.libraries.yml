@@ -1,0 +1,8 @@
+SubmitForm:
+  js:
+    js/SubmitForm.js: {}
+  dependencies:
+    - core/drupal.ajax
+    - core/jquery
+    - core/jquery.once
+    - core/drupal

@@ -76,7 +76,7 @@ class PaatoksetSearchForm extends FormBase {
     $form['container']['advanced-search-link-container']['advanced-search-link'] = [
       '#type' => 'link',
       '#title' => t('Show advanced search'),
-      '#url' => Url::fromRoute('entity.node.canonical', ['node' => 1]),
+      '#url' => Url::fromRoute('paatokset.search.decisions'),
     ];
 
     return $form;
@@ -85,28 +85,15 @@ class PaatoksetSearchForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // @todo Implement validation
-    return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Implement submit
-    return TRUE;
-  }
+    $query = [];
 
-  /**
-   * Determine and return advanced search form link.
-   *
-   * @return array
-   *   String, url
-   */
-  private function getAdvancedSearchLink() {
-    // @todo implement
-    return '/advanced-search';
+    $search_phrase = $form_state->getValue('hds-text-input__input');
+    if ($search_phrase) {
+      $query['s'] = $search_phrase;
+    }
+    $url = Url::fromRoute('paatokset.search.decisions', [], ['query' => $query]);
+    $form_state->setRedirectUrl($url);
   }
 
 }

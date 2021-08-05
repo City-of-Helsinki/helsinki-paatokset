@@ -1,0 +1,140 @@
+.hero--advanced-search-form {
+  color: #f7f7f8;
+}
+
+#block-views-block-decisions-search-block-1 {
+  background: #f7f7f8;
+}
+
+.views--decisions-search {
+  margin-left: 14px;
+  margin-right: 14px;
+  padding-left: 0;
+  padding-right: 0;
+
+  @include breakpoint($breakpoint-l) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: $breakpoint-l) {
+    &.container {
+      max-width: 100%;
+    }
+  }
+
+  .results__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .views-row {
+    flex-basis: 100%;
+    margin-bottom: 24px;
+  
+    @include breakpoint($breakpoint-l) {
+      flex-basis: 33.3%;
+      max-width: 384px;
+      margin-right: 15px;
+      justify-content: space-evenly;
+    }
+  }
+}
+
+.search-result__wrapper {
+  height: 100%;
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+
+  .issue-content__policymaker-label {
+    margin-bottom: 0;
+    width: 100%;
+  }
+}
+
+.search-result__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .search-result__date {
+    font-size: 14px;
+  }
+
+  .issue__favorite-button button.hds-button .hds-icon:first-of-type:not(:last-of-type) {
+    margin-left: 20px;
+    margin-right: 0;
+  }
+
+  .hds-button__label {
+    padding: 0;
+  }
+}
+
+.search-result__title h2 {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: 500;
+  min-height: 120px;
+  margin-bottom: 36px;
+}
+
+.search-result__container {
+  padding: 18px 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+
+  & > div {
+    width: 100%;
+  }
+
+  .search-result__footer {
+    align-self: flex-end  ;
+  }
+}
+
+.search-result__tag-container {
+  margin-bottom: 24px;
+
+  .hds-tag {
+    padding: 3px 16px;
+    font-size: 14px;
+  }
+}
+
+.search-result__issue-link {
+  margin-bottom: 10px;
+
+  a {
+    height: 48px;
+    display: block;
+  }
+
+  .hds-icon--arrow-right {
+    width: 48px;
+    color: #000;
+  }
+}
+
+.form-item-advanced-search__use-calendar {
+  display: none;
+}
+
+.issue__meetings-dropdown--datepicker {
+  .navigate-back {
+    display: none;
+  }
+
+  &.open {
+    .navigate-back {
+      display: block;
+    }
+
+    .opener {
+      display: none;
+    }
+  }
+}

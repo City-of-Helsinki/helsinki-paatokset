@@ -84,6 +84,16 @@ process:
     source: issue
     index:
       - register_id
+  top_category_name:
+    plugin: extract
+    source: issue
+    index:
+      - top_category_name
+  issue_subject:
+    plugin: extract
+    source: issue
+    index:
+      - subject
   origin_last_modifed_time: origin_last_modifed_time
   resource_uri: resource_uri
   preparer: preparer
