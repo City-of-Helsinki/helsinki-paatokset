@@ -1,0 +1,54 @@
+paatokset_ahjo_openid.index:
+  path: '/admin/ahjo-open-id'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::index'
+  requirements:
+    _permission: 'administer content'
+  options:
+    no_cache: 'TRUE'
+
+paatokset_ahjo_openid.settings:
+  path: '/admin/ahjo-open-id/settings'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_openid\Form\SettingsForm
+    _title: 'AHJO API Open ID settings'
+  requirements:
+    _permission: 'administer site configuration'
+
+paatokset_ahjo_openid.callback:
+  path: '/ahjo-api/login'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::callback'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
+    _admin_theme: 'TRUE'
+
+paatokset_ahjo_openid.auth:
+  path: '/admin/ahjo-open-id/auth/{code}'
+  defaults:
+    code: NULL
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::auth'
+  requirements:
+    _permission: 'administer content'
+  options:
+    no_cache: 'TRUE'
+
+paatokset_ahjo_openid.refresh:
+  path: '/admin/ahjo-open-id/refresh-token'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::refresh'
+  requirements:
+    _permission: 'administer content'
+  options:
+    no_cache: 'TRUE'
+
+paatokset_ahjo_openid.debug:
+  path: '/admin/ahjo-open-id/debug'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::debug'
+  requirements:
+    _permission: 'administer content'
+  options:
+    no_cache: 'TRUE'
