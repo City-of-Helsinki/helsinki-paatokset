@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class SettingsForm.
+ * Settings form for the AHJO API Open ID connector.
  *
  * @package Drupal\paatokset_ahjo_openid\Form
  */

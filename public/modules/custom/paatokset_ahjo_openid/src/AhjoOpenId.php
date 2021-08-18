@@ -49,6 +49,8 @@ class AhjoOpenId implements ContainerInjectionInterface {
   /**
    * Constructs AhjoOpenId Controller.
    *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   HTTP Client.
    * @param \Drupal\Core\State\StateInterface $state
@@ -103,7 +105,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
   public function getAuthAndRefreshTokens(string $code = NULL) {
     $request = $this->httpClient->request(
       'POST',
-      $this->authUrl,
+      $this->tokenUrl,
       [
         'http_errors' => FALSE,
         'headers' => $this->getHeaders(),
@@ -136,7 +138,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
     $refresh_token = $this->state->get('ahjo_api_refresh_token');
     $request = $this->httpClient->request(
       'POST',
-      $this->authUrl,
+      $this->tokenUrl,
       [
         'http_errors' => FALSE,
         'headers' => $this->getHeaders(),
@@ -206,10 +208,15 @@ class AhjoOpenId implements ContainerInjectionInterface {
    * Get headers for HTTP requests.
    *
    * @return array|null
+   *   Headers for the request or NULL if config is missing.
    */
   private function getHeaders(): ?array {
     $client_id = $this->clientId;
     $client_secret = getenv('PAATOKSET_OPENID_SECRET');
+
+    if (empty($client_id) || empty($client_secret)) {
+      return NULL;
+    }
     return ['Authorization' => 'Basic ' . base64_encode($client_id . ':' . $client_secret)];
   }
 

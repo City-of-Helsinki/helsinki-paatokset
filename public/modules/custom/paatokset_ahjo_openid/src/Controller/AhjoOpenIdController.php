@@ -46,7 +46,7 @@ class AhjoOpenIdController extends ControllerBase {
   public function index() {
     return [
       'heading' => [
-        '#markup' => '<h1>AHJO Open ID connector</h1>',
+        '#markup' => '<h1>' . $this->t('AHJO Open ID connector') . '</h1>',
       ],
       'div_1' => $this->getDivider(),
       'auth_flow' => $this->getAuthFlowMarkup(),
@@ -65,15 +65,14 @@ class AhjoOpenIdController extends ControllerBase {
     $auth_url = $this->ahjoOpenId->getAuthUrl();
 
     if ($auth_url) {
-      $link_markup = '<p>To start authentication flow, go to <a href="' . $auth_url . '">' . $auth_url . '</a></p>';
+      $link_markup = '<p>' . $this->t('To start authentication flow, go to:') . ' <a href="' . $auth_url . '">' . $auth_url . '</a></p>';
     }
     else {
-      $link_markup = '<p>Configuration needs to be added before authentication.</p>';
+      $link_markup = '<p>' . $this->t('Configuration needs to be added before authentication.') . '</p>';
     }
 
-
     return [
-      'title' => ['#markup' => '<h2>Authentication flow</h2>'],
+      'title' => ['#markup' => '<h2>' . $this->t('Authentication flow') . '</h2>'],
       'link' => [
         '#markup' => $link_markup,
       ],
@@ -90,16 +89,16 @@ class AhjoOpenIdController extends ControllerBase {
     $refresh_url = Url::fromRoute('paatokset_ahjo_openid.refresh', [], ['absolute' => TRUE])->toString();
     if ($this->ahjoOpenId->checkAuthToken()) {
       $token_expiration = $this->ahjoOpenId->getAuthTokenExpiration();
-      $token_status = '<p>Token is still valid until: ' . date(DATE_RFC2822, $token_expiration) . '</p>';
+      $token_status = '<p>' . $this->t('Token is still valid until %date', ['%date' => date(DATE_RFC2822, $token_expiration)]) . '</p>';
     }
     else {
-      $token_status = '<p>Token has expired or has not been set.</p>';
+      $token_status = '<p>' . $this->t('Token has expired or has not been set.') . '</p>';
     }
     return [
-      'title' => ['#markup' => '<h2>Token info</h2>'],
+      'title' => ['#markup' => '<h2>' . $this->t('Token info') . '</h2>'],
       'status' => ['#markup' => $token_status],
       'link' => [
-        '#markup' => '<p><a href="' . $refresh_url . '">Refresh token.</a></p>',
+        '#markup' => '<p><a href="' . $refresh_url . '">' . $this->t('Refresh token.') . '</a></p>',
       ],
     ];
   }
@@ -110,7 +109,7 @@ class AhjoOpenIdController extends ControllerBase {
    * @return array
    *   Markup array.
    */
-  private function getDivider() {
+  private function getDivider(): array {
     return [
       '#markup' => '<hr />',
     ];
@@ -118,45 +117,48 @@ class AhjoOpenIdController extends ControllerBase {
 
   /**
    * Authentication flow.
+   *
+   * @return array
+   *   Markup array.
    */
-  public function callback(Request $request) {
+  public function callback(Request $request): array {
     $code = $request->query->get('code');
     if (!empty($code)) {
       $authentication_url = Url::fromRoute('paatokset_ahjo_openid.auth', ['code' => $code], ['absolute' => TRUE])->toString();
-      print 'Continue to <a href="' . $authentication_url . '">' . $authentication_url . '</a>';
+      $auth_markup = '<p>' . $this->t('Continue to') . ' <a href="' . $authentication_url . '">' . $authentication_url . '</a></p>';
     }
-    print '<br />';
-    die('...');
+    else {
+      $auth_markup = '<p>' . $this->t('Authentication failed.') . '</p>';
+    }
+
+    return [
+      '#markup' => $auth_markup,
+    ];
   }
 
   /**
    * Get access and auth tokens.
    */
-  public function auth($code = NULL) {
+  public function auth($code = NULL): array {
     $code = (string) $code;
     $data = $this->ahjoOpenId->getAuthAndRefreshTokens($code);
 
     if (isset($data->access_token) && isset($data->refresh_token)) {
-      print 'Token successfully stored.<br /><br />';
-      print 'ACCESS:<br />';
-      print (string) $data->access_token;
-      print '<br />';
-      print 'EXPIRES IN:<br />';
-      print (string) $data->expires_in;
-      print '<br />';
-      print 'REFRESH:<br />';
-      print (string) $data->refresh_token;
-      print '<br />';
+      $auth_response = $this->t('Token successfully stored!');
     }
     else {
-      print 'Unable to authenticate.';
-      print '<br /><br />';
+      $auth_response = $this->t('Unable to authenticate:') . ' ' . $data->error;
     }
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
 
-    print '<br /><br />';
-    print '<a href="' . $index_url . '">Go back.</a>';
-    die;
+    return [
+      'response' => [
+        '#markup' => '<p>' . $auth_response . '</p>',
+      ],
+      'back_link' => [
+        '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',
+      ],
+    ];
   }
 
   /**
@@ -164,27 +166,30 @@ class AhjoOpenIdController extends ControllerBase {
    */
   public function refresh() {
     $token = $this->ahjoOpenId->refreshAuthToken();
+
     if (!empty($token)) {
-      print 'Access token has been refreshed and stored.<br /><br />';
-      print (string) $token;
-      print '<br />';
+      $refresh_response = $this->t('Access token has been refreshed and stored.');
     }
     else {
-      print 'Could not refresh access token.<br /><br />';
+      $refresh_response = $this->t('Could not refresh access token.');
     }
 
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
 
-    print '<br /><br />';
-    print '<a href="' . $index_url . '">Go back.</a>';
-    die();
+    return [
+      'response' => [
+        '#markup' => '<p>' . $refresh_response . '</p>',
+      ],
+      'back_link' => [
+        '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',
+      ],
+    ];
   }
 
   /**
    * Misc debug functionality.
    */
   public function debug() {
-    $this->ahjoOpenId->introSpectToken();
     die('...');
   }
 
