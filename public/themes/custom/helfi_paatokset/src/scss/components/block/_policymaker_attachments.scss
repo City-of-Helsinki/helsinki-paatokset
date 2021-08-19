@@ -1,0 +1,39 @@
+
+.policymaker-attachments {
+  margin-top: 64px;
+  table {
+    width: 100%;
+  }
+  h2 p {
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+  }
+  td p:first-child {
+    color: rgb(102, 102, 102);
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 24px;
+  }
+  td h5 {
+    color: rgb(26, 26, 26);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    margin-bottom: 8px;
+  }
+  td h5:last-child { margin-bottom: 40px; }
+  td {
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+    padding-top: 25px;
+  }
+}
+h1.policymaker-title {
+  margin-bottom: 44px;
+  height: auto;
+}
+
+h2.policymaker-title {
+  margin-bottom: 64px;
+}
+

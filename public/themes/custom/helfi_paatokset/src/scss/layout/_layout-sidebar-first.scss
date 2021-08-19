@@ -1,8 +1,14 @@
 .has-sidebar .layout-sidebar-first,
-.layout-sidebar-first {
+.layout-sidebar-first {  
   @include breakpoint($breakpoint-l) {
-    order: 1;
     width: 30%;
+    max-width: 308px;
+    order: 0;
+    margin-right: $spacing-and-half;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    margin-right: 97px;
   }
 
   .sidebar-first__container {
@@ -11,8 +17,13 @@
       flex-wrap: wrap;
       justify-content: flex-end;
       padding-left: 0;
-      padding-right: $spacing-and-half * 2;
+      margin-top: 0;
     }
+  }
+
+  .container.sidebar-first__container {
+    width: 100%;
+    float: none;
   }
 }
 

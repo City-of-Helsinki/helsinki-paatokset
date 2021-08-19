@@ -3,7 +3,6 @@
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\paatokset_submenus\Services\AgendaItemService;
 
 /**
  * Provides Agendas Submenu Documents Block.
@@ -16,25 +15,25 @@ use Drupal\paatokset_submenus\Services\AgendaItemService;
  */
 class MinutesOfDiscussionBlock extends BlockBase {
   /**
-   * AgendaItemService instance.
+   * PolicymakerService instance.
    *
-   * @var agendaItemService
+   * @var Drupal\paatokset_ahjo\Service\PolicymakerService
    */
-  private $agendaItemService;
+  private $policymakerService;
 
   /**
    * Class constructor.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->agendaItemService = \Drupal::getContainer()->get(AgendaItemService::class);
+    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
   }
 
   /**
    * Build the attributes.
    */
   public function build() {
-    $data = $this->agendaItemService->getMinutesOfDiscussion();
+    $data = $this->policymakerService->getMinutesOfDiscussion();
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],

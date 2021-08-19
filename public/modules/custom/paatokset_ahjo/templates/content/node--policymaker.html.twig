@@ -1,0 +1,215 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ */
+#}
+
+{%
+  set classes = [
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  first_paragraph_grey ? 'has-first-gray-bg-block'
+]
+%}
+
+<article{{ attributes.addClass(classes) }}>
+  <section class="container policymaker-summary">
+    <h1{{ title_attributes }}>
+      {{ label }}
+    </h1>
+    <div class="policymaker-summary__label">
+      <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
+        {{ label }}
+      </div>
+      <div class="issue__favorite-button">
+        {% set button_label = 'Save %s to favorites'|format('')|t %}
+        {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
+      </div>
+    </div>
+    <div>
+      {% if content.field_policymaker_summary|render %}
+        {{ content.field_policymaker_summary }}
+      {% elseif content.field_ahjo_summary|render %}
+        {{ content.field_ahjo_summary|raw }}
+      {% endif %}
+    </div>
+  </section>
+
+  {% if is_organization %}
+    {% set sections = [
+      recent_documents,
+      recent_meetings,
+      meeting_calendar,
+      members
+    ] %}
+
+    {% if true in sections %}
+      <section class="content-menu">
+        <p class="content-menu__description">{{ 'On this page you will find'|trans }}</p>
+        <ul>
+          {% if recent_documents %} 
+            <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
+          {% endif %}
+          {% if recent_meetings %}
+          <li><a href="#recent-meetings">{{ 'Recent meeting recordings'|trans }}</a></li>
+          {% endif %}
+          {% if meeting_calendar %}
+            <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
+          {% endif %}
+          {% if members %}
+            <li><a href="#members">{{ 'Members of the board'|trans }}</a></li>
+          {% endif %}
+        </ul>
+        <i class="hds-icon hds-icon--arrow-down hds-icon--size-xxl" aria-hidden="true"></i>
+      </section>
+    {% endif %}
+  {% endif %}
+
+  {% if content.field_policymaker_image %}
+    <section class="policymaker-image">
+      <figure>
+        {{ content.field_policymaker_image }}
+        {% if node.field_policymaker_image.title %}
+          <figcaption class="container">
+            {{ node.field_policymaker_image.field_image_title }}
+          </figcaption>
+        {% endif %}
+      </figure>
+    </section>
+  {% endif %}
+
+  {% if not is_organization %}
+    {% if recent_decisions %}
+      <section class="container recent-decisions">
+        <h2>{{ 'Recent decisions'|t }}</h2>
+        <p>
+          {{ 'The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
+            The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.'|trans }}
+        </p>
+        <div class="policymaker-decisions-container">
+        {% for decision in recent_decisions %}
+          {% include '@paatokset_ahjo/component/decision--list-item.html.twig' %}
+        {% endfor %}
+        <div class="view-all view-all--decisions">
+          <a class="paatokset-button-link" href="{{ all_documents_link }}">
+            <span>{{ 'All decisions' }}</span>
+            <i class="hds-icon hds-icon--arrow-right"></i>
+          </a>
+        </div>
+        </div>
+      </section>
+    {% endif %}
+  {% endif %}
+
+  {% if is_organization %}
+    {% if recent_documents %}
+      <section class="container recent-documents policymaker-documents" id="recent-documents">
+        <h2>{{ 'Recent documents'|trans }}</h2>
+        <p>
+          {{ 'The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
+            The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.'|trans }}
+        </p>
+        <div class="policymaker-attachments-container">
+          {% for documents in recent_documents %}
+            {% for document in documents %}
+                {% include '@paatokset_ahjo/component/attachment.html.twig' %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="view-all view-all--documents">
+          <a class="paatokset-button-link" href="{{ all_documents_link }}">
+            <span>{{ 'All documents' }}</span>
+            <i class="hds-icon hds-icon--arrow-right"></i>
+          </a>
+        </div>
+      </section>
+    {% endif %}
+
+    {# TODO: implement recent meetings #}
+    {% if recent_meetings %}
+      <section class="container policymaker-meetings" id="recent-meetings">
+        <h2 class="policymaker-title">{{ 'Recent meeting recording'|trans }}</h2>
+        <p>
+          {{ 'The meetings of the Supervisory Board can be viewed on the Helsinki Channel, where you can also access material related to the decisions under consideration. You can also view the latest Council meeting here:'|trans }}
+        </p>
+      </section>
+    {% endif %}
+
+    {# TODO: implement calendar #}
+    {% if meeting_calendar %}
+      <section class="container policymaker-calendar" id="meeting-calendar">
+      </section>
+    {% endif %}
+  {% endif %}
+
+</article>

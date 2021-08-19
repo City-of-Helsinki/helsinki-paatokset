@@ -1,0 +1,59 @@
+.policymaker-side-menu {
+  &.policymaker-side-menu--desktop {
+    display: none;
+
+    @include breakpoint($breakpoint-l) {
+      display: block;
+    }
+  }
+
+
+  &.policymaker-side-menu--mobile {
+    @include breakpoint($breakpoint-l) {
+      display: none;
+    }
+  }
+}
+
+.policymaker-side-menu--desktop {
+  li {
+    width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  span.menu__link-wrapper {
+    display: block;
+  }
+
+  .menu {
+    flex-direction: column;
+  }
+
+  a[icon="angle-left"] {
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: $spacing-half;
+    }
+  }
+
+  .active {
+    font-weight: bold;
+  }
+
+  #menu--level-0  li span.menu__link-wrapper {
+    font-size: 24px;
+    padding-bottom: 26px;
+    border-bottom: 2px solid $color-black;
+  }
+
+  #menu--level-1 li span.menu__link-wrapper {
+    padding: 24px 0;
+    border-bottom: 1px solid $color-black-20;
+    font-size: $fontsize-body-l;
+  }
+}

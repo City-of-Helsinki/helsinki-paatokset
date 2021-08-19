@@ -1,0 +1,11 @@
+uuid: c29f72f2-dc0c-4151-bc17-6e5a2d774462
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.policymaker
+id: node.policymaker
+target_entity_type_id: node
+target_bundle: policymaker
+default_langcode: site_default
+language_alterable: false

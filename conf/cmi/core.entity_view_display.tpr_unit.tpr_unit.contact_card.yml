@@ -1,55 +1,58 @@
-uuid: b9b7820f-9e30-4eac-a20a-d1a8b979bf9c
+uuid: 7b37ff5f-a03f-4840-bf45-62fd5fd1a635
 langcode: fi
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.tpr_unit.organisation
+    - core.entity_view_mode.tpr_unit.contact_card
   module:
     - address
     - helfi_tpr
-id: tpr_unit.tpr_unit.organisation
+    - telephone
+id: tpr_unit.tpr_unit.contact_card
 targetEntityType: tpr_unit
 bundle: tpr_unit
-mode: organisation
+mode: contact_card
 content:
   address:
     type: address_default
-    weight: 3
+    weight: 1
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   email:
     type: string
-    weight: 2
+    weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   name:
     type: string
-    weight: 4
+    weight: 0
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   phone:
-    type: string
-    weight: 1
+    type: telephone_link
+    weight: 3
     region: content
-    label: above
+    label: hidden
     settings:
-      link_to_entity: false
+      title: ''
     third_party_settings: {  }
   service_map_embed:
     label: hidden
-    type: string
-    weight: 0
+    type: service_map_embed
+    weight: 2
     region: content
     settings:
-      link_to_entity: false
+      iframe_title: 'Service map'
+      link_title: 'Katso suurempi kartta'
+      target: true
     third_party_settings: {  }
 hidden:
   accessibility_email: true

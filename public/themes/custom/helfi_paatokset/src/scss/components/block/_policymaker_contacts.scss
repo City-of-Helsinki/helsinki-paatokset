@@ -1,0 +1,18 @@
+.sidebar-first__container .policymaker-contacts {
+  margin-top: $spacing-triple;
+  display: none;
+
+  h2 {
+    display: none;
+  }
+
+  @include breakpoint($breakpoint-l) {
+    display: block;
+  }
+}
+
+.main-content .policymaker-contacts {
+  @include breakpoint($breakpoint-l) {
+    display: none;
+  }
+}

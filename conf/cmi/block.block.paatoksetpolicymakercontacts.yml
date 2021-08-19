@@ -1,0 +1,20 @@
+uuid: e6a01b7c-0a64-4930-9d82-cf1a283e5de2
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo
+  theme:
+    - helfi_paatokset
+id: paatoksetpolicymakercontacts
+theme: helfi_paatokset
+region: sidebar_first
+weight: -9
+provider: null
+plugin: policymaker_contacts
+settings:
+  id: policymaker_contacts
+  label: 'Paatokset policymaker contacts'
+  provider: paatokset_ahjo
+  label_display: visible
+visibility: {  }

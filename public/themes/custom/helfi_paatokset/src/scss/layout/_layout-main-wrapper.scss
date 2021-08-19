@@ -1,7 +1,13 @@
 .has-sidebar--first .layout-main-wrapper {
   @include breakpoint($breakpoint-l) {
     display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
+    flex-wrap: nowrap;
+    margin: $spacing-and-half auto 0;
+    max-width: $container-width-l;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    margin-top: 97px;
+    max-width: $container-width-xl;
   }
 }

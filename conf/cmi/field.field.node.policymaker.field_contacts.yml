@@ -1,0 +1,26 @@
+uuid: 4341db8f-1e52-42ed-b291-9d8037153ea5
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contacts
+    - node.type.policymaker
+id: node.policymaker.field_contacts
+field_name: field_contacts
+entity_type: node
+bundle: policymaker
+label: 'Contact information'
+description: 'Select contact info to display on policymaker page'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:tpr_unit'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

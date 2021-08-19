@@ -1,0 +1,25 @@
+uuid: 3212ee3e-36f9-45ff-8870-a7f67465c00c
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_submenus
+    - system
+  theme:
+    - helfi_paatokset
+id: policymakersidenavigation
+theme: helfi_paatokset
+region: sidebar_first
+weight: -10
+provider: null
+plugin: policymaker_side_nav
+settings:
+  id: policymaker_side_nav
+  label: 'Policymaker side navigation'
+  provider: paatokset_submenus
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/paattajat/*'
+    negate: false

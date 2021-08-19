@@ -1,0 +1,37 @@
+uuid: 45a1775d-7e15-4450-a1e1-5cdbb3ae6c6c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_referenced_content
+    - node.type.article
+    - node.type.imported_article
+    - node.type.landing_page
+    - node.type.page
+    - node.type.policymaker
+    - paragraphs.paragraphs_type.custom_content_links
+id: paragraph.custom_content_links.field_referenced_content
+field_name: field_referenced_content
+entity_type: paragraph
+bundle: custom_content_links
+label: 'Referenced content'
+description: 'Add reference to content. The link will point to this content.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+      imported_article: imported_article
+      landing_page: landing_page
+      page: page
+      policymaker: policymaker
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference

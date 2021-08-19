@@ -3,7 +3,6 @@
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\paatokset_submenus\Services\AgendaItemService;
 
 /**
  * Provides Agendas Submenu Block.
@@ -16,26 +15,26 @@ use Drupal\paatokset_submenus\Services\AgendaItemService;
  */
 class AgendasSubmenuBlock extends BlockBase {
   /**
-   * AgendaItemService instance.
+   * PolicymakerService instance.
    *
-   * @var agendaItemService
+   * @var Drupal\paatokset_ahjo\Service\PolicymakerService
    */
-  private $agendaItemService;
+  private $policymakerService;
 
   /**
    * Class constructor.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->agendaItemService = \Drupal::getContainer()->get(AgendaItemService::class);
+    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
   }
 
   /**
    * Build the attributes.
    */
   public function build() {
-    $years = $this->agendaItemService->getAgendasYears();
-    $list = $this->agendaItemService->getAgendasList();
+    $years = $this->policymakerService->getAgendasYears();
+    $list = $this->policymakerService->getAgendasList();
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],

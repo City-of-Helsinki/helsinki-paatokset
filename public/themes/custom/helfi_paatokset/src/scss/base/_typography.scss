@@ -44,140 +44,161 @@
   src: url("../fonts/Open_Sans/OpenSans-BoldItalic.ttf") format("truetype");
 }
 
+html {
 // ########## General ########## //
-body {
-  @include font-size($fontsize-body-l);
-  @include font-weight($regular);
-  color: $color-black;
-  font-family: $default-font-family;
-  line-height: $lineheight-l;
-}
-
-a {
-  color: $gray-dark;
-  transition: all 150ms linear;
-
-  &:hover,
-  &:focus {
+  body {
+    @include font-size($fontsize-body-l);
+    @include font-weight($regular);
     color: $color-black;
-    text-decoration: underline;
+    font-family: $default-font-family;
+    line-height: $lineheight-l;
   }
-}
-
-strong {
-  @include font-weight($semibold);
-}
-
-small {
-  font-size: 80%;
-}
-
-// ########## Headings ########## //
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @include font-weight($bold);
-  font-family: $heading-font-family;
-  hyphens: auto;
-  line-height: $lineheight-m;
-  margin-top: 0;
-  word-break: break-word;
 
   a {
-    color: inherit;
-    font-weight: inherit;
-    text-decoration: none;
-  }
-}
+    color: $gray-dark;
+    transition: all 150ms linear;
 
-h1,
-.h1 {
-  @include font-size($font-size-heading-1);
-}
-
-h2,
-.h2 {
-  @include font-size($font-size-heading-2);
-}
-
-h3,
-.h3 {
-  @include font-size($font-size-heading-3);
-}
-
-h4,
-.h4 {
-  @include font-size($font-size-heading-4);
-}
-
-h5,
-.h5 {
-  @include font-size($font-size-heading-5);
-}
-
-h6,
-.h6 {
-  @include font-size($font-size-heading-6);
-}
-
-p {
-  @include font-size($fontsize-body-l);
-  @include font-weight($regular);
-  line-height: $lineheight-l;
-  margin-bottom: $spacing-m;
-  margin-top: 0;
-}
-
-p,
-ul,
-ol {
-  + h2 {
-    margin-top: $spacing-l;
+    &:hover,
+    &:focus {
+      color: $color-black;
+      text-decoration: underline;
+    }
   }
 
-  + h3 {
-    margin-top: $spacing-m;
+  strong {
+    @include font-weight($semibold);
   }
 
-  + h4 {
-    margin-top: $spacing-s;
-  }
-}
-
-ul,
-ol {
-  ul,
-  ol {
-    margin-top: $spacing-2-xs;
+  small {
+    font-size: 80%;
   }
 
-  + p {
-    margin-top: $spacing-s;
+  // ########## Headings ########## //
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $heading-font-family;
+    hyphens: auto;
+    line-height: $lineheight-m;
+    margin-top: 0;
+    word-break: break-word;
+    margin-bottom: 16px;
+
+    a {
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+    }
   }
-}
 
-ul {
-  padding-left: $spacing-s;
-}
+  h1,
+  .h1 {
+    font-weight: normal;
+    font-size: $font-size-heading-1;
+    line-height: $font-size-heading-1;
 
-ol {
-  padding-left: $spacing-s;
-}
+    @include breakpoint($breakpoint-l) {
+      font-size: 72px;
+      line-height: 72px;
+      margin-bottom: 24px;
+    }
+  }
 
-blockquote {
-  @include font-size(24px, 36px);
-  @include font-weight($regular);
-  border-left: 5px solid $gray;
-  color: $gray-dark;
-  letter-spacing: 0;
-  margin: $spacing-2-xl;
-  padding-left: 25px;
+  h2,
+  .h2 {
+    font-size: $font-size-heading-2;
+    line-height: $font-size-heading-2;
+
+    @include breakpoint($breakpoint-l) {
+      font-size: $font-size-heading-1;
+      line-height: $font-size-heading-1;
+    }
+  }
+
+  h3,
+  .h3 {
+    font-size: $font-size-heading-3;
+    line-height: 43px;
+
+    @include breakpoint($breakpoint-l) {
+      font-size: $font-size-heading-2;
+    }
+  }
+
+  h4,
+  .h4 {
+    @include font-size($font-size-heading-4);
+  }
+
+  h5,
+  .h5 {
+    @include font-size($font-size-heading-5);
+  }
+
+  h6,
+  .h6 {
+    @include font-size($font-size-heading-6);
+  }
 
   p {
+    @include font-size($fontsize-body-l);
+    @include font-weight($regular);
+    line-height: $lineheight-l;
+    margin-bottom: $spacing-m;
+    margin-top: 0;
+  }
+
+  p,
+  ul,
+  ol {
+    + h2 {
+      margin-top: $spacing-l;
+    }
+
+    + h3 {
+      margin-top: $spacing-m;
+    }
+
+    + h4 {
+      margin-top: $spacing-s;
+    }
+  }
+
+  ul,
+  ol {
+    ul,
+    ol {
+      margin-top: $spacing-2-xs;
+    }
+
+    + p {
+      margin-top: $spacing-s;
+    }
+  }
+
+  ul {
+    padding-left: $spacing-s;
+  }
+
+  ol {
+    padding-left: $spacing-s;
+  }
+
+  blockquote {
     @include font-size(24px, 36px);
     @include font-weight($regular);
+    border-left: 5px solid $gray;
+    color: $gray-dark;
+    letter-spacing: 0;
+    margin: $spacing-2-xl;
+    padding-left: 25px;
+
+    p {
+      @include font-size(24px, 36px);
+      @include font-weight($regular);
+    }
   }
 }
