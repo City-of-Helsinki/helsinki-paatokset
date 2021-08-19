@@ -1,0 +1,4 @@
+services:
+  paatokset_ahjo_openid:
+    class: Drupal\paatokset_ahjo_openid\AhjoOpenId
+    arguments: ['@config.factory', '@http_client', '@state', '@messenger']
