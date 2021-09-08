@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
 id: authenticated
-label: 'Authenticated user'
+label: 'Sisäänkirjautunut käyttäjä'
 weight: 1
 is_admin: false
 permissions:
@@ -14,3 +14,5 @@ permissions:
   - 'use text format full_html'
   - 'view media'
   - 'view remote entities'
+  - 'view tpr_service'
+  - 'view tpr_unit'
