@@ -80,7 +80,12 @@
                 "type:drupal-drush"
             ]
         },
-        "installer-types": ["bower-asset", "npm-asset"]
+        "installer-types": ["bower-asset", "npm-asset"],
+        "patches": {
+            "drupal/jquery_ui_touch_punch": {
+                "Include Jquery UI Touch punch library": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"
+            }
+        }
     },
     "repositories": [
         {
