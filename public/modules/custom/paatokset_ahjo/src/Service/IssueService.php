@@ -80,11 +80,21 @@ class IssueService {
       $allDecisionsLink = $this->getMeetingUrl($currentAgendaItem->get('meeting_id')->value);
     }
 
+    $confidentialityReasons = [];
+    if (count($attachments) > 0) {
+      foreach ($attachments as $attachment) {
+        if (!$attachment->get('public')->value && $attachment->get('confidentiality_reason')->value) {
+          $confidentialityReasons[] = $attachment->get('confidentiality_reason');
+        }
+      }
+    }
+
     return [
       'handlings' => $handlings,
       'current_handling' => $currentHandling ?? NULL,
       'current_agenda_item' => $currentAgendaItem ?? NULL,
       'attachments' => $attachments ?? [],
+      'confidentiality_reasons' => $confidentialityReasons,
       'next_handling' => $nextHandling ?? FALSE,
       'previous_handling' => $previousHandling ?? FALSE,
       'all_decisions_link' => $allDecisionsLink ?? NULL,

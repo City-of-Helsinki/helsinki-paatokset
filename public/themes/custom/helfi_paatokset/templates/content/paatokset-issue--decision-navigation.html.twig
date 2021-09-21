@@ -3,12 +3,14 @@
 #}
 
 {% if previous_handling %}
-  <a data-link="{{ previous_handling.link }}" href="?decision={{ previous_handling.link }}" class="paatokset__link-plain decision-navigation-button decision-navigation-button--previous">
-    {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'arrow-left', label: 'Previous handling'|t } %}
+  <a data-link="{{ previous_handling.link }}" href="?decision={{ previous_handling.link }}" tabindex="1" class="paatokset__link-plain paatokset-button-link decision-navigation-button decision-navigation-button--previous">
+    <i class="hds-icon hds-icon--arrow-left"></i>
+    <span>{{ 'Previous handling'|t }}</span>
   </a>
 {% endif %}
 {% if next_handling %}
-  <a data-link="{{ next_handling.link }}" href="?decision={{ next_handling.link }}" class="paatokset__link-plain decision-navigation-button decision-navigation-button--next">
-    {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', label: 'Next handling'|t } %}
+  <a data-link="{{ next_handling.link }}" href="?decision={{ next_handling.link }}" tabindex="1" class="paatokset__link-plain paatokset-button-link decision-navigation-button decision-navigation-button--next">
+    <span>{{ 'Next handling'|t }}</span>
+    <i class="hds-icon hds-icon--arrow-right"></i>
   </a>
 {% endif %}
