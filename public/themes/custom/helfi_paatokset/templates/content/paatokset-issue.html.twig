@@ -35,19 +35,28 @@
           </div>
         {% endif %}
         <div class="issue__favorite-button">
-          {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: 'Save to favorites'|t } %}
+          {% set button_label = 'Save %s to favorites'|format('issue')|t %}
+          {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
         </div>
       </div>
     </header>
     <div class="issue__wrapper">
       <div class="ajax-progress-throbber">
       </div>
-      <div class="issue__container container">
+      <div class="issue__container issue__container--navigation container">
         <div class="issue__left-column__container">
           <div class="issue__decision-navigation">
             {% include '@helfi_paatokset/content/paatokset-issue--decision-navigation.html.twig' %}
           </div>
-
+        </div>
+        <div class="issue-right-column__container">
+          <div class="issue__pdf issue__pdf--desktop issue__right-column__container">
+            {% include '@hdbt/button/button.html.twig' with {type: 'primary', icon_last: true, icon_last_type: 'download', disabled: false, label: 'Download decision (pdf)'|t } %}
+          </div>
+        </div>
+      </div>
+      <div class="issue__container issue__container--content container">
+        <div class="issue__left-column__container">
           <div class="issue-dropdown">
             <div class="issue-ajax-error__container">
               {% set status_headings = {'error': 'Error loading decision'|trans} %}
@@ -61,8 +70,9 @@
             {% include '@helfi_paatokset/form/paatokset-dropdown.html.twig' with { selected: current_handling, options: handlings, show_warning: next_handling, warning_label: 'More recent handlings'|trans } %}
             {% if all_decisions_link %}
             <div class="issue-dropdown__show-more">
-              <a href="{{ all_decisions_link }}">
-                {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_last: true, icon_last_type: 'arrow-right', disabled: false, label: 'Other decisions for the meeting'|t } %}
+              <a href="{{ all_decisions_link }}" class="paatokset-button-link">
+                <span>{{ 'Other decisions for the meeting' }}</span>
+                <i class="hds-icon hds-icon--arrow-right"></i>
               </a>
             </div>
             {% endif %}
@@ -73,7 +83,7 @@
         </div>
 
         <div class="issue-right-column__container">
-          <div class="issue__pdf issue__right-column__container">
+          <div class="issue__pdf issue__pdf--mobile">
             {% include '@hdbt/button/button.html.twig' with {type: 'primary', icon_last: true, icon_last_type: 'download', disabled: false, label: 'Download decision (pdf)'|t } %}
           </div>
           {% include '@helfi_paatokset/content/paatokset-issue--attachments.html.twig' %}

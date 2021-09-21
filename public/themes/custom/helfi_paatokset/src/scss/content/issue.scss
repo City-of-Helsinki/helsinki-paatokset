@@ -1,10 +1,13 @@
 .issue-header__container {
-  border-bottom: 1px solid $color-black-20;
-  padding-left: 0;
+  border-bottom: 2px solid $color-black-20;
 }
 
 .issue__title {
-  margin-bottom: 32px;
+  margin-bottom: $spacing-and-half;
+
+  @include breakpoint($breakpoint-l) {
+    font-size: 72px;
+  }
 }
 
 .issue__diarynumber {
@@ -14,14 +17,14 @@
   }
 
   font-size: 16px;
-  margin-bottom: 32px;
+  margin-bottom: $spacing-double;
 }
 
 .issue-header__footer {
-  margin-bottom: 32px;
+  margin-bottom: $spacing-and-half;
 
   .issue__category {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-double;
   }
 
   @include breakpoint($breakpoint-l) {
@@ -43,6 +46,21 @@
 }
 
 .issue__container {
+
+  h3 {
+    font-size: $font-size-heading-3;
+    margin-bottom: 16px;
+    font-weight: $medium;
+
+    @include breakpoint($breakpoint-l) {
+      font-size: $font-size-heading-2;
+    }
+  }
+
+  &.issue__container--navigation {
+    margin-bottom: $spacing-double;
+  }
+
   @include breakpoint($breakpoint-l) {
     display: flex;
   }
@@ -56,23 +74,21 @@
 }
 
 .issue-right-column__container {
-  h3 {
-    font-size: 36px;
-  }
+  .issue__attachment {
+    a {
+      display: flex;
+    }
 
-  table {
-    border-spacing: 0;
-  }
-  td {
+    div:first-child {
+      margin-right: $gutter;
+    }
+
     padding: 24px 0;
     border-bottom: 1px solid rgb(151, 151, 151);
     vertical-align: top;
     font-weight: 600;
     line-height: 24px;
     font-size: 16px;
-  }
-  td:first-child {
-    padding-right: 30px;
   }
 
   @include breakpoint($breakpoint-l) {
@@ -81,13 +97,16 @@
 }
 
 .issue-content__title h2 {
-  font-size: 52px;
-  line-height: 62px;
   margin-bottom: 32px;
+  font-weight: normal;
+
+  @include breakpoint($breakpoint-l) {
+    font-size: $font-size-heading-1;
+  }
 }
 
 .issue-content__indices {
-  font-size: 32px;
+  font-size: $fontsize-body-xl;
   margin-bottom: 8px;
 }
 
@@ -99,6 +118,10 @@
   color: $color-black;
   padding-left: 0;
 
+  .hds-button__label {
+    padding: 0;
+  }
+
   .hds-icon:first-of-type:not(:last-of-type) {
     margin-left: 0;
     margin-right: 13px;
@@ -106,24 +129,20 @@
 }
 
 .issue-content-top__container {
-  margin-top: 48px;
+  margin-top: $spacing-triple;
+  margin-bottom: $spacing-triple;
 }
 
 .issue-content__section {
-  h2 {
-    font-size: 36px;
-    margin-bottom: 16px;
-  }
-
-  p, h3 {
-    margin-bottom: 30px;
-  }
-
   p, ul {
     margin-top: 0;
     padding-top: 0;
   }
-  margin-bottom: 64px;
+  margin-bottom: $spacing-double;
+
+  @include breakpoint($breakpoint-l) {
+    font-size: $fontsize-body-xl;
+  }
 }
 
 .issue__pdf {
@@ -142,36 +161,41 @@
     }
   }
 
+  &.issue__pdf--desktop {
+    display: none;
+  }
+
   @include breakpoint($breakpoint-l) {
-    margin-bottom: 46px;
+    margin-bottom: 0;
+
+    &.issue__pdf--desktop {
+      display: block;
+    }
+
+    &.issue__pdf--mobile {
+      display: none;
+    }
   }
 }
 
 .issue__decision-navigation {
-  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: 30px;
 
-  @include breakpoint($breakpoint-l) {
-    margin-bottom: 46px;
-  }
-
-  .decision-navigation-button button.hds-button {
-    color: $color-black;
-    width: 100%;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .decision-navigation-button--next {
+  .decision-navigation-button--next span {
     margin-left: auto;
   }
 }
 
 .issue-content__policymaker-label {
   text-align: center;
-  padding: 10px 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px $spacing-triple;
+  display: inline-block;
+  max-width: 100%;
+  font-size: $fontsize-body-s;
 
   &.council {
     background-color: $council-green;
@@ -196,25 +220,6 @@
   @include breakpoint($breakpoint-m) {
     display: inline-block;
     padding: 10px 55px;
-  }
-}
-
-.issue-dropdown__show-more {
-  a {
-    text-decoration: none;
-  }
-
-  button.hds-button {
-    color: $color-black;
-    font-size: 16px;
-    font-weight: 600;
-    padding-left: 0;
-    padding-right: 0;
-
-    span {
-      padding-left: 0;
-      padding-right: 0;
-    }
   }
 }
 

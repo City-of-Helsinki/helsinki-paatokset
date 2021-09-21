@@ -4,14 +4,13 @@
 
 .issue__meetings-container {
   label {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: $fontsize-body-m;
   }
 }
 
 .issue__meetings-dropdown {
-  border: 1px solid #808080;
-  margin-bottom: 14px;
+  border: 2px solid #808080;
+  margin-bottom: $spacing-double;
 
   .hds-button {
     width: 100%;
@@ -71,7 +70,6 @@
     align-items: center;
     padding-left: 30px;
     position: relative;
-    overflow: hidden;
 
     a:hover {
       text-decoration: none;
@@ -122,6 +120,7 @@
   padding-top: 0;
   margin-top: 0;
   padding-left: 0;
+  overflow-x: scroll;
 }
 
 .issue__meetings-labels {
@@ -143,18 +142,23 @@
 .issue__new-handlings-warning {
   display: inline-block;
   background-color: $yellow-light;
-  padding: 2.5px 5px;
+  padding: 5px;
   margin-bottom: 5px;
   visibility: hidden;
-  margin-bottom: 24px;
+  margin-bottom: $spacing-and-half;
   display: inline-block;
+  font-size: $fontsize-body-m;
 
   &.visible {
     visibility: visible;
   }
 
   @include breakpoint($breakpoint-l) {
-    margin-bottom: 2px;
+    margin-bottom: 7px;
+  }
+
+  span {
+    margin-left: 5px;
   }
 }
 

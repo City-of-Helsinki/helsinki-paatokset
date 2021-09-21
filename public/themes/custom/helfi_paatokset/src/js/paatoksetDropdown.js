@@ -150,7 +150,7 @@ jQuery(function($) {
           $('.issue__ajax-container').html(data.content);
         }
         if(data.attachments) {
-          $('.issue__container .issue-right-column__container').html(data.attachments);
+          $('.issue__container--content .issue-right-column__container').html(data.attachments);
         }
         if(data.decision_navigation) {
           $('.issue__decision-navigation').html(data.decision_navigation);

@@ -44,7 +44,10 @@ class IssueController extends ControllerBase {
 
     $attachments = twig_render_template(
           drupal_get_path('theme', 'helfi_paatokset') . '/templates/content/paatokset-issue--attachments.html.twig',
-          ['attachments' => $data['attachments']]
+          [
+            'attachments' => $data['attachments'],
+            'confidentiality_reasons' => $data['confidentiality_reasons'],
+          ]
       );
 
     $decision_navigation = twig_render_template(
