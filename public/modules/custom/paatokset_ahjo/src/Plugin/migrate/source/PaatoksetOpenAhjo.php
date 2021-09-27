@@ -106,7 +106,9 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
         throw new \InvalidArgumentException(sprintf('The "%s" value is missing from meta[].', $key));
       }
     }
-    ['limit' => $this->limit, 'total_count' => $count] = $source_data['meta'];
+    ['limit' => $this->limit, 'total_count' => $count, 'offset' => $offset] = $source_data['meta'];
+
+    $count = $count - $offset;
 
     $totalPages = ceil($count / $this->limit);
 
@@ -156,10 +158,10 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
   protected function buildUrls() : self {
     $this->count();
     $currentUrl = UrlHelper::parse($this->configuration['url']);
+    $orig_offset = (int) $currentUrl['query']['offset'];
 
     for ($i = 0; $i < ($this->count / $this->limit); $i++) {
-      $currentUrl['query']['offset'] = $this->limit * $i;
-
+      $currentUrl['query']['offset'] = $orig_offset + ($this->limit * $i);
       $this->urls[] = Url::fromUri($currentUrl['path'], [
         'query' => $currentUrl['query'],
         'fragment' => $currentUrl['fragment'],
