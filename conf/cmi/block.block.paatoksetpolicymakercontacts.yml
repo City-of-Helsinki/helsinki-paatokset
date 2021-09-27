@@ -3,6 +3,7 @@ langcode: fi
 status: true
 dependencies:
   module:
+    - ctools
     - paatokset_ahjo
   theme:
     - helfi_paatokset
@@ -17,4 +18,11 @@ settings:
   label: 'Paatokset policymaker contacts'
   provider: paatokset_ahjo
   label_display: visible
-visibility: {  }
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      policymaker: policymaker
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

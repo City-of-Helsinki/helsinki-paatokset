@@ -57,7 +57,11 @@ jQuery(function($) {
     container.on('keydown', arrowHandler);
 
     $('body').on('click', '.decision-navigation-button', function(event) {
-      const link = $(event.target).parent('a').data('link');
+      event.preventDefault();
+      const link = event.target.tagName === 'A' ?
+        $(event.target).data('link') :
+        $(event.target).parent('a').data('link');
+
       selectOption($(optionList).find(`[data-link='${link}']`));
     });
   });
