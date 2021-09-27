@@ -13,7 +13,8 @@ migration_group: ahjo
 label: 'Päätökset - Agenda Items'
 source:
   plugin: paatokset_open_ahjo
-  url: 'https://dev.hel.fi:443/paatokset/v1/agenda_item/'
+  url: 'https://dev.hel.fi:443/paatokset/v1/agenda_item/?limit=100&order_by=-last_modified_time'
+  limit_pages: 10
   track_changes: true
 process:
   id: id

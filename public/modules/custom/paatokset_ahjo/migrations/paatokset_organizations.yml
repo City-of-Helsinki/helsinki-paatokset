@@ -13,7 +13,7 @@ migration_group: ahjo
 label: 'Päätökset - Organizations'
 source:
   plugin: paatokset_open_ahjo
-  url: 'https://dev.hel.fi:443/paatokset/v1/organization'
+  url: 'https://dev.hel.fi:443/paatokset/v1/organization?limit=100'
   track_changes: true
 process:
   id: id
