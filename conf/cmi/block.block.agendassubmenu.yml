@@ -3,8 +3,8 @@ langcode: fi
 status: true
 dependencies:
   module:
-    - ctools
     - paatokset_submenus
+    - system
   theme:
     - helfi_paatokset
 id: agendassubmenu
@@ -19,10 +19,7 @@ settings:
   provider: paatokset_submenus
   label_display: visible
 visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      policymaker: policymaker
+  request_path:
+    id: request_path
+    pages: '/paattajat/*/asiakirjat'
     negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'

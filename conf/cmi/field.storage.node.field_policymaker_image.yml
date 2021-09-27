@@ -1,26 +1,17 @@
-uuid: fc9fd03f-4567-4fd2-8a37-c600d051bfe3
-langcode: en
+uuid: b403c124-34dd-4fb2-a865-80f5ff9e70c9
+langcode: fi
 status: true
 dependencies:
   module:
+    - media
     - node
-    - text
 id: node.field_policymaker_image
 field_name: field_policymaker_image
 entity_type: node
-type: image
+type: entity_reference
 settings:
-  uri_scheme: public
-  default_image:
-    uuid: ''
-    alt: ''
-    title: ''
-    width: null
-    height: null
-  target_type: file
-  display_field: false
-  display_default: false
-module: text
+  target_type: media
+module: core
 locked: false
 cardinality: 1
 translatable: true

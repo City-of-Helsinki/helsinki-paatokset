@@ -1,0 +1,132 @@
+.policymaker-summary {
+  margin-bottom: $spacing-double + 8px;
+  
+  p {
+    font-size: $fontsize-body-l;
+  }
+
+  .issue-content__policymaker-label {
+    margin-bottom: 16px;
+  }
+
+  .policymaker-summary__label {
+    display: flex;
+    margin-bottom: $spacing;
+  }
+
+  .issue__favorite-button {
+    display: none;
+
+    @include breakpoint($breakpoint-l) {
+      display: inline-block;
+      margin-left: $spacing;
+    }
+  }  
+}
+
+.policymaker-image {
+  margin-bottom: $spacing-triple;
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    object-fit: cover;
+    margin-bottom: $spacing-half;
+    width: 100%;
+  }
+}
+
+.content-menu {
+  background: rgb(247, 247, 248);
+  border-radius: 0;
+  padding: 49px 29px;
+  border-left: 8px rgb(194, 162, 81) solid;
+  z-index:1;
+  position: relative;
+  margin-bottom: 129px;
+
+  .content-menu__description {
+    font-size: 24px;
+    line-height: 27px;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      font-size: 20px;
+      font-weight: 700;
+      height: 43px;
+      color: black;
+      line-height: 43px;
+      text-decoration: underline;
+      padding: 16px 0;
+
+      a, a:hover{
+        color: black;
+      }
+    }
+  }
+  i {
+    height: 152px;
+    color: #FD4F00;
+    width: 152px;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.recent-documents.policymaker-documents {
+  margin-top: 0;
+  margin-bottom: 87px;
+}
+
+.view-all .paatokset-button-link {
+  margin-top: $spacing-double;
+  
+  span {
+    margin-left: auto;
+  }
+}
+
+.policymaker-list-item {
+  border-bottom: 1px solid $color-black-20;
+  padding:  $spacing-and-half 0;
+
+  &:first-child {
+    border-top: 1px solid $color-black-20;
+  }
+
+  &.policymaker-list-item--document {
+    border-color: $color-black;
+  }
+
+  .list-item__date {
+    font-size: $fontsize-body-m;
+    color: #666666;
+    margin-bottom: $spacing;
+  }
+
+  .list-item__date--desktop {
+    display: none;
+
+    @include breakpoint($breakpoint-l) {
+      display: inline;
+    }
+  }
+
+  .list-item__date--mobile {
+    @include breakpoint($breakpoint-l) {
+      display: none
+    }
+  }
+
+  .list-item__subject a {
+    text-decoration: none;
+    font-weight: $medium;
+    font-size: 24px;
+  }
+}

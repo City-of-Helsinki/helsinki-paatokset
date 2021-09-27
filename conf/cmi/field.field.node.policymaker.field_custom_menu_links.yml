@@ -1,0 +1,70 @@
+uuid: f61a2d9f-c7b4-4d92-81c7-0526b133d627
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_custom_menu_links
+    - node.type.policymaker
+    - paragraphs.paragraphs_type.custom_content_links
+  module:
+    - entity_reference_revisions
+id: node.policymaker.field_custom_menu_links
+field_name: field_custom_menu_links
+entity_type: node
+bundle: policymaker
+label: 'Custom menu links'
+description: 'Custom links for the side navigation menu.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      custom_content_links: custom_content_links
+    target_bundles_drag_drop:
+      accordion:
+        weight: 15
+        enabled: false
+      accordion_item:
+        weight: 16
+        enabled: false
+      banner:
+        weight: 17
+        enabled: false
+      columns:
+        weight: 18
+        enabled: false
+      content_cards:
+        weight: 19
+        enabled: false
+      custom_content_links:
+        enabled: true
+        weight: 20
+      gallery:
+        weight: 21
+        enabled: false
+      gallery_slide:
+        weight: 22
+        enabled: false
+      hero:
+        weight: 23
+        enabled: false
+      image:
+        weight: 24
+        enabled: false
+      liftup_with_image:
+        weight: 25
+        enabled: false
+      list_of_links:
+        weight: 26
+        enabled: false
+      list_of_links_item:
+        weight: 27
+        enabled: false
+      text:
+        weight: 28
+        enabled: false
+field_type: entity_reference_revisions

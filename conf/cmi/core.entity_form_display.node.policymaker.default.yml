@@ -3,20 +3,21 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.policymaker.field_ahjo_summary
+    - field.field.node.policymaker.field_contacts
+    - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_first_name
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_organization_type
-    - field.field.node.policymaker.field_policymaker_contact_link
     - field.field.node.policymaker.field_policymaker_id
     - field.field.node.policymaker.field_policymaker_image
-    - field.field.node.policymaker.field_policymaker_long_descr
     - field.field.node.policymaker.field_policymaker_summary
     - field.field.node.policymaker.field_resource_uri
-    - image.style.thumbnail
     - node.type.policymaker
   module:
-    - image
-    - link
+    - hdbt_admin_editorial
+    - media_library
+    - paragraphs
     - path
     - readonly_field_widget
     - scheduler
@@ -32,6 +33,38 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_ahjo_summary:
+    weight: 30
+    settings:
+      label: above
+      formatter_type: basic_string
+      show_description: '1'
+      formatter_settings: null
+    third_party_settings: {  }
+    type: readonly_field_widget
+    region: content
+  field_contacts:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_custom_menu_links:
+    type: entity_reference_paragraphs
+    weight: 28
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
   field_first_name:
     weight: 26
     settings:
@@ -48,14 +81,6 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_policymaker_contact_link:
-    weight: 3
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-    region: content
   field_policymaker_id:
     type: readonly_field_widget
     weight: 2
@@ -67,20 +92,11 @@ content:
       show_description: false
     third_party_settings: {  }
   field_policymaker_image:
-    weight: 8
+    type: media_library_widget
+    weight: 31
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      media_types: {  }
     third_party_settings: {  }
-    type: image_image
-    region: content
-  field_policymaker_long_descr:
-    weight: 4
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
     region: content
   field_policymaker_summary:
     weight: 6

@@ -1,0 +1,30 @@
+uuid: ede83b8a-e72e-412d-a3ea-392de392ec5e
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.custom_content_links.field_link_label
+    - field.field.paragraph.custom_content_links.field_referenced_content
+    - paragraphs.paragraphs_type.custom_content_links
+id: paragraph.custom_content_links.default
+targetEntityType: paragraph
+bundle: custom_content_links
+mode: default
+content:
+  field_link_label:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_referenced_content:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden: {  }

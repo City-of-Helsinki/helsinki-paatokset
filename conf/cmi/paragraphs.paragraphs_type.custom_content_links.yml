@@ -1,0 +1,10 @@
+uuid: 3f526406-ed81-4a34-8a0c-ad8a113af0ad
+langcode: fi
+status: true
+dependencies: {  }
+id: custom_content_links
+label: 'Custom content links'
+icon_uuid: null
+icon_default: null
+description: 'Add label + internal reference to a content. Used for displaying custom menu links in policymaker nodes.'
+behavior_plugins: {  }

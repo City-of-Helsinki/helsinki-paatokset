@@ -1,0 +1,20 @@
+uuid: 5ab4e2ef-7d5a-4c29-a1b0-311d75130008
+langcode: fi
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+    - node
+id: node.field_contacts
+field_name: field_contacts
+entity_type: node
+type: entity_reference
+settings:
+  target_type: tpr_unit
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

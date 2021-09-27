@@ -4,3 +4,25 @@ ajax_issue.event:
     _controller: '\Drupal\paatokset_ahjo\Controller\IssueController::loadDecision'
   requirements:
     _access: 'TRUE'
+
+# @TODO: Find out a way to translate routes / define same route for needed languages
+policymakers.fi:
+  path: paattajat
+  requirements:
+    _access: 'TRUE'
+
+policymaker.documents.fi:
+  path: 'paattajat/{organization}/asiakirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDocumentsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.fi:
+  path: 'paattajat/{organization}/decisions'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'

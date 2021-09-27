@@ -25,7 +25,7 @@ jobs:
         run: composer install
 
       - name: Run PHPCS
-        run: vendor/bin/phpcs public/modules/custom/ --standard=Drupal
+        run: vendor/bin/phpcs public/modules/custom/ --standard=Drupal --extensions=php
 
       - name: Install Drupal
         run: php -d sendmail_path=$(which true); drush --yes -v site-install --existing-config --db-url="$SIMPLETEST_DB"

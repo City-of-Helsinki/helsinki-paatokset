@@ -23,21 +23,15 @@ process:
     source: name
     start: 0
     length: 255
-  field_policymaker_long_descr:
-    plugin: substr
-    source: org_type
-    start: 0
-    length: 255
   field_resource_uri:
     plugin: substr
     source: resource_uri
     start: 0
     length: 255
-  field_policymaker_summary:
-    plugin: substr
+  field_ahjo_summary: 
+    plugin: callback
     source: summary
-    start: 0
-    default_value: 'full_html'
+    callable: strip_tags
   field_organization_type:
     plugin: substr
     source: org_type

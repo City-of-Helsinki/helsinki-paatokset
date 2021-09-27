@@ -1,0 +1,19 @@
+uuid: fd0235cb-7d35-440b-9a0f-21713967a7f4
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link_label
+    - paragraphs.paragraphs_type.custom_content_links
+id: paragraph.custom_content_links.field_link_label
+field_name: field_link_label
+entity_type: paragraph
+bundle: custom_content_links
+label: 'Link label'
+description: 'Add a descriptive label for the link'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

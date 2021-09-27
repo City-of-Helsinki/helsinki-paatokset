@@ -1,0 +1,27 @@
+{#
+  /**
+  * Template for single decision list item.
+  * Available variables:
+  * - decision
+  */
+#}
+
+<div class="policymaker-list-item policymaker-list-item--decision">
+  <div class="list-item__date">
+    <span class="list-item__date--desktop">{{ decision.date_desktop }}</span>
+    <span class="list-item__date--mobile">{{ decision.date_mobile }}</span>
+  </div>
+  <div class="list-item__subject">
+    <a href="">
+      {{ decision.subject }}
+    </a>
+  </div>
+  {% if decision.file_url %}
+  <div class="decision__pdf">
+    <a class="paatokset-button-link" href="{{ decision.file_url }}">
+      <i class="hds-icon hds-icon--document"></i>
+      <span>{{ 'Download decision (pdf)'|t }}</span>
+    </a>
+  </div>
+  {% endif %}
+</div>
