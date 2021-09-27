@@ -158,7 +158,13 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
   protected function buildUrls() : self {
     $this->count();
     $currentUrl = UrlHelper::parse($this->configuration['url']);
-    $orig_offset = (int) $currentUrl['query']['offset'];
+    if (isset($currentUrl['query']['offset'])) {
+      $orig_offset = (int) $currentUrl['query']['offset'];
+    }
+    else {
+      $orig_offset = 0;
+    }
+
 
     for ($i = 0; $i < ($this->count / $this->limit); $i++) {
       $currentUrl['query']['offset'] = $orig_offset + ($this->limit * $i);
