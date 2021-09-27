@@ -13,9 +13,7 @@ migration_group: ahjo
 label: 'Päätökset - Attachments'
 source:
   plugin: paatokset_open_ahjo
-  url: 'https://dev.hel.fi:443/paatokset/v1/attachment/?hash__isnull=false&limit=100&offset=82000'
-  limit_pages: 10
-  track_changes: true
+  url: 'https://dev.hel.fi:443/paatokset/v1/attachment/?hash__isnull=false&limit=100&offset=86000'
 process:
   id: id
   agenda_item_url:
