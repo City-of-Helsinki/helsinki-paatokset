@@ -165,7 +165,6 @@ class PaatoksetOpenAhjo extends HttpSourcePluginBase implements ContainerFactory
       $orig_offset = 0;
     }
 
-
     for ($i = 0; $i < ($this->count / $this->limit); $i++) {
       $currentUrl['query']['offset'] = $orig_offset + ($this->limit * $i);
       $this->urls[] = Url::fromUri($currentUrl['path'], [
