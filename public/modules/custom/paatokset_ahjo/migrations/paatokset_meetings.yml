@@ -13,7 +13,8 @@ migration_group: ahjo
 label: 'Päätökset - Meeting'
 source:
   plugin: paatokset_open_ahjo
-  url: 'https://dev.hel.fi:443/paatokset/v1/meeting/'
+  url: 'https://dev.hel.fi:443/paatokset/v1/meeting/?limit=100&orderby=-date'
+  limit_pages: 10
   track_changes: true
 process:
   id: id
