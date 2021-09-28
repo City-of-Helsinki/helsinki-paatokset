@@ -40,7 +40,7 @@ source:
       label: Links
       selector: links
   ids:
-    unique_id:
+    sector_id:
       type: string
 process:
   type:
