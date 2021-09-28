@@ -1,0 +1,48 @@
+uuid: 9051602f-36a2-422e-8794-c57959dd35f2
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.node.demo_ahjo_sectors.field_pending_cases
+    - field.field.node.demo_ahjo_sectors.field_sector_id
+    - field.field.node.demo_ahjo_sectors.field_sector_url
+    - node.type.demo_ahjo_sectors
+  module:
+    - user
+id: node.demo_ahjo_sectors.default
+targetEntityType: node
+bundle: demo_ahjo_sectors
+mode: default
+content:
+  field_pending_cases:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_sector_id:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_sector_url:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

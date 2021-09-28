@@ -1,0 +1,19 @@
+uuid: 8629263a-0066-4591-ad26-5d6607b470d7
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sector_id
+    - node.type.demo_ahjo_sectors
+id: node.demo_ahjo_sectors.field_sector_id
+field_name: field_sector_id
+entity_type: node
+bundle: demo_ahjo_sectors
+label: 'Sector ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,11 @@
+uuid: 233bebfe-4e57-4f54-84e9-e44b28c05001
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.demo_ahjo_sectors
+id: node.demo_ahjo_sectors
+target_entity_type_id: node
+target_bundle: demo_ahjo_sectors
+default_langcode: site_default
+language_alterable: false

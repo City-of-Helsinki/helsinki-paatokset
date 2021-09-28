@@ -1,0 +1,23 @@
+uuid: eabf08bf-1e12-4ddc-b272-142bc9a791c8
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pending_cases
+    - node.type.demo_ahjo_sectors
+id: node.demo_ahjo_sectors.field_pending_cases
+field_name: field_pending_cases
+entity_type: node
+bundle: demo_ahjo_sectors
+label: 'Pending cases'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

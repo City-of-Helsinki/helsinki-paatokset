@@ -1,0 +1,27 @@
+uuid: fb615cc4-9fdc-43fb-b960-900cd043a266
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.demo_ahjo_sectors.field_pending_cases
+    - field.field.node.demo_ahjo_sectors.field_sector_id
+    - field.field.node.demo_ahjo_sectors.field_sector_url
+    - node.type.demo_ahjo_sectors
+  module:
+    - user
+id: node.demo_ahjo_sectors.teaser
+targetEntityType: node
+bundle: demo_ahjo_sectors
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_pending_cases: true
+  field_sector_id: true
+  field_sector_url: true
+  langcode: true
