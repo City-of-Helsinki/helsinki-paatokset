@@ -34,16 +34,8 @@ process:
   public:
     plugin: get
     source: public
-  number:
-    plugin: substr
-    source: number
-    start: 0
-    length: 255
-  confidentiality_reason:
-    plugin: substr
-    source: confidentiality_reason
-    start: 0
-    length: 255
+  number: number
+  confidentiality_reason: confidentiality_reason
 destination:
   plugin: 'entity:paatokset_attachment'
 migration_dependencies: {  }
