@@ -86,7 +86,6 @@ class AhjoOpenIdController extends ControllerBase {
    *   Markup array.
    */
   private function getTokenInfo(): array {
-    $refresh_url = Url::fromRoute('paatokset_ahjo_openid.refresh', [], ['absolute' => TRUE])->toString();
     if ($this->ahjoOpenId->checkAuthToken()) {
       $token_expiration = $this->ahjoOpenId->getAuthTokenExpiration();
       $token_status = '<p>' . $this->t('Token is still valid until %date', ['%date' => date(DATE_RFC2822, $token_expiration)]) . '</p>';
@@ -94,12 +93,23 @@ class AhjoOpenIdController extends ControllerBase {
     else {
       $token_status = '<p>' . $this->t('Token has expired or has not been set.') . '</p>';
     }
+
+    if ($this->ahjoOpenId->isConfigured()) {
+      $refresh_url = Url::fromRoute('paatokset_ahjo_openid.refresh', [], ['absolute' => TRUE])->toString();
+      $refresh_link = [
+        '#markup' => '<p><a href="' . $refresh_url . '">' . $this->t('Refresh token.') . '</a></p>',
+      ];
+    }
+    else {
+      $refresh_link = [
+        '#markup' => '<p>Refresh token is missing or module is not configured.</p>'
+      ];
+    }
+
     return [
       'title' => ['#markup' => '<h2>' . $this->t('Token info') . '</h2>'],
       'status' => ['#markup' => $token_status],
-      'link' => [
-        '#markup' => '<p><a href="' . $refresh_url . '">' . $this->t('Refresh token.') . '</a></p>',
-      ],
+      'link' => $refresh_link,
     ];
   }
 
