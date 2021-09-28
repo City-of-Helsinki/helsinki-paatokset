@@ -46,7 +46,6 @@ class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFacto
     $this->ahjoOpenId = $ahjo_open_id;
   }
 
-
   /**
    * Performs authentication, returning any options to be added to the request.
    *

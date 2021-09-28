@@ -102,7 +102,7 @@ class AhjoOpenIdController extends ControllerBase {
     }
     else {
       $refresh_link = [
-        '#markup' => '<p>Refresh token is missing or module is not configured.</p>'
+        '#markup' => '<p>Refresh token is missing or module is not configured.</p>',
       ];
     }
 
