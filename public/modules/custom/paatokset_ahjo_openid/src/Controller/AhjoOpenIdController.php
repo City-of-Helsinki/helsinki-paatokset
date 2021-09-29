@@ -56,6 +56,17 @@ class AhjoOpenIdController extends ControllerBase {
   }
 
   /**
+   * Get auth token.
+   *
+   * @return void
+   */
+  public function getToken() {
+    $token = $this->ahjoOpenId->getAuthToken();
+    print $token;
+    die;
+  }
+
+  /**
    * Get auth flow link.
    *
    * @return array
