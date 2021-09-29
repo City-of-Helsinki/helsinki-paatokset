@@ -10,11 +10,18 @@ use Drupal\Core\Controller\ControllerBase;
 class PolicymakerController extends ControllerBase {
 
   /**
+   * Controller for policymaker subpages.
+   */
+  public function __construct() {
+    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+  }
+
+  /**
    * Policymaker documents route.
    */
   public function documents($organization) {
     // @todo implement documents page
-    $build = [];
+    $build = ['#title' => t('Documents: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
 
@@ -30,7 +37,7 @@ class PolicymakerController extends ControllerBase {
    */
   public function decisions($organization) {
     // @todo implement decisions page
-    $build = [];
+    $build = ['#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
 

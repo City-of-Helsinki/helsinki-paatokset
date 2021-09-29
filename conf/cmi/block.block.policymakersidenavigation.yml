@@ -3,7 +3,6 @@ langcode: fi
 status: true
 dependencies:
   module:
-    - ctools
     - paatokset_submenus
     - system
   theme:
@@ -24,10 +23,3 @@ visibility:
     id: request_path
     pages: '/paattajat/*'
     negate: false
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      policymaker: policymaker
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'

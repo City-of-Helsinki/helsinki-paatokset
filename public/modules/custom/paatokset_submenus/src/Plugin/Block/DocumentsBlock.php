@@ -33,13 +33,13 @@ class DocumentsBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $data = $this->policymakerService->getDocumentData();
+    $list = $this->policymakerService->getApiMinutes(NULL, TRUE);
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => 'Viranhaltijapäätökset',
-      '#years' => $data['years'],
-      '#list' => $data['list'],
+      '#years' => array_keys($list),
+      '#list' => $list,
     ];
   }
 

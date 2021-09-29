@@ -1,143 +1,94 @@
-// eslint-disable-next-line no-unused-vars
-jQuery(function($) {
-  function handleResponsive(maxWidth) {
-    var allDesktop = document.getElementsByClassName('desktopTd');
-    var allMobile = document.getElementsByClassName('mobileTd');
-    document.getElementById("showMoreTitle").innerHTML = 'Valitse vuosi';
-    if (maxWidth.matches) { // If media query matches
-      for (var i = 0; i < allDesktop.length; i++) {
-        allDesktop[i].style.display = 'none';
-      }
-      for (var i = 0; i < allMobile.length; i++) {
-        allMobile[i].style.display = 'block';
-      }
-    } else {
-      for (var i = 0; i < allDesktop.length; i++) {
-        allDesktop[i].style.display = 'block';
-      }
-      for (var i = 0; i < allMobile.length; i++) {
-        allMobile[i].style.display = 'none';
-      }
-    }
-  }
-  var maxWidth = window.matchMedia("(max-width: 544px)")
-  handleResponsive(maxWidth) // Call listener function at run time
-  maxWidth.addListener(handleResponsive)
+(function ($, Drupal, once) {
+  function handleListVisibility() {
+    const headerContainer = $('.paatokset__decision-tree-container .accordion__wrapper.handorgel');
+    const containerWidth = headerContainer.width();
+    const menu = headerContainer.find('ul.menu');
+    const dropdown = $(headerContainer).find('.custom-select-wrapper');
 
-  handleClick(document.querySelector("input[type=button]").id);
+    $(dropdown).removeClass('hidden');
+    const allowedWidth = containerWidth - dropdown.width() - 50;
 
-  $("input[type=button]").click(function(e){
-    handleClick(this.id)
-  });
-  function isOverflown(element) {
-    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
-  }
+    const items = $(menu).find('li').toArray();
+    let itemsWidth = 0;
+    let exceeded = false;
+    const allowedItems = [];
+    for(item of items) {
+      itemsWidth += $(item).width();
+      exceeded = itemsWidth >= allowedWidth;
 
-  var els = document.getElementsByClassName('menu');
-  for (var i = 0; i < els.length; i++) {
-    var el = els[i];
-    if (isOverflown(el)) {
-      var fitCount = Math.floor((el.clientWidth - 100) / 57)
-      $('ul.menu').each(function(){
-        let count = 0;
-        var list=$(this),
-          select=$(document.getElementById("responsiveMenu")).insertAfter($(this)).change(function(){
-          });
-        $('>li input', this).each(function(){
-          count ++;
-          if (count < fitCount) {
-            return;
-          }
-          else if (count >= fitCount) {
-            $(this).remove();
-            var span =  document.createElement('span');
-            span.innerHTML = this.value;
-            span.dataset.value = this.value;
-            span.className = 'custom-option';
-            document.getElementById("custom-options").appendChild(span);
-          }
-        });
-      });
-    }
-
-  }
-  for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
-    dropdown.addEventListener('click', function () {
-      this.querySelector('.custom-select').classList.toggle('open');
-      if (this.querySelector('.custom-select').classList.contains('open')) {
-        document.getElementById("arrow-down").style.display = "none"
-        document.getElementById("arrow-up").style.display = "block"
-        document.getElementById("custom-select__trigger").style.borderBottom = '6px solid #000';
-        $("input[type=button]").parent('li').css({
-          'border': 'none',
-          'padding-bottom': '19px'
-        });
+      if(exceeded && allowedItems.length > 0) {
+        $(item).addClass('hidden');
       } else {
-        document.getElementById("custom-select__trigger").style.borderBottom = 'none';
-        document.getElementById("arrow-down").style.display = "block"
-        document.getElementById("arrow-up").style.display = "none"
-      }
-    })
-  }
-
-  for (const option of document.querySelectorAll(".custom-option")) {
-    option.addEventListener('click', function () {
-      handleClick(this.value);
-      if (!this.classList.contains('selected')) {
-        this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
-        this.classList.add('selected');
-        document.getElementById("arrow-down").style.display = "block"
-        document.getElementById("arrow-up").style.display = "none"
-        this.closest('.custom-select').querySelector('.custom-select__trigger span').textContent = this.textContent;
-      }
-    })
-  }
-
-  window.addEventListener('click', function (e) {
-    for (const select of document.querySelectorAll('.custom-select')) {
-      if (!select.contains(e.target)) {
-        document.getElementById("arrow-down").style.display = "block"
-        document.getElementById("arrow-up").style.display = "none"
-        select.classList.remove('open');
+        allowedItems.push($(item).find('input').attr('value'));
+        $(item).removeClass('hidden');
       }
     }
-  });
 
-  function handleClick(buttonID) {
-    $("input[type=button]").parent('li').css({
-      'border': 'none',
-      'padding-bottom': '19px'
-    });
-    $('#'+buttonID).parent('li').css({
-      'border-bottom': '6px solid #000',
-      'padding-bottom': '19px'
-    });
-    document.getElementById("arrow-down").style.display = "block"
-    document.getElementById("arrow-up").style.display = "none"
-    document.getElementById("custom-select__trigger").style.borderBottom = 'none';
-    // Declare variables
-    var table, tr, td, i, txtValue, pDate, clickedYear;
-    clickedYear = buttonID.split('_')[1];
-    table = document.getElementById("listTable");
-    tr = table.getElementsByTagName("tr");
+    if(exceeded) {
+      $(dropdown).removeClass('hidden');
+      const dropdownItems = $('.custom-select-wrapper div.custom-option').toArray();
 
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        pDate = tr[i].dataset.timestamp;
-        var d = new Date(pDate * 1000);
-        var pYear = d.getFullYear();
-        if (pYear.toString() === clickedYear.toString()) {
-          tr[i].style.display = "";
+      for(item of dropdownItems) {
+        if(allowedItems.includes($(item).find('input').attr('value'))) {
+          $(item).addClass('hidden');
         } else {
-          tr[i].style.display = "none";
+          $(item).removeClass('hidden');
         }
       }
+    } else {
+      $(dropdown).addClass('hidden');
     }
   }
 
-  $(".custom-options:empty").parent().parent().hide();
-  $(".item:first-child:empty").parent().hide();
-})
+  function handleDropdownToggle(event) {
+    if($(event.target).parents('.custom-select-wrapper').length > 0) {
+      $(event.target).parents('.custom-select').toggleClass('open');
+    }
+    else {
+      $('.custom-select-wrapper .custom-select').removeClass('open');
+    }
+  }
+
+  function showSelected() {
+    const selectedValue = $('.handorgel__content__inner .selected').find('input[type="button"]').val();
+
+    $('.policymakers-documents, .policymakers-decisions').removeClass('selected-year');
+    $(`.policymakers-documents[value="${selectedValue}"], .policymakers-decisions[value="${selectedValue}"]`).addClass('selected-year');
+  }
+
+  function handleSelect(event) {
+    let value;
+    if(event.target.type === 'button') {
+      value = $(event.target).val();
+    }
+    else {
+      const inputElement = $(event.target).find('input');
+      if(inputElement) {
+        value = $(inputElement).val();
+      }
+    }
+
+    if(value) {
+      // Remove all prior selected classes
+      $('.handorgel__content__inner ul.menu li').removeClass('selected');
+      $('.custom-select-wrapper .custom-option').removeClass('selected');
+
+      // Add selected class to selected item
+      $(`.handorgel__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
+      $(`.custom-select-wrapper .custom-option input[value="${value}"]`).parent('.custom-option').addClass('selected');
+    }
+
+    showSelected();
+  }
+
+  Drupal.behaviors.myBehavior = {
+    attach: function (context) {
+      once('paatokset_submenus', 'html', context).forEach( function () {
+        handleListVisibility();
+        window.addEventListener('resize', handleListVisibility);
+        $(document).click(handleDropdownToggle);
+        $(context).find('.accordion-item__content__inner.handorgel__content__inner input').click(handleSelect);
+      })
+    }
+  }
+}(jQuery, Drupal, once));

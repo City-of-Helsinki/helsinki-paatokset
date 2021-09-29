@@ -6,6 +6,7 @@ use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
+use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Enum\PolicymakerRoutes;
 
 /**
@@ -116,6 +117,26 @@ class PolicymakerService {
   }
 
   /**
+   * Return route for policymaker dedcisions.
+   */
+  public function getDecisionsRoute() {
+    if ($this->policymaker->get('field_organization_type')->value !== 'trustee') {
+      return NULL;
+    }
+
+    $routes = PolicymakerRoutes::getTrusteeRoutes();
+    $baseRoute = $routes['Decisions'];
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $localizedRoute = "$baseRoute.$currentLanguage";
+
+    if ($this->routeExists($localizedRoute)) {
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('title')->value)]);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get all the decisions for one policymaker id.
    *
    * @return array
@@ -131,6 +152,7 @@ class PolicymakerService {
     $query->orderBy('date', 'DESC');
     $queryResult = $query->distinct()->execute()->fetchAll();
     $result = [];
+
     foreach ($queryResult as $row) {
       $result[$row->date][] = [
         '#type' => 'link',
@@ -157,9 +179,12 @@ class PolicymakerService {
         'id',
         'issue_id',
       ]);
-    $query->addExpression('YEAR(meeting_date)', 'year');
     $query->condition('meeting_policymaker_link', $this->policymaker->get('field_resource_uri')->value, '=');
     $query->orderBy('meeting_date', 'DESC');
+
+    if ($byYear) {
+      $query->addExpression('YEAR(meeting_date)', 'year');
+    }
 
     if ($limit) {
       $query->range(0, $limit);
@@ -167,25 +192,93 @@ class PolicymakerService {
 
     $queryResult = $query->execute()->fetchAll();
 
-    if (!$byYear) {
-      return $queryResult;
+    $results = [];
+    foreach ($queryResult as $row) {
+      $longDate = date('d.m.Y', strtotime($row->meeting_date));
+      $shortDate = date('m - Y', strtotime($row->meeting_date));
+      $results[$row->id] = [
+        'date_desktop' => $longDate,
+        'date_mobile' => $shortDate,
+        'subject' => $row->subject,
+        'issue_id' => $row->issue_id,
+      ];
+
+      if ($byYear) {
+        $results[$row->id]['year'] = $row->year;
+      }
     }
 
-    $result = [];
-    foreach ($queryResult as $row) {
-      $result[$row->year][] = [
-        '#type' => 'link',
-        '#date' => date("d.m.Y", strtotime($row->meeting_date)),
-        '#timestamp' => strtotime($row->meeting_date),
-        '#meetingNumber' => $row->meeting_number,
-        '#responsiveDate' => date("m-Y", strtotime($row->meeting_date)),
-        '#responsiveTitle' => 'Pöytäkirja',
-        '#year' => $row->year,
-        '#title' => $row->subject,
-        '#url' => Url::fromUri('internal:' . \Drupal::request()->getRequestUri()),
-      ];
+    $issue_ids = array_column($results, 'issue_id');
+    $issues = Issue::loadMultiple($issue_ids);
+    $issue_links = [];
+    if (!empty($issues)) {
+      foreach ($issues as $issue) {
+        $issue_links[$issue->get('id')->value] = $issue->toUrl();
+      }
     }
-    return $result;
+
+    $transformedResults = [];
+    foreach ($results as $id => $result) {
+      if (isset($issue_links[$result['issue_id']])) {
+        $result['link'] = $issue_links[$result['issue_id']]->setOption('query', ['decision' => $id])->toString();
+      }
+
+      if ($byYear) {
+        $transformedResults[$result['year']][] = $result;
+      }
+      else {
+        $transformedResults[] = $result;
+      }
+    }
+
+    return $transformedResults;
+  }
+
+  /**
+   * Get all API-retrieved minutes.
+   *
+   * @return array
+   *   Array of transcripts
+   */
+  public function getApiMinutes($limit = NULL, $byYear = FALSE) {
+    $database = \Drupal::database();
+    $query = $database->select('paatokset_meeting_document_field_data', 'pmdfd')
+      ->fields('pmdfd', ['origin_url', 'publish_time'])
+      ->fields('pmfd', ['meeting_date']);
+    $query->join('paatokset_meeting_field_data', 'pmfd', ' pmfd.id = pmdfd.meeting_id');
+    $query->condition('pmfd.policymaker_uri', $this->policymaker->get('field_resource_uri')->value);
+    $query->orderBy('pmdfd.publish_time', 'DESC');
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    if ($byYear) {
+      $query->addExpression('YEAR(pmdfd.publish_time)', 'year');
+    }
+
+    $results = $query->execute()->fetchAll();
+
+    $transformedResults = [];
+    foreach ($results as $result) {
+      $longDate = date('d.m.Y', strtotime($result->publish_time));
+      $shortDate = date('m - Y', strtotime($result->publish_time));
+      $transformedResult = [
+        'publish_date' => $longDate,
+        'publish_date_short' => $shortDate,
+        'title' => t('Minutes'),
+        'origin_url' => $result->origin_url,
+      ];
+
+      if ($byYear) {
+        $transformedResults[$result->year][] = $transformedResult;
+      }
+      else {
+        $transformedResults[] = $transformedResult;
+      }
+    }
+
+    return $transformedResults;
   }
 
   /**

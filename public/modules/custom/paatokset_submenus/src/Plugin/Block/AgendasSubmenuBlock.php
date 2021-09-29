@@ -33,8 +33,8 @@ class AgendasSubmenuBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $years = $this->policymakerService->getAgendasYears();
-    $list = $this->policymakerService->getAgendasList();
+    $list = $this->policymakerService->getAgendasList(TRUE);
+    $years = array_keys($list);
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
