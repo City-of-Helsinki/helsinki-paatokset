@@ -195,14 +195,14 @@
       </section>
     {% endif %}
 
-    {# TODO: implement recent meetings #}
-    {% if recent_meetings %}
+    {% if most_recent_meeting|render is not empty %}
       <section class="container policymaker-meetings" id="recent-meetings">
-        <h2 class="policymaker-title">{{ 'Recent meeting recording'|trans }}</h2>
+        <h2>{{ 'Recent meeting recording'|trans }}</h2>
         <p>
           {{ 'The meetings of the Supervisory Board can be viewed on the Helsinki Channel, where you can also access material related to the decisions under consideration. You can also view the latest Council meeting here:'|trans }}
         </p>
       </section>
+      {{ most_recent_meeting }}
     {% endif %}
 
     {# TODO: implement calendar #}

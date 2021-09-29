@@ -1,0 +1,22 @@
+meeting_video.settings:
+  title: Settings
+  route_name: meeting_video.settings
+  base_route: meeting_video.settings
+entity.meeting_video.view:
+  title: View
+  route_name: entity.meeting_video.canonical
+  base_route: entity.meeting_video.canonical
+entity.meeting_video.edit_form:
+  title: Edit
+  route_name: entity.meeting_video.edit_form
+  base_route: entity.meeting_video.canonical
+entity.meeting_video.delete_form:
+  title: Delete
+  route_name: entity.meeting_video.delete_form
+  base_route: entity.meeting_video.canonical
+  weight: 10
+entity.meeting_video.content_list:
+  title: Päätökset - Meeting Video
+  route_name: entity.meeting_video.collection
+  base_route: helfi_api_base.integrations
+  weight: 10

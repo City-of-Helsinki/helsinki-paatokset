@@ -1,0 +1,58 @@
+<?php
+
+use Drupal\Core\Render\Element;
+use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path) {
+  return [
+    'meeting_video' => [
+      'render element' => 'elements',
+      'template' => 'meeting-video'
+    ]
+  ];
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: meeting-video.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#paatokset_meeting'])) {
+    $variables['entity'] = $variables['elements']['#paatokset_meeting'];
+  }
+
+  $variables['all_recordings_link'] = \Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link');
+}
+
+/**
+ * Implements hook_preprocess_node__policymaker().
+ */
+function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variables) {
+  $council = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
+  if($variables['node']->id() === $council) {
+    $query = \Drupal::entityQuery('meeting_video');
+    $query->range(0, 1);
+    $ids = $query->execute();
+
+    $video = MeetingVideo::load(reset($ids));
+
+    $view_builder = \Drupal::entityTypeManager()
+      ->getViewBuilder($video
+      ->getEntityTypeId());
+
+    $variables['most_recent_meeting'] = $view_builder->view($video);
+  }
+}

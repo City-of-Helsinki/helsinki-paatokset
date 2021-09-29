@@ -1,0 +1,31 @@
+uuid: ea0b5020-545c-40f9-8343-76e386c4fdf5
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_helsinki_kanava
+id: meeting_video.meeting_video.default
+targetEntityType: meeting_video
+bundle: meeting_video
+mode: default
+content:
+  embed_url:
+    type: meeting_video_embed
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      iframe_title: 'Meeting video'
+      link_title: 'View all meeting recordings'
+      target: true
+    third_party_settings: {  }
+  name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  langcode: true

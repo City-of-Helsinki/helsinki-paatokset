@@ -1,0 +1,17 @@
+entity.meeting_video.settings:
+  title: Päätökset - Meeting Video settings
+  description: Configure Päätökset meeting video entity type
+  route_name:  meeting_video.settings
+  parent: system.admin_structure
+
+entity.meeting_video.collection:
+  title: Päätökset - Meeting Video entities
+  description: List of meeting video entities
+  route_name: entity.meeting_video.collection
+  parent: helfi_api_base.integrations
+
+paatokset_helsinki_kanava.settings_form:  
+  title: 'Helsinki Kanava'
+  route_name: paatokset_helsinki_kanava.settings_form 
+  description: 'Helsinki Kanava settings'  
+  parent: system.admin_config_system

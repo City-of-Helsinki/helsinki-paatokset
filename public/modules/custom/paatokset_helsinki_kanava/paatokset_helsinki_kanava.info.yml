@@ -1,0 +1,8 @@
+name: Päätökset Helsinki-kanava
+description: Integrates Helsinki-kanava videos
+type: module
+package: custom
+core_version_requirement: ^9
+dependencies:
+  - migrate
+  - paatokset_ahjo
