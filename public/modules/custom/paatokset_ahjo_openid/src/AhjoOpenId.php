@@ -187,7 +187,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
    *   Auth token.
    */
   public function checkAuthToken(): bool {
-    if(!$this->state->get('ahjo-api-auth-key')) {
+    if (!$this->state->get('ahjo-api-auth-key')) {
       return FALSE;
     }
 
