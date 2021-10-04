@@ -1,0 +1,40 @@
+uuid: 55c4e7dc-aefc-4952-af81-934bfd119f15
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.node.demo_ahjo_meetings.field_meeting_date
+    - field.field.node.demo_ahjo_meetings.field_meeting_id
+    - node.type.demo_ahjo_meetings
+  module:
+    - user
+id: node.demo_ahjo_meetings.default
+targetEntityType: node
+bundle: demo_ahjo_meetings
+mode: default
+content:
+  field_meeting_date:
+    weight: 102
+    label: above
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    type: timestamp
+    region: content
+  field_meeting_id:
+    weight: 101
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

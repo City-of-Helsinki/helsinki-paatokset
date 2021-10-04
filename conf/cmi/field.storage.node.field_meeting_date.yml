@@ -1,0 +1,18 @@
+uuid: ed760504-06ba-47f9-a3d0-efd6d7795a5b
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_meeting_date
+field_name: field_meeting_date
+entity_type: node
+type: timestamp
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: de9ff4c1-aea3-465a-9949-4a31c70aaffc
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_id
+    - node.type.demo_ahjo_meetings
+id: node.demo_ahjo_meetings.field_meeting_id
+field_name: field_meeting_id
+entity_type: node
+bundle: demo_ahjo_meetings
+label: 'Meeting ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

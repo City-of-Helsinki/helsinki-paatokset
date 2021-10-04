@@ -1,0 +1,11 @@
+uuid: e8b543ba-6a69-4ede-9d78-821ec995a3fd
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.demo_ahjo_meetings
+id: node.demo_ahjo_meetings
+target_entity_type_id: node
+target_bundle: demo_ahjo_meetings
+default_langcode: site_default
+language_alterable: false
