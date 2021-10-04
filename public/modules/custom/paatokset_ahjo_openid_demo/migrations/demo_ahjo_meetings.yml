@@ -5,7 +5,7 @@ dependencies:
     module:
       - paatokset_ahjo_openid
       - paatokset_ahjo_openid_demo
-id: demo_ahjo_sectors
+id: demo_ahjo_meetings
 field_plugin_method: null
 cck_plugin_method: null
 migration_tags:
@@ -21,7 +21,7 @@ source:
     plugin: ahjo_openid_token
   urls:
     - 'https://ahjohyte.hel.fi:9802/ahjorest/v1/meetings?start=2021-01-01T12:34:45Z&size=1000&agendaminutespublished=true'
-  item_selector: sectors
+  item_selector: meetings
   fields:
     -
       name: title
@@ -36,7 +36,7 @@ source:
       label: Meeting Date
       selector: DateMeeting
   ids:
-    sector_id:
+    meeting_id:
       type: string
 process:
   type:
