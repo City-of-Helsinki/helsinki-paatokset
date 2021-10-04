@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_openid
+      - paatokset_ahjo_openid_demo
+id: demo_ahjo_sectors
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_demo
+migration_group: ahjo_demo
+label: 'Ahjo API Demo - Meetings'
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  authentication:
+    plugin: ahjo_openid_token
+  urls:
+    - 'https://ahjohyte.hel.fi:9802/ahjorest/v1/meetings?start=2021-01-01T12:34:45Z&size=1000&agendaminutespublished=true'
+  item_selector: sectors
+  fields:
+    -
+      name: title
+      label: Title
+      selector: Name
+    -
+      name: meeting_id
+      label: Meeting ID
+      selector: MeetingID
+    -
+      name: meeting_date
+      label: Meeting Date
+      selector: DateMeeting
+  ids:
+    sector_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: demo_ahjo_meetings
+  title: title
+  field_meeting_id: meeting_id
+  field_meeting_date: meeting_date
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }
