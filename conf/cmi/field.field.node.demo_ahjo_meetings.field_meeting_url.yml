@@ -1,21 +1,19 @@
-uuid: a1bc5683-d03f-4dfb-a099-4c3bb38c20d9
+uuid: 8ea1414a-7eed-497f-9c0b-709d5850e015
 langcode: fi
 status: true
 dependencies:
   config:
-    - field.storage.node.field_meeting_date
+    - field.storage.node.field_meeting_url
     - node.type.demo_ahjo_meetings
-  module:
-    - datetime
-id: node.demo_ahjo_meetings.field_meeting_date
-field_name: field_meeting_date
+id: node.demo_ahjo_meetings.field_meeting_url
+field_name: field_meeting_url
 entity_type: node
 bundle: demo_ahjo_meetings
-label: 'Meeting Date'
+label: 'Meeting URL'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: datetime
+field_type: string

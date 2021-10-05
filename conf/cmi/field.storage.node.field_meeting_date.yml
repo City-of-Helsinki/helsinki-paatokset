@@ -1,15 +1,17 @@
-uuid: ed760504-06ba-47f9-a3d0-efd6d7795a5b
+uuid: df1f6140-b734-4395-bf18-0206e4563a38
 langcode: fi
 status: true
 dependencies:
   module:
+    - datetime
     - node
 id: node.field_meeting_date
 field_name: field_meeting_date
 entity_type: node
-type: timestamp
-settings: {  }
-module: core
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
 locked: false
 cardinality: 1
 translatable: true

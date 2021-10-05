@@ -1,11 +1,11 @@
-uuid: 0bb4a0f2-f7fb-4b7f-98f6-a283dcab0c94
+uuid: ed268e5e-8ba3-400b-af86-71780416bfe6
 langcode: fi
 status: true
 dependencies:
   module:
     - node
-id: node.field_meeting_id
-field_name: field_meeting_id
+id: node.field_meeting_url
+field_name: field_meeting_url
 entity_type: node
 type: string
 settings:

@@ -1,30 +1,48 @@
-uuid: 55c4e7dc-aefc-4952-af81-934bfd119f15
+uuid: 8056f490-f5d2-470c-b700-6ca4a7ace474
 langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.demo_ahjo_meetings.body
     - field.field.node.demo_ahjo_meetings.field_meeting_date
     - field.field.node.demo_ahjo_meetings.field_meeting_id
+    - field.field.node.demo_ahjo_meetings.field_meeting_url
     - node.type.demo_ahjo_meetings
   module:
+    - datetime
+    - text
     - user
 id: node.demo_ahjo_meetings.default
 targetEntityType: node
 bundle: demo_ahjo_meetings
 mode: default
 content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_meeting_date:
+    weight: 104
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_meeting_id:
     weight: 102
     label: above
     settings:
-      date_format: medium
-      custom_date_format: ''
-      timezone: ''
+      link_to_entity: false
     third_party_settings: {  }
-    type: timestamp
+    type: string
     region: content
-  field_meeting_id:
-    weight: 101
+  field_meeting_url:
+    weight: 103
     label: above
     settings:
       link_to_entity: false

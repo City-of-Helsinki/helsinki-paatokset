@@ -1,0 +1,23 @@
+uuid: 99e10249-5919-4bad-8990-16bbacd4032c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.demo_ahjo_meetings
+  module:
+    - text
+id: node.demo_ahjo_meetings.body
+field_name: body
+entity_type: node
+bundle: demo_ahjo_meetings
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

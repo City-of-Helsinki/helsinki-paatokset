@@ -1,20 +1,34 @@
-uuid: f2d3312f-d136-4927-aa12-7cf78a39fe16
+uuid: 37e9c858-0cc3-48b1-9781-dfb2e58d22dc
 langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.demo_ahjo_meetings.body
     - field.field.node.demo_ahjo_meetings.field_meeting_date
     - field.field.node.demo_ahjo_meetings.field_meeting_id
+    - field.field.node.demo_ahjo_meetings.field_meeting_url
     - node.type.demo_ahjo_meetings
   module:
+    - datetime
     - hdbt_admin_editorial
     - path
     - scheduler
+    - text
 id: node.demo_ahjo_meetings.default
 targetEntityType: node
 bundle: demo_ahjo_meetings
 mode: default
 content:
+  body:
+    type: text_textarea_with_summary
+    weight: 121
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 10
@@ -22,13 +36,21 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_meeting_date:
-    weight: 122
+    weight: 124
     settings: {  }
     third_party_settings: {  }
-    type: datetime_timestamp
+    type: datetime_default
     region: content
   field_meeting_id:
-    weight: 121
+    weight: 122
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_meeting_url:
+    weight: 123
     settings:
       size: 60
       placeholder: ''
