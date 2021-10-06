@@ -3,27 +3,21 @@ langcode: fi
 status: true
 dependencies:
   config:
-    - field.field.node.demo_ahjo_meetings.body
     - field.field.node.demo_ahjo_meetings.field_meeting_date
+    - field.field.node.demo_ahjo_meetings.field_meeting_dm
+    - field.field.node.demo_ahjo_meetings.field_meeting_dm_id
     - field.field.node.demo_ahjo_meetings.field_meeting_id
+    - field.field.node.demo_ahjo_meetings.field_meeting_location
     - field.field.node.demo_ahjo_meetings.field_meeting_url
     - node.type.demo_ahjo_meetings
   module:
     - datetime
-    - text
     - user
 id: node.demo_ahjo_meetings.default
 targetEntityType: node
 bundle: demo_ahjo_meetings
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_meeting_date:
     weight: 104
     label: above
@@ -33,8 +27,32 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_meeting_dm:
+    weight: 107
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_meeting_dm_id:
+    weight: 106
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_meeting_id:
     weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_meeting_location:
+    weight: 105
     label: above
     settings:
       link_to_entity: false

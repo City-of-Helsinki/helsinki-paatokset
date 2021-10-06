@@ -1,0 +1,21 @@
+uuid: 287197a2-d540-4589-85b5-41e1ef4ccc9f
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_meeting_dm
+field_name: field_meeting_dm
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: 82bd361e-be29-4614-849a-3b2425681bca
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_dm
+    - node.type.demo_ahjo_meetings
+id: node.demo_ahjo_meetings.field_meeting_dm
+field_name: field_meeting_dm
+entity_type: node
+bundle: demo_ahjo_meetings
+label: 'Decision Maker'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
