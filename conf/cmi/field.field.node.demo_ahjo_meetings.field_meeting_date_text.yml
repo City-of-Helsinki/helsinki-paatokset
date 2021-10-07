@@ -1,0 +1,19 @@
+uuid: 67c8e97b-790f-428f-b078-c5e65b0aec79
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_date_text
+    - node.type.demo_ahjo_meetings
+id: node.demo_ahjo_meetings.field_meeting_date_text
+field_name: field_meeting_date_text
+entity_type: node
+bundle: demo_ahjo_meetings
+label: 'Meeting Date (text)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

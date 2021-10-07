@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.demo_ahjo_meetings.field_meeting_date
+    - field.field.node.demo_ahjo_meetings.field_meeting_date_text
     - field.field.node.demo_ahjo_meetings.field_meeting_dm
     - field.field.node.demo_ahjo_meetings.field_meeting_dm_id
     - field.field.node.demo_ahjo_meetings.field_meeting_id
@@ -32,8 +33,16 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_meeting_date_text:
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_meeting_dm:
-    weight: 16
+    weight: 17
     settings:
       size: 60
       placeholder: ''
@@ -41,7 +50,7 @@ content:
     type: string_textfield
     region: content
   field_meeting_dm_id:
-    weight: 15
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -57,7 +66,7 @@ content:
     type: string_textfield
     region: content
   field_meeting_location:
-    weight: 14
+    weight: 15
     settings:
       size: 60
       placeholder: ''

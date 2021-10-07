@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.demo_ahjo_meetings.field_meeting_date
+    - field.field.node.demo_ahjo_meetings.field_meeting_date_text
     - field.field.node.demo_ahjo_meetings.field_meeting_dm
     - field.field.node.demo_ahjo_meetings.field_meeting_dm_id
     - field.field.node.demo_ahjo_meetings.field_meeting_id
@@ -19,7 +20,7 @@ bundle: demo_ahjo_meetings
 mode: default
 content:
   field_meeting_date:
-    weight: 104
+    weight: 3
     label: above
     settings:
       format_type: medium
@@ -27,8 +28,16 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_meeting_date_text:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_meeting_dm:
-    weight: 107
+    weight: 7
     label: above
     settings:
       link_to_entity: false
@@ -36,7 +45,7 @@ content:
     type: string
     region: content
   field_meeting_dm_id:
-    weight: 106
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -44,7 +53,7 @@ content:
     type: string
     region: content
   field_meeting_id:
-    weight: 102
+    weight: 1
     label: above
     settings:
       link_to_entity: false
@@ -52,7 +61,7 @@ content:
     type: string
     region: content
   field_meeting_location:
-    weight: 105
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -60,7 +69,7 @@ content:
     type: string
     region: content
   field_meeting_url:
-    weight: 103
+    weight: 2
     label: above
     settings:
       link_to_entity: false
@@ -68,9 +77,9 @@ content:
     type: string
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true
