@@ -47,12 +47,13 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     $query->range(0, 1);
     $ids = $query->execute();
 
-    $video = MeetingVideo::load(reset($ids));
-
-    $view_builder = \Drupal::entityTypeManager()
+    if($ids) {
+      $video = MeetingVideo::load(reset($ids));
+      $view_builder = \Drupal::entityTypeManager()
       ->getViewBuilder($video
       ->getEntityTypeId());
 
-    $variables['most_recent_meeting'] = $view_builder->view($video);
+      $variables['most_recent_meeting'] = $view_builder->view($video);
+    }
   }
 }

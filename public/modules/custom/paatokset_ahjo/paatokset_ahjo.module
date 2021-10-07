@@ -266,34 +266,20 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
     if($orgType !== 'trustee') {
       $variables['is_organization'] = true;
 
-      $documents = $policymakerService->getMinutesOfDiscussion(2);
+      $documents = $policymakerService->getApiMinutes(2);
       if($documents) {
-        $variables['recent_documents'] = $documents['list'];
+        $variables['recent_documents'] = $documents;
+        $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
       }
     } else {
       // Get the two most recent decisions
       $recentDecisions = $policymakerService->getAgendasList(false, 2);
-      $issue_ids = [];
       if(!empty($recentDecisions)) {
-        foreach($recentDecisions as $key => $decision) {
-          $meeting_date = new \DateTime($decision->meeting_date);
-          $decision->date_desktop = $meeting_date->format('d.m.Y');
-          $decision->date_mobile = $meeting_date->format('n/Y');
-          $issue_ids[$key] = $decision->issue_id;
-        }
-
-        $issues = Issue::loadMultiple($issue_ids);
-
-        foreach($issue_ids as $key => $issue_id) {
-          $recentDecisions[$key]->link = $issues[$issue_id]->toUrl()->setOption('query', ['decision' => $recentDecisions[$key]->id])->toString();
-        }
-
         $variables['recent_decisions'] = $recentDecisions;
+        $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
       }
     }
   }
-
-  $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
 }
 
 /**

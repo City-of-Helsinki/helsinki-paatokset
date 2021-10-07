@@ -1,0 +1,30 @@
+{#
+/**
+ *
+ * @file
+ * Template for a single document
+ */
+#}
+
+<div class="policymaker-list-item policymaker-list-item--document">
+  <div class="list-item__date">
+    <span class="list-item__date--desktop">{{ document.publish_date }}</span>
+    <span class="list-item__date--mobile">{{ document.publish_date_short }}</span>
+  </div>
+  <div class="list-item__subject">
+    <a href="{{ document.origin_url }}">
+      {{ document.title }}
+      <span class="subject__date">
+        {{  document.publish_date_short }}
+      </span>
+    </a>
+  </div>
+  {% if document.origin_url %}
+    <div class="paatokset_download-link-container">
+      <a class="paatokset__link-plain" href="{{ document.origin_url }}" download>
+        {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
+        {{ 'Lataa tulostettava versio (PDF)'|trans }}
+      </a>
+    </div>
+  {% endif %}
+</div>

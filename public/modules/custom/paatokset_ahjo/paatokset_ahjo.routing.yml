@@ -20,7 +20,7 @@ policymaker.documents.fi:
     _access: 'TRUE'
 
 policymaker.decisions.fi:
-  path: 'paattajat/{organization}/decisions'
+  path: 'paattajat/{organization}/paatokset'
   defaults:
     _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::decisions'
     _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDecisionsTitle'

@@ -102,6 +102,10 @@
 
   &.policymaker-list-item--document {
     border-color: $color-black;
+    
+    .subject__date {
+      display: block;
+    }
   }
 
   .list-item__date {

@@ -84,9 +84,6 @@
 
 <article{{ attributes.addClass(classes) }}>
   <section class="container policymaker-summary">
-    <h1{{ title_attributes }}>
-      {{ label }}
-    </h1>
     <div class="policymaker-summary__label">
       <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
         {{ label }}
@@ -161,7 +158,7 @@
           {% include '@paatokset_ahjo/component/decision--list-item.html.twig' %}
         {% endfor %}
         <div class="view-all view-all--decisions">
-          <a class="paatokset-button-link" href="{{ all_documents_link }}">
+          <a class="paatokset-button-link" href="{{ all_decisions_link }}">
             <span>{{ 'All decisions' }}</span>
             <i class="hds-icon hds-icon--arrow-right"></i>
           </a>
@@ -179,11 +176,9 @@
           {{ 'The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
             The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.'|trans }}
         </p>
-        <div class="policymaker-attachments-container">
-          {% for documents in recent_documents %}
-            {% for document in documents %}
-                {% include '@paatokset_ahjo/component/attachment.html.twig' %}
-            {% endfor %}
+        <div class="policymaker-documents-container">
+          {% for document in recent_documents %}
+            {% include '@paatokset_ahjo/component/document.html.twig' %}
           {% endfor %}
         </div>
         <div class="view-all view-all--documents">

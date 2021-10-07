@@ -13,7 +13,15 @@ use Drupal\Core\Template\Attribute;
 function paatokset_submenus_theme($existing, $type, $theme, $path) {
   return [
     'block__policymaker_side_nav' => [
+      'base hook' => 'block',
+      'render element' => 'elements',
       'template' => '/policymaker--side-navigation',
+      'path' => $path . '/templates'
+    ],
+    'block__agendas_submenu' => [
+      'base hook' => 'block',
+      'render element' => 'elements',
+      'template' => '/block--agendas-submenu',
       'path' => $path . '/templates'
     ]
   ];
@@ -32,6 +40,14 @@ function paatokset_submenus_preprocess_block(&$variables) {
     $variables['title'] = $variables['content']['#title'];
     $variables['years'] = $variables['content']['#years'];
     $variables['list'] = $variables['content']['#list'];
+
+    if($variables['plugin_id'] === 'agendas_submenu') {
+      $variables['type'] = 'decisions';
+    }
+
+    if($variables['plugin_id'] === 'agendas_submenu_documents') {
+      $variables['type'] = 'documents';
+    }
   }
 }
 

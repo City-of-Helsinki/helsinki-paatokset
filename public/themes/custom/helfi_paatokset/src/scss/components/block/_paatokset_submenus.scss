@@ -1,4 +1,28 @@
 .paatokset__decision-tree-container {
+  .hidden {
+    display: none;
+  }
+
+  .custom-select-wrapper {
+    position: absolute;
+    right: 0;
+  }
+
+  .arrow i {
+    width: $spacing;
+    height: $spacing;
+  }
+
+  .custom-select {
+    .custom-options {
+      display: none;
+    }
+
+    &.open .custom-options {
+      display: block;
+    }
+  }
+
   .decision-tree__title h4 {
     color: rgb(6, 6, 6);
     font-size: 20px;
@@ -28,13 +52,9 @@
   }
 
   .accordion-item__content__inner{
-    overflow-x: hidden;
-    overflow-y: hidden;
+    position: relative;
     border-bottom: 1px solid black;
-    display: -ms-flexbox;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
+    display: flex;
     display: inline-flex;
     width: 100%;
     justify-content: space-between;
@@ -50,9 +70,12 @@
     cursor: pointer;
   }
   .menu	{
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overflow: auto;
+    
+    &:scroll {
+      display: none;
+    }
+
     .item {
       display: inline-block;
       color: #060606;
@@ -61,58 +84,28 @@
       letter-spacing: 0.29px;
       text-decoration: none;
       margin-right: 22px;
+
+      &.hidden {
+        display: none;
+      }
     }
-    .item:first-child {
+    .item.selected {
       border-bottom: 6px solid #000;
       padding-bottom: 19px;
     }
   }
 
-  .hidden {
-    display: none;
-  }
-  .accordion-item__content__inner.handorgel__content__inner hr {
-    margin:22px 0 0 0;
-  }
-
   .container.accordion__container {
     padding:0;
   }
-
-  table {
-    width: 100%;
-  }
-  p {
-    color: rgb(102, 102, 102);
-    font-size: 16px;
-    font-weight: normal;
-    height: 24px;
-    line-height: 24px;
-    width: 128px;
-    margin-bottom: 10px;
-  }
-  h5 {
-    color: rgb(26, 26, 26);
-    font-size: 24px;
-    line-height: 29px;
-    text-decoration: none;
-    a:hover {
-      text-decoration:none;
-    }
-  }
-  td {
-    padding-bottom: 15px;
-    border-bottom: 1px solid black;
-    padding-top: 25px;
-  }
 }
 
-#arrow-up {
-  display:none;
-}
+.policymakers-documents, .policymakers-decisions {
+  display: none;
 
-#arrow-down{
-  display:block;
+  &.selected-year {
+    display: block;
+  }
 }
 
 .custom-select {
@@ -162,7 +155,6 @@
 
 .custom-option {
   position: relative;
-  display: block;
   padding: 0 22px 0 22px;
   font-size: 22px;
   font-weight: 300;

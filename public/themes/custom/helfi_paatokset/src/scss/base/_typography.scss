@@ -95,15 +95,16 @@ html {
   }
 
   h1,
-  .h1 {
+  .h1,
+  .page-title__container h1 {
     font-weight: normal;
     font-size: $font-size-heading-1;
     line-height: $font-size-heading-1;
+    margin-bottom: 16px;
 
     @include breakpoint($breakpoint-l) {
       font-size: 72px;
       line-height: 72px;
-      margin-bottom: 24px;
     }
   }
 

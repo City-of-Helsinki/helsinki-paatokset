@@ -11,3 +11,4 @@ global-scripting:
   dependencies:
     - core/drupal
     - core/jquery
+    - core/once

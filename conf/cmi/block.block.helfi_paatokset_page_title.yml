@@ -2,8 +2,6 @@ uuid: 932c62f6-06c1-42b7-8000-a0f8f278c71e
 langcode: en
 status: true
 dependencies:
-  module:
-    - ctools
   theme:
     - helfi_paatokset
 id: helfi_paatokset_page_title
@@ -17,11 +15,4 @@ settings:
   label: 'Sivun otsikko'
   provider: core
   label_display: '0'
-visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      policymaker: policymaker
-    negate: true
-    context_mapping:
-      node: '@node.node_route_context:node'
+visibility: {  }
