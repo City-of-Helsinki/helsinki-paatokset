@@ -2,6 +2,8 @@ uuid: 932c62f6-06c1-42b7-8000-a0f8f278c71e
 langcode: en
 status: true
 dependencies:
+  module:
+    - system
   theme:
     - helfi_paatokset
 id: helfi_paatokset_page_title
@@ -15,4 +17,8 @@ settings:
   label: 'Sivun otsikko'
   provider: core
   label_display: '0'
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: '/paattajat/*/asiakirjat/*'
+    negate: true

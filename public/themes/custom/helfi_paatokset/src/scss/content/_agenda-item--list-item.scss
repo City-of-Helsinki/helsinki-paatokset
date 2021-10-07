@@ -1,0 +1,54 @@
+.policymaker-list-item--agenda-item {
+  a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+
+    @include breakpoint($breakpoint-l) {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+
+  .agenda-item__index-number {
+    font-weight: $medium;
+    margin-right: $spacing-double;
+    margin-bottom: 6px;
+    white-space: nowrap;
+
+    @include breakpoint($breakpoint-l) {
+      margin-bottom: 0;
+    }
+  }
+
+  .agenda-item__subject {
+    margin-right: $spacing-double;
+    margin-bottom: $spacing-and-half;
+
+    @include breakpoint($breakpoint-l) {
+      margin-bottom: 0;
+    }
+  }
+  
+  svg {
+    min-width: $spacing-double; //$spacing-and-half;
+    min-height: $spacing-double; //$spacing-and-half;
+
+    @include breakpoint($breakpoint-l) {
+      margin-left: auto;
+    }
+  }
+
+  &.policymaker-list-item {
+    border-bottom-color: $color-black;
+  }
+
+  &.policymaker-list-item:first-child {
+    border-top: 2px solid $color-black;
+  }
+
+  &.policymaker-list-item:last-child {
+    border-bottom: 2px solid $color-black;
+  }
+}

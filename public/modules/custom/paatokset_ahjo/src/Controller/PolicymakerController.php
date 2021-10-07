@@ -20,7 +20,6 @@ class PolicymakerController extends ControllerBase {
    * Policymaker documents route.
    */
   public function documents($organization) {
-    // @todo implement documents page
     $build = [
       '#title' => t('Documents: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
       '#markup' => '
@@ -71,10 +70,36 @@ class PolicymakerController extends ControllerBase {
   }
 
   /**
+   * Return view for singular minutes.
+   */
+  public function minutes($organization, $id) {
+    $meetingData = $this->policymakerService->getMeetingAgenda($id);
+
+    $build = [
+      '#theme' => 'policymaker_minutes',
+    ];
+
+    if ($meetingData) {
+      $build['meeting'] = $meetingData['meeting'];
+      $build['list'] = $meetingData['list'];
+      $build['file'] = $meetingData['file'];
+    }
+
+    return $build;
+  }
+
+  /**
    * Return title as translatable string.
    */
   public static function getDiscussionMinutesTitle() {
     return t('Discussion minutes');
+  }
+
+  /**
+   * Return translatable title for minutes.
+   */
+  public static function getMinutesTitle() {
+    return t('Minutes');
   }
 
 }

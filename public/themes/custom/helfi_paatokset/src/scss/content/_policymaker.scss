@@ -110,7 +110,7 @@
 
   .list-item__date {
     font-size: $fontsize-body-m;
-    color: #666666;
+    color: $color-black-light;
     margin-bottom: $spacing;
   }
 
@@ -132,5 +132,72 @@
     text-decoration: none;
     font-weight: $medium;
     font-size: 24px;
+  } 
+}
+
+.minutes__header {
+  margin-bottom: $spacing;
+
+  .minutes__header-prefix {
+    font-size: 20px;
+  }
+
+  .minutes__header-suffix {
+    font-size: $fontsize-body-m;
+    color: $color-black-light
+  }
+
+  h1 {
+    @include breakpoint($breakpoint-l) {
+      margin-top: 24px;
+    }
+  }
+}
+
+.minutes-list__header {
+  font-weight: $medium;
+  font-size: 24px;
+
+  margin-bottom: $spacing-and-half;
+}
+
+.minutes-list__wrapper {
+  margin-bottom: $spacing-double;
+}
+
+.minutes-file__container {
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .minutes__publish-date {
+    position: relative;
+    padding-bottom: $spacing-and-half;
+
+    &:after {
+      content: "";
+      height: 2px;
+      background: $color-black;
+      width: 62px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    margin-bottom: $spacing-double;
+  }
+  
+  .publish-date__date {
+    font-size: $font-size-heading-4;
+    font-weight: $bold;
+  }
+}
+
+.minutes__file-link {
+  @include breakpoint($breakpoint-l) {
+    .paatokset-button-link {
+      text-decoration: none;
+    }
   }
 }

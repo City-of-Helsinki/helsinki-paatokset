@@ -105,6 +105,7 @@ html {
     @include breakpoint($breakpoint-l) {
       font-size: 72px;
       line-height: 72px;
+      margin-bottom: 24px;
     }
   }
 

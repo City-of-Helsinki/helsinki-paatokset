@@ -32,5 +32,11 @@ policymaker.discussion_minutes.fi:
   defaults:
     _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::discussionMinutes'
     _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDiscussionMinutesTitle'
+
+policymaker.minutes.fi:
+  path: 'paattajat/{organization}/asiakirjat/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getMinutesTitle'
   requirements:
     _access: 'TRUE'

@@ -15,6 +15,10 @@ class PolicymakerRoutes {
     'decisions' => 'policymaker.decisions',
   ];
 
+  const SUBROUTE = [
+    'minutes' => 'policymaker.minutes',
+  ];
+
   /**
    * Class constructor. Don't make instances of this class.
    */
@@ -32,6 +36,13 @@ class PolicymakerRoutes {
    */
   public static function getTrusteeRoutes() {
     return self::TRUSTEE;
+  }
+
+  /**
+   * Return all subroutes.
+   */
+  public static function getSubroutes() {
+    return self::SUBROUTE;
   }
 
 }
