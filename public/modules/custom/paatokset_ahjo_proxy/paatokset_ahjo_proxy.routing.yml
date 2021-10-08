@@ -1,0 +1,7 @@
+paatokset_ahjo_proxy.meetings:
+  path: '/ahjo-proxy/meetings'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::meetings'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]

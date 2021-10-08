@@ -1,0 +1,8 @@
+name: Päätökset Ahjo proxy
+type: module
+description: Proxy for connecting to and caching Ahjo API endpoints.
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:paatokset_ahjo_openid
