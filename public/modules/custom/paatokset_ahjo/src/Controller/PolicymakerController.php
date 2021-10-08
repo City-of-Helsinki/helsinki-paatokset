@@ -36,7 +36,6 @@ class PolicymakerController extends ControllerBase {
    * Policymaker decisions route.
    */
   public function decisions($organization) {
-    // @todo implement decisions page
     $build = ['#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
@@ -46,6 +45,29 @@ class PolicymakerController extends ControllerBase {
    */
   public static function getDecisionsTitle() {
     return t('Decisions');
+  }
+
+  /**
+   * Policymaker dicussion minutes route.
+   */
+  public function discussionMinutes() {
+    $build = ['#title' => t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
+
+    $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
+
+    if (!empty($minutes)) {
+      $build['years'] = array_keys($minutes);
+      $build['list'] = $minutes;
+    }
+
+    return $build;
+  }
+
+  /**
+   * Return title as translatable string.
+   */
+  public static function getDiscussionMinutesTitle() {
+    return t('Discussion minutes');
   }
 
 }

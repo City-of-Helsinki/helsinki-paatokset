@@ -26,3 +26,11 @@ policymaker.decisions.fi:
     _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDecisionsTitle'
   requirements:
     _access: 'TRUE'
+
+policymaker.discussion_minutes.fi:
+  path: 'paattajat/{organization}/keskustelupöytäkirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_ahjo\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'

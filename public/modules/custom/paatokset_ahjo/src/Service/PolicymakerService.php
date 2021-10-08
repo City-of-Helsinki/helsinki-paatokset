@@ -105,7 +105,7 @@ class PolicymakerService {
     }
 
     $routes = PolicymakerRoutes::getOrganizationRoutes();
-    $baseRoute = $routes['Documents'];
+    $baseRoute = $routes['documents'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
@@ -125,7 +125,7 @@ class PolicymakerService {
     }
 
     $routes = PolicymakerRoutes::getTrusteeRoutes();
-    $baseRoute = $routes['Decisions'];
+    $baseRoute = $routes['decisions'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
@@ -287,7 +287,7 @@ class PolicymakerService {
    * @return array
    *   Array containing queried data
    */
-  public function getMinutesOfDiscussion($limit = NULL) : array {
+  public function getMinutesOfDiscussion($limit = NULL, $byYear = FALSE) : array {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pmfd')
       ->fields('pmfd', ['id', 'meeting_date']);
@@ -300,42 +300,32 @@ class PolicymakerService {
 
     $result = $query->execute()->fetchAllKeyed();
     $mediaEntities = $this->getMeetingMediaEntities(array_keys($result));
-    $list = [];
-    $years = [];
+    $transformedResults = [];
     foreach ($mediaEntities as $id => $meeting) {
       foreach ($meeting as $entity) {
         $file_id = $entity->get('field_document')->target_id;
+        $download_link;
         if ($entity->get('field_document')->target_id) {
           $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()));
         }
         $year = date('Y', strtotime($result[$id]));
-        $title = t('Valtuuston kokous') . ' ' . date("d.m.Y", strtotime($result[$id]));
-        $list[$year][] = [
-          '#type' => 'link',
-          '#responsiveDate' => date("m-Y", strtotime($result[$id])),
-          '#responsiveTitle' => $title,
-          '#date' => date("d.m.Y", strtotime($result[$id])),
-          '#timestamp' => strtotime($result[$id]),
-          '#year' => $year,
-          '#title' => $title,
-          '#url' => '',
-          '#download_link' => $download_link ?? NULL,
-          '#download_label' => str_replace(' ', '_', $title),
+        $transformedResult = [
+          'publish_date' => date('d.m.Y', strtotime($result[$id])),
+          'publish_date_short' => date('m-Y', strtotime($result[$id])),
+          'title' => '123',
+          'origin_url' => $download_link,
         ];
 
-        if (!isset($years[$year])) {
-          $years[$year][] = [
-            '#type' => 'link',
-            '#title' => $year,
-          ];
+        if ($byYear) {
+          $transformedResults[$year][] = $transformedResult;
+        }
+        else {
+          $transformedResults[] = $transformedResult;
         }
       }
     }
 
-    return [
-      'years' => $years,
-      'list' => $list,
-    ];
+    return $transformedResults;
   }
 
   /**

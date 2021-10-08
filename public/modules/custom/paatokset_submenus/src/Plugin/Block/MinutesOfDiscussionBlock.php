@@ -33,13 +33,12 @@ class MinutesOfDiscussionBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $data = $this->policymakerService->getMinutesOfDiscussion();
+    $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
 
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#title' => 'Viranhaltijapäätökset',
-      '#years' => $data['years'],
-      '#list' => $data['list'],
+      '#years' => array_keys($minutes),
+      '#list' => $minutes,
     ];
   }
 
