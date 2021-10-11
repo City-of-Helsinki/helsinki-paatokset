@@ -91,18 +91,26 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   ) {
     $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
     $council = Node::load($councilId);
+
+    if (!$council) {
+      \Drupal::logger('HelsinkiKanava')->warning('Council node can\'t be found. Cannot import the latest council meeting recording.');
+      return;
+    }
+
     $councilUri = $council->get('field_resource_uri')->value;
 
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pmfd')
       ->fields('pmfd', ['meeting_date'])
-      ->range(0, 1)
+      // Use the second most recent meeting as from-time.
+      ->range(1, 2)
       ->condition('pmfd.policymaker_uri', $councilUri)
       ->orderBy('meeting_date', 'DESC');
     $result = $query->execute()->fetch();
 
     if (!isset($result->meeting_date)) {
-      throw new \Exception('Latest council meeting not found.');
+      \Drupal::logger('HelsinkiKanava')->warning('Latest council meeting not found. Cannot import the latest council meeting recording.');
+      return;
     }
 
     $version = '01';
@@ -116,7 +124,8 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     $secret = getenv('HELSINKI_KANAVA_SECRET');
 
     if (!$organizationId || !$secret) {
-      throw new \Exception('Helsinki Kanava credentials are not set.');
+      \Drupal::logger('HelsinkiKanava')->warning('Helsinki Kanava credentials are not set. Cannot import the latest council meeting recording.');
+      return;
     }
 
     $hash = md5(
