@@ -125,7 +125,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       $self_url = $this->getSelfUrl($meeting['links']);
       $meeting_content = $this->getContent($self_url);
-      if (!empty($meeting_content)) {
+      if (!empty($meeting_content) && !empty($meeting_content['MeetingID'])) {
         $meetings_full[] = $meeting_content;
       }
     }
@@ -153,7 +153,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $file_contents = file_get_contents($file_path);
     if ($file_contents) {
       $data = \GuzzleHttp\json_decode($file_contents, TRUE);
-      return $data['data'] ?? [];
+      return $data ?? [];
     }
     return [];
   }
@@ -186,6 +186,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The JSON returned by API service.
    */
   protected function getContent(string $url) : array {
+    // TODO: Implement parameter for bypassing cache for callback notifications.
     if ($data = $this->getFromCache($url)) {
       return $data;
     }
