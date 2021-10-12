@@ -3,8 +3,8 @@ status: true
 dependencies:
   enforced:
     module:
+      - paatokset_ahjo_api
       - paatokset_ahjo_openid
-      - paatokset_ahjo_openid_demo
 id: ahjo_meetings
 field_plugin_method: null
 cck_plugin_method: null
