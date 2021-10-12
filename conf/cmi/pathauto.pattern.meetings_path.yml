@@ -1,0 +1,22 @@
+uuid: c02fb707-e189-4242-be7a-fedd4fd878dd
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: meetings_path
+label: 'Meetings path'
+type: 'canonical_entities:node'
+pattern: 'kokoukset/[node:title]'
+selection_criteria:
+  2e557944-215c-4fb6-ae86-e304cad247e0:
+    id: node_type
+    bundles:
+      meeting: meeting
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 2e557944-215c-4fb6-ae86-e304cad247e0
+selection_logic: and
+weight: -5
+relationships: {  }

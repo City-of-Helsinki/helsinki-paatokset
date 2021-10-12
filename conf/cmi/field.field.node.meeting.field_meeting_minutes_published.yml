@@ -9,7 +9,7 @@ id: node.meeting.field_meeting_minutes_published
 field_name: field_meeting_minutes_published
 entity_type: node
 bundle: meeting
-label: 'MInutes published'
+label: 'Minutes published'
 description: ''
 required: false
 translatable: false
