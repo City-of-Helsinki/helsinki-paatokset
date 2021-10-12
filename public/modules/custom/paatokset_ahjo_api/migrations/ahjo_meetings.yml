@@ -98,13 +98,20 @@ process:
     to_timezone: UTC
     source: meeting_date
   field_meeting_agenda_published:
-    callable: _paatokset_ahjo_api_true_if_not_empty
-    plugin: callback
-    source: meeting_agenda
+    -
+      callable: _paatokset_ahjo_api_true_if_not_empty
+      plugin: callback
+      source: meeting_agenda
+    -
+      plugin: default_value
+      default_value: 0
   field_meeting_minutes_published:
-    callable: _paatokset_ahjo_api_meeting_minutes_published
-    plugin: callback
-    source: meeting_documents
+    -
+      plugin: single_value
+      source: meeting_documents
+    -
+      callable: _paatokset_ahjo_api_meeting_minutes_published
+      plugin: callback
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

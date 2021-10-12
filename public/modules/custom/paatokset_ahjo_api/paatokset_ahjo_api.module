@@ -35,7 +35,7 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   }
 
   foreach ($documents as $document) {
-    if (is_string($document) && strpos($document, 'pöytäkirja') > 0) {
+    if (isset($document['Type']) && $document['Type'] === 'pöytäkirja') {
       return TRUE;
     }
   }
