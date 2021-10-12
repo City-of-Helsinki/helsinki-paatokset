@@ -29,7 +29,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @var bool
    */
-  protected bool $useStaticFallbacks = TRUE;
+  protected bool $useStaticFallbacks = FALSE;
 
   /**
    * HTTP Client.
