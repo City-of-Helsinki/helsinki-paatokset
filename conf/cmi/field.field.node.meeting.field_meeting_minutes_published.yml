@@ -1,0 +1,23 @@
+uuid: 0180e752-4ef1-45f5-ab7c-90a3ea196d7a
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_minutes_published
+    - node.type.meeting
+id: node.meeting.field_meeting_minutes_published
+field_name: field_meeting_minutes_published
+entity_type: node
+bundle: meeting
+label: 'MInutes published'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
+field_type: boolean

@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.meeting.field_meeting_agenda_published
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_date
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
+    - field.field.node.meeting.field_meeting_minutes_published
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
     - node.type.meeting
@@ -26,12 +28,14 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_meeting_agenda_published: true
   field_meeting_attachment_info: true
   field_meeting_date: true
   field_meeting_dm: true
   field_meeting_dm_id: true
   field_meeting_id: true
   field_meeting_location: true
+  field_meeting_minutes_published: true
   field_meeting_sequence_number: true
   field_meeting_status: true
   langcode: true

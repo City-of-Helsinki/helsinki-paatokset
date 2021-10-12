@@ -3,12 +3,14 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.meeting.field_meeting_agenda_published
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_date
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
+    - field.field.node.meeting.field_meeting_minutes_published
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
     - node.type.meeting
@@ -21,8 +23,18 @@ targetEntityType: node
 bundle: meeting
 mode: default
 content:
+  field_meeting_agenda_published:
+    weight: 5
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_meeting_attachment_info:
-    weight: 6
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -38,7 +50,7 @@ content:
     type: datetime_default
     region: content
   field_meeting_dm:
-    weight: 7
+    weight: 9
     label: above
     settings:
       link_to_entity: false
@@ -46,7 +58,7 @@ content:
     type: string
     region: content
   field_meeting_dm_id:
-    weight: 8
+    weight: 10
     label: above
     settings:
       link_to_entity: false
@@ -69,8 +81,18 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_meeting_minutes_published:
+    weight: 6
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_meeting_sequence_number:
-    weight: 5
+    weight: 7
     label: above
     settings:
       thousand_separator: ''
