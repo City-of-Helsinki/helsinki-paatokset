@@ -105,7 +105,7 @@
   {% if is_organization %}
     {% set sections = [
       recent_documents,
-      recent_meetings,
+      most_recent_meeting,
       meeting_calendar,
       members
     ] %}
@@ -117,8 +117,8 @@
           {% if recent_documents %} 
             <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
           {% endif %}
-          {% if recent_meetings %}
-          <li><a href="#recent-meetings">{{ 'Recent meeting recordings'|trans }}</a></li>
+          {% if most_recent_meeting %}
+          <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
           {% endif %}
           {% if meeting_calendar %}
             <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
