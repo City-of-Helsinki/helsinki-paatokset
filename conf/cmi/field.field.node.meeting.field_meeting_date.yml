@@ -1,10 +1,12 @@
-uuid: 2bdfd67c-4378-4363-a8de-1821f0320de3
+uuid: 48d52dec-d418-427e-a491-c531a97548ab
 langcode: fi
 status: true
 dependencies:
   config:
     - field.storage.node.field_meeting_date
     - node.type.meeting
+  module:
+    - datetime
 id: node.meeting.field_meeting_date
 field_name: field_meeting_date
 entity_type: node
@@ -13,9 +15,7 @@ label: 'Meeting Date'
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    value: 1634022030
+default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: timestamp
+field_type: datetime

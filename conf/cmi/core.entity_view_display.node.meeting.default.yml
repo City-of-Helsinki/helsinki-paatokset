@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_status
     - node.type.meeting
   module:
+    - datetime
     - text
     - user
 id: node.meeting.default
@@ -31,11 +32,10 @@ content:
     weight: 1
     label: above
     settings:
-      date_format: long
-      custom_date_format: ''
-      timezone: ''
+      timezone_override: ''
+      format_type: long
     third_party_settings: {  }
-    type: timestamp
+    type: datetime_default
     region: content
   field_meeting_dm:
     weight: 7
