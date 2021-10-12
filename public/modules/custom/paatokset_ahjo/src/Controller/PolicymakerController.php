@@ -21,7 +21,14 @@ class PolicymakerController extends ControllerBase {
    */
   public function documents($organization) {
     // @todo implement documents page
-    $build = ['#title' => t('Documents: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
+    $build = [
+      '#title' => t('Documents: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+      '#markup' => '
+        <p class="container"> ' .
+      t('The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
+          The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.') .
+      '</p>',
+    ];
     return $build;
   }
 
