@@ -68,9 +68,13 @@ module:
   metatag_twitter_cards: 0
   metatag_views: 0
   migrate: 0
+  migrate_plus: 0
   node: 0
   options: 0
   paatokset_ahjo: 0
+  paatokset_ahjo_api: 0
+  paatokset_ahjo_openid: 0
+  paatokset_ahjo_proxy: 0
   paatokset_helsinki_kanava: 0
   paatokset_news_importer: 0
   paatokset_search_form: 0

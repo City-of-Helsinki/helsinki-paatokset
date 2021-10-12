@@ -1,0 +1,4 @@
+services:
+  paatokset_ahjo_proxy:
+    class: Drupal\paatokset_ahjo_proxy\AhjoProxy
+    arguments: ['@http_client', '@cache.default', '@paatokset_ahjo_openid']

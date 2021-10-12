@@ -1,0 +1,117 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_openid
+id: ahjo_meetings
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+migration_group: ahjo_api
+label: 'Ahjo API - Meetings'
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  urls:
+    - 'public://meetings.json'
+  item_selector: meetings
+  fields:
+    -
+      name: title
+      label: Title
+      selector: Name
+    -
+      name: meeting_id
+      label: Meeting ID
+      selector: MeetingID
+    -
+      name: meeting_date
+      label: Meeting Date
+      selector: DateMeeting
+    -
+      name: meeting_status
+      label: Status
+      selector: Status
+    -
+      name: meeting_sequence_number
+      label: Meeting Sequence Number
+      selector: MeetingSequenceNumber
+    -
+      name: meeting_agenda
+      label: Meeting agenda
+      selector: Agenda
+    -
+      name: meeting_documents
+      label: Meeting documents
+      selector: MeetingDocuments
+    -
+      name: attachment_info
+      label: Attachment info
+      selector: AttachmentsNotPublishedInfo
+    -
+      name: location
+      label: Location
+      selector: Location
+    -
+      name: decision_maker
+      label: Decision Maker
+      selector: DecisionMaker
+    -
+      name: decision_maker_id
+      label: Decision Maker ID
+      selector: DecisionMakerId
+    -
+      name: links
+      label: Links
+      selector: links
+  ids:
+    meeting_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: meeting
+  title:
+    plugin: default_value
+    source: title
+    default_value: 'NO TITLE'
+  field_meeting_id: meeting_id
+  field_meeting_status: meeting_status
+  field_meeting_attachment_info/format:
+    plugin: default_value
+    default_value: full_html
+  field_meeting_attachment_info/value: attachment_info
+  field_meeting_sequence_number: meeting_sequence_number
+  field_meeting_location: location
+  field_meeting_dm: decision_maker
+  field_meeting_dm_id: decision_maker_id
+  field_meeting_date:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.000'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: meeting_date
+  field_meeting_agenda_published:
+    -
+      callable: _paatokset_ahjo_api_true_if_not_empty
+      plugin: callback
+      source: meeting_agenda
+    -
+      plugin: default_value
+      default_value: 0
+  field_meeting_minutes_published:
+    -
+      plugin: single_value
+      source: meeting_documents
+    -
+      callable: _paatokset_ahjo_api_meeting_minutes_published
+      plugin: callback
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }

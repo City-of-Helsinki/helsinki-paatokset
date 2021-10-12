@@ -44,6 +44,15 @@ paatokset_ahjo_openid.refresh:
   options:
     no_cache: 'TRUE'
 
+paatokset_ahjo_openid.token:
+  path: '/admin/ahjo-open-id/token'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::getToken'
+  requirements:
+    _permission: 'administer content'
+  options:
+    no_cache: 'TRUE'
+
 paatokset_ahjo_openid.debug:
   path: '/admin/ahjo-open-id/debug'
   defaults:

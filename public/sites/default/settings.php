@@ -96,3 +96,7 @@ if ($env = getenv('APP_ENV')) {
   }
 }
 
+/**
+ * HTTP Client config.
+ */
+$settings['http_client_config']['timeout'] = 60;

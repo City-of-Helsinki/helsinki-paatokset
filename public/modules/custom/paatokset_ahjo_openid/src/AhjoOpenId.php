@@ -87,13 +87,33 @@ class AhjoOpenId implements ContainerInjectionInterface {
   }
 
   /**
+   * Check if connector is configured.
+   *
+   * @return bool
+   *   FALSE if connector has missing configs.
+   */
+  public function isConfigured(): bool {
+    // Missing config options.
+    if (empty($this->authUrl) || empty($this->callbackUrl) || empty($this->clientId) || empty($this->openIdScope)) {
+      return FALSE;
+    }
+
+    // Missing refresh token.
+    if (!$this->state->get('ahjo_api_refresh_token')) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
    * Get authentication URL.
    *
    * @return string|null
    *   Auth URL.
    */
   public function getAuthUrl(): ?string {
-    if (empty($this->authUrl) || empty($this->callbackUrl) || empty($this->clientId) ||empty($this->openIdScope)) {
+    if (empty($this->authUrl) || empty($this->callbackUrl) || empty($this->clientId) || empty($this->openIdScope)) {
       return NULL;
     }
     return $this->authUrl . '?client_id=' . $this->clientId . '&scope=' . $this->openIdScope . '&response_type=code&redirect_uri=' . $this->callbackUrl;
@@ -167,6 +187,10 @@ class AhjoOpenId implements ContainerInjectionInterface {
    *   Auth token.
    */
   public function checkAuthToken(): bool {
+    if (!$this->state->get('ahjo-api-auth-key')) {
+      return FALSE;
+    }
+
     $auth_expiration = (int) $this->state->get('ahjo-api-auth-expiration');
     if (time() > $auth_expiration) {
       return FALSE;
