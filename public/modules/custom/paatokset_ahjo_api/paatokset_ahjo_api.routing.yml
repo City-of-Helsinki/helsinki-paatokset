@@ -1,0 +1,6 @@
+ahjo_meeting_endpoint:
+  path: 'ahjo_api/meetings'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Controller\MeetingController::query'
+  requirements:
+    _access: 'TRUE'

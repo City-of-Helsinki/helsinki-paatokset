@@ -1,0 +1,3 @@
+services:
+  Drupal\paatokset_ahjo_api\Service\MeetingService:
+    class: Drupal\paatokset_ahjo_api\Service\MeetingService
