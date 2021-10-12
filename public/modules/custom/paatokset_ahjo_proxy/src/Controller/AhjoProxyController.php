@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy\Controller;
 
-use Drupal\Core\Url;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\HttpFoundation\Request;

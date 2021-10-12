@@ -71,7 +71,9 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @param \GuzzleHttp\ClientInterface $http_client
    *   HTTP Client.
-   * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId
+   * @param \Drupal\Core\Cache\CacheBackendInterface $data_cache
+   *   Data Cache.
+   * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -95,7 +97,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
-   * Get metting data
+   * Get meeting data.
    *
    * @param string|null $query_string
    *   Query string to pass on to endpoint.
@@ -116,7 +118,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     // Follow single meeting URLs to get full data.
-    // TODO: Limit amount of requests.
+    // @todo Limit amount of requests.
     $meetings_full = [];
     foreach ($meetings['meetings'] as $meeting) {
       if (empty($meeting['links'])) {
@@ -186,7 +188,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The JSON returned by API service.
    */
   protected function getContent(string $url) : array {
-    // TODO: Implement parameter for bypassing cache for callback notifications.
+    // @todo Implement parameter for bypassing cache for callback notifications.
     if ($data = $this->getFromCache($url)) {
       return $data;
     }
