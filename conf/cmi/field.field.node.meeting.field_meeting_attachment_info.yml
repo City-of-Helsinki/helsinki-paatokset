@@ -1,0 +1,26 @@
+uuid: 4a2404ce-8011-42b8-83c3-4ae75417e08b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_attachment_info
+    - node.type.meeting
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    plain_text: plain_text
+id: node.meeting.field_meeting_attachment_info
+field_name: field_meeting_attachment_info
+entity_type: node
+bundle: meeting
+label: 'Not published attachments info'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -1,0 +1,22 @@
+uuid: 005a05d3-b61a-42e2-8718-57fc8c43dae7
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.meeting
+id: node.meeting.promote
+field_name: promote
+entity_type: node
+bundle: meeting
+label: 'Näytetään etusivulla'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
+field_type: boolean

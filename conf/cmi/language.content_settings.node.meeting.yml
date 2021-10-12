@@ -1,0 +1,11 @@
+uuid: d1de8ff4-2fc9-4508-9e94-8f0074f69b14
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.meeting
+id: node.meeting
+target_entity_type_id: node
+target_bundle: meeting
+default_langcode: fi
+language_alterable: false

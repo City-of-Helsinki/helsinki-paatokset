@@ -1,0 +1,19 @@
+uuid: 0e07b78c-b033-422d-b3ff-e274654991f4
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_status
+    - node.type.meeting
+id: node.meeting.field_meeting_status
+field_name: field_meeting_status
+entity_type: node
+bundle: meeting
+label: Status
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
