@@ -54,6 +54,10 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
     'policymaker_minutes' => [
       'render element' => 'elements',
       'template' => 'content/minutes'
+    ],
+    'block__policymaker_calendar' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--policymaker-calendar'
     ]
   ];
 }
@@ -131,6 +135,18 @@ function paatokset_ahjo_theme_suggestions_paatokset_agenda_item(array $variables
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_theme_suggestions_block__policymaker_calendar(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'block__policymaker_calendar__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
  * Prepares variables for paatokset_ahjo templates.
  *
  * Default template: paatokset-issue.html.twig.
@@ -178,6 +194,37 @@ function template_preprocess_paatokset_meeting(array &$variables) {
   if (isset($variables['elements']['#paatokset_meeting'])) {
     $variables['entity'] = $variables['elements']['#paatokset_meeting'];
   }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-meeting.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_block__policymaker_calendar(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__policymaker_calendar'])) {
+    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
+  }
+
+  $variables['date'] = t('Date');
+  $variables['time'] = t('Time');
+  $variables['additional_info'] = t('Additional information');
+  $variables['open_agenda'] = t('Open agenda');
+
+  $variables['meetings'] = $policymakerService->getAgendasList()['2021'];
+
+  dump($variables);
 }
 
 /**

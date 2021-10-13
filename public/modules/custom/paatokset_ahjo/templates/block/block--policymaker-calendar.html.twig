@@ -1,0 +1,25 @@
+{%
+  set classes = [
+  'policymaker-calendar',
+  view_mode ? 'policymaker-calendar--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+<div {{ attributes.addClass(classes) }}>
+  <h2>{{ label }}</h2>
+  <table class="policymaker-calendar__table">
+    <tr>
+      <th>{{ date }}</th>
+      <th>{{ time }}</th>
+      <th>{{ additional_info }}</th>
+    </tr>
+    {% for meeting in meetings %}
+    <tr>
+      <th>{{ meeting.date_desktop }}</th>
+      <th>{{ time }}</th>
+      <th>{{ additional_info }}</th>
+      <th>{{ open_agenda }}</th>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
