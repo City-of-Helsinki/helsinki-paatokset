@@ -1,3 +1,4 @@
+uuid: 274d3b59-b90b-4a2b-9db8-813b6cf1162b
 langcode: en
 status: true
 dependencies:
@@ -8,4 +9,3 @@ label: 'Publish service channel'
 type: tpr_service_channel
 plugin: 'entity:publish_action:tpr_service_channel'
 configuration: {  }
-uuid: 274d3b59-b90b-4a2b-9db8-813b6cf1162b
