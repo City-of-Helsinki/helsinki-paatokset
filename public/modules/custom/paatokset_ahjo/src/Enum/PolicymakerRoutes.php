@@ -7,11 +7,12 @@ namespace Drupal\paatokset_ahjo\Enum;
  */
 class PolicymakerRoutes {
   const ORGANIZATION = [
-    'Documents' => 'policymaker.documents',
+    'documents' => 'policymaker.documents',
+    'discussion_minutes' => 'policymaker.discussion_minutes',
   ];
 
   const TRUSTEE = [
-    'Decisions' => 'policymaker.decisions',
+    'decisions' => 'policymaker.decisions',
   ];
 
   /**

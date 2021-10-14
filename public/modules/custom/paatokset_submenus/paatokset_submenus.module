@@ -33,7 +33,8 @@ function paatokset_submenus_theme($existing, $type, $theme, $path) {
 function paatokset_submenus_preprocess_block(&$variables) {
   $plugins = [
     'agendas_submenu',
-    'agendas_submenu_documents'
+    'agendas_submenu_documents',
+    'paatokset_minutes_of_discussion'
   ];
 
   if (in_array($variables['plugin_id'], $plugins)) {
@@ -45,7 +46,7 @@ function paatokset_submenus_preprocess_block(&$variables) {
       $variables['type'] = 'decisions';
     }
 
-    if($variables['plugin_id'] === 'agendas_submenu_documents') {
+    if(in_array($variables['plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
       $variables['type'] = 'documents';
     }
   }
@@ -80,7 +81,7 @@ function paatokset_submenus_preprocess_block__policymaker_side_nav(&$variables) 
  * Implements hook_theme_suggestion_block_alter().
  */
 function paatokset_submenus_theme_suggestions_block_alter(&$suggestions, $variables) {
-  if(isset($variables['elements']['#plugin_id']) && $variables['elements']['#plugin_id'] === 'agendas_submenu_documents') {
+  if(isset($variables['elements']['#plugin_id']) && in_array($variables['elements']['#plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
     $suggestions[] = 'block__agendas_submenu';
   }
 }
