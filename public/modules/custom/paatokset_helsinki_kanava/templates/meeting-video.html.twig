@@ -1,14 +1,14 @@
 <div class="meeting-video">
+  {% if content.name|render %}
+    <h3 class="video__name">
+      {{ content.name }}
+    </h3>
+  {% endif %}
+
   <div class="meeting-video__video-container">
     {{ content.embed_url }}
   </div>
 
-  {% if content.name|render %}
-    <p class="video__name">
-      {{ content.name }}
-    </p>
-  {% endif %}
-  
   {% if all_recordings_link %}
     <div class="view-all view-all--recordings">
       <a class="paatokset-button-link" href="{{ all_recordings_link }}">
