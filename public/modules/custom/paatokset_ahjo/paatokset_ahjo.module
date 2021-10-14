@@ -50,6 +50,10 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
     'tpr_unit__contact_card' => [
       'base hook' => 'entity',
       'template' => 'content/tpr-unit--contact-card'
+    ],
+    'policymaker_minutes' => [
+      'render element' => 'elements',
+      'template' => 'content/minutes'
     ]
   ];
 }
@@ -279,6 +283,18 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
         $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
       }
     }
+  }
+}
+
+function paatokset_ahjo_preprocess_policymaker_minutes(&$variables) {
+  if(isset($variables['elements']['meeting']) && !empty($variables['elements']['meeting'])) {
+    $variables['meeting'] = $variables['elements']['meeting'];
+  }
+  if(isset($variables['elements']['list']) && !empty($variables['elements']['list'])) {
+    $variables['list'] = $variables['elements']['list'];
+  }
+  if(isset($variables['elements']['file']) && !empty($variables['elements']['file'])) {
+    $variables['file'] = $variables['elements']['file'];
   }
 }
 

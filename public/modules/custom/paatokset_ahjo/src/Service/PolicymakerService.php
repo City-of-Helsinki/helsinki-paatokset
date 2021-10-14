@@ -7,6 +7,8 @@ use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo\Entity\Issue;
+use Drupal\paatokset_ahjo\Entity\Meeting;
+use Drupal\paatokset_ahjo\Entity\MeetingDocument;
 use Drupal\paatokset_ahjo\Enum\PolicymakerRoutes;
 
 /**
@@ -26,20 +28,31 @@ class PolicymakerService {
    * Class constructor.
    */
   public function __construct($id = NULL) {
-    $node = NULL;
+    $node;
 
     if ($id) {
       $node = Node::load($id);
     }
     else {
       $node = \Drupal::routeMatch()->getParameter('node');
-      $routeName = \Drupal::routeMatch()->getRouteName();
+      $routeParams = \Drupal::routeMatch()->getParameters();
+
       if (!$node) {
         $current_path = \Drupal::service('path.current')->getPath();
-        $path_parts = explode('/', $current_path);
+        $path_parts = explode('/', trim($current_path));
         array_pop($path_parts);
         $path_alias = implode('/', $path_parts);
         $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_alias);
+        if (preg_match('/node\/(\d+)/', $path, $matches)) {
+          $node = Node::load($matches[1]);
+        }
+      }
+
+      // Determine policymaker in custom routes.
+      if (!$node && $routeParams->get('organization')) {
+        array_pop($path_parts);
+        $path = \Drupal::service('path_alias.manager')->getPathByAlias(implode('/', $path_parts));
+
         if (preg_match('/node\/(\d+)/', $path, $matches)) {
           $node = Node::load($matches[1]);
         }
@@ -134,6 +147,26 @@ class PolicymakerService {
     }
 
     return NULL;
+  }
+
+  /**
+   * Return minutes page route by meeting id.
+   */
+  public function getMinutesRoute($id) {
+    if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
+      return NULL;
+    }
+
+    $route = PolicymakerRoutes::getSubroutes()['minutes'];
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $localizedRoute = "$route.$currentLanguage";
+
+    if ($this->routeExists($localizedRoute)) {
+      return Url::fromRoute($localizedRoute, [
+        'organization' => strtolower($this->policymaker->get('title')->value),
+        'id' => $id,
+      ]);
+    }
   }
 
   /**
@@ -243,7 +276,7 @@ class PolicymakerService {
   public function getApiMinutes($limit = NULL, $byYear = FALSE) {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_document_field_data', 'pmdfd')
-      ->fields('pmdfd', ['origin_url', 'publish_time'])
+      ->fields('pmdfd', ['origin_url', 'publish_time', 'meeting_id'])
       ->fields('pmfd', ['meeting_date']);
     $query->join('paatokset_meeting_field_data', 'pmfd', ' pmfd.id = pmdfd.meeting_id');
     $query->condition('pmfd.policymaker_uri', $this->policymaker->get('field_resource_uri')->value);
@@ -270,6 +303,11 @@ class PolicymakerService {
         'origin_url' => $result->origin_url,
       ];
 
+      $link = $this->getMinutesRoute($result->meeting_id);
+      if ($link) {
+        $transformedResult['link'] = $link;
+      }
+
       if ($byYear) {
         $transformedResults[$result->year][] = $transformedResult;
       }
@@ -279,6 +317,75 @@ class PolicymakerService {
     }
 
     return $transformedResults;
+  }
+
+  /**
+   * Return all agenda items for a meeting. Only works on policymaker subpages.
+   */
+  public function getMeetingAgenda($meetingId) {
+    // Check that the meeting belongs to current policymaker.
+    $query = \Drupal::entityQuery('paatokset_meeting')
+      ->condition('id', $meetingId)
+      ->condition('policymaker_uri', $this->policymaker->get('field_resource_uri')->value)
+      ->range(0, 1)
+      ->execute();
+
+    $id = reset($query);
+
+    if ($id) {
+      $meeting = Meeting::load($id);
+
+      $database = \Drupal::database();
+      $query = $database->select('paatokset_agenda_item_field_data', 'paifd')
+        ->fields('paifd', ['id', 'subject', 'index', 'issue_id']);
+      $query->condition('paifd.meeting_id', $id);
+      $query->addExpression('cast(paifd.index as unsigned)', 'cast_index');
+      $query->orderBy('cast_index');
+      $agendaItems = $query->execute()->fetchAllAssoc('id');
+
+      $issue_ids = array_map(function ($item) {
+        return $item->issue_id;
+      }, $agendaItems);
+
+      $issues = Issue::loadMultiple($issue_ids);
+
+      $transformedItems = [];
+      foreach ($agendaItems as $agendaItem) {
+        if (isset($issue[$agendaItem->issue_id])) {
+          $agendaItem->link = $issues[$agendaItem->issue_id]->toUrl()->setOption(['query' => ['decision' => $agendaItem->id]]);
+        }
+      }
+
+      $dateLong = date('d.m.Y', strtotime($meeting->get('meeting_date')->value));
+      $dateShort = date('m/Y', strtotime($meeting->get('meeting_date')->value));
+      $policymaker = $this->policymaker->get('title')->value;
+
+      $documentId = \Drupal::entityQuery('paatokset_meeting_document')
+        ->condition('meeting_id', $id)
+        ->execute();
+
+      $fileUrl;
+      $publishDate;
+      if ($documentId) {
+        $document = MeetingDocument::load(reset($documentId));
+        $fileUrl = $document->get('origin_url')->value;
+        $publishDate = date('d.m.Y', strtotime($document->get('publish_time')->value));
+      }
+
+      return [
+        'meeting' => [
+          'date_long' => $dateLong,
+          'title' => "$policymaker $dateShort",
+        ],
+        'list' => $agendaItems,
+        'file' => [
+          'file_url' => $fileUrl,
+          'publish_date' => $publishDate,
+        ],
+      ];
+    }
+
+    return NULL;
   }
 
   /**

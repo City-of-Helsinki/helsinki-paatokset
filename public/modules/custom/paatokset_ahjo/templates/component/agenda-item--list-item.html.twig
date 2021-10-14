@@ -1,0 +1,15 @@
+{#
+/**
+ *
+ * @file
+ * Template for a single attachment
+ */
+#}
+
+<div class="policymaker-list-item policymaker-list-item--agenda-item">
+  <a href="{{ agenda_item.link }}">
+    <span class="agenda-item__index-number">{{ agenda_item.index }}</span>
+    <span class="agenda-item__subject">{{ agenda_item.subject }}</span>
+    {% include '@hdbt/misc/icon.twig' with {icon: 'arrow-right'} %}
+  </a>
+</div>
