@@ -130,7 +130,7 @@
 
   .list-item__subject a {
     text-decoration: none;
-    font-weight: $medium;
+    font-weight: $font-weight-medium;
     font-size: 24px;
   } 
 }
@@ -155,7 +155,7 @@
 }
 
 .minutes-list__header {
-  font-weight: $medium;
+  font-weight: $font-weight-medium;
   font-size: 24px;
 
   margin-bottom: $spacing-and-half;
@@ -190,7 +190,7 @@
   
   .publish-date__date {
     font-size: $font-size-heading-4;
-    font-weight: $bold;
+    font-weight: $font-weight-bold;
   }
 }
 
