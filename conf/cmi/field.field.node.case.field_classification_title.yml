@@ -1,0 +1,19 @@
+uuid: 822430d2-cbfd-4c1a-a1e9-9fadbcf648d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_classification_title
+    - node.type.case
+id: node.case.field_classification_title
+field_name: field_classification_title
+entity_type: node
+bundle: case
+label: 'Classification title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

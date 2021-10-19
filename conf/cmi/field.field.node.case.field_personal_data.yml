@@ -1,0 +1,19 @@
+uuid: f1da4431-181d-4946-b68a-b3fe896993f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_personal_data
+    - node.type.case
+id: node.case.field_personal_data
+field_name: field_personal_data
+entity_type: node
+bundle: case
+label: 'Personal data'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

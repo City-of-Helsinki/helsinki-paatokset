@@ -1,0 +1,141 @@
+uuid: 3572959d-0e0a-4a50-a2b2-e345eecc0112
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.case.field_acquired
+    - field.field.node.case.field_classification_code
+    - field.field.node.case.field_classification_title
+    - field.field.node.case.field_created
+    - field.field.node.case.field_deadline
+    - field.field.node.case.field_description
+    - field.field.node.case.field_diary_number
+    - field.field.node.case.field_diary_number_label
+    - field.field.node.case.field_personal_data
+    - field.field.node.case.field_public_reference
+    - field.field.node.case.field_publicity_class
+    - field.field.node.case.field_reference
+    - field.field.node.case.field_status
+    - node.type.case
+  module:
+    - datetime
+    - text
+    - user
+id: node.case.default
+targetEntityType: node
+bundle: case
+mode: default
+content:
+  field_acquired:
+    weight: 105
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_classification_code:
+    weight: 107
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_classification_title:
+    weight: 108
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_created:
+    weight: 104
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_deadline:
+    weight: 106
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_description:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_diary_number:
+    weight: 101
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_diary_number_label:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_personal_data:
+    weight: 111
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_public_reference:
+    weight: 113
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_publicity_class:
+    weight: 109
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_reference:
+    weight: 112
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_status:
+    weight: 110
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
