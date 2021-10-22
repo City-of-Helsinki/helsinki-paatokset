@@ -1,0 +1,25 @@
+uuid: 32f67714-3c12-45e4-b847-b7a592853e46
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_helsinki_kanava
+    - system
+  theme:
+    - helfi_paatokset
+id: helsinkikanavaannouncements
+theme: helfi_paatokset
+region: before_content
+weight: -11
+provider: null
+plugin: paatokset_helsinki_kanava_announcements
+settings:
+  id: paatokset_helsinki_kanava_announcements
+  label: 'Helsinki Kanava announcements'
+  provider: paatokset_helsinki_kanava
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: "<front>\r\n/paattajat/*"
+    negate: false

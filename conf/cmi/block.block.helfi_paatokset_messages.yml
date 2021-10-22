@@ -9,7 +9,7 @@ dependencies:
 id: helfi_paatokset_messages
 theme: helfi_paatokset
 region: messages
-weight: -3
+weight: -14
 provider: null
 plugin: system_messages_block
 settings:

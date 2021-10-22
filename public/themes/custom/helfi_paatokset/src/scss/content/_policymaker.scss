@@ -201,3 +201,16 @@
     }
   }
 }
+
+#block-helsinkikanavaannouncements .announcement {
+  @include breakpoint($breakpoint-m) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.policymaker-live-sream {
+  .view-all--recordings {
+    display: none;
+  }
+}

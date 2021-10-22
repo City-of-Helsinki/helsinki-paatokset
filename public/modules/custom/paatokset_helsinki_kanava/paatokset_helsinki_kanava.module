@@ -1,6 +1,10 @@
 <?php
 
+
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\Entity\Node;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
@@ -11,6 +15,11 @@ function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path) {
     'meeting_video' => [
       'render element' => 'elements',
       'template' => 'meeting-video'
+    ],
+    'block__paatokset_helsinki_kanava_announcements' => [
+      'base hook' => 'block',
+      'render element' => 'elements',
+      'template' => 'block--paatokset-helsinki-kanava-announcements'
     ]
   ];
 }
@@ -55,5 +64,43 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 
       $variables['most_recent_meeting'] = $view_builder->view($video);
     }
+
+    $councilNode = Node::load($council);
+    if($councilNode) {
+      $liveStreamQuery = \Drupal::entityQuery('meeting_video');
+      $liveStreamQuery->range(0, 1);
+      $liveStreamQuery->condition('start_time', strtotime('now'), '>');
+      $upcomingIds = $liveStreamQuery->execute();
+  
+      if($upcomingIds) {
+        $liveStream = MeetingVideo::load(reset($upcomingIds));
+
+        if(_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
+          $view_builder = \Drupal::entityTypeManager()
+          ->getViewBuilder($liveStream
+          ->getEntityTypeId());
+    
+          $variables['live_stream'] = $view_builder->view($liveStream);
+        }
+      }
+    }
   }
+}
+
+function _paatokset_helsinki_kanava_should_show_stream($time) {
+  return strtotime('+1 hour') > $time;
+}
+
+function paatokset_helsinki_kanava_update_9001() {
+  $entity_type_id = 'meeting_video';
+  $field_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('start_time'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setDefaultValue('')
+    ->setCardinality(1)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('start_time', $entity_type_id, $entity_type_id, $field_storage_definition);
 }

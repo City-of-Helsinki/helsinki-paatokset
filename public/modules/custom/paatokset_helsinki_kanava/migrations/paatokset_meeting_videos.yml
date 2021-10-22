@@ -17,6 +17,10 @@ process:
   id: eventId
   name: publicName
   embed_url: defaultEmbedUrl
+  start_time:
+    plugin: callback
+    source: startTime
+    callable: strtotime
   langcode:
     plugin: default_value
     default_value: fi

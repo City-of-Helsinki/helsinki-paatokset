@@ -113,11 +113,14 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
       return;
     }
 
+    $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+    $nextMeetingDate = $meetingsService->nextMeetingDate($council->get('title')->value);
+    $toTime = $nextMeetingDate ? strtotime($nextMeetingDate) * 1000 : round(microtime(TRUE) * 1000);
+
     $version = '01';
     $languageId = 'fi_FI';
     $dateTime = new \DateTime($result->meeting_date);
     $fromTime = strtotime($result->meeting_date) * 1000;
-    $toTime = round(microtime(TRUE) * 1000);
     $tokenTime = dechex(time());
 
     $organizationId = getenv('HELSINKI_KANAVA_ID');

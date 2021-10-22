@@ -93,6 +93,19 @@ final class MeetingVideo extends ContentEntityBase {
         'text_processing' => 0,
       ]);
 
+    $fields['start_time'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Start time'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ]);
+
     return $fields;
   }
 
