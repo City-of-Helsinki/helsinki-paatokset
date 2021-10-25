@@ -5,21 +5,29 @@
 ]
 %}
 
+{% if meetings %}
 <div {{ attributes.addClass(classes) }}>
   <h2>{{ label }}</h2>
   <table class="policymaker-calendar__table">
-    <tr>
+    <tr class="policymaker-calendar__table-header policymaker-calendar__table-row">
       <th>{{ date }}</th>
       <th>{{ time }}</th>
       <th>{{ additional_info }}</th>
+      <th></th>
     </tr>
-    {% for meeting in meetings %}
-    <tr>
-      <th>{{ meeting.date_desktop }}</th>
-      <th>{{ time }}</th>
-      <th>{{ additional_info }}</th>
-      <th>{{ open_agenda }}</th>
-    </tr>
+    {% for date, meeting in meetings %}
+      {% for row in meeting %}
+      <tr class="policymaker-calendar__table-row">
+        <th>{{ date|date("d.m.Y") }}</th>
+        <th>{{ row.start_time}}</th>
+        <th></th>
+        <th>
+          <a href="{{row.motions_list_link}}">{{ open_agenda }}</a>
+          <i class="hds-icon hds-icon--arrow-right"></i>
+        </th>
+      </tr>
+      {% endfor %}
     {% endfor %}
   </table>
 </div>
+{% endif %}

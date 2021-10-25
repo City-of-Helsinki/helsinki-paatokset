@@ -1,0 +1,42 @@
+.policymaker-calendar__table {
+  width: 100%;
+  max-width: unset;
+  display: table;
+  border-collapse: collapse;
+
+  th {
+    background-color: $color-white;
+    color: $color-black;
+    padding: $spacing-and-half 0;
+    padding-right: $spacing-and-half;
+  }
+
+  th a {
+    color: $color-black;
+  }
+
+  .hds-icon--arrow-right {
+    width: 1rem;
+    height: 1rem;
+    margin-left: $spacing;
+  }
+}
+
+.policymaker-calendar__table-header {
+  th {
+    font-weight: 500;
+  }
+}
+
+.policymaker-calendar__table-row {
+  border-bottom: 1px solid $color-black-20;
+
+  &:hover {
+    background-color: none;
+  }
+
+  th:last-of-type {
+    display: flex;
+    align-items: center;
+  }
+}
