@@ -47,6 +47,7 @@ process:
     source: policymaker
     start: 0
     length: 255
+  number: number
 destination:
   plugin: 'entity:paatokset_meeting'
 migration_dependencies: {  }

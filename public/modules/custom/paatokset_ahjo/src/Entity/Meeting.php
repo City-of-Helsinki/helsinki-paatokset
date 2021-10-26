@@ -113,6 +113,15 @@ final class Meeting extends RemoteEntityBase {
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['number'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('number'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setCardinality(1)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 

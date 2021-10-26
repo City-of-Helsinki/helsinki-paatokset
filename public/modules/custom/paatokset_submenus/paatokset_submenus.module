@@ -38,7 +38,6 @@ function paatokset_submenus_preprocess_block(&$variables) {
   ];
 
   if (in_array($variables['plugin_id'], $plugins)) {
-    $variables['title'] = $variables['content']['#title'];
     $variables['years'] = $variables['content']['#years'];
     $variables['list'] = $variables['content']['#list'];
 

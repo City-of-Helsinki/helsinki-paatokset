@@ -277,7 +277,7 @@ class PolicymakerService {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_document_field_data', 'pmdfd')
       ->fields('pmdfd', ['origin_url', 'publish_time', 'meeting_id'])
-      ->fields('pmfd', ['meeting_date']);
+      ->fields('pmfd', ['meeting_date', 'number']);
     $query->join('paatokset_meeting_field_data', 'pmfd', ' pmfd.id = pmdfd.meeting_id');
     $query->condition('pmfd.policymaker_uri', $this->policymaker->get('field_resource_uri')->value);
     $query->orderBy('pmdfd.publish_time', 'DESC');
@@ -301,6 +301,7 @@ class PolicymakerService {
         'publish_date_short' => $shortDate,
         'title' => t('Minutes'),
         'origin_url' => $result->origin_url,
+        'meeting_number' => $result->number . ' - ' . date('Y', strtotime($result->publish_time)),
       ];
 
       $link = $this->getMinutesRoute($result->meeting_id);
@@ -413,13 +414,13 @@ class PolicymakerService {
         $file_id = $entity->get('field_document')->target_id;
         $download_link;
         if ($entity->get('field_document')->target_id) {
-          $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()));
+          $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()))->toString();
         }
         $year = date('Y', strtotime($result[$id]));
         $transformedResult = [
           'publish_date' => date('d.m.Y', strtotime($result[$id])),
           'publish_date_short' => date('m-Y', strtotime($result[$id])),
-          'title' => '123',
+          'title' => $entity->get('name')->value,
           'origin_url' => $download_link,
         ];
 

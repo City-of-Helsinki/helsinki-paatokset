@@ -515,3 +515,28 @@ function paatokset_ahjo_update_9007() {
     ->setDisplayConfigurable('form', TRUE);
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('confidentiality_reason', $entity_type_id, $entity_type_id, $field_storage_definition);
 }
+
+function paatokset_ahjo_update_9008() {
+  $entity_type_id = 'paatokset_agenda_item';
+
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('meeting_number'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('meeting_number', $entity_type_id, $entity_type_id, $field_storage_definition);
+
+  $entity_type_id = 'paatokset_meeting';
+  $field_storage_definition = BaseFieldDefinition::create('string')
+  ->setLabel(new TranslatableMarkup('number'))
+  ->setTranslatable(TRUE)
+  ->setRevisionable(TRUE)
+  ->setDefaultValue('')
+  ->setCardinality(1)
+  ->setDisplayConfigurable('view', TRUE)
+  ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('number', $entity_type_id, $entity_type_id, $field_storage_definition);
+}

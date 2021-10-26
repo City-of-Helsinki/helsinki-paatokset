@@ -95,9 +95,9 @@
     </div>
     <div>
       {% if content.field_policymaker_summary|render %}
-        {{ content.field_policymaker_summary }}
+        <p>{{ content.field_policymaker_summary }}</p>
       {% elseif content.field_ahjo_summary|render %}
-        {{ content.field_ahjo_summary|raw }}
+        <p>{{ content.field_ahjo_summary|raw }}</p>
       {% endif %}
     </div>
   </section>

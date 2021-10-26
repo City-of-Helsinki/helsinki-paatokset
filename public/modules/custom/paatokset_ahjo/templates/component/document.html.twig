@@ -8,15 +8,25 @@
 
 <div class="policymaker-list-item policymaker-list-item--document">
   <div class="list-item__date">
-    <span class="list-item__date--desktop">{{ document.publish_date }}</span>
-    <span class="list-item__date--mobile">{{ document.publish_date_short }}</span>
+    {% if document.publish_date %}
+      <span class="list-item__date--desktop">{{ document.publish_date }}</span>
+    {% endif %}
+    {% if document.publish_date_short %}
+      <span class="list-item__date--mobile">{{ document.publish_date_short }}</span>
+    {% endif %}
   </div>
   <div class="list-item__subject">
     <a href="{{ document.link }}">
       {{ document.title }}
-      <span class="subject__date">
-        {{  document.publish_date_short }}
-      </span>
+      {% if document.meeting_number %}
+        <span class="subject__date">
+          {{  document.meeting_number }}
+        </span>
+      {% elseif document.publish_date_short %}
+        <span class="subject__date">
+          {{  document.publish_date_short }}
+        </span>
+      {% endif %}
     </a>
   </div>
   {% if document.origin_url %}
