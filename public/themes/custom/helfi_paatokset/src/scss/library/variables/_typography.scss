@@ -4,6 +4,8 @@
 // This file includes all variables related to typography
 //
 
+@import "~hds-design-tokens/lib/typography/all.scss";
+
 // Font sizes
 $rembase: 16;
 $base-font-size: 16px; // Leave at 16px for correct container width
@@ -30,17 +32,14 @@ $lineheight-m: 1.2;
 $lineheight-l: 1.5;
 $lineheight-xl: 1.75;
 
-// Font families
-$open-sans: "Open Sans", sans-serif;
+$default-font-family: $font-default;
+$heading-font-family: $font-default;
 
-$default-font-family: $open-sans;
-$heading-font-family: $open-sans;
-
-// Font weights
-$regular: 400;
-$medium: 500;
-$semibold: 600;
-$bold: 700;
+// Font weight.
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-black: 800;
 
 .paatokset__link-plain {
   color: $color-black;

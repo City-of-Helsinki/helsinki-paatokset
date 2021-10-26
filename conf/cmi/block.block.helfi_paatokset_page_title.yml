@@ -20,5 +20,5 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: '/paattajat/*/asiakirjat/*'
+    pages: "/paattajat/*/asiakirjat/*\r\n/paatokset-issue/*"
     negate: true

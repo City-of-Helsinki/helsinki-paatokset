@@ -1,6 +1,6 @@
 .skip-link.focusable {
   &:focus {
-    @include font-weight($semibold);
+    font-weight: $font-weight-medium;
     background-color: $color-white;
     border-radius: 0 0 10px 10px;
     color: $blue;

@@ -34,7 +34,7 @@ main {
 
 input[type="submit"] {
   @include font-size(20px, 26px);
-  @include font-weight($regular);
+  font-weight: $font-weight-regular;
   background: $gray-medium
     linear-gradient(180deg, $gray-dark 0%, $gray-dark 100%) 0 0 no-repeat
     padding-box;

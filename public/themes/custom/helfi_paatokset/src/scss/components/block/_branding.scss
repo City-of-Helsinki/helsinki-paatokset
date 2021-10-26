@@ -18,7 +18,7 @@
 
 .branding__slogan {
   @include font-size(18px);
-  @include font-weight($bold);
+  font-weight: $font-weight-bold;
   display: inline-block;
   line-height: 1;
   margin-left: $spacing-m;

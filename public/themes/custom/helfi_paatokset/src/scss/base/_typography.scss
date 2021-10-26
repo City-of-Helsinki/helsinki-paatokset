@@ -4,194 +4,105 @@
 // This file includes everything related to the basic typography
 //
 
-// Open Sans
-@font-face {
-  font-family: "Open Sans";
-  font-weight: 400;
-  src: url("../fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: url("../fonts/Open_Sans/OpenSans-Italic.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  font-weight: 600;
-  src: url("../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 600;
-  src: url("../fonts/Open_Sans/OpenSans-SemiBoldItalic.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  font-weight: 700;
-  src: url("../fonts/Open_Sans/OpenSans-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 700;
-  src: url("../fonts/Open_Sans/OpenSans-BoldItalic.ttf") format("truetype");
-}
-
 html {
 // ########## General ########## //
-  body {
-    @include font-size($fontsize-body-l);
-    @include font-weight($regular);
-    color: $color-black;
-    font-family: $default-font-family;
-    line-height: $lineheight-l;
-  }
-
-  a {
-    color: $gray-dark;
-    transition: all 150ms linear;
-
-    &:hover,
-    &:focus {
-      color: $color-black;
-      text-decoration: underline;
-    }
-  }
-
-  strong {
-    @include font-weight($semibold);
-  }
-
-  small {
-    font-size: 80%;
-  }
-
-  // ########## Headings ########## //
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: $heading-font-family;
     hyphens: auto;
     line-height: $lineheight-m;
-    margin-top: 0;
+    margin: $spacing-triple 0 0;
     word-break: break-word;
-    margin-bottom: 16px;
-
-    a {
-      color: inherit;
-      font-weight: inherit;
-      text-decoration: none;
-    }
   }
 
   h1,
-  .h1,
-  .page-title__container h1 {
-    font-weight: normal;
-    font-size: $font-size-heading-1;
-    line-height: $font-size-heading-1;
+  h2,
+  h3 {
+    line-height: $lineheight-s;
+  }
+
+  h1 {
+    @include font-size($fontsize-heading-xl);
+    font-weight: $font-weight-regular;
     margin-bottom: 16px;
 
-    @include breakpoint($breakpoint-l) {
-      font-size: 72px;
-      line-height: 72px;
+    @include breakpoint($breakpoint-m) {
+      // Margin on top needed to create enough space on top when there is no hero.
+      margin-top: $spacing-quadruple;
       margin-bottom: 24px;
     }
-  }
-
-  h2,
-  .h2 {
-    font-size: $font-size-heading-2;
-    line-height: $font-size-heading-2;
 
     @include breakpoint($breakpoint-l) {
-      font-size: $font-size-heading-1;
-      line-height: $font-size-heading-1;
+      @include font-size(72px, $lineheight-s);
+      margin-bottom: $spacing-quadruple;
     }
   }
 
-  h3,
-  .h3 {
-    font-size: $font-size-heading-3;
-    line-height: 43px;
+  h2 {
+    @include font-size($fontsize-heading-l);
+    font-weight: $font-weight-regular;
 
     @include breakpoint($breakpoint-l) {
-      font-size: $font-size-heading-2;
+      @include font-size($fontsize-heading-xl);
     }
   }
 
-  h4,
-  .h4 {
-    @include font-size($font-size-heading-4);
+  h3 {
+    @include font-size($fontsize-heading-m);
+    font-weight: $font-weight-regular;
+
+    @include breakpoint($breakpoint-l) {
+      @include font-size($fontsize-heading-l);
+    }
   }
 
-  h5,
-  .h5 {
-    @include font-size($font-size-heading-5);
+  h4 {
+    @include font-size($fontsize-heading-s);
+    font-weight: $font-weight-medium;
+
+    @include breakpoint($breakpoint-l) {
+      @include font-size($fontsize-heading-m);
+    }
   }
 
-  h6,
-  .h6 {
-    @include font-size($font-size-heading-6);
+  h5 {
+    @include font-size($fontsize-heading-xs);
+    font-weight: $font-weight-medium;
+
+    @include breakpoint($breakpoint-l) {
+      @include font-size($fontsize-heading-s);
+      font-weight: $font-weight-regular;
+    }
+  }
+
+  h6 {
+    @include font-size($fontsize-heading-xxs);
+    font-weight: $font-weight-medium;
+
+    @include breakpoint($breakpoint-l) {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  a {
+    color: var(--hdbt-default-link-color);
   }
 
   p {
-    @include font-size($fontsize-body-l);
-    @include font-weight($regular);
-    line-height: $lineheight-l;
-    margin-bottom: $spacing-m;
-    margin-top: 0;
+    margin: $spacing 0 0;
   }
 
-  p,
-  ul,
-  ol {
-    + h2 {
-      margin-top: $spacing-l;
-    }
-
-    + h3 {
-      margin-top: $spacing-m;
-    }
-
-    + h4 {
-      margin-top: $spacing-s;
-    }
-  }
-
-  ul,
-  ol {
-    ul,
-    ol {
-      margin-top: $spacing-2-xs;
-    }
-
-    + p {
-      margin-top: $spacing-s;
-    }
-  }
-
-  ul {
-    padding-left: $spacing-s;
-  }
-
-  ol {
-    padding-left: $spacing-s;
+  ul, ol {
+    margin: $spacing-and-half 0 0;
+    padding: $spacing-and-half 0 0;
   }
 
   blockquote {
     @include font-size(24px, 36px);
-    @include font-weight($regular);
+    font-weight: $font-weight-regular;
     border-left: 5px solid $gray;
     color: $gray-dark;
     letter-spacing: 0;
@@ -200,7 +111,7 @@ html {
 
     p {
       @include font-size(24px, 36px);
-      @include font-weight($regular);
+      font-weight: $font-weight-regular;
     }
   }
 }

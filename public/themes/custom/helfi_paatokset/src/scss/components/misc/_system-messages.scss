@@ -28,7 +28,7 @@
   }
 
   em {
-    @include font-weight($semibold);
+    font-weight: $font-weight-medium;
     font-style: normal;
   }
 
