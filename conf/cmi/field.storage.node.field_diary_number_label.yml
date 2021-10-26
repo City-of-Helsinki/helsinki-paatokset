@@ -1,0 +1,21 @@
+uuid: 0033a945-294d-44fa-a186-9e3ee25f2842
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_diary_number_label
+field_name: field_diary_number_label
+entity_type: node
+type: string
+settings:
+  max_length: 30
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

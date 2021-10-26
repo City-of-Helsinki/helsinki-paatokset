@@ -1,0 +1,125 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_openid
+id: ahjo_cases
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+migration_group: ahjo_api
+label: 'Ahjo API - Cases'
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  urls:
+    - 'public://cases.json'
+  item_selector: cases
+  fields:
+    -
+      name: title
+      label: Title
+      selector: Title
+    -
+      name: case_id
+      label: Case ID
+      selector: CaseID
+    -
+      name: case_id_label
+      label: Case ID Label
+      selector: CaseIDLabel
+    -
+      name: description
+      label: Description
+      selector: Description
+    -
+      name: created
+      label: Created
+      selector: Created
+    -
+      name: acquired
+      label: Acquired
+      selector: Acquired
+    -
+      name: deadline
+      label: Deadline
+      selector: DateCaseDeadline
+    -
+      name: classification_code
+      label: Classification Code
+      selector: ClassificationCode
+    -
+      name: classification_title
+      label: Classification Title
+      selector: ClassificationTitle
+    -
+      name: publicity_class
+      label: Publicity Class
+      selector: PublicityClass
+    -
+      name: status
+      label: Status
+      selector: Status
+    -
+      name: personal_data
+      label: Personal Data
+      selector: PersonalData
+    -
+      name: reference
+      label: Reference
+      selector: Reference
+    -
+      name: public_reference
+      label: Public Reference
+      selector: PublicReference
+  ids:
+    case_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: case
+  title:
+    plugin: default_value
+    source: title
+    default_value: 'NO TITLE'
+  field_diary_number: case_id
+  field_diary_number_label: case_id
+  field_description: description
+  field_created:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.v'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: created
+  field_acquired:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.v'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: acquired
+  field_deadline:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.v'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: deadline
+  field_classification_code: classification_code
+  field_classification_title: classification_title
+  field_publicity_class: publicity_class
+  field_status: status
+  field_personal_data: personal_data
+  field_reference: reference
+  field_public_reference:  public_reference
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }
+

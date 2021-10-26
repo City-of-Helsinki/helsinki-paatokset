@@ -1,0 +1,19 @@
+uuid: 29cea8db-8ef4-4315-80e3-997c0bfffc94
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_public_reference
+    - node.type.case
+id: node.case.field_public_reference
+field_name: field_public_reference
+entity_type: node
+bundle: case
+label: 'Public reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

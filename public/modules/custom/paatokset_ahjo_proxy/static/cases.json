@@ -1,0 +1,525 @@
+{
+  "cases": [
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011830?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011830",
+          "Title": "Aloituspaikat, yleisopetuksen 7. luokka, lukuvuosi 2022-2023",
+          "Created": "2021-10-20T09:07:07.170",
+          "Acquired": "2021-10-20T00:00:00.000",
+          "ClassificationCode": "12 00 01",
+          "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011830"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011828?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011828",
+          "Title": "Aloituspaikat, yleisopetuksen 1. luokka, lukuvuosi 2022-2023",
+          "Created": "2021-10-20T09:04:53.810",
+          "Acquired": "2021-10-20T00:00:00.000",
+          "ClassificationCode": "12 00 01",
+          "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011828"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011819?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011819",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 2, logistiikan tuntiopettaja, työavain KASKO-03-267-21",
+          "Created": "2021-10-20T09:01:34.260",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011819"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011821?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011821",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 2, logistiikan tuntiopettaja, työavain KASKO-03-266-21",
+          "Created": "2021-10-20T09:01:33.323",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011821"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011759?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011759",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 2, logistiikan tuntiopettaja, työavain KASKO-03-269-21",
+          "Created": "2021-10-19T11:15:24.527",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011759"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011749?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011749",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 2, logistiikan määräaikainen tuntiopettaja, työavain KASKO-03-270-21 ",
+          "Created": "2021-10-19T09:27:24.843",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011749"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011743?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011743",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, logistiikan tuntiopettaja, työavain KASKO-03-272-21",
+          "Created": "2021-10-19T09:17:55.473",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011743"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011741?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011741",
+          "Title": "Hankinta, kuuntelumikseri, Stadin ammatti- ja aikuisopisto, kampus 3",
+          "Created": "2021-10-19T08:24:36.560",
+          "Acquired": "2021-10-19T00:00:00.000",
+          "ClassificationCode": "02 08 01 01",
+          "ClassificationTitle": "Hankinta ilman kilpailutusta",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011741"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011731?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011731",
+          "Title": "Hankinta, esitystekniikka, Etu-Töölön lukio, kasvatuksen ja koulutuksen toimiala",
+          "Created": "2021-10-18T15:11:44.577",
+          "Acquired": "2021-10-18T00:00:00.000",
+          "ClassificationCode": "02 08 01 00",
+          "ClassificationTitle": "Kilpailutus",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011731"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011679?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011679",
+          "Title": "Hankinta, palakone, Stadin ammatti- ja aikuisopisto, kampus 5",
+          "Created": "2021-10-18T09:12:54.947",
+          "Acquired": "2021-10-18T00:00:00.000",
+          "ClassificationCode": "02 08 01 00",
+          "ClassificationTitle": "Kilpailutus",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011679"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011713?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011713",
+          "Title": "Opetuksen järjestäminen, painotetun, kaksikielisen ja englanninkielisen opetuksen enimmäis- ja vähimmäisoppilasmäärät",
+          "Created": "2021-10-18T09:09:25.110",
+          "Acquired": "2021-10-18T00:00:00.000",
+          "ClassificationCode": "12 01 01",
+          "ClassificationTitle": "Oppilaan opetuksen järjestäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011713"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011711?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011711",
+          "Title": "Opetuksen järjestäminen, painotettu kaksikielinen ja englanninkielinen opetuksen opintopolku",
+          "Created": "2021-10-18T09:05:01.903",
+          "Acquired": "2021-10-18T00:00:00.000",
+          "ClassificationCode": "12 01 01",
+          "ClassificationTitle": "Oppilaan opetuksen järjestäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011711"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011662?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011662",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 1, koulutustarkastaja, työavain KASKO-03-278-21",
+          "Created": "2021-10-15T15:16:45.067",
+          "Acquired": "2021-09-22T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011662"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011626?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011626",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 1, koulutustarkastaja, työavain KASKO-03-279-21",
+          "Created": "2021-10-15T08:54:21.593",
+          "Acquired": "2021-09-22T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011626"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011590?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011590",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 1, graafinen kouluttaja, työavain KASKO-03-227-21",
+          "Created": "2021-10-14T11:43:18.313",
+          "Acquired": "2021-08-10T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011590"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011610?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011610",
+          "Title": "Päiväkodit, ympärivuorokautiset päiväkodit ja ryhmäperhepäiväkodit,\ntilapäiset sulkemiset syyslomalla 18.-22.10.2021",
+          "Created": "2021-10-14T09:53:04.403",
+          "Acquired": "2021-10-14T00:00:00.000",
+          "ClassificationCode": "05 01 02",
+          "ClassificationTitle": "Päiväkotihoito",
+          "Status": "Ratkaistu",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011610"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011566?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011566",
+          "Title": "Tutkimuslupa, käsitys Itämeren ympäristöongelmista, Viron ja Suomen lukio",
+          "Created": "2021-10-14T08:23:31.097",
+          "Acquired": "2021-10-13T00:00:00.000",
+          "ClassificationCode": "13 02 01",
+          "ClassificationTitle": "Tutkimusluvat",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011566"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011504?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011504",
+          "Title": "Hankinta, kamerakalusto, Stadin ammatti- ja aikuisopisto, kampus 3",
+          "Created": "2021-10-12T14:44:29.813",
+          "Acquired": "2021-10-12T00:00:00.000",
+          "ClassificationCode": "02 08 01 00",
+          "ClassificationTitle": "Kilpailutus",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011504"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011458?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011458",
+          "Title": "Kokousajat, ruotsinkielinen jaosto, kokousajat 2022",
+          "Created": "2021-10-12T09:55:22.740",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "00 00 02",
+          "ClassificationTitle": "Luottamus- ja toimielinten kokoonpano ja toiminta",
+          "Status": "Vireillä",
+          "Language": "sv",
+          "CaseID": "HEL-2021-011458"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011538?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011538",
+          "Title": "Opetuksen järjestäminen, Oulunkylän ala-aste, kielikylpyopetus, 1.8.2022 alkaen",
+          "Created": "2021-10-12T08:30:27.717",
+          "Acquired": "2021-10-13T00:00:00.000",
+          "ClassificationCode": "12 01 01",
+          "ClassificationTitle": "Oppilaan opetuksen järjestäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011538"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011437?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011437",
+          "Title": "Hankinta, media-alan valolaitteisto, Stadin ammatti- ja aikuisopisto, kampus 3",
+          "Created": "2021-10-11T15:43:03.323",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "02 08 01 00",
+          "ClassificationTitle": "Kilpailutus",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011437"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011409?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011409",
+          "Title": "Kokousajat, kasvatus- ja koulutuslautakunnan suomenkielinen jaosto 2022",
+          "Created": "2021-10-11T13:02:53.953",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "00 00 02",
+          "ClassificationTitle": "Luottamus- ja toimielinten kokoonpano ja toiminta",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011409"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011421?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011421",
+          "Title": "Oppilaan koulupaikan määräytyminen ja oppilaaksi ottamisen perusteet, Kasvatuksen ja koulutuksen toimiala",
+          "Created": "2021-10-11T11:28:13.820",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "12 01 00",
+          "ClassificationTitle": "Oppilasvalinnat ja oppilaaksi otto, opiskelijavalinnat ja opiskelijaksi otto",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011421"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011386?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011386",
+          "Title": "Hankinta, sähkömoottori-opetuslaitteisto, Stadin ammatti- ja aikuisopisto, kampus 5",
+          "Created": "2021-10-11T10:12:12.943",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "02 08 02 01",
+          "ClassificationTitle": "Hankinta ilman kilpailutusta",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011386"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011368?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011368",
+          "Title": "Hankinta, henkilönostin, Stadin ammatti- ja aikuisopisto, Kampus 4",
+          "Created": "2021-10-11T07:41:10.883",
+          "Acquired": "2021-10-11T00:00:00.000",
+          "ClassificationCode": "02 08 01 01",
+          "ClassificationTitle": "Hankinta ilman kilpailutusta",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011368"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011357?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011357",
+          "Title": "Hankinta, 3D-käsiskanneri, Stadin ammatti- ja aikuisopisto, kampus 3",
+          "Created": "2021-10-08T14:30:55.233",
+          "Acquired": "2021-10-08T00:00:00.000",
+          "ClassificationCode": "02 08 01 00",
+          "ClassificationTitle": "Kilpailutus",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011357"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011312?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011312",
+          "Title": "Virkasuhteen täyttäminen, Stadin ammatti- ja aikuisopisto, kampus 5, tuntiopettaja, VALMA, työavain KASKO-03-262-21",
+          "Created": "2021-10-08T07:54:21.713",
+          "Acquired": "2021-09-20T00:00:00.000",
+          "ClassificationCode": "01 01 01 01",
+          "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011312"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011208?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011208",
+          "Title": "Työ- ja loma-ajat lukuvuonna 2022-2023, Helsingin aikuislukio",
+          "Created": "2021-10-06T10:50:07.830",
+          "Acquired": "2021-10-06T00:00:00.000",
+          "ClassificationCode": "12 00 01",
+          "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011208"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011203?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011203",
+          "Title": "Työ- ja loma-ajat lukuvuonna 2022-2023, Helsingin kaupungin suomenkieliset lukiot , Kasvatuksen ja koulutuksen toimiala",
+          "Created": "2021-10-06T10:44:38.020",
+          "Acquired": "2021-10-06T00:00:00.000",
+          "ClassificationCode": "12 00 01",
+          "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011203"
+      },
+      {
+          "links": [
+              {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2021-011211?apireqlang=fi"
+              }
+          ],
+          "CaseIDLabel": "HEL 2021-011211",
+          "Title": "Työ- ja loma-ajat lukuvuonna 2022-2023, Helsingin kaupungin suomenkielinen esi- ja perusopetus",
+          "Created": "2021-10-06T10:30:07.500",
+          "Acquired": "2021-10-06T00:00:00.000",
+          "ClassificationCode": "12 00 01",
+          "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu",
+          "Status": "Vireillä",
+          "Language": "fi",
+          "CaseID": "HEL-2021-011211"
+      }
+  ],
+  "page": 0,
+  "count": 1,
+  "nextCount": 0,
+  "prevCount": 0,
+  "links": [
+      {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases?q=&sectors=U420300&page=0&size=30&resolved=false&count_limit=1&public=false&apireqlang=fi"
+      }
+  ],
+  "size": 30
+}

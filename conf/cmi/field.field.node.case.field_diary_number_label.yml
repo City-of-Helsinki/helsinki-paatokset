@@ -1,0 +1,19 @@
+uuid: 7cc95f2f-5010-4a95-b6d9-681b091f8274
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_diary_number_label
+    - node.type.case
+id: node.case.field_diary_number_label
+field_name: field_diary_number_label
+entity_type: node
+bundle: case
+label: 'Diary number label'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,21 @@
+uuid: e96069ca-21e9-4553-935e-e69324317394
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_created
+    - node.type.case
+  module:
+    - datetime
+id: node.case.field_created
+field_name: field_created
+entity_type: node
+bundle: case
+label: Created
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

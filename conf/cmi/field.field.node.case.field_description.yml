@@ -1,0 +1,26 @@
+uuid: 9be2bf98-065d-40c3-a42a-6b48cfe6122a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - node.type.case
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: '0'
+    plain_text: '0'
+id: node.case.field_description
+field_name: field_description
+entity_type: node
+bundle: case
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

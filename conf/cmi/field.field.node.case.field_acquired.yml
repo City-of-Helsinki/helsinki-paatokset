@@ -1,0 +1,21 @@
+uuid: 4fe0f861-1d07-486d-a4e5-645c7a40e044
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_acquired
+    - node.type.case
+  module:
+    - datetime
+id: node.case.field_acquired
+field_name: field_acquired
+entity_type: node
+bundle: case
+label: Acquired
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
