@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_first_name
     - field.field.node.policymaker.field_last_name
+    - field.field.node.policymaker.field_meetings_description
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_policymaker_id
     - field.field.node.policymaker.field_policymaker_image
@@ -50,6 +51,7 @@ hidden:
   field_custom_menu_links: true
   field_first_name: true
   field_last_name: true
+  field_meetings_description: true
   field_organization_type: true
   field_policymaker_id: true
   field_resource_uri: true
