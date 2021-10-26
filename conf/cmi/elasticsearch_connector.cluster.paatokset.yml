@@ -1,0 +1,19 @@
+uuid: 4a8571c1-96d6-4f8d-b775-4bcf4199759a
+langcode: fi
+status: '1'
+dependencies: {  }
+cluster_id: paatokset
+name: Päätökset
+url: 'http://elastic:9200'
+options:
+  multiple_nodes_connection: false
+  use_authentication: 0
+  authentication_type: Basic
+  username: ''
+  password: ''
+  timeout: '3'
+  rewrite:
+    rewrite_index: 1
+    index:
+      prefix: paatokset
+      suffix: ''

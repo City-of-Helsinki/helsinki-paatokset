@@ -58,6 +58,35 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=6081"
       - "traefik.docker.network=stonehenge-network"
 
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    container_name: "${COMPOSE_PROJECT_NAME}-elastic"
+    environment:
+      - node.name="${COMPOSE_PROJECT_NAME}-elastic"
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes="${COMPOSE_PROJECT_NAME}-elastic"
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - internal
+      - stonehenge-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.rule=Host(`varnish-${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=9200"
+      - "traefik.docker.network=stonehenge-network"
+      - "traefik.port=9200"
+
 networks:
   internal:
     external: false
@@ -65,6 +94,8 @@ networks:
     external: true
 
 volumes:
+  data01:
+    driver: local
   db_data:
   ssh:
     name: stonehenge-ssh
