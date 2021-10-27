@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70ab66ad28b620d6c7b77078fdca9209",
+    "content-hash": "def523edbb547b54d9f3aed38bdffb35",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -2924,6 +2924,10 @@
                 {
                     "name": "See other contributors",
                     "homepage": "https://www.drupal.org/node/2159059/committers"
+                },
+                {
+                    "name": "sokru",
+                    "homepage": "https://www.drupal.org/user/388235"
                 },
                 {
                     "name": "ygerasimov",
@@ -14521,7 +14525,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "drupal/elasticsearch_connector": 15
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

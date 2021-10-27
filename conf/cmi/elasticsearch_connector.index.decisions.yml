@@ -1,0 +1,9 @@
+uuid: ea722357-d519-4cad-b2b3-869a3fffa3b8
+langcode: fi
+status: true
+dependencies: {  }
+index_id: decisions
+name: Decisions
+num_of_shards: 5
+num_of_replica: 1
+server: paatokset
