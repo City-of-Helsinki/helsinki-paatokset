@@ -76,9 +76,9 @@ class MeetingService {
 
       /*
       @todo Once documents get are imported from Ahjo API, return actual data
-      For now, return dummy link to minutes if meeting is concluded.
+      For now, return dummy link to minutes if minutes_published is true
        */
-      if (strtotime('now') > strtotime($node->get('field_meeting_date')->value)) {
+      if ($node->get('field_meeting_minutes_published')->value) {
         $transformedResult['minutes_link'] = 'https://helsinki-paatokset.docker.so/';
       }
 

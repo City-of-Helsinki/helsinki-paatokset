@@ -14,7 +14,7 @@ html {
   h6 {
     hyphens: auto;
     line-height: $lineheight-m;
-    margin: $spacing-triple 0 0;
+    margin-top: 0;
     word-break: break-word;
   }
 
@@ -24,20 +24,17 @@ html {
     line-height: $lineheight-s;
   }
 
-  h1 {
+  h1, .page-title__container h1 {
     @include font-size($fontsize-heading-xl);
     font-weight: $font-weight-regular;
     margin-bottom: 16px;
 
     @include breakpoint($breakpoint-m) {
-      // Margin on top needed to create enough space on top when there is no hero.
-      margin-top: $spacing-quadruple;
       margin-bottom: 24px;
     }
 
     @include breakpoint($breakpoint-l) {
       @include font-size(72px, $lineheight-s);
-      margin-bottom: $spacing-quadruple;
     }
   }
 
@@ -92,7 +89,12 @@ html {
   }
 
   p {
-    margin: $spacing 0 0;
+    @include font-size($fontsize-body-l);
+    margin: $spacing 0;
+
+    @include breakpoint($breakpoint-l) {
+      @include font-size($fontsize-body-xl);
+    }
   }
 
   ul, ol {

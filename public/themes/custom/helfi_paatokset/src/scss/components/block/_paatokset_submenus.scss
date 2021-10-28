@@ -24,11 +24,9 @@
   }
 
   .decision-tree__title h4 {
-    color: rgb(6, 6, 6);
-    font-size: 20px;
-    font-weight: bold;
-    height: 20px;
-    letter-spacing: 0.29px;
+    font-size: 24px;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-double + $spacing-half;
   }
 
   .decision-tree__title-container {
