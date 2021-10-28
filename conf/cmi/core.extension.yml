@@ -101,11 +101,13 @@ module:
   token: 0
   token_filter: 0
   toolbar: 0
+  translatable_menu_link_uri: 0
   twig_tweak: 0
   update: 0
   update_helper: 0
   user: 0
   views_ui: 0
+  view_unpublished: 0
   pathauto: 1
   content_translation: 10
   views: 10

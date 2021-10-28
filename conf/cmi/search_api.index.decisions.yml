@@ -1,0 +1,121 @@
+uuid: 54f52d06-1ff0-4fe9-8116-22bd27259248
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo
+    - search_api
+  config:
+    - search_api.server.elasticsearch
+id: decisions
+name: Decisions
+description: ''
+read_only: false
+field_settings:
+  content_draft_proposal:
+    label: content_draft_proposal
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: content_draft_proposal
+    type: text
+    dependencies:
+      module:
+        - paatokset_ahjo
+  content_presenter:
+    label: content_presenter
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: content_presenter
+    type: text
+    dependencies:
+      module:
+        - paatokset_ahjo
+  content_resolution:
+    label: content_resolution
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: content_resolution
+    type: text
+    dependencies:
+      module:
+        - paatokset_ahjo
+  id:
+    label: ID
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: id
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+  issue_id:
+    label: issue_id
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: issue_id
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+  issue_subject:
+    label: issue_subject
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: issue_subject
+    type: text
+    boost: !!float 2
+    dependencies:
+      module:
+        - paatokset_ahjo
+  meeting_date:
+    label: meeting_date
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: meeting_date
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+  meeting_policymaker_link:
+    label: meeting_policymaker_link
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: meeting_policymaker_link
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+  subject:
+    label: subject
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: subject
+    type: text
+    boost: !!float 2
+    dependencies:
+      module:
+        - paatokset_ahjo
+  subject_resolution:
+    label: subject_resolution
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: subject_resolution
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+  top_category_name:
+    label: top_category_name
+    datasource_id: 'entity:paatokset_agenda_item'
+    property_path: top_category_name
+    type: string
+    dependencies:
+      module:
+        - paatokset_ahjo
+datasource_settings:
+  'entity:paatokset_agenda_item':
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  language_with_fallback: {  }
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: elasticsearch
