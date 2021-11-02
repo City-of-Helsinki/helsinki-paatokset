@@ -10,6 +10,10 @@
   display: table;
   border-collapse: collapse;
 
+  tr:first-child th {
+    padding-top: 0;
+  }
+
   th {
     background-color: $color-white;
     color: $color-black;
@@ -72,10 +76,15 @@
     width: 100%;
 
     th {
-      padding: $spacing;
+      padding: $spacing-half;
 
       &:first-of-type {
         font-weight: 500;
+        margin-top: $spacing;
+      }
+
+      &:last-of-type {
+        margin-bottom: $spacing;
       }
     }
 
