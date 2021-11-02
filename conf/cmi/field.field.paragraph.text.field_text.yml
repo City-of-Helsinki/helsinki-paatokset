@@ -21,3 +21,8 @@ default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: text_long
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    minimal: '0'
+    plain_text: '0'

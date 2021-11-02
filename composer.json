@@ -17,9 +17,9 @@
         "drupal/hdbt_admin": "^1.0",
         "drupal/helfi_hauki": "^1.0",
         "drupal/helfi_linkedevents": "^1.0",
-        "drupal/helfi_platform_config": "^1.1",
+        "drupal/helfi_platform_config": "^2.0",
         "drupal/helfi_tpr": "^1.0",
-        "drupal/helfi_tunnistamo": "^1.0",
+        "drupal/helfi_tunnistamo": "^2.0",
         "drupal/migrate_plus": "^5.1",
         "drupal/search_api": "^1.20",
         "drush/drush": "^10.4"

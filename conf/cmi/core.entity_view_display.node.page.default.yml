@@ -41,6 +41,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_sidebar_content:
+    label: hidden
+    region: content
+    settings:
+      link: ''
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    weight: 5
 hidden:
   field_has_hero: true
   field_hero: true
