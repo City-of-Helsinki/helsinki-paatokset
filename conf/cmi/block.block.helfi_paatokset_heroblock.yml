@@ -10,7 +10,7 @@ dependencies:
 id: helfi_paatokset_heroblock
 theme: helfi_paatokset
 region: before_content
-weight: -5
+weight: -12
 provider: null
 plugin: hero_block
 settings:

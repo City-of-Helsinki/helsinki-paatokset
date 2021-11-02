@@ -34,7 +34,8 @@ class MeetingService {
   public function query(array $params = []) : array {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
-      ->condition('type', self::NODE_TYPE);
+      ->condition('type', self::NODE_TYPE)
+      ->sort('field_meeting_date', 'ASC');
 
     if (isset($params['from'])) {
       $this->validateTime($params['from'], 'from');
@@ -49,6 +50,9 @@ class MeetingService {
     }
     if (isset($params['minutes_published'])) {
       $query->condition('field_minutes_published', TRUE);
+    }
+    if (isset($params['limit'])) {
+      $query->range('0', $params['limit']);
     }
 
     // @todo Once policymakers are imported from Ahjo API, change this to use IDs
@@ -68,6 +72,7 @@ class MeetingService {
 
       $transformedResult = [
         'title' => $node->get('title')->value,
+        'meeting_date' => $node->get('field_meeting_date')->value,
         'policymaker' => $node->get('field_meeting_dm')->value,
         'start_time' => date('H:i', strtotime($node->get('field_meeting_date')->value)),
         // @todo Once motions get imported from Ahjo API, replace this with actual data
@@ -86,6 +91,28 @@ class MeetingService {
     }
 
     return $result;
+  }
+
+  /**
+   * Get the next scheduled meeting.
+   *
+   * @param string $id
+   *   Policymaker id.
+   *
+   * @return string|void
+   *   Meeting date as string if found
+   */
+  public function nextMeetingDate(string $id) {
+    $queryResult = $this->query([
+      'from' => date('Y-m-d', strtotime('now')),
+      'limit' => 1,
+      'policymaker' => $id,
+    ]);
+
+    if (!empty($queryResult)) {
+      $meeting = reset(reset($queryResult));
+      return $meeting['meeting_date'];
+    }
   }
 
   /**
