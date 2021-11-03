@@ -1,0 +1,40 @@
+{%
+  set classes = [
+  'policymaker-calendar',
+  view_mode ? 'policymaker-calendar--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+{% if meetings %}
+<div {{ attributes.addClass(classes) }}>
+  <h2>{{ label }}</h2>
+  {% if meetings_description %}
+    <p> {{ meetings_description }}</p>
+  {% endif %}
+  <table class="policymaker-calendar__table">
+    <tr class="policymaker-calendar__table-header policymaker-calendar__table-row">
+      <th>{{ date }}</th>
+      <th>{{ time }}</th>
+      <th>{{ additional_info }}</th>
+    </tr>
+    {% for date, meeting in meetings %}
+      {% for row in meeting %}
+      <tr class="policymaker-calendar__table-row">
+        <th>{{ date|date("d.m.Y") }}</th>
+        <th>{{ row.start_time}}</th>
+        <th>Some info</th>
+        <th>
+          {% if row.minutes_link %}
+            <a href="{{row.minutes_link}}">{{ open_minutes }}</a>
+            <i class="hds-icon hds-icon--angle-right"></i>
+          {% else %}
+            <a href="{{row.motions_list_link}}">{{ open_motions }}</a>
+            <i class="hds-icon hds-icon--angle-right"></i>
+          {% endif %}
+        </th>
+      </tr>
+      {% endfor %}
+    {% endfor %}
+  </table>
+</div>
+{% endif %}

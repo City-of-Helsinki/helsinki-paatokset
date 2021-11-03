@@ -10,7 +10,7 @@ dependencies:
 id: agendassubmenu
 theme: helfi_paatokset
 region: after_content
-weight: 0
+weight: -11
 provider: null
 plugin: agendas_submenu
 settings:
