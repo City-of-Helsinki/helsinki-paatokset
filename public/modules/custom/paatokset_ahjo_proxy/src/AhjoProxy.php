@@ -218,6 +218,28 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get single case from Ahjo API.
+   *
+   * @param string $id
+   *   Case ID.
+   * @param string|NULL $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Cases data inside 'cases' to normalize output for migrations.
+   */
+  public function getSingleCase(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $meeting_url = self::API_BASE_URL . 'cases/' . $id . '?' . urldecode($query_string);
+    $meeting = $this->getContent($meeting_url, $bypass_cache);
+    return ['cases' => [$meeting]];
+  }
+
+  /**
    * Get aggregated data
    *
    * @param string $endpoint

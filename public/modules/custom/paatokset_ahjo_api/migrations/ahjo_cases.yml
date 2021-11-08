@@ -4,7 +4,7 @@ dependencies:
   enforced:
     module:
       - paatokset_ahjo_api
-      - paatokset_ahjo_openid
+      - paatokset_ahjo_proxy
 id: ahjo_cases
 field_plugin_method: null
 cck_plugin_method: null
@@ -12,13 +12,12 @@ migration_tags:
   - ahjo_api
 migration_group: ahjo_api
 label: 'Ahjo API - Cases'
+deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
 source:
   plugin: url
   track_changes: true
   data_fetcher_plugin: file
   data_parser_plugin: json
-  urls:
-    - 'public://cases.json'
   item_selector: cases
   fields:
     -

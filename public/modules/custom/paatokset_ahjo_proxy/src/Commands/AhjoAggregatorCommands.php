@@ -79,7 +79,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     if ($dataset === 'latest') {
-      $query_string = 'start=2021-10-01T12:34:45Z';
+      $week_ago = strtotime("-1 week");
+      $timestamp = date('Y-m-dTH:i:sZ', $week_ago);
+      $query_string = 'start=' . $timestamp;
     }
     else {
       $query_string = 'start=2001-10-01T12:34:45Z';
