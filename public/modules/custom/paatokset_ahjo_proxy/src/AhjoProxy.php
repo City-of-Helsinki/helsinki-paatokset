@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_proxy;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
@@ -25,7 +26,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @var string
    */
-  protected const API_BASE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
+  protected const API_BASE_URL = 'https://ahjohyte.hel.fi:9802/ahjorest/v1/';
 
   /**
    * HTTP Client.
@@ -115,6 +116,41 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Proxy data from API.
+   *
+   * @param string $url
+   *   Endpoint to get data from.
+   * @param string|null $query_string
+   *   Query string to pass on to API.
+   *
+   * @return array
+   *   Data from endpoint as array.
+   */
+  public function getData(string $url, ?string $query_string): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $api_url = self::API_BASE_URL . $url . '/?' . urldecode($query_string);
+    $data = $this->getContent($api_url);
+    return $data;
+  }
+
+  public function getFullContentForItem(array $item): ?array {
+    if (!isset($item['links'])) {
+      return NULL;
+    }
+
+    $item_url = $this->getSelfUrl($item['links']);
+
+    if (!$item_url) {
+      return NULL;
+    }
+
+    $data = $this->getContent($item_url);
+    return $data;
+  }
+
+  /**
    * Get meeting data.
    *
    * @param string|NULL $query_string
@@ -193,11 +229,12 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Aggregated data from static file.
    */
   public function getAggregatedData(string $dataset): array {
-    $this->logger->error('testing logger');
     switch ($dataset) {
       case 'meetings_all':
+        $filename = 'meetings_all.json';
+        break;
       case 'meetings_latest':
-        $filename = 'meetings.json';
+        $filename = 'meetings_latest.json';
         break;
 
       case 'cases_all':
@@ -238,6 +275,49 @@ class AhjoProxy implements ContainerInjectionInterface {
       return $data ?? [];
     }
     return [];
+  }
+
+  public static function processBatchItem($data, &$context) {
+    $context['message'] = 'Importing ' . $data['item']['MeetingID'];
+
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['endpoint'])) {
+      $context['results']['endpoint'] = $data['endpoint'];
+    }
+    if (!isset($context['results']['dataset'])) {
+      $context['results']['dataset'] = $data['dataset'];
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $full_data = $ahjo_proxy->getFullContentForItem($data['item']);
+
+    if (!empty($full_data)) {
+      $context['results']['items'][] = $full_data;
+    }
+    else {
+      $context['results']['failed'][] = $data['item'];
+    }
+  }
+
+  public static function finishBatch($success, array $results, array $operations) {
+    $messenger = \Drupal::messenger();
+    $total = count($results['items']);
+
+    $end_time = microtime(TRUE);
+    $total_time = ($end_time - $results['starttime']);
+    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
+    $messenger->addMessage('Items failed: ' . count($results['failed']));
+    $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
+    file_save_data(json_encode(['meetings' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
   }
 
   /**
