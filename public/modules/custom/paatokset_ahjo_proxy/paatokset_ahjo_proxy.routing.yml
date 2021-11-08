@@ -10,6 +10,16 @@ paatokset_ahjo_proxy.meetings_single:
   path: '/ahjo-proxy/meetings/single/{id}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::meetingsSingle'
+    id: placeholder
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+paatokset_ahjo_proxy.cases_single:
+  path: '/ahjo-proxy/cases/single/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::casesSingle'
+    id: placeholder
   requirements:
     _permission: 'access content'
   methods: [GET]
