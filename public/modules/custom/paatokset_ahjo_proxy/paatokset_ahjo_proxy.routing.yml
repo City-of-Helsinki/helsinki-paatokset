@@ -5,3 +5,19 @@ paatokset_ahjo_proxy.meetings:
   requirements:
     _permission: 'access content'
   methods: [GET]
+
+paatokset_ahjo_proxy.meetings_single:
+  path: '/ahjo-proxy/meetings/single/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::meetingsSingle'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+paatokset_ahjo_proxy.get_aggregated_data:
+  path: '/ahjo-proxy/aggregated/{dataset}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::getAggregatedData'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]

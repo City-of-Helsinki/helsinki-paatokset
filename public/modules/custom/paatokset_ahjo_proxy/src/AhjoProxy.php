@@ -99,7 +99,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   /**
    * Get meeting data.
    *
-   * @param string|null $query_string
+   * @param string|NULL $query_string
    *   Query string to pass on to endpoint.
    *
    * @return array
@@ -108,6 +108,10 @@ class AhjoProxy implements ContainerInjectionInterface {
   public function getMeetings(?string $query_string): array {
     if ($this->useStaticFallbacks) {
       return $this->getStatic('meetings.json');
+    }
+
+    if ($query_string === NULL) {
+      $query_string = '';
     }
 
     $meetings_url = self::API_BASE_URL . 'meetings/?' . urldecode($query_string);
@@ -139,6 +143,57 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     return $meetings;
+  }
+
+  /**
+   * Get single meeting from Ahjo API.
+   *
+   * @param string $id
+   *   Meeting ID.
+   * @param string|NULL $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Meeting data inside 'meetings' to normalize output for migrations.
+   */
+  public function getSingleMeeting(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $meeting_url = self::API_BASE_URL . 'meetings/' . $id . '?' . urldecode($query_string);
+    $meeting = $this->getContent($meeting_url, $bypass_cache);
+    return ['meetings' => [$meeting]];
+  }
+
+  /**
+   * Get aggregated data
+   *
+   * @param string $endpoint
+   *   Endpoint to fetch aggregated data for.
+   * @param string $id
+   *   Which dataset to fetch (all, latest, etc).
+   *
+   * @return array
+   *   Aggregated data from static file.
+   */
+  public function getAggregatedData(string $dataset): array {
+    switch ($dataset) {
+      case 'meetings_all':
+      case 'meetings_latest':
+        $filename = 'meetings.json';
+        break;
+
+      case 'cases_all':
+      case 'cases_latest':
+        $filename = 'cases.json';
+        break;
+
+      default:
+        return [];
+    }
+    return $this->getStatic($filename);
   }
 
   /**
@@ -183,13 +238,14 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @param string $url
    *   The url.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
    *
    * @return array
    *   The JSON returned by API service.
    */
-  protected function getContent(string $url) : array {
-    // @todo Implement parameter for bypassing cache for callback notifications.
-    if ($data = $this->getFromCache($url)) {
+  protected function getContent(string $url, bool $bypass_cache = FALSE) : array {
+    if (!$bypass_cache && $data = $this->getFromCache($url)) {
       return $data;
     }
 
