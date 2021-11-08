@@ -7,7 +7,7 @@ namespace Drupal\paatokset_ahjo_proxy;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
@@ -40,6 +40,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private $entityTypeManager;
+
+  /**
+   * The logger service.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
 
   /**
    * Ahjo Open ID service.
@@ -78,17 +85,20 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Data Cache.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger factory service.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
     $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
   }
 
   /**
@@ -99,6 +109,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('http_client'),
       $container->get('cache.default'),
       $container->get('entity_type.manager'),
+      $container->get('logger.factory'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -182,6 +193,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Aggregated data from static file.
    */
   public function getAggregatedData(string $dataset): array {
+    $this->logger->error('testing logger');
     switch ($dataset) {
       case 'meetings_all':
       case 'meetings_latest':
