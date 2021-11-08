@@ -6,6 +6,9 @@ namespace Drupal\paatokset_ahjo_proxy;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\FileInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,14 +25,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @var string
    */
-  protected const API_BASE_URL = 'https://ahjohyte.hel.fi:9802/ahjorest/v1/';
-
-  /**
-   * Whether to return static fallback files.
-   *
-   * @var bool
-   */
-  protected bool $useStaticFallbacks = FALSE;
+  protected const API_BASE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
 
   /**
    * HTTP Client.
@@ -37,6 +33,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @var GuzzleHttp\ClientInterface
    */
   protected $httpClient;
+
+  /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  private $entityTypeManager;
 
   /**
    * Ahjo Open ID service.
@@ -73,16 +76,19 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   HTTP Client.
    * @param \Drupal\Core\Cache\CacheBackendInterface $data_cache
    *   Data Cache.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -92,6 +98,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     return new static(
       $container->get('http_client'),
       $container->get('cache.default'),
+      $container->get('entity_type.manager'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -106,10 +113,6 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Data from endpoint or static file.
    */
   public function getMeetings(?string $query_string): array {
-    if ($this->useStaticFallbacks) {
-      return $this->getStatic('meetings.json');
-    }
-
     if ($query_string === NULL) {
       $query_string = '';
     }
@@ -206,8 +209,18 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Data from file or empty array.
    */
   public function getStatic(string $filename): array {
-    $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $filename;
-    $file_contents = file_get_contents($file_path);
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = $this->entityTypeManager
+    ->getStorage('file')
+    ->loadByProperties(['uri' => 'public://' . $filename]);
+    /** @var \Drupal\file\FileInterface|null $file */
+    $file = reset($files);
+
+    if (!$file instanceof FileInterface) {
+      return [];
+    }
+    $file_contents = file_get_contents($file->getFileUri());
+
     if ($file_contents) {
       $data = \GuzzleHttp\json_decode($file_contents, TRUE);
       return $data ?? [];
