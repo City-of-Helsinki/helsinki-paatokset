@@ -55,6 +55,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Which dataset to get (latest, all, etc)
    * @option filename
    *   Which file to store aggregated data into.
+   * @option timestamp
+   *   Custom timestamp for fetching data earlier than last week as "latest".
    *
    * @usage ahjo-proxy:aggregate meetings --dataset=latest --filename=meetings_latest.json
    *   Cleans broken revision from migration imported nodes.
@@ -64,6 +66,7 @@ class AhjoAggregatorCommands extends DrushCommands {
   public function aggregate(string $endpoint, array $options = [
     'dataset' => NUll,
     'filename' => NULL,
+    'timestamp' => NULL,
   ]): void {
 
     $allowed_datasets = [
@@ -78,13 +81,18 @@ class AhjoAggregatorCommands extends DrushCommands {
       $dataset = 'latest';
     }
 
-    if ($dataset === 'latest') {
-      $week_ago = strtotime("-1 week");
-      $timestamp = date('Y-m-dTH:i:sZ', $week_ago);
-      $query_string = 'start=' . $timestamp;
+    if (empty($options['timestamp'])) {
+      if ($dataset === 'all') {
+        $query_string = 'start=2001-10-01T12:34:45Z';
+      }
+      else {
+        $week_ago = strtotime("-1 week");
+        $timestamp = date('Y-m-dTH:i:sZ', $week_ago);
+        $query_string = 'start=' . $timestamp;
+      }
     }
     else {
-      $query_string = 'start=2001-10-01T12:34:45Z';
+      $query_string = 'start=' . $options['timestamp'];
     }
 
     $data = $this->ahjoProxy->getData($endpoint, $query_string);
@@ -96,11 +104,14 @@ class AhjoAggregatorCommands extends DrushCommands {
     $list_key = $this->getListKey($endpoint);
 
     $operations = [];
+    $count = 0;
     foreach ($data[$list_key] as $item) {
+      $count++;
       $data = [
         'item' => $item,
         'endpoint' => $endpoint,
         'dataset' => $dataset,
+        'count' => $count,
       ];
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',

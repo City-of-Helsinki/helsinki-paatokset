@@ -300,7 +300,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   public static function processBatchItem($data, &$context) {
-    $context['message'] = 'Importing ' . $data['item']['MeetingID'];
+    $context['message'] = 'Importing ' . $data['item']['MeetingID'] . ', number ' . $data['count'];
 
     if (!isset($context['results']['starttime'])) {
       $context['results']['starttime'] = microtime(TRUE);
