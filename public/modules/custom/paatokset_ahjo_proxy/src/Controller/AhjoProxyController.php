@@ -43,12 +43,45 @@ class AhjoProxyController extends ControllerBase {
   /**
    * Return meetings data.
    *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for meetings.
    */
   public function meetings(Request $request): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getMeetings($query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Get data for a single meeting.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Meeting ID.
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for meetings.
+   */
+  public function meetingsSingle(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getSingleMeeting($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Returns aggregated data.
+   *
+   * @param string $dataset
+   *   Which aggregated dataset to fetch (meetins_all, cases_latest, etc).
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Aggregated JSON data.
+   */
+  public function getAggregatedData(string $dataset): JsonResponse {
+    $data = $this->ahjoProxy->getAggregatedData($dataset);
     return new JsonResponse($data);
   }
 
