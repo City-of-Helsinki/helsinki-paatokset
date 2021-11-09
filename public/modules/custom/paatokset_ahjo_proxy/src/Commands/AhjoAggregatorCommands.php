@@ -59,9 +59,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Which file to store aggregated data into.
    * @option timestamp
    *   Custom timestamp for fetching data earlier than last week as "latest".
+   * @option retry
+   *   Filename to retry from.
    *
    * @usage ahjo-proxy:aggregate meetings --dataset=latest --filename=meetings_latest.json
    *   Stores latest meetings into meetings_latest.json
+   * @usage ahjo-proxy:aggregate meetings --dataset=all --retry=failed_meetings_all.json
+   *   Retries failed aggregation based on stored file.
    *
    * @aliases ap:agg
    */
@@ -69,6 +73,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'dataset' => NULL,
     'filename' => NULL,
     'timestamp' => NULL,
+    'retry' => NULL,
   ]): void {
 
     $allowed_datasets = [
@@ -111,15 +116,23 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query_string .= '&size=500&count_limit=500';
     }
 
-    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
-    $data = $this->ahjoProxy->getData($endpoint, $query_string);
+    $data = [];
+    $list_key = $this->getListKey($endpoint);
 
-    if (empty($data[$endpoint])) {
+    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
+    if (!empty($options['retry'])) {
+      $this->logger->info('Resuming from file: ' . $options['retry']);
+      $data[$list_key] = $this->ahjoProxy->getStatic($options['retry']);
+    }
+    else {
+      $data = $this->ahjoProxy->getData($endpoint, $query_string);
+    }
+
+
+    if (empty($data[$list_key])) {
       $this->logger->info('Empty result.');
       return;
     }
-
-    $list_key = $this->getListKey($endpoint);
 
     $this->logger->info('Processing ' . count($data[$list_key]) . ' results.');
 

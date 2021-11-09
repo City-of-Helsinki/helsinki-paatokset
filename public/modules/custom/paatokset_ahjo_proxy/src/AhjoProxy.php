@@ -373,8 +373,10 @@ class AhjoProxy implements ContainerInjectionInterface {
     $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
     file_save_data(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
+
+    // Save failed array into filesystem even if it's empty so we can wipe it.
+    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
-      file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
   }
