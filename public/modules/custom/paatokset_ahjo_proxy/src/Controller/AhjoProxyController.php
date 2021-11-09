@@ -93,7 +93,7 @@ class AhjoProxyController extends ControllerBase {
    * Returns aggregated data.
    *
    * @param string $dataset
-   *   Which aggregated dataset to fetch (meetins_all, cases_latest, etc).
+   *   Which aggregated dataset to fetch (meetings_all, cases_latest, etc).
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Aggregated JSON data.
