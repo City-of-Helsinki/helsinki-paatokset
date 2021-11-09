@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
@@ -60,7 +61,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Custom timestamp for fetching data earlier than last week as "latest".
    *
    * @usage ahjo-proxy:aggregate meetings --dataset=latest --filename=meetings_latest.json
-   *   Cleans broken revision from migration imported nodes.
+   *   Stores latest meetings into meetings_latest.json
    *
    * @aliases ap:agg
    */
@@ -82,27 +83,45 @@ class AhjoAggregatorCommands extends DrushCommands {
       $dataset = 'latest';
     }
 
+    switch ($endpoint) {
+      case 'meetings':
+        $timestamp_key = 'start';
+        break;
+
+      default:
+        $timestamp_key = 'handledsince';
+        break;
+    }
+
     if (empty($options['timestamp'])) {
       if ($dataset === 'all') {
-        $query_string = 'start=2001-10-01T12:34:45Z';
+        $query_string = $timestamp_key . '=2001-10-01T12:34:45Z';
       }
       else {
         $week_ago = strtotime("-1 week");
-        $timestamp = date('Y-m-dTH:i:sZ', $week_ago);
-        $query_string = 'start=' . $timestamp;
+        $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
+        $query_string = $timestamp_key . '=' . $timestamp;
       }
     }
     else {
-      $query_string = 'start=' . $options['timestamp'];
+      $query_string = $timestamp_key . '=' . $options['timestamp'];
     }
 
+    if ($endpoint === 'cases') {
+      $query_string .= '&size=500&count_limit=500';
+    }
+
+    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
     $data = $this->ahjoProxy->getData($endpoint, $query_string);
 
     if (empty($data[$endpoint])) {
       $this->logger->info('Empty result.');
+      return;
     }
 
     $list_key = $this->getListKey($endpoint);
+
+    $this->logger->info('Processing ' . count($data[$list_key]) . ' results.');
 
     $operations = [];
     $count = 0;
@@ -110,6 +129,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $count++;
       $data = [
         'item' => $item,
+        'list_key' => $list_key,
         'endpoint' => $endpoint,
         'dataset' => $dataset,
         'count' => $count,
@@ -127,6 +147,37 @@ class AhjoAggregatorCommands extends DrushCommands {
     ]);
 
     drush_backend_batch_process();
+  }
+
+  /**
+   * Store static files into filesystem.
+   *
+   * @command ahjo-proxy:store-static-files
+   *
+   * @usage ahjo-proxy:store-static-files
+   *   Stores default static files into filesystem (for debugging migrations).
+   *
+   * @aliases ap:fs
+   */
+  public function storeStaticFiles() {
+    $static_files = [
+      'cases_all.json',
+      'cases_latest.json',
+      'meetings_all.json',
+      'meetings_latest.json',
+    ];
+
+    foreach ($static_files as $file) {
+      $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
+      $file_contents = file_get_contents($file_path);
+      if (!empty($file_contents)) {
+        file_save_data($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
+        $this->logger->info('Saved file into public://' . $file);
+      }
+      else {
+        $this->logger->info('Could not load ' . $file);
+      }
+    }
   }
 
   /**
