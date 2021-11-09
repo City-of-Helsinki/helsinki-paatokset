@@ -32,9 +32,10 @@ class AhjoAggregatorCommands extends DrushCommands {
   /**
    * Constructor for Ahjo Aggregator Commands.
    *
-
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   Logger service.
+   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
+   *   Ahjo Proxy service.
    */
   public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy) {
     $this->ahjoProxy = $ahjo_proxy;
@@ -64,14 +65,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:agg
    */
   public function aggregate(string $endpoint, array $options = [
-    'dataset' => NUll,
+    'dataset' => NULL,
     'filename' => NULL,
     'timestamp' => NULL,
   ]): void {
 
     $allowed_datasets = [
       'all',
-      'latest'
+      'latest',
     ];
 
     if (in_array($options['dataset'], $allowed_datasets)) {
@@ -119,7 +120,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       ];
     }
 
-
     batch_set([
       'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
       'operations' => $operations,
@@ -139,9 +139,19 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   List key.
    */
   private function getListKey(string $endpoint): ?string {
-    switch($endpoint) {
+
+    switch ($endpoint) {
+      case 'cases':
+        $key = 'cases';
+        break;
+
+      case 'meetings':
+        $key = 'meetings';
+        break;
+
       default:
         $key = $endpoint;
+        break;
     }
 
     return $key;

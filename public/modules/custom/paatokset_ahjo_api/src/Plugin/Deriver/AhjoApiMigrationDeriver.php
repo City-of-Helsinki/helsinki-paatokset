@@ -30,7 +30,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
     $derivatives = [
       'all',
       'latest',
-      'single'
+      'single',
     ];
 
     foreach ($derivatives as $key) {
@@ -45,11 +45,14 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
    * Creates a derivative definition for each available language.
    *
    * @param array $base_plugin_definition
+   *   Base migration definitions.
    * @param string $key
+   *   Key for derivative.
    *
    * @return array
+   *   Modified plugin definition for derivative.
    */
-  protected function getDerivativeValues(array $base_plugin_definition, string $key) {
+  protected function getDerivativeValues(array $base_plugin_definition, string $key): array {
     // Single import requires programmatically set ID, so skip counting it.
     if ($key === 'single') {
       $base_plugin_definition['source']['skip_count'] = TRUE;
@@ -57,7 +60,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
 
     $source_url = $this->getSourceUrl($base_plugin_definition['id'], $key);
     $base_plugin_definition['source']['urls'] = [
-      $source_url
+      $source_url,
     ];
 
     return $base_plugin_definition;
@@ -102,4 +105,5 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
 
     return NULL;
   }
+
 }

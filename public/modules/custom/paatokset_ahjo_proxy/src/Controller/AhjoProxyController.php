@@ -62,6 +62,7 @@ class AhjoProxyController extends ControllerBase {
    *   HTTP request.
    * @param string $id
    *   Meeting ID.
+   *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for meetings.
    */
@@ -78,6 +79,7 @@ class AhjoProxyController extends ControllerBase {
    *   HTTP request.
    * @param string $id
    *   Meeting ID.
+   *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for meetings.
    */
