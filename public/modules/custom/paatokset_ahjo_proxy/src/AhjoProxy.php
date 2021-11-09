@@ -26,7 +26,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @var string
    */
-  protected const API_BASE_URL = 'https://ahjohyte.hel.fi:9802/ahjorest/v1/';
+  protected const API_BASE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
 
   /**
    * HTTP Client.
@@ -135,6 +135,15 @@ class AhjoProxy implements ContainerInjectionInterface {
     return $data;
   }
 
+  /**
+   * Get full content for a single item from list API.
+   *
+   * @param array $item
+   *   Item to get data for.
+   *
+   * @return array|null
+   *   Full data or NULL if self link isn't found.
+   */
   public function getFullContentForItem(array $item): ?array {
     if (!isset($item['links'])) {
       return NULL;
@@ -153,7 +162,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   /**
    * Get meeting data.
    *
-   * @param string|NULL $query_string
+   * @param string|null $query_string
    *   Query string to pass on to endpoint.
    *
    * @return array
@@ -200,7 +209,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @param string $id
    *   Meeting ID.
-   * @param string|NULL $query_string
+   * @param string|null $query_string
    *   Query string to pass on.
    * @param bool $bypass_cache
    *   Bypass request cache.
@@ -222,7 +231,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @param string $id
    *   Case ID.
-   * @param string|NULL $query_string
+   * @param string|null $query_string
    *   Query string to pass on.
    * @param bool $bypass_cache
    *   Bypass request cache.
@@ -240,12 +249,10 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
-   * Get aggregated data
+   * Get aggregated data.
    *
-   * @param string $endpoint
-   *   Endpoint to fetch aggregated data for.
-   * @param string $id
-   *   Which dataset to fetch (all, latest, etc).
+   * @param string $dataset
+   *   Which dataset to fetch.
    *
    * @return array
    *   Aggregated data from static file.
@@ -255,13 +262,17 @@ class AhjoProxy implements ContainerInjectionInterface {
       case 'meetings_all':
         $filename = 'meetings_all.json';
         break;
+
       case 'meetings_latest':
         $filename = 'meetings_latest.json';
         break;
 
       case 'cases_all':
+        $filename = 'cases_all.json';
+        break;
+
       case 'cases_latest':
-        $filename = 'cases.json';
+        $filename = 'cases_latest.json';
         break;
 
       default:
@@ -282,8 +293,8 @@ class AhjoProxy implements ContainerInjectionInterface {
   public function getStatic(string $filename): array {
     /** @var \Drupal\file\FileInterface[] $files */
     $files = $this->entityTypeManager
-    ->getStorage('file')
-    ->loadByProperties(['uri' => 'public://' . $filename]);
+      ->getStorage('file')
+      ->loadByProperties(['uri' => 'public://' . $filename]);
     /** @var \Drupal\file\FileInterface|null $file */
     $file = reset($files);
 
@@ -299,6 +310,14 @@ class AhjoProxy implements ContainerInjectionInterface {
     return [];
   }
 
+  /**
+   * Static callback for aggregating items in batch.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
   public static function processBatchItem($data, &$context) {
     $context['message'] = 'Importing ' . $data['item']['MeetingID'] . ', number ' . $data['count'];
 
@@ -330,6 +349,16 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
   }
 
+  /**
+   * Static callback function for finishing aggregation batch.
+   *
+   * @param mixed $success
+   *   If batch succeeded or not.
+   * @param array $results
+   *   Aggregated results.
+   * @param array $operations
+   *   Operations with errors.
+   */
   public static function finishBatch($success, array $results, array $operations) {
     $messenger = \Drupal::messenger();
     $total = count($results['items']);
