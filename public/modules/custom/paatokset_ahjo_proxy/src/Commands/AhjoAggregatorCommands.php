@@ -128,7 +128,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       $data = $this->ahjoProxy->getData($endpoint, $query_string);
     }
 
-
     if (empty($data[$list_key])) {
       $this->logger->info('Empty result.');
       return;
