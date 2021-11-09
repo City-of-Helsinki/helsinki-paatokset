@@ -13,7 +13,7 @@ services:
       APP_ENV: "${APP_ENV:-dev}"
       DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME}"
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
-      #XDEBUG_ENABLE: "true"
+      XDEBUG_ENABLE: "true"
       SIMPLETEST_BASE_URL: "http://app:8080"
       SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
     env_file:
@@ -59,14 +59,19 @@ services:
       - "traefik.docker.network=stonehenge-network"
 
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
     container_name: "${COMPOSE_PROJECT_NAME}-elastic"
     environment:
       - node.name="${COMPOSE_PROJECT_NAME}-elastic"
       - cluster.name=es-docker-cluster
       - cluster.initial_master_nodes="${COMPOSE_PROJECT_NAME}-elastic"
+      #- xpack.security.enabled=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.cors.allow-origin=http://localhost:3000"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      - "http.cors.allow-credentials=true"
     ulimits:
       memlock:
         soft: -1
@@ -86,6 +91,25 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=9200"
       - "traefik.docker.network=stonehenge-network"
       - "traefik.port=9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.1
+    container_name: "${COMPOSE_PROJECT_NAME}-kibana"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    ports:
+      - 5601:5601
+    networks:
+      - internal
+      - stonehenge-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.rule=Host(`varnish-${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=5601"
+      - "traefik.docker.network=stonehenge-network"
+      - "traefik.port=5601"
 
 networks:
   internal:
