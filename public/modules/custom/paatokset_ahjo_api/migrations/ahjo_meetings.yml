@@ -10,6 +10,7 @@ field_plugin_method: null
 cck_plugin_method: null
 migration_tags:
   - ahjo_api
+  - ahjo_api_meetings
 migration_group: ahjo_api
 label: 'Ahjo API - Meetings'
 deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
