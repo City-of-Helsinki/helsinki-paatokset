@@ -319,7 +319,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Context for batch operation.
    */
   public static function processBatchItem($data, &$context) {
-    $context['message'] = 'Importing ' . $data['item']['MeetingID'] . ', number ' . $data['count'];
+    $context['message'] = 'Importing item number ' . $data['count'];
 
     if (!isset($context['results']['starttime'])) {
       $context['results']['starttime'] = microtime(TRUE);
@@ -329,6 +329,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
     if (!isset($context['results']['failed'])) {
       $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['list_key'])) {
+      $context['results']['list_key'] = $data['list_key'];
     }
     if (!isset($context['results']['endpoint'])) {
       $context['results']['endpoint'] = $data['endpoint'];
@@ -368,7 +371,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
     $messenger->addMessage('Items failed: ' . count($results['failed']));
     $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
-    file_save_data(json_encode(['meetings' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    file_save_data(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $messenger->addMessage('Aggregated data saved into public://' . $filename);
+    if (!empty($results['failed'])) {
+      file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+      $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
+    }
   }
 
   /**
@@ -422,7 +430,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       return $content ?? [];
     }
-    catch (GuzzleException $e) {
+    catch (\Exception $e) {
     }
     return [];
   }
