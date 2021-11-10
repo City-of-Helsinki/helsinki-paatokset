@@ -42,3 +42,30 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
 
   return FALSE;
 }
+
+/**
+ * Update diary number and diary number label field max lengths.
+ */
+function paatokset_ahjo_api_update_9001() {
+  // Update case diary number max length.
+  $database = \Drupal::database();
+  $database->query("ALTER TABLE node__field_diary_number MODIFY field_diary_number_value VARCHAR(255)");
+  $database->query("ALTER TABLE node_revision__field_diary_number MODIFY field_diary_number_value VARCHAR(255)");
+  $storage_key = 'node.field_schema_data.field_diary_number';
+  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  $field_schema = $storage_schema->get($storage_key);
+  $field_schema['node__field_diary_number']['fields']['field_diary_number_value']['length'] = 255;
+  $field_schema['node_revision__field_diary_number']['fields']['field_diary_number_value']['length'] = 255;
+  $storage_schema->set($storage_key, $field_schema);
+
+  // Update case diary label number max length.
+  $database = \Drupal::database();
+  $database->query("ALTER TABLE node__field_diary_number_label MODIFY field_diary_number_label_value VARCHAR(255)");
+  $database->query("ALTER TABLE node_revision__field_diary_number_label MODIFY field_diary_number_label_value VARCHAR(255)");
+  $storage_key = 'node.field_schema_data.field_diary_number_label';
+  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  $field_schema = $storage_schema->get($storage_key);
+  $field_schema['node__field_diary_number']['fields']['field_diary_number_label_value']['length'] = 255;
+  $field_schema['node_revision__field_diary_number']['fields']['field_diary_number_label_value']['length'] = 255;
+  $storage_schema->set($storage_key, $field_schema);
+}
