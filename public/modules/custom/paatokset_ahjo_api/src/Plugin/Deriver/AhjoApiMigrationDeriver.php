@@ -82,7 +82,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
     if (getenv('AHJO_PROXY_BASE_URL')) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
     }
-    else if (getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
+    elseif (getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
       $base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
     }
     else {
