@@ -78,9 +78,12 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
    *   Correct source URL (if found).
    */
   protected function getSourceUrl(string $base_plugin_id, string $key): ?string {
-    // Local proxy URL needs to be added to allow curling inside container.
+    // Get either local proxy URL or OpenShift reverse proxy address.
     if (getenv('AHJO_PROXY_BASE_URL')) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
+    }
+    else if (getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
+      $base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
     }
     else {
       $base_url = '';
