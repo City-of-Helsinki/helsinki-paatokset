@@ -16,6 +16,11 @@ html {
     line-height: $lineheight-m;
     margin-top: 0;
     word-break: break-word;
+    margin-bottom: $spacing;
+
+    @include breakpoint($breakpoint-m) {
+      margin-bottom: $spacing-and-half;
+    }
   }
 
   h1,
@@ -25,16 +30,19 @@ html {
   }
 
   h1, .page-title__container h1 {
+    margin-bottom: $spacing;
+
     @include font-size($fontsize-heading-xl);
     font-weight: $font-weight-regular;
-    margin-bottom: 16px;
 
     @include breakpoint($breakpoint-m) {
-      margin-bottom: 24px;
+      margin-bottom: $spacing-and-half;
     }
 
     @include breakpoint($breakpoint-l) {
       @include font-size(72px, $lineheight-s);
+
+      margin-bottom: 38px;
     }
   }
 

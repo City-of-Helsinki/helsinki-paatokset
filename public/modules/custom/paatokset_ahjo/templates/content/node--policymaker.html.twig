@@ -93,6 +93,7 @@
         {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
       </div>
     </div>
+    {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
     <div>
       {% if content.field_policymaker_summary|render %}
         <p>{{ content.field_policymaker_summary }}</p>
@@ -130,7 +131,7 @@
             <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
             {% endif %}
             {% if meeting_calendar %}
-              <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
+              <li><a href="#block-paatoksetpolicymakercalendar">{{ 'Meeting calendar'|trans }}</a></li>
             {% endif %}
             {% if members %}
               <li><a href="#members">{{ 'Members of the board'|trans }}</a></li>
@@ -193,7 +194,7 @@
         </div>
         <div class="view-all view-all--documents">
           <a class="paatokset-button-link" href="{{ all_documents_link }}">
-            <span>{{ 'All documents' }}</span>
+            <span>{{ 'All documents'|t }}</span>
             <i class="hds-icon hds-icon--arrow-right"></i>
           </a>
         </div>
@@ -207,12 +208,6 @@
           {{ 'The meetings of the Supervisory Board can be viewed on the Helsinki Channel, where you can also access material related to the decisions under consideration. You can also view the latest Council meeting here:'|trans }}
         </p>
        {{ most_recent_meeting }}
-      </section>
-    {% endif %}
-
-    {# TODO: implement calendar #}
-    {% if meeting_calendar %}
-      <section class="container policymaker-calendar" id="meeting-calendar">
       </section>
     {% endif %}
   {% endif %}

@@ -68,13 +68,14 @@ class MeetingService {
 
     $result = [];
     foreach (Node::loadMultiple($ids) as $node) {
-      $date = date('Y-m-d', strtotime($node->get('field_meeting_date')->value));
+      $timestamp = $node->get('field_meeting_date')->date->getTimeStamp();
+      $date = date('Y-m-d', $timestamp);
 
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $node->get('field_meeting_date')->value,
         'policymaker' => $node->get('field_meeting_dm')->value,
-        'start_time' => date('H:i', strtotime($node->get('field_meeting_date')->value)),
+        'start_time' => date('H:i', $timestamp),
         // @todo Once motions get imported from Ahjo API, replace this with actual data
         'motions_list_link' => 'https://helsinki-paatokset.docker.so/',
       ];
