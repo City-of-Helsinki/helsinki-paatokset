@@ -51,6 +51,20 @@ class HelsinkiKanavaForm extends ConfigFormBase {
       '#description' => 'Link to listing on helsinkikanava.fi containing all recorded meetings',
     ];
 
+    $form['helsinki_kanava_id'] = [
+      '#type' => 'textfield',
+      '#default_value' => $config->get('helsinki_kanava_id'),
+      '#title' => t('Api ID'),
+      '#description' => 'Id used as credential in api calls',
+    ];
+
+    $form['helsinki_kanava_secret'] = [
+      '#type' => 'textfield',
+      '#default_value' => $config->get('helsinki_kanava_secret'),
+      '#title' => t('Api secret'),
+      '#description' => 'Secret token used as credential in api calls',
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -63,6 +77,8 @@ class HelsinkiKanavaForm extends ConfigFormBase {
     $this->config('paatokset_helsinki_kanava.settings')
       ->set('city_council_node', $form_state->getValue('city_council_node'))
       ->set('all_recordings_link', $form_state->getValue('all_recordings_link'))
+      ->set('helsinki_kanava_id', $form_state->getValue('helsinki_kanava_id'))
+      ->set('helsinki_kanava_secret', $form_state->getValue('helsinki_kanava_secret'))
       ->save();
   }
 

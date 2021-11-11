@@ -205,7 +205,6 @@ function template_preprocess_paatokset_meeting(array &$variables) {
  *   - elements: An array of elements to display in view mode.
  */
 function template_preprocess_block__policymaker_calendar(array &$variables) {
-  $variables['view_mode'] = $variables['elements']['#view_mode'];
   $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
   $node = \Drupal::routeMatch()->getParameter('node');
 
@@ -316,8 +315,10 @@ function template_preprocess_paatokset_agenda_item(array &$variables) {
  */
 function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
   $policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+  $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
 
-  $orgType = $policymakerService->getPolicymaker()->get('field_organization_type')->value;
+  $policymaker = $policymakerService->getPolicymaker();
+  $orgType = $policymaker->get('field_organization_type')->value;
   if ($orgType) {
     $variables['org_type_class'] = $policymakerService->transformType($orgType);
 
@@ -328,6 +329,16 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
       if ($documents) {
         $variables['recent_documents'] = $documents;
         $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
+      }
+
+      $params = [
+        'policymaker' => $policymaker->get('title')->value,
+        'from' => date("Y-m-d"),
+      ];
+      $upcomingMeetings = $meetingService->query($params);
+
+      if(!empty($upcomingMeetings)) {
+        $variables['meeting_calendar'] = true;
       }
     }
     else {

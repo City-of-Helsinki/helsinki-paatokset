@@ -123,8 +123,8 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     $fromTime = strtotime($result->meeting_date) * 1000;
     $tokenTime = dechex(time());
 
-    $organizationId = getenv('HELSINKI_KANAVA_ID');
-    $secret = getenv('HELSINKI_KANAVA_SECRET');
+    $organizationId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('helsinki_kanava_id');
+    $secret = \Drupal::config('paatokset_helsinki_kanava.settings')->get('helsinki_kanava_secret');
 
     if (!$organizationId || !$secret) {
       \Drupal::logger('HelsinkiKanava')->warning('Helsinki Kanava credentials are not set. Cannot import the latest council meeting recording.');
