@@ -7,6 +7,23 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Utility\Unicode;
+
+/**
+ * Truncate text value.
+ *
+ * @param string $value
+ *   The value to work with.
+ * @param int $length
+ *   Max length of string.
+ *
+ * @return string|null $value
+ *   Truncated value.
+ */
+function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): string {
+  return Unicode::truncate($value, $length, TRUE, TRUE);
+}
+
 /**
  * Callback to check if array or text value is empty.
  *
