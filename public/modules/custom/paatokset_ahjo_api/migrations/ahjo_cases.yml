@@ -85,14 +85,10 @@ process:
     plugin: default_value
     default_value: case
   title:
-    -
-      plugin: default_value
-      source: title
-      default_value: 'NO TITLE'
-    -
-      plugin: substr
-      start: 0
-      length: 255
+    callable: _paatokset_ahjo_api_truncate_value
+    plugin: callback
+    source: title
+  field_full_title: title
   field_diary_number: case_id
   field_diary_number_label: case_id
   field_description: description

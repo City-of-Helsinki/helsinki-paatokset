@@ -1,0 +1,19 @@
+uuid: 41fc625f-166a-4df7-9fdd-c73d8b21f52d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_full_title
+    - node.type.case
+id: node.case.field_full_title
+field_name: field_full_title
+entity_type: node
+bundle: case
+label: 'Full title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

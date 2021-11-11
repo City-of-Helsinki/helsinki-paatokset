@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.case.field_description
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
+    - field.field.node.case.field_full_title
     - field.field.node.case.field_personal_data
     - field.field.node.case.field_public_reference
     - field.field.node.case.field_publicity_class
@@ -39,6 +40,7 @@ hidden:
   field_description: true
   field_diary_number: true
   field_diary_number_label: true
+  field_full_title: true
   field_personal_data: true
   field_public_reference: true
   field_publicity_class: true
