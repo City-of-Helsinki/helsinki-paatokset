@@ -106,8 +106,8 @@ module:
   update: 0
   update_helper: 0
   user: 0
-  views_ui: 0
   view_unpublished: 0
+  views_ui: 0
   pathauto: 1
   content_translation: 10
   views: 10

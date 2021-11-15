@@ -1,0 +1,29 @@
+uuid: 7a1b3c01-764f-45f3-bce5-4fa658652aa0
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decisions_description
+    - node.type.policymaker
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    plain_text: plain_text
+id: node.policymaker.field_decisions_description
+field_name: field_decisions_description
+entity_type: node
+bundle: policymaker
+label: 'Päätöksien kuvaus'
+description: 'Viimeisimpien päätösten yläpuolella näytettävä teksti. Kuvaa tällä kentällä päätöslistausta loppukäyttäjälle.'
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>Asiakirjat ovat sekä pdf- että html-muodossa. Html-versiossa sivun asettelut voivat poiketa alkuperäisestä. Asiakirjat on jaettu sisällysluettelon mukaan asiakohdiksi, mutta tarjolla on myös pdf-muotoinen tulostusversio koko asiakirjasta.</p>\r\n"
+    format: full_html
+default_value_callback: ''
+settings: {  }
+field_type: text_long

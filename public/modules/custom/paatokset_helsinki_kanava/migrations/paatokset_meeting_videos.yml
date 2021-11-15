@@ -15,6 +15,7 @@ source:
       max_length: 1024
 process:
   id: eventId
+  asset_id: assetId
   name: publicName
   embed_url: defaultEmbedUrl
   start_time:

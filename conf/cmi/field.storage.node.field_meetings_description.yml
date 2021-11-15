@@ -1,16 +1,16 @@
-uuid: 42027a37-7cd4-49b7-8415-622c6fc39dde
+uuid: b7be25f0-e1b5-4c1c-a312-09eb411cc89b
 langcode: fi
 status: true
 dependencies:
   module:
     - node
+    - text
 id: node.field_meetings_description
 field_name: field_meetings_description
 entity_type: node
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: true

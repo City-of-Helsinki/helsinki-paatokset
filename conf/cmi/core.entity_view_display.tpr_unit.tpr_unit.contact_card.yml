@@ -70,6 +70,8 @@ hidden:
   opening_hours: true
   picture_url: true
   picture_url_override: true
+  provided_languages: true
+  search_api_excerpt: true
   services: true
   streetview_entrance_url: true
   www: true

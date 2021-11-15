@@ -85,8 +85,8 @@ class PolicymakerSideNav extends BlockBase {
 
     $policymaker = $this->policymakerService->getPolicymaker();
 
-    if (!$policymaker) {
-      return;
+    if (!$policymaker || !($policymaker->getEntityTypeId() === 'node' && $policymaker->getType() === 'policymaker')) {
+      return $items;
     }
 
     $items[] = [

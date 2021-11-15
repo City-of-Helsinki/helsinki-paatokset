@@ -6,6 +6,8 @@ dependencies:
     - field.field.node.policymaker.field_ahjo_summary
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
+    - field.field.node.policymaker.field_decisions_description
+    - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_meetings_description
@@ -13,6 +15,7 @@ dependencies:
     - field.field.node.policymaker.field_policymaker_id
     - field.field.node.policymaker.field_policymaker_image
     - field.field.node.policymaker.field_policymaker_summary
+    - field.field.node.policymaker.field_recording_description
     - field.field.node.policymaker.field_resource_uri
     - node.type.policymaker
   module:
@@ -66,6 +69,22 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_decisions_description:
+    weight: 35
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_documents_description:
+    weight: 33
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_first_name:
     weight: 26
     settings:
@@ -83,12 +102,12 @@ content:
     type: string_textfield
     region: content
   field_meetings_description:
-    weight: 32
+    weight: 34
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea
     region: content
   field_policymaker_id:
     type: readonly_field_widget
@@ -109,6 +128,14 @@ content:
     region: content
   field_policymaker_summary:
     weight: 6
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_recording_description:
+    weight: 36
     settings:
       rows: 5
       placeholder: ''

@@ -1,2 +1,4 @@
 city_council_node: '11'
-all_recordings_link: 'https://www.helsinkikanava.fi/fi_FI/web/helsinkikanava/player/folder/serie?seriesId=39419540&groupItemId=39419540&assetId=124166603'
+all_recordings_link: 'https://www.helsinkikanava.fi/fi_FI/web/helsinkikanava/player/folder/serie?seriesId=39419540&groupItemId=39419540'
+helsinki_kanava_id: ''
+helsinki_kanava_secret: ''

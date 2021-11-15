@@ -1,0 +1,11 @@
+uuid: b0b1c23b-3ac7-4cfa-8016-c1e9951a43e6
+langcode: fi
+status: true
+dependencies:
+  config:
+    - media.type.policymaker_images
+id: media.policymaker_images
+target_entity_type_id: media
+target_bundle: policymaker_images
+default_langcode: site_default
+language_alterable: false

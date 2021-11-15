@@ -4,6 +4,7 @@
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
@@ -42,8 +43,6 @@ function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables) {
   if (isset($variables['elements']['#paatokset_meeting'])) {
     $variables['entity'] = $variables['elements']['#paatokset_meeting'];
   }
-
-  $variables['all_recordings_link'] = \Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link');
 }
 
 /**
@@ -52,8 +51,11 @@ function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables) {
 function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variables) {
   $council = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
   if($variables['node']->id() === $council) {
-    $query = \Drupal::entityQuery('meeting_video');
-    $query->range(0, 1);
+    $query = \Drupal::entityQuery('meeting_video')
+      ->range(0, 1)
+      ->condition('start_time', strtotime('now'), '<')
+      ->sort('start_time', 'DESC');
+
     $ids = $query->execute();
 
     if($ids) {
@@ -63,6 +65,11 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
       ->getEntityTypeId());
 
       $variables['most_recent_meeting'] = $view_builder->view($video);
+      $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
+        'query' => [
+          'assetId' => $video->get('asset_id')->value
+        ]
+      ])->toString();
     }
 
     $councilNode = Node::load($council);
@@ -103,4 +110,18 @@ function paatokset_helsinki_kanava_update_9001() {
     ->setDisplayConfigurable('form', TRUE);
 
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('start_time', $entity_type_id, $entity_type_id, $field_storage_definition);
+}
+
+function paatokset_helsinki_kanava_update_9002() {
+  $entity_type_id = 'meeting_video';
+  $field_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('asset_id'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setDefaultValue('')
+    ->setCardinality(1)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('asset_id', $entity_type_id, $entity_type_id, $field_storage_definition);
 }

@@ -1,0 +1,29 @@
+uuid: 3382baea-4eab-4352-a53c-b619ec7b9aaa
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_documents_description
+    - node.type.policymaker
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    plain_text: plain_text
+id: node.policymaker.field_documents_description
+field_name: field_documents_description
+entity_type: node
+bundle: policymaker
+label: 'Asiakirjojen kuvaus'
+description: 'Teksti, joka näytetään asiakirjalistausten yläpuolella. Käytetään kuvaamaan listauksen sisältöä käyttäjille.'
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista. Pöytäkirja korvaa ilmestyessään esityslistan. &nbsp;</p>\r\n\r\n<p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa.</p>\r\n"
+    format: full_html
+default_value_callback: ''
+settings: {  }
+field_type: text_long
