@@ -95,7 +95,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 }
 
 function _paatokset_helsinki_kanava_should_show_stream($time) {
-  return strtotime('+1 hour') > $time;
+  return true; //strtotime('+1 hour') > $time;
 }
 
 function paatokset_helsinki_kanava_update_9001() {
