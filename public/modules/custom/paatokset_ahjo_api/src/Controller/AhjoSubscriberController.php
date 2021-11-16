@@ -90,7 +90,7 @@ class AhjoSubscriberController extends ControllerBase {
    * @param string $id
    *   Subsciber callback ID to filter (decisions, meetings, etc).
    *
-   * @return JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Queue contents.
    */
   public function listQueue(string $id): JsonResponse {
