@@ -111,7 +111,8 @@ class MeetingService {
     ]);
 
     if (!empty($queryResult)) {
-      $meeting = reset(reset($queryResult));
+      $meeting = reset($queryResult);
+      $meeting = reset($meeting);
       return $meeting['meeting_date'];
     }
   }
