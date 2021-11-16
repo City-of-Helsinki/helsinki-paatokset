@@ -4,3 +4,19 @@ ahjo_meeting_endpoint:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\MeetingController::query'
   requirements:
     _access: 'TRUE'
+
+paatokset_ahjo_api.subscriber:
+  path: 'ahjo_api/subscriber/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::callback'
+  requirements:
+    _permission: 'access content'
+  methods: [GET, POST]
+
+paatokset_ahjo_api.queue_list:
+  path: 'ahjo_api/callback-queue/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::listQueue'
+    id: all
+  requirements:
+    _permission: 'administer content'
