@@ -88,17 +88,13 @@
       <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
         {{ label }}
       </div>
-      <div class="issue__favorite-button">
-        {% set button_label = 'Save %s to favorites'|format('')|t %}
-        {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
-      </div>
     </div>
     {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
     <div>
-      {% if content.field_policymaker_summary|render %}
-        <p>{{ content.field_policymaker_summary }}</p>
-      {% elseif content.field_ahjo_summary|render %}
-        <p>{{ content.field_ahjo_summary|raw }}</p>
+      {% if node.field_policymaker_summary.value|render|striptags|trim is not empty %}
+        {{ node.field_policymaker_summary.value | check_markup('full_html') }}
+      {% elseif node.field_ahjo_summary.value|render|striptags|trim is not empty %}
+        {{ node.field_ahjo_summary.value | check_markup('full_html') }}
       {% endif %}
     </div>
   </section>
@@ -131,7 +127,7 @@
             <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
             {% endif %}
             {% if meeting_calendar %}
-              <li><a href="#block-paatoksetpolicymakercalendar">{{ 'Meeting calendar'|trans }}</a></li>
+              <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
             {% endif %}
             {% if members %}
               <li><a href="#members">{{ 'Members of the board'|trans }}</a></li>
@@ -144,7 +140,7 @@
   {% endif %}
 
   {% if content.field_policymaker_image %}
-    <section class="policymaker-image">
+    <section class="container policymaker-image">
       <figure>
         {{ content.field_policymaker_image }}
         {% if node.field_policymaker_image.title %}
@@ -160,17 +156,18 @@
     {% if recent_decisions %}
       <section class="container recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
-        <p>
-          {{ 'The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
-            The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.'|trans }}
-        </p>
+        <div class="section-description">
+          {% if node.field_decisions_description.value|render|striptags|trim is not empty %}
+            {{ node.field_decisions_description.value | check_markup('full_html') }}
+          {% endif %}
+        </div>
         <div class="policymaker-decisions-container">
         {% for decision in recent_decisions %}
           {% include '@paatokset_ahjo/component/decision--list-item.html.twig' %}
         {% endfor %}
         <div class="view-all view-all--decisions">
           <a class="paatokset-button-link" href="{{ all_decisions_link }}">
-            <span>{{ 'All decisions' }}</span>
+            <span>{{ 'All decisions'|trans }}</span>
             <i class="hds-icon hds-icon--arrow-right"></i>
           </a>
         </div>
@@ -183,10 +180,11 @@
     {% if recent_documents %}
       <section class="container recent-documents policymaker-documents" id="recent-documents">
         <h2>{{ 'Recent documents'|trans }}</h2>
-        <p>
-          {{ 'The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
-            The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.'|trans }}
-        </p>
+        <div class="section-description">
+          {% if node.field_documents_description.value|render|striptags|trim is not empty %}
+            {{ node.field_documents_description.value | check_markup('full_html') }}
+          {% endif %}
+        </div>
         <div class="policymaker-documents-container">
           {% for document in recent_documents %}
             {% include '@paatokset_ahjo/component/document.html.twig' %}
@@ -204,12 +202,28 @@
     {% if most_recent_meeting|render is not empty %}
       <section class="container policymaker-meetings" id="recent-meetings">
         <h2>{{ 'Recent meeting recording'|trans }}</h2>
-        <p>
-          {{ 'The meetings of the Supervisory Board can be viewed on the Helsinki Channel, where you can also access material related to the decisions under consideration. You can also view the latest Council meeting here:'|trans }}
-        </p>
+        <div class="section-description">
+          {% if node.field_recording_description.value|render|striptags|trim is not empty %}
+            {{ node.field_recording_description.value | check_markup('full_html') }}
+          {% endif %}
+        </div>
        {{ most_recent_meeting }}
+        {% if all_recordings_link %}
+          <div class="view-all view-all--recordings">
+            <a class="paatokset-button-link" href="{{ all_recordings_link }}">
+              <span>{{ 'All recordings' }}</span>
+              <i class="hds-icon hds-icon--arrow-right"></i>
+            </a>
+          </div>
+        {% endif %}
       </section>
     {% endif %}
+  {% endif %}
+ 
+  {% if meeting_calendar %}
+    <section class="container policymaker-calendar" id="meeting-calendar">
+      {{ drupal_block('policymaker_calendar') }}
+    </section>
   {% endif %}
 
 </article>

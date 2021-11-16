@@ -33,6 +33,12 @@ class ContactsBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
+    $contacts = $this->getContacts();
+
+    if (!$contacts || count($contacts) === 0) {
+      return;
+    }
+
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => t('Contact information'),

@@ -7,6 +7,7 @@ namespace Drupal\paatokset_helsinki_kanava\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
@@ -21,6 +22,11 @@ use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
  * )
  */
 final class MeetingVideoFormatter extends FormatterBase {
+
+  /**
+   * Base url for embedding assets from Helsinki Kanava.
+   */
+  const BASE_URL = 'https://events.icareus.com/web/helsinkikanava/player/embed/vod';
 
   /**
    * {@inheritdoc}
@@ -72,8 +78,9 @@ final class MeetingVideoFormatter extends FormatterBase {
       throw new \InvalidArgumentException('The "meeting_video_embed" field can only be used with meeting_video entities.');
     }
 
-    $embedUrl = $entity->get('embed_url')->value;
-    $id = $entity->get('id')->value;
+    $embedUrl = $entity->get('asset_id')->value ?
+      URL::fromUri(self::BASE_URL, ['query' => ['assetId' => $entity->get('asset_id')->value]])->toString() :
+      $entity->get('embed_url')->value;
 
     if ($embedUrl) {
       $element[] = [
@@ -86,6 +93,7 @@ final class MeetingVideoFormatter extends FormatterBase {
             'frameborder' => 0,
             'title' => $this->getSetting('iframe_title'),
             'scrolling' => 'no',
+            'allowfullscreen' => 'true',
           ],
           '#prefix' => '<div class="latest-meeting">',
           '#suffix' => '</div>',

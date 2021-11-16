@@ -1,19 +1,29 @@
-uuid: 15b57d35-cb91-4dc7-9a00-26216219c4bb
+uuid: 547ecbee-66c3-4520-92cd-1d556755fdbb
 langcode: fi
 status: true
 dependencies:
   config:
     - field.storage.node.field_meetings_description
     - node.type.policymaker
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: full_html
+    plain_text: plain_text
 id: node.policymaker.field_meetings_description
 field_name: field_meetings_description
 entity_type: node
 bundle: policymaker
 label: 'Kokousten kuvaus'
-description: ''
+description: 'Teksti, joka näytetään kokouskalenterin yläpuolella. Käytä tekstiä kuvaamaan kokouskalenterin sisältöä loppukäyttäjälle.'
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: "<p>Valtuuston kokoukset järjestetään yleensä joka toisena keskiviikkona. Kokoukset lähetetään suorina lähetyksinä verkossa Helsinki-kanavalla, missä ne ovat katsottavissa myöhemmin myös tallenteina. Kokouksia voi lisäksi seurata paikan päällä istuntosalin lehteriltä (Sofiankatu 3).</p>\r\n\r\n<p>Valtuuston esityslista tulee luettavaksi kokousta edeltävänä torstaina. Päätöksistä kerrotaan jo kokouksen aikana Helsinki-kanavan lähetyksen välilehdillä ja heti kokouksen jälkeen päätöstiedotteessa kohdassa uusimmat asiakirjat</p>\r\n"
+    format: full_html
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long

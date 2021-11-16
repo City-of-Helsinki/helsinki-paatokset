@@ -1,4 +1,4 @@
-.policymaker-summary {
+.node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-double + 8px;
   
   p {
@@ -86,9 +86,17 @@
   }
 }
 
-.recent-documents.policymaker-documents {
+.node--type-policymaker > section {
   margin-top: 0;
-  margin-bottom: 87px;
+  margin-bottom: $spacing-quadruple;
+
+  .section-description {
+    margin-bottom: $spacing-double;
+
+    @include breakpoint($breakpoint-l) {
+      margin-bottom: $spacing-triple;
+    }
+  }
 }
 
 .view-all .paatokset-button-link {

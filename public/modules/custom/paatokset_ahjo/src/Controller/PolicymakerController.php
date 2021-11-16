@@ -20,14 +20,16 @@ class PolicymakerController extends ControllerBase {
    * Policymaker documents route.
    */
   public function documents($organization) {
+    $policymaker = $this->policymakerService->getPolicymaker();
+
     $build = [
-      '#title' => t('Documents: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      '#markup' => '
-        <p class="container"> ' .
-      t('The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original.
-          The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.') .
-      '</p>',
+      '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
     ];
+
+    if ($policymaker->get('field_documents_description')->value) {
+      $build['#markup'] = '<div class="container">' . $policymaker->get('field_documents_description')->value . '<div>';
+    }
+
     return $build;
   }
 

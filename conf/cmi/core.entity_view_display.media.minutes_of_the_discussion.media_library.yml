@@ -30,4 +30,5 @@ hidden:
   field_meetings_reference: true
   langcode: true
   name: true
+  search_api_excerpt: true
   uid: true

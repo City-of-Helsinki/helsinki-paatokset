@@ -1,0 +1,30 @@
+uuid: b1e52b27-9e76-47c8-a14d-9aa11e664b77
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.media.policymaker_images.field_media_image_1
+    - media.type.policymaker_images
+  module:
+    - image
+id: media.policymaker_images.default
+targetEntityType: media
+bundle: policymaker_images
+mode: default
+content:
+  field_media_image_1:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true
