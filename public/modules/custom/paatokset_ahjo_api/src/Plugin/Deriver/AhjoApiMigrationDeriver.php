@@ -79,8 +79,8 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
    */
   protected function getSourceUrl(string $base_plugin_id, string $key): ?string {
     // Get either local proxy URL or OpenShift reverse proxy address.
-    if (getenv('AHJO_PROXY_BASE_URL')) {
-      $base_url = getenv('AHJO_PROXY_BASE_URL');
+    if (getenv('AHJO-PROXY-BASE-URL')) {
+      $base_url = getenv('AHJO-PROXY-BASE-URL');
     }
     elseif (getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
       $base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
