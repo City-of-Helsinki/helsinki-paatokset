@@ -236,7 +236,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
    */
   private function getHeaders(): ?array {
     $client_id = $this->clientId;
-    $client_secret = getenv('PAATOKSET_OPENID_SECRET');
+    $client_secret = getenv('PAATOKSET-OPENID-SECRET');
 
     if (empty($client_id) || empty($client_secret)) {
       return NULL;
