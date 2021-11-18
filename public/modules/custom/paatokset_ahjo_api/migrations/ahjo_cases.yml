@@ -84,13 +84,17 @@ process:
   type:
     plugin: default_value
     default_value: case
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_case_nid
+    source: case_id
   title:
     callable: _paatokset_ahjo_api_truncate_value
     plugin: callback
     source: title
   field_full_title: title
   field_diary_number: case_id
-  field_diary_number_label: case_id
+  field_diary_number_label: case_id_label
   field_description: description
   field_created:
     plugin: format_date

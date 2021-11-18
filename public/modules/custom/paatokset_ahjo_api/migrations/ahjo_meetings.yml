@@ -76,6 +76,10 @@ process:
   type:
     plugin: default_value
     default_value: meeting
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_meeting_nid
+    source: meeting_id
   title:
     plugin: default_value
     source: title
