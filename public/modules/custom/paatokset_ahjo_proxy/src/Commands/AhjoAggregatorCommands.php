@@ -208,7 +208,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'meetings_all.json',
       'meetings_latest.json',
       'decisions_all.json',
-      'meetings_all.json',
+      'decisions_latest.json',
     ];
 
     foreach ($static_files as $file) {
