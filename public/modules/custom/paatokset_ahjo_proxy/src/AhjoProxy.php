@@ -327,8 +327,14 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['items'])) {
       $context['results']['items'] = [];
     }
+    if (!empty($data['append'])) {
+      $context['results']['items'] = $data['append'];
+    }
     if (!isset($context['results']['failed'])) {
       $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['filename'])) {
+      $context['results']['filename'] = $data['filename'];
     }
     if (!isset($context['results']['list_key'])) {
       $context['results']['list_key'] = $data['list_key'];
@@ -370,7 +376,14 @@ class AhjoProxy implements ContainerInjectionInterface {
     $total_time = ($end_time - $results['starttime']);
     $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
     $messenger->addMessage('Items failed: ' . count($results['failed']));
-    $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
+
+    if (!empty($results['filename'])) {
+      $filename = $results['filename'];
+    }
+    else {
+      $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
+    }
+
     file_save_data(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 

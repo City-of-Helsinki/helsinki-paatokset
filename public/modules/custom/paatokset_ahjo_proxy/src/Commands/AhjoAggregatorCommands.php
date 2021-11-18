@@ -55,25 +55,31 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @option dataset
    *   Which dataset to get (latest, all, etc)
-   * @option filename
-   *   Which file to store aggregated data into.
-   * @option timestamp
-   *   Custom timestamp for fetching data earlier than last week as "latest".
+   * @option start
+   *   Custom timestamp for fetching data.
+   * @option end
+   *   Custom timestamp for fetching data.
    * @option retry
    *   Filename to retry from.
+   * @option append
+   *   File to append to. Useful when retrying.
+   * @option filename
+   *   Filename to use instead of default. Can be used to split/batch results.
    *
-   * @usage ahjo-proxy:aggregate meetings --dataset=latest --filename=meetings_latest.json
+   * @usage ahjo-proxy:aggregate meetings --dataset=latest
    *   Stores latest meetings into meetings_latest.json
-   * @usage ahjo-proxy:aggregate meetings --dataset=all --retry=failed_meetings_all.json
+   * @usage ahjo-proxy:aggregate meetings --dataset=all --retry=failed_meetings_all.json --append=meetings_all.json
    *   Retries failed aggregation based on stored file.
    *
    * @aliases ap:agg
    */
   public function aggregate(string $endpoint, array $options = [
     'dataset' => NULL,
-    'filename' => NULL,
-    'timestamp' => NULL,
+    'start' => NULL,
+    'end' => NULL,
     'retry' => NULL,
+    'filename' => NULL,
+    'append' => NULL,
   ]): void {
 
     $allowed_datasets = [
@@ -98,7 +104,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         break;
     }
 
-    if (empty($options['timestamp'])) {
+    if (empty($options['start'])) {
       if ($dataset === 'all') {
         $query_string = $timestamp_key . '=2001-10-01T12:34:45Z';
       }
@@ -109,11 +115,15 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
     }
     else {
-      $query_string = $timestamp_key . '=' . $options['timestamp'];
+      $query_string = $timestamp_key . '=' . $options['start'];
     }
 
-    if ($endpoint === 'cases') {
-      $query_string .= '&size=500&count_limit=500';
+    if (!empty($options['end'])) {
+      $query_string .= '&handledbefore=' . $options['end'];
+    }
+
+    if ($endpoint === 'cases' || $endpoint === 'decisions') {
+      $query_string .= '&size=1000&count_limit=1000';
     }
 
     $data = [];
@@ -126,6 +136,19 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $data = $this->ahjoProxy->getData($endpoint, $query_string);
+    }
+
+    if (!empty($options['append'])) {
+      $append_results = $this->ahjoProxy->getStatic($options['append']);
+      $this->logger->info('Combining with file: ' . $options['append']);
+    }
+
+    if (!empty($options['filename'])) {
+      $filename = $options['filename'];
+      $this->logger->info('Using filename: ' . $filename);
+    }
+    else {
+      $filename = NULL;
     }
 
     if (empty($data[$list_key])) {
@@ -145,7 +168,14 @@ class AhjoAggregatorCommands extends DrushCommands {
         'endpoint' => $endpoint,
         'dataset' => $dataset,
         'count' => $count,
+        'append' => NULL,
+        'filename' => $filename,
       ];
+
+      if ($count === 1 && !empty($append_results[$list_key])) {
+        $data['append'] = $append_results[$list_key];
+      }
+
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',
         [$data],
@@ -177,6 +207,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       'cases_latest.json',
       'meetings_all.json',
       'meetings_latest.json',
+      'decisions_all.json',
+      'meetings_all.json',
     ];
 
     foreach ($static_files as $file) {
@@ -206,6 +238,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     switch ($endpoint) {
       case 'cases':
         $key = 'cases';
+        break;
+
+      case 'decisions':
+        $key = 'decisions';
         break;
 
       case 'meetings':
