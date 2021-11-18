@@ -9,6 +9,33 @@ declare(strict_types = 1);
 
 use Drupal\Component\Utility\Unicode;
 
+function _paatokset_ahjo_api_lookup_case_nid(string $case_id) {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'case')
+    ->condition('field_diary_number', $case_id)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return;
+  }
+  return reset($ids);
+}
+
+function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id) {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'meeting')
+    ->condition('field_meeting_id', $meeting_id)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return;
+  }
+  return reset($ids);
+}
+
+
 /**
  * Truncate text value.
  *
