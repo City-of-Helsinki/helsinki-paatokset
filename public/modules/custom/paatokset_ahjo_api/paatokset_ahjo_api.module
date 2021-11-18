@@ -86,3 +86,25 @@ function paatokset_ahjo_api_update_9001() {
   $field_schema['node_revision__field_diary_number']['fields']['field_diary_number_label_value']['length'] = 255;
   $storage_schema->set($storage_key, $field_schema);
 }
+
+/**
+ * Update diary number field max length in config.
+ */
+function paatokset_ahjo_api_update_9002() {
+  $config = \Drupal::configFactory()->getEditable('field.storage.node.field_diary_number');
+  $settings = $config->get('settings');
+  $settings['max_length'] = 255;
+  $config->set('settings', $settings);
+  $config->save();
+}
+
+/**
+ * Update diary number label field max length in config.
+ */
+function paatokset_ahjo_api_update_9003() {
+  $config = \Drupal::configFactory()->getEditable('field.storage.node.field_diary_number_label');
+  $settings = $config->get('settings');
+  $settings['max_length'] = 255;
+  $config->set('settings', $settings);
+  $config->save();
+}
