@@ -31,34 +31,35 @@
     {% else %}
       {% include '@hdbt/button/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
     {% endif %}
-    <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" aria-haspopup='listbox'>
-      {% for option in options %}
-        {% if selected == option %}
-          <li
-            data-styleclass="{{option.class}}"
-            data-link="{{option.link}}"
-            role="option" aria-selected="true"
-            tabindex="0"
-            class="option selected {{option.class}}"
-            title="{{option.title}}"
-          >
-            <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
-          </li>
-        {% else %}
-          <li
-            data-styleclass="{{option.class}}"
-            data-link="{{option.link}}"
-            role="option"
-            aria-selected="false"
-            tabindex="0"
-            class="option {{option.class}}"
-            title="{{option.title}}"
-          >
-            <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
+    <nav>
+      <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" id='issue__meetings-select'>
+        {% for option in options %}
+          {% if selected == option %}
+            <li
+              data-styleclass="{{option.class}}"
+              data-link="{{option.link}}"
+              aria-selected="true"
+              tabindex="0"
+              class="option selected {{option.class}}"
+              title="{{option.title}}"
+            >
+              <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
+            </li>
+          {% else %}
+            <li
+              data-styleclass="{{option.class}}"
+              data-link="{{option.link}}"
+              aria-selected="false"
+              tabindex="0"
+              class="option {{option.class}}"
+              title="{{option.title}}"
+            >
+              <a class="paatokset__link-plain" href="?decision={{option.link}}">{{ option.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    <nav>
   </div>
   <noscript>
     <style>

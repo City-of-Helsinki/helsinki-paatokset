@@ -44,4 +44,8 @@ $font-weight-black: 800;
 .paatokset__link-plain {
   color: $color-black;
   text-decoration: none;
+
+  &:hover {
+    background-color: $color-black-20;
+  }
 }

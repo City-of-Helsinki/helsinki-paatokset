@@ -18,4 +18,8 @@
   @include breakpoint($breakpoint-l) {
     text-decoration: underline;
   }
+
+  &:hover {
+    background-color: $color-black-20;
+  }
 }

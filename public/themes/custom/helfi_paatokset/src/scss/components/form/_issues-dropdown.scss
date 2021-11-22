@@ -107,9 +107,23 @@
     border-left-color: $trustee-pink;
   }
 
-  .option:hover, .option:focus, .option.selected {
+  .option {
     cursor: pointer;
-    background-color: $color-black-20;
+
+    &:not(.selected):hover {
+      background-color: var(--color-bus);
+      a {
+        color: $color-white;
+      }
+    } 
+    
+    &:focus {
+      border: 2px solid $color-black;
+    }
+    
+    &.selected {
+      background-color: $color-black-20;
+    }
   }
 }
 
@@ -121,6 +135,12 @@
   margin-top: 0;
   padding-left: 0;
   overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .issue__meetings-labels {
