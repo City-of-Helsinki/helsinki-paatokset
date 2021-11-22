@@ -28,6 +28,7 @@ settings:
     target_bundles:
       columns: columns
       text: text
+      image: image
     target_bundles_drag_drop:
       accordion:
         weight: 12
@@ -35,9 +36,21 @@ settings:
       accordion_item:
         weight: 13
         enabled: false
+      banner:
+        enabled: false
+        weight: 23
       columns:
         enabled: true
         weight: 14
+      content_cards:
+        enabled: false
+        weight: 25
+      content_liftup:
+        enabled: false
+        weight: 26
+      from_library:
+        enabled: false
+        weight: 27
       gallery:
         weight: 15
         enabled: false
@@ -49,17 +62,33 @@ settings:
         enabled: false
       image:
         weight: 18
+        enabled: true
+      liftup_with_image:
         enabled: false
-      link:
-        weight: 19
-        enabled: false
+        weight: 32
+      link: {  }
       list_of_links:
         weight: 20
         enabled: false
       list_of_links_item:
         weight: 21
         enabled: false
+      map:
+        enabled: false
+        weight: 35
+      remote_video:
+        enabled: false
+        weight: 36
+      service_list:
+        enabled: false
+        weight: 37
+      sidebar_text:
+        enabled: false
+        weight: 38
       text:
         enabled: true
         weight: 22
+      unit_search:
+        enabled: false
+        weight: 40
 field_type: entity_reference_revisions
