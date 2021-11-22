@@ -73,7 +73,7 @@ class MeetingService {
 
       $transformedResult = [
         'title' => $node->get('title')->value,
-        'meeting_date' => $node->get('field_meeting_date')->value,
+        'meeting_date' => $timestamp,
         'policymaker' => $node->get('field_meeting_dm')->value,
         'start_time' => date('H:i', $timestamp),
         // @todo Once motions get imported from Ahjo API, replace this with actual data

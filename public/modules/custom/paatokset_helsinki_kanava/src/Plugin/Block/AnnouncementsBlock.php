@@ -28,11 +28,10 @@ class AnnouncementsBlock extends BlockBase {
       $nextMeetingDate = $meetingsService->nextMeetingDate($councilNode->get('title')->value);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
-        $timestamp = strtotime($nextMeetingDate);
         $announcement['text'] = t('Next meeting will be held on @date at @time',
           [
-            '@date' => date('d.m', $timestamp),
-            '@time' => date('H:i', $timestamp),
+            '@date' => date('d.m', $nextMeetingDate),
+            '@time' => date('H:i', $nextMeetingDate),
           ]
         );
       }
