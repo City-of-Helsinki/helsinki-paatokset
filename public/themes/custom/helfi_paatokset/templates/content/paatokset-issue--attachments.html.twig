@@ -11,7 +11,11 @@
       {% for attachment in attachments %}
         {% if attachment.public.value %}
           <div class="issue__attachment">
-            <a href="{{ attachment.file_url.value }}" class="paatokset__link-plain">
+            <a 
+              href="{{ attachment.file_url.value }}"
+              class="paatokset__link-plain"
+              aria-label="Link opens a file"
+            >
               <div>
                 <i class="hds-icon hds-icon--download hds-icon--size-s" aria-hidden="true" style="vertical-align: middle"></i>
               </div>
