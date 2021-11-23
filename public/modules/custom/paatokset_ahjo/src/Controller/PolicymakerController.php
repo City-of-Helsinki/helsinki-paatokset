@@ -81,10 +81,13 @@ class PolicymakerController extends ControllerBase {
       '#theme' => 'policymaker_minutes',
     ];
 
+    $minutesOfDiscussion = $this->policymakerService->getMinutesOfDiscussion(1, FALSE, $id);
+
     if ($meetingData) {
       $build['meeting'] = $meetingData['meeting'];
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
+      $build['minutes_of_discussion'] = $minutesOfDiscussion;
     }
 
     return $build;

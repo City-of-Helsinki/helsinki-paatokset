@@ -210,6 +210,8 @@
 }
 
 .minutes__file-link {
+  margin-bottom: $spacing-half;
+
   @include breakpoint($breakpoint-l) {
     .paatokset-button-link {
       text-decoration: none;

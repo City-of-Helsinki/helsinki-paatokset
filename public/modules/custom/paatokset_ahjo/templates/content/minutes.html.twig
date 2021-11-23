@@ -40,12 +40,25 @@
     {% endif %}
     {% if file.file_url %}
       <div class="minutes__file-link">
-        <a class="paatokset-button-link" href="{{ file.file_url }}">
+        <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ file.file_url }}">
           <i class="hds-icon hds-icon--document"></i>
           <span>{{ 'Lataa tulostettava versio (PDF)'|t }}</span>
         </a>
       </div>
     {% endif %}
     </div>
+  {% endif %}
+
+  {% if minutes_of_discussion %}
+    <div class="minutes-file__container">
+      {% for minute in minutes_of_discussion %}
+        <div class="minutes__file-link">
+          <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ minute.origin_url }}">
+            <i class="hds-icon hds-icon--document"></i>
+            <span>{{ 'Lataa keskutelupöytäkirja (PDF)'|t }}</span>
+          </a>
+        </div>
+      {% endfor %}
+    <div>
   {% endif %}
 </div>
