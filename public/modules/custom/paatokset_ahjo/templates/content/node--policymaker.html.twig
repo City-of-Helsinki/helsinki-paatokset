@@ -89,7 +89,9 @@
         {{ label }}
       </div>
     </div>
-    {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
+    {% if render_announcement_block %}
+      {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
+    {% endif %}
     <div>
       {% if node.field_policymaker_summary.value|render|striptags|trim is not empty %}
         {{ node.field_policymaker_summary.value | check_markup('full_html') }}
@@ -100,7 +102,7 @@
   </section>
 
   {% if live_stream %}
-    <section class="container policymaker-live-sream">
+    <section class="container policymaker-live-sream" id="policymaker-live-stream">
       {% if live_stream %}
         {{ live_stream }}
       {% endif %}
@@ -211,7 +213,7 @@
         {% if all_recordings_link %}
           <div class="view-all view-all--recordings">
             <a class="paatokset-button-link" href="{{ all_recordings_link }}">
-              <span>{{ 'All recordings' }}</span>
+              <span>{{ 'All recordings'|t }}</span>
               <i class="hds-icon hds-icon--arrow-right"></i>
             </a>
           </div>

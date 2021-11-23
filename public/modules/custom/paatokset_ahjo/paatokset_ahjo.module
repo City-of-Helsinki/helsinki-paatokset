@@ -316,6 +316,7 @@ function template_preprocess_paatokset_agenda_item(array &$variables) {
 function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
   $policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
   $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
 
   $policymaker = $policymakerService->getPolicymaker();
   $orgType = $policymaker->get('field_organization_type')->value;
@@ -349,6 +350,10 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
         $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
       }
     }
+  }
+
+  if($councilId && ($policymaker->id() === $councilId)) {
+    $variables['render_announcement_block'] = true;
   }
 }
 

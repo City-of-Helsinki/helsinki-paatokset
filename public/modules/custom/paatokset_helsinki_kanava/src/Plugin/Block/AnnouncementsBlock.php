@@ -3,6 +3,8 @@
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 
 /**
@@ -28,13 +30,18 @@ class AnnouncementsBlock extends BlockBase {
       $nextMeetingDate = $meetingsService->nextMeetingDate($councilNode->get('title')->value);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
-        $timestamp = strtotime($nextMeetingDate);
         $announcement['text'] = t('Next meeting will be held on @date at @time',
           [
-            '@date' => date('d.m', $timestamp),
-            '@time' => date('H:i', $timestamp),
+            '@date' => date('d.m', $nextMeetingDate),
+            '@time' => date('H:i', $nextMeetingDate),
           ]
         );
+      }
+
+      $url = $councilNode->toUrl();
+      if ($url) {
+        $linkText = t("You can see the stream on council's page");
+        $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));
       }
     }
 
