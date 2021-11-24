@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
+    - field.field.node.meeting.field_meeting_documents
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
     - field.field.node.meeting.field_meeting_minutes_published
@@ -20,7 +21,6 @@ dependencies:
     - field.field.node.meeting.field_meeting_prev_id
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
-    - field.field.node.meeting.field_meetings_documents
     - node.type.meeting
   module:
     - datetime
@@ -95,6 +95,13 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_meeting_documents:
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
   field_meeting_id:
     weight: 4
     label: above
@@ -167,13 +174,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_meetings_documents:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: json
     region: content
   links:
     weight: 0

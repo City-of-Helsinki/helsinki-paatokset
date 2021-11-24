@@ -1,12 +1,12 @@
-uuid: 13566a8f-b45f-4197-8e87-00d359be8c51
+uuid: d0a5e86f-25c9-4138-9f1a-9622a297a049
 langcode: fi
 status: true
 dependencies:
   module:
     - json_field
     - node
-id: node.field_meetings_documents
-field_name: field_meetings_documents
+id: node.field_meeting_documents
+field_name: field_meeting_documents
 entity_type: node
 type: json_native
 settings: {  }
