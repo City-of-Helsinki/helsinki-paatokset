@@ -3,23 +3,95 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_published
     - field.field.node.meeting.field_meeting_attachment_info
+    - field.field.node.meeting.field_meeting_composition
     - field.field.node.meeting.field_meeting_date
+    - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
     - field.field.node.meeting.field_meeting_minutes_published
+    - field.field.node.meeting.field_meeting_next
+    - field.field.node.meeting.field_meeting_next_id
+    - field.field.node.meeting.field_meeting_prev
+    - field.field.node.meeting.field_meeting_prev_id
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
+    - field.field.node.meeting.field_meetings_documents
     - node.type.meeting
   module:
     - datetime
+    - field_group
     - hdbt_admin_editorial
+    - json_field
     - path
     - scheduler
     - text
+third_party_settings:
+  field_group:
+    group_metadata:
+      children:
+        - field_meeting_sequence_number
+        - field_meeting_next_id
+        - field_meeting_next
+        - field_meeting_prev_id
+        - field_meeting_prev
+      parent_name: ''
+      weight: 3
+      format_type: details
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: Metadata
+    group_basic_information:
+      children:
+        - field_meeting_id
+        - field_meeting_date
+        - field_meeting_location
+        - field_meeting_status
+        - field_meeting_dm_id
+        - field_meeting_dm
+        - field_meeting_decision
+        - field_meeting_agenda_published
+        - field_meeting_minutes_published
+        - field_meeting_attachment_info
+      parent_name: ''
+      weight: 2
+      format_type: details
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        description: ''
+        open: true
+        required_fields: false
+      label: 'Basic information'
+    group_meeting_data:
+      children:
+        - field_meeting_agenda
+        - field_meetings_documents
+        - field_meeting_composition
+      parent_name: ''
+      weight: 4
+      format_type: details
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        description: ''
+        open: true
+        required_fields: false
+      label: 'Meeting data'
 id: node.meeting.default
 targetEntityType: node
 bundle: meeting
@@ -27,33 +99,57 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 3
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meeting_agenda:
+    weight: 34
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
   field_meeting_agenda_published:
-    weight: 18
+    weight: 36
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_meeting_attachment_info:
-    weight: 20
+    weight: 38
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_meeting_composition:
+    weight: 36
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
   field_meeting_date:
-    weight: 12
+    weight: 30
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_meeting_decision:
+    weight: 35
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_meeting_dm:
-    weight: 16
+    weight: 34
     settings:
       size: 60
       placeholder: ''
@@ -61,7 +157,7 @@ content:
     type: string_textfield
     region: content
   field_meeting_dm_id:
-    weight: 17
+    weight: 33
     settings:
       size: 60
       placeholder: ''
@@ -69,7 +165,7 @@ content:
     type: string_textfield
     region: content
   field_meeting_id:
-    weight: 11
+    weight: 29
     settings:
       size: 60
       placeholder: ''
@@ -77,7 +173,7 @@ content:
     type: string_textfield
     region: content
   field_meeting_location:
-    weight: 13
+    weight: 31
     settings:
       size: 60
       placeholder: ''
@@ -85,26 +181,66 @@ content:
     type: string_textfield
     region: content
   field_meeting_minutes_published:
-    weight: 19
+    weight: 37
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_meeting_next:
+    weight: 31
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+  field_meeting_next_id:
+    weight: 30
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_meeting_prev:
+    weight: 33
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+  field_meeting_prev_id:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_meeting_sequence_number:
-    weight: 15
+    weight: 29
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_meeting_status:
-    weight: 14
+    weight: 32
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_meetings_documents:
+    weight: 35
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
     region: content
   langcode:
     type: language_select
@@ -115,7 +251,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -123,12 +259,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 4
+    weight: 7
     region: content
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 7
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -136,14 +272,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 13
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 8
     region: content
     third_party_settings: {  }
   title:
@@ -156,7 +292,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
@@ -166,12 +302,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 8
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 9
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

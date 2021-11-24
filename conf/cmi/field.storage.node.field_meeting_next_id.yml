@@ -1,0 +1,21 @@
+uuid: 8871f3e8-5357-4c0a-94bf-caa29966f039
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_meeting_next_id
+field_name: field_meeting_next_id
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

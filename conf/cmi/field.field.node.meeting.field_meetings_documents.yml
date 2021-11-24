@@ -1,0 +1,21 @@
+uuid: d8a4fc7b-1e56-4728-8dc4-325f696b4dae
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meetings_documents
+    - node.type.meeting
+  module:
+    - json_field
+id: node.meeting.field_meetings_documents
+field_name: field_meetings_documents
+entity_type: node
+bundle: meeting
+label: 'Meetings documents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

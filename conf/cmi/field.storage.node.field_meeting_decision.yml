@@ -1,0 +1,19 @@
+uuid: 12371447-8512-4eed-8257-310adbf6b630
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_meeting_decision
+field_name: field_meeting_decision
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

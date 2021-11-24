@@ -1,0 +1,19 @@
+uuid: a23662ad-e357-48e3-917e-059e57548cd7
+langcode: fi
+status: true
+dependencies:
+  module:
+    - json_field
+    - node
+id: node.field_meeting_prev
+field_name: field_meeting_prev
+entity_type: node
+type: json_native
+settings: {  }
+module: json_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -3,19 +3,28 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_published
     - field.field.node.meeting.field_meeting_attachment_info
+    - field.field.node.meeting.field_meeting_composition
     - field.field.node.meeting.field_meeting_date
+    - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
     - field.field.node.meeting.field_meeting_minutes_published
+    - field.field.node.meeting.field_meeting_next
+    - field.field.node.meeting.field_meeting_next_id
+    - field.field.node.meeting.field_meeting_prev
+    - field.field.node.meeting.field_meeting_prev_id
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
+    - field.field.node.meeting.field_meetings_documents
     - node.type.meeting
   module:
     - datetime
+    - json_field
     - text
     - user
 id: node.meeting.default
@@ -23,6 +32,13 @@ targetEntityType: node
 bundle: meeting
 mode: default
 content:
+  field_meeting_agenda:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
   field_meeting_agenda_published:
     weight: 5
     label: above
@@ -40,6 +56,13 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_meeting_composition:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
   field_meeting_date:
     weight: 1
     label: above
@@ -48,6 +71,13 @@ content:
       format_type: long
     third_party_settings: {  }
     type: datetime_default
+    region: content
+  field_meeting_decision:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_meeting_dm:
     weight: 9
@@ -91,6 +121,36 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
+  field_meeting_next:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_meeting_next_id:
+    weight: 11
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_meeting_prev:
+    weight: 18
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_meeting_prev_id:
+    weight: 12
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_meeting_sequence_number:
     weight: 7
     label: above
@@ -107,6 +167,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_meetings_documents:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
     region: content
   links:
     weight: 0

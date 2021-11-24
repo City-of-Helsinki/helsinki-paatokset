@@ -1,0 +1,21 @@
+uuid: 105b0c5a-dbab-4ea7-b1eb-69804792a509
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_next
+    - node.type.meeting
+  module:
+    - json_field
+id: node.meeting.field_meeting_next
+field_name: field_meeting_next
+entity_type: node
+bundle: meeting
+label: 'Next meeting'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
