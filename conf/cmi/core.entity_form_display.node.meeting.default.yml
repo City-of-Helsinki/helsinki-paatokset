@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
+    - field.field.node.meeting.field_meeting_documents
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
     - field.field.node.meeting.field_meeting_minutes_published
@@ -20,7 +21,6 @@ dependencies:
     - field.field.node.meeting.field_meeting_prev_id
     - field.field.node.meeting.field_meeting_sequence_number
     - field.field.node.meeting.field_meeting_status
-    - field.field.node.meeting.field_meetings_documents
     - node.type.meeting
   module:
     - datetime
@@ -139,7 +139,7 @@ third_party_settings:
       label: Agenda
     group_documents:
       children:
-        - field_meetings_documents
+        - field_meeting_documents
       parent_name: group_meeting_data
       weight: 17
       format_type: details
@@ -174,7 +174,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -246,6 +246,18 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_meeting_documents:
+    weight: 5
+    settings:
+      mode: code
+      modes:
+        - tree
+        - code
+      schema: ''
+      schema_validate: false
+    third_party_settings: {  }
+    type: json_editor
     region: content
   field_meeting_id:
     weight: 29
@@ -325,18 +337,6 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_meetings_documents:
-    weight: 35
-    settings:
-      mode: code
-      modes:
-        - tree
-        - code
-      schema: ''
-      schema_validate: false
-    third_party_settings: {  }
-    type: json_editor
-    region: content
   langcode:
     type: language_select
     weight: 1
@@ -346,7 +346,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -354,12 +354,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 8
     region: content
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -367,14 +367,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 14
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 9
     region: content
     third_party_settings: {  }
   title:
@@ -387,7 +387,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
@@ -397,12 +397,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }

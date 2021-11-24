@@ -1,17 +1,17 @@
-uuid: d8a4fc7b-1e56-4728-8dc4-325f696b4dae
+uuid: b34b9713-05b9-467e-8cdb-688789acdc77
 langcode: fi
 status: true
 dependencies:
   config:
-    - field.storage.node.field_meetings_documents
+    - field.storage.node.field_meeting_documents
     - node.type.meeting
   module:
     - json_field
-id: node.meeting.field_meetings_documents
-field_name: field_meetings_documents
+id: node.meeting.field_meeting_documents
+field_name: field_meeting_documents
 entity_type: node
 bundle: meeting
-label: 'Meetings documents'
+label: 'Meeting documents'
 description: ''
 required: false
 translatable: false
