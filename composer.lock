@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0854708b9b8eed9ef8ba321db02eb4b6",
+    "content-hash": "c49ba8759bc41be8df98ec04d0528ea6",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -6773,6 +6773,20 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
             "time": "2021-04-26T09:17:50+00:00"
+        },
+        {
+            "name": "josdejong/jsoneditor",
+            "version": "v5.29.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/josdejong/jsoneditor",
+                "reference": "v5.29.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+            },
+            "type": "drupal-library"
         },
         {
             "name": "laminas/laminas-diactoros",
