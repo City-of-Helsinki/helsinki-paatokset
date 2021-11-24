@@ -1,0 +1,19 @@
+uuid: cf3749ad-0996-45f4-ac5b-c947db34f175
+langcode: fi
+status: true
+dependencies:
+  module:
+    - json_field
+    - node
+id: node.field_meeting_composition
+field_name: field_meeting_composition
+entity_type: node
+type: json_native
+settings: {  }
+module: json_field
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

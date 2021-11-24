@@ -1,0 +1,21 @@
+uuid: 3295e3bf-f0cd-4745-8bfe-24666decb307
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_prev
+    - node.type.meeting
+  module:
+    - json_field
+id: node.meeting.field_meeting_prev
+field_name: field_meeting_prev
+entity_type: node
+bundle: meeting
+label: 'Previous meeting'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
