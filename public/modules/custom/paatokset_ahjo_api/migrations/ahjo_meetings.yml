@@ -42,6 +42,22 @@ source:
       label: Meeting Sequence Number
       selector: MeetingSequenceNumber
     -
+      name: meeting_next_id
+      label: Next Meeting ID
+      selector: NextMeeting/MeetingID
+    -
+      name: meeting_next
+      label: Next Meeting Data
+      selector: NextMeeting
+    -
+      name: meeting_prev_id
+      label: Previous Meeting ID
+      selector: PreviousMeeting/MeetingID
+    -
+      name: meeting_prev
+      label: Previous Meeting Data
+      selector: PreviousMeeting
+    -
       name: meeting_agenda
       label: Meeting agenda
       selector: Agenda
@@ -49,6 +65,14 @@ source:
       name: meeting_documents
       label: Meeting documents
       selector: MeetingDocuments
+    -
+      name: meeting_composition
+      label: Meeting Composition
+      selector: Composition
+    -
+      name: decision_announcement
+      label: Decision Announcement
+      selector: DecisionAnnouncement
     -
       name: attachment_info
       label: Attachment info
@@ -90,10 +114,42 @@ process:
     plugin: default_value
     default_value: full_html
   field_meeting_attachment_info/value: attachment_info
+  field_meeting_decision/format:
+    plugin: default_value
+    default_value: full_html
+  field_meeting_decision/value: decision_announcement
   field_meeting_sequence_number: meeting_sequence_number
   field_meeting_location: location
   field_meeting_dm: decision_maker
   field_meeting_dm_id: decision_maker_id
+  field_meeting_next:
+    -
+      plugin: single_value
+      source: meeting_next
+    -
+      plugin: callback
+      callable: json_encode
+  field_meeting_prev:
+    -
+      plugin: single_value
+      source: meeting_prev
+    -
+      plugin: callback
+      callable: json_encode
+  field_meeting_next_id: meeting_next_id
+  field_meeting_prev_id: meeting_prev_id
+  field_meeting_composition:
+    plugin: callback
+    callable: json_encode
+    source: meeting_composition
+  field_meeting_agenda:
+    plugin: callback
+    callable: json_encode
+    source: meeting_agenda
+  field_meeting_documents:
+    plugin: callback
+    callable: json_encode
+    source: meeting_documents
   field_meeting_date:
     plugin: format_date
     from_format: 'Y-m-d\TH:i:s.000'
