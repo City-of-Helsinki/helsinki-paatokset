@@ -97,10 +97,12 @@ class AhjoAggregatorCommands extends DrushCommands {
     switch ($endpoint) {
       case 'meetings':
         $timestamp_key = 'start';
+        $timestamp_key_end = 'end';
         break;
 
       default:
         $timestamp_key = 'handledsince';
+        $timestamp_key_end = 'handledbefore';
         break;
     }
 
@@ -119,7 +121,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     if (!empty($options['end'])) {
-      $query_string .= '&handledbefore=' . $options['end'];
+      $query_string .= '&'. $timestamp_key_end . '=' . $options['end'];
     }
 
     if ($endpoint === 'cases' || $endpoint === 'decisions') {
