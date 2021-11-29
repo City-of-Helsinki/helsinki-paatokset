@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.meeting.field_meeting_agenda
+    - field.field.node.meeting.field_meeting_agenda_files
     - field.field.node.meeting.field_meeting_agenda_published
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_composition
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
+    - field.field.node.meeting.field_meeting_document_files
     - field.field.node.meeting.field_meeting_documents
     - field.field.node.meeting.field_meeting_id
     - field.field.node.meeting.field_meeting_location
@@ -27,6 +29,7 @@ dependencies:
     - field_group
     - hdbt_admin_editorial
     - json_field
+    - media_library
     - path
     - scheduler
     - text
@@ -124,6 +127,7 @@ third_party_settings:
       label: 'Previous meeting data'
     group_agenda:
       children:
+        - field_meeting_agenda_files
         - field_meeting_agenda
       parent_name: group_meeting_data
       weight: 15
@@ -140,6 +144,7 @@ third_party_settings:
     group_documents:
       children:
         - field_meeting_documents
+        - field_meeting_document_files
       parent_name: group_meeting_data
       weight: 17
       format_type: details
@@ -179,7 +184,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_meeting_agenda:
-    weight: 34
+    weight: 36
     settings:
       mode: code
       modes:
@@ -189,6 +194,13 @@ content:
       schema_validate: false
     third_party_settings: {  }
     type: json_editor
+    region: content
+  field_meeting_agenda_files:
+    type: media_library_widget
+    weight: 35
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
     region: content
   field_meeting_agenda_published:
     weight: 36
@@ -246,6 +258,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_meeting_document_files:
+    type: media_library_widget
+    weight: 5
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
     region: content
   field_meeting_documents:
     weight: 5
