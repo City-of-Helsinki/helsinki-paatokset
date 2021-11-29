@@ -1,0 +1,19 @@
+uuid: 482db880-ab58-4b7a-85da-f0bd616c7b3f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document_type
+    - media.type.ahjo_document
+id: media.ahjo_document.field_document_type
+field_name: field_document_type
+entity_type: media
+bundle: ahjo_document
+label: Type
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

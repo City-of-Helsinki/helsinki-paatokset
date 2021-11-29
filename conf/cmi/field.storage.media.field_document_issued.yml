@@ -1,0 +1,20 @@
+uuid: 26ba8882-d2a3-46a1-844c-192452c36f50
+langcode: fi
+status: true
+dependencies:
+  module:
+    - datetime
+    - media
+id: media.field_document_issued
+field_name: field_document_issued
+entity_type: media
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

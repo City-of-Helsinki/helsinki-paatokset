@@ -1,0 +1,19 @@
+uuid: 5ad3e891-9eef-494c-b6e0-19b5a2238d53
+langcode: fi
+status: true
+dependencies:
+  module:
+    - json_field
+    - media
+id: media.field_media_ahjo_file
+field_name: field_media_ahjo_file
+entity_type: media
+type: json_native
+settings: {  }
+module: json_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

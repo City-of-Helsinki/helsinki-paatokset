@@ -1,0 +1,21 @@
+uuid: 2f2d8566-f239-4820-b976-719eb1df92fe
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_ahjo_file
+    - media.type.ahjo_document
+  module:
+    - json_field
+id: media.ahjo_document.field_media_ahjo_file
+field_name: field_media_ahjo_file
+entity_type: media
+bundle: ahjo_document
+label: 'External file from Ahjo API'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

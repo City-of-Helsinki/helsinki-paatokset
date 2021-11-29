@@ -39,12 +39,13 @@ class ExternalAhjoFile extends MediaSourceBase {
   public function getMetadata(MediaInterface $media, $attribute_name) {
     // Get file attributes from JSON source field.
     $json_field = $media->get($this->configuration['source_field']);
-    $data = json_decode($json_field->value);
 
     // Fallback if JSON field is empty.
-    if (!$json_field) {
+    if (!$json_field || empty($json_field->value)) {
       return parent::getMetadata($media, $attribute_name);
     }
+
+    $data = json_decode($json_field->value);
 
     switch ($attribute_name) {
       // This is used to set the name of the media entity if the user leaves the field blank.
@@ -61,18 +62,24 @@ class ExternalAhjoFile extends MediaSourceBase {
         return $data->NativeId;
 
       case 'uri':
-        return $this->getAhjoFileUri($data->NativeID);
+        return $this->getAhjoFileUri($data->NativeId);
 
       case 'orig_uri':
-        return $this->FileURI;
+        return $data->FileURI;
 
       case 'issued':
-        return $data->Issued;
+        $timestamp = $data->Issued;
+        if (empty($timestamp)) {
+          return NULL;
+        }
+        $datetime = new \DateTime("now", new \DateTimezone('UTC'));
+        $datetime->setTimeStamp(strtotime($timestamp));
+        return $datetime->format("Y-m-d\TH:i:s");
 
       case 'language':
         return $data->Language;
 
-      case 'personal_data':
+      case 'personaldata':
         return $data->PersonalData;
 
       default:
@@ -82,7 +89,7 @@ class ExternalAhjoFile extends MediaSourceBase {
 
 
   private function getAhjoFileUri(string $native_id): string {
-    return 'https://example.com/' . $native_id;
+    return 'https://example.com/' . urlencode($native_id);
   }
 
 }

@@ -1,0 +1,35 @@
+uuid: cbbcab4c-5f99-45ef-adef-357131e340aa
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.ahjo_document.field_document_issued
+    - field.field.media.ahjo_document.field_document_language
+    - field.field.media.ahjo_document.field_document_native_id
+    - field.field.media.ahjo_document.field_document_orig_uri
+    - field.field.media.ahjo_document.field_document_personal_data
+    - field.field.media.ahjo_document.field_document_type
+    - field.field.media.ahjo_document.field_document_uri
+    - field.field.media.ahjo_document.field_media_ahjo_file
+    - media.type.ahjo_document
+id: media.ahjo_document.media_library
+targetEntityType: media
+bundle: ahjo_document
+mode: media_library
+content: {  }
+hidden:
+  created: true
+  field_document_issued: true
+  field_document_language: true
+  field_document_native_id: true
+  field_document_orig_uri: true
+  field_document_personal_data: true
+  field_document_type: true
+  field_document_uri: true
+  field_media_ahjo_file: true
+  langcode: true
+  name: true
+  path: true
+  status: true
+  uid: true

@@ -1,0 +1,23 @@
+uuid: 2e43b0d1-7517-4818-87e0-f6d33db4ff3f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document_orig_uri
+    - media.type.ahjo_document
+  module:
+    - link
+id: media.ahjo_document.field_document_orig_uri
+field_name: field_document_orig_uri
+entity_type: media
+bundle: ahjo_document
+label: 'Original URI'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link
