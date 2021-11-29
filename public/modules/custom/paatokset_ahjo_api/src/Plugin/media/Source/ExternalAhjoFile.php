@@ -6,7 +6,6 @@ namespace Drupal\paatokset_ahjo_api\Plugin\media\Source;
 
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
-use Drupal\json_field\Plugin\Field\FieldType\JSONItem;
 
 /**
  * Source wrapping around an external document from Ahjo.
@@ -23,6 +22,9 @@ use Drupal\json_field\Plugin\Field\FieldType\JSONItem;
  */
 class ExternalAhjoFile extends MediaSourceBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMetadataAttributes() {
     return [
       'title' => $this->t('Title'),
@@ -36,6 +38,9 @@ class ExternalAhjoFile extends MediaSourceBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMetadata(MediaInterface $media, $attribute_name) {
     // Get file attributes from JSON source field.
     $json_field = $media->get($this->configuration['source_field']);
@@ -48,7 +53,7 @@ class ExternalAhjoFile extends MediaSourceBase {
     $data = json_decode($json_field->value);
 
     switch ($attribute_name) {
-      // This is used to set the name of the media entity if the user leaves the field blank.
+      // Default name if left blank (through migrations for example).
       case 'default_name':
         return $data->Title;
 
@@ -87,7 +92,15 @@ class ExternalAhjoFile extends MediaSourceBase {
     }
   }
 
-
+  /**
+   * Get local URI for external file.
+   *
+   * @param string $native_id
+   *   Native ID of file.
+   *
+   * @return string
+   *   Local URI through proxy to get past OpenID authentication.
+   */
   private function getAhjoFileUri(string $native_id): string {
     return 'https://example.com/' . urlencode($native_id);
   }
