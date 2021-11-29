@@ -1,0 +1,29 @@
+uuid: 0d31101e-9d42-44e2-a615-9511e56def02
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_agenda_files
+    - media.type.ahjo_document
+    - node.type.meeting
+id: node.meeting.field_meeting_agenda_files
+field_name: field_meeting_agenda_files
+entity_type: node
+bundle: meeting
+label: 'Agenda documents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      ahjo_document: ahjo_document
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
