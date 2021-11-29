@@ -70,13 +70,16 @@ class AhjoEntityGenerate extends EntityLookup {
 
     // Creates an entity if the lookup determines it doesn't exist.
     $lookup_value = $value[$this->lookupSourceKey] ?? [];
+
     if (!($result = parent::transform($lookup_value, $migrateExecutable, $row, $destinationProperty))) {
       $result = $this->generateEntity($value);
     }
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface $existing */
-    elseif ($existing = $this->entityTypeManager->getStorage($this->lookupEntityType)
+
+    // Updates either the existing or created entity.
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface $entity */
+    if ($entity = $this->entityTypeManager->getStorage($this->lookupEntityType)
       ->load($result)) {
-      $this->updateEntity($existing, $value);
+      $this->updateEntity($entity, $value);
     }
 
     return $result;
@@ -136,13 +139,7 @@ class AhjoEntityGenerate extends EntityLookup {
       }
     }
     foreach ($this->configuration['values'] as $key => $property) {
-      if ($property === 'root_json') {
-        $source_value = $value;
-      }
-      else {
-        $source_value = $value[$property] ?? NULL;
-      }
-
+      $source_value = $value[$property] ?? NULL;
       $this->preprocessValue($key, $source_value);
       NestedArray::setValue($entity_values, explode(Row::PROPERTY_SEPARATOR, $key), $source_value, TRUE);
     }
@@ -162,7 +159,7 @@ class AhjoEntityGenerate extends EntityLookup {
     if ($value === NULL) {
       return;
     }
-    if ($name === 'root_json') {
+    if ($name === 'PDF' || $name === 'root_json') {
       $value = json_encode($value);
     }
   }
