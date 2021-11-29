@@ -66,8 +66,11 @@ class AhjoSubscriberController extends ControllerBase {
   public function callback(Request $request, string $id): JsonResponse {
     $queue = $this->queueFactory->get(self::QUEUE_NAME);
 
+    $content = json_decode($request->getContent());
+
     $data = [
       'id' => $id,
+      'content' => $content,
       'request' => $request->request->all(),
     ];
 
