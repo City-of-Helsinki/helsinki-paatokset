@@ -1,0 +1,15 @@
+{%
+  set classes = [
+  'policymaker-calendar',
+  view_mode ? 'policymaker-calendar--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+{% if meetings %}
+<div {{ attributes.addClass(classes) }}>
+  testi testinen
+  {% for meeting in meetings %}
+  {{ meeting }}
+  {% endfor %}
+</div>
+{% endif %}
