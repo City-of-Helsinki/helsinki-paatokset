@@ -121,7 +121,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     if (!empty($options['end'])) {
-      $query_string .= '&'. $timestamp_key_end . '=' . $options['end'];
+      $query_string .= '&' . $timestamp_key_end . '=' . $options['end'];
     }
 
     if ($endpoint === 'cases' || $endpoint === 'decisions') {
