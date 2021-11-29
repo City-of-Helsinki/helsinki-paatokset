@@ -1,0 +1,20 @@
+uuid: eafd4fab-9a20-4a6d-b7ff-2ebe94e7ad84
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - media
+id: media.field_document_language
+field_name: field_document_language
+entity_type: media
+type: entity_reference
+settings:
+  target_type: configurable_language
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,11 @@
+uuid: ed14b1df-4be6-4038-962d-c7e3ac25f8df
+langcode: fi
+status: true
+dependencies:
+  config:
+    - media.type.ahjo_document
+id: media.ahjo_document
+target_entity_type_id: media
+target_bundle: ahjo_document
+default_langcode: site_default
+language_alterable: false

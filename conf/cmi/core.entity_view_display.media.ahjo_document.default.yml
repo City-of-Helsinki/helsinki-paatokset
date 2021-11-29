@@ -1,0 +1,102 @@
+uuid: 919956b6-c0a3-4ec5-8e6f-7ade2a2eedfe
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.media.ahjo_document.field_document_issued
+    - field.field.media.ahjo_document.field_document_language
+    - field.field.media.ahjo_document.field_document_native_id
+    - field.field.media.ahjo_document.field_document_orig_uri
+    - field.field.media.ahjo_document.field_document_personal_data
+    - field.field.media.ahjo_document.field_document_type
+    - field.field.media.ahjo_document.field_document_uri
+    - field.field.media.ahjo_document.field_media_ahjo_file
+    - media.type.ahjo_document
+  module:
+    - datetime
+    - json_field
+    - link
+id: media.ahjo_document.default
+targetEntityType: media
+bundle: ahjo_document
+mode: default
+content:
+  field_document_issued:
+    weight: 4
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_document_language:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_document_native_id:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_document_orig_uri:
+    weight: 7
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_document_personal_data:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_document_type:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_document_uri:
+    weight: 6
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_media_ahjo_file:
+    label: visually_hidden
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

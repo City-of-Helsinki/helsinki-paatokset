@@ -1,0 +1,19 @@
+uuid: 77f8498f-5fe3-4797-8640-c5cefeececc2
+langcode: fi
+status: true
+dependencies:
+  module:
+    - link
+    - media
+id: media.field_document_orig_uri
+field_name: field_document_orig_uri
+entity_type: media
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

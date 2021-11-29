@@ -1,0 +1,21 @@
+uuid: 3b983a70-d51e-43b6-b3d1-e628308976ef
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document_issued
+    - media.type.ahjo_document
+  module:
+    - datetime
+id: media.ahjo_document.field_document_issued
+field_name: field_document_issued
+entity_type: media
+bundle: ahjo_document
+label: Issued
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

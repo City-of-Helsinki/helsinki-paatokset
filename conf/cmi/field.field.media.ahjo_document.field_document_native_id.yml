@@ -1,0 +1,19 @@
+uuid: e8c6431b-3933-4452-b1cf-ed7bfa4ea032
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document_native_id
+    - media.type.ahjo_document
+id: media.ahjo_document.field_document_native_id
+field_name: field_document_native_id
+entity_type: media
+bundle: ahjo_document
+label: 'Native ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

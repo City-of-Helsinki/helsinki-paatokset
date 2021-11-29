@@ -1,0 +1,23 @@
+uuid: 556682cc-8536-4605-aad9-df5f509a419c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document_language
+    - media.type.ahjo_document
+id: media.ahjo_document.field_document_language
+field_name: field_document_language
+entity_type: media
+bundle: ahjo_document
+label: Language
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:configurable_language'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

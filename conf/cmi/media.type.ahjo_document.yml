@@ -1,0 +1,27 @@
+uuid: b2b857c9-31e2-4457-82b2-6ddc9c4f7576
+langcode: fi
+status: true
+dependencies:
+  module:
+    - crop
+    - paatokset_ahjo_api
+third_party_settings:
+  crop:
+    image_field: null
+id: ahjo_document
+label: 'Ahjo Document'
+description: 'External file from Ahjo API.'
+source: ahjo_file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_ahjo_file
+field_map:
+  title: name
+  id: field_document_native_id
+  uri: field_document_uri
+  orig_uri: field_document_orig_uri
+  type: field_document_type
+  issued: field_document_issued
+  personaldata: field_document_personal_data
+  language: field_document_language
