@@ -78,7 +78,7 @@ class AnnouncementsBlock extends BlockBase {
    */
   private function shouldShowAlert(string $time): bool {
     if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
-      return true;
+      return TRUE;
     }
 
     return strtotime('+1 day') > $time;
