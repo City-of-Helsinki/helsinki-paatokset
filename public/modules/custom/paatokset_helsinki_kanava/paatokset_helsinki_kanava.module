@@ -112,7 +112,7 @@ function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
     return true;
   }
 
-  return strtotime('+1 hour') > strtotime($time);
+  return strtotime('+1 hour') > $time;
 }
 
 function paatokset_helsinki_kanava_update_9001() {
