@@ -58,15 +58,24 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
+  public function count($refresh = FALSE) {
+    return -1;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row): void {
     $recordings = $row->getSourceProperty('recordings');
 
-    if ($recordings && !(empty($recordings))) {
-      foreach ($recordings as $record) {
-        if (isset($record['assetId'])) {
-          $row->setSourceProperty('assetId', $record['assetId']);
-          return;
-        }
+    if (empty($recordings)) {
+      return;
+    }
+    foreach ($recordings as $record) {
+      if (isset($record['assetId'])) {
+        $row->setSourceProperty('assetId', $record['assetId']);
+        return;
       }
     }
   }
@@ -106,46 +115,54 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     $plugin_definition,
     MigrationInterface $migration = NULL
   ) {
+    if ($url = self::getVideoUrl($configuration['url'])) {
+      $configuration['url'] = $url;
+    }
+
+    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
+    $instance->httpClient = $container->get('http_client');
+    if (!isset($configuration['ids'])) {
+      throw new \InvalidArgumentException('The "ids" configuration is missing.');
+    }
+
+    return $instance;
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @return string
+   */
+  protected static function getVideoUrl(string $base_url): ?string {
     $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
     $council = Node::load($councilId);
 
     if (!$council) {
       \Drupal::logger('HelsinkiKanava')->warning('Council node can\'t be found. Cannot import the latest council meeting recording.');
-      return;
+      return NULL;
     }
 
-    $councilUri = $council->get('field_resource_uri')->value;
-
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_meeting_field_data', 'pmfd')
-      ->fields('pmfd', ['meeting_date'])
-      // Use the second most recent meeting as from-time.
-      ->range(1, 2)
-      ->condition('pmfd.policymaker_uri', $councilUri)
-      ->orderBy('meeting_date', 'DESC');
-    $result = $query->execute()->fetch();
-
-    if (!isset($result->meeting_date)) {
-      \Drupal::logger('HelsinkiKanava')->warning('Latest council meeting not found. Cannot import the latest council meeting recording.');
-      return;
+    if (!$council->bundle('policymaker')) {
+      \Drupal::logger('HelsinkiKanava')->warning('Council node is not of type policymaker.');
+      return NULL;
     }
 
     $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+    $previousMeetingDate = $meetingsService->previousMeetingDate($council->get('title')->value);
+    $fromTime = $previousMeetingDate ? $previousMeetingDate * 1000 : round(microtime(TRUE) * 1000);
     $nextMeetingDate = $meetingsService->nextMeetingDate($council->get('title')->value);
     $toTime = $nextMeetingDate ? $nextMeetingDate * 1000 : round(microtime(TRUE) * 1000);
 
     $version = '01';
     $languageId = 'fi_FI';
-    $dateTime = new \DateTime($result->meeting_date);
-    $fromTime = strtotime($result->meeting_date) * 1000;
     $tokenTime = dechex(time());
 
-    $organizationId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('helsinki_kanava_id');
-    $secret = \Drupal::config('paatokset_helsinki_kanava.settings')->get('helsinki_kanava_secret');
+    $organizationId = getenv('HELSINKI_KANAVA_ID');
+    $secret = getenv('HELSINKI_KANAVA_SECRET');
 
     if (!$organizationId || !$secret) {
       \Drupal::logger('HelsinkiKanava')->warning('Helsinki Kanava credentials are not set. Cannot import the latest council meeting recording.');
-      return;
+      return NULL;
     }
 
     $hash = md5(
@@ -159,7 +176,6 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
 
     $token = $version . $tokenTime . $hash;
 
-    $base_url = $configuration['url'];
     $url = Url::fromUri($base_url, [
       'query' => [
         'action' => 'getUpcomingEvents',
@@ -174,22 +190,16 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
         'token' => $token,
       ],
     ]);
-    $configuration['url'] = $url->toString();
 
-    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
-    $instance->httpClient = $container->get('http_client');
-
-    if (!isset($configuration['ids'])) {
-      throw new \InvalidArgumentException('The "ids" configuration is missing.');
-    }
-
-    return $instance;
+    return $url->toString();
   }
 
   /**
    * {@inheritdoc}
    */
   protected function initializeIterator() : \Iterator {
+    \Drupal::logger('HelsinkiKanava')->warning($this->configuration['url']);
+
     $content = $this->getContent($this->configuration['url']);
 
     foreach ($content as $object) {

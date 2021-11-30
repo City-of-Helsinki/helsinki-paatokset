@@ -23,6 +23,7 @@ class MeetingService {
    *   $params = [
    *     from  => (string) time string in format Y-m-d.
    *     to    => (string) time string in format Y-m-d.
+   *     sort  => (string) ASC or DESC.
    *     agenda_published => (bool).
    *     minutes_published => (bool).
    *     policymaker => (string) policymaker title.
@@ -32,10 +33,17 @@ class MeetingService {
    *   of meetings.
    */
   public function query(array $params = []) : array {
+    if (isset($params['sort'])) {
+      $sort = $params['sort'];
+    }
+    else {
+      $sort = 'ASC';
+    }
+
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
-      ->sort('field_meeting_date', 'ASC');
+      ->sort('field_meeting_date', $sort);
 
     if (isset($params['from'])) {
       $this->validateTime($params['from'], 'from');
@@ -92,6 +100,30 @@ class MeetingService {
     }
 
     return $result;
+  }
+
+  /**
+   * Get the previous scheduled meeting.
+   *
+   * @param string $id
+   *   Policymaker id.
+   *
+   * @return string|void
+   *   Meeting date as string if found
+   */
+  public function previousMeetingDate(string $id) {
+    $queryResult = $this->query([
+      'to' => date('Y-m-d', strtotime('now')),
+      'limit' => 1,
+      'policymaker' => $id,
+      'sort' => 'DESC',
+    ]);
+
+    if (!empty($queryResult)) {
+      $meeting = reset($queryResult);
+      $meeting = reset($meeting);
+      return $meeting['meeting_date'];
+    }
   }
 
   /**
