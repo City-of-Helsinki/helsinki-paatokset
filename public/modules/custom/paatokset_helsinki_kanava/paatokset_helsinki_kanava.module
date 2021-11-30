@@ -6,12 +6,13 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
  * Implements hook_theme().
  */
-function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path) {
+function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path): array {
   return [
     'meeting_video' => [
       'render element' => 'elements',
@@ -34,7 +35,7 @@ function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path) {
  *   An associative array containing:
  *   - elements: An array of elements to display in view mode.
  */
-function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables) {
+function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables): void {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
@@ -48,54 +49,70 @@ function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables) {
 /**
  * Implements hook_preprocess_node__policymaker().
  */
-function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variables) {
+function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variables): void {
+  // Only act on council nodes.
   $council = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
-  if($variables['node']->id() === $council) {
-    $query = \Drupal::entityQuery('meeting_video')
-      ->range(0, 1)
-      ->condition('start_time', strtotime('now'), '<')
-      ->sort('start_time', 'DESC');
+  if($variables['node']->id() !== $council) {
+    return;
+  }
 
-    $ids = $query->execute();
+  $councilNode = Node::load($council);
+  if (!$councilNode instanceof NodeInterface) {
+    return;
+  }
 
-    if($ids) {
-      $video = MeetingVideo::load(reset($ids));
+  $query = \Drupal::entityQuery('meeting_video')
+    ->range(0, 1)
+    ->condition('start_time', strtotime('now'), '<')
+    ->sort('start_time', 'DESC');
+
+  $ids = $query->execute();
+
+  $video = MeetingVideo::load(reset($ids));
+  if($video instanceof MeetingVideo) {
+    $view_builder = \Drupal::entityTypeManager()
+    ->getViewBuilder($video
+    ->getEntityTypeId());
+
+    $variables['most_recent_meeting'] = $view_builder->view($video);
+    $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
+      'query' => [
+        'assetId' => $video->get('asset_id')->value
+      ]
+    ])->toString();
+  }
+
+  $liveStreamQuery = \Drupal::entityQuery('meeting_video');
+  $liveStreamQuery->range(0, 1);
+  $liveStreamQuery->condition('start_time', strtotime('now'), '>');
+  $upcomingIds = $liveStreamQuery->execute();
+  $liveStream = MeetingVideo::load(reset($upcomingIds));
+  if($liveStream instanceof MeetingVideo) {
+    if(_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
       $view_builder = \Drupal::entityTypeManager()
-      ->getViewBuilder($video
+      ->getViewBuilder($liveStream
       ->getEntityTypeId());
 
-      $variables['most_recent_meeting'] = $view_builder->view($video);
-      $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
-        'query' => [
-          'assetId' => $video->get('asset_id')->value
-        ]
-      ])->toString();
-    }
-
-    $councilNode = Node::load($council);
-    if($councilNode) {
-      $liveStreamQuery = \Drupal::entityQuery('meeting_video');
-      $liveStreamQuery->range(0, 1);
-      $liveStreamQuery->condition('start_time', strtotime('now'), '>');
-      $upcomingIds = $liveStreamQuery->execute();
-  
-      if($upcomingIds) {
-        $liveStream = MeetingVideo::load(reset($upcomingIds));
-
-        if(_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
-          $view_builder = \Drupal::entityTypeManager()
-          ->getViewBuilder($liveStream
-          ->getEntityTypeId());
-    
-          $variables['live_stream'] = $view_builder->view($liveStream);
-        }
-      }
+      $variables['live_stream'] = $view_builder->view($liveStream);
     }
   }
 }
 
-function _paatokset_helsinki_kanava_should_show_stream($time) {
-  return true; //strtotime('+1 hour') > $time;
+/**
+ * Check if livestream is current (or if testing mode is on).
+ *
+ * @param string $time
+ *   Timestamp of when livestream starts.
+ *
+ * @return bool
+ *   If livestream should be displayed.
+ */
+function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
+  if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+    return true;
+  }
+
+  return strtotime('+1 hour') > strtotime($time);
 }
 
 function paatokset_helsinki_kanava_update_9001() {
