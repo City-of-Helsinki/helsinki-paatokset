@@ -62,7 +62,6 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     return -1;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -115,7 +114,7 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     $plugin_definition,
     MigrationInterface $migration = NULL
   ) {
-    if ($url = self::getVideoUrl($configuration['url'])) {
+    if ($url = self::getApiUrl($configuration['url'])) {
       $configuration['url'] = $url;
     }
 
@@ -129,11 +128,15 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   }
 
   /**
-   * Undocumented function
+   * Gets modified API Url with correct query parameters for fetching videos.
    *
-   * @return string
+   * @param string $base_url
+   *   Base URL for the service.
+   *
+   * @return string|null
+   *   Updated URL with correct parameters or NULL if dependencies are missing.
    */
-  protected static function getVideoUrl(string $base_url): ?string {
+  protected static function getApiUrl(string $base_url): ?string {
     $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
     $council = Node::load($councilId);
 

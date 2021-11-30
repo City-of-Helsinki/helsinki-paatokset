@@ -55,7 +55,7 @@ class HelsinkiKanavaForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#default_value' => $config->get('debug_mode'),
       '#title' => t('Debug mode for integration.'),
-      '#description' => 'Always display livestream for functionality testing, etc.'
+      '#description' => 'Always display livestream for functionality testing, etc.',
     ];
 
     return parent::buildForm($form, $form_state);
