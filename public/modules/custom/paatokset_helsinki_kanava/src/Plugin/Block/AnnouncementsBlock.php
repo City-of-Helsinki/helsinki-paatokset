@@ -30,6 +30,7 @@ class AnnouncementsBlock extends BlockBase {
       $nextMeetingDate = $meetingsService->nextMeetingDate($councilNode->get('title')->value);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
+
         $announcement['text'] = t('Next meeting will be held on @date at @time',
           [
             '@date' => date('d.m', $nextMeetingDate),
@@ -62,16 +63,25 @@ class AnnouncementsBlock extends BlockBase {
   /**
    * Get cache contexts.
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
   /**
-   * Return true if it is less than one day to the next meeting.
+   * Check if it is less than one day to the next meeting or test mode is on.
+   *
+   * @param string $time
+   *   Time of next meeting.
+   *
+   * @return bool
+   *   If alert should be displayed.
    */
-  private function shouldShowAlert($time) {
-    // strtotime('+1 day') > strtotime($time);
-    return TRUE;
+  private function shouldShowAlert(string $time): bool {
+    if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+      return true;
+    }
+
+    return strtotime('+1 day') > $time;
   }
 
 }
