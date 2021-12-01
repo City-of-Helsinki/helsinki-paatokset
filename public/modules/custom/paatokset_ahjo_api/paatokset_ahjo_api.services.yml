@@ -1,3 +1,5 @@
 services:
   Drupal\paatokset_ahjo_api\Service\MeetingService:
     class: Drupal\paatokset_ahjo_api\Service\MeetingService
+  Drupal\paatokset_ahjo_api\Service\PolicymakerService:
+    class: Drupal\paatokset_ahjo_api\Service\PolicymakerService
