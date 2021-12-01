@@ -4,7 +4,6 @@ namespace Drupal\paatokset_helsinki_kanava\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\Node;
 
 /**
  * Form for Helsinki Kanava settings.

@@ -3,7 +3,6 @@
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -77,4 +76,5 @@ class PolicymakerService {
 
     return reset($queryResult);
   }
+
 }
