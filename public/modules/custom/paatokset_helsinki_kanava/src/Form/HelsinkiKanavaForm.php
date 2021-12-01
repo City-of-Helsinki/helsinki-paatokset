@@ -33,15 +33,11 @@ class HelsinkiKanavaForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('paatokset_helsinki_kanava.settings');
 
-    $form['city_council_node'] = [
-      '#type' => 'entity_autocomplete',
-      '#target_type' => 'node',
-      '#selection_settings' => [
-        'target_bundles' => ['policymaker'],
-      ],
-      '#title' => $this->t('City council'),
-      '#description' => $this->t('Select the city council node. Helsinki kanava videos are displayed only on this page.'),
-      '#default_value' => Node::load($config->get('city_council_node')),
+    $form['city_council_id'] = [
+      '#type' => 'textfield',
+      '#default_value' => $config->get('city_council_id'),
+      '#title' => t('City Council ID'),
+      '#description' => 'Id for the city council policymaker.',
     ];
 
     $form['all_recordings_link'] = [
@@ -68,7 +64,7 @@ class HelsinkiKanavaForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_helsinki_kanava.settings')
-      ->set('city_council_node', $form_state->getValue('city_council_node'))
+      ->set('city_council_id', $form_state->getValue('city_council_id'))
       ->set('all_recordings_link', $form_state->getValue('all_recordings_link'))
       ->set('debug_mode', $form_state->getValue('debug_mode'))
       ->save();
