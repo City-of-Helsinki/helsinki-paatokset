@@ -17,7 +17,10 @@ source:
   track_changes: true
 process:
   id: id
-  field_policymaker_id: id
+  field_policymaker_id:
+    plugin: callback
+    callable: _paatokset_ahjo_placeholder_policymaker_id
+    source: id
   title:
     plugin: substr
     source: name
@@ -28,7 +31,7 @@ process:
     source: resource_uri
     start: 0
     length: 255
-  field_ahjo_summary: 
+  field_ahjo_summary:
     plugin: callback
     source: summary
     callable: strip_tags

@@ -311,12 +311,12 @@ function template_preprocess_paatokset_agenda_item(array &$variables) {
 }
 
 /**
- *
+ * Implements preprocess_node hook.
  */
 function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
   $policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
   $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
+  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
   $policymaker = $policymakerService->getPolicymaker();
   $orgType = $policymaker->get('field_organization_type')->value;
@@ -333,7 +333,7 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
       }
 
       $params = [
-        'policymaker' => $policymaker->get('title')->value,
+        'policymaker' => $policymaker->get('field_policymaker_id')->value,
         'from' => date("Y-m-d"),
       ];
       $upcomingMeetings = $meetingService->query($params);
@@ -352,13 +352,13 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
     }
   }
 
-  if($councilId && ($policymaker->id() === $councilId)) {
+  if($councilId && ($policymaker->get('field_policymaker_id')->value === $councilId)) {
     $variables['render_announcement_block'] = true;
   }
 }
 
 /**
- *
+ * Implements preprocess hook.
  */
 function paatokset_ahjo_preprocess_policymaker_minutes(&$variables) {
   if (isset($variables['elements']['meeting']) && !empty($variables['elements']['meeting'])) {
@@ -381,6 +381,17 @@ function paatokset_ahjo_preprocess_tpr_unit__contact_card(&$variables) {
   if (isset($mapEmbed[0]) && isset($mapEmbed[0]['link'])) {
     $variables['content']['service_map_embed_url'] = $mapEmbed[0]['link']['#attributes']['href'];
   }
+}
+
+/**
+ * Placeholder for city council policymaker ID.
+ */
+function _paatokset_ahjo_placeholder_policymaker_id($value) {
+  if ((string) $value === '5') {
+    return '02900';
+  }
+
+  return $value;
 }
 
 /**

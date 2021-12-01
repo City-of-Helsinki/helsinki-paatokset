@@ -5,8 +5,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
@@ -50,14 +48,12 @@ function paatokset_helsinki_kanava_preprocess_meeting_video(array &$variables): 
  * Implements hook_preprocess_node__policymaker().
  */
 function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variables): void {
-  // Only act on council nodes.
-  $council = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
-  if($variables['node']->id() !== $council) {
-    return;
-  }
+  $node = $variables['node'];
 
-  $councilNode = Node::load($council);
-  if (!$councilNode instanceof NodeInterface) {
+  // Only act on council nodes.
+  $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
+
+  if(!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->value !== $council_id) {
     return;
   }
 

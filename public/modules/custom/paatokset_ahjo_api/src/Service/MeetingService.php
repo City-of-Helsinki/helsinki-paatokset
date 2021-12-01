@@ -26,7 +26,7 @@ class MeetingService {
    *     sort  => (string) ASC or DESC.
    *     agenda_published => (bool).
    *     minutes_published => (bool).
-   *     policymaker => (string) policymaker title.
+   *     policymaker => (string) policymaker ID.
    *   ].
    *
    * @return array
@@ -65,7 +65,7 @@ class MeetingService {
 
     // @todo Once policymakers are imported from Ahjo API, change this to use IDs
     if (isset($params['policymaker'])) {
-      $query->condition('field_meeting_dm', $params['policymaker']);
+      $query->condition('field_meeting_dm_id', $params['policymaker']);
     }
 
     $ids = $query->execute();
@@ -82,7 +82,7 @@ class MeetingService {
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
-        'policymaker' => $node->get('field_meeting_dm')->value,
+        'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
         // @todo Once motions get imported from Ahjo API, replace this with actual data
         'motions_list_link' => 'https://helsinki-paatokset.docker.so/',

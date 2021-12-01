@@ -137,23 +137,12 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
    *   Updated URL with correct parameters or NULL if dependencies are missing.
    */
   protected static function getApiUrl(string $base_url): ?string {
-    $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
-    $council = Node::load($councilId);
-
-    if (!$council) {
-      \Drupal::logger('HelsinkiKanava')->warning('Council node can\'t be found. Cannot import the latest council meeting recording.');
-      return NULL;
-    }
-
-    if (!$council->bundle('policymaker')) {
-      \Drupal::logger('HelsinkiKanava')->warning('Council node is not of type policymaker.');
-      return NULL;
-    }
+    $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
     $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-    $previousMeetingDate = $meetingsService->previousMeetingDate($council->get('title')->value);
+    $previousMeetingDate = $meetingsService->previousMeetingDate($council_id);
     $fromTime = $previousMeetingDate ? $previousMeetingDate * 1000 : round(microtime(TRUE) * 1000);
-    $nextMeetingDate = $meetingsService->nextMeetingDate($council->get('title')->value);
+    $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
     $toTime = $nextMeetingDate ? $nextMeetingDate * 1000 : round(microtime(TRUE) * 1000);
 
     $version = '01';

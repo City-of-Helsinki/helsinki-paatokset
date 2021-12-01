@@ -5,7 +5,6 @@ namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
 
 /**
  * Provides Agendas Submenu Block.
@@ -22,12 +21,14 @@ class AnnouncementsBlock extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $council = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_node');
-    $councilNode = Node::load($council);
+    $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
+    $policymakerService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\PolicymakerService');
+    $councilNode = $policymakerService->getPolicyMaker($council_id);
+
     $announcement = [];
     if ($councilNode) {
       $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-      $nextMeetingDate = $meetingsService->nextMeetingDate($councilNode->get('title')->value);
+      $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
 
