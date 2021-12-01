@@ -14,10 +14,10 @@ use Drupal\Core\Block\BlockBase;
  * )
  */
 class FrontpageCalendarBlock extends BlockBase {
+
   /**
    * Build the attributes.
    */
-
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
