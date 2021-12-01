@@ -1,0 +1,118 @@
+.frontpage-calendar {
+  background-color: #f7f7f8;
+  position: relative;
+  margin-top: 50px;
+
+  @include breakout;
+
+  .hds-koros {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    left: 0;
+  }
+
+  h2 {
+    padding: 60px $spacing-s 0 $spacing-s;
+    margin-bottom: 36px;
+
+    @include breakpoint($breakpoint-s) {
+      padding: $spacing-layout-2-xl 0 0 0;
+      margin-bottom: $spacing-triple;
+    }
+  }
+
+  .container {
+    padding-bottom: 80px;
+  }
+}
+
+.frontpage-calendar__link-container {
+  display: flex;
+  justify-content: right;
+  padding: 0 $spacing-s;
+
+  @include breakpoint($breakpoint-s) {
+    padding: 0;
+  }
+
+  i {
+    width: 36px;
+  }
+
+  a {
+    display: flex;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.frontpage-calendar__item-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include breakpoint($breakpoint-s) {
+    margin: 0 -12px 60px -12px;
+  }
+}
+
+.frontpage-calendar__item {
+  width: 100%;
+  min-height: 282px;
+  padding: $spacing-2-xs $spacing-s;
+
+  @include breakpoint($breakpoint-s) {
+    padding: $spacing-xs;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    width: 25%;
+  }
+
+  @include breakpoint($breakpoint-m) {
+    width: 50%;
+  }
+
+  .motions-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+
+    i {
+      height: 18px;
+      width: 18px;
+      margin-right: $spacing-xs;
+    }
+
+    span {
+      width: auto;
+    }
+  }
+
+  .color-line {
+    height: 8px;
+  }
+
+  .content-container {
+    padding: $spacing-m;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .meeting-date {
+    font-size: $fontsize-body-l;
+    margin-bottom: $gutter;
+  }
+
+  h4 {
+    flex-grow: 1;
+  }
+}
+
+.frontpage-calendar__item-inner {
+  background-color: white;
+  height: 100%;
+}

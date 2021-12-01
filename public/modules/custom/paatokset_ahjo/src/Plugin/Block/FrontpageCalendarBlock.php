@@ -20,9 +20,9 @@ class FrontpageCalendarBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#title' => t('Upcoming meetings'),
+      'label' => t('Upcoming meetings'),
       '#attributes' => [
-        'class' => ['frontpage-calendar', 'container'],
+        'class' => ['frontpage-calendar'],
       ],
     ];
   }
