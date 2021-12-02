@@ -27,6 +27,7 @@ class MeetingService {
    *     agenda_published => (bool).
    *     minutes_published => (bool).
    *     policymaker => (string) policymaker ID.
+   *     policymaker_name => (string) policymaker name.
    *   ].
    *
    * @return array
@@ -63,9 +64,12 @@ class MeetingService {
       $query->range('0', $params['limit']);
     }
 
-    // @todo Once policymakers are imported from Ahjo API, change this to use IDs
     if (isset($params['policymaker'])) {
       $query->condition('field_meeting_dm_id', $params['policymaker']);
+    }
+
+    if (isset($params['policymaker_name'])) {
+      $query->condition('field_meeting_dm', $params['policymaker']);
     }
 
     $ids = $query->execute();

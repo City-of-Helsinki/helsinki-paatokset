@@ -209,7 +209,7 @@ function template_preprocess_block__policymaker_calendar(array &$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
 
   $params = [
-    'policymaker' => $node->get('title')->value,
+    'policymaker_name' => $node->get('title')->value,
     'from' => date("Y-m-d"),
   ];
 
