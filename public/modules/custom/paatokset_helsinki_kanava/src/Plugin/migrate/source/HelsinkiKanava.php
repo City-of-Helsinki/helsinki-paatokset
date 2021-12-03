@@ -189,8 +189,6 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   protected function initializeIterator() : \Iterator {
-    \Drupal::logger('HelsinkiKanava')->warning($this->configuration['url']);
-
     $content = $this->getContent($this->configuration['url']);
 
     foreach ($content as $object) {
