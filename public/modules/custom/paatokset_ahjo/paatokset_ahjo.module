@@ -333,7 +333,7 @@ function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
       }
 
       $params = [
-        'policymaker' => $policymaker->get('field_policymaker_id')->value,
+        'policymaker_name' => $policymaker->get('title')->value,
         'from' => date("Y-m-d"),
       ];
       $upcomingMeetings = $meetingService->query($params);
