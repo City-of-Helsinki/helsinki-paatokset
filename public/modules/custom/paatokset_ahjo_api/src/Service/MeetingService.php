@@ -2,7 +2,10 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use Drupal\media\MediaInterface;
+use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -14,6 +17,11 @@ class MeetingService {
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'meeting';
+
+  /**
+   * Machine name for meeting document media type.
+   */
+  const DOCUMENT_TYPE = 'ahjo_document';
 
   /**
    * Query Ahjo API meetings from database.
@@ -69,7 +77,7 @@ class MeetingService {
     }
 
     if (isset($params['policymaker_name'])) {
-      $query->condition('field_meeting_dm', $params['policymaker']);
+      $query->condition('field_meeting_dm', $params['policymaker_name']);
     }
 
     $ids = $query->execute();
@@ -97,7 +105,7 @@ class MeetingService {
       For now, return dummy link to minutes if minutes_published is true
        */
       if ($node->get('field_meeting_minutes_published')->value) {
-        $transformedResult['minutes_link'] = 'https://helsinki-paatokset.docker.so/';
+        $transformedResult['minutes_link'] = $this->getMeetingMinutesUrlFromEntity($node);
       }
 
       $result[$date][] = $transformedResult;
@@ -151,6 +159,128 @@ class MeetingService {
       $meeting = reset($meeting);
       return $meeting['meeting_date'];
     }
+  }
+
+  /**
+   * Get URL to meeting minutes document based on meeting ID.
+   *
+   * @param string $id
+   *   Meeting ID.
+   *
+   * @return string|null
+   *   URL to meeting minutes document, if one exists.
+   */
+  public function getMeetingMinutesUrl(string $id): ?string {
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', self::NODE_TYPE)
+      ->condition('field_meeting_id', $id);
+
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return NULL;
+    }
+
+    $entity = Node::load(reset($ids));
+    if (!$entity instanceof NodeInterface) {
+      return NULL;
+    }
+
+    return $this->getMeetingMinutesUrlFromEntity($entity);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @param Drupal\node\NodeInterface $entity
+   *   Meeting entity.
+   *
+   * @return string|null
+   *   URL for document, if possible to get.
+   */
+  public function getMeetingMinutesUrlFromEntity(NodeInterface $entity): ?string {
+    $minutes_document = $this->getMeetingMinutesFromEntity($entity);
+
+    if ($minutes_document) {
+      $minutes_url = $this->getUrlFromAhjoDocument($minutes_document);
+    }
+
+    if ($minutes_url) {
+      return $minutes_url;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get meeting minutes document from meeting node.
+   *
+   * @param Drupal\node\NodeInterface $entity
+   *   Meeting entity.
+   *
+   * @return Drupal\media\MediaInterface|null
+   *   Meeting minutes media entity, if one exists for the meeting.
+   */
+  private function getMeetingMinutesFromEntity(NodeInterface $entity): ?MediaInterface {
+    if (!$entity->hasField('field_meeting_documents') || $entity->get('field_meeting_documents')->isEmpty()) {
+      return NULL;
+    }
+
+    $minutes_id = NULL;
+    foreach ($entity->get('field_meeting_documents') as $field) {
+      $json = json_decode($field->value, TRUE);
+      if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === 'pöytäkirja') {
+        $minutes_id = $json['NativeId'];
+        break;
+      }
+    }
+
+    if (!$minutes_id) {
+      return NULL;
+    }
+
+    $query = \Drupal::entityQuery('media')
+      ->condition('status', 1)
+      ->condition('bundle', self::DOCUMENT_TYPE)
+      ->condition('field_document_native_id', $minutes_id);
+
+    $mids = $query->execute();
+
+    if (empty($mids)) {
+      return NULL;
+    }
+
+    $document = Media::load(reset($mids));
+    if (!$document instanceof MediaInterface) {
+      return NULL;
+    }
+
+    return $document;
+  }
+
+  /**
+   * Get URL from AHJO document.
+   *
+   * @param Drupal\media\MediaInterface $entity
+   *   Ahjo Document to get URL for.
+   *
+   * @return string|null
+   *   URL for document, if possible to get.
+   */
+  private function getUrlFromAhjoDocument(MediaInterface $entity): ?string {
+    $uri_field = $entity->get('field_document_uri')->first();
+    if (!$uri_field) {
+      return NULL;
+    }
+
+    $url = $uri_field->getUrl();
+
+    if ($url) {
+      return $url->toString();
+    }
+
+    return NULL;
   }
 
   /**
