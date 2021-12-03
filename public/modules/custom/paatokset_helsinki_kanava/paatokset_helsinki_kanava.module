@@ -64,7 +64,11 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 
   $ids = $query->execute();
 
-  $video = MeetingVideo::load(reset($ids));
+  $video = NULL;
+  if (!empty($ids)) {
+    $video = MeetingVideo::load(reset($ids));
+  }
+
   if($video instanceof MeetingVideo) {
     $view_builder = \Drupal::entityTypeManager()
     ->getViewBuilder($video
@@ -82,7 +86,12 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   $liveStreamQuery->range(0, 1);
   $liveStreamQuery->condition('start_time', strtotime('now'), '>');
   $upcomingIds = $liveStreamQuery->execute();
-  $liveStream = MeetingVideo::load(reset($upcomingIds));
+
+  $liveStream = NULL;
+  if (!empty($upcomingIds)) {
+    $liveStream = MeetingVideo::load(reset($upcomingIds));
+  }
+
   if($liveStream instanceof MeetingVideo) {
     if(_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
       $view_builder = \Drupal::entityTypeManager()

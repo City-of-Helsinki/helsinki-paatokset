@@ -6,6 +6,8 @@ dependencies:
   enforced:
     module:
       - paatokset_helsinki_kanava
+migration_tags:
+  - ahjo_api
 source:
   plugin: helsinki_kanava
   url: https://suite.icareus.com/api/events
