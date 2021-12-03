@@ -1,0 +1,23 @@
+{
+  "name": "city-of-helsinki/helfi-paatokset-search",
+  "type": "drupal-module",
+  "description": "Provides an integration between Päätökset React Search and Drupal.",
+  "minimum-stability": "dev",
+  "require": {
+      "city-of-helsinki/paatokset-search": "0.1.0"
+  },
+  "repositories": [
+      {
+          "type": "package",
+          "package": {
+              "name": "city-of-helsinki/paatokset-search",
+              "version": "0.1.0",
+              "source": {
+                  "url": "https://github.com/City-of-Helsinki/paatokset-search",
+                  "type": "git",
+                  "reference": "origin/develop"
+              }
+          }
+      }
+  ]
+}

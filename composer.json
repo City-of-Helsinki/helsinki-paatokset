@@ -25,7 +25,8 @@
         "drupal/search_api": "^1.20",
         "drush/drush": "^10.4",
         "elasticsearch/elasticsearch": "^7.15",
-        "josdejong/jsoneditor": "^5.29"
+        "josdejong/jsoneditor": "^5.29",
+        "paatokset/paatokset_search": "^0.1.0" 
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -107,14 +108,27 @@
                     "reference": "v5.29.1"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "paatokset/paatokset_search",
+                "version": "0.1.0",
+                "dist": {
+                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/0.1.0/paatokset_search.zip",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "scripts": {
         "copy-commit-message-script": "make copy-commit-message-script",
         "post-install-cmd": [
+            "rsync -a vendor/paatokset/paatokset_search/ public/modules/custom/paatokset_search/assets || true",
             "@copy-commit-message-script"
         ],
         "post-update-cmd": [
+            "rsync -a vendor/paatokset/paatokset_search/ public/modules/custom/paatokset_search/assets || true",
             "@copy-commit-message-script"
         ]
     }

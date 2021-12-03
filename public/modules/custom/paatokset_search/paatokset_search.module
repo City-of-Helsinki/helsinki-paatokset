@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_preprpcess_html().
+ */
+function paatokset_search_preprocess_html(array &$variables) {
+  if(\Drupal::routeMatch()->getRouteName() === 'search.decisions') {
+    $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
+  }
+}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c49ba8759bc41be8df98ec04d0528ea6",
+    "content-hash": "71f46cccbe541f1dfafdcf8aba2dec85",
     "packages": [
         {
             "name": "City-of-Helsinki/php-hauki-client",
@@ -7731,6 +7731,15 @@
                 }
             ],
             "time": "2021-11-18T09:23:29+00:00"
+        },
+        {
+            "name": "paatokset/paatokset_search",
+            "version": "0.1.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/0.1.0/paatokset_search.zip"
+            },
+            "type": "library"
         },
         {
             "name": "pear/archive_tar",

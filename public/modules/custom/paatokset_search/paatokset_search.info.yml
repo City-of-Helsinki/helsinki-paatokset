@@ -1,0 +1,4 @@
+name: Päätökset search
+type: module
+package: Custom
+core_version_requirement: ^9

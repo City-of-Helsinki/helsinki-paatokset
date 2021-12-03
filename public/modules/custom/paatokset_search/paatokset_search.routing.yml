@@ -1,0 +1,6 @@
+search.decisions:
+  path: 'paatokset'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
+  requirements:
+    _access: 'TRUE'
