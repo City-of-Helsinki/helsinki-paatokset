@@ -191,7 +191,7 @@ class MeetingService {
   }
 
   /**
-   * Undocumented function
+   * Get meeting minutes URL from meeting node.
    *
    * @param Drupal\node\NodeInterface $entity
    *   Meeting entity.
