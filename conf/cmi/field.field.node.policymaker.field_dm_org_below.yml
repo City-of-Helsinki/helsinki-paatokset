@@ -1,0 +1,21 @@
+uuid: 5c295bea-960e-4b9a-9929-c1712c6c96ad
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dm_org_below
+    - node.type.policymaker
+  module:
+    - json_field
+id: node.policymaker.field_dm_org_below
+field_name: field_dm_org_below
+entity_type: node
+bundle: policymaker
+label: 'Organization level below'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
