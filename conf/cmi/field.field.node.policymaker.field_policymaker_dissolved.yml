@@ -1,0 +1,21 @@
+uuid: 50e6d542-603e-499b-a32e-f7d370fbafa2
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_dissolved
+    - node.type.policymaker
+  module:
+    - datetime
+id: node.policymaker.field_policymaker_dissolved
+field_name: field_policymaker_dissolved
+entity_type: node
+bundle: policymaker
+label: Dissolved
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

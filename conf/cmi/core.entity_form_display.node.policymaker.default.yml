@@ -7,11 +7,19 @@ dependencies:
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_decisions_description
+    - field.field.node.policymaker.field_dm_org_above
+    - field.field.node.policymaker.field_dm_org_below
+    - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
+    - field.field.node.policymaker.field_is_decisionmaker
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_meetings_description
     - field.field.node.policymaker.field_organization_type
+    - field.field.node.policymaker.field_organization_type_id
+    - field.field.node.policymaker.field_policymaker_dissolved
+    - field.field.node.policymaker.field_policymaker_existing
+    - field.field.node.policymaker.field_policymaker_formed
     - field.field.node.policymaker.field_policymaker_id
     - field.field.node.policymaker.field_policymaker_image
     - field.field.node.policymaker.field_policymaker_summary
@@ -19,13 +27,80 @@ dependencies:
     - field.field.node.policymaker.field_resource_uri
     - node.type.policymaker
   module:
+    - datetime
+    - field_group
     - hdbt_admin_editorial
+    - json_field
     - media_library
     - paragraphs
     - path
     - readonly_field_widget
     - scheduler
     - text
+third_party_settings:
+  field_group:
+    group_integration_data:
+      children:
+        - field_policymaker_id
+        - field_ahjo_summary
+        - field_organization_type
+        - field_organization_type_id
+        - field_policymaker_formed
+        - field_policymaker_dissolved
+        - field_policymaker_existing
+        - field_is_decisionmaker
+        - field_dm_sector
+        - field_dm_org_above
+        - field_dm_org_below
+      parent_name: ''
+      weight: 1
+      format_type: details
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: 'Integration data'
+    group_basic_information:
+      children:
+        - langcode
+        - field_first_name
+        - field_last_name
+        - field_policymaker_image
+        - field_policymaker_summary
+      parent_name: ''
+      weight: 2
+      format_type: details
+      region: content
+      format_settings:
+        description: ''
+        open: true
+        required_fields: true
+        id: ''
+        classes: ''
+        show_empty_fields: false
+      label: 'Basic information'
+    group_description_content:
+      children:
+        - field_documents_description
+        - field_meetings_description
+        - field_decisions_description
+        - field_recording_description
+      parent_name: ''
+      weight: 3
+      format_type: details
+      region: content
+      format_settings:
+        description: ''
+        id: ''
+        classes: ''
+        show_empty_fields: false
+        open: false
+        required_fields: false
+      label: 'Section descriptions'
 id: node.policymaker.default
 targetEntityType: node
 bundle: policymaker
@@ -33,12 +108,12 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   field_ahjo_summary:
-    weight: 30
+    weight: 4
     settings:
       label: above
       formatter_type: basic_string
@@ -48,7 +123,7 @@ content:
     type: readonly_field_widget
     region: content
   field_contacts:
-    weight: 29
+    weight: 5
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -59,7 +134,7 @@ content:
     region: content
   field_custom_menu_links:
     type: entity_reference_paragraphs
-    weight: 28
+    weight: 4
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -70,15 +145,39 @@ content:
     third_party_settings: {  }
     region: content
   field_decisions_description:
-    weight: 35
+    weight: 14
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_dm_org_above:
+    weight: 12
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+  field_dm_org_below:
+    weight: 13
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+  field_dm_sector:
+    weight: 11
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
   field_documents_description:
-    weight: 33
+    weight: 12
     settings:
       rows: 5
       placeholder: ''
@@ -86,15 +185,22 @@ content:
     type: text_textarea
     region: content
   field_first_name:
-    weight: 26
+    weight: 2
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_is_decisionmaker:
+    weight: 10
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_last_name:
-    weight: 27
+    weight: 3
     settings:
       size: 60
       placeholder: ''
@@ -102,16 +208,51 @@ content:
     type: string_textfield
     region: content
   field_meetings_description:
-    weight: 34
+    weight: 13
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_organization_type:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_organization_type_id:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_policymaker_dissolved:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_policymaker_existing:
+    weight: 9
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_policymaker_formed:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_policymaker_id:
     type: readonly_field_widget
-    weight: 2
+    weight: 3
     region: content
     settings:
       label: above
@@ -121,13 +262,13 @@ content:
     third_party_settings: {  }
   field_policymaker_image:
     type: media_library_widget
-    weight: 31
+    weight: 4
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_policymaker_summary:
-    weight: 6
+    weight: 5
     settings:
       rows: 5
       placeholder: ''
@@ -135,7 +276,7 @@ content:
     type: text_textarea
     region: content
   field_recording_description:
-    weight: 36
+    weight: 15
     settings:
       rows: 5
       placeholder: ''
@@ -151,13 +292,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 9
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -165,7 +306,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 10
     region: content
     third_party_settings: {  }
   title:
@@ -178,7 +319,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 13
+    weight: 12
     settings:
       match_operator: CONTAINS
       size: 60
@@ -193,12 +334,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 10
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_organization_type: true
   field_resource_uri: true
   promote: true
   sticky: true

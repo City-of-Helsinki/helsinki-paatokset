@@ -7,11 +7,19 @@ dependencies:
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_decisions_description
+    - field.field.node.policymaker.field_dm_org_above
+    - field.field.node.policymaker.field_dm_org_below
+    - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
+    - field.field.node.policymaker.field_is_decisionmaker
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_meetings_description
     - field.field.node.policymaker.field_organization_type
+    - field.field.node.policymaker.field_organization_type_id
+    - field.field.node.policymaker.field_policymaker_dissolved
+    - field.field.node.policymaker.field_policymaker_existing
+    - field.field.node.policymaker.field_policymaker_formed
     - field.field.node.policymaker.field_policymaker_id
     - field.field.node.policymaker.field_policymaker_image
     - field.field.node.policymaker.field_policymaker_summary
@@ -80,9 +88,17 @@ content:
 hidden:
   field_contacts: true
   field_custom_menu_links: true
+  field_dm_org_above: true
+  field_dm_org_below: true
+  field_dm_sector: true
   field_first_name: true
+  field_is_decisionmaker: true
   field_last_name: true
   field_organization_type: true
+  field_organization_type_id: true
+  field_policymaker_dissolved: true
+  field_policymaker_existing: true
+  field_policymaker_formed: true
   field_policymaker_id: true
   field_resource_uri: true
   langcode: true
