@@ -15,8 +15,10 @@
         {% include '@paatokset_ahjo/component/frontpage-calendar-item.html.twig' with {
           line_color: '#00d7a7',
           date: row.meeting_date,
-          policymaker: row.policymaker,
-          motions_link: row.motions_list_link
+          title: row.title,
+          policymaker: row.policymaker_name,
+          motions_link: row.motions_list_link,
+          minutes_links: row.minutes_list,
         }%}
       {% endfor %}
     </div>

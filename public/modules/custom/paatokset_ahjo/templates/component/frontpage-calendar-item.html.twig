@@ -9,6 +9,11 @@
           <span>{{ open_motions }}</span>
           <i class="hds-icon hds-icon--angle-right"></i>
         </a>
+      {% elseif minutes_link %}
+        <a href="{{ minutes_link }}" class="motions-link">
+          <span>{{ open_minutes }}</span>
+          <i class="hds-icon hds-icon--angle-right"></i>
+        </a>
       {% endif %}
     </div>
   </div>
