@@ -78,6 +78,23 @@ function _paatokset_ahjo_api_true_if_not_empty($value): bool {
 }
 
 /**
+ * Convert string to boolean.
+ *
+ * @param mixed $value
+ *   The value to work with.
+ *
+ * @return bool
+ *   TRUE is value is "true", FALSE if it is not.
+ */
+function _paatokset_ahjo_api_string_to_boolean($value): bool {
+  if (strtolower($value) === 'true') {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
  * Callback to check if meeting minutes have been published
  *
  * @param mixed $documents
