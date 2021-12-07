@@ -84,6 +84,9 @@ process:
   type:
     plugin: default_value
     default_value: case
+  langcode:
+    plugin: default_value
+    default_value: fi
   nid:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_case_nid
