@@ -94,18 +94,14 @@ class MeetingService {
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
+        'policymaker_name' => $node->get('field_meeting_dm')->value,
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
-        // @todo Once motions get imported from Ahjo API, replace this with actual data
-        'motions_list_link' => 'https://helsinki-paatokset.docker.so/',
+        'motions_list_link' => $this->getDocumentUrlFromEntity($node, 'esityslista'),
       ];
 
-      /*
-      @todo Once documents get are imported from Ahjo API, return actual data
-      For now, return dummy link to minutes if minutes_published is true
-       */
       if ($node->get('field_meeting_minutes_published')->value) {
-        $transformedResult['minutes_link'] = $this->getMeetingMinutesUrlFromEntity($node);
+        $transformedResult['minutes_link'] = $this->getDocumentUrlFromEntity($node, 'pöytäkirja');
       }
 
       $result[$date][] = $transformedResult;
@@ -166,11 +162,13 @@ class MeetingService {
    *
    * @param string $id
    *   Meeting ID.
+   * @param string $document_type
+   *   Document type, for example: 'esityslista', 'pöytäkirja'.
    *
    * @return string|null
    *   URL to meeting minutes document, if one exists.
    */
-  public function getMeetingMinutesUrl(string $id): ?string {
+  public function getMeetingsDocumentUrl(string $id, string $document_type): ?string {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
@@ -187,7 +185,7 @@ class MeetingService {
       return NULL;
     }
 
-    return $this->getMeetingMinutesUrlFromEntity($entity);
+    return $this->getDocumentUrlFromEntity($entity, $document_type);
   }
 
   /**
@@ -195,19 +193,22 @@ class MeetingService {
    *
    * @param Drupal\node\NodeInterface $entity
    *   Meeting entity.
+   * @param string $document_type
+   *   Document type, for example: 'esityslista', 'pöytäkirja'.
    *
    * @return string|null
    *   URL for document, if possible to get.
    */
-  public function getMeetingMinutesUrlFromEntity(NodeInterface $entity): ?string {
-    $minutes_document = $this->getMeetingMinutesFromEntity($entity);
+  public function getDocumentUrlFromEntity(NodeInterface $entity, string $document_type): ?string {
+    $document = $this->getDocumentFromEntity($entity, $document_type);
 
-    if ($minutes_document) {
-      $minutes_url = $this->getUrlFromAhjoDocument($minutes_document);
+    if (!$document instanceof MediaInterface) {
+      return NULL;
     }
 
-    if ($minutes_url) {
-      return $minutes_url;
+    $document_url = $this->getUrlFromAhjoDocument($document);
+    if ($document_url) {
+      return $document_url;
     }
 
     return NULL;
@@ -218,11 +219,13 @@ class MeetingService {
    *
    * @param Drupal\node\NodeInterface $entity
    *   Meeting entity.
+   * @param string $document_type
+   *   Document type, for example: 'esityslista', 'pöytäkirja'.
    *
    * @return Drupal\media\MediaInterface|null
    *   Meeting minutes media entity, if one exists for the meeting.
    */
-  private function getMeetingMinutesFromEntity(NodeInterface $entity): ?MediaInterface {
+  private function getDocumentFromEntity(NodeInterface $entity, string $document_type): ?MediaInterface {
     if (!$entity->hasField('field_meeting_documents') || $entity->get('field_meeting_documents')->isEmpty()) {
       return NULL;
     }
@@ -230,7 +233,7 @@ class MeetingService {
     $minutes_id = NULL;
     foreach ($entity->get('field_meeting_documents') as $field) {
       $json = json_decode($field->value, TRUE);
-      if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === 'pöytäkirja') {
+      if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === $document_type) {
         $minutes_id = $json['NativeId'];
         break;
       }

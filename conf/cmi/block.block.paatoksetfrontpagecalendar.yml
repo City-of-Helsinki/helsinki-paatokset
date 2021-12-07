@@ -1,0 +1,25 @@
+uuid: 5b88ee3e-bd22-4c97-b1d5-4691a298057b
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetfrontpagecalendar
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: frontpage_calendar
+settings:
+  id: frontpage_calendar
+  label: 'Paatokset frontpage calendar'
+  provider: paatokset_ahjo
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false

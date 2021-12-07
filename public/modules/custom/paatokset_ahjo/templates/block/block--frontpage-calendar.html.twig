@@ -1,0 +1,33 @@
+{%
+  set classes = [
+  'frontpage-calendar',
+  view_mode ? 'frontpage-calendar--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+{% if meetings %}
+<div {{ attributes.addClass(classes) }}>
+  {% include '@hdbt/misc/koro.twig' with {koro: koro, flip: false, color: '#f7f7f8' } %}
+  <div class="container">
+    <h2>{{ content.label }}</h2>
+    <div class="frontpage-calendar__item-container">
+      {% for row in meetings %}
+        {% include '@paatokset_ahjo/component/frontpage-calendar-item.html.twig' with {
+          line_color: '#00d7a7',
+          date: row.meeting_date,
+          title: row.title,
+          policymaker: row.policymaker_name,
+          motions_link: row.motions_list_link,
+          minutes_links: row.minutes_list,
+        }%}
+      {% endfor %}
+    </div>
+    <div class="frontpage-calendar__link-container">
+       <a href="{{ calendar_link }}">
+        <span>{{ open_meeting_calendar }}</span>
+        <i class="hds-icon hds-icon--arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}

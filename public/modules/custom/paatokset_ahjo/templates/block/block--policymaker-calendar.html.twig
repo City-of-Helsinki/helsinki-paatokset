@@ -29,7 +29,7 @@
           {% if row.minutes_link %}
             <a href="{{row.minutes_link}}">{{ open_minutes }}</a>
             <i class="hds-icon hds-icon--angle-right"></i>
-          {% else %}
+          {% elseif row.motions_list_link %}
             <a href="{{row.motions_list_link}}">{{ open_motions }}</a>
             <i class="hds-icon hds-icon--angle-right"></i>
           {% endif %}
