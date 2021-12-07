@@ -94,50 +94,19 @@ class AhjoAggregatorCommands extends DrushCommands {
       $dataset = 'latest';
     }
 
-    switch ($endpoint) {
-      case 'meetings':
-        $timestamp_key = 'start';
-        $timestamp_key_end = 'end';
-        break;
-
-      default:
-        $timestamp_key = 'handledsince';
-        $timestamp_key_end = 'handledbefore';
-        break;
-    }
-
-    if (empty($options['start'])) {
-      if ($dataset === 'all') {
-        $query_string = $timestamp_key . '=2001-10-01T12:34:45Z';
-      }
-      else {
-        $week_ago = strtotime("-1 week");
-        $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
-        $query_string = $timestamp_key . '=' . $timestamp;
-      }
-    }
-    else {
-      $query_string = $timestamp_key . '=' . $options['start'];
-    }
-
-    if (!empty($options['end'])) {
-      $query_string .= '&' . $timestamp_key_end . '=' . $options['end'];
-    }
-
-    if ($endpoint === 'cases' || $endpoint === 'decisions') {
-      $query_string .= '&size=1000&count_limit=1000';
-    }
+    $options = $this->setDefaultOptions($endpoint, $dataset, $options);
 
     $data = [];
     $list_key = $this->getListKey($endpoint);
 
-    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
+
+    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $options['query_string']);
     if (!empty($options['retry'])) {
       $this->logger->info('Resuming from file: ' . $options['retry']);
       $data[$list_key] = $this->ahjoProxy->getStatic($options['retry']);
     }
     else {
-      $data = $this->ahjoProxy->getData($endpoint, $query_string);
+      $data = $this->ahjoProxy->getData($endpoint, $options['query_string']);
     }
 
     if (!empty($options['append'])) {
@@ -194,6 +163,65 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Gets and stores a single request from Ahjo API.
+   *
+   * @param string $endpoint
+   *   Endpoint to get data from.
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:get
+   *
+   * @option start
+   *   Custom timestamp for fetching data.
+   * @option end
+   *   Custom timestamp for fetching data.
+   * @option filename
+   *   Filename to use instead of default. Can be used to split/batch results.
+   *
+   * @usage ahjo-proxy:get decisionmakers
+   *   Stores all decisionmakers into decisionmakers.json
+   * @usage ahjo-proxy:get decisionmakers --start=021100VH1 --filename=decisionmakers_021100VH1.json
+   *   Stores decisionmakers under the 021100VH1 organisation.
+   *
+   * @aliases ap:get
+   */
+  public function get(string $endpoint, array $options = [
+    'start' => NULL,
+    'end' => NULL,
+    'filename' => NULL,
+  ]): void {
+    $data = [];
+    $list_key = $this->getListKey($endpoint);
+
+    $query_string = '';
+    if (!empty($options['start'])) {
+      $query_string .= 'start=' . $options['start'];
+    }
+
+    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
+
+    $data = $this->ahjoProxy->getData($endpoint, $query_string);
+
+    if (!empty($options['filename'])) {
+      $filename = $options['filename'];
+      $this->logger->info('Using filename: ' . $filename);
+    }
+    else {
+      $filename = $endpoint . '.json';
+    }
+
+    if (empty($data[$list_key])) {
+      $this->logger->info('Empty result.');
+      return;
+    }
+
+    $this->logger->info('Received ' . count($data[$list_key]) . ' results.');
+    file_save_data(json_encode($data), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $this->logger->info('Stores data into public://' . $filename);
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
@@ -211,6 +239,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'meetings_latest.json',
       'decisions_all.json',
       'decisions_latest.json',
+      'decisionmakers.json',
     ];
 
     foreach ($static_files as $file) {
@@ -224,6 +253,59 @@ class AhjoAggregatorCommands extends DrushCommands {
         $this->logger->info('Could not load ' . $file);
       }
     }
+  }
+
+  /**
+   * Set default options.
+   *
+   * @param string $endpoint
+   *   Endpoint to set options for.
+   * @param string $dataset
+   *   Dataset to set options for.
+   * @param array $options
+   *   Options from command line parameters.
+   *
+   * @return array
+   *   Set options.
+   */
+  private function setDefaultOptions(string $endpoint, string $dataset, array $options): array {
+    switch ($endpoint) {
+      case 'meetings':
+        $timestamp_key = 'start';
+        $timestamp_key_end = 'end';
+        break;
+
+      default:
+        $timestamp_key = 'handledsince';
+        $timestamp_key_end = 'handledbefore';
+        break;
+    }
+
+    if (empty($options['start'])) {
+      if ($dataset === 'all') {
+        $query_string = $timestamp_key . '=2001-10-01T12:34:45Z';
+      }
+      else {
+        $week_ago = strtotime("-1 week");
+        $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
+        $query_string = $timestamp_key . '=' . $timestamp;
+      }
+    }
+    else {
+      $query_string = $timestamp_key . '=' . $options['start'];
+    }
+
+    if (!empty($options['end'])) {
+      $query_string .= '&' . $timestamp_key_end . '=' . $options['end'];
+    }
+
+    if ($endpoint === 'cases' || $endpoint === 'decisions') {
+      $query_string .= '&size=1000&count_limit=1000';
+    }
+
+    $options['query_string'] = $query_string;
+
+    return $options;
   }
 
   /**
@@ -248,6 +330,10 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       case 'meetings':
         $key = 'meetings';
+        break;
+
+      case 'decisionmakers':
+        $key = 'decisionMakers';
         break;
 
       default:

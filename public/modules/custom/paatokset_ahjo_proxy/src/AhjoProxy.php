@@ -130,6 +130,11 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
+
+    if ($url === 'decisionmakers') {
+      $url = 'agents/decisionmakers';
+    }
+
     $api_url = self::API_BASE_URL . $url . '/?' . urldecode($query_string);
     $data = $this->getContent($api_url);
     return $data;
@@ -283,9 +288,14 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'cases_latest.json';
         break;
 
+      case 'decisionmakers':
+        $filename = 'decisionmakers.json';
+        break;
+
       default:
         return [];
     }
+
     return $this->getStatic($filename);
   }
 
