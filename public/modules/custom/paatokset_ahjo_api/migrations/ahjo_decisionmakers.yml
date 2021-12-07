@@ -1,0 +1,125 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_proxy
+id: ahjo_decisionmakers
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+  - ahjo_api_decisionmakers
+migration_group: ahjo_api
+label: 'Ahjo API - Decisionmakers'
+deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  item_selector: decisionMakers
+  fields:
+    -
+      name: title
+      label: Title
+      selector: Organization/Name
+    -
+      name: decisionmaker_id
+      label: Decisionmaker ID
+      selector: Organization/ID
+    -
+      name: decisionmaker_type_id
+      label: Type ID
+      selector: Organization/TypeId
+    -
+      name: decisionmaker_type
+      label: Decisionmaker type
+      selector: Organization/Type
+    -
+      name: existing
+      label: Currently existing decisionmaker
+      selector: Organization/Existing
+    -
+      name: formed
+      label: Date and time formed
+      selector: Organization/Formed
+    -
+      name: dissolved
+      label: Date and time dissolved
+      selector: Organization/Dissolved
+    -
+      name: is_decisionmaker
+      label: Is Decisionmaker
+      selector: Organization/IsDecisionMaker
+    -
+      name: sector
+      label: Sector
+      selector: Organization/Sector
+    -
+      name: organization_above
+      label: Organization Level Above
+      selector: Organization/OrganizationLevelAbove
+    -
+      name: organization_below
+      label: Organization Level Below
+      selector: Organization/OrganizationLevelBelow
+  ids:
+    decisionmaker_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: policymaker
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_policymaker_nid
+    source: decisionmaker_id
+  title:
+    plugin: default_value
+    source: title
+    default_value: 'NO TITLE'
+  field_policymaker_id: decisionmaker_id
+  field_organization_type: decisionmaker_type
+  field_organization_type_id: decisionmaker_type_id
+  field_policymaker_existing: existing
+  field_policymaker_formed:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.000'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: formed
+  field_policymaker_dissolved:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.000'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: dissolved
+  field_is_decisionmaker: is_decisionmaker
+  field_dm_sector:
+    -
+      plugin: single_value
+      source: sector
+    -
+      plugin: callback
+      callable: json_encode
+  field_dm_org_above:
+    -
+      plugin: single_value
+      source: organization_above
+    -
+      plugin: callback
+      callable: json_encode
+  field_dm_org_below:
+    -
+      plugin: single_value
+      source: organization_below
+    -
+      plugin: callback
+      callable: json_encode
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }
