@@ -35,6 +35,19 @@ function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id) {
   return reset($ids);
 }
 
+function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id) {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'policymaker')
+    ->condition('field_policymaker_id', $decisionmaker_id)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return;
+  }
+  return reset($ids);
+}
+
 
 /**
  * Truncate text value.
