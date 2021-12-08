@@ -68,7 +68,7 @@ services:
       #- xpack.security.enabled=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "http.cors.allow-origin=http://localhost:3000"
+      - "http.cors.allow-origin=*"
       - "http.cors.enabled=true"
       - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
       - "http.cors.allow-credentials=true"
