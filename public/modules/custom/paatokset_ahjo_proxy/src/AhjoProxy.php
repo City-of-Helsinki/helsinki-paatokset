@@ -479,7 +479,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   /**
    * Gets a file from Ahjo API and returns the Response.
    *
-   * @param string $nativeID
+   * @param string $nativeId
    *   Native ID for the file. Should already be urlencoded.
    *
    * @return GuzzleHttp\Psr7\Response
