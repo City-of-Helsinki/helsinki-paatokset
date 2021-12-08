@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\media\Source;
 
+use Drupal\Core\Url;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 
@@ -102,7 +103,7 @@ class ExternalAhjoFile extends MediaSourceBase {
    *   Local URI through proxy to get past OpenID authentication.
    */
   private function getAhjoFileUri(string $native_id): string {
-    return 'https://example.com/' . urlencode($native_id);
+    return Url::fromRoute('paatokset_ahjo_proxy.get_file', ['nativeId' => $native_id], ['absolute' => TRUE])->toString();
   }
 
 }

@@ -6,10 +6,11 @@ namespace Drupal\paatokset_ahjo_proxy\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use GuzzleHttp\Psr7\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * AHJO proxy page controller.
  *
@@ -101,6 +102,21 @@ class AhjoProxyController extends ControllerBase {
   public function getAggregatedData(string $dataset): JsonResponse {
     $data = $this->ahjoProxy->getAggregatedData($dataset);
     return new JsonResponse($data);
+  }
+
+  /**
+   * Return file from Ahjo API.
+   *
+   * @return GuzzleHttp\Psr7\Response
+   *   Response to HTTP request from Ahjo API.
+   */
+  public function getFile(string $nativeId): Response {
+    $response = $this->ahjoProxy->getFile($nativeId);
+    if (!$response) {
+      throw new NotFoundHttpException();
+    }
+
+    return $response;
   }
 
 }

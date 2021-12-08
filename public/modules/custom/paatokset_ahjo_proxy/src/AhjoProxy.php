@@ -13,6 +13,7 @@ use Drupal\file\FileInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Handler for AHJO API Proxy.
@@ -27,6 +28,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @var string
    */
   protected const API_BASE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
+
+  /**
+   * Base URL for files.
+   *
+   * @var string
+   */
+  protected const API_FILE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/content/';
 
   /**
    * HTTP Client.
@@ -466,6 +474,36 @@ class AhjoProxy implements ContainerInjectionInterface {
     catch (\Exception $e) {
     }
     return [];
+  }
+
+  /**
+   * Gets a file from Ahjo API and returns the Response.
+   *
+   * @param string $nativeID
+   *   Native ID for the file. Should already be urlencoded.
+   *
+   * @return GuzzleHttp\Psr7\Response
+   *   Response from the API.
+   */
+  public function getFile(string $nativeId): ?Response {
+    $url = self::API_FILE_URL . $nativeId;
+
+    try {
+      $response = $this->httpClient->request('GET', $url,
+      [
+        'http_errors' => FALSE,
+        'headers' => $this->getAuthHeaders(),
+      ]);
+
+      if ($response->getStatusCode() !== 200) {
+        return [];
+      }
+
+      return $response;
+    }
+    catch (\Exception $e) {
+    }
+    return NULL;
   }
 
   /**
