@@ -10,12 +10,12 @@ weight: 0
 is_admin: false
 permissions:
   - 'access content'
+  - 'access content'
+  - 'display eu cookie compliance popup'
   - 'display eu cookie compliance popup'
   - 'view media'
+  - 'view media'
+  - 'view remote entities'
   - 'view remote entities'
   - 'view tpr_service'
   - 'view tpr_unit'
-  - 'view media'
-  - 'display eu cookie compliance popup'
-  - 'access content'
-  - 'view remote entities'
