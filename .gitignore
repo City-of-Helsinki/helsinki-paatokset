@@ -4,6 +4,7 @@ node_modules
 public/core
 public/libraries
 public/modules/contrib
+public/modules/custom/paatokset_search/assets
 public/themes/contrib
 public/sites/default/files
 vendor
