@@ -45,9 +45,6 @@ class ListTest extends MigrationTestBase {
     $this->drupalGet('/admin/content/integrations/paatokset-meeting-document');
     $this->assertSession()->statusCodeEquals(403);
 
-    $this->drupalGet('/admin/content/integrations/paatokset-meeting');
-    $this->assertSession()->statusCodeEquals(403);
-
     $this->drupalGet('/admin/content/integrations/paatokset-organization');
     $this->assertSession()->statusCodeEquals(403);
 
@@ -70,10 +67,6 @@ class ListTest extends MigrationTestBase {
     $this->createMeetingDocumentMigration();
     $this->drupalGet('/admin/content/integrations/paatokset-meeting-document');
     $this->assertSession()->pageTextContains('Päätökset - Meeting documents');
-
-    $this->createMeetingMigration();
-    $this->drupalGet('/admin/content/integrations/paatokset-meeting');
-    $this->assertSession()->pageTextContains('Päätökset - Meeting');
 
     $this->createOrganizationsMigration();
     $this->drupalGet('/admin/content/integrations/paatokset-organization');
