@@ -79,6 +79,7 @@ module:
   paatokset_ahjo_proxy: 0
   paatokset_helsinki_kanava: 0
   paatokset_news_importer: 0
+  paatokset_policymakers: 0
   paatokset_search: 0
   paatokset_search_form: 0
   paatokset_submenus: 0
