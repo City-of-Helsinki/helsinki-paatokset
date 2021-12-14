@@ -5,6 +5,7 @@ namespace Drupal\paatokset_submenus\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Enum\PolicymakerRoutes;
 
 /**
@@ -20,7 +21,7 @@ class PolicymakerSideNav extends BlockBase {
   /**
    * PolicymakerService instance.
    *
-   * @var Drupal\paatokset_ahjo\Service\PolicymakerService
+   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   private $policymakerService;
 
@@ -29,7 +30,8 @@ class PolicymakerSideNav extends BlockBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+    $this->policymakerService = \Drupal::service('paatokset_policymakers');
+    $this->policymakerService->setPolicyMakerByPath();
     $this->items = $this->getItems();
   }
 
@@ -85,7 +87,7 @@ class PolicymakerSideNav extends BlockBase {
 
     $policymaker = $this->policymakerService->getPolicymaker();
 
-    if (!$policymaker || !($policymaker->getEntityTypeId() === 'node' && $policymaker->getType() === 'policymaker')) {
+    if (!$policymaker instanceof NodeInterface || $policymaker->getType() === 'policymaker') {
       return $items;
     }
 

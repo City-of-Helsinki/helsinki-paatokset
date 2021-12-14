@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Enum;
+namespace Drupal\paatokset_policymakers\Enum;
 
 /**
  * Enum class for policymaker routes.

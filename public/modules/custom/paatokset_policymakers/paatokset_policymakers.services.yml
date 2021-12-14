@@ -1,0 +1,3 @@
+services:
+  paatokset_policymakers:
+    class: Drupal\paatokset_policymakers\Service\PolicymakerService

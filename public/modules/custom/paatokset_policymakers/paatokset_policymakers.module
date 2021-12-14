@@ -1,0 +1,127 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Ahjo Policymakers module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_policymakers_theme($existing, $type, $theme, $path) {
+  return [
+    'node__policymaker' => [
+      'render element' => 'elements',
+      'template' => 'node--policymaker',
+      'path' => $path . '/templates/content',
+      'base hook' => 'node',
+    ],
+    'block__policymaker_calendar' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--policymaker-calendar',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: paatokset-meeting.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$variables) {
+  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  $params = [
+    'policymaker_name' => $node->get('title')->value,
+    'from' => date("Y-m-d"),
+  ];
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__policymaker_calendar'])) {
+    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
+  }
+
+  $variables['date'] = t('Date');
+  $variables['time'] = t('Time');
+  $variables['additional_info'] = t('Additional information');
+  $variables['open_motions'] = t('Open motions');
+  $variables['open_minutes'] = t('Open minutes');
+  $variables['meetings'] = $meetingService->query($params);
+  $variables['meetings_description'] = $node->get('field_meetings_description');
+}
+
+/**
+ * Implements preprocess_node hook.
+ */
+function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
+
+  $policymaker = $variables['node'];
+  $policymakerService->setPolicyMakerNode($policymaker);
+
+  $orgType = $policymaker->get('field_organization_type')->value;
+  if ($orgType) {
+    $variables['org_type_class'] = $policymakerService->transformOrgType($orgType);
+
+    if ($orgType !== 'trustee') {
+      $variables['is_organization'] = TRUE;
+
+      $documents = $policymakerService->getApiMinutes(2);
+      if ($documents) {
+        $variables['recent_documents'] = $documents;
+        $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
+      }
+
+      $params = [
+        'policymaker_name' => $policymaker->get('title')->value,
+        'from' => date("Y-m-d"),
+      ];
+      $upcomingMeetings = $meetingService->query($params);
+
+      if (!empty($upcomingMeetings)) {
+        $variables['meeting_calendar'] = TRUE;
+      }
+    }
+    else {
+      // Get the two most recent decisions.
+      $recentDecisions = $policymakerService->getAgendasList(FALSE, 2);
+      if (!empty($recentDecisions)) {
+        $variables['recent_decisions'] = $recentDecisions;
+        $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
+      }
+    }
+  }
+
+  if ($councilId && ($policymaker->get('field_policymaker_id')->value === $councilId)) {
+    $variables['render_announcement_block'] = TRUE;
+  }
+}
+
+/**
+ * Implements preprocess hook.
+ */
+function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
+  if (isset($variables['elements']['meeting']) && !empty($variables['elements']['meeting'])) {
+    $variables['meeting'] = $variables['elements']['meeting'];
+  }
+  if (isset($variables['elements']['list']) && !empty($variables['elements']['list'])) {
+    $variables['list'] = $variables['elements']['list'];
+  }
+  if (isset($variables['elements']['file']) && !empty($variables['elements']['file'])) {
+    $variables['file'] = $variables['elements']['file'];
+  }
+}

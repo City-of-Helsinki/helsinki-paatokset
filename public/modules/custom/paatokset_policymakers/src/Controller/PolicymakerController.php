@@ -1,9 +1,10 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Controller;
+namespace Drupal\paatokset_policymakers\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\NodeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Controller class for policymaker custom routes.
@@ -14,13 +15,17 @@ class PolicymakerController extends ControllerBase {
    * Controller for policymaker subpages.
    */
   public function __construct() {
-    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+    $this->policymakerService = \Drupal::service('paatokset_policymakers');
+    $this->policymakerService->setPolicyMakerByPath();
   }
 
   /**
    * Policymaker documents route.
+   *
+   * @return array
+   *   Render array.
    */
-  public function documents($organization) {
+  public function documents(): array {
     $policymaker = $this->policymakerService->getPolicymaker();
 
     if (!$policymaker instanceof NodeInterface) {
@@ -40,30 +45,42 @@ class PolicymakerController extends ControllerBase {
 
   /**
    * Return title as translatable string.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Documents title.
    */
-  public static function getDocumentsTitle() {
+  public static function getDocumentsTitle(): TranslatableMarkup {
     return t('Documents');
   }
 
   /**
    * Policymaker decisions route.
+   *
+   * @return array
+   *   Render array.
    */
-  public function decisions($organization) {
+  public function decisions(): array {
     $build = ['#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
 
   /**
    * Return title as translatable string.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Decisions title.
    */
-  public static function getDecisionsTitle() {
+  public static function getDecisionsTitle(): TranslatableMarkup {
     return t('Decisions');
   }
 
   /**
    * Policymaker dicussion minutes route.
+   *
+   * @return array
+   *   Render array.
    */
-  public function discussionMinutes() {
+  public function discussionMinutes(): array {
     $build = ['#title' => t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
 
     $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
@@ -78,8 +95,14 @@ class PolicymakerController extends ControllerBase {
 
   /**
    * Return view for singular minutes.
+   *
+   * @param string $id
+   *   Meeting ID.
+   *
+   * @return array
+   *   Render array.
    */
-  public function minutes($organization, $id) {
+  public function minutes(string $id): array {
     $meetingData = $this->policymakerService->getMeetingAgenda($id);
 
     $build = [
@@ -97,15 +120,21 @@ class PolicymakerController extends ControllerBase {
 
   /**
    * Return title as translatable string.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Discussions title.
    */
-  public static function getDiscussionMinutesTitle() {
+  public static function getDiscussionMinutesTitle(): TranslatableMarkup {
     return t('Discussion minutes');
   }
 
   /**
    * Return translatable title for minutes.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Minutes title.
    */
-  public static function getMinutesTitle() {
+  public static function getMinutesTitle(): TranslatableMarkup {
     return t('Minutes');
   }
 

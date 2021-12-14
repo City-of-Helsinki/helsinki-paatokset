@@ -9,7 +9,77 @@ declare(strict_types = 1);
 
 use Drupal\Component\Utility\Unicode;
 
-function _paatokset_ahjo_api_lookup_case_nid(string $case_id) {
+/**
+ * Implements hook_theme().
+ */
+function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
+  return [
+    'node__meeting' => [
+      'render element' => 'elements',
+      'template' => 'node--meeting',
+      'path' => $path . '/templates/content',
+      'base hook' => 'node',
+    ],
+    'block__frontpage_calendar' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--frontpage-calendar',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array $variables) {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'block__policymaker_calendar__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Preprocess frontpage calendar block.
+ */
+function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
+  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+
+  $params = [
+    'from' => date("Y-m-d"),
+  ];
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__policymaker_calendar'])) {
+    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
+  }
+
+  $all_meetings = array_merge(...array_values($meetingService->query($params)));
+
+  if (count($all_meetings) > 8) {
+    $all_meetings = array_slice($all_meetings, 0, 8);
+  }
+
+  $variables['open_motions'] = t('Open motions');
+  $variables['open_minutes'] = t('Open minutes');
+  $variables['calendar_link'] = '/kokouskalenteri';
+  $variables['open_meeting_calendar'] = t('Open meeting calendar');
+  $variables['meetings'] = $all_meetings;
+}
+
+/**
+ * Lookup case nodes by case ID.
+ *
+ * @param string $case_id
+ *   Case ID.
+ *
+ * @return array|null
+ *   List of nids.
+ */
+function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?array {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'case')
     ->condition('field_diary_number', $case_id)
@@ -17,12 +87,21 @@ function _paatokset_ahjo_api_lookup_case_nid(string $case_id) {
     ->latestRevision();
   $ids = $query->execute();
   if (empty($ids)) {
-    return;
+    return NULL;
   }
   return reset($ids);
 }
 
-function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id) {
+/**
+ * Lookup meeting nodes by meeting ID.
+ *
+ * @param string $meeting_id
+ *   Meeting ID.
+ *
+ * @return array|null
+ *   List of nids.
+ */
+function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?array {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'meeting')
     ->condition('field_meeting_id', $meeting_id)
@@ -30,12 +109,21 @@ function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id) {
     ->latestRevision();
   $ids = $query->execute();
   if (empty($ids)) {
-    return;
+    return NULL;
   }
   return reset($ids);
 }
 
-function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id) {
+/**
+ * Lookup policymaker nodes by ID.
+ *
+ * @param string $decisionmaker_id
+ *   Policymaker ID.
+ *
+ * @return array|null
+ *   List of nids.
+ */
+function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?array {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'policymaker')
     ->condition('field_policymaker_id', $decisionmaker_id)
@@ -43,11 +131,10 @@ function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id) {
     ->latestRevision();
   $ids = $query->execute();
   if (empty($ids)) {
-    return;
+    return NULL;
   }
   return reset($ids);
 }
-
 
 /**
  * Truncate text value.
@@ -57,7 +144,7 @@ function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id) {
  * @param int $length
  *   Max length of string.
  *
- * @return string|null $value
+ * @return string|null
  *   Truncated value.
  */
 function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): string {
@@ -95,7 +182,7 @@ function _paatokset_ahjo_api_string_to_boolean($value): bool {
 }
 
 /**
- * Callback to check if meeting minutes have been published
+ * Callback to check if meeting minutes have been published.
  *
  * @param mixed $documents
  *   An array of meeting documents.

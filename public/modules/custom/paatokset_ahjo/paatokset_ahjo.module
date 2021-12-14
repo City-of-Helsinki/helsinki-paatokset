@@ -20,10 +20,6 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'template' => 'paatokset-issue',
     ],
-    'paatokset_meeting' => [
-      'render element' => 'elements',
-      'template' => 'paatokset-meeting',
-    ],
     'paatokset_policymaker' => [
       'render element' => 'elements',
       'template' => 'paatokset-policymaker',
@@ -40,12 +36,6 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'template' => 'paatokset-agenda-item',
     ],
-    'node__policymaker' => [
-      'render element' => 'elements',
-      'template' => 'node--policymaker',
-      'path' => $path . '/templates/content',
-      'base hook' => 'node',
-    ],
     'tpr_unit__contact_card' => [
       'base hook' => 'entity',
       'template' => 'content/tpr-unit--contact-card',
@@ -53,14 +43,6 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
     'policymaker_minutes' => [
       'render element' => 'elements',
       'template' => 'content/minutes',
-    ],
-    'block__policymaker_calendar' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--policymaker-calendar',
-    ],
-    'block__frontpage_calendar' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--frontpage-calendar',
     ],
   ];
 }
@@ -73,18 +55,6 @@ function paatokset_ahjo_theme_suggestions_paatokset_issue(array $variables) {
   $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
 
   $suggestions[] = 'paatokset_issue__' . $sanitized_view_mode;
-
-  return $suggestions;
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function paatokset_ahjo_theme_suggestions_paatokset_meeting(array $variables) {
-  $suggestions = [];
-  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
-
-  $suggestions[] = 'paatokset_meeting__' . $sanitized_view_mode;
 
   return $suggestions;
 }
@@ -138,18 +108,6 @@ function paatokset_ahjo_theme_suggestions_paatokset_agenda_item(array $variables
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK().
- */
-function paatokset_ahjo_theme_suggestions_block__policymaker_calendar(array $variables) {
-  $suggestions = [];
-  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
-
-  $suggestions[] = 'block__policymaker_calendar__' . $sanitized_view_mode;
-
-  return $suggestions;
-}
-
-/**
  * Prepares variables for paatokset_ahjo templates.
  *
  * Default template: paatokset-issue.html.twig.
@@ -177,98 +135,6 @@ function template_preprocess_paatokset_issue(array &$variables) {
       $variables[$key] = $data[$key];
     }
   }
-}
-
-/**
- * Prepares variables for paatokset_ahjo templates.
- *
- * Default template: paatokset-meeting.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- */
-function template_preprocess_paatokset_meeting(array &$variables) {
-  $variables['view_mode'] = $variables['elements']['#view_mode'];
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#paatokset_meeting'])) {
-    $variables['entity'] = $variables['elements']['#paatokset_meeting'];
-  }
-}
-
-/**
- * Prepares variables for paatokset_ahjo templates.
- *
- * Default template: paatokset-meeting.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- */
-function template_preprocess_block__policymaker_calendar(array &$variables) {
-  $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-  $node = \Drupal::routeMatch()->getParameter('node');
-
-  $params = [
-    'policymaker_name' => $node->get('title')->value,
-    'from' => date("Y-m-d"),
-  ];
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#block__policymaker_calendar'])) {
-    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
-  }
-
-  $variables['date'] = t('Date');
-  $variables['time'] = t('Time');
-  $variables['additional_info'] = t('Additional information');
-  $variables['open_motions'] = t('Open motions');
-  $variables['open_minutes'] = t('Open minutes');
-  $variables['meetings'] = $meetingService->query($params);
-  $variables['meetings_description'] = $node->get('field_meetings_description');
-}
-
-/**
- * Prepares variables for paatokset_ahjo templates.
- *
- * Default template: paatokset-meeting.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- */
-function template_preprocess_block__frontpage_calendar(array &$variables) {
-  $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-
-  $params = [
-    'from' => date("Y-m-d"),
-  ];
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#block__policymaker_calendar'])) {
-    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
-  }
-
-  $all_meetings = array_merge(...array_values($meetingService->query($params)));
-
-  if (count($all_meetings) > 8) {
-    $all_meetings = array_slice($all_meetings, 0, 8);
-  }
-
-  $variables['open_motions'] = t('Open motions');
-  $variables['open_minutes'] = t('Open minutes');
-  $variables['calendar_link'] = '/kokouskalenteri';
-  $variables['open_meeting_calendar'] = t('Open meeting calendar');
-  $variables['meetings'] = $all_meetings;
 }
 
 /**
@@ -348,68 +214,6 @@ function template_preprocess_paatokset_agenda_item(array &$variables) {
   }
   if (isset($variables['elements']['#paatokset_agenda_item'])) {
     $variables['entity'] = $variables['elements']['#paatokset_agenda_item'];
-  }
-}
-
-/**
- * Implements preprocess_node hook.
- */
-function paatokset_ahjo_preprocess_node__policymaker(&$variables) {
-  $policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
-  $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
-  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-
-  $policymaker = $policymakerService->getPolicymaker();
-  $orgType = $policymaker->get('field_organization_type')->value;
-  if ($orgType) {
-    $variables['org_type_class'] = $policymakerService->transformType($orgType);
-
-    if ($orgType !== 'trustee') {
-      $variables['is_organization'] = TRUE;
-
-      $documents = $policymakerService->getApiMinutes(2);
-      if ($documents) {
-        $variables['recent_documents'] = $documents;
-        $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
-      }
-
-      $params = [
-        'policymaker_name' => $policymaker->get('title')->value,
-        'from' => date("Y-m-d"),
-      ];
-      $upcomingMeetings = $meetingService->query($params);
-
-      if(!empty($upcomingMeetings)) {
-        $variables['meeting_calendar'] = true;
-      }
-    }
-    else {
-      // Get the two most recent decisions.
-      $recentDecisions = $policymakerService->getAgendasList(FALSE, 2);
-      if (!empty($recentDecisions)) {
-        $variables['recent_decisions'] = $recentDecisions;
-        $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
-      }
-    }
-  }
-
-  if($councilId && ($policymaker->get('field_policymaker_id')->value === $councilId)) {
-    $variables['render_announcement_block'] = true;
-  }
-}
-
-/**
- * Implements preprocess hook.
- */
-function paatokset_ahjo_preprocess_policymaker_minutes(&$variables) {
-  if (isset($variables['elements']['meeting']) && !empty($variables['elements']['meeting'])) {
-    $variables['meeting'] = $variables['elements']['meeting'];
-  }
-  if (isset($variables['elements']['list']) && !empty($variables['elements']['list'])) {
-    $variables['list'] = $variables['elements']['list'];
-  }
-  if (isset($variables['elements']['file']) && !empty($variables['elements']['file'])) {
-    $variables['file'] = $variables['elements']['file'];
   }
 }
 

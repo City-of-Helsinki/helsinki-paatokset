@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @file
+ * Primary module hooks for Helsinki Kanava integration.
+ */
+
+declare(strict_types = 1);
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
@@ -53,7 +59,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   // Only act on council nodes.
   $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
-  if(!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->value !== $council_id) {
+  if (!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->value !== $council_id) {
     return;
   }
 
@@ -69,10 +75,10 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     $video = MeetingVideo::load(reset($ids));
   }
 
-  if($video instanceof MeetingVideo) {
+  if ($video instanceof MeetingVideo) {
     $view_builder = \Drupal::entityTypeManager()
-    ->getViewBuilder($video
-    ->getEntityTypeId());
+      ->getViewBuilder($video
+      ->getEntityTypeId());
 
     $variables['most_recent_meeting'] = $view_builder->view($video);
     $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
@@ -92,11 +98,11 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     $liveStream = MeetingVideo::load(reset($upcomingIds));
   }
 
-  if($liveStream instanceof MeetingVideo) {
-    if(_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
+  if ($liveStream instanceof MeetingVideo) {
+    if (_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
       $view_builder = \Drupal::entityTypeManager()
-      ->getViewBuilder($liveStream
-      ->getEntityTypeId());
+        ->getViewBuilder($liveStream
+        ->getEntityTypeId());
 
       $variables['live_stream'] = $view_builder->view($liveStream);
     }
@@ -114,12 +120,15 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
  */
 function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
   if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
-    return true;
+    return TRUE;
   }
 
   return strtotime('+1 hour') > $time;
 }
 
+/**
+ * Add start_time field to meeting videos.
+ */
 function paatokset_helsinki_kanava_update_9001() {
   $entity_type_id = 'meeting_video';
   $field_storage_definition = BaseFieldDefinition::create('string')
@@ -134,6 +143,9 @@ function paatokset_helsinki_kanava_update_9001() {
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('start_time', $entity_type_id, $entity_type_id, $field_storage_definition);
 }
 
+/**
+ * Add asset ID field for meeting videos.
+ */
 function paatokset_helsinki_kanava_update_9002() {
   $entity_type_id = 'meeting_video';
   $field_storage_definition = BaseFieldDefinition::create('string')

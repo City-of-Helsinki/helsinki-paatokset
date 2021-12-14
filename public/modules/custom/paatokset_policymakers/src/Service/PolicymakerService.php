@@ -1,22 +1,29 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Service;
+namespace Drupal\paatokset_policymakers\Service;
 
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
+use Drupal\Component\Utility\Html;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Entity\Meeting;
 use Drupal\paatokset_ahjo\Entity\MeetingDocument;
-use Drupal\paatokset_ahjo\Enum\PolicymakerRoutes;
+use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 
 /**
- * Service class for policymaker-related data.
+ * Service class for retrieving policymaker-related data.
  *
- * @package Drupal\paatokset_ahjo\Services
+ * @package Drupal\paatokset_ahjo_api\Serivces
  */
 class PolicymakerService {
+  /**
+   * Machine name for meeting node type.
+   */
+  const NODE_TYPE = 'policymaker';
+
   /**
    * Policymaker node.
    *
@@ -25,37 +32,118 @@ class PolicymakerService {
   private $policymaker;
 
   /**
-   * Class constructor.
+   * Query policymakers from database.
+   *
+   * @param array $params
+   *   Containing query parameters
+   *   $params = [
+   *     sort  => (string) ASC or DESC.
+   *     limit => (int) Limit results.
+   *     policymaker => (string) policymaker ID.
+   *   ].
+   *
+   * @return array
+   *   of policymakers.
    */
-  public function __construct($id = NULL) {
-    $node;
-
-    if ($id) {
-      $node = Node::load($id);
+  public function query(array $params = []) : array {
+    if (isset($params['sort'])) {
+      $sort = $params['sort'];
     }
     else {
-      $node = \Drupal::routeMatch()->getParameter('node');
-      $routeParams = \Drupal::routeMatch()->getParameters();
+      $sort = 'ASC';
+    }
 
-      if (!$node) {
-        $current_path = \Drupal::service('path.current')->getPath();
-        $path_parts = explode('/', trim($current_path));
-        array_pop($path_parts);
-        $path_alias = implode('/', $path_parts);
-        $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_alias);
-        if (preg_match('/node\/(\d+)/', $path, $matches)) {
-          $node = Node::load($matches[1]);
-        }
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', self::NODE_TYPE)
+      ->sort('created', $sort);
+
+    if (isset($params['limit'])) {
+      $query->range('0', $params['limit']);
+    }
+
+    if (isset($params['policymaker'])) {
+      $query->condition('field_policymaker_id', $params['policymaker']);
+    }
+
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return [];
+    }
+
+    return Node::loadMultiple($ids);
+  }
+
+  /**
+   * Get policymaker node by ID.
+   *
+   * @param string|null $id
+   *   Policymaker id. Leave null to return current instance.
+   *
+   * @return Drupal\node\NodeInterface|null
+   *   Policymaker node or NULL.
+   */
+  public function getPolicyMaker(?string $id = NULL): ?Node {
+    if ($id === NULL) {
+      return $this->policymaker;
+    }
+
+    $queryResult = $this->query([
+      'limit' => 1,
+      'policymaker' => $id,
+    ]);
+
+    return reset($queryResult);
+  }
+
+  /**
+   * Set policy maker by ID.
+   *
+   * @param string $id
+   *   Policy maker ID.
+   */
+  public function setPolicyMaker(string $id): void {
+    $this->policymaker = $this->getPolicyMaker($id);
+  }
+
+  /**
+   * Set policy maker node.
+   *
+   * @param Drupal\node\NodeInterface $node
+   *   Policy maker ID.
+   */
+  public function setPolicyMakerNode(NodeInterface $node): void {
+    if ($node->getType() === 'policymaker') {
+      $this->policymaker = $node;
+    }
+  }
+
+  /**
+   * Set policy maker by current path.
+   */
+  public function setPolicyMakerByPath(): void {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $routeParams = \Drupal::routeMatch()->getParameters();
+
+    if (!$node instanceof NodeInterface) {
+      $current_path = \Drupal::service('path.current')->getPath();
+      $path_parts = explode('/', trim($current_path));
+      array_pop($path_parts);
+      $path_alias = implode('/', $path_parts);
+      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_alias);
+      if (preg_match('/node\/(\d+)/', $path, $matches)) {
+        $node = Node::load($matches[1]);
       }
+    }
 
-      // Determine policymaker in custom routes.
-      if (!$node && $routeParams->get('organization')) {
-        array_pop($path_parts);
-        $path = \Drupal::service('path_alias.manager')->getPathByAlias(implode('/', $path_parts));
+    // Determine policymaker in custom routes.
+    if (!$node instanceof NodeInterface && $routeParams->get('organization')) {
+      array_pop($path_parts);
+      $path = \Drupal::service('path_alias.manager')->getPathByAlias(implode('/', $path_parts));
 
-        if (preg_match('/node\/(\d+)/', $path, $matches)) {
-          $node = Node::load($matches[1]);
-        }
+      if (preg_match('/node\/(\d+)/', $path, $matches)) {
+        $node = Node::load($matches[1]);
       }
     }
 
@@ -71,48 +159,17 @@ class PolicymakerService {
    * @return string
    *   Transformed css class
    */
-  public static function transformType($org_type) {
-    return str_replace('_', '-', $org_type);
-  }
-
-  /**
-   * Check if route exists.
-   */
-  public static function routeExists($routeName) {
-    $routeProvider = \Drupal::service('router.route_provider');
-
-    // getRouteByName() throws an exception if route not found.
-    try {
-      $routeProvider->getRouteByName($routeName);
-    }
-    catch (\Throwable $throwable) {
-      return FALSE;
-    }
-
-    return TRUE;
-  }
-
-  /**
-   * Return the current policymaker node.
-   *
-   * @return \Drupal\node\Entity\Node|null
-   *   - Returns routematched Node or null
-   */
-  public function getPolicymaker() {
-    return $this->policymaker;
-  }
-
-  /**
-   * Transform organization type to CSS class.
-   */
-  public function getOrgTypeClass() {
-    return $this->transformType($this->policymaker->get('field_organization_type')->value);
+  public static function transformOrgType(string $org_type): string {
+    return Html::cleanCssIdentifier(strtolower($org_type));
   }
 
   /**
    * Return route for policymaker documents.
+   *
+   * @return Drupal\Core\Url|null
+   *   URL object, if route is valid.
    */
-  public function getDocumentsRoute() {
+  public function getDocumentsRoute(): ?Url {
     if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
       return NULL;
     }
@@ -130,9 +187,12 @@ class PolicymakerService {
   }
 
   /**
-   * Return route for policymaker dedcisions.
+   * Return route for policymaker decisions.
+   *
+   * @return Drupal\Core\Url|null
+   *   URL object, if route is valid.
    */
-  public function getDecisionsRoute() {
+  public function getDecisionsRoute(): ?Url {
     if ($this->policymaker->get('field_organization_type')->value !== 'trustee') {
       return NULL;
     }
@@ -151,8 +211,11 @@ class PolicymakerService {
 
   /**
    * Return minutes page route by meeting id.
+   *
+   * @return Drupal\Core\Url|null
+   *   URL object, if route is valid.
    */
-  public function getMinutesRoute($id) {
+  public function getMinutesRoute($id): ?Url {
     if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
       return NULL;
     }
@@ -170,30 +233,26 @@ class PolicymakerService {
   }
 
   /**
-   * Get all the decisions for one policymaker id.
+   * Check if route exists.
    *
-   * @return array
-   *   of results.
+   * @param string $routeName
+   *   Route to check.
+   *
+   * @return bool
+   *   If route exists or not.
    */
-  public function getAgendasYears(): array {
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->condition('meeting_policymaker_link', $this->policymaker->get('field_resource_uri')->value);
-    $query->fields('aifd', ['meeting_policymaker_link']);
-    $query->addExpression('YEAR(meeting_date)', 'date');
-    $query->groupBy('date');
-    $query->orderBy('date', 'DESC');
-    $queryResult = $query->distinct()->execute()->fetchAll();
-    $result = [];
+  public static function routeExists(string $routeName): bool {
+    $routeProvider = \Drupal::service('router.route_provider');
 
-    foreach ($queryResult as $row) {
-      $result[$row->date][] = [
-        '#type' => 'link',
-        '#title' => $row->date,
-      ];
+    // getRouteByName() throws an exception if route not found.
+    try {
+      $routeProvider->getRouteByName($routeName);
+    }
+    catch (\Throwable $throwable) {
+      return FALSE;
     }
 
-    return $result;
+    return TRUE;
   }
 
   /**
@@ -268,12 +327,44 @@ class PolicymakerService {
   }
 
   /**
-   * Get all API-retrieved minutes.
+   * Get all the decisions for one policymaker id.
    *
    * @return array
-   *   Array of transcripts
+   *   of results.
    */
-  public function getApiMinutes($limit = NULL, $byYear = FALSE) {
+  public function getAgendasYears(): array {
+    $database = \Drupal::database();
+    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
+      ->condition('meeting_policymaker_link', $this->policymaker->get('field_resource_uri')->value);
+    $query->fields('aifd', ['meeting_policymaker_link']);
+    $query->addExpression('YEAR(meeting_date)', 'date');
+    $query->groupBy('date');
+    $query->orderBy('date', 'DESC');
+    $queryResult = $query->distinct()->execute()->fetchAll();
+    $result = [];
+
+    foreach ($queryResult as $row) {
+      $result[$row->date][] = [
+        '#type' => 'link',
+        '#title' => $row->date,
+      ];
+    }
+
+    return $result;
+  }
+
+  /**
+   * Get all API-retrieved minutes.
+   *
+   * @param int|null $limit
+   *   Limit query.
+   * @param bool $byYear
+   *   Search by year.
+   *
+   * @return array
+   *   Array of transcripts.
+   */
+  public function getApiMinutes(?int $limit = NULL, bool $byYear = FALSE): array {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_document_field_data', 'pmdfd')
       ->fields('pmdfd', ['origin_url', 'publish_time', 'meeting_id'])
@@ -322,8 +413,14 @@ class PolicymakerService {
 
   /**
    * Return all agenda items for a meeting. Only works on policymaker subpages.
+   *
+   * @param string $meetingId
+   *   Meeting ID to get Agenda Items for.
+   *
+   * @return array|null
+   *   Agenda items for meeting.
    */
-  public function getMeetingAgenda($meetingId) {
+  public function getMeetingAgenda(string $meetingId): ?array {
     // Check that the meeting belongs to current policymaker.
     $query = \Drupal::entityQuery('paatokset_meeting')
       ->condition('id', $meetingId)
@@ -350,10 +447,9 @@ class PolicymakerService {
 
       $issues = Issue::loadMultiple($issue_ids);
 
-      $transformedItems = [];
       foreach ($agendaItems as $agendaItem) {
         if (isset($issue[$agendaItem->issue_id])) {
-          $agendaItem->link = $issues[$agendaItem->issue_id]->toUrl()->setOption(['query' => ['decision' => $agendaItem->id]]);
+          $agendaItem->link = $issues[$agendaItem->issue_id]->toUrl()->setOptions(['query' => ['decision' => $agendaItem->id]]);
         }
       }
 
@@ -365,8 +461,8 @@ class PolicymakerService {
         ->condition('meeting_id', $id)
         ->execute();
 
-      $fileUrl;
-      $publishDate;
+      $fileUrl = NULL;
+      $publishDate = NULL;
       if ($documentId) {
         $document = MeetingDocument::load(reset($documentId));
         $fileUrl = $document->get('origin_url')->value;
@@ -392,10 +488,15 @@ class PolicymakerService {
   /**
    * Get all meeting document-related data.
    *
+   * @param int|null $limit
+   *   Limit query.
+   * @param bool $byYear
+   *   Search by year.
+   *
    * @return array
-   *   Array containing queried data
+   *   Meeting document data.
    */
-  public function getMinutesOfDiscussion($limit = NULL, $byYear = FALSE) : array {
+  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE) : array {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pmfd')
       ->fields('pmfd', ['id', 'meeting_date']);
@@ -412,7 +513,7 @@ class PolicymakerService {
     foreach ($mediaEntities as $id => $meeting) {
       foreach ($meeting as $entity) {
         $file_id = $entity->get('field_document')->target_id;
-        $download_link;
+        $download_link = NULL;
         if ($entity->get('field_document')->target_id) {
           $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()))->toString();
         }
@@ -451,7 +552,7 @@ class PolicymakerService {
       $title = $declaration->name->value;
       $year = date('Y', $date);
       if (!isset($documents['years'])) {
-        $documents['years'][$years] = [
+        $documents['years'][$year] = [
           '#type' => 'link',
           '#title' => $year,
         ];

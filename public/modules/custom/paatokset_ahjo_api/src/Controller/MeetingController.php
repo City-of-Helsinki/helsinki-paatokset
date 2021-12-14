@@ -21,7 +21,7 @@ class MeetingController extends ControllerBase {
    * Class constuctor.
    */
   public function __construct() {
-    $this->meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+    $this->meetingService = \Drupal::service('paatokset_ahjo_meetings');
   }
 
   /**
