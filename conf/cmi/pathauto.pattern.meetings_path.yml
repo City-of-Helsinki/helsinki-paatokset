@@ -3,20 +3,31 @@ langcode: fi
 status: true
 dependencies:
   module:
+    - language
     - node
 id: meetings_path
 label: 'Meetings path'
 type: 'canonical_entities:node'
-pattern: 'kokoukset/[node:title]'
+pattern: 'kokoukset/[node:field_meeting_id]'
 selection_criteria:
-  2e557944-215c-4fb6-ae86-e304cad247e0:
+  0b8bbe5f-2d67-4c48-a0d3-77b076b1551f:
     id: node_type
     bundles:
       meeting: meeting
     negate: false
     context_mapping:
       node: node
-    uuid: 2e557944-215c-4fb6-ae86-e304cad247e0
+    uuid: 0b8bbe5f-2d67-4c48-a0d3-77b076b1551f
+  2b942e27-381f-4686-9dc2-45bdcbbc99c4:
+    id: language
+    langcodes:
+      fi: fi
+    negate: false
+    context_mapping:
+      language: 'node:langcode:language'
+    uuid: 2b942e27-381f-4686-9dc2-45bdcbbc99c4
 selection_logic: and
 weight: -5
-relationships: {  }
+relationships:
+  'node:langcode:language':
+    label: Kieli
