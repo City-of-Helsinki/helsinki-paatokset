@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Plugin\Block;
+namespace Drupal\paatokset_policymakers\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
@@ -8,12 +8,12 @@ use Drupal\Core\Block\BlockBase;
  * Provides Calendar Block.
  *
  * @Block(
- *    id = "frontpage_calendar",
- *    admin_label = @Translation("Paatokset frontpage calendar"),
+ *    id = "policymaker_calendar",
+ *    admin_label = @Translation("Paatokset policymaker calendar"),
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class FrontpageCalendarBlock extends BlockBase {
+class CalendarBlock extends BlockBase {
 
   /**
    * Build the attributes.
@@ -21,9 +21,9 @@ class FrontpageCalendarBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      'label' => t('Upcoming meetings'),
+      '#title' => t('Calendar'),
       '#attributes' => [
-        'class' => ['frontpage-calendar'],
+        'class' => ['policymaker-calendar', 'container'],
       ],
     ];
   }

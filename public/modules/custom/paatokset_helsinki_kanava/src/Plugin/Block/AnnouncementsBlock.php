@@ -22,12 +22,12 @@ class AnnouncementsBlock extends BlockBase {
    */
   public function build() {
     $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-    $policymakerService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\PolicymakerService');
+    $policymakerService = \Drupal::service('paatokset_policymakers');
     $councilNode = $policymakerService->getPolicyMaker($council_id);
 
     $announcement = [];
     if ($councilNode) {
-      $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+      $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
       $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {

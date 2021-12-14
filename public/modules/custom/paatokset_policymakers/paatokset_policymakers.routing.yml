@@ -1,0 +1,37 @@
+# @TODO: Find out a way to translate routes / define same route for needed languages
+policymakers.fi:
+  path: paattajat
+  requirements:
+    _access: 'TRUE'
+
+policymaker.documents.fi:
+  path: 'paattajat/{organization}/asiakirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDocumentsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.fi:
+  path: 'paattajat/{organization}/paatokset'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.discussion_minutes.fi:
+  path: 'paattajat/{organization}/keskustelupöytäkirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.minutes.fi:
+  path: 'paattajat/{organization}/asiakirjat/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getMinutesTitle'
+  requirements:
+    _access: 'TRUE'

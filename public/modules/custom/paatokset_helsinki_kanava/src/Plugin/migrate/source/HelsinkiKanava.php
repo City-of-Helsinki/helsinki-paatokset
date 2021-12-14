@@ -138,7 +138,7 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   protected static function getApiUrl(string $base_url): ?string {
     $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
-    $meetingsService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+    $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
     $previousMeetingDate = $meetingsService->previousMeetingDate($council_id);
     $fromTime = $previousMeetingDate ? $previousMeetingDate * 1000 : round(microtime(TRUE) * 1000);
     $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);

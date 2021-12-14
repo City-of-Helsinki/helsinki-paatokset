@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Plugin\Block;
+namespace Drupal\paatokset_policymakers\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\node\NodeInterface;
 
 /**
  * Provides Contacts Block.
@@ -14,10 +15,11 @@ use Drupal\Core\Block\BlockBase;
  * )
  */
 class ContactsBlock extends BlockBase {
+
   /**
    * PolicymakerService instance.
    *
-   * @var Drupal\paatokset_ahjo\Service\PolicymakerService
+   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   private $policymakerService;
 
@@ -26,7 +28,8 @@ class ContactsBlock extends BlockBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+    $this->policymakerService = \Drupal::service('paatokset_policymakers');
+    $this->policymakerService->setPolicyMakerByPath();
   }
 
   /**
@@ -51,12 +54,15 @@ class ContactsBlock extends BlockBase {
 
   /**
    * Builds render arrays of contacts and return them.
+   *
+   * @return array|null
+   *   Render array, if policymakernode is found.
    */
-  private function getContacts() {
+  private function getContacts(): ?array {
     $policymaker = $this->policymakerService->getPolicymaker();
 
-    if (!$policymaker) {
-      return;
+    if (!$policymaker instanceof NodeInterface || !$policymaker->hasField('field_contacts')) {
+      return NULL;
     }
 
     $renderableEntities = [];

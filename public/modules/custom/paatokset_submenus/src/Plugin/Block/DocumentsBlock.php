@@ -17,7 +17,7 @@ class DocumentsBlock extends BlockBase {
   /**
    * PolicymakerService instance.
    *
-   * @var Drupal\paatokset_ahjo\Service\PolicymakerService
+   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   private $policymakerService;
 
@@ -26,7 +26,8 @@ class DocumentsBlock extends BlockBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('Drupal\paatokset_ahjo\Service\PolicymakerService');
+    $this->policymakerService = \Drupal::service('paatokset_policymakers');
+    $this->policymakerService->setPolicyMakerByPath();
   }
 
   /**

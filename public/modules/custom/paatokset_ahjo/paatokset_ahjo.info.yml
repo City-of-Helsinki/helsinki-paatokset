@@ -14,3 +14,4 @@ dependencies:
   - link
   - menu_ui
   - image
+  - drupal:paatokset_policymakers

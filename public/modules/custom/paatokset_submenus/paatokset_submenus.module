@@ -1,11 +1,13 @@
 <?php
 
-use Drupal\Core\Template\Attribute;
-
 /**
  * @file
  * Contains paatokset_submenus.
  */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_theme().
@@ -41,11 +43,11 @@ function paatokset_submenus_preprocess_block(&$variables) {
     $variables['years'] = $variables['content']['#years'];
     $variables['list'] = $variables['content']['#list'];
 
-    if($variables['plugin_id'] === 'agendas_submenu') {
+    if ($variables['plugin_id'] === 'agendas_submenu') {
       $variables['type'] = 'decisions';
     }
 
-    if(in_array($variables['plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
+    if (in_array($variables['plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
       $variables['type'] = 'documents';
     }
   }
@@ -74,7 +76,7 @@ function paatokset_submenus_preprocess_block__policymaker_side_nav(&$variables) 
 
     $variables['dropdown_attributes'] = new Attribute($attributes);
   }
-} 
+}
 
 /**
  * Implements hook_theme_suggestion_block_alter().
