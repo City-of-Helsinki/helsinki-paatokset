@@ -112,6 +112,7 @@ class AhjoProxyController extends ControllerBase {
    *   Response to HTTP request from Ahjo API.
    */
   public function getFile(string $nativeId): Response {
+    /** @var \GuzzleHttp\Psr7\Response $response */
     $response = $this->ahjoProxy->getFile($nativeId);
     if (!$response) {
       throw new NotFoundHttpException();
