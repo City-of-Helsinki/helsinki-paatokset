@@ -40,6 +40,24 @@
               >
                 <div class="meeting-title">{{meeting.title}}</div>
                 <div class="meeting-start-time">{{ meeting.start_time}}</div>
+                <template v-if="meeting.decision_link">
+                  <a :href="meeting.minutes_link">
+                    {{ openDecisions }}
+                    <i class="hds-icon hds-icon--angle-right"></i>
+                  </a>
+                </template>
+                <template v-else-if="meeting.minutes_link && meeting.motions_list_link">
+                  <a :href="meeting.minutes_link">
+                    {{ openMinutes }}
+                    <i class="hds-icon hds-icon--angle-right"></i>
+                  </a>
+                </template>
+                <template v-else>
+                  <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link">
+                    {{ openMotions }}
+                    <i class="hds-icon hds-icon--angle-right"></i>
+                  </a>
+                </template>
               </div>
             </li>
           </ol>
@@ -163,6 +181,15 @@
           },
           numberOfDaysInMonth() {
             return dayjs(this.selectedDate).daysInMonth();
+          },
+          openMotions(){
+            return Drupal.t('Avaa esityslista')
+          },
+          openMinutes() {
+            return Drupal.t('Katso pöytäkirja')
+          },
+          openDecisions() {
+            return Drupal.t('Katso päätöstiedote')
           },
           days() {
             let allDays = [];

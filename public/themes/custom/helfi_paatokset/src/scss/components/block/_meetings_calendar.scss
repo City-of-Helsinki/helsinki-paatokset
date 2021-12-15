@@ -63,6 +63,16 @@
     .meeting-start-time {
       color: $color-black-light;
     }
+
+    a {
+      display: flex;
+      align-items: center;
+    }
+
+    .hds-icon {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .calendar-day--past {
