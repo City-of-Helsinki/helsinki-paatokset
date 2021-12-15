@@ -1,0 +1,10 @@
+{%
+  set classes = [
+  'meetings-calendar',
+  view_mode ? 'meetings-calendar--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+<div {{ attributes.addClass(classes) }}>
+  <div id="meetings-calendar-vue"></div>
+</div>
