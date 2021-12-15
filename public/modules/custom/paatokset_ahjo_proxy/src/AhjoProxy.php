@@ -496,7 +496,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       ]);
 
       if ($response->getStatusCode() !== 200) {
-        return [];
+        return NULL;
       }
 
       return $response;
@@ -513,8 +513,9 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Headers for the request or empty array if config/token is missing.
    */
   private function getAuthHeaders(): ?array {
+
     // Check if access token is still valid (not expired).
-    if ($this->ahjoOpenId->getAuthToken()) {
+    if ($this->ahjoOpenId->checkAuthToken()) {
       $access_token = $this->ahjoOpenId->getAuthToken();
     }
     else {
