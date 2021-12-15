@@ -14,29 +14,35 @@
     {% endif %}
   </div>
   <table class="policymaker-calendar__table">
-    <tr class="policymaker-calendar__table-header policymaker-calendar__table-row">
-      <th>{{ date }}</th>
-      <th>{{ time }}</th>
-      <th>{{ additional_info }}</th>
-    </tr>
-    {% for date, meeting in meetings %}
-      {% for row in meeting %}
-      <tr class="policymaker-calendar__table-row">
-        <th>{{ date|date("d.m.Y") }}</th>
-        <th>{{ row.start_time}}</th>
-        <th>Some info</th>
-        <th>
-          {% if row.minutes_link %}
-            <a href="{{row.minutes_link}}">{{ open_minutes }}</a>
-            <i class="hds-icon hds-icon--angle-right"></i>
-          {% elseif row.motions_list_link %}
-            <a href="{{row.motions_list_link}}">{{ open_motions }}</a>
-            <i class="hds-icon hds-icon--angle-right"></i>
-          {% endif %}
-        </th>
+    <thead>
+      <tr class="policymaker-calendar__table-header policymaker-calendar__table-row">
+        <th>{{ date }}</th>
+        <th>{{ time }}</th>
+        <th>{{ additional_info }}</th>
       </tr>
+    </thead>
+    <tbody>
+      {% for date, meeting in meetings %}
+        {% for row in meeting %}
+        <tr class="policymaker-calendar__table-row">
+          <td>{{ date|date("d.m.Y") }}</td>
+          <td>{{ row.start_time}}</td>
+          <td>Some info</td>
+          {% if row.minutes_link %}
+            <td>
+              <a href="{{row.minutes_link}}">
+                {{ open_minutes }}
+                <i class="hds-icon hds-icon--angle-right"></i>
+              </a>
+            {% elseif row.motions_list_link %}
+              <a href="{{row.motions_list_link}}">{{ open_motions }}</a>
+              <i class="hds-icon hds-icon--angle-right"></i>
+            </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
       {% endfor %}
-    {% endfor %}
+    </tbody>
   </table>
 </div>
 {% endif %}
