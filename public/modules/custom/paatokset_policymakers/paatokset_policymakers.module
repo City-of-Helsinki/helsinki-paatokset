@@ -24,6 +24,10 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-calendar',
     ],
+    'policymaker_minutes' => [
+      'render element' => 'elements',
+      'template' => 'content/minutes',
+    ],
   ];
 }
 
@@ -123,5 +127,8 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
   }
   if (isset($variables['elements']['file']) && !empty($variables['elements']['file'])) {
     $variables['file'] = $variables['elements']['file'];
+  }
+  if (isset($variables['elements']['minutes_of_discussion']) && !empty($variables['elements']['minutes_of_discussion'])) {
+    $variables['minutes_of_discussion'] = $variables['elements']['minutes_of_discussion'];
   }
 }

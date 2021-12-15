@@ -496,7 +496,7 @@ class PolicymakerService {
    * @return array
    *   Meeting document data.
    */
-  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE) : array {
+  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, string $meetingId = NULL) : array {
     $database = \Drupal::database();
     $query = $database->select('paatokset_meeting_field_data', 'pmfd')
       ->fields('pmfd', ['id', 'meeting_date']);
@@ -505,6 +505,10 @@ class PolicymakerService {
 
     if ($limit) {
       $query->range(0, $limit);
+    }
+
+    if ($meetingId) {
+      $query->condition('id', $meetingId);
     }
 
     $result = $query->execute()->fetchAllKeyed();

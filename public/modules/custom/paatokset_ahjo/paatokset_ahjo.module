@@ -40,10 +40,6 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'content/tpr-unit--contact-card',
     ],
-    'policymaker_minutes' => [
-      'render element' => 'elements',
-      'template' => 'content/minutes',
-    ],
   ];
 }
 

@@ -1,6 +1,6 @@
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-double + 8px;
-  
+
   p {
     font-size: $fontsize-body-l;
   }
@@ -22,7 +22,7 @@
       margin-left: $spacing;
     }
   }
-  
+
   .announcement {
     @include breakpoint($breakpoint-m) {
       margin-left: 0;
@@ -101,7 +101,7 @@
 
 .view-all .paatokset-button-link {
   margin-top: $spacing-double;
-  
+
   span {
     margin-left: auto;
   }
@@ -117,7 +117,7 @@
 
   &.policymaker-list-item--document {
     border-color: $color-black;
-    
+
     .subject__date {
       display: block;
     }
@@ -147,7 +147,7 @@
     text-decoration: none;
     font-weight: $font-weight-medium;
     font-size: 24px;
-  } 
+  }
 }
 
 .minutes__header {
@@ -202,7 +202,7 @@
 
     margin-bottom: $spacing-double;
   }
-  
+
   .publish-date__date {
     font-size: $font-size-heading-4;
     font-weight: $font-weight-bold;
@@ -210,6 +210,8 @@
 }
 
 .minutes__file-link {
+  margin-bottom: $spacing-half;
+
   @include breakpoint($breakpoint-l) {
     .paatokset-button-link {
       text-decoration: none;
