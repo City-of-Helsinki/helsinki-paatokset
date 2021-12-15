@@ -98,9 +98,14 @@ class AhjoOpenIdController extends ControllerBase {
     if ($this->ahjoOpenId->checkAuthToken()) {
       $token_expiration = $this->ahjoOpenId->getAuthTokenExpiration();
       $token_status = '<p>' . $this->t('Token is still valid until %date', ['%date' => date(DATE_RFC2822, $token_expiration)]) . '</p>';
+      $token_url = Url::fromRoute('paatokset_ahjo_openid.token', [], ['absolute' => TRUE])->toString();
+      $token_link = [
+        '#markup' => '<p><a href="' . $token_url . '">Show access token.</a></p>',
+      ];
     }
     else {
       $token_status = '<p>' . $this->t('Token has expired or has not been set.') . '</p>';
+      $token_link = NULL;
     }
 
     if ($this->ahjoOpenId->isConfigured()) {
@@ -119,6 +124,7 @@ class AhjoOpenIdController extends ControllerBase {
       'title' => ['#markup' => '<h2>' . $this->t('Token info') . '</h2>'],
       'status' => ['#markup' => $token_status],
       'link' => $refresh_link,
+      'token' => $token_link,
     ];
   }
 
