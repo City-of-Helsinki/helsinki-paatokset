@@ -4,13 +4,13 @@ status: true
 dependencies:
   module:
     - media
-    - paatokset_ahjo
+    - node
 id: media.field_meetings_reference
 field_name: field_meetings_reference
 entity_type: media
 type: entity_reference
 settings:
-  target_type: paatokset_meeting
+  target_type: node
 module: core
 locked: false
 cardinality: 1
