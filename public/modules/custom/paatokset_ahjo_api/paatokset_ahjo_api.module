@@ -76,10 +76,10 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
  * @param string $case_id
  *   Case ID.
  *
- * @return array|null
- *   List of nids.
+ * @return string|null
+ *   Existing nid, if found.
  */
-function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?array {
+function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?string {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'case')
     ->condition('field_diary_number', $case_id)
@@ -98,10 +98,10 @@ function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?array {
  * @param string $meeting_id
  *   Meeting ID.
  *
- * @return array|null
- *   List of nids.
+ * @return string|null
+ *   Existing nid, if found.
  */
-function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?array {
+function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?string {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'meeting')
     ->condition('field_meeting_id', $meeting_id)
@@ -120,10 +120,10 @@ function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?array {
  * @param string $decisionmaker_id
  *   Policymaker ID.
  *
- * @return array|null
- *   List of nids.
+ * @return string|null
+ *   Existing nid, if found.
  */
-function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?array {
+function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?string {
   $query = Drupal::entityQuery('node')
     ->condition('type', 'policymaker')
     ->condition('field_policymaker_id', $decisionmaker_id)
