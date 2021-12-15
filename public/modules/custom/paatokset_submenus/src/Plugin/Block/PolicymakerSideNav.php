@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo\Enum\PolicymakerRoutes;
+use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 
 /**
  * Provides Agendas Submenu Block.
@@ -87,7 +87,7 @@ class PolicymakerSideNav extends BlockBase {
 
     $policymaker = $this->policymakerService->getPolicymaker();
 
-    if (!$policymaker instanceof NodeInterface || $policymaker->getType() === 'policymaker') {
+    if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
       return $items;
     }
 
