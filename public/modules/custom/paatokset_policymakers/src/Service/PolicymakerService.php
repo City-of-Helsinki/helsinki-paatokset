@@ -492,6 +492,8 @@ class PolicymakerService {
    *   Limit query.
    * @param bool $byYear
    *   Search by year.
+   * @param string $meetingId
+   *   Filter by meeting.
    *
    * @return array
    *   Meeting document data.
