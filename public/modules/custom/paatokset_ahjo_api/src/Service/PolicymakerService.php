@@ -74,7 +74,11 @@ class PolicymakerService {
       'policymaker' => $id,
     ]);
 
-    return reset($queryResult);
+    $result = reset($queryResult);
+    if (!$result) {
+      return NULL;
+    }
+    return $result;
   }
 
 }
