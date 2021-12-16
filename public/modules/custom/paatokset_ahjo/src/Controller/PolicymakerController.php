@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_ahjo\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\node\NodeInterface;
 
 /**
  * Controller class for policymaker custom routes.
@@ -21,6 +22,10 @@ class PolicymakerController extends ControllerBase {
    */
   public function documents($organization) {
     $policymaker = $this->policymakerService->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface) {
+      return [];
+    }
 
     $build = [
       '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
