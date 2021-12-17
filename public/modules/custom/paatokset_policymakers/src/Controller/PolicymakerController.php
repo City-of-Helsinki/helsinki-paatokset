@@ -82,14 +82,6 @@ class PolicymakerController extends ControllerBase {
    */
   public function discussionMinutes(): array {
     $build = ['#title' => t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
-
-    $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
-
-    if (!empty($minutes)) {
-      $build['years'] = array_keys($minutes);
-      $build['list'] = $minutes;
-    }
-
     return $build;
   }
 
