@@ -7,11 +7,13 @@ use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
+use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Entity\Meeting;
 use Drupal\paatokset_ahjo\Entity\MeetingDocument;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -30,6 +32,13 @@ class PolicymakerService {
    * @var \Drupal\node\Entity\Node
    */
   private $policymaker;
+
+  /**
+   * Policymaker ID.
+   *
+   * @var string
+   */
+  private $policymakerId;
 
   /**
    * Query policymakers from database.
@@ -94,7 +103,11 @@ class PolicymakerService {
       'policymaker' => $id,
     ]);
 
-    return reset($queryResult);
+    $result = reset($queryResult);
+    if (!$result) {
+      return NULL;
+    }
+    return $result;
   }
 
   /**
@@ -104,7 +117,10 @@ class PolicymakerService {
    *   Policy maker ID.
    */
   public function setPolicyMaker(string $id): void {
-    $this->policymaker = $this->getPolicyMaker($id);
+    $node = $this->getPolicyMaker($id);
+    if ($node instanceof NodeInterface) {
+      $this->setPolicyMakerNode($node);
+    }
   }
 
   /**
@@ -116,6 +132,10 @@ class PolicymakerService {
   public function setPolicyMakerNode(NodeInterface $node): void {
     if ($node->getType() === 'policymaker') {
       $this->policymaker = $node;
+    }
+
+    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+      $this->policymakerId = $node->get('field_policymaker_id')->value;
     }
   }
 
@@ -146,8 +166,9 @@ class PolicymakerService {
         $node = Node::load($matches[1]);
       }
     }
-
-    $this->policymaker = $node;
+    if ($node instanceof NodeInterface) {
+      $this->setPolicyMakerNode($node);
+    }
   }
 
   /**
@@ -212,10 +233,12 @@ class PolicymakerService {
   /**
    * Return minutes page route by meeting id.
    *
+   * @param string $id
+   *   Meeting ID.
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getMinutesRoute($id): ?Url {
+  public function getMinutesRoute(string $id): ?Url {
     if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
       return NULL;
     }
@@ -365,46 +388,67 @@ class PolicymakerService {
    *   Array of transcripts.
    */
   public function getApiMinutes(?int $limit = NULL, bool $byYear = FALSE): array {
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_meeting_document_field_data', 'pmdfd')
-      ->fields('pmdfd', ['origin_url', 'publish_time', 'meeting_id'])
-      ->fields('pmfd', ['meeting_date', 'number']);
-    $query->join('paatokset_meeting_field_data', 'pmfd', ' pmfd.id = pmdfd.meeting_id');
-    $query->condition('pmfd.policymaker_uri', $this->policymaker->get('field_resource_uri')->value);
-    $query->orderBy('pmdfd.publish_time', 'DESC');
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->condition('field_meeting_documents', '', '<>')
+      ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
-      $query->range(0, $limit);
+      $query->range('0', $limit);
     }
 
-    if ($byYear) {
-      $query->addExpression('YEAR(pmdfd.publish_time)', 'year');
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return [];
     }
 
-    $results = $query->execute()->fetchAll();
+    $nodes = Node::loadMultiple($ids);
+    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
+    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
     $transformedResults = [];
-    foreach ($results as $result) {
-      $longDate = date('d.m.Y', strtotime($result->publish_time));
-      $shortDate = date('m - Y', strtotime($result->publish_time));
-      $transformedResult = [
-        'publish_date' => $longDate,
-        'publish_date_short' => $shortDate,
-        'title' => t('Minutes'),
-        'origin_url' => $result->origin_url,
-        'meeting_number' => $result->number . ' - ' . date('Y', strtotime($result->publish_time)),
+    foreach ($nodes as $node) {
+      $meeting_timestamp = strtotime($node->get('field_meeting_date')->value);
+      $meeting_year = date('Y', $meeting_timestamp);
+      $meeting_id = $node->get('field_meeting_id')->value;
+
+      if ($document = $meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
+        $document_title = t('Minutes');
+      }
+      else if ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
+        $document_title = t('Agenda');
+      }
+      else {
+        continue;
+      }
+
+      $document_timestamp = strtotime($document->get('field_document_issued')->value);
+
+      $result = [
+        'publish_date' => date('d.m.Y', $document_timestamp),
+        'publish_date_short' => date('m - Y', $document_timestamp),
+        'title' => $document_title,
+        'meeting_number' => $node->get('field_meeting_sequence_number')->value . ' - ' . $meeting_year,
+        'origin_url' => $meetingService->getUrlFromAhjoDocument($document),
       ];
 
-      $link = $this->getMinutesRoute($result->meeting_id);
+      $link = $this->getMinutesRoute($meeting_id);
       if ($link) {
-        $transformedResult['link'] = $link;
+        $result['link'] = $link;
       }
 
       if ($byYear) {
-        $transformedResults[$result->year][] = $transformedResult;
+        $transformedResults[$meeting_year][] = $result;
       }
       else {
-        $transformedResults[] = $transformedResult;
+        $transformedResults[] = $result;
       }
     }
 
@@ -421,18 +465,34 @@ class PolicymakerService {
    *   Agenda items for meeting.
    */
   public function getMeetingAgenda(string $meetingId): ?array {
-    // Check that the meeting belongs to current policymaker.
-    $query = \Drupal::entityQuery('paatokset_meeting')
-      ->condition('id', $meetingId)
-      ->condition('policymaker_uri', $this->policymaker->get('field_resource_uri')->value)
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->condition('field_meeting_documents', '', '<>')
       ->range(0, 1)
-      ->execute();
+      ->sort('field_meeting_date', 'DESC');
 
-    $id = reset($query);
+    $ids = $query->execute();
 
-    if ($id) {
+    if (empty($ids)) {
+      return [];
+    }
+
+    $meeting = Node::load(reset($ids));
+
+    if (!$meeting instanceof NodeInterface) {
+      throw new NotFoundHttpException();
+    }
+
+    return [];
+
+    /*if ($id) {
       $meeting = Meeting::load($id);
-
       $database = \Drupal::database();
       $query = $database->select('paatokset_agenda_item_field_data', 'paifd')
         ->fields('paifd', ['id', 'subject', 'index', 'issue_id']);
@@ -480,13 +540,13 @@ class PolicymakerService {
           'publish_date' => $publishDate,
         ],
       ];
-    }
+    }*/
 
     return NULL;
   }
 
   /**
-   * Get all meeting document-related data.
+   * Get discussion minutes for meeting.
    *
    * @param int|null $limit
    *   Limit query.
@@ -499,43 +559,64 @@ class PolicymakerService {
    *   Meeting document data.
    */
   public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, string $meetingId = NULL) : array {
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_meeting_field_data', 'pmfd')
-      ->fields('pmfd', ['id', 'meeting_date']);
-    $query->orderBy('meeting_date', 'DESC');
-    $query->condition('policymaker_uri', $this->policymaker->get('field_resource_uri')->value, '=');
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
-      $query->range(0, $limit);
+      $query->range('0', $limit);
     }
 
     if ($meetingId) {
-      $query->condition('id', $meetingId);
+      $query->condition('field_meeting_id', $meetingId);
     }
 
-    $result = $query->execute()->fetchAllKeyed();
-    $mediaEntities = $this->getMeetingMediaEntities(array_keys($result));
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return [];
+    }
+
+    $meeting_minutes = $this->getMeetingMediaEntities($ids);
+    $meeting_ids = array_keys($meeting_minutes);
+    $nodes = Node::loadMultiple($meeting_ids);
+
     $transformedResults = [];
-    foreach ($mediaEntities as $id => $meeting) {
+    foreach ($meeting_minutes as $meeting_id => $meeting) {
       foreach ($meeting as $entity) {
-        $file_id = $entity->get('field_document')->target_id;
-        $download_link = NULL;
-        if ($entity->get('field_document')->target_id) {
-          $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()))->toString();
-        }
-        $year = date('Y', strtotime($result[$id]));
-        $transformedResult = [
-          'publish_date' => date('d.m.Y', strtotime($result[$id])),
-          'publish_date_short' => date('m-Y', strtotime($result[$id])),
-          'title' => $entity->get('name')->value,
-          'origin_url' => $download_link,
+        $meeting_timestamp = strtotime($nodes[$meeting_id]->get('field_meeting_date')->value);
+        $meeting_year = date('Y', $meeting_timestamp);
+        $dateLong = date('d.m.Y', $meeting_timestamp);
+        $dateShort = date('m - Y', $meeting_timestamp);
+
+        $result = [
+          'publish_date' => $dateLong,
+          'publish_date_short' => $dateShort,
+          'title' => $entity->label(),
         ];
 
+        $link = $this->getMinutesRoute($nodes[$meeting_id]->get('field_meeting_id')->value);
+        if ($link) {
+          $result['link'] = $link;
+        }
+
+        if ($entity->get('field_document')->target_id) {
+          $file_id = $entity->get('field_document')->target_id;
+          $download_link = file_create_url(File::load($file_id)->getFileUri());
+          $result['origin_url'] = $download_link;
+        }
+
         if ($byYear) {
-          $transformedResults[$year][] = $transformedResult;
+          $transformedResults[$meeting_year][] = $result;
         }
         else {
-          $transformedResults[] = $transformedResult;
+          $transformedResults[] = $result;
         }
       }
     }
