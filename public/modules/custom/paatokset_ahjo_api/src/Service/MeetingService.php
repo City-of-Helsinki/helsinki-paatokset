@@ -191,7 +191,7 @@ class MeetingService {
   /**
    * Get meeting minutes URL from meeting node.
    *
-   * @param Drupal\node\NodeInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   Meeting entity.
    * @param string $document_type
    *   Document type, for example: 'esityslista', 'pöytäkirja'.
@@ -222,10 +222,10 @@ class MeetingService {
    * @param string $document_type
    *   Document type, for example: 'esityslista', 'pöytäkirja'.
    *
-   * @return Drupal\media\MediaInterface|null
+   * @return \Drupal\media\MediaInterface|null
    *   Meeting minutes media entity, if one exists for the meeting.
    */
-  private function getDocumentFromEntity(NodeInterface $entity, string $document_type): ?MediaInterface {
+  public function getDocumentFromEntity(NodeInterface $entity, string $document_type): ?MediaInterface {
     if (!$entity->hasField('field_meeting_documents') || $entity->get('field_meeting_documents')->isEmpty()) {
       return NULL;
     }
@@ -271,7 +271,7 @@ class MeetingService {
    * @return string|null
    *   URL for document, if possible to get.
    */
-  private function getUrlFromAhjoDocument(MediaInterface $entity): ?string {
+  public function getUrlFromAhjoDocument(MediaInterface $entity): ?string {
     $uri_field = $entity->get('field_document_uri')->first();
     if (!$uri_field) {
       return NULL;
