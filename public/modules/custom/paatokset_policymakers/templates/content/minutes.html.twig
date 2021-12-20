@@ -8,7 +8,7 @@
   {% if meeting is not empty %}
     <div class="minutes__header">
       <span class="minutes__header-prefix">
-        {{ 'Minutes'|t }}
+        {{ meeting.page_title }}
       </span>
       <h1>{{ meeting.title }}</h1>
       <span class="minutes__header-suffix">
@@ -34,7 +34,7 @@
     <div class="minutes-file__container">
     {% if file.publish_date %}
       <div class="minutes__publish-date">
-        <label>{{ 'Minutes publish date'|t }}</label>
+        <label>{{ file.document_title }}</label>
         <span class="publish-date__date">{{ file.publish_date }}</span>
       </div>
     {% endif %}
@@ -42,7 +42,7 @@
       <div class="minutes__file-link">
         <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ file.file_url }}">
           <i class="hds-icon hds-icon--document"></i>
-          <span>{{ 'Lataa tulostettava versio (PDF)'|t }}</span>
+          <span>{{ 'Download printable version (PDF)'|t }}</span>
         </a>
       </div>
     {% endif %}
@@ -55,7 +55,7 @@
         <div class="minutes__file-link">
           <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ minute.origin_url }}">
             <i class="hds-icon hds-icon--document"></i>
-            <span>{{ 'Lataa keskutelupöytäkirja (PDF)'|t }}</span>
+            <span>{{ 'Download minutes of discussion (PDF)'|t }}</span>
           </a>
         </div>
       {% endfor %}

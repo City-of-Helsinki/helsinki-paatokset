@@ -13,6 +13,7 @@ use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_ahjo\Entity\Meeting;
 use Drupal\paatokset_ahjo\Entity\MeetingDocument;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -191,7 +192,7 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getDocumentsRoute(): ?Url {
-    if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
+    if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
       return NULL;
     }
 
@@ -214,7 +215,7 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getDecisionsRoute(): ?Url {
-    if ($this->policymaker->get('field_organization_type')->value !== 'trustee') {
+    if ($this->policymaker->get('field_organization_type')->value !== 'Luottamushenkilö') {
       return NULL;
     }
 
@@ -239,7 +240,7 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getMinutesRoute(string $id): ?Url {
-    if ($this->policymaker->get('field_organization_type')->value === 'trustee') {
+    if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
       return NULL;
     }
 
@@ -473,76 +474,91 @@ class PolicymakerService {
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
-      ->condition('field_meeting_documents', '', '<>')
       ->range(0, 1)
       ->sort('field_meeting_date', 'DESC');
 
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return [];
+    if ($meetingId) {
+      $query->condition('field_meeting_id', $meetingId);
     }
 
-    $meeting = Node::load(reset($ids));
+    $ids = $query->execute();
 
+    $meeting = Node::load(reset($ids));
     if (!$meeting instanceof NodeInterface) {
       throw new NotFoundHttpException();
     }
 
-    return [];
+    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
 
-    /*if ($id) {
-      $meeting = Meeting::load($id);
-      $database = \Drupal::database();
-      $query = $database->select('paatokset_agenda_item_field_data', 'paifd')
-        ->fields('paifd', ['id', 'subject', 'index', 'issue_id']);
-      $query->condition('paifd.meeting_id', $id);
-      $query->addExpression('cast(paifd.index as unsigned)', 'cast_index');
-      $query->orderBy('cast_index');
-      $agendaItems = $query->execute()->fetchAllAssoc('id');
+    $dateLong = date('d.m.Y', $meeting_timestamp);
+    $dateShort = date('m/Y', $meeting_timestamp);
+    $policymaker_title = $this->policymaker->get('title')->value;
+    $agendaItems = NULL;
+    $publishDate = NULL;
+    $fileUrl = NULL;
 
-      $issue_ids = array_map(function ($item) {
-        return $item->issue_id;
-      }, $agendaItems);
+    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
+    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
-      $issues = Issue::loadMultiple($issue_ids);
+    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja')) {
+      $pageTitle = t('Minutes');
+      $documentTitle = t('Minutes publication date');
+    }
+    else if ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista')) {
+      $pageTitle = t('Agenda');
+      $documentTitle = t('Agenda publication date');
+    }
+    else {
+      $pageTitle = t('Meeting');
+    }
 
-      foreach ($agendaItems as $agendaItem) {
-        if (isset($issue[$agendaItem->issue_id])) {
-          $agendaItem->link = $issues[$agendaItem->issue_id]->toUrl()->setOptions(['query' => ['decision' => $agendaItem->id]]);
-        }
+    if ($document instanceof MediaInterface) {
+      $document_timestamp = strtotime($document->get('field_document_issued')->value);
+      $publishDate = date('d.m.Y', $document_timestamp);
+      $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
+    }
+
+    $agendaItems = [];
+    foreach ($meeting->get('field_meeting_agenda') as $item) {
+
+      $data = json_decode($item->value, TRUE);
+      if (!$data) {
+        continue;
       }
 
-      $dateLong = date('d.m.Y', strtotime($meeting->get('meeting_date')->value));
-      $dateShort = date('m/Y', strtotime($meeting->get('meeting_date')->value));
-      $policymaker = $this->policymaker->get('title')->value;
-
-      $documentId = \Drupal::entityQuery('paatokset_meeting_document')
-        ->condition('meeting_id', $id)
-        ->execute();
-
-      $fileUrl = NULL;
-      $publishDate = NULL;
-      if ($documentId) {
-        $document = MeetingDocument::load(reset($documentId));
-        $fileUrl = $document->get('origin_url')->value;
-        $publishDate = date('d.m.Y', strtotime($document->get('publish_time')->value));
+      // Only get finnish agenda points for now.
+      if ($data['PDF']['Language'] !== 'fi') {
+        continue;
       }
 
-      return [
-        'meeting' => [
-          'date_long' => $dateLong,
-          'title' => "$policymaker $dateShort",
-        ],
-        'list' => $agendaItems,
-        'file' => [
-          'file_url' => $fileUrl,
-          'publish_date' => $publishDate,
-        ],
+      // Get PDF for now, should be switched to issue URL later.
+      if (isset($data['PDF']['NativeId'])) {
+        $agenda_link = Url::fromRoute('paatokset_ahjo_proxy.get_file', ['nativeId' => $data['PDF']['NativeId']], ['absolute' => TRUE])->toString();
+      }
+      else {
+        $agenda_link = NULL;
+      }
+
+      $agendaItems[] = [
+        'subject' => $data['AgendaItem'],
+        'index' => $data['AgendaPoint'],
+        'link' => $agenda_link,
       ];
-    }*/
+    }
 
-    return NULL;
+    return [
+      'meeting' => [
+        'page_title' => $pageTitle,
+        'date_long' => $dateLong,
+        'title' => "$policymaker_title $dateShort",
+      ],
+      'list' => $agendaItems,
+      'file' => [
+        'document_title' => $documentTitle,
+        'file_url' => $fileUrl,
+        'publish_date' => $publishDate,
+      ],
+    ];
   }
 
   /**
