@@ -1,0 +1,21 @@
+uuid: 6bf4a56a-57be-4aed-80e1-5036e3f1c9b9
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_organization
+    - node.type.decision
+  module:
+    - json_field
+id: node.decision.field_decision_organization
+field_name: field_decision_organization
+entity_type: node
+bundle: decision
+label: Organization
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

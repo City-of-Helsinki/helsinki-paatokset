@@ -1,0 +1,11 @@
+uuid: 0558612a-1c46-4dcb-b7a6-09636968f13e
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.decision
+id: node.decision
+target_entity_type_id: node
+target_bundle: decision
+default_langcode: site_default
+language_alterable: false
