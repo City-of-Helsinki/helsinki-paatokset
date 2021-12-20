@@ -94,6 +94,7 @@ class MeetingService {
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
+        'policymaker_type' => $this->getPolicymakerType($node->get('field_meeting_dm')->value),
         'policymaker_name' => $node->get('field_meeting_dm')->value,
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
@@ -108,6 +109,23 @@ class MeetingService {
     }
 
     return $result;
+  }
+
+  private function getPolicymakerType(string $name) {
+    $name = strtolower($name);
+    if (strpos($name, 'valtuusto') !== FALSE) {
+      return 'valtuusto';
+    }
+    if (strpos($name, 'toimikunta') !== FALSE) {
+      return 'toimikunta';
+    }
+    if (strpos($name, 'lautakun') !== FALSE) {
+      return 'lautakunta';
+    }
+    if (strpos($name, 'hallitus') !== FALSE) {
+      return 'hallitus';
+    }
+    return 'trustee';
   }
 
   /**
