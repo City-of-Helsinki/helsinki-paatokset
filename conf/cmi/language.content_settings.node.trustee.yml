@@ -1,0 +1,11 @@
+uuid: 77869678-8e1e-428f-9bf7-e948b3877913
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.trustee
+id: node.trustee
+target_entity_type_id: node
+target_bundle: trustee
+default_langcode: site_default
+language_alterable: false

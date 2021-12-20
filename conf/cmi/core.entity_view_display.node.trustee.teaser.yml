@@ -1,0 +1,35 @@
+uuid: c21d40e9-adfa-4ee2-8175-ca64cdd04b2d
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.trustee.field_trustee_chairmanships
+    - field.field.node.trustee.field_trustee_council_group
+    - field.field.node.trustee.field_trustee_id
+    - field.field.node.trustee.field_trustee_initiatives
+    - field.field.node.trustee.field_trustee_resolutions
+    - field.field.node.trustee.field_trustee_title
+    - node.type.trustee
+  module:
+    - user
+id: node.trustee.teaser
+targetEntityType: node
+bundle: trustee
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_trustee_chairmanships: true
+  field_trustee_council_group: true
+  field_trustee_id: true
+  field_trustee_initiatives: true
+  field_trustee_resolutions: true
+  field_trustee_title: true
+  langcode: true
+  search_api_excerpt: true
+  toc_enabled: true
