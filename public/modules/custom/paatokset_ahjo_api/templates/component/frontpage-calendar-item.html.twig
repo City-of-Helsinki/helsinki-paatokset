@@ -1,6 +1,6 @@
 <div class="frontpage-calendar__item">
   <div class="frontpage-calendar__item-inner">
-    <div class="color-line" style="background-color:{{ line_color }}"></div>
+    <div class="color-line {{ row.policymaker_type }}"></div>
     <div class="content-container">
       <span class="meeting-date">{{ date|date("d.m.Y") }}</span>
       <h4>{{ policymaker }}</h4>

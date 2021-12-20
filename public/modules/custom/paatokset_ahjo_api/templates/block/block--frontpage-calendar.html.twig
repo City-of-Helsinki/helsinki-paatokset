@@ -12,7 +12,7 @@
     <h2>{{ content.label }}</h2>
     <div class="frontpage-calendar__item-container">
       {% for row in meetings %}
-        {% include '@paatokset_ahjo/component/frontpage-calendar-item.html.twig' with {
+        {% include '@paatokset_ahjo_api/component/frontpage-calendar-item.html.twig' with {
           line_color: '#00d7a7',
           date: row.meeting_date,
           title: row.title,

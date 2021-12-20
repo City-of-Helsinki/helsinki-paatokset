@@ -37,7 +37,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-  
+
     .issue__category {
       margin-bottom: 0;
     }
@@ -171,7 +171,7 @@
     span {
       font-size: 16px;
     }
-    
+
     &:hover {
       background-color: var(--color-bus);
     }
@@ -213,23 +213,23 @@
   max-width: 100%;
   font-size: $fontsize-body-s;
 
-  &.council {
+  &.council, &.hallitus, &.valtuusto {
     background-color: $council-green;
   }
-  
-  &.board-division, &.board {
+
+  &.board-division, &.board, &.jaosto, &.lautakunta {
     background-color: $board-grey;
   }
-  
+
   &.traffic {
     background-color: $traffic-yellow;
   }
-  
-  &.committee {
+
+  &.committee, &.toimi--neuvottelukunta, &.toimikunta {
     background-color: $committee-blue;
   }
-  
-  &.trustee {
+
+  &.trustee, &.luottamushenkilo, &.viranhaltija {
     background-color: $trustee-pink;
   }
 
