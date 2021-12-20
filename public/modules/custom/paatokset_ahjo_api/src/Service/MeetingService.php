@@ -121,7 +121,7 @@ class MeetingService {
    *   Policy maker type CSS class.
    */
   private function getPolicymakerType(string $name): string {
-    // TODO: This should be refactored to fetch the actual type.
+    // @todo This should be refactored to fetch the actual type.
     $name = strtolower($name);
     if (strpos($name, 'valtuusto') !== FALSE) {
       return 'valtuusto';
