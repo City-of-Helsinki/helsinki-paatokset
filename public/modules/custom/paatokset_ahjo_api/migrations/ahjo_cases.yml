@@ -34,10 +34,6 @@ source:
       label: Case ID Label
       selector: CaseIDLabel
     -
-      name: description
-      label: Description
-      selector: Description
-    -
       name: created
       label: Created
       selector: Created
@@ -45,10 +41,6 @@ source:
       name: acquired
       label: Acquired
       selector: Acquired
-    -
-      name: deadline
-      label: Deadline
-      selector: DateCaseDeadline
     -
       name: classification_code
       label: Classification Code
@@ -58,25 +50,17 @@ source:
       label: Classification Title
       selector: ClassificationTitle
     -
-      name: publicity_class
-      label: Publicity Class
-      selector: PublicityClass
-    -
       name: status
       label: Status
       selector: Status
     -
-      name: personal_data
-      label: Personal Data
-      selector: PersonalData
+      name: handlings
+      label: Handlings
+      selector: Handlings
     -
-      name: reference
-      label: Reference
-      selector: Reference
-    -
-      name: public_reference
-      label: Public Reference
-      selector: PublicReference
+      name: records
+      label: Records
+      selector: Records
   ids:
     case_id:
       type: string
@@ -113,20 +97,30 @@ process:
     from_timezone: Europe/Helsinki
     to_timezone: UTC
     source: acquired
-  field_deadline:
-    plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.v'
-    to_format: 'Y-m-d\TH:i:s'
-    from_timezone: Europe/Helsinki
-    to_timezone: UTC
-    source: deadline
   field_classification_code: classification_code
   field_classification_title: classification_title
-  field_publicity_class: publicity_class
   field_status: status
-  field_personal_data: personal_data
-  field_reference: reference
-  field_public_reference:  public_reference
+  field_case_handlings:
+    plugin: callback
+    callable: json_encode
+    source: handlings
+  field_case_records:
+    plugin: callback
+    callable: json_encode
+    source: records
+  field_case_record_files:
+    plugin: ahjo_entity_generate
+    source: records
+    access_check: false
+    source_key: NativeId
+    value_key: field_document_native_id
+    bundle_key: bundle
+    bundle: ahjo_document
+    entity_type: media
+    ignore_case: true
+    values:
+      field_document_native_id: NativeId
+      field_media_ahjo_file: root_json
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }
