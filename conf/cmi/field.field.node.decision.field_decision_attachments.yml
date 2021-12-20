@@ -1,0 +1,21 @@
+uuid: f71e7334-b215-455c-96d2-aa17a254bc68
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_attachments
+    - node.type.decision
+  module:
+    - json_field
+id: node.decision.field_decision_attachments
+field_name: field_decision_attachments
+entity_type: node
+bundle: decision
+label: Attachments
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

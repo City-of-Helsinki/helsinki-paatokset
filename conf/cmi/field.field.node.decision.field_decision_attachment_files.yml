@@ -1,0 +1,29 @@
+uuid: 14c0fa59-10cd-4a8e-98f4-d51d1073fdd4
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_attachment_files
+    - media.type.ahjo_document
+    - node.type.decision
+id: node.decision.field_decision_attachment_files
+field_name: field_decision_attachment_files
+entity_type: node
+bundle: decision
+label: 'Attachments (files)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      ahjo_document: ahjo_document
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

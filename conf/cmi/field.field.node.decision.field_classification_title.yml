@@ -1,0 +1,19 @@
+uuid: cb8f1368-32b5-4b64-be0b-17a9cf1ccc9b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_classification_title
+    - node.type.decision
+id: node.decision.field_classification_title
+field_name: field_classification_title
+entity_type: node
+bundle: decision
+label: 'Classification title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

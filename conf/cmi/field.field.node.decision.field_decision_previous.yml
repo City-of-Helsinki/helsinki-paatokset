@@ -1,0 +1,21 @@
+uuid: 5190011d-e925-4425-94f2-742e11435d30
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_previous
+    - node.type.decision
+  module:
+    - json_field
+id: node.decision.field_decision_previous
+field_name: field_decision_previous
+entity_type: node
+bundle: decision
+label: 'Previous decisions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

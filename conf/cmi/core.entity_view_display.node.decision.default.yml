@@ -1,0 +1,153 @@
+uuid: abdf6054-ca6c-4f53-b657-127130151a0b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.node.decision.field_classification_code
+    - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_decision_attachment_files
+    - field.field.node.decision.field_decision_attachments
+    - field.field.node.decision.field_decision_content
+    - field.field.node.decision.field_decision_meeting
+    - field.field.node.decision.field_decision_motion
+    - field.field.node.decision.field_decision_native_id
+    - field.field.node.decision.field_decision_organization
+    - field.field.node.decision.field_decision_previous
+    - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_diary_number
+    - field.field.node.decision.field_diary_number_label
+    - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_voting_results
+    - node.type.decision
+  module:
+    - json_field
+    - text
+    - user
+id: node.decision.default
+targetEntityType: node
+bundle: decision
+mode: default
+content:
+  field_classification_code:
+    weight: 108
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_classification_title:
+    weight: 109
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_decision_attachment_files:
+    type: entity_reference_entity_view
+    weight: 115
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_decision_attachments:
+    weight: 114
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_decision_content:
+    weight: 106
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_decision_meeting:
+    weight: 111
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_decision_motion:
+    weight: 107
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_decision_native_id:
+    weight: 101
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_decision_organization:
+    weight: 110
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_decision_previous:
+    weight: 113
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  field_decision_section:
+    weight: 104
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_diary_number:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_diary_number_label:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_full_title:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_voting_results:
+    weight: 112
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: json
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true
+  toc_enabled: true

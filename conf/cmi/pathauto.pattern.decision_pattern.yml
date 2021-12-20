@@ -1,0 +1,33 @@
+uuid: 3b4845b0-1550-4ee6-a87c-9c81e423ad4e
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: decision_pattern
+label: 'Decision pattern'
+type: 'canonical_entities:node'
+pattern: 'asia/[node:field_diary_number]/[node:field_decision_native_id]'
+selection_criteria:
+  dee57461-7095-4e50-9c8e-57b6011d3013:
+    id: node_type
+    bundles:
+      decision: decision
+    negate: false
+    context_mapping:
+      node: node
+    uuid: dee57461-7095-4e50-9c8e-57b6011d3013
+  657ff87c-907a-4c07-b9be-a153836f888b:
+    id: language
+    langcodes:
+      fi: fi
+    negate: false
+    context_mapping:
+      language: 'node:langcode:language'
+    uuid: 657ff87c-907a-4c07-b9be-a153836f888b
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli

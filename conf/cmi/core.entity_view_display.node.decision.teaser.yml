@@ -1,0 +1,53 @@
+uuid: 203375f2-1db4-4170-be9e-b4ad2cab95ef
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.decision.field_classification_code
+    - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_decision_attachment_files
+    - field.field.node.decision.field_decision_attachments
+    - field.field.node.decision.field_decision_content
+    - field.field.node.decision.field_decision_meeting
+    - field.field.node.decision.field_decision_motion
+    - field.field.node.decision.field_decision_native_id
+    - field.field.node.decision.field_decision_organization
+    - field.field.node.decision.field_decision_previous
+    - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_diary_number
+    - field.field.node.decision.field_diary_number_label
+    - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_voting_results
+    - node.type.decision
+  module:
+    - user
+id: node.decision.teaser
+targetEntityType: node
+bundle: decision
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_classification_code: true
+  field_classification_title: true
+  field_decision_attachment_files: true
+  field_decision_attachments: true
+  field_decision_content: true
+  field_decision_meeting: true
+  field_decision_motion: true
+  field_decision_native_id: true
+  field_decision_organization: true
+  field_decision_previous: true
+  field_decision_section: true
+  field_diary_number: true
+  field_diary_number_label: true
+  field_full_title: true
+  field_voting_results: true
+  langcode: true
+  search_api_excerpt: true
+  toc_enabled: true

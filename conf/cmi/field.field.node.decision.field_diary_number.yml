@@ -1,0 +1,19 @@
+uuid: 5ac13c43-3d07-4256-beff-29425093ecc5
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_diary_number
+    - node.type.decision
+id: node.decision.field_diary_number
+field_name: field_diary_number
+entity_type: node
+bundle: decision
+label: 'Diary number'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
