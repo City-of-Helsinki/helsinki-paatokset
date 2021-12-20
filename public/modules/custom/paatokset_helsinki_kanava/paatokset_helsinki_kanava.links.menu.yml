@@ -10,8 +10,8 @@ entity.meeting_video.collection:
   route_name: entity.meeting_video.collection
   parent: helfi_api_base.integrations
 
-paatokset_helsinki_kanava.settings_form:  
+paatokset_helsinki_kanava.settings_form:
   title: 'Helsinki Kanava'
-  route_name: paatokset_helsinki_kanava.settings_form 
-  description: 'Helsinki Kanava settings'  
+  route_name: paatokset_helsinki_kanava.settings_form
+  description: 'Helsinki Kanava settings'
   parent: system.admin_config_system
