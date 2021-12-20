@@ -1,0 +1,72 @@
+uuid: 12bb4aa9-6b87-4620-bc82-d39937dacc3b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organization_type
+    - search_api.server.elasticsearch
+  module:
+    - node
+    - search_api
+    - paatokset_search
+id: policymakers
+name: Policymakers
+description: ''
+read_only: false
+field_settings:
+  field_organization_type:
+    label: 'Organization type'
+    datasource_id: 'entity:node'
+    property_path: field_organization_type
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_organization_type
+  organ:
+    label: Organ
+    datasource_id: 'entity:node'
+    property_path: organ
+    type: string
+  sector:
+    label: Sector
+    datasource_id: 'entity:node'
+    property_path: sector
+    type: string
+  title:
+    label: Otsikko
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    dependencies:
+      module:
+        - node
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
+    configuration:
+      absolute: false
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - policymaker
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  language_with_fallback: {  }
+  organ_json: {  }
+  rendered_item: {  }
+  sector_json: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  track_changes_in_references: true
+  cron_limit: 50
+server: elasticsearch
