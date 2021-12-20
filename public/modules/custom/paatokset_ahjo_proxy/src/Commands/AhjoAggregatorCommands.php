@@ -221,6 +221,128 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Aggregates position of trust data from Ahjo API.
+   *
+   * @command ahjo-proxy:get-positionsoftrust
+   *
+   * @usage ahjo-proxy:get-positionsoftrust
+   *   Stores all positions of trust into a file.
+   *
+   * @aliases ap:pt
+   */
+  public function positionsoftrust(): void {
+    $this->logger->info('Fetching decision making organizations...');
+    $org_data = $this->ahjoProxy->getData('organization/decisionmakingorganizations', NULL);
+    if (empty($org_data)) {
+      $this->logger->info('Empty result.');
+      $org_data = [
+        'organizations' => [],
+      ];
+    }
+    else {
+      $this->logger->info('Processing ' . count($org_data['organizations']) . ' results.');
+    }
+
+    $this->logger->info('Fetching council groups...');
+    $group_data = $this->ahjoProxy->getData('councilgroups', NULL);
+    if (empty($group_data)) {
+      $this->logger->info('Empty result.');
+      $group_data = [
+        'agentPublicList' => [],
+      ];
+    }
+    else {
+      $this->logger->info('Processing ' . count($group_data['agentPublicList']) . ' results.');
+    }
+
+    $operations = [];
+    $count = 0;
+    foreach ($org_data['organizations'] as $org) {
+      $count++;
+      $data = [
+        'endpoint' => 'agents/positionoftrust',
+        'count' => $count,
+        'query_string' => 'org=' . $org['ID'],
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processGroupItem',
+        [$data],
+      ];
+    }
+
+    foreach ($group_data['agentPublicList'] as $group) {
+      $count++;
+      $data = [
+        'endpoint' => 'agents/positionoftrust',
+        'count' => $count,
+        'query_string' => 'org=' . $group['ID'],
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processGroupItem',
+        [$data],
+      ];
+    }
+
+    batch_set([
+      'title' => 'Aggregating council groups and organizations.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishGroups',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Aggregates trustees from Ahjo API. Requires positions to be aggregated.
+   *
+   * @command ahjo-proxy:get-trustees
+   *
+   * @usage ahjo-proxy:get-trustees
+   *   Stores all positions of trust into a file.
+   *
+   * @aliases ap:trust
+   */
+  public function trustees(): void {
+    $this->logger->info('Fetching trustees organizations...');
+    $data = $this->ahjoProxy->getStatic('positionsoftrust.json');
+    $operations = [];
+    $count = 0;
+    $ids = [];
+    $duplicates = 0;
+    foreach ($data as $group) {
+      foreach ($group['agentPublicList'] as $item) {
+        if (isset($ids[$item['ID']])) {
+          $duplicates++;
+        }
+        else {
+          $ids[$item['ID']] = $item['ID'];
+          $count++;
+          $data = [
+            'endpoint' => 'agents/positionoftrust/' . $item['ID'],
+            'count' => $count,
+          ];
+          $operations[] = [
+            '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processTrusteeItem',
+            [$data],
+          ];
+        }
+      }
+    }
+
+    $this->logger->info('Prosessing individual positions of trust, total of ' . $count . ' unique items and ' . $duplicates . ' duplicates.');
+
+    batch_set([
+      'title' => 'Aggregating positions of trust.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishTrustees',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
@@ -238,7 +360,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       'meetings_latest.json',
       'decisions_all.json',
       'decisions_latest.json',
+      'initiatives_all.json',
+      'initiatives_latest.json',
+      'resolutions_all.json',
+      'resolutions_latest.json',
       'decisionmakers.json',
+      'positionsoftrust.json',
+      'trustees.json',
     ];
 
     foreach ($static_files as $file) {
@@ -333,6 +461,14 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       case 'decisionmakers':
         $key = 'decisionMakers';
+        break;
+
+      case 'resolutions':
+        $key = 'resolutions';
+        break;
+
+      case 'initiatives':
+        $key = 'initiatives';
         break;
 
       default:

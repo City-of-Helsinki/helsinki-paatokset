@@ -296,6 +296,30 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'cases_latest.json';
         break;
 
+      case 'resolutions_all':
+        $filename = 'resolutions_all.json';
+        break;
+
+      case 'resolutions_latest':
+        $filename = 'resolutions_latest.json';
+        break;
+
+      case 'initiatives_all':
+        $filename = 'initiatives_all.json';
+        break;
+
+      case 'initiatives_latest':
+        $filename = 'initiatives_latest.json';
+        break;
+
+      case 'positionsoftrust':
+        $filename = 'positionsoftrust.json';
+        break;
+
+      case 'trustees':
+        $filename = 'trustees.json';
+        break;
+
       case 'decisionmakers':
         $filename = 'decisionmakers.json';
         break;
@@ -411,6 +435,132 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     file_save_data(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $messenger->addMessage('Aggregated data saved into public://' . $filename);
+
+    // Save failed array into filesystem even if it's empty so we can wipe it.
+    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    if (!empty($results['failed'])) {
+      $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
+    }
+  }
+
+  /**
+   * Static callback for aggregating groups to get all positions of trust.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processGroupItem($data, &$context) {
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $full_data = $ahjo_proxy->getData($data['endpoint'], $data['query_string']);
+
+    if (!empty($full_data)) {
+      $context['results']['items'][] = $full_data;
+    }
+    else {
+      $context['results']['failed'][] = $data;
+    }
+  }
+
+  /**
+   * Static callback function for finishing group aggregation batch.
+   *
+   * @param mixed $success
+   *   If batch succeeded or not.
+   * @param array $results
+   *   Aggregated results.
+   * @param array $operations
+   *   Operations with errors.
+   */
+  public static function finishGroups($success, array $results, array $operations) {
+    $messenger = \Drupal::messenger();
+    $total = count($results['items']);
+
+    $end_time = microtime(TRUE);
+    $total_time = ($end_time - $results['starttime']);
+    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
+    $messenger->addMessage('Items failed: ' . count($results['failed']));
+
+    $filename = 'positionsoftrust.json';
+    file_save_data(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $messenger->addMessage('Aggregated data saved into public://' . $filename);
+
+    // Save failed array into filesystem even if it's empty so we can wipe it.
+    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    if (!empty($results['failed'])) {
+      $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
+    }
+  }
+
+  /**
+   * Static callback for aggregating individual positions of trust.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processTrusteeItem($data, &$context) {
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $full_data = $ahjo_proxy->getData($data['endpoint'], NULL);
+
+    if (!empty($full_data)) {
+      $context['results']['items'][] = $full_data;
+    }
+    else {
+      $context['results']['failed'][] = $data;
+    }
+  }
+
+  /**
+   * Static callback function for finishing group aggregation batch.
+   *
+   * @param mixed $success
+   *   If batch succeeded or not.
+   * @param array $results
+   *   Aggregated results.
+   * @param array $operations
+   *   Operations with errors.
+   */
+  public static function finishTrustees($success, array $results, array $operations) {
+    $messenger = \Drupal::messenger();
+    $total = count($results['items']);
+
+    $end_time = microtime(TRUE);
+    $total_time = ($end_time - $results['starttime']);
+    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
+    $messenger->addMessage('Items failed: ' . count($results['failed']));
+
+    $filename = 'trustees.json';
+    file_save_data(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
