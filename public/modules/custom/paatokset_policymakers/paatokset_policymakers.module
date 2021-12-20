@@ -28,6 +28,10 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'template' => 'content/minutes',
     ],
+    'block__policymaker_members' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--policymaker-memebers',
+    ],
   ];
 }
 
@@ -130,5 +134,29 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
   }
   if (isset($variables['elements']['minutes_of_discussion']) && !empty($variables['elements']['minutes_of_discussion'])) {
     $variables['minutes_of_discussion'] = $variables['elements']['minutes_of_discussion'];
+  }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: block--policymaker-members.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_block__policymaker_members(array &$variables) {
+  $variables['#attached']['library'][] = 'paatokset_ahjo/policymaker_members';
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  $variables['policymaker_name'] = $node->get('title')->value;
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__policymaker_members'])) {
+    $variables['entity'] = $variables['elements']['#block__policymaker_members'];
   }
 }
