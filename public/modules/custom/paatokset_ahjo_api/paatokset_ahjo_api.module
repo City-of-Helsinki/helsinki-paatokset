@@ -61,10 +61,6 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
 
-  if (count($all_meetings) > 8) {
-    $all_meetings = array_slice($all_meetings, 0, 8);
-  }
-
   $variables['open_motions'] = t('Open motions');
   $variables['open_minutes'] = t('Open minutes');
   $variables['calendar_link'] = '/kokouskalenteri';
