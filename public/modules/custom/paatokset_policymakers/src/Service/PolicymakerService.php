@@ -10,10 +10,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Entity\Issue;
-use Drupal\paatokset_ahjo\Entity\Meeting;
-use Drupal\paatokset_ahjo\Entity\MeetingDocument;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
-use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -236,6 +233,7 @@ class PolicymakerService {
    *
    * @param string $id
    *   Meeting ID.
+   *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
@@ -423,7 +421,7 @@ class PolicymakerService {
       if ($document = $meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
         $document_title = t('Minutes');
       }
-      else if ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
+      elseif ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
         $document_title = t('Agenda');
       }
       else {
@@ -504,7 +502,7 @@ class PolicymakerService {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
-    else if ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista')) {
+    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista')) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
