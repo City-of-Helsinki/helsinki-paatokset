@@ -1,0 +1,21 @@
+uuid: fe88713b-d2b9-4ffa-b3e5-a9682d304970
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_case_records
+    - node.type.case
+  module:
+    - json_field
+id: node.case.field_case_records
+field_name: field_case_records
+entity_type: node
+bundle: case
+label: Records
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

@@ -5,18 +5,15 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.case.field_acquired
+    - field.field.node.case.field_case_handlings
+    - field.field.node.case.field_case_record_files
+    - field.field.node.case.field_case_records
     - field.field.node.case.field_classification_code
     - field.field.node.case.field_classification_title
     - field.field.node.case.field_created
-    - field.field.node.case.field_deadline
-    - field.field.node.case.field_description
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
     - field.field.node.case.field_full_title
-    - field.field.node.case.field_personal_data
-    - field.field.node.case.field_public_reference
-    - field.field.node.case.field_publicity_class
-    - field.field.node.case.field_reference
     - field.field.node.case.field_status
     - node.type.case
   module:
@@ -33,18 +30,15 @@ content:
     region: content
 hidden:
   field_acquired: true
+  field_case_handlings: true
+  field_case_record_files: true
+  field_case_records: true
   field_classification_code: true
   field_classification_title: true
   field_created: true
-  field_deadline: true
-  field_description: true
   field_diary_number: true
   field_diary_number_label: true
   field_full_title: true
-  field_personal_data: true
-  field_public_reference: true
-  field_publicity_class: true
-  field_reference: true
   field_status: true
   langcode: true
   search_api_excerpt: true

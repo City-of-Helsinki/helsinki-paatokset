@@ -1,0 +1,21 @@
+uuid: f820e8d7-2494-4036-8f4f-a528568e5364
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_case_handlings
+    - node.type.case
+  module:
+    - json_field
+id: node.case.field_case_handlings
+field_name: field_case_handlings
+entity_type: node
+bundle: case
+label: Handlings
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
