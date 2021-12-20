@@ -26,7 +26,7 @@ use Drupal\Core\Entity\ContentEntityBase;
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\helfi_api_base\Entity\Routing\EntityRouteProvider",
+ *       "html" = "Drupal\paatokset_ahjo\Entity\Routing\EntityRouteProvider",
  *     }
  *   },
  *   base_table = "paatokset_meeting_video",
