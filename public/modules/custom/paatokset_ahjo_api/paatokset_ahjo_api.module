@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Unicode;
 
 /**
@@ -47,6 +48,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $params = [
     'from' => date("Y-m-d"),
+    'limit' => 8,
   ];
 
   // Helpful $content variable for templates.
