@@ -1,0 +1,21 @@
+uuid: 65cc030b-62eb-4984-93a4-816882c2068f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_resolutions
+    - node.type.trustee
+  module:
+    - json_field
+id: node.trustee.field_trustee_resolutions
+field_name: field_trustee_resolutions
+entity_type: node
+bundle: trustee
+label: Resolutions
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

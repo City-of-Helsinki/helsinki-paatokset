@@ -1,0 +1,22 @@
+uuid: c0730351-8500-4913-8dcf-e00098a1ac36
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.trustee
+id: node.trustee.promote
+field_name: promote
+entity_type: node
+bundle: trustee
+label: 'Näytetään etusivulla'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
+field_type: boolean
