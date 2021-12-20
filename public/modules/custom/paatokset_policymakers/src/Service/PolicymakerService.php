@@ -277,6 +277,8 @@ class PolicymakerService {
     return TRUE;
   }
 
+
+
   /**
    * Get all the decisions for one classification code.
    *
@@ -373,6 +375,48 @@ class PolicymakerService {
     }
 
     return $result;
+  }
+
+  /**
+   * Get policymaker composition based on latest meeting.
+   *
+   * @return array
+   *   Policymaker composition, if found.
+   */
+  public function getComposition(): ?array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->condition('field_meeting_composition', '', '<>')
+      ->range(0, 1)
+      ->sort('field_meeting_date', 'DESC');
+
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return [];
+    }
+
+    $meeting = Node::load(reset($ids));
+    if (!$meeting instanceof NodeInterface) {
+      return [];
+    }
+
+    $results = [];
+    // @todo: filter out results for non trustee roles.
+    // @todo: load full data (node or JSON) for trustees.
+    foreach($meeting->get('field_meeting_composition') as $field) {
+      $data = json_decode($field->value);
+      if (!empty($data)) {
+        $results[] = $data;
+      }
+    }
+    return $results;
   }
 
   /**

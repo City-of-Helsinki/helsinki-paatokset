@@ -2,6 +2,7 @@
 
 namespace Drupal\paatokset_policymakers\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\NodeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -133,6 +134,21 @@ class PolicymakerController extends ControllerBase {
    */
   public static function getMinutesTitle(): TranslatableMarkup {
     return t('Minutes');
+  }
+
+  /**
+   * Get decision maker composition in JSON format.
+   *
+   * @param string $id
+   *   Decision maker ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Return response with JSON data.
+   */
+  public function orgComposition(string $id): JsonResponse {
+    $this->policymakerService->setPolicyMaker($id);
+    $data = $this->policymakerService->getComposition();
+    return new JsonResponse($data);
   }
 
 }
