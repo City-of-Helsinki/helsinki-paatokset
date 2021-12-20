@@ -277,8 +277,6 @@ class PolicymakerService {
     return TRUE;
   }
 
-
-
   /**
    * Get all the decisions for one classification code.
    *
@@ -408,9 +406,9 @@ class PolicymakerService {
     }
 
     $results = [];
-    // @todo: filter out results for non trustee roles.
-    // @todo: load full data (node or JSON) for trustees.
-    foreach($meeting->get('field_meeting_composition') as $field) {
+    // @todo Filter out results for non trustee roles.
+    // @todo Load full data (node or JSON) for trustees.
+    foreach ($meeting->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value);
       if (!empty($data)) {
         $results[] = $data;
