@@ -35,3 +35,11 @@ policymaker.minutes.fi:
     _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getMinutesTitle'
   requirements:
     _access: 'TRUE'
+
+
+policymaker.org_composition:
+  path: 'ahjo_api/org_composition/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::orgComposition'
+  requirements:
+    _access: 'TRUE'
