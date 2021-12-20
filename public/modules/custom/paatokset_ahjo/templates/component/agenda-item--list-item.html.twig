@@ -7,9 +7,13 @@
 #}
 
 <div class="policymaker-list-item policymaker-list-item--agenda-item">
-  <a href="{{ agenda_item.link }}">
+  {% if agenda_item.link %}
+    <a href="{{ agenda_item.link }}">
+  {% endif %}
     <span class="agenda-item__index-number">{{ agenda_item.index }}</span>
     <span class="agenda-item__subject">{{ agenda_item.subject }}</span>
     {% include '@hdbt/misc/icon.twig' with {icon: 'arrow-right'} %}
-  </a>
+  {% if agenda_item.link %}
+    </a>
+  {% endif %}
 </div>
