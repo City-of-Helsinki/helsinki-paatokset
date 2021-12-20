@@ -1,0 +1,19 @@
+uuid: 96ff79bc-bd0d-4af0-9610-0e21692c7e61
+langcode: fi
+status: true
+dependencies:
+  module:
+    - json_field
+    - node
+id: node.field_case_records
+field_name: field_case_records
+entity_type: node
+type: json_native
+settings: {  }
+module: json_field
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

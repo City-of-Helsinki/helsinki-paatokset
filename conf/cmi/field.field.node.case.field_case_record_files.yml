@@ -1,0 +1,29 @@
+uuid: d050d0e3-310c-44c3-9889-a8dbd631523c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_case_record_files
+    - media.type.ahjo_document
+    - node.type.case
+id: node.case.field_case_record_files
+field_name: field_case_record_files
+entity_type: node
+bundle: case
+label: 'Records (files)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      ahjo_document: ahjo_document
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,33 @@
+uuid: 2bf19f8c-9154-492c-85bd-dcc17d4f493a
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: case_pattern
+label: 'Case pattern'
+type: 'canonical_entities:node'
+pattern: 'asia/[node:field_diary_number]'
+selection_criteria:
+  ceb55a5f-a2be-4c20-984c-8ea719ac80b0:
+    id: node_type
+    bundles:
+      case: case
+    negate: false
+    context_mapping:
+      node: node
+    uuid: ceb55a5f-a2be-4c20-984c-8ea719ac80b0
+  586667fc-3e16-45e3-9b7d-74ad97f8a3b6:
+    id: language
+    langcodes:
+      fi: fi
+    negate: false
+    context_mapping:
+      language: 'node:langcode:language'
+    uuid: 586667fc-3e16-45e3-9b7d-74ad97f8a3b6
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli

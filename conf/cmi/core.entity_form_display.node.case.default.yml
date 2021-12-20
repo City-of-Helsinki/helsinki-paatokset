@@ -4,26 +4,24 @@ status: true
 dependencies:
   config:
     - field.field.node.case.field_acquired
+    - field.field.node.case.field_case_handlings
+    - field.field.node.case.field_case_record_files
+    - field.field.node.case.field_case_records
     - field.field.node.case.field_classification_code
     - field.field.node.case.field_classification_title
     - field.field.node.case.field_created
-    - field.field.node.case.field_deadline
-    - field.field.node.case.field_description
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
     - field.field.node.case.field_full_title
-    - field.field.node.case.field_personal_data
-    - field.field.node.case.field_public_reference
-    - field.field.node.case.field_publicity_class
-    - field.field.node.case.field_reference
     - field.field.node.case.field_status
     - node.type.case
   module:
     - datetime
     - hdbt_admin_editorial
+    - json_field
+    - media_library
     - path
     - scheduler
-    - text
 id: node.case.default
 targetEntityType: node
 bundle: case
@@ -40,6 +38,29 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
+  field_case_handlings:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+  field_case_record_files:
+    type: media_library_widget
+    weight: 28
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_case_records:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
     region: content
   field_classification_code:
     weight: 18
@@ -63,20 +84,6 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
-  field_deadline:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
-  field_description:
-    weight: 14
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_diary_number:
     weight: 12
     settings:
@@ -95,38 +102,6 @@ content:
     region: content
   field_full_title:
     weight: 1
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_personal_data:
-    weight: 22
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_public_reference:
-    weight: 24
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_publicity_class:
-    weight: 20
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_reference:
-    weight: 23
     settings:
       size: 60
       placeholder: ''
