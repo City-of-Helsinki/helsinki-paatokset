@@ -85,7 +85,7 @@
 <article{{ attributes.addClass(classes) }}>
   <section class="container policymaker-summary">
     <div class="policymaker-summary__label">
-      <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
+      <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
         {{ label }}
       </div>
     </div>
@@ -120,7 +120,7 @@
     {% if true in sections %}
       <div class="container">
         <section class="content-menu">
-          <p class="content-menu__description">{{ 'On this page you will find'|trans }}</p>
+          <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
           <ul>
             {% if recent_documents %} 
               <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>

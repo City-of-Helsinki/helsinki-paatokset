@@ -627,8 +627,14 @@ class PolicymakerService {
     $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
 
     $dateLong = date('d.m.Y', $meeting_timestamp);
-    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
-    $meetingYear = date('Y', $meeting_timestamp);
+    $dateShort = date('m/Y', $meeting_timestamp);
+    $dateYear = date('Y', $meeting_timestamp);
+    $sequenceNumber;
+
+    if ($meeting->get('field_meeting_sequence_number')->value) {
+      $sequenceNumber = $meeting->get('field_meeting_sequence_number')->value . '/' . $dateYear;
+    }
+
     $policymaker_title = $this->policymaker->get('title')->value;
     $agendaItems = NULL;
     $publishDate = NULL;
@@ -676,7 +682,7 @@ class PolicymakerService {
       'meeting' => [
         'page_title' => $pageTitle,
         'date_long' => $dateLong,
-        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
+        'title' => "$policymaker_title $sequenceNumber",
       ],
       'list' => $agendaItems,
       'file' => [

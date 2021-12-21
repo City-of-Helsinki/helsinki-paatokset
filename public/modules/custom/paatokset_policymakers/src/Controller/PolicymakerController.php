@@ -129,11 +129,18 @@ class PolicymakerController extends ControllerBase {
   /**
    * Return translatable title for minutes.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
    *   Minutes title.
    */
-  public static function getMinutesTitle(): TranslatableMarkup {
-    return t('Minutes');
+  public function getMinutesTitle($id) {
+    $meetingData = $this->policymakerService->getMeetingAgenda($id);
+    $meetingTitle;
+
+    if (isset($meetingData['meeting']) && isset($meetingData['meeting']['title'])) {
+      $meetingTitle = $meetingData['meeting']['title'];
+    }
+
+    return $meetingTitle ? $meetingTitle : t('Minutes');
   }
 
   /**
