@@ -82,7 +82,6 @@ process:
   field_full_title: title
   field_diary_number: case_id
   field_diary_number_label: case_id_label
-  field_description: description
   field_created:
     plugin: format_date
     from_format: 'Y-m-d\TH:i:s.v'

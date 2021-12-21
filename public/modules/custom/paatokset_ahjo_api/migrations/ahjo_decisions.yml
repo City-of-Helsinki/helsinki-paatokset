@@ -1,0 +1,155 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_proxy
+id: ahjo_decisions
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+  - ahjo_api_decisions
+migration_group: ahjo_api
+label: 'Ahjo API - Decisions'
+deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  item_selector: decisions
+  fields:
+    -
+      name: title
+      label: Title
+      selector: Title
+    -
+      name: native_id
+      label: Native ID
+      selector: NativeId
+    -
+      name: case_id
+      label: Case ID
+      selector: CaseID
+    -
+      name: case_id_label
+      label: Case ID Label
+      selector: CaseIDLabel
+    -
+      name: classification_code
+      label: Classification Code
+      selector: ClassificationCode
+    -
+      name: classification_title
+      label: Classification Title
+      selector: ClassificationTitle
+    -
+      name: section
+      label: Section
+      selector: Section
+    -
+      name: content
+      label: Content
+      selector: Content
+    -
+      name: motion
+      label: Motion
+      selector: Motion
+    -
+      name: organization
+      label: Organization
+      selector: Organization
+    -
+      name: meeting
+      label: Meeting
+      selector: Meeting
+    -
+      name: voting_results
+      label: Voting Results
+      selector: VotingResults
+    -
+      name: attachments
+      label: Attachments
+      selector: Attachments
+    -
+      name: previous_decisions
+      label: Previous Decisions
+      selector: PreviousDecisions
+  ids:
+    native_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: decision
+  langcode:
+    plugin: default_value
+    default_value: fi
+  field_decision_native_id: native_id
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_decision_nid
+    source: native_id
+  title:
+    callable: _paatokset_ahjo_api_truncate_value
+    plugin: callback
+    source: title
+  field_full_title: title
+  field_diary_number: case_id
+  field_diary_number_label: case_id_label
+  field_classification_code: classification_code
+  field_classification_title: classification_title
+  field_decision_section: section
+  field_decision_content/format:
+    plugin: default_value
+    default_value: full_html
+  field_decision_content/value: content
+  field_decision_motion/format:
+    plugin: default_value
+    default_value: full_html
+  field_decision_motion/value: motion
+  field_decision_attachments:
+    plugin: callback
+    callable: json_encode
+    source: attachments
+  field_voting_results:
+    plugin: callback
+    callable: json_encode
+    source: voting_results
+  field_decision_previous:
+    plugin: callback
+    callable: json_encode
+    source: previous_decisions
+  field_decision_organization:
+    -
+      plugin: single_value
+      source: organization
+    -
+      plugin: callback
+      callable: json_encode
+  field_decision_meeting:
+    -
+      plugin: single_value
+      source: meeting
+    -
+      plugin: callback
+      callable: json_encode
+  field_decision_attachment_files:
+    plugin: ahjo_entity_generate
+    source: attachments
+    access_check: false
+    source_key: NativeId
+    value_key: field_document_native_id
+    bundle_key: bundle
+    bundle: ahjo_document
+    entity_type: media
+    ignore_case: true
+    values:
+      field_document_native_id: NativeId
+      field_media_ahjo_file: root_json
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }
+

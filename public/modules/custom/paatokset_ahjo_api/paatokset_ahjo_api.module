@@ -91,6 +91,28 @@ function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?string {
 }
 
 /**
+ * Lookup decision nodes by Native ID.
+ *
+ * @param string $native_id
+ *   Native ID.
+ *
+ * @return string|null
+ *   Existing nid, if found.
+ */
+function _paatokset_ahjo_api_lookup_decision_nid(string $native_id): ?string {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'decision')
+    ->condition('field_decision_native_id', $native_id)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return NULL;
+  }
+  return reset($ids);
+}
+
+/**
  * Lookup meeting nodes by meeting ID.
  *
  * @param string $meeting_id

@@ -33,7 +33,12 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'single',
     ];
 
-    if ($base_plugin_definition['id'] === 'ahjo_decisionmakers') {
+    $only_all = [
+      'ahjo_decisionmakers',
+      'ahjo_trustees',
+    ];
+
+    if (in_array($base_plugin_definition['id'], $only_all)) {
       $derivatives = ['all'];
     }
 
@@ -103,6 +108,10 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
         'all' => '/ahjo-proxy/aggregated/cases_all',
         'latest' => '/ahjo-proxy/aggregated/cases_latest',
         'single' => '/ahjo-proxy/cases/single',
+      ],
+      'ahjo_decisions' => [
+        'all' => '/ahjo-proxy/aggregated/decisions_all',
+        'latest' => '/ahjo-proxy/aggregated/decisions_latest',
       ],
       'ahjo_decisionmakers' => [
         'all' => '/ahjo-proxy/aggregated/decisionmakers',
