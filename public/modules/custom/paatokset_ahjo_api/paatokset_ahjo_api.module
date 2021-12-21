@@ -113,6 +113,28 @@ function _paatokset_ahjo_api_lookup_decision_nid(string $native_id): ?string {
 }
 
 /**
+ * Lookup trustee nodes by Agent ID.
+ *
+ * @param string $agent_id
+ *   Agent ID.
+ *
+ * @return string|null
+ *   Existing nid, if found.
+ */
+function _paatokset_ahjo_api_lookup_trustee_nid(string $agent_id): ?string {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'trustee')
+    ->condition('field_trustee_id', $agent_id)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return NULL;
+  }
+  return reset($ids);
+}
+
+/**
  * Lookup meeting nodes by meeting ID.
  *
  * @param string $meeting_id
