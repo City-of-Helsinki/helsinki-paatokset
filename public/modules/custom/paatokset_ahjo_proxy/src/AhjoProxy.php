@@ -560,7 +560,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Items failed: ' . count($results['failed']));
 
     $filename = 'trustees.json';
-    file_save_data(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    file_save_data(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
