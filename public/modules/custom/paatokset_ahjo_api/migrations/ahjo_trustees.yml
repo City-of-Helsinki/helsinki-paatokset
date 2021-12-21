@@ -1,0 +1,87 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_proxy
+id: ahjo_trustees
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+  - ahjo_api_trustees
+migration_group: ahjo_api
+label: 'Ahjo API - Trustees'
+deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
+source:
+  plugin: url
+  track_changes: true
+  data_fetcher_plugin: file
+  data_parser_plugin: json
+  item_selector: trustees
+  fields:
+    -
+      name: name
+      label: Name
+      selector: Name
+    -
+      name: agent_id
+      label: ID
+      selector: ID
+    -
+      name: title
+      label: Title
+      selector: Title
+    -
+      name: council_group
+      label: Council Group
+      selector: CouncilGroup
+    -
+      name: initiatives
+      label: Initiatives
+      selector: Initiatives
+    -
+      name: resolutions
+      label: Resolutions
+      selector: Resolutions
+    -
+      name: chairmanships
+      label: Chairmanships
+      selector: Chairmanships
+  ids:
+    agent_id:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: trustee
+  langcode:
+    plugin: default_value
+    default_value: fi
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_trustee_nid
+    source: agent_id
+  title:
+    plugin: default_value
+    source: name
+    default_value: 'NO TITLE'
+  field_trustee_title: title
+  field_trustee_id: agent_id
+  field_trustee_council_group: council_group
+  field_case_initiatives:
+    plugin: callback
+    callable: json_encode
+    source: initiatives
+  field_case_resolutions:
+    plugin: callback
+    callable: json_encode
+    source: resolutions
+  field_case_chairmanships:
+    plugin: callback
+    callable: json_encode
+    source: chairmanships
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }

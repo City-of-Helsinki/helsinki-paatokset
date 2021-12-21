@@ -116,6 +116,9 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'ahjo_decisionmakers' => [
         'all' => '/ahjo-proxy/aggregated/decisionmakers',
       ],
+      'ahjo_trustees' => [
+        'all' => '/ahjo-proxy/aggregated/trustees',
+      ],
     ];
 
     if (isset($source_urls[$base_plugin_id][$key])) {
