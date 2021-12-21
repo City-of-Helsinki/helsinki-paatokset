@@ -1,0 +1,25 @@
+uuid: 91db5172-6b8c-47eb-b4fc-11dac81bb991
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetmeetingscalendar
+theme: helfi_paatokset
+region: after_content
+weight: -14
+provider: null
+plugin: meetings_calendar
+settings:
+  id: meetings_calendar
+  label: 'Paatokset meetings calendar'
+  provider: paatokset_ahjo
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /kokouskalenteri
+    negate: false
