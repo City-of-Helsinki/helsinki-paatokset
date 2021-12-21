@@ -80,7 +80,22 @@ class AhjoProxyController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   HTTP request.
    * @param string $id
-   *   Meeting ID.
+   *   Case ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for meetings.
+   */
+  public function decisionsSingle(Request $request, string $id): JsonResponse {
+    return new JsonResponse([]);
+  }
+
+  /**
+   * Get data for a single case.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Case ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for meetings.
