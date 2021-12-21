@@ -1,4 +1,4 @@
-uuid: 416a9ed9-7576-4e09-aa8d-9a311fb0ffed
+uuid: 313f4a33-acae-4b17-9701-81e4f5948326
 langcode: fi
 status: true
 dependencies:
@@ -7,17 +7,17 @@ dependencies:
     - paatokset_ahjo
   theme:
     - helfi_paatokset
-id: paatoksetpolicymakercontacts_2
+id: paatoksetpolicymakermembers
 theme: helfi_paatokset
 region: after_content
-weight: -12
+weight: -10
 provider: null
-plugin: policymaker_contacts
+plugin: policymaker_members
 settings:
-  id: policymaker_contacts
-  label: 'Paatokset policymaker contacts'
+  id: policymaker_members
+  label: 'Paatokset policymaker members'
   provider: paatokset_ahjo
-  label_display: visible
+  label_display: '0'
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'

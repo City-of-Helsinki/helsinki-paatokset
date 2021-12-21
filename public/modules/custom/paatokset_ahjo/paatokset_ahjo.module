@@ -40,25 +40,6 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'content/tpr-unit--contact-card',
     ],
-<<<<<<< HEAD
-=======
-    'policymaker_minutes' => [
-      'render element' => 'elements',
-      'template' => 'content/minutes',
-    ],
-    'block__policymaker_calendar' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--policymaker-calendar',
-    ],
-    'block__frontpage_calendar' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--frontpage-calendar',
-    ],
-    'block__policymaker_members' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--policymaker-memebers',
-    ],
->>>>>>> 7a29902 (PP-134: HDRUP-134: started on members block)
   ];
 }
 

@@ -1,0 +1,98 @@
+.policymaker-members {
+  h2 {
+    margin-bottom: 32px;
+  }
+}
+
+.policymaker-members__filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 54px;
+
+  .search-wrapper {
+    width: 100%;
+    margin-bottom: 36px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    height: 56px;
+    padding: 16px;
+  }
+
+  .form-item {
+    width: 48%;
+    margin-bottom: 36px;
+  }
+
+  .form-item--checkbox__item {
+    list-style: none;
+
+    label {
+      display: flex;
+    }
+
+    span {
+      white-space: nowrap;
+    }
+
+    input {
+      width: 24px;
+      height: 24px;
+      margin-right: 12px;
+    }
+  }
+}
+
+.policymaker-members__list {
+  border-top: 2px solid  black;
+
+  .member-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+    padding: 32px 0;
+  }
+
+  .member-info > div {
+    display: flex;
+  }
+
+  .member-image {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    background-color: gray;
+  }
+
+  .member-name {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 29px;
+  }
+
+  .member-role,
+  .member-party {
+    color: $color-black-light;
+    font-size: 18px;
+    line-height: 27px;
+  }
+
+  .member-role {
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: '';
+      height: 4px;
+      width: 4px;
+      border-radius: 50%;
+      background-color: black;
+      display: inline-block;
+      margin: 0 8px;
+    }
+  }
+}
