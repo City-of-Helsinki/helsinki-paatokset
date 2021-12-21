@@ -1,4 +1,4 @@
-uuid: 73f9556c-6b2e-4037-95fc-c0bfb4ea1168
+uuid: 60de3c12-6b19-4969-ba69-c7f626e78e28
 langcode: fi
 status: true
 dependencies:
@@ -12,7 +12,7 @@ type: json_native
 settings: {  }
 module: json_field
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

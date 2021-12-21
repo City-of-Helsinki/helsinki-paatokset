@@ -109,7 +109,7 @@ content:
     type: json_textarea
     region: content
   field_decision_previous:
-    weight: 14
+    weight: 26
     settings:
       rows: 5
       placeholder: ''
