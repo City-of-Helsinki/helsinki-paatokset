@@ -97,7 +97,7 @@ content:
     type: json
     region: content
   field_decision_previous:
-    weight: 113
+    weight: 116
     label: above
     settings: {  }
     third_party_settings: {  }
