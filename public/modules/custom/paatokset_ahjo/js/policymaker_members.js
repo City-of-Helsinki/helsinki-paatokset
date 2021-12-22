@@ -1,6 +1,6 @@
 /**
  * @file
- * meetings_calendar.js
+ * policymaker_members.js
  *
  * Creates vue applcation for the meetings calendar
  */
@@ -10,11 +10,12 @@
   Drupal.behaviors.paatoksetAhjoPolicymakerMembers = {
     attach() {
       const markup = `
-      <div class="policymaker-members container">
+      <div class="policymaker-members">
         <div class="policymaker-members__filters">
           <div class="search-wrapper">
-            <label>Hae valtuutettua</label>
-            <input type="text" v-model="search" placeholder="Syötä valtuutetun nimi"/>
+            <label>{{ searchLabel }}</label>
+            <input type="text" v-model="search" :placeholder="searchPlaceholder"/>
+            <i class="hds-icon hds-icon--search"></i>
           </div>
           <div v-for="(filter, key) in filters" class="form-item">
             <div class="form-item__dropdown">
@@ -23,21 +24,22 @@
                 <option :value="Object.keys(filter)[0]">{{Object.keys(filter)[0]}}</option>
                 <option v-for="value in Object.values(filter)[0]" v-bind:value="value">{{ value }}</option>
               </select>
+              <i class="hds-icon hds-icon--angle-down"></i>
             </div>
           </div>
-          <div class="filters-checkboxes">
+          <div v-if="hasDeputies" class="filters-checkboxes">
               <li v-for="checkbox in checkboxes" class="form-item--checkbox__item">
                 <label :for="Object.keys(checkbox)[0]">
                   <input :checked="active_checkboxes.includes(Object.keys(checkbox)[0])" :id="Object.keys(checkbox)[0]" name="checkbox" type="checkbox" @click="addToActiveCheckbox(Object.keys(checkbox)[0])">
                   <span>{{ Object.values(checkbox)[0] }}</span>
                 </label>
               </li>
-            </div>
+          </div>
         </div>
         <div class="policymaker-members__list">
           <div v-for="member in filteredMembers" class="member-row">
             <div class="member-info">
-              <span class="member-name">{{ member.name }}</span>
+              <span class="member-name">{{ member.first_name }} {{ member.last_name }}</span>
               <div>
                 <span class="member-role">{{ member.role }}</span>
                 <span class="member-party"> {{ member.party }}</span>
@@ -50,13 +52,18 @@
       </div>
       `
 
+      /* TO-DO: change to correct url and remove comment
+      const dataURL = window.location.origin;
+      */
+
       new Vue({
         el: '#policymaker-members-vue',
         template: markup,
         data: {
           members: [
             {
-              'name': 'Aki Hyödynmaa',
+              'first_name': 'Aki',
+              'last_name': 'Hyödynmaa',
               'role': 'Varajäsen',
               'links': [],
               'deputyOf': 'Salla Korhonen',
@@ -64,7 +71,8 @@
               'party' : 'Vasemmisto'
             },
             {
-              'name': 'Antti Vuorela',
+              'first_name': 'Antti',
+              'last_name': 'Vuorela',
               'role': 'Varapuheenjohtaja',
               'links': [],
               'deputyOf': null,
@@ -72,7 +80,8 @@
               'party' : 'Kokoomus'
             },
             {
-              'name': 'Mikko Mallikas',
+              'first_name': 'Mikko',
+              'last_name': 'Mallikas',
               'role': 'Varajäsen',
               'links': [],
               'deputyOf': null,
@@ -80,7 +89,8 @@
               'party' : 'Kokoomus'
             },
             {
-              'name': 'Testi Testinen',
+              'first_name': 'Testi',
+              'last_name': 'Testinen',
               'role': 'Joku rooli',
               'links': [],
               'deputyOf': null,
@@ -88,7 +98,8 @@
               'party' : 'Kokoomus'
             },
             {
-              'name': 'Joku Jokunen',
+              'first_name': 'Joku',
+              'last_name': 'Jokunen',
               'role': 'Varajäsen',
               'links': [],
               'deputyOf': null,
@@ -99,7 +110,7 @@
           isReady: false,
           search: '',
           filters: {
-            party: { 'Kaikki': ['Kokoomus', 'Vasemmisto'], label : 'Rajaa puolueen mukaan' },
+            party: { 'Kaikki': [], label : 'Rajaa puolueen mukaan' },
             order: { 'A-Ö, nimen mukaan': ['A-Ö, puolueen mukaan'], label: 'Lajittelu'}
           },
           active_filters: {
@@ -107,11 +118,32 @@
             order: 'A-Ö, nimen mukaan'
           },
           checkboxes: {
-            deputy_member: { deputy_member: 'Näytä varajäsenet'}
+            deputy_member: { deputy_member: 'Näytä myös varajäsenet'}
           },
           active_checkboxes: [],
         },
         methods: {
+          getJson() {
+            /*
+            Remove comment once dataURL is set
+            const self = this;
+            $.getJSON(dataURL, function(data) {
+              self.members = data;
+
+              const parties = data.map(a => a.party).filter(function (el) {
+                return el != null;
+              });
+              self.filters.party['Kaikki'] = [...new Set(parties)];
+            })
+            .done(function( json ) {
+              self.isReady = true;
+            })*/
+
+            const parties = this.members.map(a => a.party).filter(function (el) {
+              return el != null;
+            });
+            this.filters.party['Kaikki'] = [...new Set(parties)];
+          },
           addToActiveCheckbox(value) {
             let temp_filters = this.active_checkboxes;
             if(!temp_filters.includes(value)) {
@@ -132,21 +164,39 @@
           filteredMembers() {
             let temp_results = this.members;
             temp_results = temp_results.filter(result => {
-              return result.name.toLowerCase().includes(this.search.toLowerCase())
+              return result.first_name.toLowerCase().includes(this.search.toLowerCase()) || result.last_name.toLowerCase().includes(this.search.toLowerCase()) 
             })
 
-            for (var i = 0; i < this.active_checkboxes.length; i++) {
-              if(this.active_checkboxes[i] === 'deputy_member') {
-                temp_results = temp_results.filter(result => result.role === 'Varajäsen')
-              }
+            if(!this.active_checkboxes.includes('deputy_member')) {
+              temp_results = temp_results.filter(result => result.role !== 'Varajäsen');
             }
 
             if(this.active_filters.party !== 'Kaikki') {
               temp_results = temp_results.filter(result => result.party === this.active_filters.party)
             }
 
+            if(this.active_filters.order === 'A-Ö, nimen mukaan') {
+              temp_results = temp_results.sort((a,b) => (a.last_name.toLowerCase().localeCompare(b.last_name.toLowerCase())));
+            }
+
+            if(this.active_filters.order === 'A-Ö, puolueen mukaan') {
+              temp_results = temp_results.sort((a,b) => (a.party.toLowerCase().localeCompare(b.party.toLowerCase())));
+            }
+
             return temp_results;
+          },
+          searchPlaceholder() {
+            return Drupal.t('Syötä valtuutetun nimi');
+          },
+          searchLabel() {
+            return Drupal.t('Hae valtuutettua');
+          },
+          hasDeputies() {
+            return this.members.filter(result => result.role === 'Varajäsen').length > 0;
           }
+        },
+        mounted() {
+          this.getJson();
         }
       });
     }
