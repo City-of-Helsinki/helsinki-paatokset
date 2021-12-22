@@ -6,5 +6,5 @@ policymaker_members:
   js:
     js/policymaker_members.js: { }
   dependencies:
-    - paatokset_ahjo/vue-js
+    - paatokset_policymakers/vue-js
     - core/drupal

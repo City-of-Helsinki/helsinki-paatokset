@@ -6,7 +6,7 @@
 ]
 %}
 
-<div {{ attributes.addClass(classes) }}>
+<div {{ attributes.addClass(classes) }} data-policymaker="{{ policymaker_id }}">
   <h2>{{ content['#title'] }}: {{ policymaker_name }}</h2>
   <div id="policymaker-members-vue"></div>
 </div>

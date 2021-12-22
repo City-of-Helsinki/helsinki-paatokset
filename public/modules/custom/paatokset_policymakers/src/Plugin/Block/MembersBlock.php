@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\paatokset_ahjo\Plugin\Block;
+namespace Drupal\paatokset_policymakers\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 

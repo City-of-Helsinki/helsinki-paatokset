@@ -51,10 +51,8 @@
         </div>
       </div>
       `
-
-      /* TO-DO: change to correct url and remove comment
-      const dataURL = window.location.origin;
-      */
+      const policymakerID = document.querySelector('#block-paatoksetpolicymakermembers').dataset.policymaker;
+      const dataURL = window.location.origin + '/fi/ahjo_api/org_composition/' + policymakerID;
 
       new Vue({
         el: '#policymaker-members-vue',
