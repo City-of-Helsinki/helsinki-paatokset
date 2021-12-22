@@ -34,9 +34,13 @@
                 {{ open_minutes }}
                 <i class="hds-icon hds-icon--angle-right"></i>
               </a>
-            {% elseif row.motions_list_link %}
-              <a href="{{row.motions_list_link}}">{{ open_motions }}</a>
-              <i class="hds-icon hds-icon--angle-right"></i>
+            </td>
+          {% elseif row.motions_list_link %}
+            <td>
+              <a href="{{row.motions_list_link}}">
+                {{ open_motions }}
+                <i class="hds-icon hds-icon--angle-right"></i>
+              </a>
             </td>
           {% endif %}
         </tr>
