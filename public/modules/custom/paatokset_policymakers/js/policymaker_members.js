@@ -7,7 +7,7 @@
 
  (function($, Drupal) {
 
-  Drupal.behaviors.paatoksetAhjoPolicymakerMembers = {
+  Drupal.behaviors.paatoksetPolicymakersPolicymakerMembers = {
     attach() {
       const markup = `
       <div class="policymaker-members">
