@@ -105,7 +105,7 @@
     display: flex;
   }
 
-  .calendar-day--today {
+  .calendar-day__today {
     .meeting-row {
       padding: $spacing;
       background-color: #f7f2e4;
@@ -117,7 +117,7 @@
     }
   }
 
-  .calendar-day--no-meetings {
+  .calendar-day__no-meetings {
     .date-header {
       color: #666666;
       border-color: #666666;

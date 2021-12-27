@@ -23,8 +23,8 @@
               :key="day.date"
               class="calendar-day"
               :class="{
-                'calendar-day--today' : isToday(day.date),
-                'calendar-day--no-meetings' : day.meetings.length === 0
+                'calendar-day__today' : isToday(day.date),
+                'calendar-day__no-meetings' : day.meetings.length === 0
               }"
               >
               <div class="date-header">
