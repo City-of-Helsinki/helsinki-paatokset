@@ -147,7 +147,7 @@ function template_preprocess_paatokset_issue(array &$variables) {
  *   - elements: An array of elements to display in view mode.
  */
 function template_preprocess_block__meetings_calendar(array &$variables) {
-  $meetingService = \Drupal::service('Drupal\paatokset_ahjo_api\Service\MeetingService');
+  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
   $variables['#attached']['library'][] = 'paatokset_ahjo/meetings_calendar';
 

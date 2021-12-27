@@ -12,12 +12,9 @@
       const markup = `
       <div class="meetings-calendar container">
         <div class="calendar-header">
+          <i @click="selectPrevious" class="hds-icon hds-icon--angle-left"></i>
           <h2>{{ selectedMonth }} {{ year }}</h2>
-          <div class="calendar-month-selector">
-            <i @click="selectPrevious" class="hds-icon hds-icon--angle-left"></i>
-            <i class="hds-icon hds-icon--playback-record"></i>
-            <i @click="selectNext" class="hds-icon hds-icon--angle-right"></i>
-          </div>
+          <i @click="selectNext" class="hds-icon hds-icon--angle-right"></i>
         </div>
         <div class="calendar-month">
           <ol class="days-grid">
@@ -27,38 +24,44 @@
               class="calendar-day"
               :class="{
                 'calendar-day--today' : isToday(day.date),
-                'calendar-day--past' : isPast(day.date)
-                }"
+                'calendar-day--no-meetings' : day.meetings.length === 0
+              }"
               >
               <div class="date-header">
                 <span>{{ getDay(day.date) }}.</span>
                 <span>{{ formatDay(day.date) }}.</span>
               </div>
-              <div
+              <template v-if="day.meetings.length > 0">
+                <div
                 v-for="meeting in day.meetings"
                 class="meeting-row"
-              >
-                <div class="meeting-title">{{meeting.title}}</div>
-                <div class="meeting-start-time">{{ meeting.start_time}}</div>
-                <template v-if="meeting.decision_link">
-                  <a :href="meeting.minutes_link">
-                    {{ openDecisions }}
-                    <i class="hds-icon hds-icon--angle-right"></i>
-                  </a>
-                </template>
-                <template v-else-if="meeting.minutes_link && meeting.motions_list_link">
-                  <a :href="meeting.minutes_link">
-                    {{ openMinutes }}
-                    <i class="hds-icon hds-icon--angle-right"></i>
-                  </a>
-                </template>
-                <template v-else>
-                  <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link">
-                    {{ openMotions }}
-                    <i class="hds-icon hds-icon--angle-right"></i>
-                  </a>
-                </template>
-              </div>
+                >
+                  <h5 class="meeting-title">{{meeting.title}}</h5>
+                  <div class="meeting-start-time">{{ meeting.start_time}}</div>
+                  <template v-if="meeting.decision_link">
+                    <a :href="meeting.minutes_link">
+                      {{ openDecisions }}
+                      <i class="hds-icon hds-icon--angle-right"></i>
+                    </a>
+                  </template>
+                  <template v-else-if="meeting.minutes_link && meeting.motions_list_link">
+                    <a :href="meeting.minutes_link">
+                      {{ openMinutes }}
+                      <i class="hds-icon hds-icon--angle-right"></i>
+                    </a>
+                  </template>
+                  <template v-else>
+                    <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link">
+                      {{ openMotions }}
+                      <i class="hds-icon hds-icon--angle-right"></i>
+                    </a>
+                  </template>
+                </div>
+              </template>
+              <template v-else>
+                <div class="no-meetings meeting-title">{{ Drupal.t('Ei kokouksia')}}</div>
+              </template>
+              
             </li>
           </ol>
         </div>
