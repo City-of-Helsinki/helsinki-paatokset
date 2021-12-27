@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetminutesofdiscussionblock
 theme: helfi_paatokset
 region: after_content
-weight: 0
+weight: -7
 provider: null
 plugin: paatokset_minutes_of_discussion
 settings:

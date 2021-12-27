@@ -1,0 +1,10 @@
+vue-js: 
+  js: 
+    https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js: {type: external, minified: true}
+
+policymaker_members:
+  js:
+    js/policymaker_members.js: { }
+  dependencies:
+    - paatokset_policymakers/vue-js
+    - core/drupal

@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetfrontpagecalendar
 theme: helfi_paatokset
 region: after_content
-weight: 0
+weight: -8
 provider: null
 plugin: frontpage_calendar
 settings:
