@@ -14,10 +14,10 @@
       {% for card in cards %}
         {% for values in card %}
           <a class="policymaker-card" href="{{ values.link }}">
-            <div class="policymaker-card__color-title {{ values.organization_type|lower }}">{{values.title}}</div>
+            <div class="policymaker-card__color-title {{ values.organization_type|lower }}">{{ values.title|t }}</div>
             <div class="policymaker-card__image"></div>
             <div class="policymaker-card__title-icon">
-              <h4>{{ values.title }}</h4>
+              <h4>{{ values.title|t }}</h4>
               <i class="hds-icon hds-icon--arrow-right"></i>
             </div>
           </a>
@@ -39,7 +39,7 @@
           {% for row in values %}
           <a href="{{ row.link }}" class="policymaker-row__link">
             <div class="policymaker-row__color {{ row.organization_type|lower|replace({'ö':'o'}) }}"></div>
-            <span class="policymaker-row__title" >{{ row.title }}</span>
+            <span class="policymaker-row__title" >{{ row.title|t }}</span>
             <i class="hds-icon hds-icon--arrow-right"></i>
           </a>
         {% endfor %}
