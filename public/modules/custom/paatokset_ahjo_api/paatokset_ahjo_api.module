@@ -93,6 +93,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'title' => $node->getTitle(),
       'link' => \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options),
       'organization_type' => $node->get('field_organization_type')->value,
+      'image' => $node->get('field_policymaker_image')->view('default'),
     ];
   }
 

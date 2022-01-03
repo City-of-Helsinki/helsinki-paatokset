@@ -66,15 +66,23 @@
   }
 
   .policymaker-card {
-    width: 50%;
     text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 16px;
 
-    &:first-of-type {
-      padding-right: 8px;
-    }
+    @include breakpoint($breakpoint-s) {
+      width: 50%;
+      padding-bottom: 0;
 
-    &:last-of-type {
-      padding-left: 8px;
+      &:first-of-type {
+        padding-right: 8px;
+      }
+
+      &:last-of-type {
+        padding-left: 8px;
+      }
     }
 
     &:hover {
@@ -110,18 +118,6 @@
     min-width: 30px;
     min-height: 30px;
     transition: all 0.2s ease-in-out;
-  }
-
-  .policymaker-card__image {
-    height: 200px;
-
-    @include breakpoint($breakpoint-s) {
-      height: 225px;
-    }
-
-    @include breakpoint($breakpoint-m) {
-      height: 300px;
-    }
   }
 }
 

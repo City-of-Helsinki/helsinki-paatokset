@@ -15,7 +15,9 @@
         {% for values in card %}
           <a class="policymaker-card" href="{{ values.link }}">
             <div class="policymaker-card__color-title {{ values.organization_type|lower }}">{{ values.title|t }}</div>
-            <div class="policymaker-card__image"></div>
+            <div class="policymaker-card__image">
+              {{values.image}}
+            </div>
             <div class="policymaker-card__title-icon">
               <h4>{{ values.title|t }}</h4>
               <i class="hds-icon hds-icon--arrow-right"></i>
