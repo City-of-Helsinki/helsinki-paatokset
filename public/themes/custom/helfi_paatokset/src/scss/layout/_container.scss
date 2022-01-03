@@ -11,7 +11,7 @@
   padding-top: 0;
   transition: padding 150ms linear;
 
-  max-width: 100%;;
+  max-width: 100%;
 
   @include breakpoint($breakpoint-xs) {
     max-width: $container-width-xs;

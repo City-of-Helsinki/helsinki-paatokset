@@ -40,6 +40,10 @@ function paatokset_ahjo_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'content/tpr-unit--contact-card',
     ],
+    'block__meetings_calendar' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--meetings-calendar',
+    ],
   ];
 }
 
@@ -131,6 +135,44 @@ function template_preprocess_paatokset_issue(array &$variables) {
       $variables[$key] = $data[$key];
     }
   }
+}
+
+/**
+ * Prepares variables for paatokset_ahjo templates.
+ *
+ * Default template: block--meetings-calendar.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_block__meetings_calendar(array &$variables) {
+  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+
+  $variables['#attached']['library'][] = 'paatokset_ahjo/meetings_calendar';
+
+  $params = [
+    'from' => date("Y-m-d"),
+  ];
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__meetings_calendar'])) {
+    $variables['entity'] = $variables['elements']['#block__meetings_calendar'];
+  }
+
+  $all_meetings = array_merge(...array_values($meetingService->query($params)));
+
+  if (count($all_meetings) > 8) {
+    $all_meetings = array_slice($all_meetings, 0, 8);
+  }
+
+  $variables['open_motions'] = t('Open motions');
+  $variables['open_minutes'] = t('Open minutes');
+  $variables['open_meeting_calendar'] = t('Open meeting calendar');
+  $variables['meetings'] = $all_meetings;
 }
 
 /**
