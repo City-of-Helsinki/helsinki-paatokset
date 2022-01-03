@@ -1,0 +1,25 @@
+uuid: ec5a2d57-a7e1-4839-996b-a6e17bf0accc
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetpolicymakerlisting
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: policymaker_listing
+settings:
+  id: policymaker_listing
+  label: 'Paatokset policymaker listing'
+  provider: paatokset_ahjo_api
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /paattajat
+    negate: false
