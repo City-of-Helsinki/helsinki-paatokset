@@ -16,10 +16,10 @@ plugin: paatokset_helsinki_kanava_announcements
 settings:
   id: paatokset_helsinki_kanava_announcements
   label: 'Helsinki Kanava announcements'
-  provider: paatokset_helsinki_kanava
   label_display: visible
+  provider: paatokset_helsinki_kanava
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
     negate: false
+    pages: '<front>'

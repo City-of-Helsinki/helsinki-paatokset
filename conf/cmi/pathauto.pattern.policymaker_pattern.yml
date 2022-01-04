@@ -12,20 +12,20 @@ pattern: 'paattajat/[node:title]'
 selection_criteria:
   c774b07d-5721-47af-a03a-13dfc9c7a273:
     id: node_type
-    bundles:
-      policymaker: policymaker
     negate: false
+    uuid: c774b07d-5721-47af-a03a-13dfc9c7a273
     context_mapping:
       node: node
-    uuid: c774b07d-5721-47af-a03a-13dfc9c7a273
+    bundles:
+      policymaker: policymaker
   4ac25b42-154b-4024-9b5a-8ab45adf3044:
     id: language
-    langcodes:
-      fi: fi
     negate: false
+    uuid: 4ac25b42-154b-4024-9b5a-8ab45adf3044
     context_mapping:
       language: 'node:langcode:language'
-    uuid: 4ac25b42-154b-4024-9b5a-8ab45adf3044
+    langcodes:
+      fi: fi
 selection_logic: and
 weight: -10
 relationships:

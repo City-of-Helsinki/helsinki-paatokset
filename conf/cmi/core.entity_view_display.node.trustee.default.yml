@@ -49,7 +49,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 4
     region: content
   field_trustee_council_group:
     weight: 2
@@ -57,7 +57,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_trustee_datapumppu_id:
     weight: 11
@@ -101,11 +101,11 @@ content:
     type: image
     region: content
   field_trustee_initiatives:
-    weight: 3
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 2
     region: content
   field_trustee_phone:
     weight: 9
@@ -124,25 +124,25 @@ content:
     type: string
     region: content
   field_trustee_resolutions:
-    weight: 4
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 3
     region: content
   field_trustee_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   links:
-    weight: 6
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
   field_trustee_id: true
   langcode: true

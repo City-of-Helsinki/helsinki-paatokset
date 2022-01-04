@@ -2,13 +2,13 @@ uuid: 07767065-3239-4bac-8859-120fd659a224
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - paatokset_news_importer
   module:
     - file
     - image
     - node
+  enforced:
+    module:
+      - paatokset_news_importer
 _core:
   default_config_hash: G77bKrN0GPW84P4O29nUDfRT3-vGpmb66DcykASSADg
 id: node.field_image
@@ -16,6 +16,9 @@ field_name: field_image
 entity_type: node
 type: image
 settings:
+  target_type: file
+  display_field: false
+  display_default: false
   uri_scheme: public
   default_image:
     uuid: ''
@@ -23,9 +26,6 @@ settings:
     title: ''
     width: null
     height: null
-  target_type: file
-  display_field: false
-  display_default: false
 module: image
 locked: false
 cardinality: 1

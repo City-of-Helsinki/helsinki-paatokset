@@ -15,10 +15,10 @@ plugin: page_title_block
 settings:
   id: page_title_block
   label: 'Sivun otsikko'
-  provider: core
   label_display: '0'
+  provider: core
 visibility:
   request_path:
     id: request_path
-    pages: "/paattajat/*/asiakirjat/*\r\n/paatokset-issue/*"
     negate: true
+    pages: "/paattajat/*/asiakirjat/*\r\n/paatokset-issue/*"

@@ -10,15 +10,15 @@ bundle: tpr_unit
 mode: default
 content:
   service_map_embed:
-    label: hidden
     type: service_map_embed
-    weight: 0
-    region: content
+    label: hidden
     settings:
       iframe_title: 'Service map'
       link_title: 'View larger map'
       target: true
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   accessibility_email: true
   accessibility_phone: true

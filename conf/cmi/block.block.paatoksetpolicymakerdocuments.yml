@@ -16,10 +16,10 @@ plugin: agendas_submenu_documents
 settings:
   id: agendas_submenu_documents
   label: 'Paatokset policymaker documents'
-  provider: paatokset_submenus
   label_display: visible
+  provider: paatokset_submenus
 visibility:
   request_path:
     id: request_path
-    pages: '/paattajat/*/asiakirjat'
     negate: false
+    pages: '/paattajat/*/asiakirjat'

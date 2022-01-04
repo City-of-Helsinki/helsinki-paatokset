@@ -4,18 +4,18 @@ status: true
 dependencies:
   module:
     - node
-id: tpr_content
 label: TPR/content
+id: tpr_content
 description: ''
 matchers:
   8ffea69f-853b-42d7-8171-80fbcb5a813c:
-    uuid: 8ffea69f-853b-42d7-8171-80fbcb5a813c
     id: 'entity:node'
-    weight: 0
+    uuid: 8ffea69f-853b-42d7-8171-80fbcb5a813c
     settings:
-      include_unpublished: false
       metadata: ''
       bundles: {  }
       group_by_bundle: false
       substitution_type: canonical
       limit: 20
+      include_unpublished: false
+    weight: 0

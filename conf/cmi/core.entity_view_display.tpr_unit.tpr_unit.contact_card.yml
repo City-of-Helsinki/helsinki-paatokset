@@ -15,45 +15,45 @@ mode: contact_card
 content:
   address:
     type: address_default
-    weight: 1
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   email:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 4
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   name:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   phone:
     type: telephone_link
-    weight: 3
-    region: content
     label: hidden
     settings:
       title: ''
     third_party_settings: {  }
-  service_map_embed:
-    label: hidden
-    type: service_map_embed
-    weight: 2
+    weight: 3
     region: content
+  service_map_embed:
+    type: service_map_embed
+    label: hidden
     settings:
       iframe_title: 'Service map'
       link_title: 'Katso suurempi kartta'
       target: true
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   accessibility_email: true
   accessibility_phone: true

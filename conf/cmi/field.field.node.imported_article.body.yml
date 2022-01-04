@@ -5,11 +5,11 @@ dependencies:
   config:
     - field.storage.node.body
     - node.type.imported_article
+  module:
+    - text
   enforced:
     module:
       - paatokset_news_importer
-  module:
-    - text
 _core:
   default_config_hash: 3L3kAZFwb6EGlYvgfTxfsfSqSOWbNnATbD9_PHmHbVM
 id: node.imported_article.body

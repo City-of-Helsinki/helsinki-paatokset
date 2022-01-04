@@ -1,7 +1,16 @@
 uuid: 81cd258a-8e4e-4a01-869a-c329952a4773
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
+  module:
+    - eu_cookie_compliance
+    - filter
+    - helfi_api_base
+    - helfi_tpr
+    - media
+    - system
 _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
 id: authenticated
@@ -15,7 +24,6 @@ permissions:
   - 'display eu cookie compliance popup'
   - 'use text format full_html'
   - 'use text format full_html'
-  - 'use text format minimal'
   - 'view media'
   - 'view media'
   - 'view remote entities'

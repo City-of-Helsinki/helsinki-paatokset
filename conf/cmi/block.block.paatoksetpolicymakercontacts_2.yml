@@ -16,13 +16,13 @@ plugin: policymaker_contacts
 settings:
   id: policymaker_contacts
   label: 'Paatokset policymaker contacts'
-  provider: paatokset_ahjo
   label_display: visible
+  provider: paatokset_ahjo
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles:
-      policymaker: policymaker
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles:
+      policymaker: policymaker

@@ -2,12 +2,12 @@ uuid: 900177b7-ca4a-4589-8281-15136be514a8
 langcode: fi
 status: true
 dependencies:
-  enforced:
-    module:
-      - paatokset_news_importer
   module:
     - menu_ui
     - scheduler
+  enforced:
+    module:
+      - paatokset_news_importer
 third_party_settings:
   menu_ui:
     available_menus:

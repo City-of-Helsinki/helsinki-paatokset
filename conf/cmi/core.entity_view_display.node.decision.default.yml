@@ -29,123 +29,123 @@ bundle: decision
 mode: default
 content:
   field_classification_code:
-    weight: 108
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 108
     region: content
   field_classification_title:
-    weight: 109
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 109
     region: content
   field_decision_attachment_files:
     type: entity_reference_entity_view
-    weight: 115
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: 115
     region: content
   field_decision_attachments:
-    weight: 114
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 114
     region: content
   field_decision_content:
-    weight: 106
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 106
     region: content
   field_decision_meeting:
-    weight: 111
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 111
     region: content
   field_decision_motion:
-    weight: 107
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 107
     region: content
   field_decision_native_id:
-    weight: 101
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 101
     region: content
   field_decision_organization:
-    weight: 110
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 110
     region: content
   field_decision_previous:
-    weight: 116
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 116
     region: content
   field_decision_section:
-    weight: 104
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 104
     region: content
   field_diary_number:
-    weight: 103
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 103
     region: content
   field_diary_number_label:
-    weight: 105
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 105
     region: content
   field_full_title:
-    weight: 102
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 102
     region: content
   field_voting_results:
-    weight: 112
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 112
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
 hidden:
   langcode: true

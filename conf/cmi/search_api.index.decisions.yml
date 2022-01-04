@@ -2,11 +2,11 @@ uuid: 54f52d06-1ff0-4fe9-8116-22bd27259248
 langcode: fi
 status: true
 dependencies:
+  config:
+    - search_api.server.elasticsearch
   module:
     - paatokset_ahjo
     - search_api
-  config:
-    - search_api.server.elasticsearch
 id: decisions
 name: Decisions
 description: ''
@@ -116,7 +116,7 @@ tracker_settings:
   default:
     indexing_order: fifo
 options:
-  index_directly: true
   cron_limit: 50
+  index_directly: true
   track_changes_in_references: true
 server: elasticsearch

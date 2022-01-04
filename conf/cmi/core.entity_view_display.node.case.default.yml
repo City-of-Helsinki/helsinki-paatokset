@@ -25,98 +25,98 @@ bundle: case
 mode: default
 content:
   field_acquired:
-    weight: 105
+    type: datetime_default
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: medium
     third_party_settings: {  }
-    type: datetime_default
+    weight: 105
     region: content
   field_case_handlings:
-    weight: 115
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 115
     region: content
   field_case_record_files:
     type: entity_reference_entity_view
-    weight: 117
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: 117
     region: content
   field_case_records:
-    weight: 116
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 116
     region: content
   field_classification_code:
-    weight: 107
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 107
     region: content
   field_classification_title:
-    weight: 108
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 108
     region: content
   field_created:
-    weight: 104
+    type: datetime_default
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: medium
     third_party_settings: {  }
-    type: datetime_default
+    weight: 104
     region: content
   field_diary_number:
-    weight: 101
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 101
     region: content
   field_diary_number_label:
-    weight: 102
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 102
     region: content
   field_full_title:
-    weight: 114
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 114
     region: content
   field_status:
-    weight: 110
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 110
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
 hidden:
   langcode: true

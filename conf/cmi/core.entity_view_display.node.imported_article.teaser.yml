@@ -7,12 +7,12 @@ dependencies:
     - field.field.node.imported_article.body
     - field.field.node.imported_article.field_image
     - node.type.imported_article
-  enforced:
-    module:
-      - paatokset_news_importer
   module:
     - text
     - user
+  enforced:
+    module:
+      - paatokset_news_importer
 _core:
   default_config_hash: NirpcNFGmb_SGgnvImAbjF-a6ydXh0vnVqSYkN985mE
 id: node.imported_article.teaser
@@ -21,17 +21,17 @@ bundle: imported_article
 mode: teaser
 content:
   body:
-    label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 101
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
 hidden:
   field_image: true

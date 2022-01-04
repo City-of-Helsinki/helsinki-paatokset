@@ -14,20 +14,20 @@ bundle: minutes_of_the_discussion
 mode: default
 content:
   field_document:
-    weight: 2
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 2
     region: content
   field_meetings_reference:
-    weight: 1
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
 hidden:
   created: true

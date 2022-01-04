@@ -16,10 +16,10 @@ plugin: meetings_calendar
 settings:
   id: meetings_calendar
   label: 'Paatokset meetings calendar'
-  provider: paatokset_ahjo
   label_display: '0'
+  provider: paatokset_ahjo
 visibility:
   request_path:
     id: request_path
-    pages: /kokouskalenteri
     negate: false
+    pages: /kokouskalenteri
