@@ -538,7 +538,8 @@ class PolicymakerService {
     $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
 
     $dateLong = date('d.m.Y', $meeting_timestamp);
-    $dateShort = date('m/Y', $meeting_timestamp);
+    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
+    $meetingYear = date('Y', $meeting_timestamp);
     $policymaker_title = $this->policymaker->get('title')->value;
     $agendaItems = NULL;
     $publishDate = NULL;
@@ -565,7 +566,7 @@ class PolicymakerService {
         $publishDate = date('d.m.Y', $document_timestamp);
       }
       else {
-        $publishDate = FALSE;
+        $publishDate = NULL;
       }
 
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
@@ -575,6 +576,7 @@ class PolicymakerService {
     foreach ($meeting->get('field_meeting_agenda') as $item) {
 
       $data = json_decode($item->value, TRUE);
+
       if (!$data) {
         continue;
       }
@@ -592,9 +594,16 @@ class PolicymakerService {
         $agenda_link = NULL;
       }
 
+      if (!empty($data['Section'])) {
+        $index = $data['AgendaPoint'] . '. ' . $data['Section'];
+      }
+      else {
+        $index = $data['AgendaPoint'];
+      }
+
       $agendaItems[] = [
         'subject' => $data['AgendaItem'],
-        'index' => $data['AgendaPoint'],
+        'index' => $index,
         'link' => $agenda_link,
       ];
     }
@@ -603,7 +612,7 @@ class PolicymakerService {
       'meeting' => [
         'page_title' => $pageTitle,
         'date_long' => $dateLong,
-        'title' => "$policymaker_title $dateShort",
+        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
       ],
       'list' => $agendaItems,
       'file' => [
