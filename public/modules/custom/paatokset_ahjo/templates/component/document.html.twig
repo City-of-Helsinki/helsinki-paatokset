@@ -29,12 +29,4 @@
       {% endif %}
     </a>
   </div>
-  {% if document.origin_url %}
-    <div class="paatokset_download-link-container">
-      <a class="paatokset__link-plain" href="{{ document.origin_url }}" download>
-        {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
-        {{ 'Lataa tulostettava versio (PDF)'|trans }}
-      </a>
-    </div>
-  {% endif %}
 </div>
