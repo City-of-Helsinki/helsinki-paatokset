@@ -1,0 +1,181 @@
+.policymaker-listing {
+  @include breakout();
+  background-color: #f7f7f8;
+
+  .container {
+    padding: 65px 0;
+  }
+
+  h2 {
+    margin-bottom: 50px;
+  }
+
+  .accordion-item__header {
+    .handorgel__header__button {
+      color: black;
+      border: none;
+      border-top: 2px solid $color-black-20;
+      background-color: #f7f7f8;
+      padding: 32px 32px 32px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .icon {
+      min-width: 30px;
+      min-height: 30px;
+      width: 30px;
+      height: 30px;
+      transition: all 0.1s ease-in-out;
+    }
+    
+  }
+
+  .handorgel__header--open {
+    .icon {
+      transform: rotate(180deg)
+    }
+  }
+
+  .handorgel__content {
+    background-color: #f7f7f8;
+    border: none;
+  }
+
+  .accordion-item__content__inner {
+    padding: 0;
+  }
+
+  .accordion__wrapper.handorgel {
+    border: none;
+  }
+
+  .accordion-item__button--close {
+    display: flex;
+    justify-content: right;
+    padding: 24px;
+    cursor: pointer;
+  }
+}
+
+.policymaker-card__container {
+  margin-bottom: 72px;
+
+  @include breakpoint($breakpoint-s) {
+    display: flex;
+  }
+
+  .policymaker-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 16px;
+
+    @include breakpoint($breakpoint-s) {
+      width: 50%;
+      padding-bottom: 0;
+
+      &:first-of-type {
+        padding-right: 8px;
+      }
+
+      &:last-of-type {
+        padding-left: 8px;
+      }
+    }
+
+    &:hover {
+      .hds-icon {
+        transform: translate(10px);
+      }
+    }
+  }
+
+  .policymaker-card__color-title {
+    text-align: center;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    padding: 4px 0;
+
+    &.valtuusto {
+      background-color: $council-green;
+    }
+
+    &.hallitus {
+      background-color: $board-grey;
+    }
+  }
+
+  .policymaker-card__title-icon {
+    padding: 25px;
+    background-color: $color-white;
+  }
+
+  .hds-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.policymaker-row__link {
+  padding: 36px;
+  display: flex;
+  justify-content: space-between;
+  background-color: $color-white;
+  margin-bottom: 16px;
+  position: relative;
+  text-decoration: none;
+
+  &:hover {
+    .hds-icon {
+      transform: translate(10px);
+    }
+  }
+
+
+  .hds-icon {
+    min-width: 30px;
+    min-height: 30px;
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .policymaker-row__color {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 16px;
+    background-color: red;
+    
+    &.council, &.hallitus, &.valtuusto {
+      background-color: $council-green;
+    }
+  
+    &.board-division, &.board, &.jaosto, &.lautakunta {
+      background-color: $board-grey;
+    }
+  
+    &.traffic {
+      background-color: $traffic-yellow;
+    }
+  
+    &.committee, &.toimi--neuvottelukunta, &.toimikunta {
+      background-color: $committee-blue;
+    }
+  
+    &.trustee, &.luottamushenkilo, &.viranhaltija {
+      background-color: $trustee-pink;
+    }
+  }
+  
+  .policymaker-row__title {
+    font-size: 24px;
+  }
+}
