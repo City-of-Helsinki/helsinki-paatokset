@@ -16,10 +16,10 @@ plugin: paatokset_minutes_of_discussion
 settings:
   id: paatokset_minutes_of_discussion
   label: 'Paatokset minutes of discussion block'
-  provider: paatokset_submenus
   label_display: visible
+  provider: paatokset_submenus
 visibility:
   request_path:
     id: request_path
-    pages: '/paattajat/*/keskustelupöytäkirjat'
     negate: false
+    pages: '/paattajat/*/keskustelupöytäkirjat'

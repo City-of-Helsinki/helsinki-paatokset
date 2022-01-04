@@ -1,0 +1,17 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - toolbar
+    - view_unpublished
+id: read_only
+label: 'Vain luku'
+weight: 4
+is_admin: null
+permissions:
+  - 'access toolbar'
+  - 'view any unpublished landing_page content'
+  - 'view any unpublished page content'
+  - 'view unpublished paragraphs'

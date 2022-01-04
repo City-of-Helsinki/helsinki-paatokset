@@ -19,21 +19,21 @@ bundle: image
 mode: image_with_caption
 content:
   field_caption:
-    weight: 1
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_media_image:
-    label: hidden
-    weight: 0
-    settings:
-      image_style: large
-      image_link: ''
-    third_party_settings: {  }
     type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: large
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true

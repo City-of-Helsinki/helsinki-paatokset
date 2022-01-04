@@ -6,12 +6,12 @@ dependencies:
     - field.field.node.imported_article.body
     - field.field.node.imported_article.field_image
     - node.type.imported_article
-  enforced:
-    module:
-      - paatokset_news_importer
   module:
     - text
     - user
+  enforced:
+    module:
+      - paatokset_news_importer
 _core:
   default_config_hash: A4sceLgPjOPsvAE06zxeJCG3fd0xjMkYLmxl4Ak-9n4
 id: node.imported_article.default
@@ -20,11 +20,11 @@ bundle: imported_article
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 101
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 101
     region: content
   links:
     weight: 100

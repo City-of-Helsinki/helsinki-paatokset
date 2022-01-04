@@ -16,10 +16,10 @@ plugin: agendas_submenu
 settings:
   id: agendas_submenu
   label: 'Agendas Submenu'
-  provider: paatokset_submenus
   label_display: visible
+  provider: paatokset_submenus
 visibility:
   request_path:
     id: request_path
-    pages: '/paattajat/*/paatokset'
     negate: false
+    pages: '/paattajat/*/paatokset'

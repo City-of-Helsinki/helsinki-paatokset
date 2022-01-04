@@ -1,7 +1,37 @@
 uuid: c6f92aee-6783-467b-a9df-47c65052cd28
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.ahjo_document
+    - media.type.declaration_of_affiliation
+    - media.type.file
+    - media.type.image
+    - media.type.minutes_of_the_discussion
+    - media.type.policymaker_images
+    - media.type.remote_video
+    - media.type.soundcloud
+    - node.type.article
+    - node.type.imported_article
+    - node.type.landing_page
+    - node.type.page
+    - node.type.policymaker
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.pdf_categories
+  module:
+    - content_translation
+    - file
+    - helfi_api_base
+    - media
+    - node
+    - paragraphs
+    - paragraphs_library
+    - path
+    - scheduler
+    - system
+    - taxonomy
+    - toolbar
+    - view_unpublished
 _core:
   default_config_hash: XhNzDGDspXeMyW4TAki8MB6z-vzBwmtP_efemgX6-HI
 id: content_producer
@@ -112,6 +142,8 @@ permissions:
   - 'update media'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view any unpublished landing_page content'
+  - 'view any unpublished page content'
   - 'view article revisions'
   - 'view imported_article revisions'
   - 'view landing_page revisions'

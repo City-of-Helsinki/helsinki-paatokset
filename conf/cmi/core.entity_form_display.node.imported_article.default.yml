@@ -7,14 +7,14 @@ dependencies:
     - field.field.node.imported_article.field_image
     - image.style.thumbnail
     - node.type.imported_article
-  enforced:
-    module:
-      - paatokset_news_importer
   module:
     - image
     - path
     - scheduler
     - text
+  enforced:
+    module:
+      - paatokset_news_importer
 _core:
   default_config_hash: 3X3P2CLtvszPB84oy7EeY3Zm9E4ymt1lwju6-um9Ock
 id: node.imported_article.default
@@ -61,10 +61,10 @@ content:
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 15
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
@@ -74,17 +74,17 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 120
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 16
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -97,12 +97,12 @@ content:
   uid:
     type: entity_reference_autocomplete
     weight: 5
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
@@ -112,8 +112,8 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   field_image: true

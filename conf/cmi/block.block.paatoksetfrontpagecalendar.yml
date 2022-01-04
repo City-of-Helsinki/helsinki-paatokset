@@ -16,10 +16,10 @@ plugin: frontpage_calendar
 settings:
   id: frontpage_calendar
   label: 'Paatokset frontpage calendar'
-  provider: paatokset_ahjo
   label_display: '0'
+  provider: paatokset_ahjo
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
     negate: false
+    pages: '<front>'

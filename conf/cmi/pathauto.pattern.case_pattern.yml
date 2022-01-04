@@ -12,20 +12,20 @@ pattern: 'asia/[node:field_diary_number]'
 selection_criteria:
   ceb55a5f-a2be-4c20-984c-8ea719ac80b0:
     id: node_type
-    bundles:
-      case: case
     negate: false
+    uuid: ceb55a5f-a2be-4c20-984c-8ea719ac80b0
     context_mapping:
       node: node
-    uuid: ceb55a5f-a2be-4c20-984c-8ea719ac80b0
+    bundles:
+      case: case
   586667fc-3e16-45e3-9b7d-74ad97f8a3b6:
     id: language
-    langcodes:
-      fi: fi
     negate: false
+    uuid: 586667fc-3e16-45e3-9b7d-74ad97f8a3b6
     context_mapping:
       language: 'node:langcode:language'
-    uuid: 586667fc-3e16-45e3-9b7d-74ad97f8a3b6
+    langcodes:
+      fi: fi
 selection_logic: and
 weight: -10
 relationships:

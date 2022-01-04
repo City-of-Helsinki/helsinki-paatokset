@@ -35,171 +35,171 @@ bundle: meeting
 mode: default
 content:
   field_meeting_agenda:
-    weight: 14
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 14
     region: content
   field_meeting_agenda_files:
     type: entity_reference_entity_view
-    weight: 21
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: 21
     region: content
   field_meeting_agenda_published:
-    weight: 5
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 5
     region: content
   field_meeting_attachment_info:
-    weight: 8
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 8
     region: content
   field_meeting_composition:
-    weight: 16
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 16
     region: content
   field_meeting_date:
-    weight: 1
+    type: datetime_default
     label: above
     settings:
       timezone_override: ''
       format_type: long
     third_party_settings: {  }
-    type: datetime_default
+    weight: 1
     region: content
   field_meeting_decision:
-    weight: 13
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 13
     region: content
   field_meeting_dm:
-    weight: 9
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 9
     region: content
   field_meeting_dm_id:
-    weight: 10
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 10
     region: content
   field_meeting_document_files:
     type: entity_reference_entity_view
-    weight: 20
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: 20
     region: content
   field_meeting_documents:
-    weight: 19
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 19
     region: content
   field_meeting_id:
-    weight: 4
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 4
     region: content
   field_meeting_location:
-    weight: 2
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   field_meeting_minutes_published:
-    weight: 6
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 6
     region: content
   field_meeting_next:
-    weight: 17
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 17
     region: content
   field_meeting_next_id:
-    weight: 11
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 11
     region: content
   field_meeting_prev:
-    weight: 18
+    type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 18
     region: content
   field_meeting_prev_id:
-    weight: 12
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 12
     region: content
   field_meeting_sequence_number:
-    weight: 7
+    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 7
     region: content
   field_meeting_status:
-    weight: 3
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   langcode: true
   search_api_excerpt: true

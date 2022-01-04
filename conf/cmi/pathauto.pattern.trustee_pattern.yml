@@ -12,20 +12,20 @@ pattern: 'paattajat/[node:field_trustee_id]'
 selection_criteria:
   af202feb-3cf2-425e-9120-0b058ba941a1:
     id: node_type
-    bundles:
-      trustee: trustee
     negate: false
+    uuid: af202feb-3cf2-425e-9120-0b058ba941a1
     context_mapping:
       node: node
-    uuid: af202feb-3cf2-425e-9120-0b058ba941a1
+    bundles:
+      trustee: trustee
   c6cdaa31-a732-4c65-9488-8c7482e89599:
     id: language
-    langcodes:
-      fi: fi
     negate: false
+    uuid: c6cdaa31-a732-4c65-9488-8c7482e89599
     context_mapping:
       language: 'node:langcode:language'
-    uuid: c6cdaa31-a732-4c65-9488-8c7482e89599
+    langcodes:
+      fi: fi
 selection_logic: and
 weight: -10
 relationships:

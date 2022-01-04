@@ -16,10 +16,10 @@ plugin: policymaker_side_nav
 settings:
   id: policymaker_side_nav
   label: 'Policymaker side navigation'
-  provider: paatokset_submenus
   label_display: visible
+  provider: paatokset_submenus
 visibility:
   request_path:
     id: request_path
-    pages: '/paattajat/*'
     negate: false
+    pages: '/paattajat/*'

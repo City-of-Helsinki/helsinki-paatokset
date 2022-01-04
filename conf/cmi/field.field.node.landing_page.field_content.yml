@@ -27,13 +27,13 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       columns: columns
       banner: banner
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
       content_cards: content_cards
+    negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -22
@@ -42,14 +42,14 @@ settings:
         weight: -21
         enabled: false
       banner:
-        enabled: true
         weight: -26
+        enabled: true
       columns:
-        enabled: true
         weight: -27
-      content_cards:
         enabled: true
+      content_cards:
         weight: -23
+        enabled: true
       gallery:
         weight: -20
         enabled: false
@@ -63,11 +63,11 @@ settings:
         weight: -17
         enabled: false
       liftup_with_image:
-        enabled: true
         weight: -24
-      list_of_links:
         enabled: true
+      list_of_links:
         weight: -25
+        enabled: true
       list_of_links_item:
         weight: -16
         enabled: false

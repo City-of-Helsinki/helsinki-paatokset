@@ -16,98 +16,12 @@ base_table: tpr_unit_field_data
 base_field: id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access remote entities overview'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: full
-        options:
-          items_per_page: 50
-          offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            id: id
-            name: name
-            changed: changed
-          info:
-            id:
-              sortable: false
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: changed
-          empty_table: false
-      row:
-        type: fields
+      title: 'TPR unit list'
       fields:
         tpr_unit_bulk_form:
           id: tpr_unit_bulk_form
@@ -116,6 +30,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: tpr_unit
+          plugin_id: bulk_form
           label: 'Bulk update'
           exclude: false
           alter:
@@ -160,8 +76,6 @@ display:
           action_title: Action
           include_exclude: exclude
           selected_actions: {  }
-          entity_type: tpr_unit
-          plugin_id: bulk_form
         id:
           id: id
           table: tpr_unit_field_data
@@ -169,6 +83,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: tpr_unit
+          entity_field: id
+          plugin_id: field
           label: ID
           exclude: false
           alter:
@@ -224,19 +141,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: tpr_unit
-          entity_field: id
-          plugin_id: field
         name:
+          id: name
           table: tpr_unit_field_data
           field: name
-          id: name
-          entity_type: null
-          entity_field: name
-          plugin_id: field
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: null
+          entity_field: name
+          plugin_id: field
           label: Name
           exclude: false
           alter:
@@ -298,6 +212,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: tpr_unit
+          entity_field: changed
+          plugin_id: field
           label: Changed
           exclude: false
           alter:
@@ -355,9 +272,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: tpr_unit
-          entity_field: changed
-          plugin_id: field
         operations:
           id: operations
           table: tpr_unit
@@ -365,6 +279,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: tpr_unit
+          plugin_id: entity_operations
           label: Operations
           exclude: false
           alter:
@@ -407,8 +323,60 @@ display:
           empty_zero: false
           hide_alter_empty: true
           destination: false
-          entity_type: tpr_unit
-          plugin_id: entity_operations
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 50
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access remote entities overview'
+      cache:
+        type: tag
+        options: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No results found.'
+            format: plain_text
+          tokenize: false
+      sorts: {  }
+      arguments: {  }
       filters:
         combine:
           id: combine
@@ -417,6 +385,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: combine
           operator: allwords
           value: ''
           group: 1
@@ -452,7 +421,6 @@ display:
           fields:
             id: id
             name: name
-          plugin_id: combine
         langcode:
           id: langcode
           table: tpr_unit_field_data
@@ -460,6 +428,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: tpr_unit
+          entity_field: langcode
+          plugin_id: language
           operator: in
           value:
             '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
@@ -492,11 +463,57 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: tpr_unit
-          entity_field: langcode
-          plugin_id: language
-      sorts: {  }
-      title: 'TPR unit list'
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            id: id
+            name: name
+            changed: changed
+          default: changed
+          info:
+            id:
+              sortable: false
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
+      group_by: false
       header: {  }
       footer:
         result:
@@ -506,27 +523,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: result
           empty: true
           content: 'Displaying @start - @end of @total'
-          plugin_id: result
-      empty:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: 'No results found.'
-            format: plain_text
-          plugin_id: text
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
-      group_by: false
     cache_metadata:
       max-age: 0
       contexts:
@@ -537,14 +537,14 @@ display:
         - user.permissions
       tags: {  }
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
+      rendering_language: '***LANGUAGE_language_content***'
       display_extenders: {  }
       path: admin/content/integrations/tpr-unit
-      rendering_language: '***LANGUAGE_language_content***'
     cache_metadata:
       max-age: 0
       contexts:

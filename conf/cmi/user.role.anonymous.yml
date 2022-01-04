@@ -1,7 +1,13 @@
 uuid: 3e66c898-b728-4288-8b0b-8fabb8032767
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - eu_cookie_compliance
+    - helfi_api_base
+    - helfi_tpr
+    - media
+    - system
 _core:
   default_config_hash: EDyVdaROG6pYzyEct43c01Wq4gpATszrk-qR6gqnQ84
 id: anonymous

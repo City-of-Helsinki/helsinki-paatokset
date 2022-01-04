@@ -22,32 +22,32 @@ bundle: ahjo_document
 mode: default
 content:
   field_document_issued:
-    weight: 4
+    type: datetime_default
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: medium
     third_party_settings: {  }
-    type: datetime_default
+    weight: 4
     region: content
   field_document_language:
-    weight: 3
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 3
     region: content
   field_document_native_id:
-    weight: 1
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_document_orig_uri:
-    weight: 7
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -56,26 +56,26 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 7
     region: content
   field_document_personal_data:
-    weight: 5
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 5
     region: content
   field_document_type:
-    weight: 2
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   field_document_uri:
-    weight: 6
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -84,14 +84,14 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 6
     region: content
   field_media_ahjo_file:
+    type: json
     label: visually_hidden
-    weight: 0
     settings: {  }
     third_party_settings: {  }
-    type: json
+    weight: 0
     region: content
 hidden:
   created: true

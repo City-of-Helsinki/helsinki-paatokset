@@ -12,20 +12,20 @@ pattern: 'kokoukset/[node:field_meeting_id]'
 selection_criteria:
   0b8bbe5f-2d67-4c48-a0d3-77b076b1551f:
     id: node_type
-    bundles:
-      meeting: meeting
     negate: false
+    uuid: 0b8bbe5f-2d67-4c48-a0d3-77b076b1551f
     context_mapping:
       node: node
-    uuid: 0b8bbe5f-2d67-4c48-a0d3-77b076b1551f
+    bundles:
+      meeting: meeting
   2b942e27-381f-4686-9dc2-45bdcbbc99c4:
     id: language
-    langcodes:
-      fi: fi
     negate: false
+    uuid: 2b942e27-381f-4686-9dc2-45bdcbbc99c4
     context_mapping:
       language: 'node:langcode:language'
-    uuid: 2b942e27-381f-4686-9dc2-45bdcbbc99c4
+    langcodes:
+      fi: fi
 selection_logic: and
 weight: -5
 relationships:

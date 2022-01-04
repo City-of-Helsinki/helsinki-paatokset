@@ -1,7 +1,48 @@
 uuid: 28f3d046-0deb-413b-bae3-a28bfcaba5cf
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.ahjo_document
+    - media.type.declaration_of_affiliation
+    - media.type.file
+    - media.type.image
+    - media.type.minutes_of_the_discussion
+    - media.type.policymaker_images
+    - media.type.remote_video
+    - media.type.soundcloud
+    - node.type.article
+    - node.type.case
+    - node.type.imported_article
+    - node.type.landing_page
+    - node.type.meeting
+    - node.type.page
+    - node.type.policymaker
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.pdf_categories
+  module:
+    - block
+    - content_translation
+    - eu_cookie_compliance
+    - file
+    - helfi_api_base
+    - helfi_tpr
+    - locale
+    - media
+    - menu_link_content
+    - node
+    - paatokset_ahjo_proxy
+    - paragraphs
+    - paragraphs_library
+    - path
+    - pathauto
+    - redirect
+    - scheduler
+    - simple_sitemap
+    - system
+    - taxonomy
+    - toolbar
+    - view_unpublished
 _core:
   default_config_hash: wJWcExCcstsjfohW4IUVRm742x2vKz6nOlZpa3OG7yQ
 id: admin
@@ -145,7 +186,6 @@ permissions:
   - 'translate article node'
   - 'translate editable entities'
   - 'translate file media'
-  - 'translate hauki_resource'
   - 'translate image media'
   - 'translate interface'
   - 'translate keywords taxonomy_term'
@@ -170,6 +210,7 @@ permissions:
   - 'view all revisions'
   - 'view all tpr_service revisions'
   - 'view all tpr_unit revisions'
+  - 'view any unpublished content'
   - 'view article revisions'
   - 'view case revisions'
   - 'view imported_article revisions'

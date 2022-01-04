@@ -16,10 +16,10 @@ plugin: policymaker_listing
 settings:
   id: policymaker_listing
   label: 'Paatokset policymaker listing'
-  provider: paatokset_ahjo_api
   label_display: visible
+  provider: paatokset_ahjo_api
 visibility:
   request_path:
     id: request_path
-    pages: /paattajat
     negate: false
+    pages: /paattajat
