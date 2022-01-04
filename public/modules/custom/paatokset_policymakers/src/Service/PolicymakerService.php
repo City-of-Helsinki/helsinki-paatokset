@@ -470,7 +470,14 @@ class PolicymakerService {
         continue;
       }
 
-      $document_timestamp = strtotime($document->get('field_document_issued')->value);
+      // If document doesn't have issued date, use meeting date (e.g agendas).
+      if ($document->hasField('field_document_issued') && !$document->get('field_document_issued')->isEmpty()) {
+        $document_timestamp = strtotime($document->get('field_document_issued')->value);
+      }
+      else {
+        $document_timestamp = $meeting_timestamp;
+      }
+
 
       $result = [
         'publish_date' => date('d.m.Y', $document_timestamp),
@@ -553,8 +560,14 @@ class PolicymakerService {
     }
 
     if ($document instanceof MediaInterface) {
-      $document_timestamp = strtotime($document->get('field_document_issued')->value);
-      $publishDate = date('d.m.Y', $document_timestamp);
+      if ($document->hasField('field_document_issued') && !$document->get('field_document_issued')->isEmpty()) {
+        $document_timestamp = strtotime($document->get('field_document_issued')->value);
+        $publishDate = date('d.m.Y', $document_timestamp);
+      }
+      else {
+        $publishDate = FALSE;
+      }
+
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
     }
 
