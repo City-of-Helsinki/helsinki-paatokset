@@ -214,3 +214,37 @@ function helfi_paatokset_preprocess_block(&$variables) {
       }
     }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_paatokset_preprocess_node__case(&$variables) {
+  $link = [
+    '#url' => '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja',
+    '#title' => t('Siirry sanakirjaan'),
+  ];
+
+  $variables['banner_content'] = [
+    'link' => $link,
+    'title' => t('Sanat hukassa?'),
+    'icon' => '',
+    'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_paatokset_preprocess_node__decision(&$variables) {
+  $link = [
+    '#url' => '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja',
+    '#title' => t('Siirry sanakirjaan'),
+  ];
+
+  $variables['banner_content'] = [
+    'link' => $link,
+    'title' => t('Sanat hukassa?'),
+    'icon' => '',
+    'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
+  ];
+}
