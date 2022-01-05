@@ -1,0 +1,19 @@
+uuid: df869ac2-8c04-4dc2-a12c-f7e12a15600d
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_email
+    - node.type.trustee
+id: node.trustee.field_trustee_email
+field_name: field_trustee_email
+entity_type: node
+bundle: trustee
+label: Email
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -3,15 +3,25 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.trustee.field_first_name
+    - field.field.node.trustee.field_last_name
     - field.field.node.trustee.field_trustee_chairmanships
     - field.field.node.trustee.field_trustee_council_group
+    - field.field.node.trustee.field_trustee_datapumppu_id
+    - field.field.node.trustee.field_trustee_email
+    - field.field.node.trustee.field_trustee_home_district
     - field.field.node.trustee.field_trustee_id
+    - field.field.node.trustee.field_trustee_image
     - field.field.node.trustee.field_trustee_initiatives
+    - field.field.node.trustee.field_trustee_phone
+    - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
     - field.field.node.trustee.field_trustee_title
+    - image.style.thumbnail
     - node.type.trustee
   module:
     - hdbt_admin_editorial
+    - image
     - json_field
     - path
     - scheduler
@@ -22,12 +32,28 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 9
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_first_name:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_last_name:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_trustee_chairmanships:
-    weight: 6
+    weight: 11
     settings:
       rows: 5
       placeholder: ''
@@ -42,6 +68,30 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_trustee_datapumppu_id:
+    weight: 22
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_trustee_email:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_trustee_home_district:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_trustee_id:
     weight: 1
     settings:
@@ -50,16 +100,40 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_trustee_image:
+    weight: 8
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_trustee_initiatives:
-    weight: 4
+    weight: 9
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: json_textarea
     region: content
-  field_trustee_resolutions:
+  field_trustee_phone:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_trustee_profession:
     weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_trustee_resolutions:
+    weight: 10
     settings:
       rows: 5
       placeholder: ''
@@ -76,14 +150,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 7
+    weight: 12
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 12
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -91,12 +165,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 15
     region: content
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 13
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -104,14 +178,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 21
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 16
     region: content
     third_party_settings: {  }
   title:
@@ -124,7 +198,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 8
+    weight: 13
     settings:
       match_operator: CONTAINS
       size: 60
@@ -134,12 +208,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 14
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 15
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
