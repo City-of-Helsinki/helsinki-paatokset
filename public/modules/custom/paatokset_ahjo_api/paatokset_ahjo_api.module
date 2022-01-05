@@ -330,6 +330,35 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   return FALSE;
 }
 
+
+/**
+ * Get first name.
+ *
+ * @param mixed $value
+ *   The value to work with.
+ *
+ * @return string
+ *   First name from formatted name string.
+ */
+function _paatokset_ahjo_api_get_first_name($value): string {
+  $bits = explode(', ', (string) $value);
+  return (string) array_shift(array_slice($bits, -1));
+}
+
+/**
+ * Get last name.
+ *
+ * @param mixed $value
+ *   The value to work with.
+ *
+ * @return string
+ *   First name from formatted name string.
+ */
+function _paatokset_ahjo_api_get_last_name($value): string {
+  $bits = explode(', ', (string) $value);
+  return (string) array_shift(array_slice($bits, 0, 1));
+}
+
 /**
  * Implements hook_entity_extra_field_info().
  */
