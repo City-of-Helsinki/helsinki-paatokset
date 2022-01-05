@@ -105,7 +105,7 @@ class MeetingService {
       if ($node->get('field_meeting_minutes_published')->value) {
         $transformedResult['minutes_link'] = $this->getMeetingUrl($node);
       }
-      else if ($node->get('field_meeting_agenda_published')->value) {
+      elseif ($node->get('field_meeting_agenda_published')->value) {
         $transformedResult['motions_list_link'] = $this->getMeetingUrl($node);
       }
 
@@ -192,10 +192,10 @@ class MeetingService {
   /**
    * Get Meeting minutes Link.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   Meeting node.
    *
-   * @return Link|null
+   * @return \Drupal\Core\Link|null
    *   URL as string, if possible to get.
    */
   public function getMeetingLink(NodeInterface $node): ?Link {
@@ -226,7 +226,7 @@ class MeetingService {
   /**
    * Get Meeting minutes URL.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   Meeting node.
    *
    * @return string|null

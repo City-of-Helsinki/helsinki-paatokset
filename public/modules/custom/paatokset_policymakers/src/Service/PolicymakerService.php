@@ -469,9 +469,9 @@ class PolicymakerService {
    */
   private function getTrusteeNodesByName(array $names): ?array {
     $query = \Drupal::entityQuery('node')
-    ->condition('status', 1)
-    ->condition('type', 'trustee')
-    ->condition('title', $names, 'IN');
+      ->condition('status', 1)
+      ->condition('type', 'trustee')
+      ->condition('title', $names, 'IN');
 
     $ids = $query->execute();
 
@@ -487,6 +487,8 @@ class PolicymakerService {
    *
    * @param string $name
    *   Name to format.
+   * @param bool $alt_format
+   *   Use alternative formatting (multiple last names).
    *
    * @return string
    *   Name formatted to: Lastname, Firstname
@@ -494,8 +496,8 @@ class PolicymakerService {
   private function formatTrusteeName(string $name, $alt_format = FALSE): string {
     $bits = explode(' ', $name);
     if ($alt_format && count($bits) > 2) {
-      $last_names = implode(' ' , array_slice($bits, -2));
-      $first_names = implode(' ' , array_slice($bits, 0 , -2));
+      $last_names = implode(' ', array_slice($bits, -2));
+      $first_names = implode(' ', array_slice($bits, 0, -2));
     }
     else {
       $last_names = array_pop($bits);
@@ -565,7 +567,6 @@ class PolicymakerService {
       else {
         $document_timestamp = $meeting_timestamp;
       }
-
 
       $result = [
         'publish_date' => date('d.m.Y', $document_timestamp),
@@ -689,9 +690,8 @@ class PolicymakerService {
   /**
    * Get agenda items.
    *
-   * @param \Drupal\Core\Field\FieldItemListInterface $field
+   * @param \Drupal\Core\Field\FieldItemListInterface $list_field
    *   Field to get agenda items from.
-   *
    * @param string $langcode
    *   Langcode to use.
    *
