@@ -39,12 +39,12 @@
                   <h5 class="meeting-title">{{meeting.title}}</h5>
                   <div class="meeting-start-time">{{ meeting.start_time}}</div>
                   <template v-if="meeting.decision_link">
-                    <a :href="meeting.minutes_link">
+                    <a :href="meeting.decision_link">
                       {{ openDecisions }}
                       <i class="hds-icon hds-icon--angle-right"></i>
                     </a>
                   </template>
-                  <template v-else-if="meeting.minutes_link && meeting.motions_list_link">
+                  <template v-else-if="meeting.minutes_link">
                     <a :href="meeting.minutes_link">
                       {{ openMinutes }}
                       <i class="hds-icon hds-icon--angle-right"></i>
@@ -61,13 +61,13 @@
               <template v-else>
                 <div class="no-meetings meeting-title">{{ Drupal.t('Ei kokouksia')}}</div>
               </template>
-              
+
             </li>
           </ol>
         </div>
       </div>
       `
-      
+
       /* URL to get all meetings */
       const yearAgo = dayjs().subtract(1, "year").format("YYYY-MM-DD");
       const dataURL = window.location.origin + '/fi/ahjo_api/meetings?from=' + yearAgo;
@@ -97,7 +97,7 @@
                   day.meetings = self.meetings[date]
                 }
               });
-              
+
               self.daysWithMeetings = temp;
             })
           },
@@ -227,9 +227,9 @@
             const previousMonth = dayjs(`${this.year}-${this.month}-01`).subtract(1, "month");
 
             const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday ? firstDayOfTheMonthWeekday - 1 : 6;
-        
+
             const previousMonthLastMondayDayOfMonth = dayjs(this.currentMonthDays[0].date).subtract(visibleNumberOfDaysFromPreviousMonth, "day").date();
-            
+
             //Doesn't add previous days if the first day of the month is saturday or sunday
             if(firstDayOfTheMonthWeekday !== 6 && firstDayOfTheMonthWeekday !== 0) {
               return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((day, index) => {
@@ -245,7 +245,7 @@
             const lastDayOfTheMonthWeekday = dayjs(`${this.year}-${this.month}-${this.currentMonthDays.length}`).day();
             const nextMonth = dayjs(`${this.year}-${this.month}-01`).add(1, "month");
             const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday ? 7 - lastDayOfTheMonthWeekday : lastDayOfTheMonthWeekday;
-        
+
             return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
               return {
                 date: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`).format("YYYY-MM-DD"),
