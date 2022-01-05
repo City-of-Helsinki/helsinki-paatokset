@@ -1,6 +1,7 @@
-search.decisions:
+paatokset_search.decisions:
   path: 'paatokset'
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
+    _title: 'Search decisions'
   requirements:
     _access: 'TRUE'

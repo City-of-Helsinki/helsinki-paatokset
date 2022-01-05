@@ -1,11 +1,28 @@
+// Hero section block for paatokset search form
+#block-helfi-paatokset-heroblock {
+  margin-bottom: $spacing-double;
+
+  @include breakpoint($breakpoint-xl) {
+    margin-bottom: $spacing-quadruple;
+  }
+}
+
+// Hero section for search form
+.hero--paatokset-search-bar {
+  .hero__text-content {
+    padding-top: $spacing-triple;
+    padding-bottom: $spacing-triple;
+
+    @include breakpoint($breakpoint-xl) {
+      max-width: 894px;
+    }
+  }
+}
+
 // Hero section search form
 .paatokset__search-form {
   .hds-text-input__label {
     font-weight: bold;
-  }
-
-  @include breakpoint($breakpoint-xl) {
-    margin-bottom: 115px;
   }
 
   .hds-text-input__input-wrapper {
@@ -13,6 +30,7 @@
 
     @include breakpoint($breakpoint-xl) {
       display: flex;
+      align-items: flex-end;
     }
   }
 
@@ -24,8 +42,18 @@
 
   input[type="submit"] {
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: $spacing;
     height: var(--input-height);
+    background-color: #000;
+    background-image: none;
+    text-shadow: none;
+    --focus-outline-color: var(--color-coat-of-arms);
+
+    &:hover {
+      background-color: $color-white;
+      border-color: $color-black;
+      color: $color-black;
+    }
 
     @include breakpoint($breakpoint-xl) {
       max-width: 258px;
