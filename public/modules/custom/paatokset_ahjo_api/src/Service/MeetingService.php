@@ -7,6 +7,7 @@ use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -188,6 +189,49 @@ class MeetingService {
     }
   }
 
+  /**
+   * Get Meeting minutes Link.
+   *
+   * @param NodeInterface $node
+   *   Meeting node.
+   *
+   * @return Link|null
+   *   URL as string, if possible to get.
+   */
+  public function getMeetingLink(NodeInterface $node): ?Link {
+
+    if (!$node->hasField('field_meeting_id') || !$node->hasField('field_meeting_dm_id')) {
+      return NULL;
+    }
+
+    $meeting_id = $node->get('field_meeting_id')->value;
+    $policymaker_id = $node->get('field_meeting_dm_id')->value;
+
+    if (!$meeting_id || !$policymaker_id) {
+      return NULL;
+    }
+
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+    if (!$url instanceof Url) {
+      return NULL;
+    }
+
+    $text = t('Meeting minutes.');
+
+    return Link::fromTextAndUrl($text, $url);
+  }
+
+  /**
+   * Get Meeting minutes URL.
+   *
+   * @param NodeInterface $node
+   *   Meeting node.
+   *
+   * @return string|null
+   *   URL as string, if possible to get.
+   */
   public function getMeetingUrl(NodeInterface $node): ?string {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');

@@ -35,7 +35,11 @@ bundle: meeting
 mode: default
 content:
   field_meeting_agenda:
+<<<<<<< HEAD
     type: json
+=======
+    weight: 15
+>>>>>>> PP-252: Add custom link to meetings to minutes page.
     label: above
     settings: {  }
     third_party_settings: {  }

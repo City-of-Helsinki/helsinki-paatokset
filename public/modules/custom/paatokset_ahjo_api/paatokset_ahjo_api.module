@@ -9,6 +9,9 @@ declare(strict_types = 1);
 
 use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_theme().
@@ -141,9 +144,9 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $variables['accordions'][] = [
     'Kaupinginhallituksen jaostot' => $hallituksen_jaosto,
     'Lautakunnat ja jaostot' => array_merge($lautakunta, $accorion_contents['jaosto'][1]),
-    'Viranhaltijat' => $accorion_contents['viranhaltija'][1], 
-    'Luottamushenkilöpäättäjät' => $accorion_contents['trustee'][1], 
-    'Luottamushenkilöt' => $trustees, 
+    'Viranhaltijat' => $accorion_contents['viranhaltija'][1],
+    'Luottamushenkilöpäättäjät' => $accorion_contents['trustee'][1],
+    'Luottamushenkilöt' => $trustees,
   ];
 
   $variables['title'] = $variables['elements']['content']['label'];
@@ -325,6 +328,40 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function paatokset_ahjo_api_entity_extra_field_info(): array {
+  $extra['node']['meeting']['display']['meeting_link'] = [
+    'label' => t('Meeting minutes link.'),
+    'description' => t('Meeting minutes link under policymaker page.'),
+    'weight' => 0,
+    'visible' => FALSE,
+  ];
+
+  return $extra;
+}
+
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
+  if ($entity->id() === NULL) {
+    return;
+  }
+
+  /** @var \Drupal\node\NodeInterface $entity */
+  if ($display->getComponent('meeting_link')) {
+    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
+    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+    $link = $meetingService->getMeetingLink($entity);
+    if ($link instanceof Link) {
+      $build['meeting_link'] = $link->toRenderable();
+    }
+  }
 }
 
 /**
