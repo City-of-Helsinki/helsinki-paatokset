@@ -22,6 +22,7 @@ dependencies:
   module:
     - image
     - json_field
+    - link
     - user
 id: node.trustee.default
 targetEntityType: node
@@ -68,12 +69,11 @@ content:
     weight: 11
     region: content
   field_trustee_email:
-    type: string
+    weight: 15
     label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    weight: 7
+    type: basic_string
     region: content
   field_trustee_home_district:
     type: string
@@ -87,9 +87,13 @@ content:
     type: string
     label: above
     settings:
-      link_to_entity: false
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    weight: 14
+    type: link
     region: content
   field_trustee_image:
     type: image

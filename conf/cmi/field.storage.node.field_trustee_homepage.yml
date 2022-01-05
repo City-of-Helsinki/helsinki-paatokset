@@ -1,18 +1,16 @@
-uuid: bf448955-3e85-410d-a121-b5cde611b618
+uuid: a6123fea-309d-43b0-a7c9-28865f2c0b8a
 langcode: fi
 status: true
 dependencies:
   module:
+    - link
     - node
 id: node.field_trustee_homepage
 field_name: field_trustee_homepage
 entity_type: node
-type: string
-settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
-module: core
+type: link
+settings: {  }
+module: link
 locked: false
 cardinality: 1
 translatable: true

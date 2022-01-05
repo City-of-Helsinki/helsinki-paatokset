@@ -1,4 +1,4 @@
-uuid: 7b64ab97-fbff-46f3-aa1b-1dd99ef19a30
+uuid: 4d443d9a-c52f-429c-96ad-8c151a17bb89
 langcode: fi
 status: true
 dependencies:
@@ -7,11 +7,8 @@ dependencies:
 id: node.field_trustee_email
 field_name: field_trustee_email
 entity_type: node
-type: string
-settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
+type: email
+settings: {  }
 module: core
 locked: false
 cardinality: 1
