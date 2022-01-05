@@ -24,6 +24,7 @@ dependencies:
     - hdbt_admin_editorial
     - image
     - json_field
+    - link
     - path
     - scheduler
 id: node.trustee.default
@@ -78,13 +79,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_trustee_email:
-    type: string_textfield
-    weight: 4
-    region: content
+    weight: 29
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    type: email_default
+    region: content
   field_trustee_home_district:
     type: string_textfield
     weight: 7
@@ -98,9 +99,11 @@ content:
     weight: 28
     region: content
     settings:
-      size: 60
-      placeholder: ''
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
+    type: link_default
+    region: content
   field_trustee_id:
     type: string_textfield
     weight: 1
