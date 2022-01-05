@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.trustee.field_trustee_datapumppu_id
     - field.field.node.trustee.field_trustee_email
     - field.field.node.trustee.field_trustee_home_district
+    - field.field.node.trustee.field_trustee_homepage
     - field.field.node.trustee.field_trustee_id
     - field.field.node.trustee.field_trustee_image
     - field.field.node.trustee.field_trustee_initiatives
@@ -86,6 +87,14 @@ content:
     region: content
   field_trustee_home_district:
     weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_trustee_homepage:
+    weight: 28
     settings:
       size: 60
       placeholder: ''

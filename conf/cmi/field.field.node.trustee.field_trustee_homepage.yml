@@ -1,0 +1,19 @@
+uuid: 4cfa257a-15de-4fca-ae35-2a95196f5d3f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_homepage
+    - node.type.trustee
+id: node.trustee.field_trustee_homepage
+field_name: field_trustee_homepage
+entity_type: node
+bundle: trustee
+label: Homepage
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
