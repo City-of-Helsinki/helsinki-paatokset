@@ -233,11 +233,17 @@ class PolicymakerService {
    *
    * @param string $id
    *   Meeting ID.
+   * @param string|null $policymaker_id
+   *   Policymaker ID. NULL if using default.
    *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getMinutesRoute(string $id): ?Url {
+  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL): ?Url {
+    if (!empty($policymaker_id)) {
+      $this->setPolicyMaker($policymaker_id);
+    }
+
     if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
       return NULL;
     }
@@ -558,6 +564,7 @@ class PolicymakerService {
     }
     else {
       $pageTitle = t('Meeting');
+      $documentTitle = NULL;
     }
 
     if ($document instanceof MediaInterface) {

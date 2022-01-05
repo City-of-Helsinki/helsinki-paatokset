@@ -6,6 +6,7 @@ use Drupal\media\MediaInterface;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Url;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -98,11 +99,13 @@ class MeetingService {
         'policymaker_name' => $node->get('field_meeting_dm')->value,
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
-        'motions_list_link' => $this->getDocumentUrlFromEntity($node, 'esityslista'),
       ];
 
       if ($node->get('field_meeting_minutes_published')->value) {
-        $transformedResult['minutes_link'] = $this->getDocumentUrlFromEntity($node, 'pöytäkirja');
+        $transformedResult['minutes_link'] = $this->getMeetingUrl($node);
+      }
+      else if ($node->get('field_meeting_agenda_published')->value) {
+        $transformedResult['motions_list_link'] = $this->getMeetingUrl($node);
       }
 
       $result[$date][] = $transformedResult;
@@ -183,6 +186,20 @@ class MeetingService {
       $meeting = reset($meeting);
       return $meeting['meeting_date'];
     }
+  }
+
+  public function getMeetingUrl(NodeInterface $node): ?string {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
+    $meeting_id = $node->get('field_meeting_id')->value;
+    $policymaker_id = $node->get('field_meeting_dm_id')->value;
+    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+    if ($url instanceof Url) {
+      return $url->toString();
+    }
+
+    return NULL;
   }
 
   /**
