@@ -67,6 +67,14 @@ process:
     plugin: default_value
     source: name
     default_value: 'NO TITLE'
+  field_first_name:
+    plugin: callback
+    callable: _paatokset_ahjo_api_get_first_name
+    source: name
+  field_last_name:
+    plugin: callback
+    callable: _paatokset_ahjo_api_get_last_name
+    source: name
   field_trustee_title: title
   field_trustee_id: agent_id
   field_trustee_council_group: council_group
