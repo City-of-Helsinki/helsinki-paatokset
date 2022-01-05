@@ -7,6 +7,7 @@ use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Entity\Issue;
@@ -551,14 +552,19 @@ class PolicymakerService {
     $publishDate = NULL;
     $fileUrl = NULL;
 
+    // Only get finnish agenda points for now and use swedish as fallback.
+    // @todo Get current and fallback languages dynamically.
+    $currentLanguage = 'fi';
+    $fallbackLanguage = 'sv';
+
     /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
     $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
-    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja')) {
+    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', $currentLanguage)) {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
-    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista')) {
+    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', $currentLanguage)) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
@@ -579,8 +585,41 @@ class PolicymakerService {
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
     }
 
+    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $currentLanguage);
+    if (empty($agendaItems)) {
+      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $fallbackLanguage);
+    }
+
+    return [
+      'meeting' => [
+        'page_title' => $pageTitle,
+        'date_long' => $dateLong,
+        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
+      ],
+      'list' => $agendaItems,
+      'file' => [
+        'document_title' => $documentTitle,
+        'file_url' => $fileUrl,
+        'publish_date' => $publishDate,
+      ],
+    ];
+  }
+
+  /**
+   * Get agenda items.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $field
+   *   Field to get agenda items from.
+   *
+   * @param string $langcode
+   *   Langcode to use.
+   *
+   * @return array
+   *   Array of agenda items. Can be empty.
+   */
+  private function getAgendaItems(FieldItemListInterface $list_field, string $langcode = 'fi'): array {
     $agendaItems = [];
-    foreach ($meeting->get('field_meeting_agenda') as $item) {
+    foreach ($list_field as $item) {
 
       $data = json_decode($item->value, TRUE);
 
@@ -588,8 +627,7 @@ class PolicymakerService {
         continue;
       }
 
-      // Only get finnish agenda points for now.
-      if ($data['PDF']['Language'] !== 'fi') {
+      if ($data['PDF']['Language'] !== $langcode) {
         continue;
       }
 
@@ -615,19 +653,7 @@ class PolicymakerService {
       ];
     }
 
-    return [
-      'meeting' => [
-        'page_title' => $pageTitle,
-        'date_long' => $dateLong,
-        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
-      ],
-      'list' => $agendaItems,
-      'file' => [
-        'document_title' => $documentTitle,
-        'file_url' => $fileUrl,
-        'publish_date' => $publishDate,
-      ],
-    ];
+    return $agendaItems;
   }
 
   /**

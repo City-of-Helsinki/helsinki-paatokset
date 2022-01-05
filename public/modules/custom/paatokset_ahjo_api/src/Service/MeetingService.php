@@ -310,11 +310,13 @@ class MeetingService {
    *   Meeting entity.
    * @param string $document_type
    *   Document type, for example: 'esityslista', 'pöytäkirja'.
+   * @param string $langcode
+   *   Document language, defaults to 'fi'.
    *
    * @return \Drupal\media\MediaInterface|null
    *   Meeting minutes media entity, if one exists for the meeting.
    */
-  public function getDocumentFromEntity(NodeInterface $entity, string $document_type): ?MediaInterface {
+  public function getDocumentFromEntity(NodeInterface $entity, string $document_type, string $langcode = 'fi'): ?MediaInterface {
     if (!$entity->hasField('field_meeting_documents') || $entity->get('field_meeting_documents')->isEmpty()) {
       return NULL;
     }
@@ -322,6 +324,10 @@ class MeetingService {
     $minutes_id = NULL;
     foreach ($entity->get('field_meeting_documents') as $field) {
       $json = json_decode($field->value, TRUE);
+      if (isset($json['Language']) && $json['Language'] !== $langcode) {
+        continue;
+      }
+
       if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === $document_type) {
         $minutes_id = $json['NativeId'];
         break;
