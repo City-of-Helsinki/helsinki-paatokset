@@ -1,0 +1,19 @@
+uuid: d50e5e9f-212b-448c-a2ab-3a0c9baa197d
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_first_name
+    - node.type.trustee
+id: node.trustee.field_first_name
+field_name: field_first_name
+entity_type: node
+bundle: trustee
+label: 'First name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -6,6 +6,7 @@ dependencies:
     - field.storage.media.field__policymaker_reference
     - media.type.declaration_of_affiliation
     - node.type.policymaker
+    - node.type.trustee
 id: media.declaration_of_affiliation.field__policymaker_reference
 field_name: field__policymaker_reference
 entity_type: media
@@ -21,9 +22,10 @@ settings:
   handler_settings:
     target_bundles:
       policymaker: policymaker
+      trustee: trustee
     sort:
       field: _none
       direction: ASC
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: policymaker
 field_type: entity_reference

@@ -4,10 +4,19 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.trustee.field_first_name
+    - field.field.node.trustee.field_last_name
     - field.field.node.trustee.field_trustee_chairmanships
     - field.field.node.trustee.field_trustee_council_group
+    - field.field.node.trustee.field_trustee_datapumppu_id
+    - field.field.node.trustee.field_trustee_email
+    - field.field.node.trustee.field_trustee_home_district
+    - field.field.node.trustee.field_trustee_homepage
     - field.field.node.trustee.field_trustee_id
+    - field.field.node.trustee.field_trustee_image
     - field.field.node.trustee.field_trustee_initiatives
+    - field.field.node.trustee.field_trustee_phone
+    - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
     - field.field.node.trustee.field_trustee_title
     - node.type.trustee
@@ -24,10 +33,19 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_first_name: true
+  field_last_name: true
   field_trustee_chairmanships: true
   field_trustee_council_group: true
+  field_trustee_datapumppu_id: true
+  field_trustee_email: true
+  field_trustee_home_district: true
+  field_trustee_homepage: true
   field_trustee_id: true
+  field_trustee_image: true
   field_trustee_initiatives: true
+  field_trustee_phone: true
+  field_trustee_profession: true
   field_trustee_resolutions: true
   field_trustee_title: true
   langcode: true
