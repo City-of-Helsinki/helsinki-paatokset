@@ -412,16 +412,97 @@ class PolicymakerService {
       return [];
     }
 
-    $results = [];
-    // @todo Filter out results for non trustee roles.
+    $composition = [];
+    $allowed_roles = [
+      'Jäsen',
+      'Varajäsen',
+      'Puheenjohtaja',
+    ];
     // @todo Load full data (node or JSON) for trustees.
+    $names = [];
     foreach ($meeting->get('field_meeting_composition') as $field) {
-      $data = json_decode($field->value);
+      $data = json_decode($field->value, TRUE);
+      if (!isset($data['Role']) || !in_array($data['Role'], $allowed_roles)) {
+        continue;
+      }
       if (!empty($data)) {
-        $results[] = $data;
+        $formatted_name = $this->formatTrusteeName($data['Name']);
+        $names[] = $formatted_name;
+        $composition[$formatted_name] = $data;
+
+        // Special handling for combined last names or middle names.
+        $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
+        if ($formatted_name !== $alt_formatted_name) {
+          $names[] = $alt_formatted_name;
+          $composition[$alt_formatted_name] = $data;
+        }
       }
     }
+
+    $results = [];
+    $person_nodes = $this->getTrusteeNodesByName($names);
+    foreach ($person_nodes as $node) {
+      $name = $node->title->value;
+      if (isset($composition[$name])) {
+        $results[] = [
+          'first_name' => $node->get('field_first_name')->value,
+          'last_name' => $node->get('field_last_name')->value,
+          'role' => $composition[$name]['Role'],
+          'email' => $node->get('field_trustee_email')->value,
+          'party' => $node->get('field_trustee_council_group')->value,
+          'deputy_of' => $composition[$name]['DeputyOf'],
+        ];
+      }
+    }
+
     return $results;
+  }
+
+  /**
+   * Load trustee nodes based on names.
+   *
+   * @param array $names
+   *   Names of trustees to load.
+   *
+   * @return array|null
+   *   Array of nodes.
+   */
+  private function getTrusteeNodesByName(array $names): ?array {
+    $query = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('type', 'trustee')
+    ->condition('title', $names, 'IN');
+
+    $ids = $query->execute();
+
+    if (empty($ids)) {
+      return [];
+    }
+
+    return Node::loadMultiple($ids);
+  }
+
+  /**
+   * Format trustee name to match data from API.
+   *
+   * @param string $name
+   *   Name to format.
+   *
+   * @return string
+   *   Name formatted to: Lastname, Firstname
+   */
+  private function formatTrusteeName(string $name, $alt_format = FALSE): string {
+    $bits = explode(' ', $name);
+    if ($alt_format && count($bits) > 2) {
+      $last_names = implode(' ' , array_slice($bits, -2));
+      $first_names = implode(' ' , array_slice($bits, 0 , -2));
+    }
+    else {
+      $last_names = array_pop($bits);
+      $first_names = implode(' ', $bits);
+    }
+
+    return $last_names . ', ' . $first_names;
   }
 
   /**
