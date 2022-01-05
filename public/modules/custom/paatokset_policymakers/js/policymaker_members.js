@@ -58,53 +58,7 @@
         el: '#policymaker-members-vue',
         template: markup,
         data: {
-          members: [
-            {
-              'first_name': 'Aki',
-              'last_name': 'Hyödynmaa',
-              'role': 'Varajäsen',
-              'links': [],
-              'deputyOf': 'Salla Korhonen',
-              'email' : 'etunimi.sukunimi@email.com',
-              'party' : 'Vasemmisto'
-            },
-            {
-              'first_name': 'Antti',
-              'last_name': 'Vuorela',
-              'role': 'Varapuheenjohtaja',
-              'links': [],
-              'deputyOf': null,
-              'email' : 'etunimi.sukunimi@email.com',
-              'party' : 'Kokoomus'
-            },
-            {
-              'first_name': 'Mikko',
-              'last_name': 'Mallikas',
-              'role': 'Varajäsen',
-              'links': [],
-              'deputyOf': null,
-              'email' : 'etunimi.sukunimi@email.com',
-              'party' : 'Kokoomus'
-            },
-            {
-              'first_name': 'Testi',
-              'last_name': 'Testinen',
-              'role': 'Joku rooli',
-              'links': [],
-              'deputyOf': null,
-              'email' : 'etunimi.sukunimi@email.com',
-              'party' : 'Kokoomus'
-            },
-            {
-              'first_name': 'Joku',
-              'last_name': 'Jokunen',
-              'role': 'Varajäsen',
-              'links': [],
-              'deputyOf': null,
-              'email' : 'etunimi.sukunimi@email.com',
-              'party' : 'Kokoomus'
-            }
-          ],
+          members: [],
           isReady: false,
           search: '',
           filters: {
@@ -122,8 +76,6 @@
         },
         methods: {
           getJson() {
-            /*
-            Remove comment once dataURL is set
             const self = this;
             $.getJSON(dataURL, function(data) {
               self.members = data;
@@ -135,7 +87,7 @@
             })
             .done(function( json ) {
               self.isReady = true;
-            })*/
+            })
 
             const parties = this.members.map(a => a.party).filter(function (el) {
               return el != null;
@@ -155,14 +107,17 @@
             this.active_checkboxes = temp_filters;
           },
           processEmail(email) {
-            return email.replace("@", " (at) ")
+            if (email) {
+              return email.replace("@", " (at) ")
+            }
+            return null;
           }
         },
         computed: {
           filteredMembers() {
             let temp_results = this.members;
             temp_results = temp_results.filter(result => {
-              return result.first_name.toLowerCase().includes(this.search.toLowerCase()) || result.last_name.toLowerCase().includes(this.search.toLowerCase()) 
+              return result.first_name.toLowerCase().includes(this.search.toLowerCase()) || result.last_name.toLowerCase().includes(this.search.toLowerCase())
             })
 
             if(!this.active_checkboxes.includes('deputy_member')) {
