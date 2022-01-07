@@ -30,6 +30,7 @@ hidden:
   created: true
   description: true
   email: true
+  hide_description: true
   langcode: true
   latitude: true
   longitude: true
