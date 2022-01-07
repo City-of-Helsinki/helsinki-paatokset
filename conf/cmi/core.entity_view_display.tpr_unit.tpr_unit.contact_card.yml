@@ -63,6 +63,7 @@ hidden:
   call_charge_info: true
   created: true
   description: true
+  hide_description: true
   langcode: true
   latitude: true
   longitude: true
