@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.policymaker.field_ahjo_summary
+    - field.field.node.policymaker.field_ahjo_title
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_above
     - field.field.node.policymaker.field_dm_org_below
+    - field.field.node.policymaker.field_dm_org_name
     - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
@@ -41,12 +43,28 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_ahjo_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
   field_decisions_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_dm_org_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 8
     region: content
   field_documents_description:
     type: text_default

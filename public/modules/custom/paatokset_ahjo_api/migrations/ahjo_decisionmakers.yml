@@ -68,6 +68,8 @@ source:
   ids:
     decisionmaker_id:
       type: string
+  constants:
+    title_field: title
 process:
   type:
     plugin: default_value
@@ -79,10 +81,20 @@ process:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_policymaker_nid
     source: decisionmaker_id
+  _existing_title:
+    plugin: callback
+    callable: _paatokset_ahjo_api_get_existing_value
+    source:
+      - '@nid'
+      - 'constants/title_field'
   title:
     plugin: default_value
+    source: '@_existing_title'
+    default_value: title
+  field_ahjo_title:
+    plugin: default_value
     source: title
-    default_value: 'NO TITLE'
+    default_value: decisionmaker_id
   field_policymaker_id: decisionmaker_id
   field_organization_type: decisionmaker_type
   field_organization_type_id: decisionmaker_type_id
@@ -119,6 +131,14 @@ process:
     -
       plugin: callback
       callable: json_encode
+  field_dm_org_name:
+    -
+      plugin: array_shift
+      source: organization_above/organizations
+    -
+      plugin: extract
+      index:
+        - Name
   field_dm_org_below:
     -
       plugin: single_value

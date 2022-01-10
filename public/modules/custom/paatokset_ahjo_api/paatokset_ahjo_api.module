@@ -12,6 +12,8 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Link;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_theme().
@@ -357,6 +359,19 @@ function _paatokset_ahjo_api_get_first_name($value): string {
 function _paatokset_ahjo_api_get_last_name($value): string {
   $bits = explode(', ', (string) $value);
   return (string) array_shift(array_slice($bits, 0, 1));
+}
+
+/**
+ * Get existing value, if node already exists.
+ */
+function _paatokset_ahjo_api_get_existing_value(array $values) {
+  $nid = $values[0];
+  $field = $values[1];
+  $node = Node::load($nid);
+  if ($node instanceof NodeInterface && $node->hasField($field) && !$node->get($field)->isEmpty()) {
+    return $node->get($field)->value;
+  }
+  return NULL;
 }
 
 /**

@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.policymaker.field_ahjo_summary
+    - field.field.node.policymaker.field_ahjo_title
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_above
     - field.field.node.policymaker.field_dm_org_below
+    - field.field.node.policymaker.field_dm_org_name
     - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
@@ -41,10 +43,12 @@ third_party_settings:
   field_group:
     group_integration_data:
       children:
+        - field_ahjo_title
         - field_policymaker_id
         - field_ahjo_summary
         - field_organization_type
         - field_organization_type_id
+        - field_dm_org_name
         - field_policymaker_formed
         - field_policymaker_dissolved
         - field_policymaker_existing
@@ -114,13 +118,39 @@ content:
     third_party_settings: {  }
   field_ahjo_summary:
     type: readonly_field_widget
-    weight: 4
+    weight: 6
     region: content
     settings:
       label: above
       formatter_type: basic_string
       show_description: '1'
       formatter_settings: null
+    third_party_settings: {  }
+  field_ahjo_title:
+    type: readonly_field_widget
+    weight: 4
+    region: content
+    settings:
+      label: above
+      formatter_type: string
+      formatter_settings:
+        service_map_embed:
+          iframe_title: 'Service map'
+          link_title: 'Katso suurempi kartta'
+          target: '1'
+        imagecache_external_image:
+          imagecache_external_style: ''
+          imagecache_external_link: ''
+        imagecache_external_responsive_image:
+          imagecache_external_responsive_style: content_cards
+          imagecache_external_link: ''
+        meeting_video_embed:
+          iframe_title: 'Meeting video'
+          link_title: 'View all meeting recordings'
+          target: '1'
+        string:
+          link_to_entity: 0
+      show_description: 0
     third_party_settings: {  }
   field_contacts:
     type: entity_reference_autocomplete
@@ -154,7 +184,7 @@ content:
     third_party_settings: {  }
   field_dm_org_above:
     type: json_textarea
-    weight: 12
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -162,15 +192,23 @@ content:
     third_party_settings: {  }
   field_dm_org_below:
     type: json_textarea
-    weight: 13
+    weight: 16
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_dm_org_name:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_dm_sector:
     type: json_textarea
-    weight: 11
+    weight: 14
     region: content
     settings:
       rows: 5
@@ -194,7 +232,7 @@ content:
     third_party_settings: {  }
   field_is_decisionmaker:
     type: boolean_checkbox
-    weight: 10
+    weight: 13
     region: content
     settings:
       display_label: true
@@ -217,7 +255,7 @@ content:
     third_party_settings: {  }
   field_organization_type:
     type: string_textfield
-    weight: 5
+    weight: 7
     region: content
     settings:
       size: 60
@@ -225,7 +263,7 @@ content:
     third_party_settings: {  }
   field_organization_type_id:
     type: string_textfield
-    weight: 6
+    weight: 8
     region: content
     settings:
       size: 60
@@ -233,26 +271,26 @@ content:
     third_party_settings: {  }
   field_policymaker_dissolved:
     type: datetime_default
-    weight: 8
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   field_policymaker_existing:
     type: boolean_checkbox
-    weight: 9
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_policymaker_formed:
     type: datetime_default
-    weight: 7
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_policymaker_id:
     type: readonly_field_widget
-    weight: 3
+    weight: 5
     region: content
     settings:
       label: above
