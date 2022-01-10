@@ -367,11 +367,18 @@ function _paatokset_ahjo_api_get_last_name($value): string {
 function _paatokset_ahjo_api_get_existing_value(array $values) {
   $nid = $values[0];
   $field = $values[1];
+  $default = $values[2];
+
+  if (!$nid) {
+    return $default;
+  }
+
   $node = Node::load($nid);
   if ($node instanceof NodeInterface && $node->hasField($field) && !$node->get($field)->isEmpty()) {
     return $node->get($field)->value;
   }
-  return NULL;
+
+  return $default;
 }
 
 /**

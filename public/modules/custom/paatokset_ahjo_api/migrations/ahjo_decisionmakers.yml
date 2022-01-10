@@ -81,16 +81,13 @@ process:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_policymaker_nid
     source: decisionmaker_id
-  _existing_title:
+  title:
     plugin: callback
     callable: _paatokset_ahjo_api_get_existing_value
     source:
       - '@nid'
       - 'constants/title_field'
-  title:
-    plugin: default_value
-    source: '@_existing_title'
-    default_value: title
+      - 'title'
   field_ahjo_title:
     plugin: default_value
     source: title
