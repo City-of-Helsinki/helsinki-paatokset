@@ -232,3 +232,17 @@ h2.minutes-list__header {
     display: none;
   }
 }
+
+.policymaker-label__org-name {
+  font-size: 18px;
+  margin-top: $spacing * -1;
+  margin-bottom: $spacing-double;
+
+  &:after {
+    content: "";
+    display: block;
+    margin-top: $spacing-and-half;
+    border-bottom: 2px solid $color-black;
+    width: 90px;
+  }
+}

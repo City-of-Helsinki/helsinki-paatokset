@@ -45,40 +45,48 @@ content:
     region: content
   field_ahjo_title:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 7
+    weight: 2
     region: content
   field_decisions_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 8
     region: content
   field_dm_org_name:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 8
+    weight: 4
     region: content
   field_documents_description:
     type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 6
     region: content
   field_meetings_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 7
+    region: content
+  field_organization_type:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_policymaker_image:
     type: entity_reference_entity_view
@@ -87,7 +95,7 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 2
+    weight: 5
     region: content
   field_policymaker_summary:
     type: text_default
@@ -101,7 +109,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 9
     region: content
 hidden:
   field_contacts: true
@@ -112,7 +120,6 @@ hidden:
   field_first_name: true
   field_is_decisionmaker: true
   field_last_name: true
-  field_organization_type: true
   field_organization_type_id: true
   field_policymaker_dissolved: true
   field_policymaker_existing: true

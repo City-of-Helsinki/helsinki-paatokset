@@ -98,9 +98,16 @@ class PolicymakerSideNav extends BlockBase {
     ];
 
     $routeProvider = \Drupal::service('router.route_provider');
-    $routes = $policymaker->get('field_organization_type')->value === 'trustee' ?
-      PolicymakerRoutes::getTrusteeRoutes() :
-      PolicymakerRoutes::getOrganizationRoutes();
+    $trustee_types = [
+      'Viranhaltija',
+      'Luottamushenkilö',
+    ];
+    if (in_array($policymaker->get('field_organization_type')->value, $trustee_types)) {
+      $routes = PolicymakerRoutes::getTrusteeRoutes();
+    }
+    else {
+      $routes = PolicymakerRoutes::getOrganizationRoutes();
+    }
 
     foreach ($routes as $route) {
       $localizedRoute = "$route.$currentLanguage";

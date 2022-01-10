@@ -84,11 +84,23 @@
 
 <article{{ attributes.addClass(classes) }}>
   <section class="container policymaker-summary">
-    <div class="policymaker-summary__label">
-      <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
-        {{ label }}
+    {% if is_organization %}
+      <div class="policymaker-summary__label">
+        <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
+          {{ content.field_ahjo_title }}
+        </div>
       </div>
-    </div>
+    {% else %}
+      <div aria-label="{{ 'Organization'|t }}" class="policymaker-label__org-name">
+        {{ content.field_dm_org_name }}
+      </div>
+      <div role="region" aria-label="{{ 'Page tags'|t }}" class="policymaker-summary__label">
+        <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
+          {{ content.field_organization_type }}
+        </div>
+      </div>
+    {% endif %}
+
     {% if render_announcement_block %}
       {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
     {% endif %}
@@ -122,7 +134,7 @@
         <section class="content-menu">
           <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
           <ul>
-            {% if recent_documents %} 
+            {% if recent_documents %}
               <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
             {% endif %}
             {% if most_recent_meeting %}
@@ -221,7 +233,7 @@
       </section>
     {% endif %}
   {% endif %}
- 
+
   {% if meeting_calendar %}
     <section class="container policymaker-calendar" id="meeting-calendar">
       {{ drupal_block('policymaker_calendar') }}
