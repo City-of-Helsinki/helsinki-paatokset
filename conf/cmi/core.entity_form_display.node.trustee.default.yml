@@ -34,7 +34,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 14
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -79,7 +79,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_trustee_email:
-    weight: 29
+    weight: 10
     settings:
       size: 60
       placeholder: ''
@@ -162,14 +162,14 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 12
+    weight: 15
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 17
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -182,7 +182,7 @@ content:
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 18
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -220,12 +220,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 19
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 20
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
