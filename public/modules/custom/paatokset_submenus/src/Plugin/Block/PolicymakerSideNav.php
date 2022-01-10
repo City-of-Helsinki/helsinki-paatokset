@@ -127,6 +127,7 @@ class PolicymakerSideNav extends BlockBase {
     foreach ($items as $key => $item) {
       if ($item['url']->toString() === $currentPath) {
         $items[$key]['is_active'] = TRUE;
+        $items[$key]['attributes']->setAttribute('aria-current', 'page');
       }
     }
 

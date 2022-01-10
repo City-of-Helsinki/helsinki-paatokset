@@ -47,7 +47,11 @@
                     ]
                   %}
                   <li{{ item_attributes.addClass(item_classes) }}>
-                    <input type="button" id="yearSelection_{{ year }}" value="{{ year }}"/>
+                    {% if loop.index == 1 %}
+                      <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="true"/>
+                    {% else %}
+                      <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="false"/>
+                    {% endif %}
                   </li>
                 {% endfor %}
               </ul>

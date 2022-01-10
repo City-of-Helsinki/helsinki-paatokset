@@ -6,22 +6,22 @@
 
 <div class="minutes-container container">
   {% if meeting is not empty %}
-    <div class="minutes__header">
+    <h1 class="minutes__header">
       <span class="minutes__header-prefix">
         {{ meeting.page_title }}
       </span>
-      <h1>{{ meeting.title }}</h1>
+      <span class="minutes__header-title">{{ meeting.title }}</span>
       <span class="minutes__header-suffix">
         {{ meeting.date_long }}
       </span>
-    </div>
+    </h1>
   {% endif %}
 
   {% if list is not empty %}
     <div class="minutes-list__wrapper">
-      <div class="minutes-list__header">
+      <h2 class="minutes-list__header">
         {{ 'Issue list'|t }}
-      </div>
+      </h2>
       <div class="minutes-list__container">
         {% for agenda_item in list %}
           {% include '@paatokset_ahjo/component/agenda-item--list-item.html.twig' %}

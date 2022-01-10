@@ -72,10 +72,12 @@
       // Remove all prior selected classes
       $('.handorgel__content__inner ul.menu li').removeClass('selected');
       $('.custom-select-wrapper .custom-option').removeClass('selected');
+      $('.custom-select-wrapper .custom-option input').attr('aria-pressed', false);
 
       // Add selected class to selected item
       $(`.handorgel__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
       $(`.custom-select-wrapper .custom-option input[value="${value}"]`).parent('.custom-option').addClass('selected');
+      $(`.custom-select-wrapper .custom-option input[value="${value}"]`).attr('aria-pressed', 'true');
     }
 
     showSelected();
