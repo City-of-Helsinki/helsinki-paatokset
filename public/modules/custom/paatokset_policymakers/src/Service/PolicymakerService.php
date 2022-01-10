@@ -560,17 +560,9 @@ class PolicymakerService {
         continue;
       }
 
-      // If document doesn't have issued date, use meeting date (e.g agendas).
-      if ($document->hasField('field_document_issued') && !$document->get('field_document_issued')->isEmpty()) {
-        $document_timestamp = strtotime($document->get('field_document_issued')->value);
-      }
-      else {
-        $document_timestamp = $meeting_timestamp;
-      }
-
       $result = [
-        'publish_date' => date('d.m.Y', $document_timestamp),
-        'publish_date_short' => date('m - Y', $document_timestamp),
+        'publish_date' => date('d.m.Y', $meeting_timestamp),
+        'publish_date_short' => date('m - Y', $meeting_timestamp),
         'title' => $document_title,
         'meeting_number' => $node->get('field_meeting_sequence_number')->value . ' - ' . $meeting_year,
         'origin_url' => $meetingService->getUrlFromAhjoDocument($document),
@@ -721,7 +713,7 @@ class PolicymakerService {
       }
 
       if (!empty($data['Section'])) {
-        $index = $data['AgendaPoint'] . '. ' . $data['Section'];
+        $index = $data['AgendaPoint'] . '. &ndash; ' . $data['Section'];
       }
       else {
         $index = $data['AgendaPoint'];
