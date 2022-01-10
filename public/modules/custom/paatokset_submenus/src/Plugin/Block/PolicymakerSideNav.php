@@ -106,14 +106,19 @@ class PolicymakerSideNav extends BlockBase {
       'Viranhaltija',
       'Luottamushenkilö',
     ];
-    if (in_array($policymaker->get('field_organization_type')->value, $trustee_types)) {
+    $org_type = $policymaker->get('field_organization_type')->value;
+    if (in_array($org_type, $trustee_types)) {
       $routes = PolicymakerRoutes::getTrusteeRoutes();
     }
     else {
       $routes = PolicymakerRoutes::getOrganizationRoutes();
     }
 
-    foreach ($routes as $route) {
+    foreach ($routes as $key => $route) {
+      if ($key === 'discussion_minutes' && $org_type !== 'Valtuusto') {
+        continue;
+      }
+
       $localizedRoute = "$route.$currentLanguage";
       if ($this->policymakerService->routeExists($localizedRoute)) {
         $route = $routeProvider->getRouteByName($localizedRoute);
