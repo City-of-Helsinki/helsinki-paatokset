@@ -713,7 +713,7 @@ class PolicymakerService {
       }
 
       if (!empty($data['Section'])) {
-        $index = $data['AgendaPoint'] . '. &ndash; ' . $data['Section'];
+        $index = $data['AgendaPoint'] . '. – ' . $data['Section'];
       }
       else {
         $index = $data['AgendaPoint'];
