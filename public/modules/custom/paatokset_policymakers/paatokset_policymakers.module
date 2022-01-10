@@ -81,11 +81,16 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $policymaker = $variables['node'];
   $policymakerService->setPolicyMakerNode($policymaker);
 
+  $not_organization_types = [
+    'Luottamushenkilö',
+    'Viranhaltija',
+  ];
+
   $orgType = $policymaker->get('field_organization_type')->value;
+
   if ($orgType) {
     $variables['org_type_class'] = $policymakerService->transformOrgType($orgType);
-
-    if ($orgType !== 'trustee') {
+    if (!in_array($orgType, $not_organization_types)) {
       $variables['is_organization'] = TRUE;
 
       $documents = $policymakerService->getApiMinutes(2);
@@ -150,7 +155,7 @@ function template_preprocess_block__policymaker_members(array &$variables) {
   $variables['#attached']['library'][] = 'paatokset_policymakers/policymaker_members';
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  $variables['policymaker_name'] = $node->get('title')->value;
+  $variables['policymaker_name'] = $node->get('field_ahjo_title')->value;
   $variables['policymaker_id'] = $node->get('field_policymaker_id')->value;
 
   // Helpful $content variable for templates.
