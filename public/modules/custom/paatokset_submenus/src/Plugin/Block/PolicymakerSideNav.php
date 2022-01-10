@@ -92,7 +92,7 @@ class PolicymakerSideNav extends BlockBase {
     }
 
     $items[] = [
-      'title' => $policymaker->getTitle(),
+      'title' => $policymaker->get('field_ahjo_title')->value,
       'url' => $policymaker->toUrl(),
       'attributes' => new Attribute(),
     ];
@@ -109,7 +109,7 @@ class PolicymakerSideNav extends BlockBase {
         $title = call_user_func($route->getDefault('_title_callback'))->render();
         $items[] = [
           'title' => $title,
-          'url' => Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker->get('title')->value)]),
+          'url' => Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker->get('field_ahjo_title')->value)]),
           'attributes' => new Attribute(),
         ];
       }
