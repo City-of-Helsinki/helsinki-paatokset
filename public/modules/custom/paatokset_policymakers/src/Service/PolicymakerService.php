@@ -200,7 +200,7 @@ class PolicymakerService {
     $localizedRoute = "$baseRoute.$currentLanguage";
 
     if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('title')->value)]);
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('field_ahjo_title')->value)]);
     }
 
     return NULL;
@@ -223,7 +223,7 @@ class PolicymakerService {
     $localizedRoute = "$baseRoute.$currentLanguage";
 
     if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('title')->value)]);
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('field_ahjo_title')->value)]);
     }
 
     return NULL;
@@ -255,7 +255,7 @@ class PolicymakerService {
 
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, [
-        'organization' => strtolower($this->policymaker->get('title')->value),
+        'organization' => strtolower($this->policymaker->get('field_ahjo_title')->value),
         'id' => $id,
       ]);
     }
@@ -627,15 +627,9 @@ class PolicymakerService {
     $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
 
     $dateLong = date('d.m.Y', $meeting_timestamp);
-    $dateShort = date('m/Y', $meeting_timestamp);
-    $dateYear = date('Y', $meeting_timestamp);
-    $sequenceNumber;
-
-    if ($meeting->get('field_meeting_sequence_number')->value) {
-      $sequenceNumber = $meeting->get('field_meeting_sequence_number')->value . '/' . $dateYear;
-    }
-
-    $policymaker_title = $this->policymaker->get('title')->value;
+    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
+    $meetingYear = date('Y', $meeting_timestamp);
+    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
     $agendaItems = NULL;
     $publishDate = NULL;
     $fileUrl = NULL;
@@ -682,7 +676,7 @@ class PolicymakerService {
       'meeting' => [
         'page_title' => $pageTitle,
         'date_long' => $dateLong,
-        'title' => "$policymaker_title $sequenceNumber",
+        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
       ],
       'list' => $agendaItems,
       'file' => [
