@@ -3,12 +3,13 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.storage.node.field_ahjo_title
     - field.storage.node.field_organization_type
     - search_api.server.elasticsearch
   module:
-    - node
     - search_api
     - paatokset_search
+    - node
 id: policymakers
 name: Policymakers
 description: ''
@@ -35,11 +36,11 @@ field_settings:
   title:
     label: Otsikko
     datasource_id: 'entity:node'
-    property_path: title
+    property_path: field_ahjo_title
     type: text
     dependencies:
-      module:
-        - node
+      config:
+        - field.storage.node.field_ahjo_title
   url:
     label: URI
     property_path: search_api_url
