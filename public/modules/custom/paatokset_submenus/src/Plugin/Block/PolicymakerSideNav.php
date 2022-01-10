@@ -97,6 +97,10 @@ class PolicymakerSideNav extends BlockBase {
       'attributes' => new Attribute(),
     ];
 
+    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+
     $routeProvider = \Drupal::service('router.route_provider');
     $trustee_types = [
       'Viranhaltija',
@@ -116,7 +120,7 @@ class PolicymakerSideNav extends BlockBase {
         $title = call_user_func($route->getDefault('_title_callback'))->render();
         $items[] = [
           'title' => $title,
-          'url' => Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker->get('field_ahjo_title')->value)]),
+          'url' => Url::fromRoute($localizedRoute, ['organization' => $policymaker_org]),
           'attributes' => new Attribute(),
         ];
       }
