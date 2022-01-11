@@ -82,6 +82,8 @@
 ]
 %}
 
+{{ attach_library('hdbt/accordion') }}
+
 <article{{ attributes.addClass(classes) }}>
 
   {{ title_prefix }}
@@ -91,10 +93,110 @@
     </h2>
   {% endif %}
   {{ title_suffix }}
-  {{ content|without('field_lower_content', 'field_sidebar_content') }}
 
-  <div class="top-container">
-    {{ content.field_trustee_title }}
+  <div class="trustee-top-container">
+    <span>{{ content.field_trustee_title }}</span>
+    <span>{{ content.field_trustee_council_group }}</span>
+  </div>
+  <div class="trustee-image">
+      {{ content.field_trustee_image }}
+    </div>
+  {% if content.field_trustee_profession|render or content.field_trustee_home_district|render or content.field_trustee_email|render or content.field_trustee_homepage|render %}
+    <div class="trustee-information">
+      {% if content.field_trustee_profession|render %}
+        <div class="information-row">{{ content.field_trustee_profession }}</div>
+      {% endif %}
+      {% if content.field_trustee_home_district|render %}
+        <div class="information-row">{{ content.field_trustee_home_district }}</div>
+      {% endif %}
+      {% if content.field_trustee_email|render %}
+        <div class="information-row">{{ content.field_trustee_email }}</div>
+      {% endif %}
+      {% if content.field_trustee_homepage|render %}
+        <div class="information-row">{{ content.field_trustee_homepage }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="accordion__wrapper handorgel accordion_speaking-turn">
+    <h4 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ speaking_turns.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h4>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in speaking_turns.content %}
+        <div>
+          <div class="speaking-turn__meeting">{{ row.meeting }}</div>
+          <div class="speaking-turn__link-container">
+            {% include '@hdbt/misc/icon.twig' with {icon: 'videocamera'} %}
+            <a class="speaking-turn__link" href="{{row.link}}">{{ row.speaking_turn }}</a>
+          </div>
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
   </div>
 
+  {% if initiatives.content|length > 0 %}
+  <div class="accordion__wrapper handorgel accordion_initiatives">
+    <h4 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ initiatives.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h4>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in initiatives.content %}
+        <div>
+          <div class="date">{{ row[0].Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row[0].FileURI }}">{{row[0].Title}}</a>
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if resolutions.content|length > 0 %}
+  <div class="accordion__wrapper handorgel accordion_resolutions">
+    <h4 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ resolutions.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h4>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in resolutions.content %}
+        <div>
+          <div class="date">{{ row[0].Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row[0].FileURI }}">{{row[0].Title}}</a>
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </article>

@@ -1,0 +1,149 @@
+.page-type--trustee .page-title__container {
+  max-width: unset;
+}
+
+.trustee-information {
+  background-color: #e8f3fc;
+  padding: $spacing-m;
+  margin-bottom: 48px;
+
+  .information-row {
+    display: flex;
+    font-size: 18px;
+
+    &:not(:last-of-type) {
+      margin-bottom: $spacing-s;
+    }
+  }
+
+  .label {
+    margin-right: $spacing-2-xs;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.trustee-top-container {
+  margin-bottom: $spacing-m;
+  padding-left: 32px;
+
+  @include breakpoint($breakpoint-l) {
+    padding: 0;
+  }
+
+  span {
+    font-size: 18px;
+    color: $color-black-light;
+
+    &:first-of-type::after {
+      content: "•";
+      margin: 0 $spacing-s;
+    }
+  }
+}
+
+.trustee-image {
+  margin-bottom: $spacing-m;
+}
+
+.node--type-trustee {
+  .accordion-item__header {
+    .handorgel__header__button {
+      color: black;
+      border: none;
+      border-top: 2px solid $color-black-20;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      @include breakpoint($breakpoint-l) {
+        padding: 32px 32px 32px 0;
+      }
+    }
+
+    .icon {
+      min-width: 30px;
+      min-height: 30px;
+      width: 30px;
+      height: 30px;
+      transition: all 0.1s ease-in-out;
+    }
+    
+  }
+
+  .handorgel__header--open {
+    .icon {
+      transform: rotate(180deg)
+    }
+  }
+
+  .handorgel__header--open,
+  .handorgel__header--opened {
+    .handorgel__header__button {
+      background-color: white;
+    }
+  }
+
+ 
+
+  .handorgel__content {
+    border: none;
+    padding: 0 24px;
+
+    @include breakpoint($breakpoint-l) {
+      padding: 0;
+    }
+  }
+
+  .accordion-item__content__inner {
+    padding: 0;
+  }
+
+  .accordion__wrapper.handorgel {
+    border: none;
+  }
+
+  .accordion-item__button--close {
+    display: flex;
+    justify-content: right;
+    padding: 24px;
+    cursor: pointer;
+
+    .icon {
+      margin-left: $spacing-2-xs;
+    }
+  }
+}
+
+.accordion_initiatives,
+.accordion_resolutions {
+  .accordion-item__content__inner > div {
+    margin-bottom: $spacing-s;
+  }
+
+  .date {
+    color: $color-black-light;
+    margin-bottom: $spacing-2-xs;
+  }
+}
+
+.accordion_speaking-turn {
+  .accordion-item__content__inner > div {
+    margin-bottom: $spacing-s;
+  }
+
+  .speaking-turn__meeting {
+    font-size: 18px;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-s;
+  }
+
+  .speaking-turn__link-container {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: $spacing-s;
+    }
+  }
+}

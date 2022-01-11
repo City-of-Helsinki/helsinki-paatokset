@@ -54,7 +54,7 @@ content:
     region: content
   field_trustee_council_group:
     type: string
-    label: inline
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -84,7 +84,6 @@ content:
     weight: 10
     region: content
   field_trustee_homepage:
-    type: string
     label: above
     settings:
       trim_length: 80
@@ -95,9 +94,10 @@ content:
     third_party_settings: {  }
     type: link
     region: content
+    weight: null
   field_trustee_image:
     type: image
-    label: above
+    label: hidden
     settings:
       image_link: ''
       image_style: ''
@@ -143,10 +143,10 @@ content:
     weight: 0
     region: content
   links:
-    settings: {  }
-    third_party_settings: {  }
     weight: 6
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_trustee_id: true
   langcode: true
