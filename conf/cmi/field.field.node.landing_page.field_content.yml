@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.meetings_calendar
   module:
     - entity_reference_revisions
 _core:
@@ -33,6 +34,7 @@ settings:
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
       content_cards: content_cards
+      meetings_calendar: meetings_calendar
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -50,6 +52,9 @@ settings:
       content_cards:
         weight: -23
         enabled: true
+      custom_content_links:
+        weight: 21
+        enabled: false
       gallery:
         weight: -20
         enabled: false
@@ -71,6 +76,9 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
+      meetings_calendar:
+        weight: 29
+        enabled: true
       text:
         weight: -15
         enabled: false

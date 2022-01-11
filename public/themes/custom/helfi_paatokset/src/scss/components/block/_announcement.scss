@@ -2,8 +2,24 @@
 
 #block-helsinkikanavaannouncements {
   .announcement {
+    h2 {
+      font-weight: $font-weight-bold;
+      font-size: 1.15rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
     margin-left: 0;
     margin-bottom: $spacing-triple;
+
+    @include breakpoint($breakpoint-m) {
+      margin-left: 0;
+      margin-right: 0;
+    }
 
     @include breakpoint($breakpoint-xl) {
       margin-bottom: $spacing-quadruple;

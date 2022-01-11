@@ -1,14 +1,12 @@
-// Hero section block for paatokset search form
-#block-helfi-paatokset-heroblock {
+// Hero section for search form
+.hero--paatokset-search-bar {
+  margin-top: -40px;
   margin-bottom: $spacing-double;
 
   @include breakpoint($breakpoint-xl) {
     margin-bottom: $spacing-quadruple;
   }
-}
 
-// Hero section for search form
-.hero--paatokset-search-bar {
   .hero__text-content {
     padding-top: $spacing-triple;
     padding-bottom: $spacing-triple;
