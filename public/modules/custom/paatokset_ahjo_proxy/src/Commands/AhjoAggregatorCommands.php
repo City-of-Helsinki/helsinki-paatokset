@@ -102,7 +102,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $options['query_string']);
     if (!empty($options['retry'])) {
       $this->logger->info('Resuming from file: ' . $options['retry']);
-      $data[$list_key] = $this->ahjoProxy->getStatic($options['retry']);
+      $data = $this->ahjoProxy->getStatic($options['retry']);
     }
     else {
       $data = $this->ahjoProxy->getData($endpoint, $options['query_string']);
