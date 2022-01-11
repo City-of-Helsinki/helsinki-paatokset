@@ -5,7 +5,6 @@ namespace Drupal\paatokset_news_importer\Plugin\migrate\source;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
-use Drupal\migrate\Row;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,27 +50,6 @@ class ImportedArticle extends SourcePluginBase implements ContainerFactoryPlugin
    */
   public function fields() {
     return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-    if ($row->hasSourceProperty('description')) {
-      $description = $row->getSourceProperty('description');
-      $doc = new \DOMDocument();
-      $doc->loadHTML($description);
-      $images = $doc->getElementsByTagName('img');
-      if (count($images) > 0) {
-        $row->setSourceProperty('source_path', $images[0]->getAttribute('src'));
-        $path_parts = preg_replace('/\?.*/', '', pathinfo($images[0]->getAttribute('src')));
-        $row->setSourceProperty('filename', $path_parts['basename']);
-        $row->setSourceProperty('image_alt', utf8_decode($images[0]->getAttribute('alt')));
-        $row->setSourceProperty('image_title', utf8_decode($images[0]->getAttribute('title')));
-      }
-    }
-
-    return parent::prepareRow($row);
   }
 
   /**
@@ -121,6 +99,17 @@ class ImportedArticle extends SourcePluginBase implements ContainerFactoryPlugin
           }
           $transformedItem[$key] = (string) $value;
         }
+        if (isset($transformedItem['description'])) {
+          $doc = new \DOMDocument();
+          $doc->loadHTML($transformedItem['description']);
+          $images = $doc->getElementsByTagName('img');
+          if (count($images) > 0) {
+            $transformedItem['image_url'] = $images[0]->getAttribute('src');
+            $transformedItem['image_alt'] = utf8_decode($images[0]->getAttribute('alt'));
+            $transformedItem['image_title'] = utf8_decode($images[0]->getAttribute('title'));
+          }
+        }
+
         $transformedItem['content'] = (string) $item->xpath('content:encoded')[0];
         $result[] = $transformedItem;
       }

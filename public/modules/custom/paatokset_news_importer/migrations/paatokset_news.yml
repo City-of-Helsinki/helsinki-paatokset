@@ -27,6 +27,14 @@ process:
   uid/target_id:
     plugin: default_value
     default_value: '1'
+  field_image_url: image_url
+  field_published:
+    plugin: format_date
+    from_format: 'd M Y H:i:s O'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: pubDate
   field_image/target_id:
     plugin: migration_lookup
     migration: paatokset_news_images

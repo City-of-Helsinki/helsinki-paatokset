@@ -1,12 +1,15 @@
-uuid: 04172a5f-0fd7-4c79-af3c-96a1c2c6d046
+uuid: 196cd81a-1cb0-4c3d-a053-69d74a9ac396
 langcode: fi
 status: true
 dependencies:
   config:
     - field.field.node.imported_article.body
-    - field.field.node.imported_article.field_image
+    - field.field.node.imported_article.field_image_url
+    - field.field.node.imported_article.field_published
     - node.type.imported_article
   module:
+    - datetime
+    - link
     - text
     - user
   enforced:
@@ -26,11 +29,33 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  field_image_url:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_published:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 103
+    region: content
   links:
+    settings: {  }
+    third_party_settings: {  }
     weight: 100
     region: content
 hidden:
-  field_image: true
   langcode: true
   search_api_excerpt: true
   toc_enabled: true

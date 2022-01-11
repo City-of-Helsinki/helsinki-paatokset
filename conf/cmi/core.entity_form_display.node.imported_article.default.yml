@@ -1,17 +1,18 @@
-uuid: 4c3b4c13-60a8-4442-9b71-026c00ca415e
+uuid: 45e2286e-4b0b-4f13-ac37-bcc58befab5d
 langcode: fi
 status: true
 dependencies:
   config:
     - field.field.node.imported_article.body
-    - field.field.node.imported_article.field_image
-    - image.style.thumbnail
+    - field.field.node.imported_article.field_image_url
+    - field.field.node.imported_article.field_published
     - node.type.imported_article
   module:
-    - image
+    - hdbt_admin_editorial
+    - link
     - path
+    - readonly_field_widget
     - scheduler
-    - text
   enforced:
     module:
       - paatokset_news_importer
@@ -23,14 +24,14 @@ bundle: imported_article
 mode: default
 content:
   body:
-    type: text_textarea_with_summary
+    type: readonly_field_widget
     weight: 12
     region: content
     settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
     third_party_settings: {  }
   created:
     type: datetime_timestamp
@@ -38,20 +39,33 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_image:
-    type: image_image
-    weight: 13
+  field_image_url:
+    type: link_default
+    weight: 123
     region: content
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_published:
+    type: readonly_field_widget
+    weight: 122
+    region: content
+    settings:
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
     third_party_settings: {  }
   langcode:
-    type: language_select
+    type: readonly_field_widget
     weight: 2
     region: content
     settings:
-      include_locked: true
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
     third_party_settings: {  }
   path:
     type: path
@@ -60,11 +74,10 @@ content:
     settings: {  }
     third_party_settings: {  }
   promote:
-    type: boolean_checkbox
+    type: options_buttons
     weight: 15
     region: content
-    settings:
-      display_label: true
+    settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
@@ -87,22 +100,24 @@ content:
       display_label: true
     third_party_settings: {  }
   title:
-    type: string_textfield
+    type: readonly_field_widget
     weight: -5
     region: content
     settings:
-      size: 60
-      placeholder: ''
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
     third_party_settings: {  }
   uid:
-    type: entity_reference_autocomplete
+    type: readonly_field_widget
     weight: 5
     region: content
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      label: above
+      formatter_type: null
+      formatter_settings: null
+      show_description: false
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
@@ -115,5 +130,4 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_image: true
+hidden: {  }
