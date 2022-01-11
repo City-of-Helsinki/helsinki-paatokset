@@ -8,6 +8,7 @@ use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo\Entity\Issue;
@@ -418,7 +419,7 @@ class PolicymakerService {
       'Varajäsen',
       'Puheenjohtaja',
     ];
-    // @todo Load full data (node or JSON) for trustees.
+
     $names = [];
     foreach ($meeting->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value, TRUE);
@@ -443,10 +444,21 @@ class PolicymakerService {
     $person_nodes = $this->getTrusteeNodesByName($names);
     foreach ($person_nodes as $node) {
       $name = $node->title->value;
+
+      if ($node->hasField('field_trustee_image') && !$node->get('field_trustee_image')->isEmpty()) {
+        $image_uri = $node->get('field_trustee_image')->first()->entity->getFileUri();
+        $image_style = ImageStyle::load('1_1_thumbnail_2x');
+        $image_url = $image_style->buildUrl($image_uri);
+      }
+      else {
+        $image_url = NULL;
+      }
       if (isset($composition[$name])) {
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
           'last_name' => $node->get('field_last_name')->value,
+          'image_url' => $image_url,
+          'url' => $node->toUrl()->setAbsolute(TRUE)->toString(),
           'role' => $composition[$name]['Role'],
           'email' => $node->get('field_trustee_email')->value,
           'party' => $node->get('field_trustee_council_group')->value,
