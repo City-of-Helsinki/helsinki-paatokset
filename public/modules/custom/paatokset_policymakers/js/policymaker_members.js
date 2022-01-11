@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="policymaker-members__list">
-          <div v-for="member in filteredMembers" class="member-row">
+          <a v-for="member in filteredMembers" class="member-row" :href="member.url">
             <div class="member-info">
               <span class="member-name">{{ member.first_name }} {{ member.last_name }}</span>
               <div>
@@ -46,8 +46,10 @@
               </div>
               <span class="member-email">{{ processEmail(member.email) }}</span>
             </div>
-            <div class="member-image"></div>
-          </div>
+            <div class="member-image">
+              <img v-if="member.image_url" :src="member.image_url"/>
+            </div>
+          </a>
         </div>
       </div>
       `
