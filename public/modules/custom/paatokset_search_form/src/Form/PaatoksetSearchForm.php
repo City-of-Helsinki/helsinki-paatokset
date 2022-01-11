@@ -4,7 +4,6 @@ namespace Drupal\paatokset_search_form\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 
 /**
  * Front page search form.
@@ -49,7 +48,6 @@ class PaatoksetSearchForm extends FormBase {
       '#attributes' => [
         'class' => ['hds-text-input__input-wrapper'],
       ],
-
     ];
 
     $form['container']['search-wrapper']['hds-text-input']['hds-text-input__input-wrapper']['hds-text-input__input'] = [
@@ -57,6 +55,7 @@ class PaatoksetSearchForm extends FormBase {
       '#attributes' => [
         'class' => ['hds-text-input__input'],
       ],
+      '#title' => t('Search from content'),
       '#placeholder' => t('Write a search phrase, eg. park'),
     ];
 
@@ -66,47 +65,14 @@ class PaatoksetSearchForm extends FormBase {
       '#button_type' => 'primary',
     ];
 
-    $form['container']['advanced-search-link-container'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => ['advanced-search-link-container'],
-      ],
-    ];
-
-    $form['container']['advanced-search-link-container']['advanced-search-link'] = [
-      '#type' => 'link',
-      '#title' => t('Show advanced search'),
-      '#url' => Url::fromRoute('entity.node.canonical', ['node' => 1]),
-    ];
-
     return $form;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // @todo Implement validation
-    return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Implement submit
-    return TRUE;
-  }
-
-  /**
-   * Determine and return advanced search form link.
-   *
-   * @return array
-   *   String, url
-   */
-  private function getAdvancedSearchLink() {
-    // @todo implement
-    return '/advanced-search';
+    $form_state->setRedirect('paatokset_search.decisions', ['s' => $form_state->getValue(['hds-text-input__input'])]);
   }
 
 }

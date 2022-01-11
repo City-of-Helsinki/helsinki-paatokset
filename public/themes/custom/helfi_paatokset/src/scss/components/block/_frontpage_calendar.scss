@@ -1,3 +1,11 @@
+.container.frontpage-calendar__container {
+  margin-top: $spacing-quadruple;
+
+  @include breakpoint($breakpoint-l) {
+    margin-top: $spacing-quadruple * 2;
+  }
+}
+
 .frontpage-calendar {
   background-color: #f7f7f8;
   position: relative;

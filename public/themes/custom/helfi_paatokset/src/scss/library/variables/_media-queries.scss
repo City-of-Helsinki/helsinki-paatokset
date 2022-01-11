@@ -4,18 +4,7 @@
 // This file includes all variables related to media queries
 //
 
-$breakpoint-xs: 320px;
-$breakpoint-s: 576px;
-$breakpoint-m: 768px;
-$breakpoint-l: 992px;
-$breakpoint-xl: 1248px;
-
-// Adjust value of container
-$container-width-xs: 382px;
-$container-width-s: 544px;
-$container-width-m: 720px;
-$container-width-l: 944px;
-$container-width-xl: 1200px;
+@import "~hds-design-tokens/lib/breakpoint/all.scss";
 
 $gutter: 16px;
 

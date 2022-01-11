@@ -23,6 +23,7 @@
     max-width: $container-width-s;
   }
 
+  // @todo fix weird issue with $breakpoint-m getting overridden by smaller breakpoints
   @include breakpoint($breakpoint-m) {
     max-width: $container-width-m;
   }

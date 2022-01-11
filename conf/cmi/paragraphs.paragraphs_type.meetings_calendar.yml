@@ -1,0 +1,15 @@
+uuid: 2bc86e57-3a3d-4d7e-b208-cdee4761bd58
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: meetings_calendar
+label: 'Meetings calendar'
+icon_uuid: null
+icon_default: null
+description: 'Display a calendar of upcoming meetings.'
+behavior_plugins: {  }

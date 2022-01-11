@@ -1,0 +1,12 @@
+// Helsinki Kanava announcements block
+
+#block-helsinkikanavaannouncements {
+  .announcement {
+    margin-left: 0;
+    margin-bottom: $spacing-triple;
+
+    @include breakpoint($breakpoint-xl) {
+      margin-bottom: $spacing-quadruple;
+    }
+  }
+}
