@@ -59,6 +59,7 @@
       position: absolute;
       right: 20px;
       bottom: 16px;
+      pointer-events: none;
     }
   }
 
@@ -90,6 +91,7 @@
     align-items: center;
     border-bottom: 1px solid black;
     padding: 32px 0;
+    text-decoration: none;
   }
 
   .member-info > div {
@@ -100,7 +102,7 @@
     height: 75px;
     width: 75px;
     border-radius: 50%;
-    background-color: gray;
+    overflow: hidden;
 
     @include breakpoint($breakpoint-s) {
       height: 120px;
