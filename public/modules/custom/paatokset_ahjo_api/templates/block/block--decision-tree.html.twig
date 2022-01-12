@@ -1,0 +1,29 @@
+{%
+  set classes = [
+  'decision_tree',
+  view_mode ? 'decision-tree--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+<div {{ attributes.addClass(classes) }}>
+  <div class="decision-tree__info-text">{{ info_1 }}</div>
+  <div class="decision-tree__upper-tree">
+    {% include '@paatokset_ahjo_api/component/decision-tree-arrow.html.twig' with {
+      class: 'arrow-left'
+    }%}
+    {% for row in decision_process %}
+      <div class="decision-tree__box">
+        {{row}}
+      </div>
+    {% endfor %}
+    {% include '@paatokset_ahjo_api/component/decision-tree-arrow--dashed.html.twig' %}
+  </div>
+  <div class="decision-tree__info-text">{{ info_1 }}</div>
+  <div class="decision-tree__lower-tree">
+  {% for row in decisionmaker_process %}
+    <div class="decision-tree__box">
+      {{row}}
+    </div>
+  {% endfor %}
+  </div>
+</div>

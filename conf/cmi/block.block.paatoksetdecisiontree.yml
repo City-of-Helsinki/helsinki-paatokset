@@ -1,0 +1,25 @@
+uuid: cc919dc1-b02c-4750-b9bc-e89c9c7a220b
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetdecisiontree
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: decision_tree
+settings:
+  id: decision_tree
+  label: 'Paatokset decision tree'
+  label_display: '0'
+  provider: paatokset_ahjo_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /paatoksentekoprosessi
