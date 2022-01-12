@@ -17,11 +17,12 @@ const Entries = () => {
     styles: ['./src/scss/styles.scss'],
   };
 
-  const pattern = './src/js/**/*.js';
+  const matches = glob.sync('./src/js/**/*.js');
 
-  glob.sync(pattern, {ignore: []}).map((item) => {
-    entries[path.parse(item).name] = item }
-  );
+  if(matches) {
+    entries.bundle = matches;
+  }
+
   return entries;
 };
 
