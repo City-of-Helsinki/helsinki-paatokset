@@ -140,7 +140,7 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
 
     $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
     $previousMeetingDate = $meetingsService->previousMeetingDate($council_id);
-    $fromTime = $previousMeetingDate ? $previousMeetingDate * 1000 : round(microtime(TRUE) * 1000);
+    $fromTime = strtotime('-4 months') * 1000;
     $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
     $toTime = $nextMeetingDate ? $nextMeetingDate * 1000 : round(microtime(TRUE) * 1000);
 
