@@ -95,7 +95,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ->execute();
   $nodes_policymakers =  \Drupal\node\Entity\Node::loadMultiple($nids_policymakers);
 
-  foreach($nodes_policymakers as $node) {
+  foreach ($nodes_policymakers as $node) {
     if (!$node instanceof NodeInterface) {
       continue;
     }
@@ -123,7 +123,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     'jaosto' => ['Jaosto', []]
   ];
 
-  foreach($accorion_contents as $key => $value) {
+  foreach ($accorion_contents as $key => $value) {
     $filter = $value[0];
 
     $accorion_contents[$key][1] = array_filter($filtered, function ($var) use ($filter) {
@@ -147,7 +147,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ->execute();
   $nodes_trustees = \Drupal\node\Entity\Node::loadMultiple($nids_trustees);
 
-  foreach($nodes_trustees as $node) {
+  foreach ($nodes_trustees as $node) {
     $options = ['absolute' => TRUE];
     $trustees[] = [
       'title' => $node->getTitle(),
