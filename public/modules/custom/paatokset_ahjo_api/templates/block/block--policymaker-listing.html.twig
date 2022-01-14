@@ -41,7 +41,12 @@
           {% for row in values %}
           <a href="{{ row.link }}" class="policymaker-row__link">
             <div class="policymaker-row__color {{ row.organization_type|lower|replace({'ö':'o'}) }}"></div>
-            <span class="policymaker-row__title" >{{ row.title|t }}</span>
+            <div class="policymaker-row__title">
+              {{ row.title|t }}
+              {% if row.organization_type == 'Viranhaltija' %}
+                <div class="policymaker-row__sub-title" >{{ row.organization_name }}</div>
+              {% endif %}
+            </div>
             <i class="hds-icon hds-icon--arrow-right"></i>
           </a>
         {% endfor %}
