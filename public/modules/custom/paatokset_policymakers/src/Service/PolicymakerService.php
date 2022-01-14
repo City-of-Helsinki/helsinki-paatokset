@@ -728,7 +728,7 @@ class PolicymakerService {
         $index = $data['AgendaPoint'] . '. – ' . $data['Section'];
       }
       else {
-        $index = $data['AgendaPoint'];
+        $index = $data['AgendaPoint'] . '.';
       }
 
       $agendaItems[] = [
