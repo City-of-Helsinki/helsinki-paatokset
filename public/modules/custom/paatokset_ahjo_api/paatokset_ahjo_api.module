@@ -141,8 +141,11 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     return (!str_contains($var['title'], $hallituksen_jaosto_filter));
   });
 
-  $nids_trustees = \Drupal::entityQuery('node')->condition('type','trustee')->execute();
-  $nodes_trustees =  \Drupal\node\Entity\Node::loadMultiple($nids_trustees);
+  $nids_trustees = \Drupal::entityQuery('node')
+    ->condition('type','trustee')
+    ->condition('status', 1)
+    ->execute();
+  $nodes_trustees = \Drupal\node\Entity\Node::loadMultiple($nids_trustees);
 
   foreach($nodes_trustees as $node) {
     $options = ['absolute' => TRUE];

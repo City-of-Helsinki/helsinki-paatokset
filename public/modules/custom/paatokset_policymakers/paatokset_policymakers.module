@@ -74,7 +74,10 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
  * Implements preprocess_node hook.
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
+
+  /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
   $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
