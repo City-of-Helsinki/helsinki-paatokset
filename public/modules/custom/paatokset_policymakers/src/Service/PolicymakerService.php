@@ -904,4 +904,35 @@ class PolicymakerService {
     return $result;
   }
 
+  /**
+   * Gets all initiatives from trustee nodes.
+   *
+   * @return array
+   *   List of initiatives.
+   */
+  public function getAllInitiatives(): array {
+    $nids = \Drupal::entityQuery('node')
+    ->condition('type','trustee')
+    ->condition('status', 1)
+    ->condition('field_trustee_initiatives', '', '<>')
+    ->execute();
+
+    $nodes = Node::loadMultiple($nids);
+    $initiatives = [];
+    foreach($nodes as $node) {
+      if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
+        continue;
+      }
+
+      $id = $node->get('field_trustee_id')->value;
+
+      foreach ($node->get('field_trustee_initiatives') as $field) {
+        $initiative = json_decode($field->value, TRUE);
+        $inititive['Trustee'] = $id;
+        $initiatives[] = $initiative;
+      }
+    }
+
+    return $initiatives;
+  }
 }
