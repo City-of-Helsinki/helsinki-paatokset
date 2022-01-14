@@ -912,14 +912,14 @@ class PolicymakerService {
    */
   public function getAllInitiatives(): array {
     $nids = \Drupal::entityQuery('node')
-    ->condition('type','trustee')
-    ->condition('status', 1)
-    ->condition('field_trustee_initiatives', '', '<>')
-    ->execute();
+      ->condition('type', 'trustee')
+      ->condition('status', 1)
+      ->condition('field_trustee_initiatives', '', '<>')
+      ->execute();
 
     $nodes = Node::loadMultiple($nids);
     $initiatives = [];
-    foreach($nodes as $node) {
+    foreach ($nodes as $node) {
       if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
         continue;
       }
@@ -928,11 +928,12 @@ class PolicymakerService {
 
       foreach ($node->get('field_trustee_initiatives') as $field) {
         $initiative = json_decode($field->value, TRUE);
-        $inititive['Trustee'] = $id;
+        $initiative['TrusteeID'] = $id;
         $initiatives[] = $initiative;
       }
     }
 
     return $initiatives;
   }
+
 }
