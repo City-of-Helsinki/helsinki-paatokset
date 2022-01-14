@@ -89,15 +89,27 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     $variables['entity'] = $variables['elements']['#block__policymaker_listing'];
   }
 
-  $nids_policymakers = \Drupal::entityQuery('node')->condition('type','policymaker')->execute();
+  $nids_policymakers = \Drupal::entityQuery('node')
+    ->condition('type','policymaker')
+    ->condition('status', 1)
+    ->execute();
   $nodes_policymakers =  \Drupal\node\Entity\Node::loadMultiple($nids_policymakers);
 
   foreach($nodes_policymakers as $node) {
+    if (!$node instanceof NodeInterface) {
+      continue;
+    }
+
+    if (!$node->hasField('field_ahjo_title') || !$node->hasField('field_dm_org_name') || $node->get('field_ahjo_title')->isEmpty()) {
+      continue;
+    }
+
     $options = ['absolute' => TRUE];
     $filtered[] = [
-      'title' => $node->getTitle(),
+      'title' => $node->get('field_ahjo_title')->value,
       'link' => \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options),
       'organization_type' => $node->get('field_organization_type')->value,
+      'organization_name' => $node->get('field_dm_org_name')->value,
       'image' => $node->get('field_policymaker_image')->view('default'),
     ];
   }
