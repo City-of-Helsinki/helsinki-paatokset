@@ -59,9 +59,8 @@
                 </div>
               </template>
               <template v-else>
-                <div class="no-meetings meeting-title">{{ Drupal.t('Ei kokouksia')}}</div>
+                <div class="no-meetings meeting-title">{{ noMeetings }}</div>
               </template>
-
             </li>
           </ol>
         </div>
@@ -135,25 +134,25 @@
           },
           getDay(date) {
             if(dayjs(date).day() === 1) {
-              return Drupal.t('Maanantai');
+              return window.Drupal.t('Monday');
             }
             if(dayjs(date).day() === 2) {
-              return Drupal.t('Tiistai');
+              return window.Drupal.t('Tuesday');
             }
             if(dayjs(date).day() === 3) {
-              return Drupal.t('Keskiviikko');
+              return window.Drupal.t('Wednesday');
             }
             if(dayjs(date).day() === 4) {
-              return Drupal.t('Torstai');
+              return window.Drupal.t('Thursday');
             }
             if(dayjs(date).day() === 5) {
-              return Drupal.t('Perjantai');
+              return window.Drupal.t('Friday');
             }
             if(dayjs(date).day() === 6) {
-              return Drupal.t('Lauantai');
+              return window.Drupal.t('Saturday');
             }
             if(dayjs(date).day() === 0) {
-              return Drupal.t('Sunnuntai');
+              return window.Drupal.t('Sunday');
             }
           },
           isToday(date) {
@@ -168,7 +167,24 @@
         },
         computed: {
           selectedMonth() {
-            return Drupal.t(this.selectedDate.format("MMMM"), {}, {context: "Long month name"});
+            return window.Drupal.t(this.selectedDate.format("MMMM"), {}, {context: "Long month name"});
+          },
+          /**
+           * Needed for the month translation to work
+           */
+          monthTranslations() {
+            window.Drupal.t('January', {}, {context: "Long month name"})
+            window.Drupal.t('February', {}, {context: "Long month name"})
+            window.Drupal.t('March', {}, {context: "Long month name"})
+            window.Drupal.t('April', {}, {context: "Long month name"})
+            window.Drupal.t('May', {}, {context: "Long month name"})
+            window.Drupal.t('June', {}, {context: "Long month name"})
+            window.Drupal.t('July', {}, {context: "Long month name"})
+            window.Drupal.t('August', {}, {context: "Long month name"})
+            window.Drupal.t('September', {}, {context: "Long month name"})
+            window.Drupal.t('October', {}, {context: "Long month name"})
+            window.Drupal.t('November', {}, {context: "Long month name"})
+            window.Drupal.t('December', {}, {context: "Long month name"})
           },
           weekdays() {
             return weekdaysData;
@@ -186,13 +202,16 @@
             return dayjs(this.selectedDate).daysInMonth();
           },
           openMotions(){
-            return Drupal.t('Avaa esityslista')
+            return window.Drupal.t('Open motions');
           },
           openMinutes() {
-            return Drupal.t('Katso pöytäkirja')
+            return window.Drupal.t('Open minutes');
           },
           openDecisions() {
-            return Drupal.t('Katso päätöstiedote')
+            return window.Drupal.t('Open decisions');
+          },
+          noMeetings() {
+            return window.Drupal.t('No meetings');
           },
           days() {
             let allDays = [];

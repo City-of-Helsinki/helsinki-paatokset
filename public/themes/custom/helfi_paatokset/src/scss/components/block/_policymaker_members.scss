@@ -92,10 +92,25 @@
     border-bottom: 1px solid black;
     padding: 32px 0;
     text-decoration: none;
+
+    &:hover {
+      .member-name {
+        text-decoration: underline;
+      }
+    }
   }
 
   .member-info > div {
     display: flex;
+  }
+
+  .member-info {
+    display: flex;
+    flex-direction: column;
+
+    .deputy-of {
+      margin-top: 16px;
+    }
   }
 
   .member-image {
@@ -128,15 +143,15 @@
 
     @include breakpoint($breakpoint-s) {
       font-size: 18px;
-    line-height: 27px;
+      line-height: 27px;
     }
   }
 
-  .member-role {
+  .member-party {
     display: flex;
     align-items: center;
 
-    &::after {
+    &::before {
       content: '';
       height: 4px;
       width: 4px;

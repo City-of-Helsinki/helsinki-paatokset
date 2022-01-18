@@ -157,6 +157,7 @@ function template_preprocess_block__policymaker_members(array &$variables) {
 
   $variables['policymaker_name'] = $node->get('field_ahjo_title')->value;
   $variables['policymaker_id'] = $node->get('field_policymaker_id')->value;
+  $variables['policymaker_type'] = $node->get('field_organization_type')->value;
 
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {

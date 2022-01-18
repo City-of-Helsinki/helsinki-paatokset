@@ -59,5 +59,6 @@ hidden:
   field_meeting_sequence_number: true
   field_meeting_status: true
   langcode: true
+  meeting_link: true
   search_api_excerpt: true
   toc_enabled: true
