@@ -11,7 +11,12 @@
     attach() {
       const markup = `
       <div class="meetings-calendar container">
-        <div class="calendar-header">
+        <div v-if="!isReady" class="hds-loading-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div v-if="isReady" class="calendar-header">
           <i @click="selectPrevious" class="hds-icon hds-icon--angle-left"></i>
           <h2>{{ selectedMonth }} {{ year }}</h2>
           <i @click="selectNext" class="hds-icon hds-icon--angle-right"></i>
