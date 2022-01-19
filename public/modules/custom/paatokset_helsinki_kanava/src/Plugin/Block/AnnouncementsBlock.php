@@ -38,12 +38,12 @@ class AnnouncementsBlock extends BlockBase {
             '@time' => date('H:i', $nextMeetingDate),
           ]
         );
-      }
 
-      $url = $councilNode->toUrl();
-      if ($url) {
-        $linkText = t("You can see the stream on council's page");
-        $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));
+        $url = $councilNode->toUrl();
+        if ($url) {
+          $linkText = t("You can see the stream on council's page");
+          $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));
+        }
       }
     }
 
