@@ -11,14 +11,15 @@ label: 'Article content pattern'
 type: 'canonical_entities:node'
 pattern: '[node:menu-link:parents:join-path]/[node:title]'
 selection_criteria:
-  02f068b0-826e-4d95-b8c0-a552a60d1ee6:
+  5fa83dfe-7dd4-4d07-ad89-3d3e03c8a052:
     id: node_type
     negate: false
-    uuid: 02f068b0-826e-4d95-b8c0-a552a60d1ee6
+    uuid: 5fa83dfe-7dd4-4d07-ad89-3d3e03c8a052
     context_mapping:
       node: node
     bundles:
       article: article
+      imported_article: imported_article
 selection_logic: and
 weight: -5
 relationships: {  }

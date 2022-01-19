@@ -71,9 +71,11 @@
  */
 #}
 
+{% set type = 'article' %}
+
 {%
   set classes = [
-  'node--type-article',
+  'node--type-' ~ type|clean_class,
   node.isPromoted() ? 'node--promoted',
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
@@ -82,38 +84,31 @@
 %}
 
 <article{{ attributes.addClass(classes) }}>
-  {% embed "@hdbt/misc/container.twig" with {container_element: 'article-header'} %}
-    {% block container_content %}
-      {% if node.body.summary|render %}
-        <div class="article__lead">
-          {{ node.body.summary }}
+
+  {% if content.lead|render %}
+    <div class="{{ type|clean_class }}__lead container">
+      {% if content.lead_image|render %}
+        <div class="{{ type|clean_class }}__lead-image">
+          <img src="{{ content.lead_image }}">
         </div>
       {% endif %}
+      {{ content.lead }}
+    </div>
+  {% endif %}
 
-      {{ drupal_block('hdbt_content_social_sharing_block') }}
+  <div class="{{ type|clean_class }}__sharing-block container">
+    {{ drupal_block('hdbt_content_social_sharing_block') }}
+  </div>
 
-      {% if content.field_author|render %}
-        <div class="article__author">
-          {{ content.field_author }}
-        </div>
-      {% endif %}
+  {% if content.published|render %}
+    <div class="{{ type|clean_class }}__date container">
+      {{ content.published }}
+    </div>
+  {% endif %}
 
-      {% set created_date = node.createdtime|format_date('medium') %}
-      {% if created_date|render %}
-        <div class="article__date">
-          {{ created_date }}
-        </div>
-      {% endif %}
-    {% endblock container_content %}
-  {% endembed %}
-
-  {% if content.body|render %}
-    <div class="text text--default">
-      <div class="container text__container">
-        <div class="text__text-content">
-          {{ content.body }}
-        </div>
-      </div>
-    <div>
+  {% if node.body.value|render|striptags|trim is not empty %}
+    <div class="{{ type|clean_class }}__content container">
+      {{ node.body.value | check_markup('full_html') }}
+    </div>
   {% endif %}
 </article>

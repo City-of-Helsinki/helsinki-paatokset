@@ -1,31 +1,10 @@
-uuid: 900177b7-ca4a-4589-8281-15136be514a8
+uuid: d682abe4-056b-4897-a451-ed5e14396903
 langcode: fi
 status: true
 dependencies:
-  module:
-    - menu_ui
-    - scheduler
   enforced:
     module:
       - paatokset_news_importer
-third_party_settings:
-  menu_ui:
-    available_menus:
-      - main
-    parent: 'main:'
-  scheduler:
-    expand_fieldset: when_required
-    fields_display_mode: vertical_tab
-    publish_enable: false
-    publish_past_date: error
-    publish_past_date_created: false
-    publish_required: false
-    publish_revision: false
-    publish_touch: false
-    show_message_after_update: true
-    unpublish_enable: false
-    unpublish_required: false
-    unpublish_revision: false
 _core:
   default_config_hash: sefk051KFkjD6XhIzNY6sGD5ZWDj9RznZh2VQqJsmY8
 name: 'Imported Article'

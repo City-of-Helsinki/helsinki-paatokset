@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.meetings_calendar
+    - paragraphs.paragraphs_type.news_liftups
   module:
     - entity_reference_revisions
 _core:
@@ -35,6 +36,7 @@ settings:
       liftup_with_image: liftup_with_image
       content_cards: content_cards
       meetings_calendar: meetings_calendar
+      news_liftups: news_liftups
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -78,6 +80,9 @@ settings:
         enabled: false
       meetings_calendar:
         weight: 29
+        enabled: true
+      news_liftups:
+        weight: 30
         enabled: true
       text:
         weight: -15
