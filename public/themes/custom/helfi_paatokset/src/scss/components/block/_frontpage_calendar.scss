@@ -69,6 +69,13 @@
   width: 100%;
   min-height: 282px;
   padding: $spacing-2-xs $spacing-s;
+  text-decoration: none;
+
+  &:hover {
+    .motions-link {
+      text-decoration: underline;
+    }
+  }
 
   @include breakpoint($breakpoint-s) {
     padding: $spacing-xs;

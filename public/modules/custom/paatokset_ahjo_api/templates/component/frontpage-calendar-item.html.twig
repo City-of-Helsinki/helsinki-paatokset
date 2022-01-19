@@ -1,20 +1,20 @@
-<div class="frontpage-calendar__item">
+<a class="frontpage-calendar__item" {% if motions_link %} href="{{motions_link}}" {% elseif minutes_link %} href="{{minutes_link}}" {% endif %}>
   <div class="frontpage-calendar__item-inner">
     <div class="color-line {{ row.policymaker_type }}"></div>
     <div class="content-container">
       <span class="meeting-date">{{ date|date("d.m.Y") }}</span>
       <h4>{{ policymaker }}</h4>
       {% if motions_link %}
-        <a href="{{ motions_link }}" class="motions-link">
+        <div class="motions-link">
           <span>{{ open_motions }}</span>
           <i class="hds-icon hds-icon--angle-right"></i>
-        </a>
+        </div>
       {% elseif minutes_link %}
-        <a href="{{ minutes_link }}" class="motions-link">
+        <div class="motions-link">
           <span>{{ open_minutes }}</span>
           <i class="hds-icon hds-icon--angle-right"></i>
-        </a>
+        </div>
       {% endif %}
     </div>
   </div>
-</div>
+</a>

@@ -93,6 +93,51 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     $variables['entity'] = $variables['elements']['#block__policymaker_listing'];
   }
 
+  /**
+   * Gets trustees for Kaupunginvaltuusto
+   */
+
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+
+  $policymakerService->setPolicymaker('02900');
+
+  $valtuusto_nodes = $policymakerService->getComposition();
+
+  $filter = 'Jäsen';
+  $members = array_filter($valtuusto_nodes, function ($var) use ($filter) {
+      return (str_contains($var['role'], $filter));
+  });
+
+  $filter = 'Varajäsen';
+  $deputies = array_filter($valtuusto_nodes, function ($var) use ($filter) {
+      return (str_contains($var['role'], $filter));
+  });
+
+  /** A function to sort arrays by last name */
+
+  function cmp($a, $b) {
+    return strcmp($a['last_name'], $b['last_name']);
+  }
+
+  usort($members, 'cmp');
+  usort($deputies, 'cmp');
+
+  foreach($members as $node) {
+    $members_formatted[] = [
+      'title' => $node['first_name'] . ' ' . $node['last_name'] . ', ' . t('Valtuutettu'),
+      'link' => $node['url'],
+      'organization_type' => 'trustee'
+    ];
+  };
+
+  foreach($deputies as $node) {
+    $deputies_formatted[] = [
+      'title' => $node['first_name'] . ' ' . $node['last_name'] . ', ' . t('Varavaltuutettu'),
+      'link' => $node['url'],
+      'organization_type' => 'trustee'
+    ];
+  };
+
   $nids_policymakers = \Drupal::entityQuery('node')
     ->condition('type','policymaker')
     ->condition('status', 1)
@@ -124,7 +169,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     'viranhaltija' => ['Viranhaltija', []],
     'trustee' => ['Luottamushenkilö', []],
     'lautakunta' => ['Lautakunta', []],
-    'jaosto' => ['Jaosto', []]
+    'jaosto' => ['Jaosto', []],
+    'toimi_neuvotteku' => ['Toimi-/Neuvottelukunta', []]
   ];
 
   foreach ($accordion_contents as $key => $value) {
@@ -145,29 +191,14 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     return (!str_contains($var['title'], $hallituksen_jaosto_filter));
   });
 
-  $nids_trustees = \Drupal::entityQuery('node')
-    ->condition('type','trustee')
-    ->condition('status', 1)
-    ->execute();
-  $nodes_trustees = \Drupal\node\Entity\Node::loadMultiple($nids_trustees);
-
-  foreach ($nodes_trustees as $node) {
-    $options = ['absolute' => TRUE];
-    $trustees[] = [
-      'title' => $node->getTitle(),
-      'link' => \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options),
-      'organization_type' => 'trustee'
-    ];
-  };
-
-  $variables['cards'] = [$accordion_contents['valtuusto'][1], $accordion_contents['hallitus'][1]];
+  $variables['cards'] = [$accorion_contents['valtuusto'][1], $accorion_contents['hallitus'][1]];
 
   $variables['accordions'][] = [
     'Kaupinginhallituksen jaostot' => $hallituksen_jaosto,
-    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accordion_contents['jaosto'][1]),
-    'Viranhaltijat' => $accordion_contents['viranhaltija'][1],
-    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
-    'Luottamushenkilöt' => $trustees,
+    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accorion_contents['jaosto'][1]),
+    'Viranhaltijat' => $accorion_contents['viranhaltija'][1],
+    'Luottamushenkilöpäättäjät' => $accorion_contents['trustee'][1],
+    'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted),
   ];
 
   $variables['title'] = $variables['elements']['content']['label'];
