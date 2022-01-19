@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_home_district
 field_name: field_trustee_home_district
 entity_type: node
 bundle: trustee
-label: 'Home district'
+label: Kotikaupunginosa
 description: ''
 required: false
 translatable: false

@@ -1,6 +1,10 @@
 .meetings-calendar {
   margin-top: 90px; 
 
+  .hds-loading-spinner {
+    margin: 90px 0;
+  }
+
   ol {
     list-style: none;
   }
@@ -12,14 +16,22 @@
     align-items: center;
 
     h2 {
-      margin: 0 30px;
-      font-size: 32px;
-      min-width: 235px;
+      margin: 0 15px;
+      font-size: 26px;
+      min-width: 190px;
       text-align: center;
+      text-transform: capitalize;
+
+      @include breakpoint($breakpoint-s) {
+        margin: 0 30px;
+        font-size: 32px;
+        min-width: 235px;
+      }
     }
 
     .hds-icon {
       height: 30px;
+      min-width: 30px;
       width: 30px;
       cursor: pointer;
     }

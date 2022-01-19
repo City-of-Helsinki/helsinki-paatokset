@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_profession
 field_name: field_trustee_profession
 entity_type: node
 bundle: trustee
-label: Profession
+label: Ammatti
 description: ''
 required: false
 translatable: false

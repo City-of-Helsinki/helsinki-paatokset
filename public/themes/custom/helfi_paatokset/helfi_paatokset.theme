@@ -288,6 +288,16 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     'title' => t('Valtuutetun puheenvuorot'),
     'content' => $content_speaking_turns
   ];
+
+  if($node->get('field_trustee_title')) {
+    if($node->get('field_trustee_title')->value == 'Jäsen') {
+      $variables['content']['field_trustee_title'] = t('Valtuutettu');
+    }
+
+    if($node->get('field_trustee_title')->value == 'Varajäsen') {
+      $variables['content']['field_trustee_title'] = t('Varavaltuutettu');
+    }
+  };
   
 }
 
