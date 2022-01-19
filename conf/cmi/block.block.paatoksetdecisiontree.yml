@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /paatoksentekoprosessi
+    pages: "/tietoa-paatoksenteosta\r\n/information-om-beslutsfattning\r\n/information-on-decisionmaking"

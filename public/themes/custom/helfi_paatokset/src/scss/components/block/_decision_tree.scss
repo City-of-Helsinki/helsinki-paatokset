@@ -3,12 +3,17 @@
 }
 
 .decision-tree__box {
-  padding: 28px;
+  padding: 24px;
   text-align: center;
   border: 2px solid #1a1a1a;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   position: relative;
+
+  @include breakpoint($breakpoint-s) {
+    padding: 28px;
+    font-size: 24px;
+  }
   
   &:not(&:last-of-type) {
     margin-bottom: 24px;
