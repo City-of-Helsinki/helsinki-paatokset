@@ -118,7 +118,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ];
   }
 
-  $accorion_contents = [
+  $accordion_contents = [
     'valtuusto' => ['Valtuusto', []],
     'hallitus' => ['Hallitus', []],
     'viranhaltija' => ['Viranhaltija', []],
@@ -127,21 +127,21 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     'jaosto' => ['Jaosto', []]
   ];
 
-  foreach ($accorion_contents as $key => $value) {
+  foreach ($accordion_contents as $key => $value) {
     $filter = $value[0];
 
-    $accorion_contents[$key][1] = array_filter($filtered, function ($var) use ($filter) {
+    $accordion_contents[$key][1] = array_filter($filtered, function ($var) use ($filter) {
       return ($var['organization_type'] == $filter);
     });
   };
 
   $hallituksen_jaosto_filter = 'hallitu';
-  $hallituksen_jaosto = array_filter($accorion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
+  $hallituksen_jaosto = array_filter($accordion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
       return (str_contains($var['title'], $hallituksen_jaosto_filter));
   });
 
   //Removes kaupunginhallituksen jaostot from array
-  $lautakunta = array_filter($accorion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
+  $lautakunta = array_filter($accordion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
     return (!str_contains($var['title'], $hallituksen_jaosto_filter));
   });
 
@@ -160,13 +160,13 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ];
   };
 
-  $variables['cards'] = [$accorion_contents['valtuusto'][1], $accorion_contents['hallitus'][1]];
+  $variables['cards'] = [$accordion_contents['valtuusto'][1], $accordion_contents['hallitus'][1]];
 
   $variables['accordions'][] = [
     'Kaupinginhallituksen jaostot' => $hallituksen_jaosto,
-    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accorion_contents['jaosto'][1]),
-    'Viranhaltijat' => $accorion_contents['viranhaltija'][1],
-    'Luottamushenkilöpäättäjät' => $accorion_contents['trustee'][1],
+    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accordion_contents['jaosto'][1]),
+    'Viranhaltijat' => $accordion_contents['viranhaltija'][1],
+    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
     'Luottamushenkilöt' => $trustees,
   ];
 
