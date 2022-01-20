@@ -170,3 +170,33 @@ function template_preprocess_block__policymaker_members(array &$variables) {
     $variables['entity'] = $variables['elements']['#block__policymaker_members'];
   }
 }
+
+/**
+ * Implements hook_pathauto_pattern_alter().
+ *
+ * Custom node path for Viranhaltija decisionmakers, add org name to URL.
+ */
+function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context) {
+  // Only act on node context.
+  if (!isset($context['module'], $context['data']['node']) || $context['module'] !== 'node') {
+    return;
+  }
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $context['data']['node'];
+
+  // Only act on policymaker nodes and make sure fields exist.
+  if (!$node->bundle() === 'policymaker' || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
+    return;
+  }
+
+  // Only act on Viranhaltija decisionmakers.
+  if ($node->get('field_organization_type')->value !== 'Viranhaltija') {
+    return;
+  }
+
+  // If org name exists, add it to the path.
+  if (!$node->get('field_dm_org_name')->isEmpty()) {
+    $pattern->setPattern('paattajat/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
+    return;
+  }
+}
