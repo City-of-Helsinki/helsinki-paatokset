@@ -250,13 +250,23 @@ class PolicymakerService {
       return NULL;
     }
 
+    $policymaker = $this->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
+      return NULL;
+    }
+
+    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$route.$currentLanguage";
 
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, [
-        'organization' => strtolower($this->policymaker->get('field_ahjo_title')->value),
+        'organization' => strtolower($policymaker_org),
         'id' => $id,
       ]);
     }
