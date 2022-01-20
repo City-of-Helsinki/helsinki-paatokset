@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.policymaker.field_policymaker_summary
     - field.field.node.policymaker.field_recording_description
     - field.field.node.policymaker.field_resource_uri
+    - field.field.node.policymaker.field_sector_name
     - node.type.policymaker
   module:
     - text
@@ -110,6 +111,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 9
+    region: content
+  field_sector_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 10
     region: content
 hidden:
   field_contacts: true
