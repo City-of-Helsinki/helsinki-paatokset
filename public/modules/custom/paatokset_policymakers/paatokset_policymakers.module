@@ -189,8 +189,18 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
     return;
   }
 
+  $allowed_types = [
+    'Viranhaltija',
+    'Luottamushenkilö',
+  ];
+
   // Only act on Viranhaltija decisionmakers.
-  if ($node->get('field_organization_type')->value !== 'Viranhaltija') {
+  if (!in_array($node->get('field_organization_type')->value, $allowed_types)) {
+    return;
+  }
+
+  // Special case: Dont' add org name to Pormestari URL.
+  if ($node->get('field_ahjo_title')->value === 'Pormestari') {
     return;
   }
 

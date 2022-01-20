@@ -43,7 +43,7 @@
             <div class="policymaker-row__color {{ row.organization_type|lower|replace({'ö':'o'}) }}"></div>
             <div class="policymaker-row__title">
               {{ row.title|t }}
-              {% if row.organization_type == 'Viranhaltija' %}
+              {% if row.organization_type == 'Viranhaltija' or row.organization_type == 'Luottamushenkilö' %}
                 <div class="policymaker-row__sub-title" >{{ row.organization_name }}</div>
               {% endif %}
             </div>
