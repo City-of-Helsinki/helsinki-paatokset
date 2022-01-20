@@ -79,13 +79,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_trustee_email:
-    weight: 10
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
     type: email_default
+    weight: 10
     region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
   field_trustee_home_district:
     type: string_textfield
     weight: 8
@@ -95,13 +95,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_trustee_homepage:
+    type: link_default
     weight: 9
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_trustee_id:
     type: string_textfield
     weight: 3

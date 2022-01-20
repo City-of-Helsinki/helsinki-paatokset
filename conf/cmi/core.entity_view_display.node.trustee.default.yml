@@ -69,11 +69,11 @@ content:
     weight: 11
     region: content
   field_trustee_email:
-    weight: 15
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 15
     region: content
   field_trustee_home_district:
     type: string
@@ -84,6 +84,7 @@ content:
     weight: 10
     region: content
   field_trustee_homepage:
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -92,9 +93,8 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
-    region: content
     weight: null
+    region: content
   field_trustee_image:
     type: image
     label: hidden
@@ -143,10 +143,10 @@ content:
     weight: 0
     region: content
   links:
-    weight: 6
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 6
+    region: content
 hidden:
   field_trustee_id: true
   langcode: true
