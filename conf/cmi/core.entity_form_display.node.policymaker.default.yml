@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.policymaker.field_policymaker_summary
     - field.field.node.policymaker.field_recording_description
     - field.field.node.policymaker.field_resource_uri
+    - field.field.node.policymaker.field_sector_name
     - node.type.policymaker
   module:
     - datetime
@@ -49,6 +50,7 @@ third_party_settings:
         - field_organization_type
         - field_organization_type_id
         - field_dm_org_name
+        - field_sector_name
         - field_policymaker_formed
         - field_policymaker_dissolved
         - field_policymaker_existing
@@ -184,7 +186,7 @@ content:
     third_party_settings: {  }
   field_dm_org_above:
     type: json_textarea
-    weight: 15
+    weight: 16
     region: content
     settings:
       rows: 5
@@ -192,7 +194,7 @@ content:
     third_party_settings: {  }
   field_dm_org_below:
     type: json_textarea
-    weight: 16
+    weight: 17
     region: content
     settings:
       rows: 5
@@ -208,7 +210,7 @@ content:
     third_party_settings: {  }
   field_dm_sector:
     type: json_textarea
-    weight: 14
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -232,7 +234,7 @@ content:
     third_party_settings: {  }
   field_is_decisionmaker:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -271,20 +273,20 @@ content:
     third_party_settings: {  }
   field_policymaker_dissolved:
     type: datetime_default
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_policymaker_existing:
     type: boolean_checkbox
-    weight: 12
+    weight: 13
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_policymaker_formed:
     type: datetime_default
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -319,6 +321,14 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sector_name:
+    type: string_textfield
+    weight: 10
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   langcode:

@@ -114,6 +114,7 @@ process:
     to_timezone: UTC
     source: dissolved
   field_is_decisionmaker: is_decisionmaker
+  field_sector_name: sector/Sector
   field_dm_sector:
     -
       plugin: single_value
