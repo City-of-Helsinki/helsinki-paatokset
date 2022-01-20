@@ -1,10 +1,10 @@
 uuid: 313f4a33-acae-4b17-9701-81e4f5948326
 langcode: fi
-status: true
+status: false
 dependencies:
   module:
-    - ctools
-    - paatokset_ahjo
+    - node
+    - paatokset_policymakers
   theme:
     - helfi_paatokset
 id: paatoksetpolicymakermembers

@@ -10,7 +10,7 @@
   Drupal.behaviors.paatoksetPolicymakersPolicymakerMembers = {
     attach() {
       const markup = `
-      <div class="policymaker-members">
+      <div class="policymaker-members__container">
         <div class="policymaker-members__filters">
           <div class="search-wrapper">
             <label>{{ searchLabel }}</label>
@@ -56,11 +56,10 @@
         </div>
       </div>
       `
-      const policymakerID = document.querySelector('#block-paatoksetpolicymakermembers').dataset.policymaker;
-      const policymakerType = document.querySelector('#block-paatoksetpolicymakermembers').dataset.type;
+      const container = document.querySelector('.policymaker-members__block');
+      const policymakerID = container.dataset.policymaker;
+      const policymakerType = container.dataset.type;
       const dataURL = window.location.origin + '/fi/ahjo_api/org_composition/' + policymakerID;
-
-      console.log(policymakerType !== 'Valtuusto')
 
       new Vue({
         el: '#policymaker-members-vue',

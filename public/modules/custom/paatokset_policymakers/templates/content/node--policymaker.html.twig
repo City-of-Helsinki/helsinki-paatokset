@@ -143,8 +143,8 @@
             {% if meeting_calendar %}
               <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
             {% endif %}
-            {% if members %}
-              <li><a href="#members">{{ 'Members of the board'|trans }}</a></li>
+            {% if is_organization %}
+              <li><a href="#members-list">{{ 'Members list'|trans }}</a></li>
             {% endif %}
           </ul>
           <i class="hds-icon hds-icon--arrow-down hds-icon--size-xxl" aria-hidden="true"></i>
@@ -237,6 +237,12 @@
   {% if meeting_calendar %}
     <section class="container policymaker-calendar" id="meeting-calendar">
       {{ drupal_block('policymaker_calendar') }}
+    </section>
+  {% endif %}
+
+  {% if is_organization %}
+    <section class="container" id="members-list">
+      {{ drupal_block('policymaker_members') }}
     </section>
   {% endif %}
 
