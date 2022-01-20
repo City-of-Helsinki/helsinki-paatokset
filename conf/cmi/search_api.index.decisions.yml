@@ -7,6 +7,7 @@ dependencies:
   module:
     - paatokset_ahjo
     - search_api
+    - paatokset_search
 id: decisions
 name: Decisions
 description: ''
@@ -112,11 +113,12 @@ processor_settings:
   aggregated_field: {  }
   language_with_fallback: {  }
   rendered_item: {  }
+  sector_json: {  }
 tracker_settings:
   default:
     indexing_order: fifo
 options:
   cron_limit: 50
-  index_directly: true
+  index_directly: false
   track_changes_in_references: true
 server: elasticsearch
