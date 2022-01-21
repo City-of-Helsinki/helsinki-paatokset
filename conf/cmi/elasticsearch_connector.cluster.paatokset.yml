@@ -4,7 +4,7 @@ status: '1'
 dependencies: {  }
 cluster_id: paatokset
 name: Päätökset
-url: 'http://elastic:9200'
+url: ''
 options:
   multiple_nodes_connection: false
   use_authentication: 0

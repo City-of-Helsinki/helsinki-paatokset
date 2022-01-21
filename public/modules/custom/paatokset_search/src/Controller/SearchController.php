@@ -14,7 +14,7 @@ class SearchController extends ControllerBase {
    */
   public function decisions() {
     $build = [
-      '#markup' => '<div id="paatokset_search"></div>',
+      '#markup' => '<div id="paatokset_search" data-type="decisions"></div>',
       '#attached' => [
         'library' => [
           'paatokset_search/paatokset-search',
