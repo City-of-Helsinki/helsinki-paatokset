@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.decision.field_classification_title
     - field.field.node.decision.field_decision_attachment_files
     - field.field.node.decision.field_decision_attachments
+    - field.field.node.decision.field_decision_case_title
     - field.field.node.decision.field_decision_content
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
@@ -18,6 +19,8 @@ dependencies:
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
     - node.type.decision
   module:
@@ -37,6 +40,7 @@ hidden:
   field_classification_title: true
   field_decision_attachment_files: true
   field_decision_attachments: true
+  field_decision_case_title: true
   field_decision_content: true
   field_decision_meeting: true
   field_decision_motion: true
@@ -47,6 +51,8 @@ hidden:
   field_diary_number: true
   field_diary_number_label: true
   field_full_title: true
+  field_meeting_date: true
+  field_top_category_name: true
   field_voting_results: true
   langcode: true
   search_api_excerpt: true
