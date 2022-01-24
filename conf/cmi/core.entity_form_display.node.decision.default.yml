@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.decision.field_classification_title
     - field.field.node.decision.field_decision_attachment_files
     - field.field.node.decision.field_decision_attachments
+    - field.field.node.decision.field_decision_case_title
     - field.field.node.decision.field_decision_content
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
@@ -17,9 +18,12 @@ dependencies:
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
     - node.type.decision
   module:
+    - datetime
     - hdbt_admin_editorial
     - json_field
     - media_library
@@ -33,19 +37,11 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 18
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
   field_classification_code:
-    type: string_textfield
-    weight: 6
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_classification_title:
     type: string_textfield
     weight: 7
     region: content
@@ -53,24 +49,40 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_classification_title:
+    type: string_textfield
+    weight: 8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_decision_attachment_files:
     type: media_library_widget
-    weight: 13
+    weight: 16
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_decision_attachments:
     type: json_textarea
-    weight: 15
+    weight: 17
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_decision_case_title:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_decision_content:
     type: text_textarea
-    weight: 9
+    weight: 12
     region: content
     settings:
       rows: 5
@@ -78,7 +90,7 @@ content:
     third_party_settings: {  }
   field_decision_meeting:
     type: json_textarea
-    weight: 11
+    weight: 14
     region: content
     settings:
       rows: 5
@@ -86,7 +98,7 @@ content:
     third_party_settings: {  }
   field_decision_motion:
     type: text_textarea
-    weight: 10
+    weight: 13
     region: content
     settings:
       rows: 5
@@ -102,7 +114,7 @@ content:
     third_party_settings: {  }
   field_decision_organization:
     type: json_textarea
-    weight: 8
+    weight: 10
     region: content
     settings:
       rows: 5
@@ -110,7 +122,7 @@ content:
     third_party_settings: {  }
   field_decision_previous:
     type: json_textarea
-    weight: 26
+    weight: 18
     region: content
     settings:
       rows: 5
@@ -126,7 +138,7 @@ content:
     third_party_settings: {  }
   field_diary_number:
     type: string_textfield
-    weight: 4
+    weight: 5
     region: content
     settings:
       size: 60
@@ -134,7 +146,7 @@ content:
     third_party_settings: {  }
   field_diary_number_label:
     type: string_textfield
-    weight: 5
+    weight: 6
     region: content
     settings:
       size: 60
@@ -148,9 +160,23 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_meeting_date:
+    type: datetime_default
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_top_category_name:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_voting_results:
     type: json_textarea
-    weight: 12
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -158,40 +184,40 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 16
+    weight: 19
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 21
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 19
+    weight: 22
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 22
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 25
+    weight: 28
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 20
+    weight: 23
     region: content
     settings:
       display_label: true
@@ -206,7 +232,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 17
+    weight: 20
     region: content
     settings:
       match_operator: CONTAINS
@@ -216,12 +242,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 23
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 24
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -1,0 +1,21 @@
+uuid: 6eb509bf-a849-4500-aa00-0781e1816c49
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_date
+    - node.type.decision
+  module:
+    - datetime
+id: node.decision.field_meeting_date
+field_name: field_meeting_date
+entity_type: node
+bundle: decision
+label: 'Decision Date'
+description: 'Meeting date or issued date for decision document.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
