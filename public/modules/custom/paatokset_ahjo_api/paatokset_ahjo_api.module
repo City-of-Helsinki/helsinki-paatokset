@@ -34,6 +34,10 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-listing',
     ],
+    'block__decision_tree' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--decision-tree',
+    ],
   ];
 }
 
@@ -167,6 +171,36 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   ];
 
   $variables['title'] = $variables['elements']['content']['label'];
+}
+
+/**
+ * Preprocess frontpage calendar block.
+ */
+function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): void {
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__decision_tree'])) {
+    $variables['entity'] = $variables['elements']['#block__decision_tree'];
+  }
+
+  $variables['decision_process'] = [
+    t('Asia tulee vireille'),
+    t('Lauta- ja johtokunta'),
+    t('Kaupunginhallitus'),
+    t('Kaupuginvaltuusto'),
+    t('Päätös pannaan täytäntöön')
+  ];
+
+  $variables['decisionmaker_process'] = [
+    t('Asia tulee vireille'),
+    t('Viranhaltija päättää'),
+    t('Päätös pannaan täytäntöön'),
+  ];
+
+  $variables['info_1'] = t('Tavallisin päätöksen tekemisen prosessi');
+  $variables['info_2'] = t('Viranhaltija tekee päätöksen');
 }
 
 /**
