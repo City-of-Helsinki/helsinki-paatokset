@@ -1,0 +1,25 @@
+uuid: 38ee9bb7-76db-46a4-b1d7-a587f928f513
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetallinitiatives
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: all_initiatives
+settings:
+  id: all_initiatives
+  label: 'Paatokset all initiatives'
+  label_display: visible
+  provider: paatokset_ahjo_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /kaikki-aloitteet

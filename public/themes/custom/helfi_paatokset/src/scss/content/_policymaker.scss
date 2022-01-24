@@ -117,6 +117,15 @@
 .policymaker-list-item {
   border-bottom: 1px solid $color-black-20;
   padding:  $spacing-and-half 0;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    .list-item__subject {
+      text-decoration: underline;
+    }
+  }
 
   &:first-child {
     border-top: 1px solid $color-black-20;
@@ -150,8 +159,7 @@
     }
   }
 
-  .list-item__subject a {
-    text-decoration: none;
+  .list-item__subject {
     font-weight: $font-weight-medium;
     font-size: 24px;
   }
