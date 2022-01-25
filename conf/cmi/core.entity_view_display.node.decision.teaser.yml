@@ -18,8 +18,11 @@ dependencies:
     - field.field.node.decision.field_decision_section
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
+    - field.field.node.decision.field_dm_org_above_name
+    - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
     - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
     - node.type.decision
@@ -50,8 +53,11 @@ hidden:
   field_decision_section: true
   field_diary_number: true
   field_diary_number_label: true
+  field_dm_org_above_name: true
+  field_dm_org_name: true
   field_full_title: true
   field_meeting_date: true
+  field_organization_type: true
   field_top_category_name: true
   field_voting_results: true
   langcode: true
