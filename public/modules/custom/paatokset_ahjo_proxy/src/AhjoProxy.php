@@ -316,8 +316,16 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'positionsoftrust.json';
         break;
 
+      case 'positionsoftrust_council':
+        $filename = 'positionsoftrust_council.json';
+        break;
+
       case 'trustees':
         $filename = 'trustees.json';
+        break;
+
+      case 'trustees_council':
+        $filename = 'trustees_council.json';
         break;
 
       case 'decisionmakers':

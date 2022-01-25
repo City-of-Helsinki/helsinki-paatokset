@@ -35,11 +35,14 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
 
     $only_all = [
       'ahjo_decisionmakers',
-      'ahjo_trustees',
     ];
 
     if (in_array($base_plugin_definition['id'], $only_all)) {
       $derivatives = ['all'];
+    }
+
+    if ($base_plugin_definition['id'] === 'ahjo_trustees') {
+      $derivatives = ['all', 'council'];
     }
 
     foreach ($derivatives as $key) {
@@ -118,6 +121,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       ],
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees',
+        'council' => '/ahjo-proxy/aggregated/trustees_council',
       ],
     ];
 
