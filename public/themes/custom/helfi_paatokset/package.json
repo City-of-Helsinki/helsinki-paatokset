@@ -75,7 +75,9 @@
     "webpack-cli": "^4.7.2",
     "webpack-merge": "^4.1.4",
     "webpack-notifier": "^1.14.0",
-    "webpack-remove-empty-scripts": "^0.7.1"
+    "webpack-remove-empty-scripts": "^0.7.1",
+    "json-schema": ">=0.4.0",
+    "nanoid": ">=3.1.31"
   },
   "lint-staged": {
     "src/scss/**/*.scss": [
