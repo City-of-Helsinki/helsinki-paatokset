@@ -518,10 +518,6 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
  *   Top category name based on the first part of the code, if found.
  */
 function _paatokset_ahjo_api_get_top_category($value): ?string {
-  if (!is_string($value)) {
-    return NULL;
-  }
-
   $bits = explode(' ', (string) $value);
   $code = array_shift($bits);
 

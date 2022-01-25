@@ -154,12 +154,16 @@ process:
       field_document_native_id: NativeId
       field_media_ahjo_file: root_json
   field_meeting_date:
-    plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.000'
-    to_format: 'Y-m-d\TH:i:s'
-    from_timezone: Europe/Helsinki
-    to_timezone: UTC
-    source: meeting_date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d\TH:i:s.000'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: Europe/Helsinki
+      to_timezone: UTC
+      source: meeting_date
+    -
+      plugin: default_value
+      default_value: '2001-01-01T00:00:00'
   field_top_category_name:
     callable: _paatokset_ahjo_api_get_top_category
     plugin: callback
