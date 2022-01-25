@@ -276,7 +276,46 @@ class AhjoAggregatorCommands extends DrushCommands {
       $data = [
         'endpoint' => 'agents/positionoftrust',
         'count' => $count,
+        'filename' => 'positionsoftrust.json',
         'query_string' => 'org=' . $group['ID'],
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processGroupItem',
+        [$data],
+      ];
+    }
+
+    batch_set([
+      'title' => 'Aggregating council groups and organizations.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishGroups',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Aggregates city council position of trust data from Ahjo API.
+   *
+   * @command ahjo-proxy:get-council-positionsoftrust
+   *
+   * @usage ahjo-proxy:get-council-positionsoftrust
+   *   Stores all positions of trust into a file.
+   *
+   * @aliases ap:cpt
+   */
+  public function councilPositionsOfTrust(): void {
+    $council_groups = [
+      '02900',
+      '00400',
+    ];
+
+    foreach ($council_groups as $id) {
+      $data = [
+        'endpoint' => 'agents/positionoftrust',
+        'filename' => 'positionsoftrust_council.json',
+        'query_string' => 'org=' . $id,
       ];
 
       $operations[] = [
@@ -297,6 +336,9 @@ class AhjoAggregatorCommands extends DrushCommands {
   /**
    * Aggregates trustees from Ahjo API. Requires positions to be aggregated.
    *
+   * @param string $filename
+   *   Filename to get initial data from.
+   *
    * @command ahjo-proxy:get-trustees
    *
    * @usage ahjo-proxy:get-trustees
@@ -304,9 +346,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:trust
    */
-  public function trustees(): void {
+  public function trustees(string $filename = 'positionsoftrust.json'): void {
     $this->logger->info('Fetching trustees organizations...');
-    $data = $this->ahjoProxy->getStatic('positionsoftrust.json');
+    $data = $this->ahjoProxy->getStatic($filename);
     $operations = [];
     $count = 0;
     $ids = [];
