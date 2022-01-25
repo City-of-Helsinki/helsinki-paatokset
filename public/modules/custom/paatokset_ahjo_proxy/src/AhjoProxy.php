@@ -636,7 +636,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         'http_errors' => FALSE,
         'headers' => $this->getAuthHeaders(),
       ]);
-dd($response);
+
       if ($response->getStatusCode() !== 200) {
         return [];
       }
