@@ -528,7 +528,7 @@ function _paatokset_ahjo_api_get_top_category($value): ?string {
     return NULL;
   }
 
-  $bits = explode(', ', (string) $value);
+  $bits = explode(' ', (string) $value);
   $code = array_shift($bits);
 
   switch ($code) {
