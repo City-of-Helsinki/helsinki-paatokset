@@ -536,6 +536,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['failed'])) {
       $context['results']['failed'] = [];
     }
+    if (!isset($context['results']['filename'])) {
+      $context['results']['filename'] = $data['filename'];
+    }
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -568,7 +571,13 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
     $messenger->addMessage('Items failed: ' . count($results['failed']));
 
-    $filename = 'trustees.json';
+    if (!empty($results['filename'])) {
+      $filename = $results['filename'];
+    }
+    else {
+      $filename = 'trustees.json';
+    }
+
     file_save_data(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
