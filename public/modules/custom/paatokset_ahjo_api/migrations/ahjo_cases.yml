@@ -107,6 +107,10 @@ process:
     plugin: callback
     callable: json_encode
     source: records
+  field_top_category_name:
+    callable: _paatokset_ahjo_api_get_top_category
+    plugin: callback
+    source: classification_code
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }
