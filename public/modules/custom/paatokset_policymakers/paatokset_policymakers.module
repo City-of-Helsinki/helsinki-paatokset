@@ -185,7 +185,7 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   $node = $context['data']['node'];
 
   // Only act on policymaker nodes and make sure fields exist.
-  if (!$node->bundle() === 'policymaker' || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
+  if (!$node->bundle() === 'policymaker' || !$node->hasField('field_ahjo_title') || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
     return;
   }
 
