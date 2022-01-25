@@ -5,8 +5,9 @@
   view_mode ? 'policymaker-members--view-mode-' ~ view_mode|clean_class,
 ]
 %}
-
-<div {{ attributes.addClass(classes) }} data-policymaker="{{ policymaker_id }}" data-type="{{ policymaker_type }}">
-  <h2>{{ content['#title'] }}: {{ policymaker_name }}</h2>
-  <div id="policymaker-members-vue"></div>
-</div>
+{% if (policymaker_type != 'Luottamushenkilö') and (policymaker_type != 'Viranhaltija')%}
+  <div {{ attributes.addClass(classes) }} data-policymaker="{{ policymaker_id }}" data-type="{{ policymaker_type }}">
+    <h2>{{ content['#title'] }}: {{ policymaker_name }}</h2>
+    <div id="policymaker-members-vue"></div>
+  </div>
+{% endif %}
