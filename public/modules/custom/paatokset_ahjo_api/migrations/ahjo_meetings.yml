@@ -119,7 +119,7 @@ process:
   field_meeting_attachment_info/value: attachment_info
   field_meeting_decision/format:
     plugin: default_value
-    default_value: full_html
+    default_value: plain_text
   field_meeting_decision/value: decision_announcement
   field_meeting_sequence_number: meeting_sequence_number
   field_meeting_location: location

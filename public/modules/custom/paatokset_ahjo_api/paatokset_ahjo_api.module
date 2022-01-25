@@ -515,6 +515,88 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
 }
 
 /**
+ * Get top category name from classifiction code.
+ *
+ * @param mixed $value
+ *   The value to work with.
+ *
+ * @return string|null
+ *   Top category name based on the first part of the code, if found.
+ */
+function _paatokset_ahjo_api_get_top_category($value): ?string {
+  if (!is_string($value)) {
+    return NULL;
+  }
+
+  $bits = explode(', ', (string) $value);
+  $code = array_shift($bits);
+
+  switch ($code) {
+    case "00":
+      return "Hallintoasiat";
+      break;
+
+    case "01":
+      return "Henkilöstöasiat";
+      break;
+
+    case "02":
+      return "Talousasiat, verotus ja omaisuuden hallinta";
+      break;
+
+    case "03":
+      return "Lainsäädäntö ja lainsäädännön soveltaminen";
+      break;
+
+    case "04":
+      return "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
+      break;
+
+    case "05":
+      return "Sosiaalitoimi";
+      break;
+
+    case "06":
+      return "Terveydenhuolto";
+      break;
+
+    case "07":
+      return "Tiedon hallinta";
+      break;
+
+    case "08":
+      return "Liikenne";
+      break;
+
+    case "09":
+      return "Turvallisuus ja yleinen järjestys";
+      break;
+
+    case "10":
+      return "Maankäyttö, rakentaminen ja asuminen";
+      break;
+
+    case "11":
+      return "Ympäristöasia";
+      break;
+
+    case "12":
+      return "Opetus- ja sivistystoimi";
+      break;
+
+    case "13":
+      return "Tutkimus- ja kehittämistoiminta";
+      break;
+
+    case "14":
+      return "Elinkeino- ja työvoimapalvelut";
+      break;
+  }
+
+  return NULL;
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function paatokset_ahjo_api_entity_extra_field_info(): array {
