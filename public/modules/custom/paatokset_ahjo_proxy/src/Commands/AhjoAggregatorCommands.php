@@ -311,9 +311,12 @@ class AhjoAggregatorCommands extends DrushCommands {
       '00400',
     ];
 
+    $count = 0;
     foreach ($council_groups as $id) {
+      $count++;
       $data = [
         'endpoint' => 'agents/positionoftrust',
+        'count' => $count,
         'filename' => 'positionsoftrust_council.json',
         'query_string' => 'org=' . $id,
       ];
@@ -365,6 +368,9 @@ class AhjoAggregatorCommands extends DrushCommands {
             'endpoint' => 'agents/positionoftrust/' . $item['ID'],
             'count' => $count,
           ];
+          if ($filename = 'positionsoftrust_council.json') {
+            $data['filename'] = 'trustees_council.json';
+          }
           $operations[] = [
             '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processTrusteeItem',
             [$data],
@@ -408,7 +414,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       'resolutions_latest.json',
       'decisionmakers.json',
       'positionsoftrust.json',
+      'positionsoftrust_council.json',
       'trustees.json',
+      'trustees_council.json',
     ];
 
     foreach ($static_files as $file) {
