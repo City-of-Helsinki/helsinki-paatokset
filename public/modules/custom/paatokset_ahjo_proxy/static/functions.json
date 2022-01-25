@@ -1,0 +1,2118 @@
+[
+  {
+      "ClassificationCode": "00",
+      "ClassificationTitle": "HALLINTOASIAT"
+  },
+  {
+      "ClassificationCode": "00 00",
+      "ClassificationTitle": "Hallintoasioiden ohjaus"
+  },
+  {
+      "ClassificationCode": "00 00 00",
+      "ClassificationTitle": "Perustaminen, lakkauttaminen, yhdistäminen"
+  },
+  {
+      "ClassificationCode": "00 00 01",
+      "ClassificationTitle": "Vaalien järjestäminen"
+  },
+  {
+      "ClassificationCode": "00 00 02",
+      "ClassificationTitle": "Luottamus- ja toimielinten kokoonpano ja toiminta"
+  },
+  {
+      "ClassificationCode": "00 00 03",
+      "ClassificationTitle": "Valtuuston aloitetoiminta"
+  },
+  {
+      "ClassificationCode": "00 01",
+      "ClassificationTitle": "Toiminnan suunnittelu, järjestäminen, toteuttaminen, kehittäminen, seuranta"
+  },
+  {
+      "ClassificationCode": "00 01 00",
+      "ClassificationTitle": "Hallinnon järjestäminen"
+  },
+  {
+      "ClassificationCode": "00 01 01",
+      "ClassificationTitle": "Toiminnan suunnittelu ja seuranta"
+  },
+  {
+      "ClassificationCode": "00 01 02",
+      "ClassificationTitle": "Toiminnan arviointi- ja kehittämismenettelyt"
+  },
+  {
+      "ClassificationCode": "00 01 03",
+      "ClassificationTitle": "Riskien hallinta ja sisäinen valvonta"
+  },
+  {
+      "ClassificationCode": "00 01 04",
+      "ClassificationTitle": "Ohjelma-, hanke- ja projektitoiminta"
+  },
+  {
+      "ClassificationCode": "00 01 04 00",
+      "ClassificationTitle": "Hanke- ja projektitoiminta"
+  },
+  {
+      "ClassificationCode": "00 01 04 01",
+      "ClassificationTitle": "Sisäinen kehittäminen"
+  },
+  {
+      "ClassificationCode": "00 01 05",
+      "ClassificationTitle": "Konserni- ja omistajaohjaus"
+  },
+  {
+      "ClassificationCode": "00 01 06",
+      "ClassificationTitle": "Kotimainen yhteistyö"
+  },
+  {
+      "ClassificationCode": "00 02",
+      "ClassificationTitle": "Päätöksenteko ja johtaminen"
+  },
+  {
+      "ClassificationCode": "00 02 00",
+      "ClassificationTitle": "Kaupunginvaltuuston päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 01",
+      "ClassificationTitle": "Kaupunginhallituksen päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 02",
+      "ClassificationTitle": "Kaupunginhallituksen jaostojen päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 03",
+      "ClassificationTitle": "Lautakuntien päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 04",
+      "ClassificationTitle": "Lautakuntien jaostojen päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 05",
+      "ClassificationTitle": "Johtokuntien päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 06",
+      "ClassificationTitle": "Viranhaltijoiden päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 02 08",
+      "ClassificationTitle": "Kuuluttaminen ja ilmoittaminen"
+  },
+  {
+      "ClassificationCode": "00 02 09",
+      "ClassificationTitle": "Kokousasiat"
+  },
+  {
+      "ClassificationCode": "00 02 10",
+      "ClassificationTitle": "Luottamushenkilöiden päätöksenteko"
+  },
+  {
+      "ClassificationCode": "00 03",
+      "ClassificationTitle": "Tarkastustoimi"
+  },
+  {
+      "ClassificationCode": "00 03 00",
+      "ClassificationTitle": "Hallinnon ja talouden tarkastus"
+  },
+  {
+      "ClassificationCode": "00 03 01",
+      "ClassificationTitle": "Sisäinen tarkastus"
+  },
+  {
+      "ClassificationCode": "00 03 02",
+      "ClassificationTitle": "Sidonnaisuusilmoituksien valvonta"
+  },
+  {
+      "ClassificationCode": "00 04",
+      "ClassificationTitle": "Viestintä ja edustaminen"
+  },
+  {
+      "ClassificationCode": "00 04 00",
+      "ClassificationTitle": "Viestinnän ja tiedottamisen järjestäminen ja toteuttaminen"
+  },
+  {
+      "ClassificationCode": "00 04 01",
+      "ClassificationTitle": "Julkaisutoiminta"
+  },
+  {
+      "ClassificationCode": "00 04 02",
+      "ClassificationTitle": "Mediaseuranta"
+  },
+  {
+      "ClassificationCode": "00 04 03",
+      "ClassificationTitle": "Edustaminen"
+  },
+  {
+      "ClassificationCode": "00 04 04",
+      "ClassificationTitle": "Tunnustukset ja palkinnot"
+  },
+  {
+      "ClassificationCode": "00 04 05",
+      "ClassificationTitle": "Markkinointi"
+  },
+  {
+      "ClassificationCode": "01",
+      "ClassificationTitle": "HENKILÖSTÖASIAT"
+  },
+  {
+      "ClassificationCode": "01 00",
+      "ClassificationTitle": "Henkilöstöasioiden ohjaus"
+  },
+  {
+      "ClassificationCode": "01 00 00",
+      "ClassificationTitle": "Työnantaja- ja henkilöstöpolitiikka"
+  },
+  {
+      "ClassificationCode": "01 00 00 00",
+      "ClassificationTitle": "Henkilöstöpolitiikka"
+  },
+  {
+      "ClassificationCode": "01 00 00 03",
+      "ClassificationTitle": "Tasa-arvo"
+  },
+  {
+      "ClassificationCode": "01 00 01",
+      "ClassificationTitle": "Yleiset virka- ja työehtosopimusasiat"
+  },
+  {
+      "ClassificationCode": "01 00 01 00",
+      "ClassificationTitle": "Virka- ja työehtosopimukset"
+  },
+  {
+      "ClassificationCode": "01 00 01 03",
+      "ClassificationTitle": "Työriidat ja niiden sovittelu"
+  },
+  {
+      "ClassificationCode": "01 00 01 04",
+      "ClassificationTitle": "Työmatkojen korvaaminen liikennehenkilöstön työnseisauksen aikana"
+  },
+  {
+      "ClassificationCode": "01 00 02",
+      "ClassificationTitle": "Henkilöstösuunnittelu ja raportointi"
+  },
+  {
+      "ClassificationCode": "01 00 02 00",
+      "ClassificationTitle": "Henkilöstösuunnittelu"
+  },
+  {
+      "ClassificationCode": "01 00 02 01",
+      "ClassificationTitle": "Henkilöstöraportointi"
+  },
+  {
+      "ClassificationCode": "01 01",
+      "ClassificationTitle": "Palvelussuhde"
+  },
+  {
+      "ClassificationCode": "01 01 00",
+      "ClassificationTitle": "Palvelussuhdeasiat"
+  },
+  {
+      "ClassificationCode": "01 01 01",
+      "ClassificationTitle": "Rekrytointi ja palvelussuhteeseen valitseminen"
+  },
+  {
+      "ClassificationCode": "01 01 01 00",
+      "ClassificationTitle": "Täyttölupa"
+  },
+  {
+      "ClassificationCode": "01 01 01 01",
+      "ClassificationTitle": "Työ- ja virkasuhteen täyttäminen"
+  },
+  {
+      "ClassificationCode": "01 01 03",
+      "ClassificationTitle": "Palvelussuhteen hoitaminen"
+  },
+  {
+      "ClassificationCode": "01 01 03 00",
+      "ClassificationTitle": "Yleiset palvelussuhdeasiat"
+  },
+  {
+      "ClassificationCode": "01 01 03 01",
+      "ClassificationTitle": "Sitoumukset, henkilöstöetuudet ja käyttöoikeudet"
+  },
+  {
+      "ClassificationCode": "01 01 03 02",
+      "ClassificationTitle": "Työajan määräytyminen"
+  },
+  {
+      "ClassificationCode": "01 01 03 03",
+      "ClassificationTitle": "Työsuorituksen arviointi ja kehityskeskustelu"
+  },
+  {
+      "ClassificationCode": "01 01 03 04",
+      "ClassificationTitle": "Lomat ja vapaat"
+  },
+  {
+      "ClassificationCode": "01 01 03 06",
+      "ClassificationTitle": "Huomionosoitukset henkilöstölle"
+  },
+  {
+      "ClassificationCode": "01 01 03 07",
+      "ClassificationTitle": "Palvelussuhderikkomukset ja virheen korjaaminen"
+  },
+  {
+      "ClassificationCode": "01 01 04",
+      "ClassificationTitle": "Palvelusuhteen päättyminen"
+  },
+  {
+      "ClassificationCode": "01 01 04 00",
+      "ClassificationTitle": "Irtisanoutuminen ja eroaminen"
+  },
+  {
+      "ClassificationCode": "01 01 04 01",
+      "ClassificationTitle": "Irtisanominen"
+  },
+  {
+      "ClassificationCode": "01 01 04 02",
+      "ClassificationTitle": "Työsuhteen purku"
+  },
+  {
+      "ClassificationCode": "01 02",
+      "ClassificationTitle": "Palkan, palkkioiden ja korvausten maksaminen"
+  },
+  {
+      "ClassificationCode": "01 02 00",
+      "ClassificationTitle": "Palkan, palkkioiden ja korvausten määräytyminen"
+  },
+  {
+      "ClassificationCode": "01 02 00 00",
+      "ClassificationTitle": "Palkan, palkkioiden ja palkanlisien perusteet"
+  },
+  {
+      "ClassificationCode": "01 02 01",
+      "ClassificationTitle": "Palkan, palkkioiden ja korvausten maksaminen, luontoisedut"
+  },
+  {
+      "ClassificationCode": "01 02 01 07",
+      "ClassificationTitle": "Muut luontoisedut"
+  },
+  {
+      "ClassificationCode": "01 02 01 08",
+      "ClassificationTitle": "Muut palkan, palkkioiden ja korvausten maksamiseen liittyvät asiakirjat"
+  },
+  {
+      "ClassificationCode": "01 02 02",
+      "ClassificationTitle": "Matkustus"
+  },
+  {
+      "ClassificationCode": "01 02 02 00",
+      "ClassificationTitle": "Virkamatka"
+  },
+  {
+      "ClassificationCode": "01 02 02 01",
+      "ClassificationTitle": "Auton käyttö"
+  },
+  {
+      "ClassificationCode": "01 02 03",
+      "ClassificationTitle": "Henkilöstön palkitseminen"
+  },
+  {
+      "ClassificationCode": "01 02 03 00",
+      "ClassificationTitle": "Henkilöstön palkitseminen"
+  },
+  {
+      "ClassificationCode": "01 02 03 01",
+      "ClassificationTitle": "Tulospalkkio"
+  },
+  {
+      "ClassificationCode": "01 02 03 02",
+      "ClassificationTitle": "Aloitetoiminta"
+  },
+  {
+      "ClassificationCode": "01 02 03 03",
+      "ClassificationTitle": "Stipendit ja tunnustukset"
+  },
+  {
+      "ClassificationCode": "01 02 03 04",
+      "ClassificationTitle": "Kunnia- ja ansiomerkit"
+  },
+  {
+      "ClassificationCode": "01 03",
+      "ClassificationTitle": "Osaamisen kehittäminen"
+  },
+  {
+      "ClassificationCode": "01 03 00",
+      "ClassificationTitle": "Henkilöstön koulutus ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "01 03 00 00",
+      "ClassificationTitle": "Koulutuksen kehittämisen suunnittelu"
+  },
+  {
+      "ClassificationCode": "01 03 00 01",
+      "ClassificationTitle": "Perehdyttäminen"
+  },
+  {
+      "ClassificationCode": "01 03 00 02",
+      "ClassificationTitle": "Henkilöstökoulutuksen järjestäminen"
+  },
+  {
+      "ClassificationCode": "01 04",
+      "ClassificationTitle": "Työhyvinvoinnin edistäminen"
+  },
+  {
+      "ClassificationCode": "01 04 00",
+      "ClassificationTitle": "Yhteistoiminta-asiat"
+  },
+  {
+      "ClassificationCode": "01 04 00 00",
+      "ClassificationTitle": "Yhteistoimintasopimukset"
+  },
+  {
+      "ClassificationCode": "01 04 00 01",
+      "ClassificationTitle": "Yhteistoiminnan organisointi"
+  },
+  {
+      "ClassificationCode": "01 04 01",
+      "ClassificationTitle": "Työsuojelu ja työturvallisuus"
+  },
+  {
+      "ClassificationCode": "01 04 01 00",
+      "ClassificationTitle": "Työsuojelutoiminnan järjestäminen"
+  },
+  {
+      "ClassificationCode": "01 04 01 01",
+      "ClassificationTitle": "Työsuojeluvaltuutetun valinta"
+  },
+  {
+      "ClassificationCode": "01 04 01 02",
+      "ClassificationTitle": "Työsuojelutoimikunnan valinta"
+  },
+  {
+      "ClassificationCode": "01 04 01 03",
+      "ClassificationTitle": "Työsuojelutoimikunnan toiminta"
+  },
+  {
+      "ClassificationCode": "01 04 01 04",
+      "ClassificationTitle": "Työturvallisuuden valvonta"
+  },
+  {
+      "ClassificationCode": "01 04 01 05",
+      "ClassificationTitle": "Työsuojeluviranomaisten toiminta"
+  },
+  {
+      "ClassificationCode": "01 04 02",
+      "ClassificationTitle": "Työterveyshuolto"
+  },
+  {
+      "ClassificationCode": "01 04 02 00",
+      "ClassificationTitle": "Työterveyshuollon järjestäminen"
+  },
+  {
+      "ClassificationCode": "01 04 03",
+      "ClassificationTitle": "Henkilöstöruokailu"
+  },
+  {
+      "ClassificationCode": "01 04 04",
+      "ClassificationTitle": "Virkistystoiminta"
+  },
+  {
+      "ClassificationCode": "01 04 04 00",
+      "ClassificationTitle": "Henkilökunnan virkistystoiminta"
+  },
+  {
+      "ClassificationCode": "01 04 05",
+      "ClassificationTitle": "Työhyvinvointi"
+  },
+  {
+      "ClassificationCode": "01 05",
+      "ClassificationTitle": "Henkilöstökassatoiminta"
+  },
+  {
+      "ClassificationCode": "01 05 00",
+      "ClassificationTitle": "Henkilöstökassatoiminnan ohjaus"
+  },
+  {
+      "ClassificationCode": "02",
+      "ClassificationTitle": "TALOUSASIAT, VEROTUS JA OMAISUUDEN HALLINTA"
+  },
+  {
+      "ClassificationCode": "02 02",
+      "ClassificationTitle": "Talouden suunnittelu, toteuttaminen ja seuranta"
+  },
+  {
+      "ClassificationCode": "02 02 00",
+      "ClassificationTitle": "Talousarvion valmistelu ja talousarviomäärärahat"
+  },
+  {
+      "ClassificationCode": "02 02 01",
+      "ClassificationTitle": "Talouden seuranta"
+  },
+  {
+      "ClassificationCode": "02 02 02",
+      "ClassificationTitle": "Määräraha-asiat"
+  },
+  {
+      "ClassificationCode": "02 03",
+      "ClassificationTitle": "Verotus"
+  },
+  {
+      "ClassificationCode": "02 03 00",
+      "ClassificationTitle": "Valtion verotus"
+  },
+  {
+      "ClassificationCode": "02 03 01",
+      "ClassificationTitle": "Kunnallisverotus"
+  },
+  {
+      "ClassificationCode": "02 03 01 00",
+      "ClassificationTitle": "Kunnallisveron määräytyminen"
+  },
+  {
+      "ClassificationCode": "02 03 01 01",
+      "ClassificationTitle": "Vapautus kunnallisverosta ja verohuojennus"
+  },
+  {
+      "ClassificationCode": "02 03 02",
+      "ClassificationTitle": "Kunnallinen verottaminen"
+  },
+  {
+      "ClassificationCode": "02 03 02 00",
+      "ClassificationTitle": "Kiinteistöverotus"
+  },
+  {
+      "ClassificationCode": "02 03 02 01",
+      "ClassificationTitle": "Yhteisöverotus"
+  },
+  {
+      "ClassificationCode": "02 03 02 02",
+      "ClassificationTitle": "Koiraverotus"
+  },
+  {
+      "ClassificationCode": "02 03 02 03",
+      "ClassificationTitle": "Kaupunki veronmaksajana"
+  },
+  {
+      "ClassificationCode": "02 05",
+      "ClassificationTitle": "Rahoitus ja varainhallinta"
+  },
+  {
+      "ClassificationCode": "02 05 00",
+      "ClassificationTitle": "Maksuperusteiden määrääminen ja määräytyminen"
+  },
+  {
+      "ClassificationCode": "02 05 01",
+      "ClassificationTitle": "Tuet ja avustukset"
+  },
+  {
+      "ClassificationCode": "02 05 01 00",
+      "ClassificationTitle": "Kunnan myöntämät avustukset"
+  },
+  {
+      "ClassificationCode": "02 05 01 01",
+      "ClassificationTitle": "Kunnan itselleen hakemat avustukset"
+  },
+  {
+      "ClassificationCode": "02 05 01 02",
+      "ClassificationTitle": " Valtionosuudet"
+  },
+  {
+      "ClassificationCode": "02 05 01 03",
+      "ClassificationTitle": "Kuntien yhdistymisavustukset"
+  },
+  {
+      "ClassificationCode": "02 05 01 04",
+      "ClassificationTitle": "Sponsorointi"
+  },
+  {
+      "ClassificationCode": "02 05 01 05",
+      "ClassificationTitle": "Avustusten myöntäminen rahastoista"
+  },
+  {
+      "ClassificationCode": "02 05 02",
+      "ClassificationTitle": "Hankerahoitus"
+  },
+  {
+      "ClassificationCode": "02 05 03",
+      "ClassificationTitle": "Antolainaus"
+  },
+  {
+      "ClassificationCode": "02 05 03 00",
+      "ClassificationTitle": "Lainojen myöntäminen"
+  },
+  {
+      "ClassificationCode": "02 05 03 01",
+      "ClassificationTitle": "Takaukset ja vakuudet"
+  },
+  {
+      "ClassificationCode": "02 05 03 02",
+      "ClassificationTitle": "Lainojen myöntäminen, yksityishenkilöt"
+  },
+  {
+      "ClassificationCode": "02 05 04",
+      "ClassificationTitle": "Ottolainaus"
+  },
+  {
+      "ClassificationCode": "02 05 05",
+      "ClassificationTitle": "Sijoitustoiminta"
+  },
+  {
+      "ClassificationCode": "02 06",
+      "ClassificationTitle": "Kirjanpito ja maksuliikenne"
+  },
+  {
+      "ClassificationCode": "02 06 00",
+      "ClassificationTitle": "Pankkipalveluiden hallinta"
+  },
+  {
+      "ClassificationCode": "02 06 01",
+      "ClassificationTitle": "Kirjanpito"
+  },
+  {
+      "ClassificationCode": "02 06 01 00",
+      "ClassificationTitle": "Kirjanpidon hallinta"
+  },
+  {
+      "ClassificationCode": "02 06 05",
+      "ClassificationTitle": "Kassatoiminnot"
+  },
+  {
+      "ClassificationCode": "02 06 06",
+      "ClassificationTitle": "Perintä ja maksukyvyttömyysasiat"
+  },
+  {
+      "ClassificationCode": "02 06 07",
+      "ClassificationTitle": "Maksuvapautus- ja lykkäysasiat"
+  },
+  {
+      "ClassificationCode": "02 07",
+      "ClassificationTitle": "Omaisuuden hallinta"
+  },
+  {
+      "ClassificationCode": "02 07 00",
+      "ClassificationTitle": "Kiinteän omaisuuden hallinta"
+  },
+  {
+      "ClassificationCode": "02 07 01",
+      "ClassificationTitle": "Irtaimen ja käyttöomaisuuden hallinta"
+  },
+  {
+      "ClassificationCode": "02 07 02",
+      "ClassificationTitle": "Perintö- ja lahjoitusasiat"
+  },
+  {
+      "ClassificationCode": "02 08",
+      "ClassificationTitle": "Hankintatoimi ja logistiikka"
+  },
+  {
+      "ClassificationCode": "02 08 00",
+      "ClassificationTitle": "Hankinnan ja logistiikan ohjaus"
+  },
+  {
+      "ClassificationCode": "02 08 01",
+      "ClassificationTitle": "Tuotteiden ja tavaroiden hankinta"
+  },
+  {
+      "ClassificationCode": "02 08 01 00",
+      "ClassificationTitle": "Kilpailutus"
+  },
+  {
+      "ClassificationCode": "02 08 01 01",
+      "ClassificationTitle": "Hankinta ilman kilpailutusta"
+  },
+  {
+      "ClassificationCode": "02 08 02",
+      "ClassificationTitle": "Palveluiden hankinta"
+  },
+  {
+      "ClassificationCode": "02 08 02 00",
+      "ClassificationTitle": "Kilpailutus"
+  },
+  {
+      "ClassificationCode": "02 08 02 01",
+      "ClassificationTitle": "Hankinta ilman kilpailutusta"
+  },
+  {
+      "ClassificationCode": "02 08 03",
+      "ClassificationTitle": "Rakennusurakoiden hankinta"
+  },
+  {
+      "ClassificationCode": "02 08 03 00",
+      "ClassificationTitle": "Kilpailutus"
+  },
+  {
+      "ClassificationCode": "02 08 03 01",
+      "ClassificationTitle": "Hankinta ilman kilpailutusta"
+  },
+  {
+      "ClassificationCode": "02 09",
+      "ClassificationTitle": "Omien palvelujen ja tuotteiden myynti"
+  },
+  {
+      "ClassificationCode": "02 09 00",
+      "ClassificationTitle": "Palvelumyynti"
+  },
+  {
+      "ClassificationCode": "02 09 01",
+      "ClassificationTitle": "Tuote- ja tavaramyynti"
+  },
+  {
+      "ClassificationCode": "03",
+      "ClassificationTitle": "LAINSÄÄDÄNTÖ JA LAINSÄÄDÄNNÖN SOVELTAMINEN"
+  },
+  {
+      "ClassificationCode": "03 00",
+      "ClassificationTitle": "Lait ja asetukset"
+  },
+  {
+      "ClassificationCode": "03 00 00",
+      "ClassificationTitle": "Lakien ja asetusten säätäminen"
+  },
+  {
+      "ClassificationCode": "03 00 01",
+      "ClassificationTitle": "Lainsäädännön soveltaminen"
+  },
+  {
+      "ClassificationCode": "03 01",
+      "ClassificationTitle": "Oikeudellisten etujen ja laillisuuden valvonta, korvausasiat"
+  },
+  {
+      "ClassificationCode": "03 01 00",
+      "ClassificationTitle": "Vahingonkorvausasiat"
+  },
+  {
+      "ClassificationCode": "03 01 01",
+      "ClassificationTitle": "Oikeudellisten etujen valvonta"
+  },
+  {
+      "ClassificationCode": "03 01 02",
+      "ClassificationTitle": "Laillisuusvalvonta"
+  },
+  {
+      "ClassificationCode": "04",
+      "ClassificationTitle": "KANSAINVÄLINEN TOIMINTA JA MAAHANMUUTTOPOLITIIKKA"
+  },
+  {
+      "ClassificationCode": "04 00",
+      "ClassificationTitle": "Kansainvälisten asioiden ohjaus"
+  },
+  {
+      "ClassificationCode": "04 00 00",
+      "ClassificationTitle": "Kansainvälisten asioiden ohjaus"
+  },
+  {
+      "ClassificationCode": "04 03",
+      "ClassificationTitle": "Kansainväliseen toimintaan osallistuminen"
+  },
+  {
+      "ClassificationCode": "04 03 00",
+      "ClassificationTitle": "Kansainväliset organisaatiot"
+  },
+  {
+      "ClassificationCode": "04 03 01",
+      "ClassificationTitle": "Kansainväliseen yhteistoimintaan osallistuminen"
+  },
+  {
+      "ClassificationCode": "04 04",
+      "ClassificationTitle": "Maahanmuuttopolitiikka"
+  },
+  {
+      "ClassificationCode": "04 04 00",
+      "ClassificationTitle": "Maahanmuutto- ja maahanmuuttajapalveluiden kehittäminen"
+  },
+  {
+      "ClassificationCode": "04 04 01",
+      "ClassificationTitle": "Työperusteinen maahanmuutto"
+  },
+  {
+      "ClassificationCode": "04 04 02",
+      "ClassificationTitle": "Humanitaarinen maahanmuutto"
+  },
+  {
+      "ClassificationCode": "05",
+      "ClassificationTitle": "SOSIAALITOIMI"
+  },
+  {
+      "ClassificationCode": "05 00",
+      "ClassificationTitle": "Sosiaalitoimen kehittäminen, ohjaus ja valvonta"
+  },
+  {
+      "ClassificationCode": "05 00 00",
+      "ClassificationTitle": "Sosiaalitoimen kehittäminen ja suunnittelu"
+  },
+  {
+      "ClassificationCode": "05 00 01",
+      "ClassificationTitle": "Sosiaalitoimen ohjaus ja valvonta"
+  },
+  {
+      "ClassificationCode": "05 00 02",
+      "ClassificationTitle": "Sosiaaliasiamiestoiminta"
+  },
+  {
+      "ClassificationCode": "05 01",
+      "ClassificationTitle": "Lasten päivähoito"
+  },
+  {
+      "ClassificationCode": "05 01 00",
+      "ClassificationTitle": "Lasten päivähoidon kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 01 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (lasten päivähoito)"
+  },
+  {
+      "ClassificationCode": "05 01 02",
+      "ClassificationTitle": "Päiväkotihoito"
+  },
+  {
+      "ClassificationCode": "05 01 03",
+      "ClassificationTitle": "Kerhot"
+  },
+  {
+      "ClassificationCode": "05 01 04",
+      "ClassificationTitle": "Leikkipuistot"
+  },
+  {
+      "ClassificationCode": "05 01 05",
+      "ClassificationTitle": "Perhepäivähoito"
+  },
+  {
+      "ClassificationCode": "05 01 06",
+      "ClassificationTitle": "Esiopetus"
+  },
+  {
+      "ClassificationCode": "05 01 07",
+      "ClassificationTitle": "Lasten kotihoidontuki"
+  },
+  {
+      "ClassificationCode": "05 01 08",
+      "ClassificationTitle": "Yksityinen päivähoito"
+  },
+  {
+      "ClassificationCode": "05 02",
+      "ClassificationTitle": "Lastensuojelu ja perheiden palvelut"
+  },
+  {
+      "ClassificationCode": "05 02 00",
+      "ClassificationTitle": "Lastensuojelun kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 02 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (lastensuojelu ja perheiden palvelut)"
+  },
+  {
+      "ClassificationCode": "05 02 02",
+      "ClassificationTitle": "Avohuolto"
+  },
+  {
+      "ClassificationCode": "05 02 03",
+      "ClassificationTitle": "Perhehoito"
+  },
+  {
+      "ClassificationCode": "05 02 04",
+      "ClassificationTitle": "Laitoshoito"
+  },
+  {
+      "ClassificationCode": "05 02 05",
+      "ClassificationTitle": "Jälkihuolto"
+  },
+  {
+      "ClassificationCode": "05 02 06",
+      "ClassificationTitle": "Lomatoiminta"
+  },
+  {
+      "ClassificationCode": "05 02 07",
+      "ClassificationTitle": "Isyyden selvittäminen, huolto- ja tapaamisoikeusasiat"
+  },
+  {
+      "ClassificationCode": "05 02 08",
+      "ClassificationTitle": "Elatusturva-asiat"
+  },
+  {
+      "ClassificationCode": "05 02 09",
+      "ClassificationTitle": "Adoptioasiat"
+  },
+  {
+      "ClassificationCode": "05 02 10",
+      "ClassificationTitle": "Perheneuvonta"
+  },
+  {
+      "ClassificationCode": "05 02 11",
+      "ClassificationTitle": "Lapsiperheiden kotipalvelu"
+  },
+  {
+      "ClassificationCode": "05 02 12",
+      "ClassificationTitle": "Ensi- ja turvakodit"
+  },
+  {
+      "ClassificationCode": "05 02 13",
+      "ClassificationTitle": "Rikostensovittelu"
+  },
+  {
+      "ClassificationCode": "05 03",
+      "ClassificationTitle": "Vammaisten palvelut"
+  },
+  {
+      "ClassificationCode": "05 03 00",
+      "ClassificationTitle": "Vammaisten palvelujen kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 03 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (vammaisten palvelut)"
+  },
+  {
+      "ClassificationCode": "05 03 02",
+      "ClassificationTitle": "Vammaispalvelu"
+  },
+  {
+      "ClassificationCode": "05 03 03",
+      "ClassificationTitle": "Kehitysvammahuolto"
+  },
+  {
+      "ClassificationCode": "05 04",
+      "ClassificationTitle": "Vanhusten palvelut"
+  },
+  {
+      "ClassificationCode": "05 04 00",
+      "ClassificationTitle": "Vanhusten palvelujen kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 04 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (vanhusten palvelut)"
+  },
+  {
+      "ClassificationCode": "05 04 02",
+      "ClassificationTitle": "Asumispalvelut"
+  },
+  {
+      "ClassificationCode": "05 04 03",
+      "ClassificationTitle": "Laitospalvelut"
+  },
+  {
+      "ClassificationCode": "05 04 04",
+      "ClassificationTitle": "Yksityinen vanhusten palvelutoiminta"
+  },
+  {
+      "ClassificationCode": "05 04 05",
+      "ClassificationTitle": "Vanhusten päivätoiminta"
+  },
+  {
+      "ClassificationCode": "05 05",
+      "ClassificationTitle": "Päihdehuolto"
+  },
+  {
+      "ClassificationCode": "05 05 00",
+      "ClassificationTitle": "Päihdehuollon palvelujen kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 05 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (päihdehuolto)"
+  },
+  {
+      "ClassificationCode": "05 05 02",
+      "ClassificationTitle": "Avopalvelut"
+  },
+  {
+      "ClassificationCode": "05 05 03",
+      "ClassificationTitle": "Asumispalvelut"
+  },
+  {
+      "ClassificationCode": "05 05 04",
+      "ClassificationTitle": "Laitospalvelut"
+  },
+  {
+      "ClassificationCode": "05 06",
+      "ClassificationTitle": "Toimeentulo, maahanmuutto ja sosiaalinen kuntoutus"
+  },
+  {
+      "ClassificationCode": "05 06 00",
+      "ClassificationTitle": "Toiminnan kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 06 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (toimeentulo, maahanmuutto ja sosiaalinen kuntoutus)"
+  },
+  {
+      "ClassificationCode": "05 06 02",
+      "ClassificationTitle": "Toimeentulotukiasiat"
+  },
+  {
+      "ClassificationCode": "05 06 03",
+      "ClassificationTitle": "Sosiaalinen luototus"
+  },
+  {
+      "ClassificationCode": "05 06 04",
+      "ClassificationTitle": "Talous- ja velkaneuvonta"
+  },
+  {
+      "ClassificationCode": "05 06 05",
+      "ClassificationTitle": "Maahanmuuttajien palvelut"
+  },
+  {
+      "ClassificationCode": "05 06 06",
+      "ClassificationTitle": "Sosiaalinen työhön kuntoutus ja työllistämispalvelut"
+  },
+  {
+      "ClassificationCode": "05 07",
+      "ClassificationTitle": "Asunnottomuus ja tuettu asuminen"
+  },
+  {
+      "ClassificationCode": "05 07 00",
+      "ClassificationTitle": "Toiminnan kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 07 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (asunnottomuus ja tuettu asuminen)"
+  },
+  {
+      "ClassificationCode": "05 07 02",
+      "ClassificationTitle": "Asunnottomien palvelut"
+  },
+  {
+      "ClassificationCode": "05 07 03",
+      "ClassificationTitle": "Tuettu asuminen"
+  },
+  {
+      "ClassificationCode": "05 08",
+      "ClassificationTitle": "Omaishoito ja kuljetuspalvelut"
+  },
+  {
+      "ClassificationCode": "05 08 00",
+      "ClassificationTitle": "Toiminnan kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "05 08 01",
+      "ClassificationTitle": "Yksilöhuollon muutoksenhaku (omaishoito ja kuljetuspalvelut)"
+  },
+  {
+      "ClassificationCode": "05 08 02",
+      "ClassificationTitle": "Omaishoidontuki"
+  },
+  {
+      "ClassificationCode": "05 08 03",
+      "ClassificationTitle": "Kuljetuspalvelut ja -tuki"
+  },
+  {
+      "ClassificationCode": "06",
+      "ClassificationTitle": "TERVEYDENHUOLTO"
+  },
+  {
+      "ClassificationCode": "06 00",
+      "ClassificationTitle": "Palveluprosessin hallinta"
+  },
+  {
+      "ClassificationCode": "06 00 00",
+      "ClassificationTitle": "Hoidon järjestäminen"
+  },
+  {
+      "ClassificationCode": "06 00 01",
+      "ClassificationTitle": "Perustietojen ylläpito"
+  },
+  {
+      "ClassificationCode": "06 00 02",
+      "ClassificationTitle": "Potilasasiakirjojen käytön ja luovutusten hallinta"
+  },
+  {
+      "ClassificationCode": "06 00 03",
+      "ClassificationTitle": "Terveydenhuollon ohjaus ja valvonta"
+  },
+  {
+      "ClassificationCode": "06 01",
+      "ClassificationTitle": "Ennaltaehkäisevä terveydenhuolto"
+  },
+  {
+      "ClassificationCode": "06 01 00",
+      "ClassificationTitle": "Terveysneuvonta"
+  },
+  {
+      "ClassificationCode": "06 01 01",
+      "ClassificationTitle": "Seulonta"
+  },
+  {
+      "ClassificationCode": "06 01 02",
+      "ClassificationTitle": "Terveyden edistäminen"
+  },
+  {
+      "ClassificationCode": "06 02",
+      "ClassificationTitle": "Ensihoito ja sairaankuljetus"
+  },
+  {
+      "ClassificationCode": "06 02 01",
+      "ClassificationTitle": "Potilaan tutkimus ja hoito ensihoidossa"
+  },
+  {
+      "ClassificationCode": "06 02 02",
+      "ClassificationTitle": "Sairaankuljetukset"
+  },
+  {
+      "ClassificationCode": "06 03",
+      "ClassificationTitle": "Potilaan hoito"
+  },
+  {
+      "ClassificationCode": "06 03 01",
+      "ClassificationTitle": "Potilaan hoito ja kohtelu"
+  },
+  {
+      "ClassificationCode": "06 03 02",
+      "ClassificationTitle": "Varsinainen hoitotoiminta"
+  },
+  {
+      "ClassificationCode": "06 04",
+      "ClassificationTitle": "Terveydenhoidolliset ja sairaanhoidolliset palvelut"
+  },
+  {
+      "ClassificationCode": "06 04 00",
+      "ClassificationTitle": "Kuvantaminen"
+  },
+  {
+      "ClassificationCode": "06 04 01",
+      "ClassificationTitle": "Laboratoriotoiminta"
+  },
+  {
+      "ClassificationCode": "06 04 02",
+      "ClassificationTitle": "Muut terveydenhoidolliset ja sairaanhoidolliset palvelut"
+  },
+  {
+      "ClassificationCode": "06 05",
+      "ClassificationTitle": "Vainajaan liittyvät terveydenhuollon tehtävät"
+  },
+  {
+      "ClassificationCode": "06 05 00",
+      "ClassificationTitle": "Vainajan käsittely"
+  },
+  {
+      "ClassificationCode": "06 06",
+      "ClassificationTitle": "Viranomaisyhteistyö ja potilaan hoitoon liittyvä yhteistyö"
+  },
+  {
+      "ClassificationCode": "06 06 00",
+      "ClassificationTitle": "Organisaatioiden välinen tiedonvaihto"
+  },
+  {
+      "ClassificationCode": "06 06 01",
+      "ClassificationTitle": "Virka-aputehtävät"
+  },
+  {
+      "ClassificationCode": "06 07",
+      "ClassificationTitle": "Tukipalvelut"
+  },
+  {
+      "ClassificationCode": "06 07 00",
+      "ClassificationTitle": "Välinehuolto ja hoitotarvikepalvelut"
+  },
+  {
+      "ClassificationCode": "06 07 01",
+      "ClassificationTitle": "Apuvälinepalvelut"
+  },
+  {
+      "ClassificationCode": "06 07 02",
+      "ClassificationTitle": "Apteekkitoiminta ja lääkehuolto"
+  },
+  {
+      "ClassificationCode": "06 07 03",
+      "ClassificationTitle": "Lääkintätekniikka ja terveydenhuollon laitteet"
+  },
+  {
+      "ClassificationCode": "06 07 04",
+      "ClassificationTitle": "Laitoshuolto"
+  },
+  {
+      "ClassificationCode": "06 07 05",
+      "ClassificationTitle": "Ruokahuolto"
+  },
+  {
+      "ClassificationCode": "07",
+      "ClassificationTitle": "TIEDON HALLINTA"
+  },
+  {
+      "ClassificationCode": "07 00",
+      "ClassificationTitle": "Tiedonhallinnan ohjaus"
+  },
+  {
+      "ClassificationCode": "07 00 00",
+      "ClassificationTitle": "Tiedonhallinnan kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "07 00 01",
+      "ClassificationTitle": "Tietoturva ja tietosuoja"
+  },
+  {
+      "ClassificationCode": "07 00 02",
+      "ClassificationTitle": "Tietojärjestelmä- ja rekisteriselosteet"
+  },
+  {
+      "ClassificationCode": "07 00 03",
+      "ClassificationTitle": "Rekisteritietojen tarkistus ja tiedonsaantipyynnöt"
+  },
+  {
+      "ClassificationCode": "07 01",
+      "ClassificationTitle": "Tiedon hallinta ja tietopalvelu"
+  },
+  {
+      "ClassificationCode": "07 01 00",
+      "ClassificationTitle": "Sähköinen asiointi"
+  },
+  {
+      "ClassificationCode": "07 01 01",
+      "ClassificationTitle": "Asiakirjahallinto ja arkistotoimi"
+  },
+  {
+      "ClassificationCode": "07 01 02",
+      "ClassificationTitle": "Tietopalvelu"
+  },
+  {
+      "ClassificationCode": "07 01 03",
+      "ClassificationTitle": "Tilastotoiminta ja raportointi"
+  },
+  {
+      "ClassificationCode": "07 01 04",
+      "ClassificationTitle": "Lokitietopyynnöt ja korjauspyynnöt"
+  },
+  {
+      "ClassificationCode": "07 02",
+      "ClassificationTitle": "Tietojärjestelmien kehittäminen ja ylläpito"
+  },
+  {
+      "ClassificationCode": "07 02 00",
+      "ClassificationTitle": "Tietojärjestelmäpalvelujen ohjaus, suunnittelu ja käyttöönotto"
+  },
+  {
+      "ClassificationCode": "07 02 01",
+      "ClassificationTitle": "Tietojärjestelmien käyttäjäoikeuksien hallinta"
+  },
+  {
+      "ClassificationCode": "07 02 02",
+      "ClassificationTitle": "Tietojärjestelmien suunnittelu ja käyttö"
+  },
+  {
+      "ClassificationCode": "08",
+      "ClassificationTitle": "LIIKENNE"
+  },
+  {
+      "ClassificationCode": "08 00",
+      "ClassificationTitle": "Liikenteen suunnittelu ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "08 00 00",
+      "ClassificationTitle": "Liikennepolitiikan suunnittelu, kehittäminen, ohjaus ja ylläpito"
+  },
+  {
+      "ClassificationCode": "08 00 01",
+      "ClassificationTitle": "Liikenneväylien suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 02",
+      "ClassificationTitle": "Raideliikenteen suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 03",
+      "ClassificationTitle": "Linja-autoliikenteen suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 04",
+      "ClassificationTitle": "Kävelyn ja pyöräilyn suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 05",
+      "ClassificationTitle": "Taksi-, vesi- ja lentoliikenteen suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 06",
+      "ClassificationTitle": "Tavaraliikenteen suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 07",
+      "ClassificationTitle": "Siltojen ja tunnelien suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 00 08",
+      "ClassificationTitle": "Muiden liikenteen rakenteiden suunnittelu"
+  },
+  {
+      "ClassificationCode": "08 01",
+      "ClassificationTitle": "Liikennemerkit ja liikenteen ohjaus"
+  },
+  {
+      "ClassificationCode": "08 01 00",
+      "ClassificationTitle": "Liikennevalot"
+  },
+  {
+      "ClassificationCode": "08 01 01",
+      "ClassificationTitle": "Nopeuden hallinta"
+  },
+  {
+      "ClassificationCode": "08 01 02",
+      "ClassificationTitle": "Jalankulun ja pyöräilyn merkinnät"
+  },
+  {
+      "ClassificationCode": "08 01 03",
+      "ClassificationTitle": "Pysäköinti"
+  },
+  {
+      "ClassificationCode": "08 01 04",
+      "ClassificationTitle": "Ajorajoitukset ja erityiskatujen merkinnät"
+  },
+  {
+      "ClassificationCode": "08 01 05",
+      "ClassificationTitle": "Opastus"
+  },
+  {
+      "ClassificationCode": "08 01 06",
+      "ClassificationTitle": "Julkinen liikenne"
+  },
+  {
+      "ClassificationCode": "08 01 07",
+      "ClassificationTitle": "Muut liikennemerkit ja liikenteen ohjaus"
+  },
+  {
+      "ClassificationCode": "08 02",
+      "ClassificationTitle": "Liikennepalvelut"
+  },
+  {
+      "ClassificationCode": "08 02 00",
+      "ClassificationTitle": "Joukkoliikenteen suunnittelu ja tuottaminen"
+  },
+  {
+      "ClassificationCode": "08 02 01",
+      "ClassificationTitle": "Joukkoliikenteen rakentaminen"
+  },
+  {
+      "ClassificationCode": "08 02 02",
+      "ClassificationTitle": "Joukkoliikennettä palvelevat laitteet"
+  },
+  {
+      "ClassificationCode": "08 02 03",
+      "ClassificationTitle": "Joukkoliikenteen palvelutaso"
+  },
+  {
+      "ClassificationCode": "08 02 04",
+      "ClassificationTitle": "Kuljetusten järjestäminen ja ohjaaminen"
+  },
+  {
+      "ClassificationCode": "08 02 05",
+      "ClassificationTitle": "Satamatoiminta ja aluspalvelut"
+  },
+  {
+      "ClassificationCode": "08 02 05 00",
+      "ClassificationTitle": "Satamatoiminnan ohjaus ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "08 02 05 01",
+      "ClassificationTitle": "Alusliikenne ja aluspalvelut"
+  },
+  {
+      "ClassificationCode": "08 02 05 02",
+      "ClassificationTitle": "Tavarasatamatoiminta"
+  },
+  {
+      "ClassificationCode": "08 02 05 03",
+      "ClassificationTitle": "Matkustajasatamatoiminta"
+  },
+  {
+      "ClassificationCode": "08 02 06",
+      "ClassificationTitle": "Varikkotoiminta ja asemat"
+  },
+  {
+      "ClassificationCode": "08 03",
+      "ClassificationTitle": "Liikenteen valvonta"
+  },
+  {
+      "ClassificationCode": "08 03 01",
+      "ClassificationTitle": "Pysäköinnin valvonta"
+  },
+  {
+      "ClassificationCode": "08 03 01 00",
+      "ClassificationTitle": "Pysäköinnin valvonta"
+  },
+  {
+      "ClassificationCode": "08 03 01 01",
+      "ClassificationTitle": "Maksullisen pysäköinnin järjestäminen"
+  },
+  {
+      "ClassificationCode": "08 03 01 02",
+      "ClassificationTitle": "Ajoneuvojen siirto, varastointi, luovutus ja romutus (tienpitoviranomainen)"
+  },
+  {
+      "ClassificationCode": "09",
+      "ClassificationTitle": "TURVALLISUUS JA YLEINEN JÄRJESTYS"
+  },
+  {
+      "ClassificationCode": "09 00",
+      "ClassificationTitle": "Turvallisuuden ja yleisen järjestyksen ohjaus"
+  },
+  {
+      "ClassificationCode": "09 00 00",
+      "ClassificationTitle": "Turvallisuuden suunnittelu"
+  },
+  {
+      "ClassificationCode": "09 05",
+      "ClassificationTitle": "Pelastustoimi"
+  },
+  {
+      "ClassificationCode": "09 05 00",
+      "ClassificationTitle": "Onnettomuuksien ennaltaehkäisy"
+  },
+  {
+      "ClassificationCode": "09 05 01",
+      "ClassificationTitle": "Pelastustoiminta"
+  },
+  {
+      "ClassificationCode": "09 06",
+      "ClassificationTitle": "Väestönsuojelu ja poikkeusoloihin varautuminen"
+  },
+  {
+      "ClassificationCode": "09 06 00",
+      "ClassificationTitle": "Valmiussuunnittelu"
+  },
+  {
+      "ClassificationCode": "09 06 01",
+      "ClassificationTitle": "Väestönsuojelu"
+  },
+  {
+      "ClassificationCode": "09 07",
+      "ClassificationTitle": "Yleisen järjestyksen valvonta"
+  },
+  {
+      "ClassificationCode": "09 07 00",
+      "ClassificationTitle": "Yleisen järjestyksen valvonnan ohjaus"
+  },
+  {
+      "ClassificationCode": "10",
+      "ClassificationTitle": "MAANKÄYTTÖ, RAKENTAMINEN JA ASUMINEN"
+  },
+  {
+      "ClassificationCode": "10 00",
+      "ClassificationTitle": "Maankäytön, rakentamisen ja asumisen ohjaus"
+  },
+  {
+      "ClassificationCode": "10 00 00",
+      "ClassificationTitle": "Maapolitiikan hoito"
+  },
+  {
+      "ClassificationCode": "10 01",
+      "ClassificationTitle": "Maan, kiinteistöjen ja huonetilojen hallinta"
+  },
+  {
+      "ClassificationCode": "10 01 00",
+      "ClassificationTitle": "Maan ja kiinteistöjen hankinta"
+  },
+  {
+      "ClassificationCode": "10 01 01",
+      "ClassificationTitle": "Maan ja kiinteistöjen luovutus"
+  },
+  {
+      "ClassificationCode": "10 01 01 00",
+      "ClassificationTitle": "Tonttien varaaminen"
+  },
+  {
+      "ClassificationCode": "10 01 01 01",
+      "ClassificationTitle": "Rakennettujen ja rakentamattomien kiinteistöjen myynti ja vaihto"
+  },
+  {
+      "ClassificationCode": "10 01 01 02",
+      "ClassificationTitle": "Lyhyt- ja pitkäaikaiset tonttivuokraukset, maanalaisten rakennuspaikkojen vuokraukset"
+  },
+  {
+      "ClassificationCode": "10 01 01 03",
+      "ClassificationTitle": "Yleisten alueiden ja muiden alueiden vuokraus"
+  },
+  {
+      "ClassificationCode": "10 01 01 04",
+      "ClassificationTitle": "Alueiden tilapäinen käyttö ja tilapäinen vuokraus"
+  },
+  {
+      "ClassificationCode": "10 01 01 05",
+      "ClassificationTitle": "Pysyvien käyttöoikeuksien luovuttaminen, rasitesopimukset"
+  },
+  {
+      "ClassificationCode": "10 01 01 06",
+      "ClassificationTitle": "Rakenteiden, laitteiden ja johtojen sijoittaminen (pysyvä rakenne)"
+  },
+  {
+      "ClassificationCode": "10 01 02",
+      "ClassificationTitle": "Kaupungin sisäiset vuokraukset"
+  },
+  {
+      "ClassificationCode": "10 01 03",
+      "ClassificationTitle": "Rakennusten ja huonetilojen myynti ja ulosvuokraus"
+  },
+  {
+      "ClassificationCode": "10 01 04",
+      "ClassificationTitle": "Rakennusten ja huonetilojen osto ja sisäänvuokraus"
+  },
+  {
+      "ClassificationCode": "10 02",
+      "ClassificationTitle": "Maanmittaus ja maaperätutkimus"
+  },
+  {
+      "ClassificationCode": "10 02 00",
+      "ClassificationTitle": "Kiinteistönmuodostus, tonttijaot, katukorvaukset"
+  },
+  {
+      "ClassificationCode": "10 02 01",
+      "ClassificationTitle": "Maa- ja kallioperätutkimukset"
+  },
+  {
+      "ClassificationCode": "10 02 02",
+      "ClassificationTitle": "Maastomittaukset ja paikkatietojen hallinta"
+  },
+  {
+      "ClassificationCode": "10 02 03",
+      "ClassificationTitle": "Karttojen laatiminen ja ylläpito"
+  },
+  {
+      "ClassificationCode": "10 02 04",
+      "ClassificationTitle": "Osoitenumeroasiat"
+  },
+  {
+      "ClassificationCode": "10 03",
+      "ClassificationTitle": "Kaavoitus"
+  },
+  {
+      "ClassificationCode": "10 03 00",
+      "ClassificationTitle": "Maakuntakaavoitus"
+  },
+  {
+      "ClassificationCode": "10 03 01",
+      "ClassificationTitle": "Kaavoituksen kuntayhteistyö"
+  },
+  {
+      "ClassificationCode": "10 03 02",
+      "ClassificationTitle": "Yleissuunnittelu"
+  },
+  {
+      "ClassificationCode": "10 03 02 00",
+      "ClassificationTitle": "Yleiskaavoitus"
+  },
+  {
+      "ClassificationCode": "10 03 02 01",
+      "ClassificationTitle": "Yleissuunnitelmat ja yleisselvitykset"
+  },
+  {
+      "ClassificationCode": "10 03 03",
+      "ClassificationTitle": "Asemakaavoitus"
+  },
+  {
+      "ClassificationCode": "10 03 04",
+      "ClassificationTitle": "Rantakaavoitus"
+  },
+  {
+      "ClassificationCode": "10 03 05",
+      "ClassificationTitle": "Rakennuskiellot, toimenpidekiellot ja -rajoitukset"
+  },
+  {
+      "ClassificationCode": "10 03 06",
+      "ClassificationTitle": "Kaavoitusta tukevat suunnitelmat"
+  },
+  {
+      "ClassificationCode": "10 03 07",
+      "ClassificationTitle": "Nimistöasiat"
+  },
+  {
+      "ClassificationCode": "10 03 08",
+      "ClassificationTitle": "Rakentamistapaohjeet, lähiympäristön suunnitteluohjeet"
+  },
+  {
+      "ClassificationCode": "10 03 09",
+      "ClassificationTitle": "Suunnittelu- ja arkkitehtuurikilpailut"
+  },
+  {
+      "ClassificationCode": "10 03 10",
+      "ClassificationTitle": "Alueiden, rakennusten, kulttuurihistoriallisten kohteiden ja sisätilojen suojelu"
+  },
+  {
+      "ClassificationCode": "10 04",
+      "ClassificationTitle": "Rakennusvalvonta"
+  },
+  {
+      "ClassificationCode": "10 04 00",
+      "ClassificationTitle": "Rakentamisen ja rakennusvalvonnan ohjaus ja neuvonta"
+  },
+  {
+      "ClassificationCode": "10 04 01",
+      "ClassificationTitle": "Poikkeamismenettely"
+  },
+  {
+      "ClassificationCode": "10 04 02",
+      "ClassificationTitle": "Suunnittelutarveratkaisu"
+  },
+  {
+      "ClassificationCode": "10 04 03",
+      "ClassificationTitle": "Rakennuslupa"
+  },
+  {
+      "ClassificationCode": "10 04 04",
+      "ClassificationTitle": "Toimenpidelupa"
+  },
+  {
+      "ClassificationCode": "10 04 05",
+      "ClassificationTitle": "Purkaminen"
+  },
+  {
+      "ClassificationCode": "10 04 06",
+      "ClassificationTitle": "Maisematyölupa"
+  },
+  {
+      "ClassificationCode": "10 04 07",
+      "ClassificationTitle": "Aloittamisoikeus"
+  },
+  {
+      "ClassificationCode": "10 04 08",
+      "ClassificationTitle": "Z-lausunto, toimenpiteen vähäisyyden arviointi ja muu vastaava menettely"
+  },
+  {
+      "ClassificationCode": "10 04 09",
+      "ClassificationTitle": "Rakennusrasite ja kiinteistöjen yhteisjärjestely"
+  },
+  {
+      "ClassificationCode": "10 04 10",
+      "ClassificationTitle": "Rakennetun ympäristön jatkuva valvonta"
+  },
+  {
+      "ClassificationCode": "10 05",
+      "ClassificationTitle": "Alueiden toteutussuunnittelu, rakentaminen ja ylläpito"
+  },
+  {
+      "ClassificationCode": "10 05 00",
+      "ClassificationTitle": "Maa-alueiden rakentamiskelpoiseksi saattaminen"
+  },
+  {
+      "ClassificationCode": "10 05 01",
+      "ClassificationTitle": "Alueiden suunnittelun, rakentamisen ja ylläpidon ohjaus ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "10 05 02",
+      "ClassificationTitle": "Alueiden kohdesuunnittelu, uudisrakentaminen ja peruskorjaus"
+  },
+  {
+      "ClassificationCode": "10 05 03",
+      "ClassificationTitle": "Alueiden ylläpito"
+  },
+  {
+      "ClassificationCode": "10 06",
+      "ClassificationTitle": "Rakennusten ja rakennelmien toteutussuunnittelu, rakentaminen ja ylläpito"
+  },
+  {
+      "ClassificationCode": "10 06 00",
+      "ClassificationTitle": "Rakennusten ja rakennelmien suunnittelu ja toteutus"
+  },
+  {
+      "ClassificationCode": "10 06 01",
+      "ClassificationTitle": "Rakennusten ja rakennelmien ylläpito"
+  },
+  {
+      "ClassificationCode": "10 07",
+      "ClassificationTitle": "Asuminen"
+  },
+  {
+      "ClassificationCode": "10 07 00",
+      "ClassificationTitle": "Asuntoasioiden ohjaus ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "10 07 01",
+      "ClassificationTitle": "Asunnonvälitys"
+  },
+  {
+      "ClassificationCode": "10 07 02",
+      "ClassificationTitle": "Valvonta ja lainat"
+  },
+  {
+      "ClassificationCode": "10 07 03",
+      "ClassificationTitle": "Korjausrahoitus"
+  },
+  {
+      "ClassificationCode": "10 07 04",
+      "ClassificationTitle": "Asuntopolitiikka"
+  },
+  {
+      "ClassificationCode": "11",
+      "ClassificationTitle": "YMPÄRISTÖASIAT"
+  },
+  {
+      "ClassificationCode": "11 00",
+      "ClassificationTitle": "Ympäristöasioiden ohjaus"
+  },
+  {
+      "ClassificationCode": "11 00 00",
+      "ClassificationTitle": "Ympäristöpolitiikka"
+  },
+  {
+      "ClassificationCode": "11 00 01",
+      "ClassificationTitle": "Ympäristönsuojelun suunnittelu ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "11 00 02",
+      "ClassificationTitle": "Ympäristön tilan yleinen seuranta"
+  },
+  {
+      "ClassificationCode": "11 00 03",
+      "ClassificationTitle": "Kunnalliset yleiset määräykset ja valvontaohjelmat"
+  },
+  {
+      "ClassificationCode": "11 01",
+      "ClassificationTitle": "Ympäristön- ja luonnonsuojelu"
+  },
+  {
+      "ClassificationCode": "11 01 00",
+      "ClassificationTitle": "Ympäristönsuojelu"
+  },
+  {
+      "ClassificationCode": "11 01 00 00",
+      "ClassificationTitle": "Ympäristölupa"
+  },
+  {
+      "ClassificationCode": "11 01 00 01",
+      "ClassificationTitle": "Kemikaalisäiliöiden jättäminen maaperään"
+  },
+  {
+      "ClassificationCode": "11 01 00 02",
+      "ClassificationTitle": "Meluilmoitus"
+  },
+  {
+      "ClassificationCode": "11 01 00 03",
+      "ClassificationTitle": "Ilmoitus koeluontoisesta toiminnasta"
+  },
+  {
+      "ClassificationCode": "11 01 00 04",
+      "ClassificationTitle": "Ilmoitus poikkeuksellisesta tilanteesta"
+  },
+  {
+      "ClassificationCode": "11 01 00 05",
+      "ClassificationTitle": "Ilmoitus tietojärjestelmään"
+  },
+  {
+      "ClassificationCode": "11 01 00 06",
+      "ClassificationTitle": "Ilmoitus koskien maaperän puhdistamista"
+  },
+  {
+      "ClassificationCode": "11 01 00 07",
+      "ClassificationTitle": "Toimenpidepyyntö"
+  },
+  {
+      "ClassificationCode": "11 01 01",
+      "ClassificationTitle": "Vesiensuojelu ja vesirakentamisen valvonta"
+  },
+  {
+      "ClassificationCode": "11 01 02",
+      "ClassificationTitle": "Vesiliikenteen valvonta"
+  },
+  {
+      "ClassificationCode": "11 01 03",
+      "ClassificationTitle": "Maastoliikenteen valvonta"
+  },
+  {
+      "ClassificationCode": "11 01 04",
+      "ClassificationTitle": "Luonnonsuojelu"
+  },
+  {
+      "ClassificationCode": "11 01 05",
+      "ClassificationTitle": "Ympäristövaikutusten arviointi"
+  },
+  {
+      "ClassificationCode": "11 01 06",
+      "ClassificationTitle": "Jätehuollon valvonta ja jätteen synnyn ehkäisy"
+  },
+  {
+      "ClassificationCode": "11 01 06 00",
+      "ClassificationTitle": "Toimenpidepyyntö"
+  },
+  {
+      "ClassificationCode": "11 01 06 01",
+      "ClassificationTitle": "Huvivenesataman jätehuoltosuunnitelma ja tietojärjestelmään merkitseminen"
+  },
+  {
+      "ClassificationCode": "11 01 06 02",
+      "ClassificationTitle": "Jätehuollon valvonta ja jätteen synnyn ehkäisy"
+  },
+  {
+      "ClassificationCode": "11 01 07",
+      "ClassificationTitle": "Vesihuollon valvonta"
+  },
+  {
+      "ClassificationCode": "11 01 08",
+      "ClassificationTitle": "Hallintopakkomenettely"
+  },
+  {
+      "ClassificationCode": "11 02",
+      "ClassificationTitle": "Ympäristöterveydenhuolto"
+  },
+  {
+      "ClassificationCode": "11 02 00",
+      "ClassificationTitle": "Elintarvikevalvonta"
+  },
+  {
+      "ClassificationCode": "11 02 01",
+      "ClassificationTitle": "Kulutustavaroiden ja palveluiden turvallisuuden valvonta"
+  },
+  {
+      "ClassificationCode": "11 02 02",
+      "ClassificationTitle": "Terveydensuojelu (ympäristöterveys)"
+  },
+  {
+      "ClassificationCode": "11 02 02 00",
+      "ClassificationTitle": "Toimenpidepyyntö"
+  },
+  {
+      "ClassificationCode": "11 02 02 01",
+      "ClassificationTitle": "Ilmoitus"
+  },
+  {
+      "ClassificationCode": "11 02 02 02",
+      "ClassificationTitle": "Asunnontarkastus"
+  },
+  {
+      "ClassificationCode": "11 02 03",
+      "ClassificationTitle": "Kemikaaliasiat"
+  },
+  {
+      "ClassificationCode": "11 02 04",
+      "ClassificationTitle": "Tupakkavalvonta ja nikotiinivalmisteiden valvonta"
+  },
+  {
+      "ClassificationCode": "11 02 05",
+      "ClassificationTitle": "Eläinsuojelu"
+  },
+  {
+      "ClassificationCode": "11 02 06",
+      "ClassificationTitle": "Eläinlääkintähuolto"
+  },
+  {
+      "ClassificationCode": "11 03",
+      "ClassificationTitle": "Maisema- ja kulttuuriympäristön suojelu ja hoito"
+  },
+  {
+      "ClassificationCode": "11 03 00",
+      "ClassificationTitle": "Maisema- ja kulttuuriympäristön suojelu ja hoito"
+  },
+  {
+      "ClassificationCode": "11 03 01",
+      "ClassificationTitle": "Muinaismuistojen vaaliminen ja hallinta"
+  },
+  {
+      "ClassificationCode": "11 03 02",
+      "ClassificationTitle": "Kunnan maisema- ja kulttuurikohteiden suojelu ja hoito"
+  },
+  {
+      "ClassificationCode": "12",
+      "ClassificationTitle": "OPETUS- JA SIVISTYSTOIMI"
+  },
+  {
+      "ClassificationCode": "12 00",
+      "ClassificationTitle": "Opetus- ja sivistystoimen ohjaus"
+  },
+  {
+      "ClassificationCode": "12 00 00",
+      "ClassificationTitle": "Koulutuspoliittinen ohjaus"
+  },
+  {
+      "ClassificationCode": "12 00 01",
+      "ClassificationTitle": "Koulutuksen ja opetuksen suunnittelu"
+  },
+  {
+      "ClassificationCode": "12 01",
+      "ClassificationTitle": "Oppilas- ja opiskelija-asiat"
+  },
+  {
+      "ClassificationCode": "12 01 00",
+      "ClassificationTitle": "Oppilasvalinnat ja oppilaaksi otto, opiskelijavalinnat ja opiskelijaksi otto"
+  },
+  {
+      "ClassificationCode": "12 01 01",
+      "ClassificationTitle": "Oppilaan opetuksen järjestäminen"
+  },
+  {
+      "ClassificationCode": "12 01 02",
+      "ClassificationTitle": "Oppilaan arviointi"
+  },
+  {
+      "ClassificationCode": "12 01 03",
+      "ClassificationTitle": "Oppilashuolto, oppilaiden hyvinvointi"
+  },
+  {
+      "ClassificationCode": "12 01 04",
+      "ClassificationTitle": "Kodin ja koulun välinen yhteistyö"
+  },
+  {
+      "ClassificationCode": "12 01 05",
+      "ClassificationTitle": "Palkitseminen ja stipendit"
+  },
+  {
+      "ClassificationCode": "12 01 06",
+      "ClassificationTitle": "Opiskelijavaihto"
+  },
+  {
+      "ClassificationCode": "12 01 07",
+      "ClassificationTitle": "Oppilaskuntatoiminta"
+  },
+  {
+      "ClassificationCode": "12 01 08",
+      "ClassificationTitle": "Harrastus- ja kerhotoiminta"
+  },
+  {
+      "ClassificationCode": "12 02",
+      "ClassificationTitle": "Kulttuuripalvelut ja kirjastopalvelut"
+  },
+  {
+      "ClassificationCode": "12 02 00",
+      "ClassificationTitle": "Kulttuuritapahtumat"
+  },
+  {
+      "ClassificationCode": "12 02 01",
+      "ClassificationTitle": "Kulttuurilaitostoiminta"
+  },
+  {
+      "ClassificationCode": "12 02 02",
+      "ClassificationTitle": "Kirjastopalvelut"
+  },
+  {
+      "ClassificationCode": "12 02 02 00",
+      "ClassificationTitle": "Kirjasto- ja lainauspalveluiden järjestäminen, keskuskirjastotoiminta"
+  },
+  {
+      "ClassificationCode": "12 02 02 01",
+      "ClassificationTitle": "Käyttöoikeudet"
+  },
+  {
+      "ClassificationCode": "12 02 02 02",
+      "ClassificationTitle": "Kirjastojen ja yleisöpalveluyksiköiden aukioloajat ja kirjastoauton pysähdyspaikat"
+  },
+  {
+      "ClassificationCode": "12 02 03",
+      "ClassificationTitle": "Museotoiminta"
+  },
+  {
+      "ClassificationCode": "12 02 03 00",
+      "ClassificationTitle": "Kokoelmanhallinta"
+  },
+  {
+      "ClassificationCode": "12 02 03 03",
+      "ClassificationTitle": "Yleisöpalvelu ja museopedagogiikka"
+  },
+  {
+      "ClassificationCode": "12 02 04",
+      "ClassificationTitle": "Näyttelytoiminta"
+  },
+  {
+      "ClassificationCode": "12 02 05",
+      "ClassificationTitle": "Musiikki- ja orkesteritoiminta"
+  },
+  {
+      "ClassificationCode": "12 02 07",
+      "ClassificationTitle": "Kotiseututyö"
+  },
+  {
+      "ClassificationCode": "12 03",
+      "ClassificationTitle": "Liikuntatoimi"
+  },
+  {
+      "ClassificationCode": "12 03 00",
+      "ClassificationTitle": "Liikuntatoimen ohjaus, suunnittelu ja valvonta"
+  },
+  {
+      "ClassificationCode": "12 03 01",
+      "ClassificationTitle": "Liikuntalaitostoiminta"
+  },
+  {
+      "ClassificationCode": "12 03 02",
+      "ClassificationTitle": "Ulkoliikuntatoiminta"
+  },
+  {
+      "ClassificationCode": "12 03 03",
+      "ClassificationTitle": "Merellinen toiminta"
+  },
+  {
+      "ClassificationCode": "12 03 04",
+      "ClassificationTitle": "Liikunnanohjaustoiminta"
+  },
+  {
+      "ClassificationCode": "12 03 05",
+      "ClassificationTitle": "Liikuntatoimen varaustoiminta"
+  },
+  {
+      "ClassificationCode": "12 04",
+      "ClassificationTitle": "Lapsi- ja nuorisoasioiden palvelut"
+  },
+  {
+      "ClassificationCode": "12 04 00",
+      "ClassificationTitle": "Lapsi- ja nuorisopalveluiden kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "12 04 01",
+      "ClassificationTitle": "Lapsi- ja nuorisotyö"
+  },
+  {
+      "ClassificationCode": "12 04 02",
+      "ClassificationTitle": "Lasten ja nuorten vapaa-ajan toiminta"
+  },
+  {
+      "ClassificationCode": "12 05",
+      "ClassificationTitle": "Maailmankatsomuksellisten yhteisöjen toiminta"
+  },
+  {
+      "ClassificationCode": "12 05 00",
+      "ClassificationTitle": "Maailmankatsomuksellisten yhteisöjen toiminta"
+  },
+  {
+      "ClassificationCode": "12 06",
+      "ClassificationTitle": "Eläintarha- ja kotieläinpuistotoiminta"
+  },
+  {
+      "ClassificationCode": "12 06 00",
+      "ClassificationTitle": "Eläintarha- ja kotieläinpuistotoiminnan kehittäminen ja ohjaus"
+  },
+  {
+      "ClassificationCode": "12 06 01",
+      "ClassificationTitle": "Eläinten hankinta, kuljetus ja rekisteröinti"
+  },
+  {
+      "ClassificationCode": "12 06 02",
+      "ClassificationTitle": "Eläinten hyvinvointi"
+  },
+  {
+      "ClassificationCode": "12 06 03",
+      "ClassificationTitle": "Ympäristökasvatus"
+  },
+  {
+      "ClassificationCode": "13",
+      "ClassificationTitle": "TUTKIMUS- JA KEHITTÄMISTOIMINTA"
+  },
+  {
+      "ClassificationCode": "13 00",
+      "ClassificationTitle": "Tutkimus- ja kehittämistoiminnan ohjaus"
+  },
+  {
+      "ClassificationCode": "13 00 00",
+      "ClassificationTitle": "Tutkimustoiminnan ohjaus"
+  },
+  {
+      "ClassificationCode": "13 00 01",
+      "ClassificationTitle": "Tutkimus- ja kehittämistoiminnan arviointi"
+  },
+  {
+      "ClassificationCode": "13 00 02",
+      "ClassificationTitle": "Tutkimustoiminnan edistäminen (palkinnot, apurahat)"
+  },
+  {
+      "ClassificationCode": "13 01",
+      "ClassificationTitle": "Tutkimus- ja kehittämistoiminnan suunnittelu, järjestäminen ja toteuttaminen"
+  },
+  {
+      "ClassificationCode": "13 01 00",
+      "ClassificationTitle": "Tutkimus- ja kehittämistoiminnan suunnittelu ja seuranta"
+  },
+  {
+      "ClassificationCode": "13 01 01",
+      "ClassificationTitle": "Projektimuotoinen tutkimus- ja kehittämistoiminta"
+  },
+  {
+      "ClassificationCode": "13 02",
+      "ClassificationTitle": "Tutkimuseettinen toiminta"
+  },
+  {
+      "ClassificationCode": "13 02 00",
+      "ClassificationTitle": "Tutkimuseettisen toiminnan ohjaus"
+  },
+  {
+      "ClassificationCode": "13 02 01",
+      "ClassificationTitle": "Tutkimusluvat"
+  },
+  {
+      "ClassificationCode": "14",
+      "ClassificationTitle": "ELINKEINO- JA TYÖVOIMAPALVELUT"
+  },
+  {
+      "ClassificationCode": "14 00",
+      "ClassificationTitle": "Elinkeino- ja työvoimapalvelujen ohjaus"
+  },
+  {
+      "ClassificationCode": "14 00 00",
+      "ClassificationTitle": "Kunnan elinkeino- ja työvoimapolitiikka"
+  },
+  {
+      "ClassificationCode": "14 00 01",
+      "ClassificationTitle": "Yhteistyö elinkeinoelämän ja yritysten kanssa"
+  },
+  {
+      "ClassificationCode": "14 00 02",
+      "ClassificationTitle": "Yritystoiminnan kehittäminen"
+  },
+  {
+      "ClassificationCode": "14 01",
+      "ClassificationTitle": "Yritystoiminnan edistäminen"
+  },
+  {
+      "ClassificationCode": "14 01 00",
+      "ClassificationTitle": "Matkailun edistäminen"
+  },
+  {
+      "ClassificationCode": "14 02",
+      "ClassificationTitle": "Maaseudun elinkeinotoiminta"
+  },
+  {
+      "ClassificationCode": "14 02 00",
+      "ClassificationTitle": "Maatalous"
+  },
+  {
+      "ClassificationCode": "14 02 01",
+      "ClassificationTitle": "Metsätalous"
+  },
+  {
+      "ClassificationCode": "14 02 02",
+      "ClassificationTitle": "Kalatalous"
+  },
+  {
+      "ClassificationCode": "14 02 03",
+      "ClassificationTitle": "Metsästys ja riistatalous"
+  },
+  {
+      "ClassificationCode": "14 03",
+      "ClassificationTitle": "Energiantuotanto"
+  },
+  {
+      "ClassificationCode": "14 03 00",
+      "ClassificationTitle": "Energiapolitiikka"
+  },
+  {
+      "ClassificationCode": "14 03 01",
+      "ClassificationTitle": "Energiatuotanto ja polttoaineet"
+  },
+  {
+      "ClassificationCode": "14 03 02",
+      "ClassificationTitle": "Sähkön myynti, siirto ja jakelu"
+  },
+  {
+      "ClassificationCode": "14 03 03",
+      "ClassificationTitle": "Lämmitys ja jäähdytys"
+  },
+  {
+      "ClassificationCode": "14 03 04",
+      "ClassificationTitle": "Energian säästö ja energianeuvonta"
+  },
+  {
+      "ClassificationCode": "14 03 05",
+      "ClassificationTitle": "Energiaan liittyvät ympäristöasiat"
+  },
+  {
+      "ClassificationCode": "14 03 06",
+      "ClassificationTitle": "Energiahuoltoalueiden maisemointi ja kunnossapito"
+  },
+  {
+      "ClassificationCode": "14 04",
+      "ClassificationTitle": "Vesi- ja jätehuollon järjestäminen ja toteuttaminen"
+  },
+  {
+      "ClassificationCode": "14 04 00",
+      "ClassificationTitle": "Vesihuollon järjestäminen"
+  },
+  {
+      "ClassificationCode": "14 04 01",
+      "ClassificationTitle": "Jätevesihuollon järjestäminen"
+  },
+  {
+      "ClassificationCode": "14 04 02",
+      "ClassificationTitle": "Jätehuollon järjestäminen"
+  },
+  {
+      "ClassificationCode": "14 05",
+      "ClassificationTitle": "Työvoimapalvelut"
+  },
+  {
+      "ClassificationCode": "14 05 00",
+      "ClassificationTitle": "Työvoimapalveluiden suunnittelu ja kehittäminen"
+  },
+  {
+      "ClassificationCode": "14 05 01",
+      "ClassificationTitle": "Työvoimapalveluiden tuottaminen"
+  }
+]
