@@ -3,108 +3,87 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.storage.node.field_classification_title
+    - field.storage.node.field_decision_native_id
+    - field.storage.node.field_diary_number
+    - field.storage.node.field_decision_case_title
+    - field.storage.node.field_meeting_date
+    - field.storage.node.field_full_title
+    - field.storage.node.field_top_category_name
     - search_api.server.elasticsearch
   module:
-    - paatokset_ahjo
     - search_api
     - paatokset_search
+    - node
 id: decisions
 name: Decisions
 description: ''
 read_only: false
 field_settings:
-  content_draft_proposal:
-    label: content_draft_proposal
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: content_draft_proposal
-    type: text
+  category_name:
+    label: 'Classification title'
+    datasource_id: 'entity:node'
+    property_path: field_classification_title
+    type: string
     dependencies:
-      module:
-        - paatokset_ahjo
-  content_presenter:
-    label: content_presenter
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: content_presenter
-    type: text
-    dependencies:
-      module:
-        - paatokset_ahjo
-  content_resolution:
-    label: content_resolution
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: content_resolution
-    type: text
-    dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_classification_title
   id:
-    label: ID
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: id
+    label: 'Native ID'
+    datasource_id: 'entity:node'
+    property_path: field_decision_native_id
     type: string
     dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_decision_native_id
   issue_id:
-    label: issue_id
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: issue_id
+    label: 'Diary number'
+    datasource_id: 'entity:node'
+    property_path: field_diary_number
     type: string
     dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_diary_number
   issue_subject:
-    label: issue_subject
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: issue_subject
+    label: 'Case title'
+    datasource_id: 'entity:node'
+    property_path: field_decision_case_title
     type: text
     boost: !!float 2
     dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_decision_case_title
   meeting_date:
-    label: meeting_date
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: meeting_date
+    label: 'Decision Date'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_date
     type: string
     dependencies:
-      module:
-        - paatokset_ahjo
-  meeting_policymaker_link:
-    label: meeting_policymaker_link
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: meeting_policymaker_link
-    type: string
-    dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_meeting_date
   subject:
-    label: subject
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: subject
+    label: 'Full title'
+    datasource_id: 'entity:node'
+    property_path: field_full_title
     type: text
     boost: !!float 2
     dependencies:
-      module:
-        - paatokset_ahjo
-  subject_resolution:
-    label: subject_resolution
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: subject_resolution
-    type: string
-    dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_full_title
   top_category_name:
-    label: top_category_name
-    datasource_id: 'entity:paatokset_agenda_item'
-    property_path: top_category_name
+    label: 'Top category name'
+    datasource_id: 'entity:node'
+    property_path: field_top_category_name
     type: string
     dependencies:
-      module:
-        - paatokset_ahjo
+      config:
+        - field.storage.node.field_top_category_name
 datasource_settings:
-  'entity:paatokset_agenda_item':
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - decision
     languages:
       default: true
       selected: {  }
