@@ -126,6 +126,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   usort($members, 'cmp');
   usort($deputies, 'cmp');
 
+  $members_formatted = [];
+
   foreach($members as $node) {
     $members_formatted[] = [
       'title' => $node['first_name'] . ' ' . $node['last_name'] . ', ' . t('Valtuutettu'),
@@ -133,6 +135,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'organization_type' => 'trustee'
     ];
   };
+
+  $deputies_formatted = [];
 
   foreach($deputies as $node) {
     $deputies_formatted[] = [
@@ -147,6 +151,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ->condition('status', 1)
     ->execute();
   $nodes_policymakers =  \Drupal\node\Entity\Node::loadMultiple($nids_policymakers);
+
+  $filtered = [];
 
   foreach ($nodes_policymakers as $node) {
     if (!$node instanceof NodeInterface) {
@@ -195,13 +201,13 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     return (!str_contains($var['title'], $hallituksen_jaosto_filter));
   });
 
-  $variables['cards'] = [$accorion_contents['valtuusto'][1], $accorion_contents['hallitus'][1]];
+  $variables['cards'] = [$accordion_contents['valtuusto'][1], $accordion_contents['hallitus'][1]];
 
   $variables['accordions'][] = [
     'Kaupinginhallituksen jaostot' => $hallituksen_jaosto,
-    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accorion_contents['jaosto'][1]),
-    'Viranhaltijat' => $accorion_contents['viranhaltija'][1],
-    'Luottamushenkilöpäättäjät' => $accorion_contents['trustee'][1],
+    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accordion_contents['jaosto'][1]),
+    'Viranhaltijat' => $accordion_contents['viranhaltija'][1],
+    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
     'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted),
   ];
 
