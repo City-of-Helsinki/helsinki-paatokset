@@ -74,6 +74,7 @@ module:
   migrate: 0
   migrate_plus: 0
   node: 0
+  oembed_providers: 0
   options: 0
   paatokset_ahjo: 0
   paatokset_ahjo_api: 0
