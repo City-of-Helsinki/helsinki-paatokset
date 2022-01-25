@@ -6,7 +6,7 @@
  */
 #}
 
-<div class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
+<a href="{{ document.link }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
   <div class="list-item__date">
     {% if document.publish_date %}
       <span class="list-item__date--desktop">{{ document.publish_date }}</span>
@@ -16,7 +16,7 @@
     {% endif %}
   </div>
   <div class="list-item__subject">
-    <a href="{{ document.link }}">
+    <span>
       {{ document.title }}
       {% if document.meeting_number %}
         <span class="subject__date">
@@ -27,6 +27,6 @@
           {{  document.publish_date_short }}
         </span>
       {% endif %}
-    </a>
+    </span>
   </div>
-</div>
+</a>

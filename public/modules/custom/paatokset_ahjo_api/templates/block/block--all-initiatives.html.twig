@@ -1,0 +1,92 @@
+{%
+  set classes = [
+  'all-initiatives',
+  'container',
+  view_mode ? 'all-initiatives--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+{% if initiatives %}
+<div {{ attributes.addClass(classes) }}>
+  {% if (years is not empty ) %}
+    <div class="paatokset__decision-tree-container">
+      <div class="decision-tree__title">
+        <h4>{{ 'Select year' |trans }}</h4>
+      </div>
+      {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
+        {% block container_content %}
+          <div class="accordion__wrapper handorgel">
+            <div class="accordion-item__content handorgel__content">
+              <div class="accordion-item__content__inner handorgel__content__inner">
+                <ul class="menu">
+                  {% for year in years %}
+                    {% set item_attributes = create_attribute() %}
+                    {%
+                      set item_classes = [
+                        'item',
+                        loop.index == 1 ? 'selected'
+                      ]
+                    %}
+                    <li{{ item_attributes.addClass(item_classes) }}>
+                      {% if loop.index == 1 %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="true"/>
+                      {% else %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="false"/>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select">
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
+                      <div class="arrow">
+                        <i class="hds-icon hds-icon--arrow-down"></i>
+                      </div>
+                    </div>
+                    <div class="custom-options" id="custom-options">
+                      {% for year in years %}
+                        <div class="custom-option">
+                          <input type="button" value="{{ year }}"/>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        {% endblock %}
+      {% endembed %}
+      {% for year, documents in initiatives %}
+        {% set document_container_attributes = create_attribute() %}
+        {%
+          set document_container_classes = [
+            'policymakers-documents',
+            'container',
+            loop.index == 1 ? 'selected-year'
+          ]
+        %}
+
+        <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
+          {% for document in documents %}
+            <a href="{{ document.FileURI }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
+              <div class="list-item__date">
+                {% if document.Date %}
+                  <span class="list-item__date--desktop">{{ document.Date|date("d.m.Y") }}</span>
+                {% endif %}
+                {% if document.Date %}
+                  <span class="list-item__date--mobile">{{ document.Date|date("m - Y")  }}</span>
+                {% endif %}
+              </div>
+              <div class="list-item__subject">
+                <span>
+                  {{ document.Title }}
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endif %}

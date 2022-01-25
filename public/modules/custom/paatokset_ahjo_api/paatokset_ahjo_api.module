@@ -38,6 +38,10 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--decision-tree',
     ],
+    'block__all_initiatives' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--all-initiatives',
+    ],
   ];
 }
 
@@ -202,6 +206,49 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   ];
 
   $variables['title'] = $variables['elements']['content']['label'];
+}
+
+
+/**
+ * Preprocess all initiatives block.
+ */
+function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables): void {
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $initiatives = $policymakerService->getAllInitiatives();
+
+  $years = array(); 
+
+  foreach ($initiatives as $initiative ) {
+    $date = date_format(date_create($initiative['Date']),"Y");
+    if (!in_array($date, $years)) {
+      $years[] = $date; 
+    }
+  }
+
+  foreach($years as $year ) {
+    foreach ($initiatives as $initiative) {
+      $date = date_format(date_create($initiative['Date']),"Y");
+      if( $date == $year) {
+        $all[] = $initiative;
+        $by_year = [
+          $year => $all,
+        ];
+      }
+    }
+  }
+
+  $variables['initiatives'] = $by_year;
+  $variables['years'] = $years;
+
+   // Helpful $content variable for templates.
+   foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  if (isset($variables['elements']['#block__all_initiatives'])) {
+    $variables['entity'] = $variables['elements']['#block__all_initiatives'];
+  }
 }
 
 /**
