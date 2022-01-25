@@ -62,6 +62,18 @@ source:
       label: Organization
       selector: Organization
     -
+      name: organization_name
+      label: Organization name
+      selector: Organization/Name
+    -
+      name: organization_type
+      label: Organization type
+      selector: Organization/Type
+    -
+      name: organization_above
+      label: Organization level above
+      selector: Organization/OrganizationLevelAbove/organizations
+    -
       name: meeting
       label: Meeting
       selector: Meeting
@@ -168,6 +180,16 @@ process:
     callable: _paatokset_ahjo_api_get_top_category
     plugin: callback
     source: classification_code
+  field_dm_org_name: organization_name
+  field_organization_type: organization_type
+  field_dm_org_above_name:
+    -
+      plugin: array_shift
+      source: organization_above
+    -
+      plugin: extract
+      index:
+        - Name
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }
