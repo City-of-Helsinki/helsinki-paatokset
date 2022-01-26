@@ -59,13 +59,13 @@ services:
       - "traefik.docker.network=stonehenge-network"
 
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
     container_name: "${COMPOSE_PROJECT_NAME}-elastic"
     environment:
       - node.name="${COMPOSE_PROJECT_NAME}-elastic"
+      - discovery.seed_hosts=elastic
       - cluster.name=es-docker-cluster
       - cluster.initial_master_nodes="${COMPOSE_PROJECT_NAME}-elastic"
-      #- xpack.security.enabled=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "http.cors.allow-origin=*"
@@ -76,7 +76,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
+    volumes: 
       - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
@@ -85,10 +85,10 @@ services:
       - stonehenge-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.entrypoints=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.rule=Host(`varnish-${DRUPAL_HOSTNAME}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.tls=true"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=9200"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-elastic.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-elastic.rule=Host(`elastic-${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-elastic.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-elastic.loadbalancer.server.port=9200"
       - "traefik.docker.network=stonehenge-network"
       - "traefik.port=9200"
 
@@ -104,10 +104,10 @@ services:
       - stonehenge-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.entrypoints=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.rule=Host(`varnish-${DRUPAL_HOSTNAME}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.tls=true"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=5601"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.rule=Host(`kibana-${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-kibana.loadbalancer.server.port=5601"
       - "traefik.docker.network=stonehenge-network"
       - "traefik.port=5601"
 

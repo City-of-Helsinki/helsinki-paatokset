@@ -15,6 +15,12 @@
       max-width: 894px;
     }
   }
+
+  .container.hero__container {
+    @media (max-width: $breakpoint-s) {
+      max-width: $container-width-xs;
+    }
+  }
 }
 
 // Hero section search form

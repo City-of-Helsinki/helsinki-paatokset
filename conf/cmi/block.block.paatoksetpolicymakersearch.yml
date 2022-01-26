@@ -1,0 +1,33 @@
+uuid: 8cf26b05-46e5-4a42-8770-b9f6c2bdfbcf
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+    - paatokset_search
+    - system
+  theme:
+    - helfi_paatokset
+id: paatoksetpolicymakersearch
+theme: helfi_paatokset
+region: content
+weight: 0
+provider: null
+plugin: policymaker_search_block
+settings:
+  id: policymaker_search_block
+  label: 'Paatokset policymaker search'
+  label_display: '0'
+  provider: paatokset_search
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      landing_page: landing_page
+  request_path:
+    id: request_path
+    negate: false
+    pages: /paattajat
