@@ -152,19 +152,6 @@ process:
     -
       plugin: callback
       callable: json_encode
-  field_decision_attachment_files:
-    plugin: ahjo_entity_generate
-    source: attachments
-    access_check: false
-    source_key: NativeId
-    value_key: field_document_native_id
-    bundle_key: bundle
-    bundle: ahjo_document
-    entity_type: media
-    ignore_case: true
-    values:
-      field_document_native_id: NativeId
-      field_media_ahjo_file: root_json
   field_meeting_date:
     -
       plugin: format_date
