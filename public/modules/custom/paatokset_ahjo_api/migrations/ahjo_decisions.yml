@@ -82,6 +82,10 @@ source:
       label: Meeting Date
       selector: Meeting/DateMeeting
     -
+      name: meeting_id
+      label: Meeting Id
+      selector: Meeting/MeetingID
+    -
       name: voting_results
       label: Voting Results
       selector: VotingResults
@@ -177,6 +181,7 @@ process:
       plugin: extract
       index:
         - Name
+  field_meeting_id: meeting_id
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

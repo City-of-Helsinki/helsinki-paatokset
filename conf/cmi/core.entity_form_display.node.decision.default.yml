@@ -21,6 +21,8 @@ dependencies:
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
     - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_meeting_id
+    - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
@@ -40,7 +42,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 24
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -62,14 +64,14 @@ content:
     third_party_settings: {  }
   field_decision_attachment_files:
     type: media_library_widget
-    weight: 19
+    weight: 21
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_decision_attachments:
     type: json_textarea
-    weight: 20
+    weight: 22
     region: content
     settings:
       rows: 5
@@ -93,7 +95,7 @@ content:
     third_party_settings: {  }
   field_decision_meeting:
     type: json_textarea
-    weight: 17
+    weight: 19
     region: content
     settings:
       rows: 5
@@ -125,7 +127,7 @@ content:
     third_party_settings: {  }
   field_decision_previous:
     type: json_textarea
-    weight: 21
+    weight: 23
     region: content
     settings:
       rows: 5
@@ -185,6 +187,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meeting_id:
+    type: string_textfield
+    weight: 17
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_meeting_sequence_number:
+    type: number
+    weight: 18
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_organization_type:
     type: string_textfield
     weight: 11
@@ -203,7 +220,7 @@ content:
     third_party_settings: {  }
   field_voting_results:
     type: json_textarea
-    weight: 18
+    weight: 20
     region: content
     settings:
       rows: 5
@@ -211,40 +228,40 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 22
+    weight: 24
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 27
+    weight: 29
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 25
+    weight: 27
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 28
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 31
+    weight: 33
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 26
+    weight: 28
     region: content
     settings:
       display_label: true
@@ -259,7 +276,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 23
+    weight: 25
     region: content
     settings:
       match_operator: CONTAINS
@@ -269,12 +286,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 29
+    weight: 31
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 30
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
