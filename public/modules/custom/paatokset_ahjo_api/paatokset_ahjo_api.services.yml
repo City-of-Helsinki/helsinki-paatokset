@@ -1,3 +1,5 @@
 services:
   paatokset_ahjo_meetings:
     class: Drupal\paatokset_ahjo_api\Service\MeetingService
+  paatokset_ahjo_cases:
+    class: Drupal\paatokset_ahjo_api\Service\CaseService
