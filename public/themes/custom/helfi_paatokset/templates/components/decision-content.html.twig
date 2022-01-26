@@ -1,0 +1,37 @@
+{#
+
+#}
+
+<div class="issue-content-top__container">
+  <div{{ content_attributes.addClass('issue-content-top') }}>
+    {% if selectedDecision.field_decision_section.value %}
+      <div class="issue-content__indices">
+        § {{ selectedDecision.field_decision_section.value }}
+      </div>
+    {% endif %}
+
+    <div class="issue-content__title">
+      <h2>{{ selectedDecision.field_full_title.value }}</h2>
+    </div>
+
+    {% if selectedDecision.field_dm_org_name.value %}
+      <div class="issue-content__policymaker-label {{ selected_class }}">
+        <span>{{ selectedDecision.field_dm_org_name.value }} </span>
+      </div>
+    {% endif %}
+
+    <div class="issue__favorite-button">
+      {% set button_label = 'Save %s to favorites'|format('decision')|t %}
+      {%
+        include '@hdbt/button/button.html.twig'
+        with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label }
+      %}
+    </div>
+  </div>
+</div>
+
+<div class="issue-content__container">
+  <div{{ content_attributes.addClass('issue-content') }}>
+    Content.
+  </div>
+</div>

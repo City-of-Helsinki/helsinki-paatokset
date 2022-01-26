@@ -73,6 +73,7 @@
 
 {%
   set classes = [
+  'issue',
   'node--type-' ~ node.bundle|clean_class,
   node.isPromoted() ? 'node--promoted',
   node.isSticky() ? 'node--sticky',
@@ -83,15 +84,100 @@
 %}
 
 <article{{ attributes.addClass(classes) }}>
-
   {{ title_prefix }}
-  {% if label and not page and not hide_label %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
-  {% endif %}
   {{ title_suffix }}
-  {{ content|without('field_lower_content', 'field_sidebar_content') }}
+
+  <header class="issue-header__container container">
+    <div{{ content_attributes.addClass('issue__header') }}>
+      <h1{{ title_attributes.addClass('issue__title') }}>
+        {{ node.field_full_title.value }}
+      </h1>
+    </div>
+    {% if content.field_diary_number_label|render %}
+      <div class="issue__diarynumber">
+        <label>
+          {{ 'Diary number'|trans }}
+        </label>
+        <span>{{ node.field_diary_number_label.value }}</span>
+      </div>
+    {% endif %}
+    <div class="issue-header__footer">
+      {% if content.field_top_category_name|render %}
+        <section class="issue__category issue__left-column__container" aria-label='{{ 'Tags'|t }}' role="Region">
+          {% include '@hdbt/misc/tag.html.twig' with { label: node.field_top_category_name.value, url: false } %}
+        </section>
+      {% endif %}
+      <div class="issue__favorite-button">
+        {% set button_label = 'Save %s to favorites'|format('issue')|t %}
+        {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
+      </div>
+    </div>
+  </header>
+
+  <div class="issue__wrapper">
+    <div class="ajax-progress-throbber"></div>
+
+    <div class="issue__container issue__container--navigation container">
+      <div class="issue__left-column__container">
+        <div class="issue__decision-navigation">
+          {% include '@helfi_paatokset/components/decision-navigation.html.twig' %}
+        </div>
+      </div>
+      <div class="issue-right-column__container">
+        {% if decision_pdf %}
+          <div class="issue__pdf issue__pdf--desktop issue__right-column__container">
+            <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
+              {{ 'Download decision (pdf)'|t }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="issue__container issue__container--content container">
+      <div class="issue__left-column__container">
+        <div class="issue-dropdown">
+          <div class="issue-ajax-error__container">
+            {% set status_headings = {'error': 'Error loading decision'|trans} %}
+            {%
+              set message_list = {
+                'error': ['Something went wrong loading decision. Try again.'|trans]
+              }
+            %}
+            {% include '@hdbt/misc/status-messages.html.twig' with { status_headings: status_headings, message_list: message_list, size: 'large' } %}
+          </div>
+
+          {% include '@helfi_paatokset/components/decisions-dropdown.html.twig' with { selected: selectedDecision, options: all_decisions, show_warning: next_decision, warning_label: 'More recent handlings'|trans } %}
+
+          {% if all_decisions_link %}
+          <div class="issue-dropdown__show-more">
+            <a href="{{ all_decisions_link }}" class="paatokset-button-link">
+              <span>{{ 'Other decisions for the meeting'|t }}</span>
+              <i class="hds-icon hds-icon--arrow-right"></i>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="issue__ajax-container">
+          {% include '@helfi_paatokset/components/decision-content.html.twig' with { selectedDecision } %}
+        </div>
+      </div>
+
+      <div class="issue-right-column__container">
+        <div class="issue__pdf issue__pdf--mobile">
+          {% if decision_pdf %}
+            <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
+              {{ 'Download decision (pdf)'|t }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% include '@helfi_paatokset/components/case-attachments.html.twig' %}
+      </div>
+
+    </div>
+  </div>
 
   <div class="banner banner--default banner--design-align-left banner--has-icon">
     {% embed "@hdbt/misc/container.twig" with {container_element: 'banner'} %}
