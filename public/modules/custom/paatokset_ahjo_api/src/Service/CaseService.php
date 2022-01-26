@@ -46,8 +46,7 @@ class CaseService {
    *
    * @var string
    */
-  private $case_id;
-
+  private $caseId;
 
   /**
    * Set case and decision entities based on path.
@@ -59,11 +58,11 @@ class CaseService {
       $this->case = $case;
     }
 
-    $this->case_id = $case->get('field_diary_number')->value;
+    $this->caseId = $case->get('field_diary_number')->value;
 
     $decision_id = \Drupal::request()->query->get('decision');
     if (!$decision_id) {
-      $this->selectedDecision = $this->getDefaultDecision($this->case_id);
+      $this->selectedDecision = $this->getDefaultDecision($this->caseId);
     }
     else {
       $this->selectedDecision = $this->getDecision($decision_id);
@@ -84,7 +83,7 @@ class CaseService {
       'limit' => 1,
     ]);
     $this->case = array_shift($case_nodes);
-    $this->case_id = $case_id;
+    $this->caseId = $case_id;
 
     $decision_nodes = $this->decisionQuery([
       'case_id' => $case_id,
@@ -256,7 +255,7 @@ class CaseService {
    */
   public function getAllDecisions(?string $case_id = NULL): array {
     if (!$case_id) {
-      $case_id = $this->case_id;
+      $case_id = $this->caseId;
     }
     return $this->decisionQuery(['case_id' => $case_id]);
   }
@@ -272,7 +271,7 @@ class CaseService {
    */
   public function getDecisionsList(?string $case_id = NULL): array {
     if (!$case_id) {
-      $case_id = $this->case_id;
+      $case_id = $this->caseId;
     }
     $decisions = $this->getAllDecisions($case_id);
 
@@ -352,7 +351,7 @@ class CaseService {
    */
   private function getAdjacentDecision(int $offset, ?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
     if (!$case_id) {
-      $case_id = $this->case_id;
+      $case_id = $this->caseId;
     }
 
     if (!$decision_nid) {
