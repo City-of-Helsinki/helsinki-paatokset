@@ -12,7 +12,7 @@ use Drupal\Core\Link;
 /**
  * Service class for retrieving meeting-related data.
  *
- * @package Drupal\paatokset_ahjo_api\Serivces
+ * @package Drupal\paatokset_ahjo_api\Services
  */
 class MeetingService {
   /**
