@@ -21,6 +21,8 @@ dependencies:
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
     - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_meeting_id
+    - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
@@ -174,6 +176,23 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 117
+    region: content
+  field_meeting_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 126
+    region: content
+  field_meeting_sequence_number:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 125
     region: content
   field_organization_type:
     type: string
