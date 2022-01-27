@@ -9,18 +9,19 @@ dependencies:
     - field.field.node.decision.field_decision_attachments
     - field.field.node.decision.field_decision_case_title
     - field.field.node.decision.field_decision_content
+    - field.field.node.decision.field_decision_date
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
     - field.field.node.decision.field_decision_native_id
     - field.field.node.decision.field_decision_organization
     - field.field.node.decision.field_decision_previous
+    - field.field.node.decision.field_decision_record
     - field.field.node.decision.field_decision_section
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_dm_org_above_name
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
-    - field.field.node.decision.field_meeting_date
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
@@ -43,7 +44,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 108
+    weight: 9
     region: content
   field_classification_title:
     type: string
@@ -51,7 +52,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 109
+    weight: 10
     region: content
   field_decision_attachment_files:
     type: entity_reference_entity_view
@@ -60,14 +61,14 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 115
+    weight: 15
     region: content
   field_decision_attachments:
     type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 114
+    weight: 14
     region: content
   field_decision_case_title:
     type: string
@@ -75,28 +76,37 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 119
+    weight: 17
     region: content
   field_decision_content:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 106
+    weight: 7
+    region: content
+  field_decision_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_decision_meeting:
     type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 111
+    weight: 12
     region: content
   field_decision_motion:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 107
+    weight: 8
     region: content
   field_decision_native_id:
     type: string
@@ -104,21 +114,28 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 101
+    weight: 1
     region: content
   field_decision_organization:
     type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 110
+    weight: 11
     region: content
   field_decision_previous:
     type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 116
+    weight: 16
+    region: content
+  field_decision_record:
+    type: json
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 24
     region: content
   field_decision_section:
     type: string
@@ -126,7 +143,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 104
+    weight: 5
     region: content
   field_diary_number:
     type: string
@@ -134,7 +151,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 103
+    weight: 4
     region: content
   field_diary_number_label:
     type: string
@@ -142,7 +159,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 105
+    weight: 6
     region: content
   field_dm_org_above_name:
     type: string
@@ -150,7 +167,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 124
+    weight: 21
     region: content
   field_dm_org_name:
     type: string
@@ -158,7 +175,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 122
+    weight: 20
     region: content
   field_full_title:
     type: string
@@ -166,16 +183,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 102
-    region: content
-  field_meeting_date:
-    type: datetime_default
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 117
+    weight: 2
     region: content
   field_meeting_id:
     type: string
@@ -183,7 +191,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 126
+    weight: 23
     region: content
   field_meeting_sequence_number:
     type: number_integer
@@ -192,7 +200,7 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 125
+    weight: 22
     region: content
   field_organization_type:
     type: string
@@ -200,7 +208,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 121
+    weight: 19
     region: content
   field_top_category_name:
     type: string
@@ -208,19 +216,19 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 120
+    weight: 18
     region: content
   field_voting_results:
     type: json
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 112
+    weight: 13
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   langcode: true
