@@ -4,6 +4,7 @@ namespace Drupal\paatokset_ahjo_openid\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Settings form for the AHJO API Open ID connector.
@@ -11,6 +12,23 @@ use Drupal\Core\Form\FormStateInterface;
  * @package Drupal\paatokset_ahjo_openid\Form
  */
 class SettingsForm extends ConfigFormBase {
+
+  /**
+   * State API.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  private $state;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    $instance = parent::create($container);
+    $instance->state = $container->get('state');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -64,6 +82,12 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('scope'),
     ];
 
+    $form['cookies'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Cookies for API requests'),
+      '#default_value' => $this->state->get('ahjo_api_cookies'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -84,6 +108,8 @@ class SettingsForm extends ConfigFormBase {
     foreach ($settings as $setting) {
       $config->set($setting, $form_state->getValue($setting));
     }
+
+    $this->state->set('ahjo_api_cookies', $form_state->getValue('cookies'));
 
     $config->save();
 

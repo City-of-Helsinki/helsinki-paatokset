@@ -229,6 +229,16 @@ class AhjoOpenId implements ContainerInjectionInterface {
   }
 
   /**
+   * Get cookies for API requests. Workaround for local environment faults.
+   *
+   * @return string|null
+   *   Cookies to set.
+   */
+  public function getCookies(): ?string {
+    return $this->state->get('ahjo_api_cookies');
+  }
+
+  /**
    * Get headers for HTTP requests.
    *
    * @return array|null
