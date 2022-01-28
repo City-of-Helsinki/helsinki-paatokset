@@ -703,9 +703,16 @@ class AhjoProxy implements ContainerInjectionInterface {
       return [];
     }
 
-    return [
+    $headers = [
       'Authorization' => 'Bearer ' . $access_token,
     ];
+
+    $cookies = $this->ahjoOpenId->getCookies();
+    if ($cookies) {
+      $headers['Cookie'] = $cookies;
+    }
+
+    return $headers;
   }
 
   /**
