@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
+    - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_voting_results
     - node.type.decision
@@ -214,6 +215,14 @@ content:
   field_organization_type:
     type: string_textfield
     weight: 12
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_policymaker_id:
+    type: string_textfield
+    weight: 35
     region: content
     settings:
       size: 60

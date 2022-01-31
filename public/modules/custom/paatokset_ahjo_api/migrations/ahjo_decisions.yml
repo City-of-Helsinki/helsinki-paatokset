@@ -70,6 +70,10 @@ source:
       label: Organization type
       selector: Organization/Type
     -
+      name: organization_id
+      label: Organization ID
+      selector: Organization/ID
+    -
       name: organization_above
       label: Organization level above
       selector: Organization/OrganizationLevelAbove/organizations
@@ -157,6 +161,7 @@ process:
     plugin: callback
     source: classification_code
   field_dm_org_name: organization_name
+  field_policymaker_id: organization_id
   field_organization_type: organization_type
   field_dm_org_above_name:
     -
