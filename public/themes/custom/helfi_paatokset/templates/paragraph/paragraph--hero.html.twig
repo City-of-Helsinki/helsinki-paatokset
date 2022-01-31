@@ -88,16 +88,16 @@
                 {% set target_new = item['#options']['target_new'] %}
 
                 <a href="{{ link }}" {% if target_new %}target="_blank"{% endif %} class="hero__button hds-button {% if link_type %}{{ 'hds-button--' ~ link_type }}{% endif %}">
-                  {% if icon_first == true %}<span aria-hidden="true" class="hds-icon {{ 'hds-icon--' ~ icon_first_type }}"></span>{% endif %}
+                  {% if icon_first == true %}<span aria-hidden="true" class="hel-icon {{ 'hel-icon--' ~ icon_first_type }}"></span>{% endif %}
                   <span class="hds-button__label">{{ text }}</span>
                   {% if link_type == 'supplementary' %}
                     {% if target_new %}
-                      <span aria-hidden="true" class="hds-icon hds-icon--link-external"></span>
+                      <span aria-hidden="true" class="hel-icon hel-icon--link-external"></span>
                     {% else %}
-                      <span aria-hidden="true" class="hds-icon hds-icon--arrow-right"></span>
+                      <span aria-hidden="true" class="hel-icon hel-icon--arrow-right"></span>
                     {% endif %}
                   {% elseif target_new %}
-                    <span aria-hidden="true" class="hds-icon hds-icon--link-external"></span>
+                    <span aria-hidden="true" class="hel-icon hel-icon--link-external"></span>
                   {% endif %}
                 </a>
               {% endfor %}

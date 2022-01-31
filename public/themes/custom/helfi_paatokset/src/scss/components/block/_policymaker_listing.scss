@@ -86,7 +86,7 @@
     }
 
     &:hover {
-      .hds-icon {
+      .hel-icon {
         transform: translate(10px);
       }
     }
@@ -112,7 +112,7 @@
     background-color: $color-white;
   }
 
-  .hds-icon {
+  .hel-icon {
     width: 30px;
     height: 30px;
     min-width: 30px;
@@ -131,13 +131,13 @@
   text-decoration: none;
 
   &:hover {
-    .hds-icon {
+    .hel-icon {
       transform: translate(10px);
     }
   }
 
 
-  .hds-icon {
+  .hel-icon {
     min-width: 30px;
     min-height: 30px;
     width: 30px;

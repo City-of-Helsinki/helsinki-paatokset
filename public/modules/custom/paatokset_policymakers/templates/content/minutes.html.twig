@@ -41,7 +41,7 @@
     {% if file.file_url %}
       <div class="minutes__file-link">
         <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ file.file_url }}">
-          <i class="hds-icon hds-icon--document"></i>
+          <i class="hel-icon hel-icon--document"></i>
           <span>{{ 'Download printable version (PDF)'|t }}</span>
         </a>
       </div>
@@ -54,7 +54,7 @@
       {% for minute in minutes_of_discussion %}
         <div class="minutes__file-link">
           <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ minute.origin_url }}">
-            <i class="hds-icon hds-icon--document"></i>
+            <i class="hel-icon hel-icon--document"></i>
             <span>{{ 'Download minutes of discussion (PDF)'|t }}</span>
           </a>
         </div>

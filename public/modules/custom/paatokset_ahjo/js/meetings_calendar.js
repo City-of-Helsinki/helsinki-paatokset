@@ -17,9 +17,9 @@
           <div></div>
         </div>
         <div v-if="isReady" class="calendar-header">
-          <i @click="selectPrevious" class="hds-icon hds-icon--angle-left"></i>
+          <i @click="selectPrevious" class="hel-icon hel-icon--angle-left"></i>
           <h2>{{ selectedMonth }} {{ year }}</h2>
-          <i @click="selectNext" class="hds-icon hds-icon--angle-right"></i>
+          <i @click="selectNext" class="hel-icon hel-icon--angle-right"></i>
         </div>
         <div class="calendar-month">
           <ol class="days-grid">
@@ -46,19 +46,19 @@
                   <template v-if="meeting.decision_link">
                     <a :href="meeting.decision_link">
                       {{ openDecisions }}
-                      <i class="hds-icon hds-icon--angle-right"></i>
+                      <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
                   <template v-else-if="meeting.minutes_link">
                     <a :href="meeting.minutes_link">
                       {{ openMinutes }}
-                      <i class="hds-icon hds-icon--angle-right"></i>
+                      <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
                   <template v-else>
                     <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link">
                       {{ openMotions }}
-                      <i class="hds-icon hds-icon--angle-right"></i>
+                      <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
                 </div>
