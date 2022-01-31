@@ -667,6 +667,16 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->save();
   }
 
+  /**
+   * Update decision node based on case node data.
+   *
+   * @param Drupal\node\NodeInterface $node
+   *   Decision node.
+   * @param string $case_id
+   *   Case diary number.
+   * @param bool $set_record
+   *   Set decision record and issued date from case node.
+   */
   protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'case')
@@ -708,7 +718,14 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
     }
   }
-
+  /**
+   * Update decision node based on meeting node data.
+   *
+   * @param Drupal\node\NodeInterface $node
+   *   Decision node.
+   * @param string $meeting_id
+   *   Meeting ID.
+   */
   protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'meeting')
@@ -745,7 +762,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     $total_time = ($end_time - $results['starttime']);
     $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed) in ' . $total_time . ' seconds.');
   }
-
 
   /**
    * Get rel=self link.
