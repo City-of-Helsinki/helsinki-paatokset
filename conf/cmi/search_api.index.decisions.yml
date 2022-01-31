@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_decision_case_title
     - field.storage.node.field_classification_title
-    - field.storage.node.field_meeting_date
+    - field.storage.node.field_decision_date
     - field.storage.node.field_diary_number
     - field.storage.node.field_full_title
     - field.storage.node.field_decision_native_id
@@ -57,13 +57,13 @@ field_settings:
       config:
         - field.storage.node.field_decision_case_title
   meeting_date:
-    label: 'Decision Date'
+    label: 'Decision issued date'
     datasource_id: 'entity:node'
-    property_path: field_meeting_date
+    property_path: field_decision_date
     type: string
     dependencies:
       config:
-        - field.storage.node.field_meeting_date
+        - field.storage.node.field_decision_date
   organization_above_name:
     label: 'Organization level above name'
     datasource_id: 'entity:node'
