@@ -10,10 +10,12 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Psr7\Response;
+use Drupal\node\Entity\Node;
 
 /**
  * Handler for AHJO API Proxy.
@@ -595,6 +597,155 @@ class AhjoProxy implements ContainerInjectionInterface {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
   }
+
+  /**
+   * Static callback function for processing decision data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processDecisionItem($data, &$context) {
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    // Fetch record content from endpoint.
+    $record_content = NULL;
+    $fetch_record_from_case = FALSE;
+    if ($data['endpoint']) {
+      $record_content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    }
+
+    if (!empty($record_content)) {
+      $node->set('field_decision_record', json_encode($record_content));
+    }
+    else {
+      $fetch_record_from_case = TRUE;
+    }
+
+    if (isset($record_content['Issued'])) {
+      $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
+      $date->setTimezone(new \DateTimeZone('UTC'));
+      $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
+    }
+
+    // Fetch case data for decision.
+    // If record couldn't be fetched from endpoint, try to get it from case.
+    if ($data['case_id']) {
+      $ahjo_proxy->updateDecisionCaseData($node, $data['case_id'], $fetch_record_from_case);
+    }
+
+    // Fetch meeting date for decision.
+    if ($data['meeting_id']) {
+      $ahjo_proxy->updateDecisionMeetingData($node, $data['meeting_id']);
+    }
+
+    // If decision date can't be set, use a default value.
+    if ($node->get('field_decision_date')->isEmpty()) {
+      $node->set('field_decision_date', '2001-01-01T00:00:00');
+      $context['results']['failed'][] = $node->id();
+    }
+    else {
+      // Consider this successfull if date was set.
+      $context['results']['items'][] = $node->id();
+    }
+
+    $node->save();
+  }
+
+  protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', 'case')
+      ->condition('status', 1)
+      ->condition('field_diary_number', $case_id)
+      ->range('0', 1)
+      ->latestRevision();
+    $nids = $query->execute();
+    $nid = array_shift($nids);
+    $case = Node::load($nid);
+
+    if (!$case instanceof NodeInterface) {
+      return;
+    }
+
+    $node->set('field_decision_case_title', $case->field_full_title->value);
+
+    if (!$set_record) {
+      return;
+    }
+
+    $decision_id = $node->field_decision_native_id->value;
+    $record_content = NULL;
+    foreach ($case->get('field_case_records') as $field) {
+      $data = json_decode($field->value, TRUE);
+      if ($data['NativeId'] === $decision_id) {
+        $record_content = $data;
+        break;
+      }
+    }
+
+    if (!empty($record_content)) {
+      $node->set('field_decision_record', json_encode($record_content));
+    }
+
+    if (isset($record_content['Issued'])) {
+      $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
+      $date->setTimezone(new \DateTimeZone('UTC'));
+      $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
+    }
+  }
+
+  protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_id', $meeting_id)
+      ->range('0', 1)
+      ->latestRevision();
+    $nids = $query->execute();
+    $nid = array_shift($nids);
+    $meeting = Node::load($nid);
+
+    if (!$meeting instanceof NodeInterface) {
+      return;
+    }
+
+    $node->set('field_meeting_sequence_number', $meeting->field_meeting_sequence_number->value);
+  }
+
+  /**
+   * Static callback function for finishing group aggregation batch.
+   *
+   * @param mixed $success
+   *   If batch succeeded or not.
+   * @param array $results
+   *   Aggregated results.
+   * @param array $operations
+   *   Operations with errors.
+   */
+  public static function finishDecisions($success, array $results, array $operations) {
+    $messenger = \Drupal::messenger();
+    $total = count($results['items']);
+    $failed = count($results['failed']);
+    $end_time = microtime(TRUE);
+    $total_time = ($end_time - $results['starttime']);
+    $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed) in ' . $total_time . ' seconds.');
+  }
+
 
   /**
    * Get rel=self link.

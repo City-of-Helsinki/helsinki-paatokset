@@ -8,6 +8,9 @@ use Drush\Commands\DrushCommands;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\node\NodeStorageInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Ahjo Aggregator drush commands.
@@ -31,6 +34,20 @@ class AhjoAggregatorCommands extends DrushCommands {
   protected $logger;
 
   /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * Node storage service.
+   *
+   * @var \Drupal\node\NodeStorageInterface
+   */
+  protected NodeStorageInterface $nodeStorage;
+
+  /**
    * Constructor for Ahjo Aggregator Commands.
    *
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
@@ -38,8 +55,10 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
    *   Ahjo Proxy service.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entityTypeManager) {
     $this->ahjoProxy = $ahjo_proxy;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
   }
 
@@ -385,6 +404,137 @@ class AhjoAggregatorCommands extends DrushCommands {
       'title' => 'Aggregating positions of trust.',
       'operations' => $operations,
       'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishTrustees',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Updates migrated decision nodes with record, case and meeting info.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:update-decisions
+   *
+   * @option update
+   *   Update all decisions, not just ones with missing records.
+   * @option localdata
+   *   Use only local and placeholder data, doesn't require VPN connection.
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @usage ahjo-proxy:update-decisions
+   *   Fetches data for decisions where the record field is null.
+   * @usage ahjo-proxy:update-decisions --update
+   *   Fetches and updates data for all decisions.
+   *
+   * @aliases ap:ud
+   */
+  public function updateDecisions(array $options = [
+    'update' => NULL,
+    'localdata' => NULL,
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['update'])) {
+      $update_all = TRUE;
+    }
+    else {
+      $update_all = FALSE;
+    }
+
+    if (!empty($options['localdata'])) {
+      $use_local_data = TRUE;
+    }
+    else {
+      $use_local_data = FALSE;
+    }
+
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    if ($update_all) {
+      $this->logger->info('Updating all nodes...');
+    }
+    else {
+      $this->logger->info('Only updating nodes with missing records...');
+    }
+
+    if ($use_local_data) {
+      $this->logger->info('Using local data...');
+    }
+    else {
+      $this->logger->info('Fetching data from API...');
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->latestRevision();
+
+    if (!$update_all) {
+      $query->notExists('field_decision_record');
+    }
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
+        continue;
+      }
+
+      $meeting_id = NULL;
+      if ($node->hasField('field_meeting_id')) {
+        $meeting_id = $node->field_meeting_id->value;
+      }
+
+      $case_id = NULL;
+      if ($node->hasField('field_diary_number')) {
+        $case_id = $node->field_diary_number->value;
+      }
+
+      $endpoint = NULL;
+      if (!$use_local_data) {
+        $endpoint = 'records/' . $node->field_decision_native_id->value;
+      }
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'native_id' => $node->field_decision_native_id->value,
+        'count' => $count,
+        'case_id' => $case_id,
+        'meeting_id' => $meeting_id,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processDecisionItem',
+        [$data],
+      ];
+    }
+
+    batch_set([
+      'title' => 'Aggregating data for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
     ]);
 
     drush_backend_batch_process();
