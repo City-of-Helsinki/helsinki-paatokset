@@ -718,6 +718,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
     }
   }
+
   /**
    * Update decision node based on meeting node data.
    *

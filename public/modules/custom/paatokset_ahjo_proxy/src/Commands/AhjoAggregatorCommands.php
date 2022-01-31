@@ -54,12 +54,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Logger service.
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
    *   Ahjo Proxy service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entity_type_manager) {
     $this->ahjoProxy = $ahjo_proxy;
-    $this->entityTypeManager = $entityTypeManager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
   }
