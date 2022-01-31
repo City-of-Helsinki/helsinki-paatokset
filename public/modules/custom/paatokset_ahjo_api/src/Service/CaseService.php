@@ -189,8 +189,9 @@ class CaseService {
   /**
    * Format decision label.
    *
-   * @param NodeInterface $node
+   * @param Drupal\node\NodeInterface $node
    *   Decision node.
+   *
    * @return string
    *   Formatted label.
    */

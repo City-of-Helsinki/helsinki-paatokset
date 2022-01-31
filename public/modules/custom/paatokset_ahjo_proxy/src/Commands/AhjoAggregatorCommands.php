@@ -54,6 +54,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Logger service.
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
    *   Ahjo Proxy service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   Entity type manager.
    */
   public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entityTypeManager) {
     $this->ahjoProxy = $ahjo_proxy;
@@ -450,7 +452,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     else {
       $use_local_data = FALSE;
     }
-
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
