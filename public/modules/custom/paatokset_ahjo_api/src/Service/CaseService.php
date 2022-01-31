@@ -155,16 +155,11 @@ class CaseService {
       $decision_id = $this->selectedDecision->field_decision_native_id->value;
     }
 
-    $pdf_url = NULL;
-    foreach ($this->case->get('field_case_records') as $field) {
-      $data = json_decode($field->value, TRUE);
-      if ($data['NativeId'] === $decision_id) {
-        $pdf_url = $data['FileURI'];
-        break;
-      }
+    $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
+    if (!empty($data) && isset($data['FileURI'])) {
+      return $data['FileURI'];
     }
-
-    return $pdf_url;
+    return NULL;
   }
 
   /**
@@ -188,12 +183,34 @@ class CaseService {
       return NULL;
     }
 
-    if (!$decision->hasField('field_dm_org_name') || !$decision->hasField('field_meeting_date')) {
-      return $decision->title->value;
+    return $this->formatDecisionLabel($decision);
+  }
+
+  /**
+   * Format decision label.
+   *
+   * @param NodeInterface $node
+   *   Decision node.
+   * @return string
+   *   Formatted label.
+   */
+  private function formatDecisionLabel(NodeInterface $node): string {
+    $meeting_number = $node->field_meeting_sequence_number->value;
+    $decision_timestamp = strtotime($node->field_decision_date->value);
+    $decision_date = date('d.m.Y', $decision_timestamp);
+
+    if ($meeting_number) {
+      $decision_date = $meeting_number . '/' . $decision_date;
     }
 
-    $decision_date = strtotime($decision->field_meeting_date->value);
-    return $decision->field_dm_org_name->value . ' ' . date('d.m.Y', $decision_date);
+    if ($node->field_dm_org_name->value) {
+      $label = $node->field_dm_org_name->value . ' ' . $decision_date;
+    }
+    else {
+      $label = $node->title->value;
+    }
+
+    return $label;
   }
 
   /**
@@ -277,13 +294,7 @@ class CaseService {
 
     $results = [];
     foreach ($decisions as $node) {
-      $decision_date = strtotime($node->field_meeting_date->value);
-      if ($node->field_dm_org_name->value) {
-        $label = $node->field_dm_org_name->value . ' ' . date('d.m.Y', $decision_date);
-      }
-      else {
-        $label = $node->title->value;
-      }
+      $label = $this->formatDecisionLabel($node);
 
       if ($node->field_organization_type->value) {
         $class = Html::cleanCssIdentifier(strtolower($node->field_organization_type->value));
@@ -409,6 +420,7 @@ class CaseService {
    */
   public function decisionQuery(array $params): array {
     $params['type'] = self::DECISION_NODE_TYPE;
+    $params['sort_by'] = 'field_decision_date';
     return $this->query($params);
   }
 
@@ -429,10 +441,17 @@ class CaseService {
       $sort = 'DESC';
     }
 
+    if (isset($params['sort_by'])) {
+      $sort_by = $params['sort_by'];
+    }
+    else {
+      $sort_by = 'field_meeting_date';
+    }
+
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', $params['type'])
-      ->sort('field_meeting_date', $sort);
+      ->sort($sort_by, $sort);
 
     if (isset($params['limit'])) {
       $query->range('0', $params['limit']);
