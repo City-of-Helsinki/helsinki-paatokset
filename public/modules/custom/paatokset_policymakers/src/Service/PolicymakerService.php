@@ -428,6 +428,7 @@ class PolicymakerService {
       'Jäsen',
       'Varajäsen',
       'Puheenjohtaja',
+      'Varapuheenjohtaja',
     ];
 
     $names = [];
@@ -445,6 +446,7 @@ class PolicymakerService {
         $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
         if ($formatted_name !== $alt_formatted_name) {
           $names[] = $alt_formatted_name;
+          $data['alt_name'] = TRUE;
           $composition[$alt_formatted_name] = $data;
         }
       }
@@ -474,9 +476,28 @@ class PolicymakerService {
           'party' => $node->get('field_trustee_council_group')->value,
           'deputy_of' => $composition[$name]['DeputyOf'],
         ];
+
+        // Remove from composition so we have a list of non council trustees.
+        unset($composition[$name]);
       }
     }
 
+    // Add remaining people to results.
+    foreach ($composition as $data) {
+      if (isset($data['alt_name']) && $data['alt_name']) {
+        continue;
+      }
+      $results[] = [
+        'first_name' => $data['Name'],
+        'last_name' => "",
+        'image_url' => NULL,
+        'url' => NULL,
+        'role' => $data['Role'],
+        'email' => NULL,
+        'party' => NULL,
+        'deputy_of' => $data['DeputyOf'],
+      ];
+    }
     return $results;
   }
 
