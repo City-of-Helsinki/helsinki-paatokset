@@ -978,8 +978,7 @@ class PolicymakerService {
   }
 
   /**
-   * Get organization display type from node.
-   * This shouldn't be used for type checking, only for displayed labels.
+   * Get organization display type from node. Shouldn't be used for type checks.
    *
    * @param Drupal\node\NodeInterface|null $node
    *   Policymaker node. Leave empty to use set policymaker.
@@ -1015,8 +1014,7 @@ class PolicymakerService {
   }
 
   /**
-   * Get altered or default organization type.
-   * This shouldn't be used for type checking, only for displayed labels.
+   * Get display version of organization type.
    *
    * @param string $type
    *   Org type to check.
@@ -1025,25 +1023,29 @@ class PolicymakerService {
    *   Either the same type that was passed in or an altered version.
    */
   public function getPolicymakerType(string $type): string {
-    switch(strtolower($type)) {
+    $output = NULL;
+
+    switch (strtolower($type)) {
       case 'viranhaltija':
-        return 'Viranhaltijat';
+        $output = 'Viranhaltijat';
         break;
 
       case 'luottamushenkilö':
-        return 'Luottamushenkilöpäättäjät';
+        $output = 'Luottamushenkilöpäättäjät';
         break;
 
       case 'lautakunta':
       case 'jaosto':
       case 'toimi-/neuvottelukunta':
-        return 'Lautakunnat ja jaostot';
+        $output = 'Lautakunnat ja jaostot';
         break;
 
       default:
-        return $type;
+        $output = $type;
         break;
     }
+
+    return $output;
   }
 
   /**
