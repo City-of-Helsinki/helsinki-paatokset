@@ -1,0 +1,39 @@
+uuid: be98c745-a29b-4a2b-b315-adb1061a5adf
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_organization_color_code
+field_name: field_organization_color_code
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: color-sumu
+      label: Sumu
+    -
+      value: color-hopea
+      label: Hopea
+    -
+      value: color-suomenlinna
+      label: Suomenlinna
+    -
+      value: color-engel
+      label: Engel
+    -
+      value: color-kupari
+      label: Kupari
+    -
+      value: color-none
+      label: 'Ei värikoodia'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
