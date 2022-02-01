@@ -472,7 +472,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['failed'])) {
       $context['results']['failed'] = [];
     }
-    if (!isset($context['results']['filename'])) {
+    if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
 
@@ -544,7 +544,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['failed'])) {
       $context['results']['failed'] = [];
     }
-    if (!isset($context['results']['filename'])) {
+    if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
 

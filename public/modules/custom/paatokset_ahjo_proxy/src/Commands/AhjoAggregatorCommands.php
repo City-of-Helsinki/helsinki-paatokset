@@ -368,7 +368,7 @@ class AhjoAggregatorCommands extends DrushCommands {
             'endpoint' => 'agents/positionoftrust/' . $item['ID'],
             'count' => $count,
           ];
-          if ($filename = 'positionsoftrust_council.json') {
+          if ($filename === 'positionsoftrust_council.json') {
             $data['filename'] = 'trustees_council.json';
           }
           $operations[] = [
