@@ -1049,6 +1049,23 @@ class PolicymakerService {
   }
 
   /**
+   * Get organization display type by ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @return string|null
+   *   Orginzation display type or NULL if policymaker can't be found.
+   */
+  public function getPolicymakerTypeById(string $id): ?string {
+    $node = $this->getPolicyMaker($id);
+    if ($node instanceof NodeInterface) {
+      return $this->getPolicymakerTypeFromNode($node);
+    }
+    return NULL;
+  }
+
+  /**
    * Gets policymaker color coding from node.
    *
    * @param Drupal\node\NodeInterface|null $node
