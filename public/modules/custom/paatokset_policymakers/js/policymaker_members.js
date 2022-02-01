@@ -90,7 +90,7 @@
               const parties = data.map(a => a.party).filter(function (el) {
                 return el != null;
               });
-              self.filters.party['All'] = [...new Set(parties)];
+              self.filters.party['All'] = [...new Set(parties.sort())];
             })
             .done(function( json ) {
               self.isReady = true;
@@ -99,7 +99,7 @@
             const parties = this.members.map(a => a.party).filter(function (el) {
               return el != null;
             });
-            this.filters.party['All'] = [...new Set(parties)];
+            this.filters.party['All'] = [...new Set(parties.sort())];
           },
           addToActiveCheckbox(value) {
             let temp_filters = this.active_checkboxes;
@@ -141,10 +141,9 @@
 
             if(this.active_filters.order === window.Drupal.t('A-Ö, by party')) {
               temp_results = temp_results.sort((a,b) => {
-                return (a.party.toLowerCase().localeCompare(b.party.toLowerCase())) || (a.last_name.toLowerCase().localeCompare(b.last_name.toLowerCase()))
+                return (a?.party?.toLowerCase().localeCompare(b?.party?.toLowerCase())) || (a?.last_name.toLowerCase().localeCompare(b?.last_name.toLowerCase()))
               });
             }
-
             return temp_results;
           },
           searchPlaceholder() {
