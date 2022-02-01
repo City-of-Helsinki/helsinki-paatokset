@@ -1044,8 +1044,6 @@ class PolicymakerService {
         return $type;
         break;
     }
-
-
   }
 
   /**
@@ -1073,7 +1071,6 @@ class PolicymakerService {
     if ($node->hasField('field_city_council_division') && $node->get('field_city_council_division')->value) {
       return 'color-hopea';
     }
-
 
     // If type isn't set, return with no color.
     if (!$node->hasField('field_organization_type') || $node->get('field_organization_type')->isEmpty()) {
