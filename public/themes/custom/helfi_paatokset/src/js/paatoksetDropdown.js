@@ -140,16 +140,18 @@ jQuery(function($) {
    * Load decision content via ajax and update URL
    */
   function loadDecision(id) {
+    const caseId = $('#case-header').data('caseId')
     const { baseUrl, pathPrefix, currentPath } = window.drupalSettings.path;
-    const path = `${baseUrl}${pathPrefix}${currentPath}`;
+    const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}`;
+
     $.ajax({
-      url: `${path}/ajax?decision=${id}`,
+      url: `${path}?decision=${id}`,
       beforeSend: function() {
         $('.issue__wrapper .ajax-progress-throbber').show();
       },
       success: function(response) {
         const data = JSON.parse(response);
-        
+
         if(data.content) {
           $('.issue__ajax-container').html(data.content);
         }
@@ -161,6 +163,9 @@ jQuery(function($) {
         }
         if(data.all_decisions_link) {
           $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
+        }
+        if (data.decision_pdf) {
+          $('.issue__pdf a').attr('href', data.decision_pdf);
         }
         if(data.show_warning) {
           showWarning();
@@ -177,7 +182,8 @@ jQuery(function($) {
         $('.issue__wrapper .ajax-progress-throbber').hide();
       }
     });
-    window.history.pushState({}, '', `${path}?decision=${id}`);
+
+    window.history.pushState({}, '', `${window.location.pathname}?decision=${id}`);
   }
 
   function hideWarning() {

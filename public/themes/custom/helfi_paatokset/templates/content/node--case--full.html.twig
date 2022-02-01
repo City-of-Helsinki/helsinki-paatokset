@@ -87,7 +87,7 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  <header class="issue-header__container container">
+  <header id="case-header" class="issue-header__container container" data-case-id="{{ node.field_diary_number.value }}">
     <div{{ content_attributes.addClass('issue__header') }}>
       <h1{{ title_attributes.addClass('issue__title') }}>
         {{ node.field_full_title.value }}
@@ -153,7 +153,7 @@
           <div class="issue-dropdown__show-more">
             <a href="{{ all_decisions_link }}" class="paatokset-button-link">
               <span>{{ 'Other decisions for the meeting'|t }}</span>
-              <i class="hds-icon hds-icon--arrow-right"></i>
+              <i class="hel-icon hds-icon hds-icon--arrow-right"></i>
             </a>
           </div>
           {% endif %}

@@ -4,13 +4,13 @@
 
 {% if previous_decision %}
   <a data-link="{{ previous_decision.id }}" href="?decision={{ previous_decision.id }}" class="paatokset__link-plain paatokset-button-link decision-navigation-button--previous">
-    <i class="hds-icon hds-icon--arrow-left"></i>
+    <i class="hel-icon hds-icon hds-icon--arrow-left"></i>
     <span>{{ 'Previous handling'|t }}</span>
   </a>
 {% endif %}
 {% if next_decision %}
   <a data-link="{{ next_decision.id }}" href="?decision={{ next_decision.id }}" class="paatokset__link-plain paatokset-button-link decision-navigation-button--next">
     <span>{{ 'Next handling'|t }}</span>
-    <i class="hds-icon hds-icon--arrow-right"></i>
+    <i class="hel-icon hds-icon hds-icon--arrow-right"></i>
   </a>
 {% endif %}
