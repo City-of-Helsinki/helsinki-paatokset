@@ -446,6 +446,7 @@ class PolicymakerService {
         $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
         if ($formatted_name !== $alt_formatted_name) {
           $names[] = $alt_formatted_name;
+          $data['orig_name'] = $formatted_name;
           $data['alt_name'] = TRUE;
           $composition[$alt_formatted_name] = $data;
         }
@@ -465,6 +466,7 @@ class PolicymakerService {
       else {
         $image_url = NULL;
       }
+
       if (isset($composition[$name])) {
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
@@ -478,6 +480,10 @@ class PolicymakerService {
         ];
 
         // Remove from composition so we have a list of non council trustees.
+        if (isset($composition[$name]['alt_name']) && $composition[$name]['alt_name']) {
+          $orig_name = $composition[$name]['orig_name'];
+          unset($composition[$orig_name]);
+        }
         unset($composition[$name]);
       }
     }
