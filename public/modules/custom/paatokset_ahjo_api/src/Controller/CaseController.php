@@ -3,7 +3,6 @@
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
