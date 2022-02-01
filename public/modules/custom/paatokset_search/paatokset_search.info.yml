@@ -2,6 +2,6 @@ name: Päätökset search
 type: module
 package: Custom
 core_version_requirement: ^9
-dependecies:
+dependencies:
   - elasticsearch_connector
   - search_api
