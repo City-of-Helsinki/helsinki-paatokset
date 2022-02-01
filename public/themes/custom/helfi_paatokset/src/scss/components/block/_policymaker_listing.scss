@@ -153,26 +153,6 @@
     height: 100%;
     width: 16px;
     background-color: red;
-    
-    &.council, &.hallitus, &.valtuusto {
-      background-color: $council-green;
-    }
-  
-    &.board-division, &.board, &.jaosto, &.lautakunta {
-      background-color: $board-grey;
-    }
-  
-    &.traffic {
-      background-color: $traffic-yellow;
-    }
-  
-    &.committee, &.toimi--neuvottelukunta, &.toimikunta {
-      background-color: $committee-blue;
-    }
-  
-    &.trustee, &.luottamushenkilo, &.viranhaltija {
-      background-color: $trustee-pink;
-    }
   }
   
   .policymaker-row__title {

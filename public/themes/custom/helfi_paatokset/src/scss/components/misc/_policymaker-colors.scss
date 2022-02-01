@@ -1,0 +1,51 @@
+$color-sumu : #9fc9eb;
+$color-hopea: #dedfe1;
+$color-suomenlinna: #f5a3c7;
+$color-engel: #ffe977;
+$color-kupari: #00d7a7;
+
+.issue-content__policymaker-label,
+.policymaker-row__color,
+.frontpage-calendar__item .color-line  {
+  &.council, &.hallitus, &.valtuusto {
+    background-color: $council-green;
+  }
+  
+  &.board-division, &.board, &.jaosto, &.lautakunta {
+    background-color: $board-grey;
+  }
+  
+  &.traffic {
+    background-color: $traffic-yellow;
+  }
+  
+  &.committee, &.toimi--neuvottelukunta, &.toimikunta {
+    background-color: $committee-blue;
+  }
+  
+  &.trustee, &.luottamushenkilo, &.viranhaltija, &.luottamushenkilö {
+    background-color: $trustee-pink;
+  }
+}
+
+.issue__meetings-dropdown {
+  .council::before {
+    border-left-color: $council-green;
+  }
+
+  .board-division::before, .board::before {
+    border-left-color: $board-grey;
+  }
+
+  .traffic::before {
+    border-left-color: $traffic-yellow;
+  }
+
+  .committee::before {
+    border-left-color: $committee-blue;
+  }
+
+  .trustee::before {
+    border-left-color: $trustee-pink;
+  }
+}

@@ -213,26 +213,6 @@
   max-width: 100%;
   font-size: $fontsize-body-s;
 
-  &.council, &.hallitus, &.valtuusto {
-    background-color: $council-green;
-  }
-
-  &.board-division, &.board, &.jaosto, &.lautakunta {
-    background-color: $board-grey;
-  }
-
-  &.traffic {
-    background-color: $traffic-yellow;
-  }
-
-  &.committee, &.toimi--neuvottelukunta, &.toimikunta {
-    background-color: $committee-blue;
-  }
-
-  &.trustee, &.luottamushenkilo, &.viranhaltija, &.luottamushenkilö {
-    background-color: $trustee-pink;
-  }
-
   @include breakpoint($breakpoint-m) {
     display: inline-block;
     padding: 10px 55px;
