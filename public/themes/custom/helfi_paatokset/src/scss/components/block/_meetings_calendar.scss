@@ -2,7 +2,10 @@
   margin-top: 90px; 
 
   .hds-loading-spinner {
-    margin: 90px 0;
+    margin: 90px auto;
+    position: relative;
+    top: unset;
+    left: unset;
   }
 
   ol {
@@ -29,7 +32,7 @@
       }
     }
 
-    .hds-icon {
+    .hel-icon {
       height: 30px;
       min-width: 30px;
       width: 30px;
@@ -91,7 +94,7 @@
       align-items: center;
     }
 
-    .hds-icon {
+    .hel-icon {
       width: 16px;
       height: 16px;
     }

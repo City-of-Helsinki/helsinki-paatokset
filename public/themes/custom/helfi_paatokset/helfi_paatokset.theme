@@ -37,7 +37,6 @@ function helfi_paatokset_preprocess(&$variables) {
   $variables['current_language'] = Drupal::languageManager()
     ->getCurrentLanguage()
     ->getId();
-  $variables['#attached']['drupalSettings']['iconsPath'] = $variables['icons_path'];
 }
 
 /**
@@ -364,4 +363,13 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
   }
 
   $variables['articles'] = $articles;
+}
+
+/**
+ * Implements hook_preprocess_html() for HTML document templates.
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_preprocess_menu(&$variables) {
+  $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
 }

@@ -15,7 +15,7 @@
           <div class="search-wrapper">
             <label>{{ searchLabel }}</label>
             <input type="text" v-model="search" :placeholder="searchPlaceholder"/>
-            <i class="hds-icon hds-icon--search"></i>
+            <i class="hel-icon hel-icon--search"></i>
           </div>
           <div v-for="(filter, key) in filters" class="form-item">
             <div class="form-item__dropdown">
@@ -24,7 +24,7 @@
                 <option :value="window.Drupal.t(Object.keys(filter)[0])">{{ window.Drupal.t(Object.keys(filter)[0]) }}</option>
                 <option v-for="value in Object.values(filter)[0]" v-bind:value="window.Drupal.t(value)">{{ window.Drupal.t(value) }}</option>
               </select>
-              <i class="hds-icon hds-icon--angle-down"></i>
+              <i class="hel-icon hel-icon--angle-down"></i>
             </div>
           </div>
           <div v-if="hasDeputies" class="filters-checkboxes">
