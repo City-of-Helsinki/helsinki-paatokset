@@ -134,13 +134,12 @@ class PolicymakerController extends ControllerBase {
    */
   public function getMinutesTitle($id) {
     $meetingData = $this->policymakerService->getMeetingAgenda($id);
-    $meetingTitle;
 
     if (isset($meetingData['meeting']) && isset($meetingData['meeting']['title'])) {
-      $meetingTitle = $meetingData['meeting']['title'];
+      return $meetingData['meeting']['title'];
     }
 
-    return $meetingTitle ? $meetingTitle : t('Minutes');
+    return t('Minutes');
   }
 
   /**
