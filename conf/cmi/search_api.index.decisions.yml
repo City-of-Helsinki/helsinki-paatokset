@@ -60,7 +60,7 @@ field_settings:
     label: 'Decision issued date'
     datasource_id: 'entity:node'
     property_path: field_decision_date
-    type: string
+    type: date
     dependencies:
       config:
         - field.storage.node.field_decision_date
