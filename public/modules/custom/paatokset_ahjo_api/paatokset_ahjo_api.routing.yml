@@ -20,3 +20,10 @@ paatokset_ahjo_api.queue_list:
     id: all
   requirements:
     _permission: 'administer content'
+
+paatokset_ahjo_api.case_ajax:
+  path: 'ahjo_api/case/{case_id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseController::loadDecision'
+  requirements:
+    _access: 'TRUE'
