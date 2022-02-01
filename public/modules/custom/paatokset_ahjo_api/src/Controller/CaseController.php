@@ -47,7 +47,7 @@ class CaseController extends ControllerBase {
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
       [
         'selectedDecision' => $data['selectedDecision'],
-        'selectedClass' => $data['selectedClass'],
+        'selected_class' => $data['selected_class'],
       ]
     );
 
