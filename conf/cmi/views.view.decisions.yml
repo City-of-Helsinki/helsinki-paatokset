@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_decision_date
     - field.storage.node.field_decision_native_id
     - field.storage.node.field_diary_number
-    - field.storage.node.field_meeting_date
     - field.storage.node.field_top_category_name
     - node.type.decision
   module:
@@ -264,15 +264,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_meeting_date:
-          id: field_meeting_date
-          table: node__field_meeting_date
-          field: field_meeting_date
+        field_decision_date:
+          id: field_decision_date
+          table: node__field_decision_date
+          field: field_decision_date
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Decision Date'
+          label: 'Issued date'
           exclude: false
           alter:
             alter_text: false
@@ -699,7 +699,7 @@ display:
             field_diary_number: field_diary_number
             field_top_category_name: field_top_category_name
             field_decision_native_id: field_decision_native_id
-            field_meeting_date: field_meeting_date
+            field_decision_date: field_decision_date
             changed: changed
             operations: operations
           default: '-1'
@@ -732,7 +732,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_meeting_date:
+            field_decision_date:
               sortable: true
               default_sort_order: desc
               align: ''
@@ -781,9 +781,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_decision_date'
         - 'config:field.storage.node.field_decision_native_id'
         - 'config:field.storage.node.field_diary_number'
-        - 'config:field.storage.node.field_meeting_date'
         - 'config:field.storage.node.field_top_category_name'
   page_1:
     id: page_1
@@ -815,7 +815,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_decision_date'
         - 'config:field.storage.node.field_decision_native_id'
         - 'config:field.storage.node.field_diary_number'
-        - 'config:field.storage.node.field_meeting_date'
         - 'config:field.storage.node.field_top_category_name'
