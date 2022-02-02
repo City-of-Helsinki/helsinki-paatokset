@@ -34,6 +34,7 @@ class PrepareIndex implements EventSubscriberInterface {
     if (in_array($indexName, $finnishIndices)) {
       $indexConfig = $event->getIndexConfig();
       $indexConfig['body']['settings']['analysis']['analyzer']['default']['type'] = 'finnish';
+      $event->setIndexConfig($indexConfig);
     }
   }
 
