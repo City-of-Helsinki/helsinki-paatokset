@@ -33,7 +33,6 @@ dependencies:
     - datetime
     - hdbt_admin_editorial
     - json_field
-    - media_library
     - path
     - scheduler
     - text
@@ -63,13 +62,6 @@ content:
     settings:
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-  field_decision_attachment_files:
-    type: media_library_widget
-    weight: 22
-    region: content
-    settings:
-      media_types: {  }
     third_party_settings: {  }
   field_decision_attachments:
     type: json_textarea
@@ -313,4 +305,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_decision_attachment_files: true

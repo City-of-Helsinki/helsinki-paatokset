@@ -127,7 +127,6 @@ third_party_settings:
         required_fields: false
     group_agenda:
       children:
-        - field_meeting_agenda_files
         - field_meeting_agenda
       label: Agenda
       region: content
@@ -194,13 +193,6 @@ content:
         - code
       schema: ''
       schema_validate: false
-    third_party_settings: {  }
-  field_meeting_agenda_files:
-    type: media_library_widget
-    weight: 35
-    region: content
-    settings:
-      media_types: {  }
     third_party_settings: {  }
   field_meeting_agenda_published:
     type: boolean_checkbox
@@ -425,4 +417,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_meeting_agenda_files: true
