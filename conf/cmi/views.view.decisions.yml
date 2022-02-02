@@ -3,14 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_decision_content
     - field.storage.node.field_decision_date
-    - field.storage.node.field_decision_native_id
+    - field.storage.node.field_decision_motion
     - field.storage.node.field_diary_number
-    - field.storage.node.field_top_category_name
+    - field.storage.node.field_dm_org_name
     - node.type.decision
   module:
     - datetime
     - node
+    - text
     - user
 id: decisions
 label: Decisions
@@ -138,78 +140,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_top_category_name:
-          id: field_top_category_name
-          table: node__field_top_category_name
-          field: field_top_category_name
+        field_dm_org_name:
+          id: field_dm_org_name
+          table: node__field_dm_org_name
+          field: field_dm_org_name
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Top category'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_decision_native_id:
-          id: field_decision_native_id
-          table: node__field_decision_native_id
-          field: field_decision_native_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: 'Native ID'
+          label: Organization
           exclude: false
           alter:
             alter_text: false
@@ -328,21 +267,19 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        changed:
-          id: changed
-          table: node_field_data
-          field: changed
+        field_decision_content:
+          id: field_decision_content
+          table: node__field_decision_content
+          field: field_decision_content
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: changed
           plugin_id: field
-          label: Päivitetty
+          label: Content
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '✔ '
             make_link: false
             path: ''
             absolute: false
@@ -375,16 +312,75 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: '✖ '
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_decision_motion:
+          id: field_decision_motion
+          table: node__field_decision_motion
+          field: field_decision_motion
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Motion
+          exclude: false
+          alter:
+            alter_text: true
+            text: '✔ '
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: '✖ '
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -684,6 +680,108 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_decision_motion_value:
+          id: field_decision_motion_value
+          table: node__field_decision_motion
+          field: field_decision_motion_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_decision_motion_value_op
+            label: 'Motion (field_decision_motion)'
+            description: null
+            use_operator: false
+            operator: field_decision_motion_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_decision_motion_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: Motion
+            description: ''
+            identifier: field_decision_motion_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Has data'
+                operator: 'not empty'
+                value: ''
+              2:
+                title: 'Does not have data'
+                operator: empty
+                value: ''
+              3:
+                title: ''
+                operator: '='
+                value: ''
+        field_decision_content_value:
+          id: field_decision_content_value
+          table: node__field_decision_content
+          field: field_decision_content_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_decision_content_value_op
+            label: 'Content (field_decision_content)'
+            description: null
+            use_operator: false
+            operator: field_decision_content_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_decision_content_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: Content
+            description: ''
+            identifier: field_decision_content_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Has data'
+                operator: 'not empty'
+                value: ''
+              2:
+                title: 'Does not have data'
+                operator: empty
+                value: ''
+              3:
+                title: ''
+                operator: '='
+                value: ''
       filter_groups:
         operator: AND
         groups:
@@ -697,10 +795,10 @@ display:
           columns:
             title: title
             field_diary_number: field_diary_number
-            field_top_category_name: field_top_category_name
-            field_decision_native_id: field_decision_native_id
+            field_dm_org_name: field_dm_org_name
             field_decision_date: field_decision_date
-            changed: changed
+            field_decision_content: field_decision_content
+            field_decision_motion: field_decision_motion
             operations: operations
           default: '-1'
           info:
@@ -718,15 +816,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_top_category_name:
+            field_dm_org_name:
               sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_decision_native_id:
-              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -739,9 +830,16 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
+            field_decision_content:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_decision_motion:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
@@ -781,10 +879,11 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_decision_content'
         - 'config:field.storage.node.field_decision_date'
-        - 'config:field.storage.node.field_decision_native_id'
+        - 'config:field.storage.node.field_decision_motion'
         - 'config:field.storage.node.field_diary_number'
-        - 'config:field.storage.node.field_top_category_name'
+        - 'config:field.storage.node.field_dm_org_name'
   page_1:
     id: page_1
     display_title: Page
@@ -815,7 +914,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_decision_content'
         - 'config:field.storage.node.field_decision_date'
-        - 'config:field.storage.node.field_decision_native_id'
+        - 'config:field.storage.node.field_decision_motion'
         - 'config:field.storage.node.field_diary_number'
-        - 'config:field.storage.node.field_top_category_name'
+        - 'config:field.storage.node.field_dm_org_name'
