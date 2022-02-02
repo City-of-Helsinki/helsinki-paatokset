@@ -487,9 +487,13 @@ class PolicymakerService {
       if (isset($data['alt_name']) && $data['alt_name']) {
         continue;
       }
+      $bits = explode(' ', $data['Name']);
+      $last_name = array_pop($bits);
+      $first_name = implode(' ', $bits);
+
       $results[] = [
-        'first_name' => $data['Name'],
-        'last_name' => "",
+        'first_name' => $first_name,
+        'last_name' => $last_name,
         'image_url' => NULL,
         'url' => NULL,
         'role' => $data['Role'],
