@@ -6,25 +6,26 @@ $color-kupari: #00d7a7;
 
 .issue-content__policymaker-label,
 .policymaker-row__color,
-.frontpage-calendar__item .color-line  {
-  &.council, &.hallitus, &.valtuusto {
-    background-color: $council-green;
+.frontpage-calendar__item .color-line,
+.policymaker-card__color-title  {
+  &.color-sumu {
+    background-color: $color-sumu;
   }
   
-  &.board-division, &.board, &.jaosto, &.lautakunta {
-    background-color: $board-grey;
+  &.color-hopea {
+    background-color: $color-hopea;
   }
   
-  &.traffic {
-    background-color: $traffic-yellow;
+  &.color-suomenlinna {
+    background-color: $color-suomenlinna;
   }
   
-  &.committee, &.toimi--neuvottelukunta, &.toimikunta {
-    background-color: $committee-blue;
+  &.color-engel{
+    background-color: $color-engel
   }
   
-  &.trustee, &.luottamushenkilo, &.viranhaltija, &.luottamushenkilö {
-    background-color: $trustee-pink;
+  &.color-kupari {
+    background-color: $color-kupari;
   }
 }
 

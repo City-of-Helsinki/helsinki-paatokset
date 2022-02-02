@@ -97,14 +97,6 @@
     font-weight: $font-weight-medium;
     text-transform: uppercase;
     padding: 4px 0;
-
-    &.valtuusto {
-      background-color: $council-green;
-    }
-
-    &.hallitus {
-      background-color: $board-grey;
-    }
   }
 
   .policymaker-card__title-icon {
@@ -152,7 +144,6 @@
     bottom: 0;
     height: 100%;
     width: 16px;
-    background-color: red;
   }
   
   .policymaker-row__title {

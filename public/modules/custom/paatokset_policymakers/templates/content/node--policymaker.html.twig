@@ -86,8 +86,8 @@
   <section class="container policymaker-summary">
     {% if is_organization %}
       <div class="policymaker-summary__label">
-        <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
-          {{ content.field_ahjo_title }}
+        <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color}}">
+          {{ organization_type }}
         </div>
       </div>
     {% else %}
@@ -95,8 +95,8 @@
         {{ content.field_dm_org_name }}
       </div>
       <div role="region" aria-label="{{ 'Page tags'|t }}" class="policymaker-summary__label">
-        <div class="issue-content__policymaker-label policymaker-label--small {{ org_type_class }}">
-          {{ content.field_organization_type }}
+        <div class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color }}">
+          {{ organization_type }}
         </div>
       </div>
     {% endif %}
