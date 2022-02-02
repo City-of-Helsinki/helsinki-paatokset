@@ -30,12 +30,14 @@
       {% endif %}
       <div class="issue-header__footer">
         {% if entity.top_category_name.value %}
-          <section 
+          <section
             class="issue__category issue__left-column__container"
             aria-label='{{ 'Tags'|t }}'
             role="Region"
           >
-            {% include '@hdbt/misc/tag.html.twig' with { label: entity.top_category_name.value } %}
+            <span class="hds-tag hds">
+              <span class="hds-tag__label">{{ entity.top_category_name.value }}</span>
+            </span>
           </section>
         {% endif %}
         <div class="issue__favorite-button">
