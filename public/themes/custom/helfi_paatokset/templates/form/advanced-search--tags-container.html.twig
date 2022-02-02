@@ -28,7 +28,9 @@
 <div{{ attributes.addClass(classes) }}>
   <span class="tags-container__title">{{ 'Filters:'|trans }}</span>
   {% for tag in tags %}
-    {% include '@hdbt/misc/tag.html.twig' with { type: 'deletable', label: tag} %}
+    <span class="hds-tag hds">
+      <span class="hds-tag__label">{{ tag }}</span>
+    </span>
   {% endfor %}
   {% if tags is not empty %}
     {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', disabled: false, label: 'Reset filters'|t } %}
