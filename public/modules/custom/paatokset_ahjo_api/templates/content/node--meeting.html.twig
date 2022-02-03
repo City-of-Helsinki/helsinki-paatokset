@@ -73,6 +73,7 @@
 
 {%
   set classes = [
+  'issue',
   'node--type-' ~ node.bundle|clean_class,
   node.isPromoted() ? 'node--promoted',
   node.isSticky() ? 'node--sticky',
@@ -106,7 +107,6 @@
         {{ content.meeting_link }}
       </div>
     {% endif %}
-
 
   </div>
 </article>
