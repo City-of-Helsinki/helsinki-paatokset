@@ -466,21 +466,9 @@ display:
           admin_label: 'file from field_document'
           plugin_id: standard
           required: false
+      css_class: container
       group_by: false
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: 'Sisältöalueen placeholder-teksti'
-            format: full_html
-          tokenize: false
+      header: {  }
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -500,7 +488,10 @@ display:
     display_plugin: block
     position: 2
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
     cache_metadata:
       max-age: -1
       contexts:

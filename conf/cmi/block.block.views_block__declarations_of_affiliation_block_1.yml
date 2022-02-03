@@ -18,7 +18,7 @@ plugin: 'views_block:declarations_of_affiliation-block_1'
 settings:
   id: 'views_block:declarations_of_affiliation-block_1'
   label: ''
-  label_display: visible
+  label_display: '0'
   provider: views
   views_label: ''
   items_per_page: none
@@ -26,4 +26,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /sidonnaisuusilmoitukset
+    pages: "/tietoa-paatoksenteosta/sidonnaisuusilmoitukset\r\n/infomration-om-beslutsfattning/redogorelser-for-bindningar"
