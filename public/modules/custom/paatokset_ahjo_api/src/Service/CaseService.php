@@ -72,18 +72,20 @@ class CaseService {
   /**
    * Set case and decision entities based on IDs.
    *
-   * @param string $case_id
-   *   Case diary number.
+   * @param string|null $case_id
+   *   Case diary number or NULL if decision doesn't have a case.
    * @param string $decision_id
    *   Decision native ID.
    */
-  public function setEntitiesById(string $case_id, string $decision_id): void {
-    $case_nodes = $this->caseQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-    ]);
-    $this->case = array_shift($case_nodes);
-    $this->caseId = $case_id;
+  public function setEntitiesById(?string $case_id = NULL, string $decision_id): void {
+    if ($case_id !== NULL) {
+      $case_nodes = $this->caseQuery([
+        'case_id' => $case_id,
+        'limit' => 1,
+      ]);
+      $this->case = array_shift($case_nodes);
+      $this->caseId = $case_id;
+    }
 
     $decision_nodes = $this->decisionQuery([
       'case_id' => $case_id,
@@ -138,6 +140,32 @@ class CaseService {
   }
 
   /**
+   * Get page main heading either from case or decision node.
+   *
+   * @return string|null
+   *   Main heading or NULL if neither case or decision have been set.
+   */
+  public function getDecisionHeading(): ?string {
+    if ($this->case instanceof NodeInterface && $this->case->hasField('field_full_title') && !$this->case->get('field_full_title')->isEmpty()) {
+      return $this->case->get('field_full_title')->value;
+    }
+
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    if ($this->selectedDecision->hasField('field_decision_case_title') && !$this->selectedDecision->get('field_decision_case_title')->isEmpty()) {
+      return $this->selectedDecision->get('field_decision_case_title')->value;
+    }
+
+    if ($this->selectedDecision->hasField('field_full_title') && !$this->selectedDecision->get('field_full_title')->isEmpty()) {
+      return $this->selectedDecision->get('field_full_title')->value;
+    }
+
+    return $this->selectedDecision->title->value;
+  }
+
+  /**
    * Get decision PDF file.
    *
    * @param string|null $decision_id
@@ -146,13 +174,9 @@ class CaseService {
    * @return string|null
    *   URL for PDF.
    */
-  public function getDecisionPdf(?string $decision_id = NULL): ?string {
-    if (!$this->case instanceof NodeInterface || !$this->case->hasField('field_case_records') || $this->case->get('field_case_records')->isEmpty()) {
+  public function getDecisionPdf(): ?string {
+    if (!$this->selectedDecision instanceof NodeInterface || !$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
       return NULL;
-    }
-
-    if (!$decision_id) {
-      $decision_id = $this->selectedDecision->field_decision_native_id->value;
     }
 
     $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
@@ -280,6 +304,11 @@ class CaseService {
     if (!$case_id) {
       $case_id = $this->caseId;
     }
+
+    if ($case_id === NULL) {
+      return [];
+    }
+
     return $this->decisionQuery(['case_id' => $case_id]);
   }
 
