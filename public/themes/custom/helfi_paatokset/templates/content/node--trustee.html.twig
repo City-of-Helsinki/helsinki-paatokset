@@ -124,6 +124,12 @@
       {% if policymaker_declaration %}
         <div class="information-row information-row--pm-declaration">{{ policymaker_declaration }}</div>
       {% endif %}
+      {% if doa %}
+        <div class="information-row">
+          <div class="label">{{ 'Declaration of affiliation' }}:</div>
+          {{ doa }}
+        </div>
+      {% endif %}
     </div>
   {% endif %}
 
