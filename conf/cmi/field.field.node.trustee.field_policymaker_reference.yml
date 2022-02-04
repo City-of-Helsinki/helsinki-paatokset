@@ -1,0 +1,29 @@
+uuid: c9bc0dd1-1c9a-4ff1-8b8b-83afbb34914c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_reference
+    - node.type.policymaker
+    - node.type.trustee
+id: node.trustee.field_policymaker_reference
+field_name: field_policymaker_reference
+entity_type: node
+bundle: trustee
+label: 'Policymaker reference'
+description: "Luottamushenkilöt voivat myös olla päättäjiä. Lisää tieto tämän kentän avulla, jotta tieto nimikkeestä näkyy luottamushenkilön sivulla.\r\n"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      policymaker: policymaker
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.trustee.field_first_name
     - field.field.node.trustee.field_last_name
+    - field.field.node.trustee.field_policymaker_reference
     - field.field.node.trustee.field_trustee_chairmanships
     - field.field.node.trustee.field_trustee_council_group
     - field.field.node.trustee.field_trustee_datapumppu_id
@@ -44,6 +45,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 13
+    region: content
+  field_policymaker_reference:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 16
     region: content
   field_trustee_chairmanships:
     type: json

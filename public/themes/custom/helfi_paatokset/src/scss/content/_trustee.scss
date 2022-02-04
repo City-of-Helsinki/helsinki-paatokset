@@ -9,10 +9,15 @@
 
   .information-row {
     display: flex;
+    flex-wrap: wrap;
     font-size: 18px;
 
     &:not(:last-of-type) {
       margin-bottom: $spacing-s;
+    }
+
+    &.information-row--pm-declaration a {
+      margin-left: .4rem;
     }
   }
 
