@@ -2,10 +2,6 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use \DOMDocument;
-use \DOMXPath;
-use \DOMNode;
-use \DOMNodeList;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Utility\Html;
@@ -444,17 +440,17 @@ class CaseService {
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
 
-    $content_dom = new DOMDocument();
+    $content_dom = new \DOMDocument();
     if (!empty($content)) {
       @$content_dom->loadHTML($content);
     }
-    $content_xpath = new DOMXPath($content_dom);
+    $content_xpath = new \DOMXPath($content_dom);
 
-    $motion_dom = new DOMDocument();
+    $motion_dom = new \DOMDocument();
     if (!empty($motion)) {
       @$motion_dom->loadHTML($motion);
     }
-    $motion_xpath = new DOMXPath($motion_dom);
+    $motion_xpath = new \DOMXPath($motion_dom);
 
     $output = [];
 
@@ -546,7 +542,7 @@ class CaseService {
    * @return array
    *   Array of sections.
    */
-  private function getMotionSections(DOMNodeList $list): array {
+  private function getMotionSections(\DOMNodeList $list): array {
     $output = [];
     if ($list->length < 1) {
       return [];
@@ -568,7 +564,7 @@ class CaseService {
 
     // Move on to other sections.
     $other_sections = $list->item(1);
-    if (!$other_sections instanceof DOMNode) {
+    if (!$other_sections instanceof \DOMNode) {
       return $output;
     }
 
@@ -604,14 +600,14 @@ class CaseService {
    * @return string|null
    *   HTML content as string, or NULL if content is empty.
    */
-  private function getHtmlContentUntilBreakingElement(DOMNodeList $list): ?string {
+  private function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
     $output = NULL;
     if ($list->length < 1) {
       return NULL;
     }
 
     $current_item = $list->item(0);
-    while ($current_item->nextSibling instanceof DOMNode) {
+    while ($current_item->nextSibling instanceof \DOMNode) {
 
       // Iterate over to next sibling. This skips the first one.
       $current_item = $current_item->nextSibling;
