@@ -1,7 +1,7 @@
 {#
 
 #}
-
+{{ attach_library('hdbt/accordion') }}
 <div class="issue-content-top__container">
   <div{{ content_attributes.addClass('issue-content-top') }}>
     {% if selectedDecision.field_decision_section.value %}
@@ -32,6 +32,29 @@
 
 <div class="issue-content__container">
   <div{{ content_attributes.addClass('issue-content') }}>
-    Content.
+    {{ decision_content.main }}
+
+    <div class="paatokset-accordion">
+      {% for accordion in decision_content.accordions %}
+        <div class="accordion__wrapper handorgel">
+          <h3 class="accordion-item__header handorgel__header">
+            <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+              <span>{{ accordion.heading }}</span>
+              <div class="accordion-item__icon">
+                {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+              </div>
+            </button>
+          </h3>
+          <div class="accordion-item__content handorgel__content">
+            <div class="accordion-item__content__inner handorgel__content__inner">
+              {{ accordion.content }}
+              <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+                {{ 'Close'|t }}
+              </span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </div>

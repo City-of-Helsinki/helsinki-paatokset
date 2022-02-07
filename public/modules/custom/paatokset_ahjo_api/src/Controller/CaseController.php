@@ -42,12 +42,14 @@ class CaseController extends ControllerBase {
     $data['attachments'] = $this->caseService->getAttachments();
     $data['next_decision'] = $this->caseService->getNextDecision();
     $data['previous_decision'] = $this->caseService->getPrevDecision();
+    $data['decision_content'] = $this->caseService->parseContent();
 
     $content = twig_render_template(
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
       [
         'selectedDecision' => $data['selectedDecision'],
         'selected_class' => $data['selected_class'],
+        'decision_content' => $data['decision_content'],
       ]
     );
 

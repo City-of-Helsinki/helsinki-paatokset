@@ -2,9 +2,14 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use DOMDocument;
+use DOMXPath;
+use DOMNode;
+use DOMNodeList;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Utility\Html;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -431,6 +436,231 @@ class CaseService {
       'title' => $node->title->value,
       'id' => urlencode($node->field_decision_native_id->value),
     ];
+  }
+
+  public function parseContent() {
+    $content = $this->selectedDecision->get('field_decision_content')->value;
+    $motion = $this->selectedDecision->get('field_decision_motion')->value;
+
+    $content_dom = new DOMDocument();
+    if (!empty($content)) {
+      @$content_dom->loadHTML($content);
+    }
+    $content_xpath = new DOMXPath($content_dom);
+
+    $motion_dom = new DOMDocument();
+    if (!empty($motion)) {
+      @$motion_dom->loadHTML($motion);
+    }
+    $motion_xpath = new DOMXPath($motion_dom);
+
+    $output = [];
+
+    $main_content = NULL;
+    // Main decision content sections.
+    $content_sections = $content_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
+
+    foreach ($content_sections as $section) {
+      $main_content .= $section->ownerDocument->saveHTML($section);
+    }
+
+    if ($main_content) {
+      $output['main'] = [
+        '#markup' => $main_content,
+      ];
+    }
+
+    // Motion content sections.
+    // If decision content is empty, print motion content as main content.
+    $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
+    if (!$main_content) {
+      $motion_content = NULL;
+      foreach ($motion_sections as $section) {
+        $motion_content .= $section->ownerDocument->saveHTML($section);
+      }
+      $output['main'] = [
+        '#markup' => $motion_content,
+      ];
+    }
+    else {
+      // If decision content is set, split motions sections into accordions.
+      $motion_accordions = $this->getMotionSections($motion_sections);
+      foreach ($motion_accordions as $accordion) {
+        $output['accordions'][] = $accordion;
+      }
+    }
+
+    // Presenter information.
+    $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
+    $presenter_content = NULL;
+    if ($presenter_info) {
+      $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
+    }
+
+    if ($presenter_content) {
+      $output['accordions'][] = [
+        'heading' => t('Presenter information'),
+        'content' => ['#markup' => $presenter_content],
+      ];
+    }
+
+    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
+    $more_info_content = NULL;
+    if ($more_info) {
+      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
+    }
+
+    if ($more_info_content) {
+      $output['accordions'][] = [
+        'heading' => t('More info'),
+        'content' => ['#markup' => $more_info_content],
+      ];
+    }
+
+    $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
+    $appeal_content = NULL;
+    if ($appeal_info) {
+      $appeal_content = $this->getHtmlContentUntilBreakingElement($appeal_info);
+    }
+
+    if ($appeal_content) {
+      $output['accordions'][] = [
+        'heading' => t('Appeal process'),
+        'content' => ['#markup' => $appeal_content],
+      ];
+    }
+
+    //dd($appeal_content);
+
+
+/*
+      'accordions' => [
+        [
+          'heading' => 'Esitys',
+          'content' => ['#markup' => $main_content]
+        ],
+      ],
+    ];
+*/
+    return $output;
+
+    //$more_info = $xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
+
+    //dd($more_info->item(0));
+    /*$more_info = $more_info->item(0);
+    while ($more_info->nextSibling instanceof \DOMNode) {
+      $more_info = $more_info->nextSibling;
+
+      if ($more_info->nodeName === 'h3' && !empty($more_info->getAttribute('class'))) {
+        break;
+      }
+
+      print $more_info->ownerDocument->saveHTML($more_info);
+    }*/
+    /*die(':)');
+
+    foreach($more_info->item(0)->nextSibling as $node) {
+      print $node->nodeValue;
+      print $node->nodeName . ': ' . $node->nodeValue;
+      print '<br />';
+      print 'class:' . $node->getAttribute('class');
+      print '<br />';
+    }
+    die(':)');
+    /*$body = $doc->getElementsByTagName('body')->item(0);
+    foreach ($body->childNodes as $node) {
+      print $node->nodeName . ': ' . $node->nodeValue;
+      print '<br />';
+      print 'class:' . $node->getAttribute('class');
+      print '<br />';
+
+      if ($node->hasChildNodes()) {
+        foreach ($node->childNodes as $child) {
+          print $child->nodeName . ': ' . $child->nodeValue;
+          print '<br />';
+          print 'class:' . $child->getAttribute('class');
+          print '<br />';
+        }
+      }
+
+      print '<hr />';
+    }*/
+    dd(':)');
+    dd($content);
+    dd($motion);
+  }
+
+  private function getMotionSections(DOMNodeList $list): array {
+    $output = [];
+    if ($list->length < 1) {
+      return [];
+    }
+
+    $section = ['content' => ['#markup' => NULL]];
+    // First section should always be motion description.
+    $current_item = $list->item(0);
+    foreach ($current_item->childNodes as $node) {
+      if ($node->nodeName === 'h3') {
+        $section['heading'] = $node->nodeValue;
+        continue;
+      }
+
+      $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
+    }
+
+    $output[] = $section;
+
+    // Move on to other sections.
+    $other_sections = $list->item(1);
+    if (!$other_sections instanceof DOMNode) {
+      return $output;
+    }
+
+    $section = ['content' => ['#markup' => NULL]];
+    foreach ($other_sections->childNodes as $node) {
+      // If a h3 is reached, start over a new section.
+      if ($node->nodeName === 'h3') {
+        if (!empty($section['content']['#markup'])) {
+          $output[] = $section;
+          $section = ['content' => ['#markup' => NULL]];
+        }
+
+        $section['heading'] = $node->nodeValue;
+        continue;
+      }
+
+      $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
+    }
+
+    return $output;
+  }
+
+  private function getHtmlContentUntilBreakingElement(DOMNodeList $list): ?string {
+    $output = NULL;
+    if ($list->length < 1) {
+      return NULL;
+    }
+
+    $current_item = $list->item(0);
+    while ($current_item->nextSibling instanceof DOMNode) {
+
+      // Iterate over to next sibling. This skips the first one.
+      $current_item = $current_item->nextSibling;
+
+      // H3 with a class is considered a breaking element.
+      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
+        break;
+      }
+
+      // Skip over any empty elements.
+      if (empty($current_item->nodeValue)) {
+        continue;
+      }
+
+      $output .= $current_item->ownerDocument->saveHTML($current_item);
+    }
+
+    return $output;
   }
 
   /**
