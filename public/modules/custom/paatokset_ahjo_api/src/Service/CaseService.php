@@ -504,6 +504,7 @@ class CaseService {
       ];
     }
 
+    // More information.
     $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
     $more_info_content = NULL;
     if ($more_info) {
@@ -517,6 +518,7 @@ class CaseService {
       ];
     }
 
+    // Appeal information.
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
     $appeal_content = NULL;
     if ($appeal_info) {
@@ -530,66 +532,18 @@ class CaseService {
       ];
     }
 
-    //dd($appeal_content);
-
-
-/*
-      'accordions' => [
-        [
-          'heading' => 'Esitys',
-          'content' => ['#markup' => $main_content]
-        ],
-      ],
-    ];
-*/
     return $output;
-
-    //$more_info = $xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-
-    //dd($more_info->item(0));
-    /*$more_info = $more_info->item(0);
-    while ($more_info->nextSibling instanceof \DOMNode) {
-      $more_info = $more_info->nextSibling;
-
-      if ($more_info->nodeName === 'h3' && !empty($more_info->getAttribute('class'))) {
-        break;
-      }
-
-      print $more_info->ownerDocument->saveHTML($more_info);
-    }*/
-    /*die(':)');
-
-    foreach($more_info->item(0)->nextSibling as $node) {
-      print $node->nodeValue;
-      print $node->nodeName . ': ' . $node->nodeValue;
-      print '<br />';
-      print 'class:' . $node->getAttribute('class');
-      print '<br />';
-    }
-    die(':)');
-    /*$body = $doc->getElementsByTagName('body')->item(0);
-    foreach ($body->childNodes as $node) {
-      print $node->nodeName . ': ' . $node->nodeValue;
-      print '<br />';
-      print 'class:' . $node->getAttribute('class');
-      print '<br />';
-
-      if ($node->hasChildNodes()) {
-        foreach ($node->childNodes as $child) {
-          print $child->nodeName . ': ' . $child->nodeValue;
-          print '<br />';
-          print 'class:' . $child->getAttribute('class');
-          print '<br />';
-        }
-      }
-
-      print '<hr />';
-    }*/
-    dd(':)');
-    dd($content);
-    dd($motion);
   }
 
+  /**
+   * Split motions into sections.
+   *
+   * @param DOMNodeList $list
+   *   Motion content sections.
+   *
+   * @return array
+   *   Array of sections.
+   */
   private function getMotionSections(DOMNodeList $list): array {
     $output = [];
     if ($list->length < 1) {
@@ -632,9 +586,22 @@ class CaseService {
       $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
     }
 
+    if (!empty($section['content']['#markup'])) {
+      $output[] = $section;
+    }
+
     return $output;
   }
 
+  /**
+   * Get HTML content from first heading until next heading.
+   *
+   * @param DOMNodeList $list
+   *   Xpath query results.
+   *
+   * @return string|null
+   *   HTML content as string, or NULL if content is empty.
+   */
   private function getHtmlContentUntilBreakingElement(DOMNodeList $list): ?string {
     $output = NULL;
     if ($list->length < 1) {
