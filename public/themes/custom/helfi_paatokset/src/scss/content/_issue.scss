@@ -52,15 +52,17 @@
 }
 
 .issue__container {
-
   h3 {
     font-size: $font-size-heading-3;
     margin-bottom: 16px;
-    font-weight: $font-weight-medium;
 
     @include breakpoint($breakpoint-l) {
       font-size: $font-size-heading-2;
     }
+  }
+
+  .SisaltoSektio {
+    margin-bottom: $spacing-double;
   }
 
   &.issue__container--navigation {
