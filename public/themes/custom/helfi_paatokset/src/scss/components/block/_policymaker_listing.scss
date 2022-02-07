@@ -9,53 +9,6 @@
   h2 {
     margin-bottom: 50px;
   }
-
-  .accordion-item__header {
-    .handorgel__header__button {
-      color: black;
-      border: none;
-      border-top: 2px solid $color-black-20;
-      background-color: #f7f7f8;
-      padding: 32px 32px 32px 0;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .icon {
-      min-width: 30px;
-      min-height: 30px;
-      width: 30px;
-      height: 30px;
-      transition: all 0.1s ease-in-out;
-    }
-    
-  }
-
-  .handorgel__header--open {
-    .icon {
-      transform: rotate(180deg)
-    }
-  }
-
-  .handorgel__content {
-    background-color: #f7f7f8;
-    border: none;
-  }
-
-  .accordion-item__content__inner {
-    padding: 0;
-  }
-
-  .accordion__wrapper.handorgel {
-    border: none;
-  }
-
-  .accordion-item__button--close {
-    display: flex;
-    justify-content: right;
-    padding: 24px;
-    cursor: pointer;
-  }
 }
 
 .policymaker-card__container {
@@ -145,7 +98,7 @@
     height: 100%;
     width: 16px;
   }
-  
+
   .policymaker-row__title {
     font-size: 24px;
   }

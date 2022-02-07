@@ -26,8 +26,9 @@
         {% endfor %}
       {% endfor %}
     </div>
+    <div class="paatokset-accordion">
     {% for key, values in accordions[0] %}
-      <div class="accordion__wrapper handorgel">
+    <div class="accordion__wrapper handorgel">
       <h4 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
           <span>{{ key|t }}</span>
@@ -60,5 +61,6 @@
       </div>
     </div>
     {% endfor %}
+    </div>
   </div>
 </div>

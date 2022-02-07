@@ -180,6 +180,10 @@ jQuery(function($) {
       },
       complete: function() {
         $('.issue__wrapper .ajax-progress-throbber').hide();
+        window.document.dispatchEvent(new Event("DOMContentLoaded", {
+          bubbles: true,
+          cancelable: true
+        }));
       }
     });
 
