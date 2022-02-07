@@ -2,14 +2,13 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use DOMDocument;
-use DOMXPath;
-use DOMNode;
-use DOMNodeList;
+use \DOMDocument;
+use \DOMXPath;
+use \DOMNode;
+use \DOMNodeList;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Utility\Html;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -171,10 +170,7 @@ class CaseService {
   }
 
   /**
-   * Get decision PDF file.
-   *
-   * @param string|null $decision_id
-   *   Decision ID. Leave NULL to use active decision.
+   * Get active decision's PDF file.
    *
    * @return string|null
    *   URL for PDF.
@@ -438,7 +434,13 @@ class CaseService {
     ];
   }
 
-  public function parseContent() {
+  /**
+   * Parse decision content and motion data from HTML.
+   *
+   * @return array
+   *   Render arrays.
+   */
+  public function parseContent(): array {
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
 
@@ -538,7 +540,7 @@ class CaseService {
   /**
    * Split motions into sections.
    *
-   * @param DOMNodeList $list
+   * @param \DOMNodeList $list
    *   Motion content sections.
    *
    * @return array
@@ -596,7 +598,7 @@ class CaseService {
   /**
    * Get HTML content from first heading until next heading.
    *
-   * @param DOMNodeList $list
+   * @param \DOMNodeList $list
    *   Xpath query results.
    *
    * @return string|null
