@@ -16,8 +16,9 @@
 
   {% if all_decisions_link is empty %}
     {% set all_decisions_link = '#' %}
+    {% set hide_all_decisions_link = TRUE %}
   {% endif %}
-  <div class="issue-dropdown__show-more" {% if all_decisions_link is empty %}style="display:none;"{% endif %}>
+  <div class="issue-dropdown__show-more" {% if hide_all_decisions_link %}style="display:none;"{% endif %}>
     <a href="{{ all_decisions_link }}" class="paatokset-button-link">
       <span>{{ 'Other decisions for the meeting'|t }}</span>
       <i class="hel-icon hel-icon hel-icon--arrow-right"></i>

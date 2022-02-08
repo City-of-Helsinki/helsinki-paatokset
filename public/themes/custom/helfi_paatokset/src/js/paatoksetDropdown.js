@@ -159,7 +159,7 @@ jQuery(function($) {
           $('.issue__container--content .issue-right-column__container').html(data.attachments);
         }
         if(data.decision_navigation) {
-          $('.issue__decision-navigation').html(data.decision_navigation);
+          $('.issue__decision-navigation__wrapper').html(data.decision_navigation);
         }
         if(data.all_decisions_link) {
           $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);

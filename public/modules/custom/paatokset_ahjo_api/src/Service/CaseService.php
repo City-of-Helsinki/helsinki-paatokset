@@ -185,7 +185,7 @@ class CaseService {
   }
 
   /**
-   * Undocumented function
+   * Get meeting URL for selected decision.
    *
    * @return \Drupal\Core\Url|null
    */
@@ -200,7 +200,6 @@ class CaseService {
     }
     $meeting_id = $this->selectedDecision->get('field_meeting_id')->value;
 
-
     // Check if decision has policymaker ID.
     if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
       return NULL;
@@ -211,6 +210,40 @@ class CaseService {
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
     return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+  }
+
+  /**
+   * Get decision URL by title and section.
+   *
+   * @param string $title
+   *   Decision title.
+   * @param string $section
+   *   Decision section, to differentiate between multiple same titles.
+   * @param string $meeting_id
+   *   Meeting ID, to differentiate between multiple same titles.
+   *
+   * @return Drupal\Core\Url|null
+   *   Decision URL, if found.
+   */
+  public function getDecisionUrlByTitle(string $title, string $section, string $meeting_id): ?Url {
+    $params = [
+      'title' => $title,
+      'section' => $section,
+      'meeting_id' => $meeting_id,
+      'limit' => 1,
+    ];
+
+    $nodes = $this->decisionQuery($params);
+    if (empty($nodes)) {
+      return NULL;
+    }
+
+    $node = array_shift($nodes);
+    if ($node instanceof NodeInterface) {
+      return $node->toUrl();
+    }
+
+    return NULL;
   }
 
   /**
@@ -708,7 +741,7 @@ class CaseService {
       $sort_by = $params['sort_by'];
     }
     else {
-      $sort_by = 'field_meeting_date';
+      $sort_by = 'field_created';
     }
 
     $query = \Drupal::entityQuery('node')
@@ -718,6 +751,18 @@ class CaseService {
 
     if (isset($params['limit'])) {
       $query->range('0', $params['limit']);
+    }
+
+    if (isset($params['title'])) {
+      $query->condition('field_full_title', $params['title']);
+    }
+
+    if (isset($params['section'])) {
+      $query->condition('field_decision_section', $params['section']);
+    }
+
+    if (isset($params['meeting_id'])) {
+      $query->condition('field_meeting_id', $params['meeting_id']);
     }
 
     if (isset($params['case_id'])) {

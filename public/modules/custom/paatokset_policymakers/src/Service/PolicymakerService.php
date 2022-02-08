@@ -712,9 +712,9 @@ class PolicymakerService {
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
     }
 
-    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $currentLanguage);
+    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $currentLanguage, $meetingId);
     if (empty($agendaItems)) {
-      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $fallbackLanguage);
+      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $fallbackLanguage, $meetingId);
     }
 
     return [
@@ -737,13 +737,18 @@ class PolicymakerService {
    *
    * @param \Drupal\Core\Field\FieldItemListInterface $list_field
    *   Field to get agenda items from.
+   * @param string $meeting_id
+   *   Meeting ID.
    * @param string $langcode
    *   Langcode to use.
    *
    * @return array
    *   Array of agenda items. Can be empty.
    */
-  private function getAgendaItems(FieldItemListInterface $list_field, string $langcode = 'fi'): array {
+  private function getAgendaItems(FieldItemListInterface $list_field, string $meeting_id, string $langcode = 'fi'): array {
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
     $agendaItems = [];
     foreach ($list_field as $item) {
 
@@ -757,19 +762,17 @@ class PolicymakerService {
         continue;
       }
 
-      // Get PDF for now, should be switched to issue URL later.
-      if (isset($data['PDF']['NativeId'])) {
-        $agenda_link = Url::fromRoute('paatokset_ahjo_proxy.get_file', ['nativeId' => $data['PDF']['NativeId']], ['absolute' => TRUE])->toString();
-      }
-      else {
-        $agenda_link = NULL;
-      }
-
       if (!empty($data['Section'])) {
         $index = $data['AgendaPoint'] . '. – ' . $data['Section'];
       }
       else {
         $index = $data['AgendaPoint'] . '.';
+      }
+
+      $agenda_link = NULL;
+      if (!empty($data['Section']) && !empty($data['AgendaItem'])) {
+        $section_clean = (string) intval($data['Section']);
+        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $section_clean, $meeting_id);
       }
 
       $agendaItems[] = [
