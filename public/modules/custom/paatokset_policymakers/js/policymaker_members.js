@@ -13,18 +13,20 @@
       <div class="policymaker-members__container">
         <div class="policymaker-members__filters">
           <div class="search-wrapper">
-            <label>{{ searchLabel }}</label>
-            <input type="text" v-model="search" :placeholder="searchPlaceholder"/>
+            <label for="search-input">{{ searchLabel }}</label>
+            <input type="text" v-model="search" :placeholder="searchPlaceholder" id="search-input"/>
             <i class="hel-icon hel-icon--search"></i>
           </div>
           <div v-for="(filter, key) in filters" class="form-item">
             <div class="form-item__dropdown">
-              <label>{{ window.Drupal.t(filter.label) }}</label>
-              <select class="form-item__select" id="select" v-model="active_filters[key]">
-                <option :value="window.Drupal.t(Object.keys(filter)[0])">{{ window.Drupal.t(Object.keys(filter)[0]) }}</option>
-                <option v-for="value in Object.values(filter)[0]" v-bind:value="window.Drupal.t(value)">{{ window.Drupal.t(value) }}</option>
-              </select>
-              <i class="hel-icon hel-icon--angle-down"></i>
+              <label :for="processId(filter.label)">
+                {{ window.Drupal.t(filter.label) }}
+                <select class="form-item__select" :id="processId(filter.label)" v-model="active_filters[key]">
+                  <option :value="window.Drupal.t(Object.keys(filter)[0])">{{ window.Drupal.t(Object.keys(filter)[0]) }}</option>
+                  <option v-for="value in Object.values(filter)[0]" v-bind:value="window.Drupal.t(value)">{{ window.Drupal.t(value) }}</option>
+                </select>
+                <i class="hel-icon hel-icon--angle-down"></i>
+              </label>
             </div>
           </div>
           <div v-if="hasDeputies" class="filters-checkboxes">
@@ -39,7 +41,7 @@
         <div class="policymaker-members__list">
           <a v-for="member in filteredMembers" class="member-row" :href="member.url">
             <div class="member-info">
-              <span class="member-name">{{ member.first_name }} {{ member.last_name }}</span>
+              <h4 class="member-name">{{ member.first_name }} {{ member.last_name }}</h4>
               <div>
                 <span class="member-role">{{ member.role }}</span>
                 <span v-if="member.party" class="member-party"> {{ member.party }}</span>
@@ -53,6 +55,9 @@
               <img v-if="member.image_url" :src="member.image_url"/>
             </div>
           </a>
+          <div v-if="filteredMembers.length === 0" class="no-results">
+            <h4>{{ noResults }}</h4>
+          </div>
         </div>
       </div>
       `
@@ -118,6 +123,9 @@
               return email.replace("@", " (at) ")
             }
             return null;
+          },
+          processId(string) {
+            return string.replace(/\s/g, '-').toLowerCase()
           }
         },
         computed: {
@@ -157,6 +165,9 @@
           },
           deputyOf() {
             return window.Drupal.t('Personal deputy')
+          },
+          noResults() {
+            return window.Drupal.t('No search results')
           },
           translations() {
             window.Drupal.t('Filter by party');

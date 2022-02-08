@@ -17,9 +17,13 @@
           <div></div>
         </div>
         <div v-if="isReady" class="calendar-header">
-          <i @click="selectPrevious" class="hel-icon hel-icon--angle-left"></i>
+          <div class="icon-container" @click="selectPrevious" @keyup.enter="selectPrevious" role="button" :aria-label="previousMonth" tabindex="0">
+            <i class="hel-icon hel-icon--angle-left"></i>
+          </div>
           <h2>{{ selectedMonth }} {{ year }}</h2>
-          <i @click="selectNext" class="hel-icon hel-icon--angle-right"></i>
+          <div class="icon-container" @click="selectNext" @keyup.enter="selectNext" role="button" :aria-label="nextMonth" tabindex="0">
+            <i class="hel-icon hel-icon--angle-right"></i>
+          </div>
         </div>
         <div class="calendar-month">
           <ol class="days-grid">
@@ -32,7 +36,7 @@
                 'calendar-day__no-meetings' : day.meetings.length === 0
               }"
               >
-              <div class="date-header">
+              <div class="date-header" role="heading" aria-level="3">
                 <span>{{ getDay(day.date) }}.</span>
                 <span>{{ formatDay(day.date) }}.</span>
               </div>
@@ -41,22 +45,22 @@
                 v-for="meeting in day.meetings"
                 class="meeting-row"
                 >
-                  <h5 class="meeting-title">{{meeting.title}}</h5>
+                  <h4 class="meeting-title">{{meeting.title}}</h4>
                   <div class="meeting-start-time">{{ meeting.start_time}}</div>
                   <template v-if="meeting.decision_link">
-                    <a :href="meeting.decision_link">
+                    <a :href="meeting.decision_link" :aria-label="openDecisions + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
                       {{ openDecisions }}
                       <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
-                  <template v-else-if="meeting.minutes_link">
+                  <template v-else-if="meeting.minutes_link" :aria-label="openMinutes + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
                     <a :href="meeting.minutes_link">
                       {{ openMinutes }}
                       <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
                   <template v-else>
-                    <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link">
+                    <a v-if="meeting.motions_list_link" :href="meeting.motions_list_link" :aria-label="openMotions + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
                       {{ openMotions }}
                       <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
@@ -136,6 +140,9 @@
           },
           formatDay(date) {
             return dayjs(date).format("D.M");
+          },
+          formatDayFull(date) {
+            return dayjs(date).format("DD.MM.YYYY");
           },
           getDay(date) {
             if(dayjs(date).day() === 1) {
@@ -217,6 +224,12 @@
           },
           noMeetings() {
             return window.Drupal.t('No meetings');
+          },
+          nextMonth() {
+            return window.Drupal.t('Seuraava kuukausi');
+          },
+          previousMonth() {
+            return window.Drupal.t('Edellinen kuukausi');
           },
           days() {
             let allDays = [];
