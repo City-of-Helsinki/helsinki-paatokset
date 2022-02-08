@@ -7,6 +7,7 @@
 
 use Drupal\Core\Link;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -194,16 +195,16 @@ function helfi_paatokset_preprocess_block(&$variables) {
     ) {
       // Get any current menu level item.
       $current_level_menu_item = reset($variables['content']['#items']);
-  
+
       if (isset($current_level_menu_item['original_link'])) {
         $original_link = $current_level_menu_item['original_link'];
         $parent = $original_link->getParent();
-  
+
         // Check if current menu item has parent and serve it as variable.
         if ($parent) {
           $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
           $parent_item = $menu_link_manager->createInstance($parent);
-  
+
           if ($parent_item) {
             $variables['menu_link_parent'] = [
               'title' => $parent_item->getTitle(),
@@ -218,35 +219,25 @@ function helfi_paatokset_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_paatokset_preprocess_node__case(&$variables) {
-  $link = [
-    '#url' => '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja',
-    '#title' => t('Siirry sanakirjaan'),
-  ];
+function helfi_paatokset_preprocess_node(&$variables) {
+  $node = $variables['node'];
 
-  $variables['banner_content'] = [
-    'link' => $link,
-    'title' => t('Sanat hukassa?'),
-    'icon' => '',
-    'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
-  ];
-}
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
 
-/**
- * Implements hook_preprocess_HOOK().
- */
-function helfi_paatokset_preprocess_node__decision(&$variables) {
-  $link = [
-    '#url' => '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja',
-    '#title' => t('Siirry sanakirjaan'),
-  ];
-
-  $variables['banner_content'] = [
-    'link' => $link,
-    'title' => t('Sanat hukassa?'),
-    'icon' => '',
-    'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
-  ];
+  if (in_array($node->bundle(), ['case', 'decision'])) {
+    $variables['banner_content'] = [
+      'link' => [
+        'url' => '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja',
+        'label' => t('Siirry sanakirjaan'),
+        'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
+        'target_new' => TRUE,
+      ],
+      'title' => t('Sanat hukassa?'),
+      'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
+    ];
+  }
 }
 
 /**
@@ -254,6 +245,10 @@ function helfi_paatokset_preprocess_node__decision(&$variables) {
  */
 function helfi_paatokset_preprocess_node__trustee(&$variables) {
   $node = $variables['node'];
+
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
 
   if($node->get('field_trustee_initiatives')) {
     $content_initiatives = [];
@@ -265,7 +260,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
       'content' => $content_initiatives
     ];
   };
-  
+
   if($node->get('field_trustee_resolutions')) {
     $content_resolutions = [];
     foreach($node->get('field_trustee_resolutions') as $json) {
@@ -298,7 +293,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
       $variables['content']['field_trustee_title'] = t('Varavaltuutettu');
     }
   };
-  
+
   if(isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
     $pmLink = Link::fromTextAndUrl(
@@ -351,7 +346,7 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
   if(!empty($main_article_results)) {
     $main_article_id = reset($main_article_results);
   }
-  
+
   $query = \Drupal::entityQuery('node')
     ->condition('status', 1)
     ->condition('type', 'imported_article')
