@@ -77,7 +77,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo\Entity\Issue;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -265,7 +264,6 @@ class PolicymakerService {
       return NULL;
     }
 
-
     $routes = PolicymakerRoutes::getOrganizationRoutes();
     $baseRoute = $routes['documents'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -382,7 +380,6 @@ class PolicymakerService {
 
     return TRUE;
   }
-
 
   /**
    * Get decision list for officials.
