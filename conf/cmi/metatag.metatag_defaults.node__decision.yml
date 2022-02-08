@@ -1,0 +1,8 @@
+uuid: 046d61ce-2a9c-4936-967b-3a24d4d96594
+langcode: fi
+status: true
+dependencies: {  }
+id: node__decision
+label: 'Sisältö: Decision'
+tags:
+  title: '[node:title] – [node:field_dm_org_name:value] | [site:name] | Helsingin Kaupunki'
