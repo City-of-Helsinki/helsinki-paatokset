@@ -333,12 +333,15 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
   if(!empty($doaQuery)) {
     // Display only one DOA for the page - there should be only one of these per trustee.
     $doa = Media::load(reset($doaQuery));
-    $doaUrl = $doa->field_document->entity->getFileUri();
-    $doaLinkText = Markup::create(
-      $doa->field_first_name->value . ' ' . $doa->field_lastname->value . ' (pdf)' . '<i class="hel-icon hel-icon--document"></i>'
-    );
-    $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
-    $variables['doa'] = $doaLink->toRenderable();
+    $doaEntity = $doa->field_document->entity;
+    if(isset($doaEntity) && isset($doaEntity->uri)) {
+      $doaUrl = $doaEntity->getFileUri();
+      $doaLinkText = Markup::create(
+        $doa->field_first_name->value . ' ' . $doa->field_lastname->value . ' (pdf)' . '<i class="hel-icon hel-icon--document"></i>'
+      );
+      $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
+      $variables['doa'] = $doaLink->toRenderable();
+    }
   }
 }
 
