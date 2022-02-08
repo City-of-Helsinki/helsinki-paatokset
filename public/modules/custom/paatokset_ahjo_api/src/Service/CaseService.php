@@ -188,6 +188,7 @@ class CaseService {
    * Get meeting URL for selected decision.
    *
    * @return \Drupal\Core\Url|null
+   *   Meeting URL, if found.
    */
   public function getDecisionMeetingLink(): ?Url {
     if (!$this->selectedDecision instanceof NodeInterface) {
