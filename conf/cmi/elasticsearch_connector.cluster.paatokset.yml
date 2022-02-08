@@ -4,13 +4,13 @@ status: '1'
 dependencies: {  }
 cluster_id: paatokset
 name: Päätökset
-url: ''
+url: 'http:elastic:9200'
 options:
   multiple_nodes_connection: false
-  use_authentication: 0
+  use_authentication: 1
   authentication_type: Basic
-  username: ''
-  password: ''
+  username: elastic
+  password: changeme
   timeout: '3'
   rewrite:
     rewrite_index: 1

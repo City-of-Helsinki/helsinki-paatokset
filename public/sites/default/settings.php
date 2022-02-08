@@ -47,11 +47,17 @@ if (isset($_SERVER['WODBY_APP_NAME'])) {
 // Config values from evinronment variables
 $config['openid_connect.client.tunnistamo']['settings']['client_id'] = getenv('TUNNISTAMO_CLIENT_ID');
 $config['openid_connect.client.tunnistamo']['settings']['client_secret'] = getenv('TUNNISTAMO_CLIENT_SECRET');
-$config['elasticsearch_connector.cluster.paatokset']['options.use_authentication'] = 1;
-$config['elasticsearch_connector.cluster.paatokset']['options.authentication_type'] = 'Basic';
-$config['elasticsearch_connector.cluster.paatokset']['options.username'] = getenv('ELASTIC_INTERNAL_USER');
-$config['elasticsearch_connector.cluster.paatokset']['options.password'] = getenv('ELASTIC_INTERNAL_PWD');
-$config['elasticsearch_connector.cluster.paatokset']['url'] = getenv('ELASTIC_CONNECTOR_URL');
+
+if(getenv('ELASTIC_CONNECTOR_URL')) {
+  $config['elasticsearch_connector.cluster.paatokset']['url'] = getenv('ELASTIC_CONNECTOR_URL');
+
+  if(getenv('ELASTIC_INTERNAL_USER') && getenv('ELASTIC_INTERNAL_PWD')) {
+    $config['elasticsearch_connector.cluster.paatokset']['options']['use_authentication'] = '1';
+    $config['elasticsearch_connector.cluster.paatokset']['options']['authentication_type'] = 'Basic';
+    $config['elasticsearch_connector.cluster.paatokset']['options']['username'] = getenv('ELASTIC_INTERNAL_USER');
+    $config['elasticsearch_connector.cluster.paatokset']['options']['password'] = getenv('ELASTIC_INTERNAL_PWD');
+  }
+}
 
 // Drupal route(s).
 $routes = (getenv('DRUPAL_ROUTES')) ? explode(',', getenv('DRUPAL_ROUTES')) : [];
