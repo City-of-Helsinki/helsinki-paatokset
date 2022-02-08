@@ -121,36 +121,38 @@
     </section>
   {% endif %}
 
-  {% if is_organization %}
-    {% set sections = [
-      recent_documents,
-      most_recent_meeting,
-      meeting_calendar,
-      members
-    ] %}
+  {% set sections = [
+    recent_documents,
+    recent_decisions,
+    most_recent_meeting,
+    meeting_calendar,
+    members
+  ] %}
 
-    {% if true in sections %}
-      <div class="container">
-        <section class="content-menu">
-          <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
-          <ul>
-            {% if recent_documents %}
-              <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
-            {% endif %}
-            {% if most_recent_meeting %}
-            <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
-            {% endif %}
-            {% if meeting_calendar %}
-              <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
-            {% endif %}
-            {% if is_organization %}
-              <li><a href="#members-list">{{ 'Members list'|trans }}</a></li>
-            {% endif %}
-          </ul>
-          <i class="hel-icon hel-icon--arrow-down hel-icon--size-xxl" aria-hidden="true"></i>
-        </section>
-      </div>
-    {% endif %}
+  {% if true in sections %}
+    <div class="container">
+      <section class="content-menu">
+        <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
+        <ul>
+          {% if recent_documents %}
+            <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
+          {% endif %}
+          {% if most_recent_meeting %}
+          <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
+          {% endif %}
+          {% if recent_decisions %}
+          <li><a href="#recent-decisions">{{ 'Recent decisions'|trans }}</a></li>
+          {% endif %}
+          {% if meeting_calendar %}
+            <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
+          {% endif %}
+          {% if is_organization %}
+            <li><a href="#members-list">{{ 'Members list'|trans }}</a></li>
+          {% endif %}
+        </ul>
+        <i class="hel-icon hel-icon--arrow-up hel-icon--size-xxl" aria-hidden="true"></i>
+      </section>
+    </div>
   {% endif %}
 
   {% if content.field_policymaker_image %}
@@ -168,7 +170,7 @@
 
   {% if not is_organization %}
     {% if recent_decisions %}
-      <section class="container recent-decisions">
+      <section class="container recent-decisions" id="recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
         <div class="section-description">
           {% if node.field_decisions_description.value|render|striptags|trim is not empty %}
