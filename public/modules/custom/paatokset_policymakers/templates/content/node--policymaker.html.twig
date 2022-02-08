@@ -83,7 +83,7 @@
 %}
 
 <article{{ attributes.addClass(classes) }}>
-  <section class="container policymaker-summary">
+  <section class="policymaker-summary">
     {% if is_organization %}
       <div class="policymaker-summary__label">
         <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color}}">
@@ -114,7 +114,7 @@
   </section>
 
   {% if live_stream %}
-    <section class="container policymaker-live-sream" id="policymaker-live-stream">
+    <section class="policymaker-live-sream" id="policymaker-live-stream">
       {% if live_stream %}
         {{ live_stream }}
       {% endif %}
@@ -130,7 +130,7 @@
   ] %}
 
   {% if true in sections %}
-    <div class="container">
+    <div>
       <section class="content-menu">
         <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
         <ul>
@@ -150,17 +150,17 @@
             <li><a href="#members-list">{{ 'Members list'|trans }}</a></li>
           {% endif %}
         </ul>
-        <i class="hel-icon hel-icon--arrow-up hel-icon--size-xxl" aria-hidden="true"></i>
+        {% include '@hdbt/misc/icon.twig' with { icon: 'hero-arrow-desktop', class: 'content-menu__arrow' } %}
       </section>
     </div>
   {% endif %}
 
   {% if content.field_policymaker_image %}
-    <section class="container policymaker-image">
+    <section class="policymaker-image">
       <figure>
         {{ content.field_policymaker_image }}
         {% if node.field_policymaker_image.title %}
-          <figcaption class="container">
+          <figcaption>
             {{ node.field_policymaker_image.field_image_title }}
           </figcaption>
         {% endif %}
@@ -170,7 +170,7 @@
 
   {% if not is_organization %}
     {% if recent_decisions %}
-      <section class="container recent-decisions" id="recent-decisions">
+      <section class="recent-decisions" id="recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
         <div class="section-description">
           {% if node.field_decisions_description.value|render|striptags|trim is not empty %}
@@ -194,7 +194,7 @@
 
   {% if is_organization %}
     {% if recent_documents %}
-      <section class="container recent-documents policymaker-documents" id="recent-documents">
+      <section class="recent-documents policymaker-documents" id="recent-documents">
         <h2>{{ 'Recent documents'|trans }}</h2>
         <div class="section-description">
           {% if node.field_documents_description.value|render|striptags|trim is not empty %}
@@ -216,7 +216,7 @@
     {% endif %}
 
     {% if most_recent_meeting|render is not empty %}
-      <section class="container policymaker-meetings" id="recent-meetings">
+      <section class="policymaker-meetings" id="recent-meetings">
         <h2>{{ 'Recent meeting recording'|trans }}</h2>
         <div class="section-description">
           {% if node.field_recording_description.value|render|striptags|trim is not empty %}
@@ -237,13 +237,13 @@
   {% endif %}
 
   {% if meeting_calendar %}
-    <section class="container policymaker-calendar" id="meeting-calendar">
+    <section class="policymaker-calendar" id="meeting-calendar">
       {{ drupal_block('policymaker_calendar') }}
     </section>
   {% endif %}
 
   {% if is_organization %}
-    <section class="container" id="members-list">
+    <section id="members-list">
       {{ drupal_block('policymaker_members') }}
     </section>
   {% endif %}

@@ -1,4 +1,4 @@
-uuid: f69b9f7e-280c-4c6a-a7d0-e886333b3fa9
+uuid: e1c0fc6e-3d39-460f-80e9-114f69428625
 langcode: fi
 status: true
 dependencies:
@@ -7,19 +7,19 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-id: paatoksetpolicymakerdocuments
+id: policymakermobilenavigation
 theme: helfi_paatokset
-region: content
-weight: -11
+region: before_content
+weight: -17
 provider: null
-plugin: agendas_submenu_documents
+plugin: policymaker_side_nav_mobile
 settings:
-  id: agendas_submenu_documents
-  label: 'Paatokset policymaker documents'
+  id: policymaker_side_nav_mobile
+  label: 'Policymaker mobile navigation'
   label_display: visible
   provider: paatokset_submenus
 visibility:
   request_path:
     id: request_path
     negate: false
-    pages: '/paattajat/*/asiakirjat'
+    pages: "/paattajat/*\r\n"

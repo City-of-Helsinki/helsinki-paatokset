@@ -10,7 +10,7 @@ dependencies:
 id: helsinkikanavaannouncements
 theme: helfi_paatokset
 region: before_content
-weight: -11
+weight: -14
 provider: null
 plugin: paatokset_helsinki_kanava_announcements
 settings:

@@ -6,29 +6,6 @@
 
 html {
 // ########## General ########## //
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    hyphens: auto;
-    line-height: $lineheight-m;
-    margin-top: 0;
-    word-break: break-word;
-    margin-bottom: $spacing;
-
-    @include breakpoint($breakpoint-m) {
-      margin-bottom: $spacing-and-half;
-    }
-  }
-
-  h1,
-  h2,
-  h3 {
-    line-height: $lineheight-s;
-  }
-
   h1, .page-title__container h1 {
     margin-bottom: $spacing;
 
@@ -44,70 +21,6 @@ html {
 
       margin-bottom: 38px;
     }
-  }
-
-  h2 {
-    @include font-size($fontsize-heading-l);
-    font-weight: $font-weight-regular;
-
-    @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-heading-xl);
-    }
-  }
-
-  h3 {
-    @include font-size($fontsize-heading-m);
-    font-weight: $font-weight-regular;
-
-    @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-heading-l);
-    }
-  }
-
-  h4 {
-    @include font-size($fontsize-heading-s);
-    font-weight: $font-weight-medium;
-
-    @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-heading-m);
-    }
-  }
-
-  h5 {
-    @include font-size($fontsize-heading-xs);
-    font-weight: $font-weight-medium;
-
-    @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-heading-s);
-      font-weight: $font-weight-regular;
-    }
-  }
-
-  h6 {
-    @include font-size($fontsize-heading-xxs);
-    font-weight: $font-weight-medium;
-
-    @include breakpoint($breakpoint-l) {
-      font-weight: $font-weight-bold;
-    }
-  }
-
-  a {
-    color: var(--hdbt-default-link-color);
-  }
-
-  p {
-    @include font-size($fontsize-body-l);
-    margin: $spacing 0;
-
-    @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-body-xl);
-    }
-  }
-
-  ul, ol {
-    margin: $spacing-and-half 0 0;
-    padding: $spacing-and-half 0 0;
   }
 
   blockquote {

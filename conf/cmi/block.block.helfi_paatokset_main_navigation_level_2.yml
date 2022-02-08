@@ -5,8 +5,8 @@ dependencies:
   config:
     - system.menu.main
   module:
-    - ctools
     - menu_block_current_language
+    - node
   theme:
     - helfi_paatokset
 id: helfi_paatokset_main_navigation_level_2

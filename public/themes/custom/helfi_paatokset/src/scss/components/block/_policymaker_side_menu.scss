@@ -1,6 +1,7 @@
 .policymaker-side-menu {
   &.policymaker-side-menu--desktop {
     display: none;
+    width: 100%;
 
     @include breakpoint($breakpoint-l) {
       display: block;
@@ -9,6 +10,8 @@
 
 
   &.policymaker-side-menu--mobile {
+    margin-bottom: $spacing-double;
+
     @include breakpoint($breakpoint-l) {
       display: none;
     }

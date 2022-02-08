@@ -1,0 +1,24 @@
+uuid: ee3180d6-050a-474c-a050-f79f68bfac23
+langcode: fi
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - helfi_paatokset
+id: sivunotsikko
+theme: helfi_paatokset
+region: before_content
+weight: -13
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Sivun otsikko (päättäjät-alasivut)'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paattajat/*/asiakirjat\r\n/paattajat/*/keskustelupöytäkirjat"

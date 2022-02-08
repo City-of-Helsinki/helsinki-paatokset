@@ -10,7 +10,7 @@ dependencies:
 id: helfi_paatokset_page_title
 theme: helfi_paatokset
 region: before_content
-weight: -13
+weight: -16
 provider: null
 plugin: page_title_block
 settings:
@@ -22,7 +22,7 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: "/paattajat/*/asiakirjat/*\r\n/paatokset-issue/*\r\n/paatokset"
+    pages: /paatokset
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false

@@ -14,10 +14,14 @@ use Drupal\Core\Template\Attribute;
  */
 function paatokset_submenus_theme($existing, $type, $theme, $path) {
   return [
-    'block__policymaker_side_nav' => [
+    'block__policymaker_side_navigation' => [
       'base hook' => 'block',
-      'render element' => 'elements',
-      'template' => '/policymaker--side-navigation',
+      'template' => '/block--policymaker-side-navigation',
+      'path' => $path . '/templates'
+    ],
+    'block__policymaker_side_navigation__mobile' => [
+      'base hook' => 'block',
+      'template' => '/block--policymaker-side-navigation--mobile',
       'path' => $path . '/templates'
     ],
     'block__agendas_submenu' => [
@@ -33,6 +37,11 @@ function paatokset_submenus_theme($existing, $type, $theme, $path) {
  * Implements hook_preprocess_block().
  */
 function paatokset_submenus_preprocess_block(&$variables) {
+  // Bail if plugin_id is not set
+  if(!isset($variables['plugin_id'])) {
+    return;
+  }
+
   $plugins = [
     'agendas_submenu',
     'agendas_submenu_documents',
@@ -51,30 +60,29 @@ function paatokset_submenus_preprocess_block(&$variables) {
       $variables['type'] = 'documents';
     }
   }
-}
 
-/**
- * Implements hook_preprocess_block_HOOK().
- */
-function paatokset_submenus_preprocess_block__policymaker_side_nav(&$variables) {
-  if(isset($variables['elements']['content']['#items'])) {
-    $variables['items'] = $variables['elements']['content']['#items'];
+  if ($variables['plugin_id'] === 'policymaker_side_nav') {
+    if(isset($variables['elements']['content']['#items'])) {
+      $variables['items'] = $variables['elements']['content']['#items'];
+    }
   }
 
-  $variables['#attached']['library'][] = 'hds_web_components/Dropdown';
-
-  if(isset($variables['elements']['content']['#options'])) {
-    $attributes = [
-      'link-to-selection' => 'link-to-selection',
-      'placeholder' => t('Move to page'),
-      'options' => $variables['elements']['content']['#options']
-    ];
-
-    if(isset($variables['elements']['content']['#current_option'])) {
-      $attributes['value'] = $variables['elements']['content']['#current_option'];
+  if($variables['plugin_id'] === 'policymaker_side_nav_mobile') {
+    $variables['#attached']['library'][] = 'hds_web_components/Dropdown';
+  
+    if(isset($variables['elements']['content']['#options'])) {
+      $attributes = [
+        'link-to-selection' => 'link-to-selection',
+        'placeholder' => t('Move to page'),
+        'options' => $variables['elements']['content']['#options']
+      ];
+  
+      if(isset($variables['elements']['content']['#current_option'])) {
+        $attributes['value'] = $variables['elements']['content']['#current_option'];
+      }
+  
+      $variables['dropdown_attributes'] = new Attribute($attributes);
     }
-
-    $variables['dropdown_attributes'] = new Attribute($attributes);
   }
 }
 
@@ -82,7 +90,15 @@ function paatokset_submenus_preprocess_block__policymaker_side_nav(&$variables) 
  * Implements hook_theme_suggestion_block_alter().
  */
 function paatokset_submenus_theme_suggestions_block_alter(&$suggestions, $variables) {
-  if(isset($variables['elements']['#plugin_id']) && in_array($variables['elements']['#plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
-    $suggestions[] = 'block__agendas_submenu';
+  if(isset($variables['elements']['#plugin_id'])) {
+    if(in_array($variables['elements']['#plugin_id'], ['agendas_submenu_documents', 'paatokset_minutes_of_discussion'])) {
+      $suggestions[] = 'block__agendas_submenu';
+    }
+    if($variables['elements']['#plugin_id'] === 'policymaker_side_nav') {
+      $suggestions[] = 'block__policymaker_side_navigation';
+    }
+    if($variables['elements']['#plugin_id'] === 'policymaker_side_nav_mobile') {
+      $suggestions[] = 'block__policymaker_side_navigation__mobile';
+    }
   }
 }

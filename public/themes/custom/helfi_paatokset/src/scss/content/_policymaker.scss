@@ -84,12 +84,18 @@
       }
     }
   }
-  i {
-    height: 152px;
-    color: #FD4F00;
-    width: 152px;
-    position: absolute;
-    right: 0;
+  
+  .content-menu__arrow {
+    display: none;
+
+    @include breakpoint($breakpoint-xs) {
+      display: block;
+      height: 111px;
+      color: #FD4F00;
+      width: 90px;
+      position: absolute;
+      right: 0;
+    }
   }
   .hel-icon--arrow-up {
     transform: rotate(180deg);
