@@ -49,7 +49,7 @@ class CaseService {
   private $caseId;
 
   /**
-   * Set case and decision entities based on path.
+   * Set case and decision entities based on path. Only works on case paths!
    */
   public function setEntitiesByPath(): void {
     $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
@@ -488,6 +488,20 @@ class CaseService {
       }
     }
 
+    // More information.
+    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
+    $more_info_content = NULL;
+    if ($more_info) {
+      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
+    }
+
+    if ($more_info_content) {
+      $output['more_info'] = [
+        'heading' => t('Ask for more info'),
+        'content' => ['#markup' => $more_info_content],
+      ];
+    }
+
     // Presenter information.
     $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
     $presenter_content = NULL;
@@ -499,20 +513,6 @@ class CaseService {
       $output['accordions'][] = [
         'heading' => t('Presenter information'),
         'content' => ['#markup' => $presenter_content],
-      ];
-    }
-
-    // More information.
-    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info) {
-      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
-    }
-
-    if ($more_info_content) {
-      $output['accordions'][] = [
-        'heading' => t('More info'),
-        'content' => ['#markup' => $more_info_content],
       ];
     }
 

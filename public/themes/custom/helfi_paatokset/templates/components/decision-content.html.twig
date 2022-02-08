@@ -56,5 +56,14 @@
         </div>
       {% endfor %}
     </div>
+
+    {% if decision_content.more_info %}
+      <div class="issue__more-info">
+        <h2>{{ decision_content.more_info.heading }}</h2>
+        <div class="issue__more-info__content">
+          {{ decision_content.more_info.content }}
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>

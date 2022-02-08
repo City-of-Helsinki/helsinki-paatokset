@@ -1,0 +1,10 @@
+{#
+
+#}
+{% if decision_pdf %}
+  <div class="issue__pdf issue__pdf--desktop issue__right-column__container">
+    <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
+      {{ 'Download decision (pdf)'|t }}
+    </a>
+  </div>
+{% endif %}

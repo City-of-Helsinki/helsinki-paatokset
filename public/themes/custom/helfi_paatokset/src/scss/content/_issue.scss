@@ -54,10 +54,18 @@
 .issue__container {
   h3 {
     font-size: $font-size-heading-3;
-    margin-bottom: 16px;
 
     @include breakpoint($breakpoint-l) {
       font-size: $font-size-heading-2;
+    }
+  }
+
+  h3, h4 {
+    margin-bottom: $spacing;
+    margin-top: $spacing;
+
+    &:first-child {
+      margin-top: 0;
     }
   }
 
@@ -67,6 +75,16 @@
 
   &.issue__container--navigation {
     margin-bottom: $spacing-double;
+  }
+
+  .paatokset-accordion {
+    margin-bottom: $spacing-double;
+    border-bottom: 2px solid $color-black-20;
+
+    .handorgel__header__button,
+    .handorgel__content {
+      background: transparent;
+    }
   }
 
   @include breakpoint($breakpoint-l) {
@@ -89,6 +107,11 @@
 
     div:first-child {
       margin-right: $gutter;
+    }
+
+    .hel-icon {
+      width: var(--spacing-m);
+      height: var(--spacing-m);
     }
 
     padding: 24px 0;
@@ -219,6 +242,16 @@
     display: inline-block;
     padding: 10px 55px;
   }
+}
+
+.issue__more-info {
+  margin-top: $spacing-4-xl;
+  margin-bottom: $spacing-4-xl;
+}
+
+.issue__more-info__content {
+  padding-left: $spacing-and-half;
+  border-left: 5px solid var(--hdbt-color-palette--primary);
 }
 
 .issue-ajax-error__container {
