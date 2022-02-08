@@ -712,9 +712,9 @@ class PolicymakerService {
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
     }
 
-    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $currentLanguage, $meetingId);
+    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
     if (empty($agendaItems)) {
-      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $fallbackLanguage, $meetingId);
+      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
     }
 
     return [
