@@ -163,9 +163,16 @@ jQuery(function($) {
         }
         if(data.all_decisions_link) {
           $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
+          $('.issue-dropdown__show-more').css('display', 'block');
+        }
+        else {
+          $('.issue-dropdown__show-more').css('display', 'none');
         }
         if (data.decision_pdf) {
           $('.issue__pdf a').attr('href', data.decision_pdf);
+          $('.issue__pdf').css('display', 'block');
+        } else {
+          $('.issue__pdf').css('display', 'none');
         }
         if(data.show_warning) {
           showWarning();

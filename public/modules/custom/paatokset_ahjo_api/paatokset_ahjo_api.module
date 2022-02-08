@@ -310,6 +310,7 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
   $variables['next_decision'] = $caseService->getNextDecision();
   $variables['previous_decision'] = $caseService->getPrevDecision();
   $variables['decision_content'] = $caseService->parseContent();
+  $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
 }
 
 /**
@@ -338,6 +339,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $variables['next_decision'] = $caseService->getNextDecision();
   $variables['previous_decision'] = $caseService->getPrevDecision();
   $variables['decision_content'] = $caseService->parseContent();
+  $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
 }
 
 /**

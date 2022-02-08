@@ -1,10 +1,12 @@
 {#
 
 #}
-{% if decision_pdf %}
-  <div class="issue__pdf issue__pdf--desktop issue__right-column__container">
-    <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
-      {{ 'Download decision (pdf)'|t }}
-    </a>
-  </div>
+{% if decision_pdf is empty %}
+  {% set decision_pdf = '#' %}
 {% endif %}
+<div class="issue__pdf issue__pdf--desktop issue__right-column__container" {% if decision_pdf is empty %}style="display:none;"{% endif %}>
+  <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
+    {{ 'Download decision (pdf)'|t }}
+  </a>
+</div>
+
