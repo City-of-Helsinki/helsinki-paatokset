@@ -91,6 +91,9 @@
     position: absolute;
     right: 0;
   }
+  .hel-icon--arrow-up {
+    transform: rotate(180deg);
+  }
 }
 
 .node--type-policymaker > section {

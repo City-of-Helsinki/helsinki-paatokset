@@ -257,17 +257,26 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getDocumentsRoute(): ?Url {
+    if (!$this->policymaker instanceof NodeInterface || $this->policymaker->getType() !== 'policymaker') {
+      return NULL;
+    }
+
     if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
       return NULL;
     }
+
 
     $routes = PolicymakerRoutes::getOrganizationRoutes();
     $baseRoute = $routes['documents'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
+    $policymaker_url = $this->policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+
     if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('field_ahjo_title')->value)]);
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
     }
 
     return NULL;
@@ -280,9 +289,22 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getDecisionsRoute(): ?Url {
-    if ($this->policymaker->get('field_organization_type')->value !== 'Luottamushenkilö') {
+    $trustee_types = [
+      'Viranhaltija',
+      'Luottamushenkilö',
+    ];
+
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymaker->hasField('field_organization_type')) {
       return NULL;
     }
+
+    if (!in_array($this->policymaker->get('field_organization_type')->value, $trustee_types)) {
+      return NULL;
+    }
+
+    $policymaker_url = $this->policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
 
     $routes = PolicymakerRoutes::getTrusteeRoutes();
     $baseRoute = $routes['decisions'];
@@ -290,7 +312,7 @@ class PolicymakerService {
     $localizedRoute = "$baseRoute.$currentLanguage";
 
     if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($this->policymaker->get('field_ahjo_title')->value)]);
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
     }
 
     return NULL;
@@ -361,68 +383,56 @@ class PolicymakerService {
     return TRUE;
   }
 
+
   /**
-   * Get all the decisions for one classification code.
+   * Get decision list for officials.
+   *
+   * @param int|null $limit
+   *   Limit results.
+   * @param bool $byYear
+   *   Group decision by year.
    *
    * @return array
-   *   of results.
+   *   List of decisions.
    */
-  public function getAgendasList($byYear = TRUE, $limit = NULL): array {
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->fields('aifd', [
-        'subject',
-        'meeting_date',
-        'meeting_number',
-        'id',
-        'issue_id',
-      ]);
-    $query->condition('meeting_policymaker_link', $this->policymaker->get('field_resource_uri')->value, '=');
-    $query->orderBy('meeting_date', 'DESC');
-
-    if ($byYear) {
-      $query->addExpression('YEAR(meeting_date)', 'year');
+  public function getAgendasList(?int $limit = 0, bool $byYear = TRUE): array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
     }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'decision')
+      ->condition('field_policymaker_id', $this->policymakerId)
+      ->condition('field_decision_date', '', '<>')
+      ->sort('field_decision_date', 'DESC');
 
     if ($limit) {
-      $query->range(0, $limit);
+      $query->range('0', $limit);
     }
 
-    $queryResult = $query->execute()->fetchAll();
+    $ids = $query->execute();
 
-    $results = [];
-    foreach ($queryResult as $row) {
-      $longDate = date('d.m.Y', strtotime($row->meeting_date));
-      $shortDate = date('m - Y', strtotime($row->meeting_date));
-      $results[$row->id] = [
-        'date_desktop' => $longDate,
-        'date_mobile' => $shortDate,
-        'subject' => $row->subject,
-        'issue_id' => $row->issue_id,
+    if (empty($ids)) {
+      return [];
+    }
+
+    $nodes = Node::loadMultiple($ids);
+
+    $transformedResults = [];
+    foreach ($nodes as $node) {
+      $timestamp = strtotime($node->get('field_decision_date')->value);
+      $year = date('Y', $timestamp);
+
+      $result = [
+        'date_desktop' => date('d.m.Y', $timestamp),
+        'date_mobile' => date('m - Y', $timestamp),
+        'subject' => $node->field_full_title->value,
+        'link' => $node->toUrl()->toString(),
       ];
 
       if ($byYear) {
-        $results[$row->id]['year'] = $row->year;
-      }
-    }
-
-    $issue_ids = array_column($results, 'issue_id');
-    $issues = Issue::loadMultiple($issue_ids);
-    $issue_links = [];
-    if (!empty($issues)) {
-      foreach ($issues as $issue) {
-        $issue_links[$issue->get('id')->value] = $issue->toUrl();
-      }
-    }
-
-    $transformedResults = [];
-    foreach ($results as $id => $result) {
-      if (isset($issue_links[$result['issue_id']])) {
-        $result['link'] = $issue_links[$result['issue_id']]->setOption('query', ['decision' => $id])->toString();
-      }
-
-      if ($byYear) {
-        $transformedResults[$result['year']][] = $result;
+        $transformedResults[$year][] = $result;
       }
       else {
         $transformedResults[] = $result;
@@ -430,33 +440,6 @@ class PolicymakerService {
     }
 
     return $transformedResults;
-  }
-
-  /**
-   * Get all the decisions for one policymaker id.
-   *
-   * @return array
-   *   of results.
-   */
-  public function getAgendasYears(): array {
-    $database = \Drupal::database();
-    $query = $database->select('paatokset_agenda_item_field_data', 'aifd')
-      ->condition('meeting_policymaker_link', $this->policymaker->get('field_resource_uri')->value);
-    $query->fields('aifd', ['meeting_policymaker_link']);
-    $query->addExpression('YEAR(meeting_date)', 'date');
-    $query->groupBy('date');
-    $query->orderBy('date', 'DESC');
-    $queryResult = $query->distinct()->execute()->fetchAll();
-    $result = [];
-
-    foreach ($queryResult as $row) {
-      $result[$row->date][] = [
-        '#type' => 'link',
-        '#title' => $row->date,
-      ];
-    }
-
-    return $result;
   }
 
   /**

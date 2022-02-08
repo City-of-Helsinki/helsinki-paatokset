@@ -33,12 +33,16 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
-    $build = [
-      '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
+    $build['title'] = [
+      '#prefix' => '<h1>',
+      '#suffix' => '</h1>',
+      '#markup' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
     ];
 
     if ($policymaker->get('field_documents_description')->value) {
-      $build['#markup'] = '<div class="container">' . $policymaker->get('field_documents_description')->value . '<div>';
+      $build['description'] = [
+        '#markup' => '<div class="container">' . $policymaker->get('field_documents_description')->value . '<div>',
+      ];
     }
 
     return $build;
@@ -61,7 +65,24 @@ class PolicymakerController extends ControllerBase {
    *   Render array.
    */
   public function decisions(): array {
-    $build = ['#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
+    $policymaker = $this->policymakerService->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface) {
+      return [];
+    }
+
+    $build['title'] = [
+      '#prefix' => '<h1>',
+      '#suffix' => '</h1>',
+      '#markup' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])
+    ];
+
+    if ($policymaker->get('field_decisions_description')->value) {
+      $build['description'] = [
+        '#markup' => '<div class="container">' . $policymaker->get('field_decisions_description')->value . '<div>',
+      ];
+    }
+
     return $build;
   }
 
