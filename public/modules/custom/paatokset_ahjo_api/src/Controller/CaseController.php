@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -43,6 +44,11 @@ class CaseController extends ControllerBase {
     $data['next_decision'] = $this->caseService->getNextDecision();
     $data['previous_decision'] = $this->caseService->getPrevDecision();
     $data['decision_content'] = $this->caseService->parseContent();
+    $all_decisions_link = $this->caseService->getDecisionMeetingLink();
+
+    if ($all_decisions_link instanceof Url) {
+      $all_decisions_link = $all_decisions_link->toString();
+    }
 
     $content = twig_render_template(
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
@@ -74,6 +80,7 @@ class CaseController extends ControllerBase {
       'decision_navigation' => $decision_navigation,
       'show_warning' => !empty($data['next_decision']),
       'decision_pdf' => $data['decision_pdf'],
+      'all_decisions_link' => $all_decisions_link,
     ]));
   }
 

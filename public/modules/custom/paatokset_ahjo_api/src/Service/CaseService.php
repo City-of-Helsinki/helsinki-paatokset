@@ -5,6 +5,7 @@ namespace Drupal\paatokset_ahjo_api\Service;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -181,6 +182,35 @@ class CaseService {
       return $data['FileURI'];
     }
     return NULL;
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @return \Drupal\Core\Url|null
+   */
+  public function getDecisionMeetingLink(): ?Url {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    // Check if decision has meeting ID.
+    if (!$this->selectedDecision->hasField('field_meeting_id') || $this->selectedDecision->get('field_meeting_id')->isEmpty()) {
+      return NULL;
+    }
+    $meeting_id = $this->selectedDecision->get('field_meeting_id')->value;
+
+
+    // Check if decision has policymaker ID.
+    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
+      return NULL;
+    }
+    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
+
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
+    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
   }
 
   /**

@@ -14,12 +14,13 @@
 
   {% include '@helfi_paatokset/components/decisions-dropdown.html.twig' with { selected: selectedDecision, options: all_decisions, show_warning: next_decision, warning_label: 'More recent handlings'|trans } %}
 
-  {% if all_decisions_link %}
-    <div class="issue-dropdown__show-more">
-      <a href="{{ all_decisions_link }}" class="paatokset-button-link">
-        <span>{{ 'Other decisions for the meeting'|t }}</span>
-        <i class="hel-icon hel-icon hel-icon--arrow-right"></i>
-      </a>
-    </div>
+  {% if all_decisions_link is empty %}
+    {% set all_decisions_link = '#' %}
   {% endif %}
+  <div class="issue-dropdown__show-more" {% if all_decisions_link is empty %}style="display:none;"{% endif %}>
+    <a href="{{ all_decisions_link }}" class="paatokset-button-link">
+      <span>{{ 'Other decisions for the meeting'|t }}</span>
+      <i class="hel-icon hel-icon hel-icon--arrow-right"></i>
+    </a>
+  </div>
 </div>
