@@ -101,7 +101,13 @@
   <div class="trustee-image">
       {{ content.field_trustee_image }}
     </div>
-  {% if content.field_trustee_profession|render or content.field_trustee_home_district|render or content.field_trustee_email|render or content.field_trustee_homepage|render %}
+  {% if 
+    content.field_trustee_profession|render or
+    content.field_trustee_home_district|render or
+    content.field_trustee_email|render or
+    content.field_trustee_homepage|render or
+    policymaker_declaration|render   
+  %}
     <div class="trustee-information">
       {% if content.field_trustee_profession|render %}
         <div class="information-row">{{ content.field_trustee_profession }}</div>
@@ -114,6 +120,9 @@
       {% endif %}
       {% if content.field_trustee_homepage|render %}
         <div class="information-row">{{ content.field_trustee_homepage }}</div>
+      {% endif %}
+      {% if policymaker_declaration %}
+        <div class="information-row information-row--pm-declaration">{{ policymaker_declaration }}</div>
       {% endif %}
     </div>
   {% endif %}

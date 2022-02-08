@@ -5,6 +5,7 @@
  * Functions to support theming in the City of Helsinki - Päätökset theme.
  */
 
+use Drupal\Core\Link;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 
@@ -298,6 +299,31 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     }
   };
   
+  if(isset($node->field_policymaker_reference->entity)) {
+    $policymaker = $node->field_policymaker_reference->entity;
+    $pmLink = Link::fromTextAndUrl(
+      $policymaker->title->value,
+      $policymaker->toUrl()
+    )->toString();
+    $pmName = '';
+    if(
+      $node->field_first_name->value &&
+      $node->field_last_name->value
+    ) {
+      $pmName = $node->field_first_name->value . ' ' . $node->field_last_name->value;
+    }
+    else {
+      $pmName = $node->getTitle();
+    }
+
+    $variables['policymaker_declaration'] = t(
+      '@trustee is @policymaker',
+      [
+        '@trustee' => $pmName,
+        '@policymaker' => $pmLink
+      ]
+    );
+  };
 }
 
 /**
