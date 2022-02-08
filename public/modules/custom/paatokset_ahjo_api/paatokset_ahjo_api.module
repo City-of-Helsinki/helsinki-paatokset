@@ -345,36 +345,6 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
 }
 
 /**
- * Preprocess Decision nodes.
- */
-function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
-  $node = $variables['node'];
-  if (!$node instanceof NodeInterface) {
-    return;
-  }
-
-  $case_id = $node->get('field_diary_number')->value;
-  $decision_id = $node->get('field_decision_native_id')->value;
-
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
-  $caseService->setEntitiesById($case_id, $decision_id);
-
-  $variables['main_heading'] = $caseService->getDecisionHeading();
-  $variables['decision_pdf'] = $caseService->getDecisionPdf();
-  $variables['selectedDecision'] = $caseService->getSelectedDecision();
-  $variables['selected_label'] = $caseService->getDecisionLabel();
-  $variables['selected_class'] = $caseService->getDecisionClass();
-  $variables['attachments'] = $caseService->getAttachments();
-  $variables['all_decisions'] = $caseService->getDecisionsList();
-  $variables['next_decision'] = $caseService->getNextDecision();
-  $variables['previous_decision'] = $caseService->getPrevDecision();
-
-  //$variables['case_title'] = $caseService->getCaseTitle()
-  //dd($caseService->case);
-}
-
-/**
  * Lookup case nodes by case ID.
  *
  * @param string $case_id
