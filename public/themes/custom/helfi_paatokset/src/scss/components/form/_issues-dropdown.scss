@@ -87,26 +87,6 @@
     border-left: 20px solid $color-black;
   }
 
-  .council::before {
-    border-left-color: $council-green;
-  }
-  
-  .board-division::before, .board::before {
-    border-left-color: $board-grey;
-  }
-  
-  .traffic::before {
-    border-left-color: $traffic-yellow;
-  }
-  
-  .committee::before {
-    border-left-color: $committee-blue;
-  }
-  
-  .trustee::before {
-    border-left-color: $trustee-pink;
-  }
-
   .option {
     cursor: pointer;
 

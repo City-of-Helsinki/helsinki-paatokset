@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.policymaker.field_ahjo_summary
     - field.field.node.policymaker.field_ahjo_title
+    - field.field.node.policymaker.field_city_council_division
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
+    - field.field.node.policymaker.field_custom_organization_type
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_above
     - field.field.node.policymaker.field_dm_org_below
@@ -17,6 +19,7 @@ dependencies:
     - field.field.node.policymaker.field_is_decisionmaker
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_meetings_description
+    - field.field.node.policymaker.field_organization_color_code
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
     - field.field.node.policymaker.field_policymaker_dissolved
@@ -30,6 +33,7 @@ dependencies:
     - field.field.node.policymaker.field_sector_name
     - node.type.policymaker
   module:
+    - options
     - text
     - user
 id: node.policymaker.default
@@ -51,6 +55,24 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_city_council_division:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_custom_organization_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
     region: content
   field_decisions_description:
     type: text_default
@@ -80,6 +102,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 7
+    region: content
+  field_organization_color_code:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
   field_organization_type:
     type: string

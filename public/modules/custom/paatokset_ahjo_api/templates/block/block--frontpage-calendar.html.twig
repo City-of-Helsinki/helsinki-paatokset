@@ -13,7 +13,7 @@
     <div class="frontpage-calendar__item-container">
       {% for row in meetings %}
         {% include '@paatokset_ahjo_api/component/frontpage-calendar-item.html.twig' with {
-          line_color: '#00d7a7',
+          line_color: row.organization_color,
           date: row.meeting_date,
           title: row.title,
           policymaker: row.policymaker_name,

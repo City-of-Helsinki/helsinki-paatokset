@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.policymaker.field_ahjo_summary
     - field.field.node.policymaker.field_ahjo_title
+    - field.field.node.policymaker.field_city_council_division
     - field.field.node.policymaker.field_contacts
     - field.field.node.policymaker.field_custom_menu_links
+    - field.field.node.policymaker.field_custom_organization_type
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_above
     - field.field.node.policymaker.field_dm_org_below
@@ -17,6 +19,7 @@ dependencies:
     - field.field.node.policymaker.field_is_decisionmaker
     - field.field.node.policymaker.field_last_name
     - field.field.node.policymaker.field_meetings_description
+    - field.field.node.policymaker.field_organization_color_code
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
     - field.field.node.policymaker.field_policymaker_dissolved
@@ -107,6 +110,23 @@ third_party_settings:
         open: false
         description: ''
         required_fields: false
+    group_organization_label:
+      children:
+        - field_custom_organization_type
+        - field_city_council_division
+        - field_organization_color_code
+      label: 'Organization label'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
 id: node.policymaker.default
 targetEntityType: node
 bundle: policymaker
@@ -154,6 +174,13 @@ content:
           link_to_entity: 0
       show_description: 0
     third_party_settings: {  }
+  field_city_council_division:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_contacts:
     type: entity_reference_autocomplete
     weight: 5
@@ -175,6 +202,14 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: ''
+    third_party_settings: {  }
+  field_custom_organization_type:
+    type: string_textfield
+    weight: 27
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_decisions_description:
     type: text_textarea
@@ -254,6 +289,12 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  field_organization_color_code:
+    type: options_select
+    weight: 28
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_organization_type:
     type: string_textfield

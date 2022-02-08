@@ -1,0 +1,23 @@
+uuid: 79101b44-d39e-46d3-a2b4-bcdf3d6f320c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_city_council_division
+    - node.type.policymaker
+id: node.policymaker.field_city_council_division
+field_name: field_city_council_division
+entity_type: node
+bundle: policymaker
+label: 'City council division'
+description: 'Sets this organization to be one of the city council divisions.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
+field_type: boolean

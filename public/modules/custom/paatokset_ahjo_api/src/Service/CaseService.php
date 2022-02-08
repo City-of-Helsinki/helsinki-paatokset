@@ -231,11 +231,16 @@ class CaseService {
       $decision = $this->getDecision($decision_id);
     }
 
-    if (!$decision instanceof NodeInterface || !$decision->hasField('field_organization_type') || $decision->get('field_organization_type')->isEmpty()) {
-      return 'council';
+    if (!$decision instanceof NodeInterface || !$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
+      return 'color-sumu';
     }
 
-    return Html::cleanCssIdentifier(strtolower($decision->field_organization_type->value));
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
+    $class = $policymakerService->getPolicymakerClassById($decision->field_policymaker_id->value);
+
+    return Html::cleanCssIdentifier($class);
   }
 
   /**
@@ -288,6 +293,9 @@ class CaseService {
    *   Dropdown contents.
    */
   public function getDecisionsList(?string $case_id = NULL): array {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
     if (!$case_id) {
       $case_id = $this->caseId;
     }
@@ -297,11 +305,11 @@ class CaseService {
     foreach ($decisions as $node) {
       $label = $this->formatDecisionLabel($node);
 
-      if ($node->field_organization_type->value) {
-        $class = Html::cleanCssIdentifier(strtolower($node->field_organization_type->value));
+      if ($node->field_policymaker_id->value) {
+        $class = Html::cleanCssIdentifier($policymakerService->getPolicymakerClassById($node->field_policymaker_id->value));
       }
       else {
-        $class = 'council';
+        $class = 'color-sumu';
       }
 
       $results[] = [

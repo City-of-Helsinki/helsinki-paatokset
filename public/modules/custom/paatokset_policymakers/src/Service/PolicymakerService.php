@@ -446,6 +446,7 @@ class PolicymakerService {
         $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
         if ($formatted_name !== $alt_formatted_name) {
           $names[] = $alt_formatted_name;
+          $data['orig_name'] = $formatted_name;
           $data['alt_name'] = TRUE;
           $composition[$alt_formatted_name] = $data;
         }
@@ -465,6 +466,7 @@ class PolicymakerService {
       else {
         $image_url = NULL;
       }
+
       if (isset($composition[$name])) {
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
@@ -478,6 +480,10 @@ class PolicymakerService {
         ];
 
         // Remove from composition so we have a list of non council trustees.
+        if (isset($composition[$name]['alt_name']) && $composition[$name]['alt_name']) {
+          $orig_name = $composition[$name]['orig_name'];
+          unset($composition[$orig_name]);
+        }
         unset($composition[$name]);
       }
     }
@@ -969,6 +975,174 @@ class PolicymakerService {
     }
 
     return $initiatives;
+  }
+
+  /**
+   * Get organization display type from node. Shouldn't be used for type checks.
+   *
+   * @param Drupal\node\NodeInterface|null $node
+   *   Policymaker node. Leave empty to use set policymaker.
+   *
+   * @return string|null
+   *   Overridden, default or NULL if node can't be found.
+   */
+  public function getPolicymakerTypeFromNode(?NodeInterface $node = NULL): ?string {
+    if ($node === NULL) {
+      $node = $this->getPolicyMaker();
+    }
+    if (!$node instanceof NodeInterface) {
+      return NULL;
+    }
+
+    // First check if label has been manually overriden.
+    if ($node->hasField('field_custom_organization_type') && !$node->get('field_custom_organization_type')->isEmpty()) {
+      return $node->get('field_custom_organization_type')->value;
+    }
+
+    // Check if node is a city council division.
+    if ($node->hasField('field_city_council_division') && $node->get('field_city_council_division')->value) {
+      return 'Kaupunginhallituksen jaosto';
+    }
+
+    // Return NULL if organization type field is empty and no override is set.
+    if (!$node->hasField('field_organization_type') || $node->get('field_organization_type')->isEmpty()) {
+      return NULL;
+    }
+
+    // Check org type field.
+    return $this->getPolicymakerType($node->get('field_organization_type')->value);
+  }
+
+  /**
+   * Get display version of organization type.
+   *
+   * @param string $type
+   *   Org type to check.
+   *
+   * @return string
+   *   Either the same type that was passed in or an altered version.
+   */
+  public function getPolicymakerType(string $type): string {
+    $output = NULL;
+
+    switch (strtolower($type)) {
+      case 'viranhaltija':
+        $output = 'Viranhaltijat';
+        break;
+
+      case 'luottamushenkilö':
+        $output = 'Luottamushenkilöpäättäjät';
+        break;
+
+      case 'lautakunta':
+      case 'jaosto':
+      case 'toimi-/neuvottelukunta':
+        $output = 'Lautakunnat ja jaostot';
+        break;
+
+      default:
+        $output = $type;
+        break;
+    }
+
+    return $output;
+  }
+
+  /**
+   * Get organization display type by ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @return string|null
+   *   Orginzation display type or NULL if policymaker can't be found.
+   */
+  public function getPolicymakerTypeById(string $id): ?string {
+    $node = $this->getPolicyMaker($id);
+    if ($node instanceof NodeInterface) {
+      return $this->getPolicymakerTypeFromNode($node);
+    }
+    return NULL;
+  }
+
+  /**
+   * Gets policymaker color coding from node.
+   *
+   * @param Drupal\node\NodeInterface|null $node
+   *   Policymaker node. Leave empty to use set policymaker.
+   *
+   * @return string
+   *   Color code for label.
+   */
+  public function getPolicymakerClass(?NodeInterface $node = NULL): string {
+    if ($node === NULL) {
+      $node = $this->getPolicyMaker();
+    }
+    if (!$node instanceof NodeInterface) {
+      return 'color-none';
+    }
+
+    // First check overridden color code.
+    if ($node->hasField('field_organization_color_code') && !$node->get('field_organization_color_code')->isEmpty()) {
+      return $node->get('field_organization_color_code')->value;
+    }
+
+    if ($node->hasField('field_city_council_division') && $node->get('field_city_council_division')->value) {
+      return 'color-hopea';
+    }
+
+    // If type isn't set, return with no color.
+    if (!$node->hasField('field_organization_type') || $node->get('field_organization_type')->isEmpty()) {
+      return 'color-none';
+    }
+
+    // Use org type to determine color coding.
+    switch (strtolower($node->get('field_organization_type')->value)) {
+      case 'valtuusto':
+        $color = 'color-kupari';
+        break;
+
+      case 'hallitus':
+        $color = 'color-hopea';
+        break;
+
+      case 'viranhaltija':
+        $color = 'color-suomenlinna';
+        break;
+
+      case 'luottamushenkilö':
+        $color = 'color-engel';
+        break;
+
+      case 'lautakunta':
+      case 'toimi-/neuvottelukunta':
+      case 'jaosto':
+        $color = 'color-sumu';
+        break;
+
+      default:
+        $color = 'color-none';
+        break;
+    }
+
+    return $color;
+  }
+
+  /**
+   * Gets policymaker color coding by ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @return string
+   *   Color code for label.
+   */
+  public function getPolicymakerClassById(string $id): string {
+    $node = $this->getPolicyMaker($id);
+    if ($node instanceof NodeInterface) {
+      return $this->getPolicyMakerClass($node);
+    }
+    return 'color-none';
   }
 
 }

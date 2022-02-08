@@ -62,6 +62,7 @@ function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array 
  */
 function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  $policymakerService = \Drupal::service('paatokset_policymakers');
 
   $params = [
     'from' => date("Y-m-d"),
@@ -78,11 +79,16 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
 
+  foreach($all_meetings as $meeting) {
+    $meeting['organization_color'] = $policymakerService->getPolicymakerClassById($meeting['policymaker']);
+    $meetings_with_color[] = $meeting;
+  }
+
   $variables['open_motions'] = t('Open motions');
   $variables['open_minutes'] = t('Open minutes');
   $variables['calendar_link'] = '/kokouskalenteri';
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
-  $variables['meetings'] = $all_meetings;
+  $variables['meetings'] = $meetings_with_color;
 }
 
 /**
@@ -130,9 +136,10 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
 
   foreach($members as $node) {
     $members_formatted[] = [
-      'title' => $node['first_name'] . ' ' . $node['last_name'] . ', ' . t('Valtuutettu'),
+      'title' => $node['first_name'] . ' ' . $node['last_name'],
       'link' => $node['url'],
-      'organization_type' => 'trustee'
+      'organization_type' => 'trustee',
+      'trustee_type' => t('Valtuutettu')
     ];
   };
 
@@ -140,9 +147,10 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
 
   foreach($deputies as $node) {
     $deputies_formatted[] = [
-      'title' => $node['first_name'] . ' ' . $node['last_name'] . ', ' . t('Varavaltuutettu'),
+      'title' => $node['first_name'] . ' ' . $node['last_name'],
       'link' => $node['url'],
-      'organization_type' => 'trustee'
+      'organization_type' => 'trustee',
+      'trustee_type' => t('Varavaltuutettu')
     ];
   };
 
@@ -170,6 +178,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'organization_type' => $node->get('field_organization_type')->value,
       'organization_name' => $node->get('field_dm_org_name')->value,
       'image' => $node->get('field_policymaker_image')->view('default'),
+      'organization_color' => $policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value)
     ];
   }
 

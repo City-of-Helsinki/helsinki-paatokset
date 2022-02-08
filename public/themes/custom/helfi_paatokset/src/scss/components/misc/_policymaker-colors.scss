@@ -1,0 +1,52 @@
+$color-sumu : #9fc9eb;
+$color-hopea: #dedfe1;
+$color-suomenlinna: #f5a3c7;
+$color-engel: #ffe977;
+$color-kupari: #00d7a7;
+
+.issue-content__policymaker-label,
+.policymaker-row__color,
+.frontpage-calendar__item .color-line,
+.policymaker-card__color-title  {
+  &.color-sumu {
+    background-color: $color-sumu;
+  }
+  
+  &.color-hopea {
+    background-color: $color-hopea;
+  }
+  
+  &.color-suomenlinna {
+    background-color: $color-suomenlinna;
+  }
+  
+  &.color-engel{
+    background-color: $color-engel
+  }
+  
+  &.color-kupari {
+    background-color: $color-kupari;
+  }
+}
+
+.issue__meetings-dropdown {
+  .council::before {
+    border-left-color: $council-green;
+  }
+
+  .board-division::before, .board::before {
+    border-left-color: $board-grey;
+  }
+
+  .traffic::before {
+    border-left-color: $traffic-yellow;
+  }
+
+  .committee::before {
+    border-left-color: $committee-blue;
+  }
+
+  .trustee::before {
+    border-left-color: $trustee-pink;
+  }
+}

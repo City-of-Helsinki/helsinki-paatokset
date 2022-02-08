@@ -83,6 +83,8 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $policymaker = $variables['node'];
   $policymakerService->setPolicyMakerNode($policymaker);
+  $variables['organization_type'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
+  $variables['organization_type_color'] = $policymakerService->getPolicymakerClass($policymaker);
 
   $not_organization_types = [
     'Luottamushenkilö',
@@ -92,7 +94,6 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $orgType = $policymaker->get('field_organization_type')->value;
 
   if ($orgType) {
-    $variables['org_type_class'] = $policymakerService->transformOrgType($orgType);
     if (!in_array($orgType, $not_organization_types)) {
       $variables['is_organization'] = TRUE;
 
