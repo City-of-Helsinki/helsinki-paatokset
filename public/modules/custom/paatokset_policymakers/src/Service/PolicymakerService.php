@@ -4,7 +4,73 @@ namespace Drupal\paatokset_policymakers\Service;
 
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
+use Drupal\media\Entity\Media;{%
+  set classes = [
+  'policymaker-listing',
+  view_mode ? 'policymaker-listing--view-mode-' ~ view_mode|clean_class,
+]
+%}
+
+{{ attach_library('hdbt/accordion') }}
+
+<div {{ attributes.addClass(classes) }}>
+  <div class="container">
+    <h2>{{ title }}</h2>
+    <div class="policymaker-card__container">
+      {% for card in cards %}
+        {% for values in card %}
+          <a class="policymaker-card" href="{{ values.link }}">
+            <div class="policymaker-card__color-title {{ values.organization_color }}">{{ values.title|t }}</div>
+            <div class="policymaker-card__image">
+              {{values.image}}
+            </div>
+            <div class="policymaker-card__title-icon">
+              <h4>{{ values.title|t }}</h4>
+              <i class="hel-icon hel-icon--arrow-right"></i>
+            </div>
+          </a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    <div class="paatokset-accordion">
+    {% for key, values in accordions[0] %}
+    <div class="accordion__wrapper handorgel">
+      <h4 class="accordion-item__header handorgel__header">
+        <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+          <span>{{ key|t }}</span>
+          <div class="accordion-item__icon">
+            {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+          </div>
+        </button>
+      </h4>
+      <div class="accordion-item__content handorgel__content">
+        <div class="accordion-item__content__inner handorgel__content__inner">
+          {% for row in values %}
+          <a href="{{ row.link }}" class="policymaker-row__link">
+            <div class="policymaker-row__color {{ row.organization_color }}"></div>
+            <div class="policymaker-row__title">
+              {{ row.title|t }}
+              {% if row.organization_type == 'Viranhaltija' or row.organization_type == 'Luottamushenkilö' %}
+                <div class="policymaker-row__sub-title" >{{ row.organization_name }}</div>
+              {% endif %}
+              {% if row.organization_type == 'trustee' %}
+                <div class="policymaker-row__sub-title" >{{ row.trustee_type }}</div>
+              {% endif %}
+            </div>
+            <i class="hel-icon hel-icon--arrow-right"></i>
+          </a>
+        {% endfor %}
+          <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+            {{ 'Close'|t }}
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
 use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
