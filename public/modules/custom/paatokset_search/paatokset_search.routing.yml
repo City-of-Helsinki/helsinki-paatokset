@@ -1,5 +1,5 @@
 paatokset_search.decisions:
-  path: 'paatokset'
+  path: 'asia'
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
     _title: 'Search decisions'
