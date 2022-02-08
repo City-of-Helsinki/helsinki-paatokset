@@ -301,15 +301,26 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
   
   if(isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
-    $policymakerLink = Link::fromTextAndUrl(
+    $pmLink = Link::fromTextAndUrl(
       $policymaker->title->value,
       $policymaker->toUrl()
     )->toString();
+    $pmName = '';
+    if(
+      $node->field_first_name->value &&
+      $node->field_last_name->value
+    ) {
+      $pmName = $node->field_first_name->value . ' ' . $node->field_last_name->value;
+    }
+    else {
+      $pmName = $node->getTitle();
+    }
+
     $variables['policymaker_declaration'] = t(
       '@trustee is @policymaker',
       [
-        '@trustee' => $node->field_first_name->value . ' ' . $node->field_last_name->value,
-        '@policymaker' => $policymakerLink
+        '@trustee' => $pmName,
+        '@policymaker' => $pmLink
       ]
     );
   };
