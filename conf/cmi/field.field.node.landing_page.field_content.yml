@@ -37,6 +37,7 @@ settings:
       content_cards: content_cards
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
+      chart: chart
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -47,6 +48,9 @@ settings:
         enabled: false
       banner:
         weight: -26
+        enabled: true
+      chart:
+        weight: 25
         enabled: true
       columns:
         weight: -27
