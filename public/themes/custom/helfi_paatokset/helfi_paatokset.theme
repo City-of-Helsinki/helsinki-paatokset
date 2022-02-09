@@ -304,21 +304,11 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
       $policymaker->title->value,
       $policymaker->toUrl()
     )->toString();
-    $pmName = '';
-    if(
-      $node->field_first_name->value &&
-      $node->field_last_name->value
-    ) {
-      $pmName = $node->field_first_name->value . ' ' . $node->field_last_name->value;
-    }
-    else {
-      $pmName = $node->getTitle();
-    }
 
     $variables['policymaker_declaration'] = t(
       '@trustee is @policymaker',
       [
-        '@trustee' => $pmName,
+        '@trustee' => _helfi_paatokset_title_to_name($node->getTitle()),
         '@policymaker' => $pmLink
       ]
     );
@@ -337,7 +327,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     if(isset($doaEntity) && isset($doaEntity->uri)) {
       $doaUrl = $doaEntity->getFileUri();
       $doaLinkText = Markup::create(
-        $doa->field_first_name->value . ' ' . $doa->field_lastname->value . ' (pdf)' . '<i class="hel-icon hel-icon--document"></i>'
+        '<i class="hel-icon hel-icon--document"></i>' . _helfi_paatokset_title_to_name($node->getTitle()). ' (pdf)'
       );
       $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
       $variables['doa'] = $doaLink->toRenderable();
@@ -349,10 +339,22 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function helfi_paatokset_preprocess_field__node__title__trustee(&$variables) {
-  $old = explode(',', $variables['items'][0]['content']['#context']['value']);
-  $new = $old[1] . ' ' . $old[0];
+  $title = $variables['items'][0]['content']['#context']['value'];
+  $variables['items'][0]['content']['#context']['value'] = _helfi_paatokset_title_to_name($title);
+}
 
-  $variables['items'][0]['content']['#context']['value'] = $new;
+/**
+ * Transforms the title value of trustee into conventional name.
+ * Eg. 'Vapaavuori, Jan' -> 'Jan Vapaavuori' 
+ * 
+ * @param string $title
+ * 
+ * @return string
+ *   the title transformed into name string.
+ */
+function _helfi_paatokset_title_to_name(string $title) {
+  $old = explode(',', $title);
+  return $old[1] . ' ' . $old[0];
 }
 
 /**
