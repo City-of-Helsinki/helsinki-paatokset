@@ -685,6 +685,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       ->range('0', 1)
       ->latestRevision();
     $nids = $query->execute();
+
+    if (empty($nids)) {
+      return;
+    }
+
     $nid = array_shift($nids);
     $case = Node::load($nid);
 
@@ -735,6 +740,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       ->range('0', 1)
       ->latestRevision();
     $nids = $query->execute();
+
+    if (empty($nids)) {
+      return;
+    }
+
     $nid = array_shift($nids);
     $meeting = Node::load($nid);
 
