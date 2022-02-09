@@ -240,19 +240,26 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
     }
   }
 
+  function value_reverse($array) {
+    $keys = array_keys($array);
+    $reversed_values = array_reverse(array_values($array), true);
+    return array_combine($keys, $reversed_values);
+  }
+
+  $years = value_reverse($years);
+
   usort($initiatives, function ($item1, $item2) {
     return $item1['Date'] <=> $item2['Date'];
   });
 
-  $by_year = [];
+  $by_year = array();
 
   foreach($years as $year) {
     $filtered = array_filter($initiatives, function ($var) use ($year) {
         return (str_contains(date_format(date_create($var['Date']),"Y"), $year));
     });
-    $by_year[$year] = $filtered;
+    $by_year[$year] = array_reverse($filtered);
   };
-
 
   $variables['initiatives'] = $by_year;
   $variables['years'] = $years;
