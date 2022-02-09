@@ -53,8 +53,8 @@
                       <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
                   </template>
-                  <template v-else-if="meeting.minutes_link" :aria-label="openMinutes + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
-                    <a :href="meeting.minutes_link">
+                  <template v-else-if="meeting.minutes_link">
+                    <a :href="meeting.minutes_link" :aria-label="openMinutes + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
                       {{ openMinutes }}
                       <i class="hel-icon hel-icon--angle-right"></i>
                     </a>
