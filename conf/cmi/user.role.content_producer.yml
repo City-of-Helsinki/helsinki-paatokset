@@ -155,3 +155,6 @@ permissions:
   - 'view scheduled content'
   - 'view the administration theme'
   - 'view unpublished paragraphs'
+  - 'create helfi_chart media'
+  - 'delete own helfi_chart media'
+  - 'edit own helfi_chart media'

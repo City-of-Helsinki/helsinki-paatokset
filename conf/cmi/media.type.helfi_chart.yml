@@ -1,0 +1,17 @@
+uuid: 22cdcd59-dd81-4698-b4e3-282b55a0e468
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_charts
+_core:
+  default_config_hash: 1Bify-3s5efjndtvBiqv5RO9j0QC-IvMlqOB_fg4pXo
+id: helfi_chart
+label: Chart
+description: 'Media type Chart can be used to present interactive charts. Supports Microsoft Power BI.'
+source: helfi_chart
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_helfi_chart_url
+field_map: {  }

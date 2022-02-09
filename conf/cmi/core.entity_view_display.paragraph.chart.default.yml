@@ -1,0 +1,44 @@
+uuid: 2adec84a-8a08-4cd8-8387-eac0737e9710
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.chart.field_chart_chart
+    - field.field.paragraph.chart.field_chart_description
+    - field.field.paragraph.chart.field_chart_title
+    - paragraphs.paragraphs_type.chart
+  module:
+    - text
+_core:
+  default_config_hash: z5HcA-kCryhCEDDUh3GMvbVm_xuff7CohDimxV11670
+id: paragraph.chart.default
+targetEntityType: paragraph
+bundle: chart
+mode: default
+content:
+  field_chart_chart:
+    type: entity_reference_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_chart_description:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_chart_title:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true
