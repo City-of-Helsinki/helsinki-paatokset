@@ -551,7 +551,8 @@ class CaseService {
     $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
 
     if (!empty($data) && isset($data['AgendaPoint'])) {
-      return t('Case @point. / @section §', [
+      $section = $section . ' §';
+      return t('Case @point. / @section', [
         '@point' => $data['AgendaPoint'],
         '@section' => $section,
       ]);
