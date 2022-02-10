@@ -13,7 +13,7 @@ entity_type: media
 bundle: declaration_of_affiliation
 label: ' Policymaker reference'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

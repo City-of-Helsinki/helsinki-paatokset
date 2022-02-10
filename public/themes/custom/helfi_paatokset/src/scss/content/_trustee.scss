@@ -19,6 +19,11 @@
     &.information-row--pm-declaration a {
       margin-left: .4rem;
     }
+
+    &.information-row--doa a {
+      display: inline-flex;
+      align-items: center;
+    }
   }
 
   .label {
