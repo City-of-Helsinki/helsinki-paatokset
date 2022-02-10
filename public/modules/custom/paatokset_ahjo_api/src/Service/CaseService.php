@@ -528,12 +528,49 @@ class CaseService {
   }
 
   /**
+   * Get formatted section label for decision, including agenda point.
+   *
+   * @return string|null|Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Formatted section label, if possible to generate.
+   */
+  public function getFormattedDecisionSection(): mixed {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    if (!$this->selectedDecision->hasField('field_decision_section') || $this->selectedDecision->get('field_decision_section')->isEmpty()) {
+      return NULL;
+    }
+
+    $section = $this->selectedDecision->get('field_decision_section')->value;
+
+    if (!$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
+      return '§ ' . $section;
+    }
+
+    $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
+
+    if (!empty($data) && isset($data['AgendaPoint'])) {
+      return t('Case @point. / @section §', [
+        '@point' => $data['AgendaPoint'],
+        '@section' => $section,
+      ]);
+    }
+
+    return '§ ' . $section;
+  }
+
+  /**
    * Parse decision content and motion data from HTML.
    *
    * @return array
    *   Render arrays.
    */
   public function parseContent(): array {
+    if ($this->selectedDecision instanceof NodeInterface) {
+      return [];
+    }
+
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
 
