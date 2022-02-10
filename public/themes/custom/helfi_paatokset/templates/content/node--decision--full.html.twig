@@ -92,21 +92,12 @@
   <div class="issue__wrapper">
     <div class="ajax-progress-throbber"></div>
 
-    <div class="issue__container issue__container--navigation container">
-
+    <div class="issue__container issue__container--content container">
       <div class="issue__left-column__container">
         <div class="issue__decision-navigation__wrapper">
           {% include '@helfi_paatokset/components/decision-navigation.html.twig' %}
         </div>
-      </div>
 
-      <div class="issue-right-column__container">
-        {% include '@helfi_paatokset/components/decision-pdf.html.twig' %}
-      </div>
-    </div>
-
-    <div class="issue__container issue__container--content container">
-      <div class="issue__left-column__container">
         {% include '@helfi_paatokset/components/case-navigation.html.twig' %}
 
         <div class="issue__ajax-container">
@@ -115,9 +106,7 @@
       </div>
 
       <div class="issue-right-column__container">
-        <div class="issue__pdf issue__pdf--mobile">
-          {% include '@helfi_paatokset/components/decision-pdf.html.twig' %}
-        </div>
+        {% include '@helfi_paatokset/components/decision-pdf.html.twig' %}
 
         {% include '@helfi_paatokset/components/case-attachments.html.twig' %}
       </div>
