@@ -10,18 +10,23 @@
       justify-content: space-between;
     }
 
-    .icon {
-      min-width: 30px;
-      min-height: 30px;
-      width: 30px;
-      height: 30px;
-      transition: all 0.1s ease-in-out;
+    .accordion-item__icon {
+      display: flex;
+      align-items: center;
+
+      span {
+        min-width: 30px;
+        min-height: 30px;
+        width: 30px;
+        height: 30px;
+        transition: all 0.1s ease-in-out;
+      }
     }
 
   }
 
-  .handorgel__header--open {
-    .icon {
+  .handorgel__header--opened {
+    .accordion-item__icon span {
       transform: rotate(180deg)
     }
   }
