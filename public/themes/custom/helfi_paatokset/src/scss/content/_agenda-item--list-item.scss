@@ -30,13 +30,20 @@
       margin-bottom: 0;
     }
   }
-  
-  svg {
-    min-width: $spacing-double; //$spacing-and-half;
-    min-height: $spacing-double; //$spacing-and-half;
+
+  a {
+    &:hover, &:focus {
+      background-color: $color-black-20;
+    }
+  }
+
+  .hel-icon {
+    min-width: $spacing-and-half;
+    min-height: $spacing-and-half;
 
     @include breakpoint($breakpoint-l) {
       margin-left: auto;
+      margin-right: $spacing-half;
     }
   }
 
