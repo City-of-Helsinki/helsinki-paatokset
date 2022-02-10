@@ -241,11 +241,46 @@ class CaseService {
 
     $node = array_shift($nodes);
     if ($node instanceof NodeInterface) {
-      return $node->toUrl();
+      return $this->getDecisionUrlFromNode($node);
     }
 
     return NULL;
   }
+
+  /**
+   * Get decision URL by ID.
+   *
+   * @param NodeInterface $decision
+   *   Decision node.
+   *
+   * @return Drupal\Core\Url
+   *   URL for case node with decision ID as parameter, or decision URL.
+   */
+  public function getDecisionUrlFromNode(NodeInterface $decision): Url {
+    if (!$decision->hasField('field_decision_native_id') || $decision->get('field_decision_native_id')->isEmpty()) {
+      return $decision->toUrl();
+    }
+
+    $decision_id = $decision->get('field_decision_native_id')->value;
+
+    $case = NULL;
+    if ($decision->hasField('field_diary_number') && !$decision->get('field_diary_number')->isEmpty()) {
+      $case = $this->caseQuery([
+        'case_id' => $decision->get('field_diary_number')->value,
+        'limit' => 1,
+      ]);
+      $case = array_shift($case);
+    }
+
+    if ($case instanceof NodeInterface) {
+      $case_url = $case->toUrl();
+      $case_url->setOption('query', ['decision' => $decision_id]);
+      return $case_url;
+    }
+
+    return $decision->toUrl();
+  }
+
 
   /**
    * Get label for decision (organization name + date).
