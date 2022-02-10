@@ -607,6 +607,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Context for batch operation.
    */
   public static function processDecisionItem($data, &$context) {
+    $messenger = \Drupal::messenger();
     $context['message'] = 'Importing item number ' . $data['count'];
 
     if (!isset($context['results']['items'])) {
@@ -656,6 +657,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // If decision date can't be set, use a default value.
     if ($node->get('field_decision_date')->isEmpty()) {
+      $messenger->addMessage('Decision date fetching failed for decision with nid: ' . $node->id());
       $node->set('field_decision_date', '2001-01-01T00:00:00');
       $context['results']['failed'][] = $node->id();
     }
@@ -678,6 +680,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Set decision record and issued date from case node.
    */
   protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
+    $messenger = \Drupal::messenger();
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'case')
       ->condition('status', 1)
@@ -687,6 +690,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $nids = $query->execute();
 
     if (empty($nids)) {
+      $messenger->addMessage('Case not found: ' . $case_id);
       return;
     }
 
@@ -733,6 +737,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Meeting ID.
    */
   protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
+    $messenger = \Drupal::messenger();
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -742,6 +747,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $nids = $query->execute();
 
     if (empty($nids)) {
+      $messenger->addMessage('Meeting not found: ' . $meeting_id);
       return;
     }
 
