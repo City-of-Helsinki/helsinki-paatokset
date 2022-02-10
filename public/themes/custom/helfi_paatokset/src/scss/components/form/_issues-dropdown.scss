@@ -95,12 +95,12 @@
       a {
         color: $color-white;
       }
-    } 
-    
+    }
+
     &:focus {
       border: 2px solid $color-black;
     }
-    
+
     &.selected {
       background-color: $color-black-20;
     }
@@ -118,6 +118,11 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 
+  .paatokset__link-plain:hover {
+    color: inherit;
+    background: transparent;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -126,7 +131,7 @@
 .issue__meetings-labels {
   display: flex;
   flex-direction: column-reverse;
-  
+
   @include breakpoint($breakpoint-l) {
     flex-direction: row;
     align-items: center;
