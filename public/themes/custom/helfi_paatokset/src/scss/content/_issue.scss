@@ -3,7 +3,7 @@
 
   margin-bottom: 27.5px;
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     margin-bottom: 32px;
   }
 }
@@ -11,7 +11,7 @@
 .issue__title {
   margin-bottom: $spacing-and-half;
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     font-size: 72px;
   }
 }
@@ -33,7 +33,7 @@
     margin-bottom: $spacing-double;
   }
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -55,7 +55,7 @@
   h3 {
     font-size: $font-size-heading-3;
 
-    @include breakpoint($breakpoint-l) {
+    @include breakpoint($breakpoint-xl) {
       font-size: $font-size-heading-2;
     }
   }
@@ -87,13 +87,13 @@
     }
   }
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     display: flex;
   }
 }
 
 .issue__left-column__container {
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     width: 65%;
     padding-right: 125px;
   }
@@ -122,7 +122,7 @@
     font-size: 16px;
   }
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     width: 35%;
   }
 }
@@ -131,7 +131,7 @@
   margin-bottom: 32px;
   font-weight: normal;
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     font-size: $font-size-heading-1;
   }
 }
@@ -181,7 +181,7 @@
   }
   margin-bottom: $spacing-double;
 
-  @include breakpoint($breakpoint-l) {
+  @include breakpoint($breakpoint-xl) {
     font-size: $fontsize-body-xl;
   }
 }
@@ -207,20 +207,11 @@
   &.issue__pdf--desktop {
     display: none;
   }
-
-  @include breakpoint($breakpoint-l) {
-    &.issue__pdf--desktop {
-      display: block;
-    }
-
-    &.issue__pdf--mobile {
-      display: none;
-    }
-  }
 }
 
 .issue__decision-navigation__wrapper {
-  margin-bottom: $spacing-double;
+  margin-top: $spacing-half;
+  margin-bottom: 45px;
 }
 
 .issue__decision-navigation {
@@ -231,6 +222,10 @@
   .decision-navigation-button--next span {
     margin-left: auto;
   }
+}
+
+.issue__meetings-labels label {
+  font-weight: 500;
 }
 
 .issue-content__policymaker-label {
@@ -245,6 +240,14 @@
   @include breakpoint($breakpoint-m) {
     display: inline-block;
     padding: 10px 55px;
+  }
+}
+
+.issue-dropdown__show-more .paatokset-button-link {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 
