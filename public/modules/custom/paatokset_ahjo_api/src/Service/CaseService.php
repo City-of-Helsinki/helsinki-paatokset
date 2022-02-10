@@ -250,7 +250,7 @@ class CaseService {
   /**
    * Get decision URL by ID.
    *
-   * @param NodeInterface $decision
+   * @param Drupal\node\NodeInterface $decision
    *   Decision node.
    *
    * @return Drupal\Core\Url
@@ -280,7 +280,6 @@ class CaseService {
 
     return $decision->toUrl();
   }
-
 
   /**
    * Get label for decision (organization name + date).
