@@ -62,6 +62,9 @@ jQuery(function($) {
         $(event.target).data('link') :
         $(event.target).parent('a').data('link');
 
+      console.log(link);
+      console.log($(optionList).find(`[data-link='${link}']`));
+
       selectOption($(optionList).find(`[data-link='${link}']`));
     });
   });
@@ -156,7 +159,7 @@ jQuery(function($) {
           $('.issue__ajax-container').html(data.content);
         }
         if(data.attachments) {
-          $('.issue__container--content .issue-right-column__container').html(data.attachments);
+          $('.issue__attachments__wrapper').html(data.attachments);
         }
         if(data.decision_navigation) {
           $('.issue__decision-navigation__wrapper').html(data.decision_navigation);
