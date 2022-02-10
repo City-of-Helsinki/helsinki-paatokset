@@ -264,6 +264,10 @@
 .issue__more-info {
   margin-top: $spacing-4-xl;
   margin-bottom: $spacing-4-xl;
+
+  div {
+    margin: $spacing 0;
+  }
 }
 
 .issue__more-info__content {
@@ -273,4 +277,42 @@
 
 .issue-ajax-error__container {
   display: none;
+}
+
+.issue__decision-date {
+  margin-bottom: $spacing-double;
+}
+
+// Styling from Ahjo API HTML content.
+.issue-content__container {
+  div {
+    @include font-size($fontsize-body-l);
+
+    @include breakpoint($breakpoint-l) {
+      @include font-size($fontsize-body-xl);
+    }
+  }
+
+  .SisaltoSektio, .accordion-item__content__inner {
+    ul, ol {
+      padding-top: 0;
+      padding-left:1 rem;
+    }
+
+    div {
+      margin: $spacing 0;
+    }
+
+    table td {
+      display: block;
+
+      div {
+        margin:0;
+      }
+
+      @include breakpoint($breakpoint-s) {
+        display: table-cell;
+      }
+    }
+  }
 }

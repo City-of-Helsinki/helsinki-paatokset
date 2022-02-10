@@ -568,7 +568,7 @@ class CaseService {
    *   Render arrays.
    */
   public function parseContent(): array {
-    if ($this->selectedDecision instanceof NodeInterface) {
+    if (!$this->selectedDecision instanceof NodeInterface) {
       return [];
     }
 
@@ -645,17 +645,25 @@ class CaseService {
     }
 
     if ($presenter_content) {
-      $output['accordions'][] = [
+      $output['presenter_info'] = [
         'heading' => t('Presenter information'),
         'content' => ['#markup' => $presenter_content],
       ];
     }
 
+    // Add decision date to appeal process accordion.
+    // Do not display for motions, only for decisions.
+    $appeal_content = NULL;
+    if ($main_content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
+      $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
+      $decision_date = date('d.m.Y', $decision_timestamp);
+      $appeal_content = '<p class="issue__decision-date">' . t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
+    }
+
     // Appeal information.
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    $appeal_content = NULL;
     if ($appeal_info) {
-      $appeal_content = $this->getHtmlContentUntilBreakingElement($appeal_info);
+      $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
     }
 
     if ($appeal_content) {
