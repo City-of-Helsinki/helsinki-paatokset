@@ -404,7 +404,9 @@ class CaseService {
       return [];
     }
 
-    return $this->decisionQuery(['case_id' => $case_id]);
+    return $this->decisionQuery([
+      'case_id' => $case_id
+    ]);
   }
 
   /**
@@ -502,29 +504,26 @@ class CaseService {
       $decision_nid = $this->selectedDecision->id();
     }
 
-    $all_decisions = $this->getAllDecisions($case_id);
-    $all_nids = array_keys($all_decisions);
-    $next_nid = NULL;
-    foreach ($all_nids as $key => $id) {
-      if ((string) $id !== $decision_nid) {
+    $all_decisions = array_values($this->getAllDecisions($case_id));
+    $found_node = NULL;
+    foreach ($all_decisions as $key => $value) {
+      if ((string) $value->id() !== $decision_nid) {
         continue;
       }
 
-      if (isset($all_nids[$key + $offset])) {
-        $next_nid = (string) $all_nids[$key + $offset];
+      if (isset($all_decisions[$key + $offset])) {
+        $found_node = $all_decisions[$key + $offset];
       }
       break;
     }
 
-    if (!isset($all_decisions[$next_nid])) {
+    if (!$found_node instanceof NodeInterface) {
       return [];
     }
 
-    $node = $all_decisions[$next_nid];
-
     return [
-      'title' => $node->title->value,
-      'id' => urlencode($node->field_decision_native_id->value),
+      'title' => $found_node->title->value,
+      'id' => $found_node->field_decision_native_id->value,
     ];
   }
 
@@ -783,6 +782,8 @@ class CaseService {
       ->condition('status', 1)
       ->condition('type', $params['type'])
       ->sort($sort_by, $sort);
+
+    $query->sort('nid', 'ASC');
 
     if (isset($params['limit'])) {
       $query->range('0', $params['limit']);
