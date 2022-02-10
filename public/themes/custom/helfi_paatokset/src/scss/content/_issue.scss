@@ -189,16 +189,18 @@
 .issue__pdf {
   margin-bottom: 50px;
 
-  button.hds-button {
-    background-color: $color-black;
-    border: none;
+  .hds-button {
+    --background-color: var(--color-black);
+    --background-color-hover: var(--color-bus);
+    --background-color-focus: var(--color-bus);
+    --background-color-hover-focus: var(--color-bus);
+    --border-color: var(--color-black);
+    --border-color-hover: var(--color-bus);
+    --border-color-focus: var(--color-bus);
+    --border-color-hover-focus: var(--color-bus);
 
     span {
       font-size: 16px;
-    }
-
-    &:hover {
-      background-color: var(--color-bus);
     }
   }
 
