@@ -4,9 +4,9 @@
 {{ attach_library('hdbt/accordion') }}
 <div class="issue-content-top__container">
   <div{{ content_attributes.addClass('issue-content-top') }}>
-    {% if selectedDecision.field_decision_section.value %}
+    {% if decision_section %}
       <div class="issue-content__indices">
-        § {{ selectedDecision.field_decision_section.value }}
+        {{ decision_section }}
       </div>
     {% endif %}
 

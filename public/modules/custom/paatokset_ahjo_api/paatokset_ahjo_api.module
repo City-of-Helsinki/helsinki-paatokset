@@ -312,6 +312,7 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
   $caseService->setEntitiesByPath();
   $variables['decision_pdf'] = $caseService->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
+  $variables['decision_section'] = $caseService->getFormattedDecisionSection();
   $variables['selected_label'] = $caseService->getDecisionLabel();
   $variables['selected_class'] = $caseService->getDecisionClass();
   $variables['attachments'] = $caseService->getAttachments();
@@ -341,6 +342,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $variables['main_heading'] = $caseService->getDecisionHeading();
   $variables['decision_pdf'] = $caseService->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
+  $variables['decision_section'] = $caseService->getFormattedDecisionSection();
   $variables['selected_label'] = $caseService->getDecisionLabel();
   $variables['selected_class'] = $caseService->getDecisionClass();
   $variables['attachments'] = $caseService->getAttachments();

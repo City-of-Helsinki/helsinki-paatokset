@@ -39,6 +39,7 @@ class CaseController extends ControllerBase {
 
     $data['decision_pdf'] = $this->caseService->getDecisionPdf();
     $data['selectedDecision'] = $this->caseService->getSelectedDecision();
+    $data['decision_section'] = $this->caseService->getFormattedDecisionSection();
     $data['selected_class'] = $this->caseService->getDecisionClass();
     $data['attachments'] = $this->caseService->getAttachments();
     $data['next_decision'] = $this->caseService->getNextDecision();
@@ -56,6 +57,7 @@ class CaseController extends ControllerBase {
         'selectedDecision' => $data['selectedDecision'],
         'selected_class' => $data['selected_class'],
         'decision_content' => $data['decision_content'],
+        'decision_section' => $data['decision_section'],
       ]
     );
 
