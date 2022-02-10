@@ -405,7 +405,7 @@ class CaseService {
     }
 
     return $this->decisionQuery([
-      'case_id' => $case_id
+      'case_id' => $case_id,
     ]);
   }
 
