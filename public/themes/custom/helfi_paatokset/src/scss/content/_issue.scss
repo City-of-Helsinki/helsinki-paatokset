@@ -221,6 +221,16 @@
 
   .decision-navigation-button--next span {
     margin-left: auto;
+    margin-right: 0;
+    flex-basis: 0;
+
+    @include breakpoint($breakpoint-s) {
+      flex-basis: auto;
+    }
+  }
+  .decision-navigation-button--next .hel-icon {
+    margin-right: 0;
+    margin-left: 14px;
   }
 }
 
