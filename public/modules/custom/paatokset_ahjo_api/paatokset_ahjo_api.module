@@ -659,6 +659,31 @@ function _paatokset_ahjo_api_get_top_category($value): ?string {
 }
 
 /**
+ * Parse decision content from raw HTML.
+ *
+ * @param mixed $value
+ * @return string|null
+ */
+function _paatokset_ahjo_api_parse_decision_content($value): string|null {
+  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+  $caseService = \Drupal::service('paatokset_ahjo_cases');
+  return $caseService->parseContentSectionsFromHtml((string) $value);
+}
+
+/**
+ * Parse decision motion from raw HTML.
+ *
+ * @param mixed $value
+ *
+ * @return string|null
+ */
+function _paatokset_ahjo_api_parse_decision_motion($value): string|null {
+  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+  $caseService = \Drupal::service('paatokset_ahjo_cases');
+  return $caseService->parseContentSectionsFromHtml((string) $value);
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function paatokset_ahjo_api_entity_extra_field_info(): array {

@@ -126,10 +126,24 @@ process:
     plugin: default_value
     default_value: plain_text
   field_decision_content/value: content
+  field_decision_content_parsed/value:
+    callable: _paatokset_ahjo_api_parse_decision_content
+    plugin: callback
+    source: content
+  field_decision_content_parsed/format:
+    plugin: default_value
+    default_value: full_html
   field_decision_motion/format:
     plugin: default_value
     default_value: plain_text
   field_decision_motion/value: motion
+  field_decision_motion_parsed/value:
+    callable: _paatokset_ahjo_api_parse_decision_motion
+    plugin: callback
+    source: motion
+  field_decision_motion_parsed/format:
+    plugin: default_value
+    default_value: full_html
   field_decision_attachments:
     plugin: callback
     callable: json_encode
