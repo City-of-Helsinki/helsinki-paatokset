@@ -677,6 +677,40 @@ class CaseService {
   }
 
   /**
+   * Parse Ahjo API HTML main content from motion or content raw data.
+   *
+   * @param Drupal\node\NodeInterface $node
+   *   Decision node.
+   * @param string $field_name
+   *   Which field to get raw data from.
+   *
+   * @return string|null
+   *   Parsed content HTML as string, if found.
+   */
+  public function getDecisionContentFromHtml(NodeInterface $node, string $field_name): ?string {
+    if (!$node instanceof NodeInterface || !$node->hasField($field_name) || $node->get($field_name)->isEmpty()) {
+      return NULL;
+    }
+
+    $html = $node->get($field_name)->value;
+    $dom = new \DOMDocument();
+    if (!empty($html)) {
+      @$dom->loadHTML($html);
+    }
+    $xpath = new \DOMXPath($dom);
+
+    $content = NULL;
+    // Main decision content sections.
+    $sections = $xpath->query("//*[contains(@class, 'SisaltoSektio')]");
+
+    foreach ($sections as $section) {
+      $content .= $section->ownerDocument->saveHTML($section);
+    }
+
+    return $content;
+  }
+
+  /**
    * Split motions into sections.
    *
    * @param \DOMNodeList $list

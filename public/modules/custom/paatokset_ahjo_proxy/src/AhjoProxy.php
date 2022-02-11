@@ -762,6 +762,53 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Static callback function for processing decision data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function parseDecisionItem($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Parsing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $node = Node::load($data['nid']);
+
+    $decision_content = $caseService->getDecisionContentFromHtml($node, 'field_decision_content');
+    if ($node->hasField('field_decision_content_parsed')) {
+      $node->set('field_decision_content_parsed', $decision_content);
+    }
+
+    $decision_motion = $caseService->getDecisionContentFromHtml($node, 'field_decision_motion');
+    if ($node->hasField('field_decision_motion_parsed')) {
+      $node->set('field_decision_motion_parsed', $decision_motion);
+    }
+
+    // If decision content can't be set, consider this failed.
+    if ($node->get('field_decision_content_parsed')->isEmpty()) {
+      $messenger->addMessage('Content parsing failed for decision with nid: ' . $data['nid']);
+      $context['results']['failed'][] = $node->id();
+    }
+    else {
+      $context['results']['items'][] = $node->id();
+      $node->save();
+    }
+  }
+
+  /**
    * Static callback function for finishing group aggregation batch.
    *
    * @param mixed $success
