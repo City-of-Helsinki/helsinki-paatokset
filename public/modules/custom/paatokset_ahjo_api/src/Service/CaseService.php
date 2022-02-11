@@ -693,6 +693,19 @@ class CaseService {
     }
 
     $html = $node->get($field_name)->value;
+    return $this->parseContentSectionsFromHtml($html);
+  }
+
+  /**
+   * Parse content sections from raw HTML.
+   *
+   * @param string $html
+   *   Input HTML.
+   *
+   * @return string|null
+   *   Content sections, if found.
+   */
+  public function parseContentSectionsFromHtml(string $html): ?string {
     $dom = new \DOMDocument();
     if (!empty($html)) {
       @$dom->loadHTML($html);
