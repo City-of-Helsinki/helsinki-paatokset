@@ -542,6 +542,72 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Parses decision content and motion fields from raw HTML.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:parse-decision-content
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @usage ahjo-proxy:parse-decision-content --limit=50
+   *   Parses fields for the first 50 decisions where content is empty.
+   *
+   * @aliases ap:dc
+   */
+  public function parseDecisionContents(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->notExists('field_decision_content_parsed')
+      ->condition('field_decision_content', '', '<>')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $operations = [];
+    $count = 0;
+    foreach ($ids as $nid) {
+      $count++;
+      $data = [
+        'nid' => $nid,
+        'count' => $count,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::parseDecisionItem',
+        [$data],
+      ];
+    }
+
+    batch_set([
+      'title' => 'Parsing data for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
