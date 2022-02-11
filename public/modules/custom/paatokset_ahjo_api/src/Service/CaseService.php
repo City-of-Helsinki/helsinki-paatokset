@@ -432,7 +432,7 @@ class CaseService {
       $label = $this->formatDecisionLabel($node);
 
       if ($node->field_policymaker_id->value) {
-        $class = Html::cleanCssIdentifier($policymakerService->getPolicymakerClassById($node->field_policymaker_id->value));
+        $class = $policymakerService->getPolicymakerClassById($node->field_policymaker_id->value);
       }
       else {
         $class = 'color-sumu';
