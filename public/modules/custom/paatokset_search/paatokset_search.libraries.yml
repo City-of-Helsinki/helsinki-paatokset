@@ -1,6 +1,6 @@
 paatokset-search:
   remote: https://github.com/City-of-Helsinki/paatokset-search
-  version: 0.1.0
+  version: 0.2.2
   license:
     name: MIT
     url: https://github.com/City-of-Helsinki/asuntomyynti-search/blob/develop/README.md
@@ -11,4 +11,3 @@ paatokset-search:
   css:
     theme:
       assets/paatokset-search-main.css: { }
-      assets/paatokset-search-vendors.css: { }

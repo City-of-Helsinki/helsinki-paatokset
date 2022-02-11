@@ -4,6 +4,13 @@ $color-suomenlinna: #f5a3c7;
 $color-engel: #ffe977;
 $color-kupari: #00d7a7;
 
+:root {
+  --color-sumu: #9fc9eb;
+  --color-hopea: #dedfe1;
+  --color-suomenlinna: #f5a3c7;
+  --color-kupari: #00d7a7;
+}
+
 .issue-content__policymaker-label,
 .policymaker-row__color,
 .frontpage-calendar__item .color-line,

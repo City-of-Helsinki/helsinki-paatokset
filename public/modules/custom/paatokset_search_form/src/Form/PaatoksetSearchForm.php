@@ -72,7 +72,7 @@ class PaatoksetSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect('paatokset_search.decisions', ['s' => $form_state->getValue(['hds-text-input__input'])]);
+    $form_state->setRedirect('paatokset_search.decisions', ['s' => json_encode($form_state->getValue(['hds-text-input__input']))]);
   }
 
 }

@@ -3,6 +3,8 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.storage.node.field_first_name
+    - field.storage.node.field_last_name
     - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
     - field.storage.node.field_ahjo_title
@@ -25,6 +27,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_dm_org_name
+  field_first_name:
+    label: 'First name'
+    datasource_id: 'entity:node'
+    property_path: field_first_name
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_first_name
+  field_last_name:
+    label: 'Last name'
+    datasource_id: 'entity:node'
+    property_path: field_last_name
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_last_name
   field_organization_type:
     label: 'Organization type'
     datasource_id: 'entity:node'
@@ -72,6 +90,8 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  color_class: {  }
+  decision_url: {  }
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }

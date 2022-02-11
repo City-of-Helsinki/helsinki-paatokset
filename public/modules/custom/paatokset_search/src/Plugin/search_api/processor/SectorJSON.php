@@ -8,7 +8,7 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
- * Adds the item's view count to the indexed data.
+ * Extracts sector info from source JSON.
  *
  * @SearchApiProcessor(
  *   id = "sector_json",
@@ -48,7 +48,6 @@ class SectorJSON extends ProcessorPluginBase {
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDatasourceId();
     if ($datasourceId == 'entity:node') {
-      // This is a node entity so we need to find out if it has a view count.
       $node = $item->getOriginalObject()->getValue();
       $sectorData = $node->get('field_dm_sector')->value;
 
