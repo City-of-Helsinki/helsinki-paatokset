@@ -33,9 +33,9 @@
     <nav>
       <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" id='issue__meetings-select'>
         {% for option in options %}
-          {% if selectedDecisions.id == option.id %}
+          {% if selectedDecision.id == option.id %}
             <li
-              data-styleclass="council"
+              data-styleclass="{{ option.class }}"
               data-link="{{ option.native_id }}"
               aria-selected="true"
               tabindex="0"
@@ -46,7 +46,7 @@
             </li>
           {% else %}
             <li
-              data-styleclass="council"
+              data-styleclass="{{ option.class }}"
               data-link="{{ option.native_id }}"
               aria-selected="false"
               tabindex="0"
