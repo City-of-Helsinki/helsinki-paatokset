@@ -9,9 +9,11 @@ dependencies:
     - field.field.node.decision.field_decision_attachments
     - field.field.node.decision.field_decision_case_title
     - field.field.node.decision.field_decision_content
+    - field.field.node.decision.field_decision_content_parsed
     - field.field.node.decision.field_decision_date
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
+    - field.field.node.decision.field_decision_motion_parsed
     - field.field.node.decision.field_decision_native_id
     - field.field.node.decision.field_decision_organization
     - field.field.node.decision.field_decision_previous
@@ -31,11 +33,79 @@ dependencies:
     - node.type.decision
   module:
     - datetime
+    - field_group
     - hdbt_admin_editorial
     - json_field
     - path
     - scheduler
     - text
+third_party_settings:
+  field_group:
+    group_decision_data:
+      children:
+        - field_full_title
+        - field_decision_native_id
+        - field_decision_date
+        - field_decision_section
+        - field_decision_case_title
+        - field_diary_number
+        - field_diary_number_label
+        - field_classification_code
+        - field_classification_title
+        - field_top_category_name
+        - field_decision_record
+        - field_decision_content
+        - field_decision_motion
+        - field_decision_attachments
+      label: 'Decision data'
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
+    group_organization_data:
+      children:
+        - field_policymaker_id
+        - field_dm_org_name
+        - field_organization_type
+        - field_dm_org_above_name
+        - field_decision_organization
+      label: 'Organization data'
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
+    group_meeting_data:
+      children:
+        - field_meeting_id
+        - field_meeting_sequence_number
+        - field_decision_meeting
+        - field_voting_results
+      label: 'Meeting data'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
 id: node.decision.default
 targetEntityType: node
 bundle: decision
@@ -43,137 +113,11 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 27
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
   field_classification_code:
-    type: string_textfield
-    weight: 8
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_classification_title:
-    type: string_textfield
-    weight: 9
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_attachments:
-    type: json_textarea
-    weight: 23
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_case_title:
-    type: string_textfield
-    weight: 5
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_content:
-    type: text_textarea
-    weight: 17
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_date:
-    type: datetime_default
-    weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_decision_meeting:
-    type: json_textarea
-    weight: 21
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_motion:
-    type: text_textarea
-    weight: 18
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_native_id:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_organization:
-    type: json_textarea
-    weight: 11
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_previous:
-    type: json_textarea
-    weight: 24
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_record:
-    type: json_textarea
-    weight: 16
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_decision_section:
-    type: string_textfield
-    weight: 4
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_diary_number:
-    type: string_textfield
-    weight: 6
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_diary_number_label:
-    type: string_textfield
-    weight: 7
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_dm_org_above_name:
-    type: string_textfield
-    weight: 15
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_dm_org_name:
     type: string_textfield
     weight: 13
     region: content
@@ -181,38 +125,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_full_title:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_meeting_id:
-    type: string_textfield
-    weight: 19
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_meeting_sequence_number:
-    type: number
-    weight: 20
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_organization_type:
-    type: string_textfield
-    weight: 12
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_policymaker_id:
+  field_classification_title:
     type: string_textfield
     weight: 14
     region: content
@@ -220,7 +133,15 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_top_category_name:
+  field_decision_attachments:
+    type: json_textarea
+    weight: 28
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_case_title:
     type: string_textfield
     weight: 10
     region: content
@@ -228,9 +149,174 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_decision_content:
+    type: text_textarea
+    weight: 22
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_content_parsed:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_date:
+    type: datetime_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_decision_meeting:
+    type: json_textarea
+    weight: 26
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_motion:
+    type: text_textarea
+    weight: 23
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_motion_parsed:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_native_id:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_organization:
+    type: json_textarea
+    weight: 24
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_previous:
+    type: json_textarea
+    weight: 29
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_record:
+    type: json_textarea
+    weight: 21
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_section:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_diary_number:
+    type: string_textfield
+    weight: 11
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_diary_number_label:
+    type: string_textfield
+    weight: 12
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_dm_org_above_name:
+    type: string_textfield
+    weight: 23
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_dm_org_name:
+    type: string_textfield
+    weight: 21
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_full_title:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_meeting_id:
+    type: string_textfield
+    weight: 24
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_meeting_sequence_number:
+    type: number
+    weight: 25
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_organization_type:
+    type: string_textfield
+    weight: 22
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_policymaker_id:
+    type: string_textfield
+    weight: 20
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_top_category_name:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_voting_results:
     type: json_textarea
-    weight: 22
+    weight: 27
     region: content
     settings:
       rows: 5
@@ -238,40 +324,40 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 25
+    weight: 30
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 35
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 28
+    weight: 33
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 31
+    weight: 36
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 34
+    weight: 39
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 29
+    weight: 34
     region: content
     settings:
       display_label: true
@@ -286,7 +372,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 26
+    weight: 31
     region: content
     settings:
       match_operator: CONTAINS
@@ -296,12 +382,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 32
+    weight: 37
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 33
+    weight: 38
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -1,0 +1,25 @@
+uuid: e0109af9-d92f-4cf9-9e45-be280d823902
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_content_parsed
+    - node.type.decision
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
+id: node.decision.field_decision_content_parsed
+field_name: field_decision_content_parsed
+entity_type: node
+bundle: decision
+label: 'Decision content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
