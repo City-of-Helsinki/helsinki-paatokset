@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.storage.node.field_decision_case_title
     - field.storage.node.field_classification_title
+    - field.storage.node.field_decision_content_parsed
     - field.storage.node.field_decision_date
+    - field.storage.node.field_decision_motion_parsed
     - field.storage.node.field_diary_number
     - field.storage.node.field_full_title
     - field.storage.node.field_decision_native_id
@@ -31,6 +33,23 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_classification_title
+  decision_content:
+    label: 'Decision content'
+    datasource_id: 'entity:node'
+    property_path: field_decision_content_parsed
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_decision_content_parsed
+  decision_motion:
+    label: 'Decision motion'
+    datasource_id: 'entity:node'
+    property_path: field_decision_motion_parsed
+    type: text
+    boost: 0.5
+    dependencies:
+      config:
+        - field.storage.node.field_decision_motion_parsed
   id:
     label: 'Native ID'
     datasource_id: 'entity:node'
@@ -117,6 +136,7 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  entity_type: {  }
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
