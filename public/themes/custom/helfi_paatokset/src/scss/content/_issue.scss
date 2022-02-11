@@ -61,7 +61,6 @@
   }
 
   h3, h4 {
-    margin-bottom: $spacing;
     margin-top: $spacing;
 
     &:first-child {
@@ -285,7 +284,7 @@
 
 // Styling from Ahjo API HTML content.
 .issue-content__container {
-  div {
+  td, div {
     @include font-size($fontsize-body-l);
 
     @include breakpoint($breakpoint-l) {
@@ -305,6 +304,7 @@
 
     table td {
       display: block;
+      background-color: #f1f1f1;
 
       div {
         margin:0;
