@@ -942,11 +942,6 @@ class CaseService {
       ]);
     }
 
-    // If node is already a decision, return NULL and skip motion creation.
-    if ($found_node->get('field_is_decision')->value) {
-      return NULL;
-    }
-
     return $found_node;
   }
 

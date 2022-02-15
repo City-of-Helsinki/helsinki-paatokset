@@ -608,6 +608,32 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Resets all meetings so their motions can be processed again.
+   *
+   * @command ahjo-proxy:reset-meeting-motion-check
+   *
+   * @aliases ap:rm
+   */
+  public function resetMeetingsMotionProcessing(): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_agenda_published', 1)
+      ->condition('field_meeting_minutes_published', 0)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->latestRevision();
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      $node->set('field_agenda_items_processed', 0);
+      $node->save();
+    }
+  }
+
+  /**
    * Saves motions from meeting agenda items into decision nodes.
    *
    * @param array $options
@@ -688,7 +714,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
 
     if (!$update_all) {
-      $query->notExists('field_agenda_items_processed');
+      $query->condition('field_agenda_items_processed', 1, '<>');
     }
 
     if ($limit) {

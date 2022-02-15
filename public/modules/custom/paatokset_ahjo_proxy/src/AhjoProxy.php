@@ -827,7 +827,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed) in ' . $total_time . ' seconds.');
   }
 
-
   /**
    * Static callback function for processing motions data.
    *
@@ -912,6 +911,18 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title);
     if (!$node instanceof NodeInterface) {
       $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
+    // If node is already a decision, skip item.
+    if ($node->get('field_is_decision')->value) {
+      $context['results']['skipped'][] = $data['title'];
+      return;
+    }
+
+    // If node is not new and we're not updating everything, skip item.
+    if (!$data['update_all'] && !$node->isNew()) {
+      $context['results']['skipped'][] = $data['title'];
       return;
     }
 
