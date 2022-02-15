@@ -6,6 +6,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
+use Drupal\Component\Utility\Unicode;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -209,7 +210,6 @@ class CaseService {
 
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-
     return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
   }
 
@@ -218,21 +218,24 @@ class CaseService {
    *
    * @param string $title
    *   Decision title.
-   * @param string $section
-   *   Decision section, to differentiate between multiple same titles.
    * @param string $meeting_id
    *   Meeting ID, to differentiate between multiple same titles.
+   * @param string|null $section
+   *   Decision section, if set, to differentiate between multiple same titles.
    *
    * @return Drupal\Core\Url|null
    *   Decision URL, if found.
    */
-  public function getDecisionUrlByTitle(string $title, string $section, string $meeting_id): ?Url {
+  public function getDecisionUrlByTitle(string $title, string $meeting_id, ?string $section = NULL): ?Url {
     $params = [
       'title' => $title,
-      'section' => $section,
       'meeting_id' => $meeting_id,
       'limit' => 1,
     ];
+
+    if ($section) {
+      $params['section'] = $section;
+    }
 
     $nodes = $this->decisionQuery($params);
     if (empty($nodes)) {
@@ -816,6 +819,135 @@ class CaseService {
     }
 
     return $output;
+  }
+
+  /**
+   * Get top category name from classification code.
+   *
+   * @param string $code
+   *   Classification code.
+   *
+   * @return string|null
+   *   Top category name, if found.
+   */
+  public function getTopCategoryFromClassificationCode(string $code): ?string {
+    $bits = explode(' ', (string) $code);
+    $code = array_shift($bits);
+
+    switch ($code) {
+      case "00":
+        return "Hallintoasiat";
+        break;
+
+      case "01":
+        return "Henkilöstöasiat";
+        break;
+
+      case "02":
+        return "Talousasiat, verotus ja omaisuuden hallinta";
+        break;
+
+      case "03":
+        return "Lainsäädäntö ja lainsäädännön soveltaminen";
+        break;
+
+      case "04":
+        return "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
+        break;
+
+      case "05":
+        return "Sosiaalitoimi";
+        break;
+
+      case "06":
+        return "Terveydenhuolto";
+        break;
+
+      case "07":
+        return "Tiedon hallinta";
+        break;
+
+      case "08":
+        return "Liikenne";
+        break;
+
+      case "09":
+        return "Turvallisuus ja yleinen järjestys";
+        break;
+
+      case "10":
+        return "Maankäyttö, rakentaminen ja asuminen";
+        break;
+
+      case "11":
+        return "Ympäristöasia";
+        break;
+
+      case "12":
+        return "Opetus- ja sivistystoimi";
+        break;
+
+      case "13":
+        return "Tutkimus- ja kehittämistoiminta";
+        break;
+
+      case "14":
+        return "Elinkeino- ja työvoimapalvelut";
+        break;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Find or create motion as decision node.
+   *
+   * @param string $case_id
+   *   Diary number for motion.
+   * @param string $meeting_id
+   *   Meeting ID for motion.
+   * @param string $title
+   *   Motion title (used in case there are multiple motions with same id).
+   *
+   * @return NodeInterface|null
+   *   Decision node as motion. NULL if not found or if a decision was found.
+   */
+  public function findOrCreateMotion(string $case_id, string $meeting_id, string $title): ?NodeInterface {
+    $nodes = $this->decisionQuery([
+      'case_id' => $case_id,
+      'meeting_id' => $meeting_id,
+    ]);
+
+    // If there is only one node, use that.
+    $found_node = NULL;
+    if (count($nodes) === 1) {
+      $found_node = array_shift($nodes);
+    }
+    // If multiple nodes are found, use title to find correct one.
+    else {
+      foreach($nodes as $node) {
+        if ($node->field_full_title->value === $title) {
+          $found_node = $node;
+          break;
+        }
+      }
+    }
+
+    // If node can't be found, create it.
+    if (!$found_node instanceof NodeInterface) {
+      $found_node = Node::create([
+        'type' => 'decision',
+        'langcode' => 'fi',
+        'title' => Unicode::truncate($title, '255', TRUE, TRUE),
+      ]);
+    }
+
+    // If node is already a decision, return NULL and skip motion creation.
+    if ($found_node->get('field_is_decision')->value) {
+      return NULL;
+    }
+
+    return $found_node;
   }
 
   /**
