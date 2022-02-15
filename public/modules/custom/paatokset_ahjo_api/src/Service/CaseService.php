@@ -836,67 +836,71 @@ class CaseService {
 
     switch ($code) {
       case "00":
-        return "Hallintoasiat";
+        $name = "Hallintoasiat";
         break;
 
       case "01":
-        return "Henkilöstöasiat";
+        $name = "Henkilöstöasiat";
         break;
 
       case "02":
-        return "Talousasiat, verotus ja omaisuuden hallinta";
+        $name = "Talousasiat, verotus ja omaisuuden hallinta";
         break;
 
       case "03":
-        return "Lainsäädäntö ja lainsäädännön soveltaminen";
+        $name = "Lainsäädäntö ja lainsäädännön soveltaminen";
         break;
 
       case "04":
-        return "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
+        $name = "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
         break;
 
       case "05":
-        return "Sosiaalitoimi";
+        $name = "Sosiaalitoimi";
         break;
 
       case "06":
-        return "Terveydenhuolto";
+        $name = "Terveydenhuolto";
         break;
 
       case "07":
-        return "Tiedon hallinta";
+        $name = "Tiedon hallinta";
         break;
 
       case "08":
-        return "Liikenne";
+        $name = "Liikenne";
         break;
 
       case "09":
-        return "Turvallisuus ja yleinen järjestys";
+        $name = "Turvallisuus ja yleinen järjestys";
         break;
 
       case "10":
-        return "Maankäyttö, rakentaminen ja asuminen";
+        $name = "Maankäyttö, rakentaminen ja asuminen";
         break;
 
       case "11":
-        return "Ympäristöasia";
+        $name = "Ympäristöasia";
         break;
 
       case "12":
-        return "Opetus- ja sivistystoimi";
+        $name = "Opetus- ja sivistystoimi";
         break;
 
       case "13":
-        return "Tutkimus- ja kehittämistoiminta";
+        $name = "Tutkimus- ja kehittämistoiminta";
         break;
 
       case "14":
-        return "Elinkeino- ja työvoimapalvelut";
+        $name = "Elinkeino- ja työvoimapalvelut";
+        break;
+
+      default:
+        $name = NULL;
         break;
     }
 
-    return NULL;
+    return $name;
   }
 
   /**
@@ -909,7 +913,7 @@ class CaseService {
    * @param string $title
    *   Motion title (used in case there are multiple motions with same id).
    *
-   * @return NodeInterface|null
+   * @return Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found or if a decision was found.
    */
   public function findOrCreateMotion(string $case_id, string $meeting_id, string $title): ?NodeInterface {
@@ -925,7 +929,7 @@ class CaseService {
     }
     // If multiple nodes are found, use title to find correct one.
     else {
-      foreach($nodes as $node) {
+      foreach ($nodes as $node) {
         if ($node->field_full_title->value === $title) {
           $found_node = $node;
           break;
