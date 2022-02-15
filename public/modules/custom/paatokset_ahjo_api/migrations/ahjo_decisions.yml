@@ -111,7 +111,11 @@ process:
   nid:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_decision_nid
-    source: native_id
+    source:
+      - native_id
+      - case_id
+      - meeting_id
+      - title
   title:
     callable: _paatokset_ahjo_api_truncate_value
     plugin: callback
