@@ -106,7 +106,8 @@
     content.field_trustee_home_district|render or
     content.field_trustee_email|render or
     content.field_trustee_homepage|render or
-    policymaker_declaration|render   
+    policymaker_declaration|render or
+    content.field_trustee_phone|render
   %}
     <div class="trustee-information">
       {% if content.field_trustee_profession|render %}
@@ -114,6 +115,9 @@
       {% endif %}
       {% if content.field_trustee_home_district|render %}
         <div class="information-row">{{ content.field_trustee_home_district }}</div>
+      {% endif %}
+      {% if content.field_trustee_phone|render %}
+        <div class="information-row">{{ content.field_trustee_phone }}</div>
       {% endif %}
       {% if content.field_trustee_email|render %}
         <div class="information-row">{{ content.field_trustee_email }}</div>

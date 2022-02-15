@@ -1,0 +1,6 @@
+policymaker_listing:
+  js:
+    js/policymaker-listing.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery

@@ -108,3 +108,15 @@
     color: $gray;
   }
 }
+
+.sector-container {
+  margin-bottom: 64px;
+
+  h5 {
+    font-weight: 500;
+  }
+}
+
+.load-more-btn {
+  display: none;
+}

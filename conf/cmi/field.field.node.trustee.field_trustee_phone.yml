@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_phone
 field_name: field_trustee_phone
 entity_type: node
 bundle: trustee
-label: Phone
+label: Puhelinnumero
 description: ''
 required: false
 translatable: false
