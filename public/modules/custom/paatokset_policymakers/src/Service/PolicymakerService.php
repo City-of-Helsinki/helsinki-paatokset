@@ -266,6 +266,10 @@ class PolicymakerService {
       $this->setPolicyMaker($policymaker_id);
     }
 
+    if (!$this->policymaker instanceof NodeInterface) {
+      return NULL;
+    }
+
     if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
       return NULL;
     }
@@ -755,7 +759,10 @@ class PolicymakerService {
       $agenda_link = NULL;
       if (!empty($data['Section']) && !empty($data['AgendaItem'])) {
         $section_clean = (string) intval($data['Section']);
-        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $section_clean, $meeting_id);
+        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
+      }
+      else {
+        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
       $agendaItems[] = [
