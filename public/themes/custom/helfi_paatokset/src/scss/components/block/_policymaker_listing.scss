@@ -107,13 +107,16 @@
     font-size: 20px;
     color: $gray;
   }
+
+  & + h5 {
+    margin-top: 64px;
+  }
 }
 
-.sector-container {
-  margin-bottom: 64px;
-
+.accordion-item__content__inner {
   h5 {
     font-weight: 500;
+    
   }
 }
 

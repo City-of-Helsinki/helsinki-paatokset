@@ -178,9 +178,19 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'organization_type' => $node->get('field_organization_type')->value,
       'organization_name' => $node->get('field_dm_org_name')->value,
       'image' => $node->get('field_policymaker_image')->view('default'),
-      'organization_color' => $policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value)
+      'organization_color' => $policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
+      'is_city_council_division' => $node->get('field_city_council_division')->value,
+      'sector' => $node->get('field_sector_name')->value,
     ];
   }
+
+  $hallituksen_jaosto = array_filter($filtered, function ($var) {
+    return ($var['is_city_council_division'] == '1');
+  });
+
+  $filtered = array_filter($filtered, function ($var) {
+    return ($var['is_city_council_division'] == null || $var['is_city_council_division'] == '0');
+  });
 
   $accordion_contents = [
     'valtuusto' => ['Valtuusto', []],
@@ -200,25 +210,79 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     });
   };
 
-  $hallituksen_jaosto_filter = 'hallitu';
-  $hallituksen_jaosto = array_filter($accordion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
-      return (str_contains($var['title'], $hallituksen_jaosto_filter));
-  });
+  $lautakunnat_jaostot = array_merge($accordion_contents['lautakunta'][1], $accordion_contents['jaosto'][1]);
 
-  //Removes kaupunginhallituksen jaostot from array
-  $lautakunta = array_filter($accordion_contents['lautakunta'][1], function ($var) use ($hallituksen_jaosto_filter) {
-    return (!str_contains($var['title'], $hallituksen_jaosto_filter));
-  });
+  /** A function to sort arrays by title */
+  function cmp_titles($a, $b) {
+    return strnatcmp($a['title'], $b['title']);
+  }
+
+  usort($accordion_contents['viranhaltija'][1], 'cmp_titles');
+  usort($accordion_contents['trustee'][1], 'cmp_titles');
+  usort($lautakunnat_jaostot, 'cmp_titles');
+  usort($hallituksen_jaosto, 'cmp_titles');
+
+  //Gets each sector from array
+  $sectors = array();
+  foreach ($lautakunnat_jaostot as $row) {
+    $sectors[$row['sector']] = [];
+  }
+
+  //Sets the policymakers under correct sectors in array
+  foreach ($sectors as $key => $value) {
+    $filter = $key;
+
+    $sectors[$key] = array_filter($lautakunnat_jaostot, function ($var) use ($filter) {
+      return ($var['sector'] == $filter);
+    });
+  };
+
+  ksort($sectors);
+
+  //Gets each sector from array
+  $sectors_occupants = array();
+  foreach ($accordion_contents['viranhaltija'][1] as $row) {
+    $sectors_occupants[$row['sector']] = [];
+  }
+
+  //Sets the policymakers under correct sectors in array
+  foreach ($sectors_occupants as $key => $value) {
+    $filter = $key;
+
+    $sectors_occupants[$key] = array_filter($accordion_contents['viranhaltija'][1], function ($var) use ($filter) {
+      return ($var['sector'] == $filter);
+    });
+  };
+
+  ksort($sectors_occupants);
 
   $variables['cards'] = [$accordion_contents['valtuusto'][1], $accordion_contents['hallitus'][1]];
 
-  $variables['accordions'][] = [
+  $accordions_1 = [
     'Kaupunginhallituksen jaostot' => $hallituksen_jaosto,
-    'Lautakunnat ja jaostot' => array_merge($lautakunta, $accordion_contents['jaosto'][1]),
-    'Viranhaltijat' => $accordion_contents['viranhaltija'][1],
-    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
-    'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted),
+    'Lautakunnat ja johtokunnat' => $sectors,
   ];
+
+  $accordions_2 = [];
+
+  foreach ($sectors_occupants as $key => $value) {
+    dump(strlen($key));
+    if (strlen($key) == 0 ) {
+      $accordion_key = 'Viranhaltijat: Muut';
+    } else {
+      $accordion_key = 'Viranhaltijat: ' . $key;
+    }
+    $accordions_2[$accordion_key] = $value;
+  }
+
+  $accordions_3 = [
+    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
+    'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted)
+  ];
+
+  $accordions = array_merge($accordions_1, array_merge(array_reverse($accordions_2), $accordions_3));
+
+  $variables['accordions'] = $accordions;
 
   $variables['title'] = $variables['elements']['content']['label'];
 }

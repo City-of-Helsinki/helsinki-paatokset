@@ -15,13 +15,14 @@
           const accordions = $('.accordion-item__content__inner', context)
 
           accordions.each(function() {
+            console.log($(this).children().length)
             if($(this).children().length > 50) {
 
               let children = $(this).children()
               $(this).find('.load-more-btn', context).css( 'display', 'inline-flex' );
 
               children.each(function() {
-                if($(this).attr('class') === 'policymaker-row__link')
+                if($(this).attr('class') === 'policymaker-row__link' || $(this).attr('class') === 'sector-title')
                 $(this).hide()
               })
 
