@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.meeting.field_agenda_items_processed
     - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_files
     - field.field.node.meeting.field_meeting_agenda_published
@@ -38,6 +39,7 @@ content:
     weight: 100
     region: content
 hidden:
+  field_agenda_items_processed: true
   field_meeting_agenda: true
   field_meeting_agenda_files: true
   field_meeting_agenda_published: true
