@@ -3,6 +3,7 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.meeting.field_agenda_items_processed
     - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_files
     - field.field.node.meeting.field_meeting_agenda_published
@@ -64,6 +65,7 @@ third_party_settings:
         - field_meeting_dm
         - field_meeting_decision
         - field_meeting_agenda_published
+        - field_agenda_items_processed
         - field_meeting_minutes_published
         - field_meeting_attachment_info
       label: 'Basic information'
@@ -142,8 +144,8 @@ third_party_settings:
         required_fields: false
     group_documents:
       children:
-        - field_meeting_documents
         - field_meeting_document_files
+        - field_meeting_documents
       label: 'Meeting documents'
       region: content
       parent_name: group_meeting_data
@@ -182,6 +184,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_agenda_items_processed:
+    type: boolean_checkbox
+    weight: 37
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_meeting_agenda:
     type: json_editor
     weight: 36
@@ -203,7 +212,7 @@ content:
     third_party_settings: {  }
   field_meeting_attachment_info:
     type: text_textarea
-    weight: 38
+    weight: 39
     region: content
     settings:
       rows: 5
@@ -288,7 +297,7 @@ content:
     third_party_settings: {  }
   field_meeting_minutes_published:
     type: boolean_checkbox
-    weight: 37
+    weight: 38
     region: content
     settings:
       display_label: true

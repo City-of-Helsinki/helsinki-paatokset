@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.decision.field_dm_org_above_name
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_is_decision
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
@@ -201,6 +202,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_is_decision:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 26
     region: content
   field_meeting_id:
     type: string
