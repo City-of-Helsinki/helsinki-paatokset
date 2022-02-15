@@ -121,6 +121,9 @@ process:
   field_diary_number_label: case_id_label
   field_classification_code: classification_code
   field_classification_title: classification_title
+  field_is_decision:
+    plugin: default_value
+    default_value: 1
   field_decision_section: section
   field_decision_content/format:
     plugin: default_value
