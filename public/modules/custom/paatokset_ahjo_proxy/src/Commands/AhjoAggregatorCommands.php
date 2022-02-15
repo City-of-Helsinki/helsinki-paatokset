@@ -608,6 +608,170 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Saves motions from meeting agenda items into decision nodes.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:get-motions
+   *
+   * @option update
+   *   Update previously created motions instead of just creating new ones.
+   * @option localdata
+   *   Use only local and placeholder data, doesn't require VPN connection.
+   * @option limit
+   *   Limit processing to certain amount of meeting nodes.
+   * @option offset
+   *   Skip the fist x meetings (useful with limit and update parameter).
+   *
+   * @usage ahjo-proxy:get-motions
+   *   Fetches data for new motions from meetings.
+   * @usage ahjo-proxy:update-decisions --update
+   *   Creates and updates existing motions.
+   * @usage ahjo-proxy:get-motions --localdata
+   *   Gets data for new motions from locally stored meetings.
+   *   Some fields may be limited.
+   *
+   * @aliases ap:gm
+   */
+  public function getMotionsFromAgendaItems(array $options = [
+    'update' => NULL,
+    'localdata' => NULL,
+    'limit' => NULL,
+    'offset' => NULL,
+  ]): void {
+    if (!empty($options['update'])) {
+      $update_all = TRUE;
+    }
+    else {
+      $update_all = FALSE;
+    }
+
+    if (!empty($options['localdata'])) {
+      $use_local_data = TRUE;
+    }
+    else {
+      $use_local_data = FALSE;
+    }
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = NULL;
+    }
+
+    if (!empty($options['offset'])) {
+      $offset = (int) $options['offset'];
+    }
+    else {
+      $offset = 0;
+    }
+
+    if ($use_local_data) {
+      $this->logger->info('Using local data...');
+    }
+    else {
+      $this->logger->info('Fetching data from API...');
+    }
+
+    if ($limit) {
+      $this->logger->info('Limiting nodes to range: ' . $offset . ' to ' . $limit);
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_agenda_published', 1)
+      ->condition('field_meeting_minutes_published', 0)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->latestRevision();
+
+    if (!$update_all) {
+      $query->notExists('field_agenda_items_processed');
+    }
+
+    if ($limit) {
+      $query->range($offset, $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      $meeting_data = [
+        'meeting_id' => $node->field_meeting_id->value,
+        'meeting_number' => $node->field_meeting_sequence_number->value,
+        'meeting_date' => $node->field_meeting_date->value,
+        'org_id' => $node->field_meeting_dm_id->value,
+        'org_name' => $node->field_meeting_dm->value,
+      ];
+
+      foreach ($node->get('field_meeting_agenda') as $field) {
+        $item = json_decode($field->value, TRUE);
+
+        // Only create finnish language motions.
+        if (!isset($item['PDF']) || $item['PDF']['Language'] !== 'fi') {
+          continue;
+        }
+
+        if (!isset($item['PDF']['NativeId'])) {
+          continue;
+        }
+        else {
+          $native_id = $item['PDF']['NativeId'];
+        }
+
+        $item['PDF']['AgendaPoint'] = $item['AgendaPoint'];
+
+        $endpoint = NULL;
+        if (!$use_local_data) {
+          $endpoint = 'records/' . $native_id;
+        }
+        $count++;
+        $data = [
+          'endpoint' => $endpoint,
+          'update_all' => $update_all,
+          'count' => $count,
+          'title' => $item['AgendaItem'],
+          'native_id' => $native_id,
+          'pdf' => $item['PDF'],
+          'html' => $item['HTML'],
+          'meeting_data' => $meeting_data,
+        ];
+
+        $operations[] = [
+          '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processMotionsItem',
+          [$data],
+        ];
+      }
+
+      // Mark meeting as processed.
+      $node->set('field_agenda_items_processed', 1);
+      $node->save();
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    $this->logger->info('Amount of items to process: ' . count($operations));
+
+    batch_set([
+      'title' => 'Fetching data for motions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishMotions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files

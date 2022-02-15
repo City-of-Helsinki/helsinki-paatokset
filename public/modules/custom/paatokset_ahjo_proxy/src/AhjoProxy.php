@@ -827,6 +827,192 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed) in ' . $total_time . ' seconds.');
   }
 
+
+  /**
+   * Static callback function for processing motions data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processMotionsItem($data, &$context) {
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['skipped'])) {
+      $context['results']['skipped'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+    if (!isset($context['results']['update_all'])) {
+      $context['results']['update_all'] = $data['update_all'];
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService */
+    $case_service = \Drupal::service('paatokset_ahjo_cases');
+
+    $ids = $ahjo_proxy->getCaseDataFromHtml($data['html']);
+
+    // Skip items without diary numbers.
+    if (empty($ids) || !isset($ids['case_id'])) {
+      $context['results']['skipped'][] = $data['title'];
+      return;
+    }
+
+    // Make sure meeting data exists.
+    if (empty($data['meeting_data'])) {
+      $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
+    if (!empty($data['pdf'])) {
+      $record = json_encode($data['pdf']);
+    }
+    else {
+      $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
+    if (!empty($data['html'])) {
+      $motion = $data['html'];
+    }
+    else {
+      $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
+    $case_id = $ids['case_id'];
+    $title = $data['title'];
+    $native_id = $data['native_id'];
+    $meeting_id = $data['meeting_data']['meeting_id'];
+    $meeting_date = $data['meeting_data']['meeting_date'];
+    $meeting_number = $data['meeting_data']['meeting_number'];
+    $org_id = $data['meeting_data']['org_id'];
+    $org_name = $data['meeting_data']['org_name'];
+
+    // Get top category name.
+    if (isset($ids['classification_code'])) {
+      $classification_code = $ids['classification_code'];
+      $top_category = $case_service->getTopCategoryFromClassificationCode($classification_code);
+    }
+    else {
+      $classification_code = NULL;
+      $top_category = NULL;
+    }
+
+    $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title);
+    if (!$node instanceof NodeInterface) {
+      $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
+    $node->set('field_full_title', $title);
+    $node->set('field_is_decision', 0);
+    $node->set('field_top_category_name', $top_category);
+    $node->set('field_classification_code', $classification_code);
+    $node->set('field_decision_native_id', $native_id);
+    $node->set('field_diary_number', $case_id);
+    $node->set('field_meeting_id', $meeting_id);
+    $node->set('field_decision_date', $meeting_date);
+    $node->set('field_meeting_sequence_number', $meeting_number);
+    $node->set('field_policymaker_id', $org_id);
+    $node->set('field_dm_org_name', $org_name);
+    $node->set('field_decision_record', $record);
+    $node->set('field_decision_motion', [
+      'value' => $motion,
+      'format' => 'plain_text',
+    ]);
+
+    if ($node->save()) {
+      $context['results']['items'][] = $data['title'];
+    }
+    else {
+      $context['results']['failed'][] = $data['title'];
+    }
+  }
+
+  /**
+   * Static callback function for finishing motions aggregation batch.
+   *
+   * @param mixed $success
+   *   If batch succeeded or not.
+   * @param array $results
+   *   Aggregated results.
+   * @param array $operations
+   *   Operations with errors.
+   */
+  public static function finishMotions($success, array $results, array $operations) {
+    $messenger = \Drupal::messenger();
+    $total = count($results['items']);
+    $failed = count($results['failed']);
+    if (isset($results['skipped'])) {
+      $skipped = count($results['skipped']);
+    }
+    else {
+      $skipped = 0;
+    }
+    $end_time = microtime(TRUE);
+    $total_time = ($end_time - $results['starttime']);
+    $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed, ' . $skipped . ' skipped) in ' . $total_time . ' seconds.');
+
+    // Save failed array into filesystem even if it's empty so we can wipe it.
+    file_save_data(json_encode($results['failed']), 'public://failed_motions.json', FileSystemInterface::EXISTS_REPLACE);
+    if (!empty($results['failed'])) {
+      $messenger->addMessage('Data for failed items saved into public://failed_motions.json');
+    }
+  }
+
+  /**
+   * Get case diary number and section id from html data.
+   *
+   * @param string $html
+   *   HTML data to parse.
+   *
+   * @return array|null
+   *   Array containing IDs, if found.
+   */
+  protected function getCaseDataFromHtml(string $html): ?array {
+    $dom = new \DOMDocument();
+    if (!empty($html)) {
+      @$dom->loadHTML($html);
+    }
+    else {
+      return NULL;
+    }
+    $xpath = new \DOMXPath($dom);
+    $divs = $xpath->query("//*[contains(@class, 'DnroTmuoto')]");
+    $id_text = '';
+    foreach ($divs as $div) {
+      $id_text .= $div->nodeValue;
+    }
+
+    $bits = explode(' T ', $id_text);
+
+    $diary_label = array_shift($bits);
+
+    if (empty($diary_label)) {
+      return NULL;
+    }
+
+    $diary_number = str_replace(' ', '-', $diary_label);
+    $classification_code = array_pop($bits);
+
+    return [
+      'case_id' => $diary_number,
+      'case_id_label' => $diary_label,
+      'classification_code' => $classification_code,
+    ];
+  }
+
   /**
    * Get rel=self link.
    *
