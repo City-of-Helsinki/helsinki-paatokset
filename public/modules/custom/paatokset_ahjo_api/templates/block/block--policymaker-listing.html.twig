@@ -6,6 +6,7 @@
 %}
 
 {{ attach_library('hdbt/accordion') }}
+{{ attach_library('paatokset_ahjo_api/policymaker_listing') }}
 
 <div {{ attributes.addClass(classes) }}>
   <div class="container">
@@ -27,7 +28,7 @@
       {% endfor %}
     </div>
     <div class="paatokset-accordion">
-    {% for key, values in accordions[0] %}
+    {% for key, values in accordions %}
     <div class="accordion__wrapper handorgel">
       <h4 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
@@ -39,24 +40,43 @@
       </h4>
       <div class="accordion-item__content handorgel__content">
         <div class="accordion-item__content__inner handorgel__content__inner">
-          {% for row in values %}
-          <a href="{{ row.link }}" class="policymaker-row__link">
-            <div class="policymaker-row__color {{ row.organization_color }}"></div>
-            <div class="policymaker-row__title">
-              {{ row.title|t }}
-              {% if row.organization_type == 'Viranhaltija' or row.organization_type == 'Luottamushenkilö' %}
-                <div class="policymaker-row__sub-title" >{{ row.organization_name }}</div>
+          {% for row_key, row in values %}
+            {% if key == 'Lautakunnat ja johtokunnat'%}
+              {% if row_key %}
+                <h5 class="sector-title">{{ row_key|t }}</h5>
               {% endif %}
-              {% if row.organization_type == 'trustee' %}
-                <div class="policymaker-row__sub-title" >{{ row.trustee_type }}</div>
-              {% endif %}
-            </div>
-            <i class="hel-icon hel-icon--arrow-right"></i>
-          </a>
-        {% endfor %}
-          <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-            {{ 'Close'|t }}
-          </span>
+              {% for values in row %}
+                <a href="{{ values.link }}" class="policymaker-row__link">
+                  <div class="policymaker-row__color {{ values.organization_color }}"></div>
+                  <div class="policymaker-row__title">
+                    {{ values.title|t }}
+                    {% if values.organization_type == 'Viranhaltija'%}
+                      <div class="policymaker-row__sub-title" >{{ values.organization_name }}</div>
+                    {% endif %}
+                  </div>
+                  <i class="hel-icon hel-icon--arrow-right"></i>
+                </a>
+              {% endfor %}
+            {% else %}
+              <a href="{{ row.link }}" class="policymaker-row__link">
+                <div class="policymaker-row__color {{ row.organization_color }}"></div>
+                <div class="policymaker-row__title">
+                  {{ row.title|t }}
+                  {% if row.organization_type == 'Luottamushenkilö' or row.organization_type == 'Viranhaltija'%}
+                    <div class="policymaker-row__sub-title" >{{ row.organization_name }}</div>
+                  {% endif %}
+                  {% if row.organization_type == 'trustee' %}
+                    <div class="policymaker-row__sub-title" >{{ row.trustee_type }}</div>
+                  {% endif %}
+                </div>
+                <i class="hel-icon hel-icon--arrow-right"></i>
+              </a>
+            {% endif %}
+          {% endfor %}
+        <button class="button hds-button hds-button--primary load-more-btn">{{ 'Load more'|t}}</button>
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+        </span>
         </div>
       </div>
     </div>

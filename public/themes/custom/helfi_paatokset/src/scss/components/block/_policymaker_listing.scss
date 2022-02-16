@@ -107,4 +107,19 @@
     font-size: 20px;
     color: $gray;
   }
+
+  & + h5 {
+    margin-top: 64px;
+  }
+}
+
+.accordion-item__content__inner {
+  h5 {
+    font-weight: 500;
+    
+  }
+}
+
+.load-more-btn {
+  display: none;
 }
