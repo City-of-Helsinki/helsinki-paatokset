@@ -928,7 +928,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_record', json_encode($record_content));
     }
     // If record content can't or won't be fetched, use PDF from agenda item.
-    else if (!empty($data['pdf'])) {
+    elseif (!empty($data['pdf'])) {
       $node->set('field_decision_record', json_encode($data['pdf']));
     }
     // If neither can't be used, mark this item as failed.
