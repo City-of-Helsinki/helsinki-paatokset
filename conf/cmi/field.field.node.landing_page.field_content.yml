@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
+    - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.liftup_with_image
@@ -35,14 +37,15 @@ settings:
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
       content_cards: content_cards
+      accordion: accordion
+      chart: chart
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
-      chart: chart
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -22
-        enabled: false
+        enabled: true
       accordion_item:
         weight: -21
         enabled: false

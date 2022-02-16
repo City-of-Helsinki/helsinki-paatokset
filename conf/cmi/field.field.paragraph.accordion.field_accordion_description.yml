@@ -11,7 +11,8 @@ dependencies:
 third_party_settings:
   allowed_formats:
     allowed_formats:
-      - minimal
+      - full_html
+      - plain_text
 id: paragraph.accordion.field_accordion_description
 field_name: field_accordion_description
 entity_type: paragraph
