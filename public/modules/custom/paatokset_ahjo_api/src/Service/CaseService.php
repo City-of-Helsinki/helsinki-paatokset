@@ -590,6 +590,11 @@ class CaseService {
     }
     $motion_xpath = new \DOMXPath($motion_dom);
 
+    // If content is not set, use motion html instead.
+    if (empty($content)) {
+      $content_xpath = $motion_xpath;
+    }
+
     $output = [];
 
     $main_content = NULL;
@@ -609,17 +614,7 @@ class CaseService {
     // Motion content sections.
     // If decision content is empty, print motion content as main content.
     $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-    if (!$main_content) {
-      $motion_content = NULL;
-      foreach ($motion_sections as $section) {
-        $motion_content .= $section->ownerDocument->saveHTML($section);
-      }
-      $output['main'] = [
-        '#markup' => $motion_content,
-      ];
-    }
-    else {
-      // If decision content is set, split motions sections into accordions.
+    if ($content) {
       $motion_accordions = $this->getMotionSections($motion_sections);
       foreach ($motion_accordions as $accordion) {
         $output['accordions'][] = $accordion;
@@ -657,15 +652,15 @@ class CaseService {
     // Add decision date to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
-    if ($main_content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
+    if ($content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
       $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
       $appeal_content = '<p class="issue__decision-date">' . t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
     }
 
-    // Appeal information.
+    // Appeal information. Only display for decisions (if content is available).
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($appeal_info) {
+    if ($content && $appeal_info) {
       $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
     }
 
