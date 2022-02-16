@@ -1,6 +1,7 @@
 {#
   Template for case decision navigation
 #}
+{% if previous_decision or next_decision %}
 <div class="issue__decision-navigation">
   {% if previous_decision %}
     <a data-link="{{ previous_decision.id }}" href="?decision={{ previous_decision.id }}" class="paatokset__link-plain paatokset-button-link decision-navigation-button decision-navigation-button--previous">
@@ -15,3 +16,4 @@
     </a>
   {% endif %}
 </div>
+{% endif %}

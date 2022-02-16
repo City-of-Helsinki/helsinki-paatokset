@@ -208,15 +208,12 @@
   }
 }
 
-.issue__decision-navigation__wrapper {
-  margin-top: $spacing-half;
-  margin-bottom: 45px;
-}
-
 .issue__decision-navigation {
   height: 100%;
   display: flex;
   align-items: center;
+  margin-top: $spacing-half;
+  margin-bottom: 45px;
 
   .decision-navigation-button--next span {
     margin-left: auto;
