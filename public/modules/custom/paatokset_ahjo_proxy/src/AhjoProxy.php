@@ -873,14 +873,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    if (!empty($data['pdf'])) {
-      $record = json_encode($data['pdf']);
-    }
-    else {
-      $context['results']['failed'][] = $data['title'];
-      return;
-    }
-
     if (!empty($data['html'])) {
       $motion = $data['html'];
     }
@@ -926,6 +918,25 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
+    // Get record from endpoint, unless we're only using local data.
+    $record_content = [];
+    if ($data['endpoint']) {
+      $record_content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    }
+
+    if (!empty($record_content)) {
+      $node->set('field_decision_record', json_encode($record_content));
+    }
+    // If record content can't or won't be fetched, use PDF from agenda item.
+    else if (!empty($data['pdf'])) {
+      $node->set('field_decision_record', json_encode($data['pdf']));
+    }
+    // If neither can't be used, mark this item as failed.
+    else {
+      $context['results']['failed'][] = $data['title'];
+      return;
+    }
+
     $node->set('field_full_title', $title);
     $node->set('field_is_decision', 0);
     $node->set('field_top_category_name', $top_category);
@@ -937,7 +948,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->set('field_meeting_sequence_number', $meeting_number);
     $node->set('field_policymaker_id', $org_id);
     $node->set('field_dm_org_name', $org_name);
-    $node->set('field_decision_record', $record);
     $node->set('field_decision_motion', [
       'value' => $motion,
       'format' => 'plain_text',
