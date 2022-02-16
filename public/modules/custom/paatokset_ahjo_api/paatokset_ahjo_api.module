@@ -185,11 +185,11 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   }
 
   $hallituksen_jaosto = array_filter($filtered, function ($var) {
-    return ($var['is_city_council_division'] == '1');
+    return ($var['is_city_council_division'] === '1');
   });
 
   $filtered = array_filter($filtered, function ($var) {
-    return ($var['is_city_council_division'] == null || $var['is_city_council_division'] == '0');
+    return ($var['is_city_council_division'] === null || $var['is_city_council_division'] === '0');
   });
 
   $accordion_contents = [
@@ -266,7 +266,6 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $accordions_2 = [];
 
   foreach ($sectors_occupants as $key => $value) {
-    dump(strlen($key));
     if (strlen($key) == 0 ) {
       $accordion_key = 'Viranhaltijat: Muut';
     } else {
