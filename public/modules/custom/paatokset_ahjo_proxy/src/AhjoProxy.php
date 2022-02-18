@@ -1155,7 +1155,13 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // Attempt to fetch content first, because
     // migration doesn't complain about empty results.
-    $endpoint_url = self::API_BASE_URL . $endpoint . '/' . $id;
+    if ($endpoint = 'trustees') {
+      $endpoint_url = self::API_BASE_URL . 'agents/positionoftrust/' . $id;
+    }
+    else {
+      $endpoint_url = self::API_BASE_URL . $endpoint . '/' . $id;
+    }
+
     $data = $this->getContent($endpoint_url);
     if (empty($data)) {
       return 0;
