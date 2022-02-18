@@ -33,6 +33,15 @@ paatokset_ahjo_proxy.decisions_single:
     _permission: 'access content'
   methods: [GET]
 
+paatokset_ahjo_proxy.trustees_single:
+  path: '/ahjo-proxy/trustees/single/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::trusteesSingle'
+    id: placeholder
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
 paatokset_ahjo_proxy.get_aggregated_data:
   path: '/ahjo-proxy/aggregated/{dataset}'
   defaults:
