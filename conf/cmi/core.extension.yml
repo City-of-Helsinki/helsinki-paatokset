@@ -82,7 +82,6 @@ module:
   node: 0
   oembed_providers: 0
   options: 0
-  paatokset_ahjo: 0
   paatokset_ahjo_api: 0
   paatokset_ahjo_openid: 0
   paatokset_ahjo_proxy: 0
