@@ -3,7 +3,7 @@ langcode: fi
 status: true
 dependencies:
   module:
-    - paatokset_ahjo
+    - paatokset_ahjo_api
     - system
   theme:
     - helfi_paatokset
@@ -17,7 +17,7 @@ settings:
   id: meetings_calendar
   label: 'Paatokset meetings calendar'
   label_display: '0'
-  provider: paatokset_ahjo
+  provider: paatokset_ahjo_api
 visibility:
   request_path:
     id: request_path

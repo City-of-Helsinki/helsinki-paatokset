@@ -1,3 +1,21 @@
+vue-js:
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js: {type: external, minified: true}
+
+days-js:
+  js:
+    https://unpkg.com/dayjs@1.8.21/dayjs.min.js: {type: external, minified: true}
+    https://unpkg.com/dayjs@1.8.21/plugin/weekday.js: {type: external, minified: true}
+    https://unpkg.com/dayjs@1.8.21/plugin/weekOfYear.js: {type: external, minified: true}
+
+meetings_calendar:
+  js:
+    js/meetings_calendar.js: { }
+  dependencies:
+    - paatokset_ahjo_api/vue-js
+    - paatokset_ahjo_api/days-js
+    - core/drupal
+
 policymaker_listing:
   js:
     js/policymaker-listing.js: { }
