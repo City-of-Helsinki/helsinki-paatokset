@@ -1,0 +1,6 @@
+services:
+  paatokset_ahjo_api.ahjo_callback:
+    class: Drupal\paatokset_ahjo_api\Commands\AhjoCallbackCommands
+    tags:
+      - { name: drush.command }
+    arguments: ['@queue', '@logger.factory', '@database', '@paatokset_ahjo_proxy']
