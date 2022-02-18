@@ -75,18 +75,20 @@ class AhjoProxyController extends ControllerBase {
   }
 
   /**
-   * Get data for a single case.
+   * Get data for a single decision.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   HTTP request.
    * @param string $id
-   *   Case ID.
+   *   Native ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for meetings.
    */
   public function decisionsSingle(Request $request, string $id): JsonResponse {
-    return new JsonResponse([]);
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getSingleDecision($id, $query_string);
+    return new JsonResponse($data);
   }
 
   /**
@@ -103,6 +105,23 @@ class AhjoProxyController extends ControllerBase {
   public function casesSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getSingleCase($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Get data for a single trustee.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Agent ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for meetings.
+   */
+  public function trusteesSingle(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getSingleTrustee($id, $query_string);
     return new JsonResponse($data);
   }
 
