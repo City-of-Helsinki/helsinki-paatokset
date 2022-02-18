@@ -10,9 +10,12 @@
 
 .issue__title {
   margin-bottom: $spacing-and-half;
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: normal;
 
-  @include breakpoint($breakpoint-xl) {
-    font-size: 72px;
+  @include breakpoint($breakpoint-l) {
+    font-size: 52px;
   }
 }
 
@@ -128,10 +131,12 @@
 
 .issue-content__title h2 {
   margin-bottom: 32px;
+  line-height: 1.1;
   font-weight: normal;
+  font-size: 24px;
 
-  @include breakpoint($breakpoint-xl) {
-    font-size: $font-size-heading-1;
+  @include breakpoint($breakpoint-l) {
+    font-size: 36px;
   }
 }
 
