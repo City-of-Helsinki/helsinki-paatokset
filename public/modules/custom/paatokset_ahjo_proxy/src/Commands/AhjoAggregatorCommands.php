@@ -173,6 +173,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       ];
     }
 
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
     batch_set([
       'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
       'operations' => $operations,
@@ -307,6 +312,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       ];
     }
 
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
     batch_set([
       'title' => 'Aggregating council groups and organizations.',
       'operations' => $operations,
@@ -346,6 +356,11 @@ class AhjoAggregatorCommands extends DrushCommands {
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processGroupItem',
         [$data],
       ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
     }
 
     batch_set([
@@ -398,6 +413,11 @@ class AhjoAggregatorCommands extends DrushCommands {
           ];
         }
       }
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
     }
 
     $this->logger->info('Prosessing individual positions of trust, total of ' . $count . ' unique items and ' . $duplicates . ' duplicates.');
@@ -532,6 +552,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       ];
     }
 
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
     batch_set([
       'title' => 'Aggregating data for decisions.',
       'operations' => $operations,
@@ -596,6 +621,11 @@ class AhjoAggregatorCommands extends DrushCommands {
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::parseDecisionItem',
         [$data],
       ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
     }
 
     batch_set([
