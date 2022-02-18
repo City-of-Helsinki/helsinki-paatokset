@@ -1,5 +1,14 @@
-.breadcrumb__link,
+.breadcrumb__link {
+  /* Force breadcrumbs to be in one line */
+  white-space: nowrap;
+}
+/* Truncate titles, specifically for cases and decisions. */
+.breadcrumb__link:nth-child(6),
 .breadcrumb__current {
+  @include breakpoint($breakpoint-m) {
+    display: block;
+  }
+
   text-overflow: ellipsis;
   overflow-x: hidden;
   white-space: nowrap;
