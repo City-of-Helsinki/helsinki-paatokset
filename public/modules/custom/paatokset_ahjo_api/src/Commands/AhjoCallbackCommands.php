@@ -154,7 +154,7 @@ class AhjoCallbackCommands extends DrushCommands {
     }
     $this->writeln('Total: ' . $count);
     $this->writeln('Operations: ' . implode(', ', $operations) . '.');
-    $this->writeln('Run with: drush queue:run ' . SELF::QUEUE_NAME);
+    $this->writeln('Run with: drush queue:run ' . self::QUEUE_NAME);
   }
 
   /**
@@ -178,7 +178,7 @@ class AhjoCallbackCommands extends DrushCommands {
 
     try {
       $this->queue->deleteItem($item);
-      $this->logger()->success('Removed item ' . $id .' from the queue.');
+      $this->logger()->success('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
       $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
@@ -249,4 +249,5 @@ class AhjoCallbackCommands extends DrushCommands {
 
     return $query->execute()->fetchObject();
   }
+
 }

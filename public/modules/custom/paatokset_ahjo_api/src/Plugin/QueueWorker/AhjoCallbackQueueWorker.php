@@ -97,4 +97,5 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
       '@id' => $entity,
     ]);
   }
+
 }
