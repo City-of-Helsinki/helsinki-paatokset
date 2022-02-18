@@ -1149,6 +1149,14 @@ class AhjoProxy implements ContainerInjectionInterface {
       return 5;
     }
 
+    // Attempt to fetch content first, because
+    // migration doesn't complain about empty results.
+    $endpoint_url = self::API_BASE_URL . $endpoint . '/' . $id;
+    $data = $this->getContent($endpoint_url);
+    if (empty($data)) {
+      return 0;
+    }
+
     // Get either local proxy URL or OpenShift reverse proxy address.
     if (getenv('AHJO_PROXY_BASE_URL')) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
@@ -1299,6 +1307,28 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     return $headers;
+  }
+
+  /**
+   * Check if proxy / open ID configuration is set and tokens are valid.
+   *
+   * @return bool
+   *   If proxy is operational.
+   */
+  public function isOperational(): bool {
+    // Check if access token is still valid (not expired).
+    if ($this->ahjoOpenId->checkAuthToken()) {
+      $access_token = $this->ahjoOpenId->getAuthToken();
+    }
+    else {
+      // Refresh and return new access token.
+      $access_token = $this->ahjoOpenId->refreshAuthToken();
+    }
+
+    if (!$access_token) {
+      return FALSE;
+    }
+    return TRUE;
   }
 
   /**
