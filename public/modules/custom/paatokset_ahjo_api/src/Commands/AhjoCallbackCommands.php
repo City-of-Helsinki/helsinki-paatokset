@@ -102,6 +102,8 @@ class AhjoCallbackCommands extends DrushCommands {
     ]);
 
     $items = [];
+    $queues = [];
+    $operations = [];
     while ($item = $this->queue->claimItem()) {
       $items[] = $item;
 
@@ -114,6 +116,14 @@ class AhjoCallbackCommands extends DrushCommands {
       }
       else {
         $operation = NULL;
+      }
+
+      if (!in_array($item->data['id'], $queues)) {
+        $queues[] = $item->data['id'];
+      }
+
+      if (!in_array($operation, $operations)) {
+        $operations[] = $operation;
       }
 
       if (isset($item->data['content']->id)) {
@@ -138,6 +148,10 @@ class AhjoCallbackCommands extends DrushCommands {
     }
 
     $table->render();
+
+    $this->writeln('Queues: ' . implode(', ', $queues) . '.');
+    $this->writeln('Operations: ' . implode(', ', $operations) . '.');
+    $this->writeln('Run with: drush queue:run ' . SELF::QUEUE_NAME);
   }
 
   /**
