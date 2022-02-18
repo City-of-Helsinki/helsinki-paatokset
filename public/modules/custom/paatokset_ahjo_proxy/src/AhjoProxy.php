@@ -673,7 +673,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       $filename = 'trustees.json';
     }
 
-
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $ahjo_proxy->fileRepository->writeData(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
