@@ -1,0 +1,6 @@
+.breadcrumb__link,
+.breadcrumb__current {
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
