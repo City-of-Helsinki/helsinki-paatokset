@@ -16,6 +16,9 @@ use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Psr7\Response;
 use Drupal\node\Entity\Node;
+use Drupal\migrate\Plugin\MigrationPluginManager;
+use Drupal\migrate\MigrateMessage;
+use Drupal\migrate\MigrateExecutable;
 
 /**
  * Handler for AHJO API Proxy.
@@ -51,6 +54,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private $entityTypeManager;
+
+  /**
+   * Migration manager.
+   *
+   * @var \Drupal\migrate\Plugin\MigrationPluginManager
+   */
+  protected $migrationManager;
 
   /**
    * The logger service.
@@ -96,6 +106,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Data Cache.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
+   * @param \Drupal\migrate\Plugin\MigrationPluginManager $migration_manager
+   *   Migration manager.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory service.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
@@ -104,11 +116,12 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
     $this->entityTypeManager = $entity_type_manager;
+    $this->migrationManager = $migration_manager;
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
   }
 
@@ -120,6 +133,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('http_client'),
       $container->get('cache.default'),
       $container->get('entity_type.manager'),
+      $container->get('plugin.manager.migration'),
       $container->get('logger.factory'),
       $container->get('paatokset_ahjo_openid')
     );
@@ -171,6 +185,11 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $data = $this->getContent($item_url);
+
+    if (!empty($data) && strpos($item_url, "decisions/")) {
+      $data = array_shift($data);
+    }
+
     return $data;
   }
 
@@ -258,9 +277,55 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $meeting_url = self::API_BASE_URL . 'cases/' . $id . '?' . urldecode($query_string);
-    $meeting = $this->getContent($meeting_url, $bypass_cache);
-    return ['cases' => [$meeting]];
+    $cases_url = self::API_BASE_URL . 'cases/' . $id . '?' . urldecode($query_string);
+    $case = $this->getContent($cases_url, $bypass_cache);
+    return ['cases' => [$case]];
+  }
+
+  /**
+   * Get single decision from Ahjo API.
+   *
+   * @param string $id
+   *   Native ID or Case ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Decision data inside 'decisions' to normalize output for migrations.
+   */
+  public function getSingleDecision(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $decisions_url = self::API_BASE_URL . 'decisions/' . $id . '?' . urldecode($query_string);
+    $decision = $this->getContent($decisions_url, $bypass_cache);
+
+    // Single decisions are already inside an array.
+    return ['decisions' => $decision];
+  }
+
+  /**
+   * Get single position of trust from Ahjo API.
+   *
+   * @param string $id
+   *   Agent ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Trustee data inside 'trustees' to normalize output for migrations.
+   */
+  public function getSingleTrustee(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $agent_url = self::API_BASE_URL . 'agents/positionoftrust/' . $id . '?' . urldecode($query_string);
+    $agent = $this->getContent($agent_url, $bypass_cache);
+    return ['trustees' => [$agent]];
   }
 
   /**
@@ -1032,6 +1097,85 @@ class AhjoProxy implements ContainerInjectionInterface {
       'case_id_label' => $diary_label,
       'classification_code' => $classification_code,
     ];
+  }
+
+  /**
+   * Migrate single entity.
+   *
+   * @param string $endpoint
+   *   Endpoint to use.
+   * @param string $id
+   *   Entity ID.
+   *
+   * @return int
+   *   Migration status.
+   *   - Completed: 1
+   *   - Incomplete, stopped: 2
+   *   - Stopped: 3
+   *   - Failed: 4
+   *   - Skipped: 5
+   *   - Disabled: 6
+   */
+  public function migrateSingleEntity(string $endpoint, string $id): int {
+    switch ($endpoint) {
+      case 'meetings':
+        $migration_id = 'ahjo_meetings:single';
+        $migration_url = '/ahjo-proxy/meetings/single/';
+        break;
+      case 'decisions':
+        $migration_id = 'ahjo_decisions:single';
+        $migration_url = '/ahjo-proxy/decisions/single/';
+        break;
+      case 'cases':
+        $migration_id = 'ahjo_cases:single';
+        $migration_url = '/ahjo-proxy/cases/single/';
+        break;
+      case 'trustees':
+        $migration_id = 'ahjo_trustees:single';
+        $migration_url = '/ahjo-proxy/trustees/single/';
+        break;
+      default:
+        $migration_id = NULL;
+        $migration_url = NULL;
+        break;
+    }
+
+    // Invalid ID or URL, return "Skipped" because dependencies couldn't be met.
+    if (!$migration_id || !$migration_url) {
+      return 5;
+    }
+
+    // Get either local proxy URL or OpenShift reverse proxy address.
+    if (getenv('AHJO_PROXY_BASE_URL')) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+    }
+    elseif (getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
+      $base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
+    }
+    else {
+      $base_url = '';
+    }
+
+    $migration = $this->migrationManager->createInstance($migration_id, [
+      'source' => [
+        'urls' => [
+          $base_url . $migration_url . $id,
+        ],
+      ],
+    ]);
+
+    // Migration couldn't be loaded, so return with "disabled" status.
+    if (!$migration) {
+      return 6;
+    }
+
+    // Always update even if entity exists.
+    $migration->getIdMap()->prepareUpdate();
+
+    // Execute migration.
+    $executable = new MigrateExecutable($migration, new MigrateMessage());
+    $status = $executable->import();
+    return $status;
   }
 
   /**

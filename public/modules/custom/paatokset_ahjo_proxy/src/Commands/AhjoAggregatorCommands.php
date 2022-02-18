@@ -798,6 +798,27 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Updates single entity via migration.
+   *
+   * @param string $endpoint
+   *   Additional options for the command.
+   * @param string $id
+   *   Entity ID
+   *
+   * @command ahjo-proxy:update-entity
+   *
+   * @usage ahjo-proxy:update-entity meetings U0298020221
+   *   Updates or creates entity with ID U0298020221.
+   *
+   * @aliases ap:update
+   */
+  public function updateSingleEntity(string $endpoint, string $id): void {
+    $this->logger->info('Migrating single entity from ' . $endpoint . ' with ID: ' . $id);
+    $status = $this->ahjoProxy->migrateSingleEntity($endpoint, $id);
+    $this->logger->info('Completed with status: ' . $status);
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
