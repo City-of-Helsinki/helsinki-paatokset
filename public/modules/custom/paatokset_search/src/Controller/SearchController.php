@@ -14,7 +14,7 @@ class SearchController extends ControllerBase {
    */
   public function decisions() {
     $build = [
-      '#markup' => '<div id="paatokset_search" data-type="decisions" data-url="' . getenv('REACT_APP_ELASTIC_URL') . '"></div>',
+      '#markup' => '<div id="paatokset_search" class="paatokset-search--decisions" data-type="decisions" data-url="' . getenv('REACT_APP_ELASTIC_URL') . '"></div>',
       '#attached' => [
         'library' => [
           'paatokset_search/paatokset-search',

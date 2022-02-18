@@ -129,8 +129,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     return strcmp($a['last_name'], $b['last_name']);
   }
 
-  usort($members, 'cmp');
-  usort($deputies, 'cmp');
+  // usort($members, 'cmp');
+  // usort($deputies, 'cmp');
 
   $members_formatted = [];
 

@@ -49,6 +49,11 @@ class SectorJSON extends ProcessorPluginBase {
     $datasourceId = $item->getDatasourceId();
     if ($datasourceId == 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
+
+      if($node->getType() !== 'policymaker') {
+        return;
+      }
+
       $sectorData = $node->get('field_dm_sector')->value;
 
       if ($sectorData && $sectorData !== 'null') {
