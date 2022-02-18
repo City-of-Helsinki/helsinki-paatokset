@@ -636,7 +636,9 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
  */
 function _paatokset_ahjo_api_get_first_name($value): string {
   $bits = explode(', ', (string) $value);
-  return (string) array_shift(array_slice($bits, -1));
+  $bit = array_slice($bits, -1);
+  $bit = array_shift($bit);
+  return (string) $bit;
 }
 
 /**
@@ -650,7 +652,9 @@ function _paatokset_ahjo_api_get_first_name($value): string {
  */
 function _paatokset_ahjo_api_get_last_name($value): string {
   $bits = explode(', ', (string) $value);
-  return (string) array_shift(array_slice($bits, 0, 1));
+  $bit = array_slice($bits, 0, 1);
+  $bit = array_shift($bit);
+  return (string) $bit;
 }
 
 /**
