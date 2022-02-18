@@ -819,6 +819,36 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Generates callback data.
+   *
+   * @command ahjo-proxy:generate-queue
+   *
+   * @aliases ap:gq
+   */
+  public function generateCallbackQueue(): void {
+    $data = $this->ahjoProxy->getStatic('callback_test.json');
+    $queue = \Drupal::service('queue')->get('ahjo_api_subscriber_queue');
+    if (!$queue) {
+      $this->logger()->error('Could not load queue.');
+    }
+
+    $count = 0;
+    foreach ($data as $item) {
+      if (empty($item['data']) || !isset($item['data']['id']) || !isset($item['data']['content'])) {
+        continue;
+      }
+
+      $queue->createItem([
+        'id' => $item['data']['id'],
+        'content' => (object) $item['data']['content'],
+      ]);
+      $count++;
+    }
+
+    $this->logger()->info('Created ' . $count . ' items.');
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
@@ -845,6 +875,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'positionsoftrust_council.json',
       'trustees.json',
       'trustees_council.json',
+      'callback_test.json',
     ];
 
     foreach ($static_files as $file) {
