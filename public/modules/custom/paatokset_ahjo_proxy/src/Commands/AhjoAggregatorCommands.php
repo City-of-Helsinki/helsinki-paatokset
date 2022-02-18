@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -41,6 +42,13 @@ class AhjoAggregatorCommands extends DrushCommands {
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
+   * File repository service.
+   *
+   * @var \Drupal\file\FileRepositoryInterface
+   */
+  protected $fileRepository;
+
+  /**
    * Node storage service.
    *
    * @var \Drupal\node\NodeStorageInterface
@@ -56,12 +64,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Ahjo Proxy service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
+   * @param \Drupal\file\FileRepositoryInterface $file_repository
+   *   File repository.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entity_type_manager, FileRepositoryInterface $file_repository) {
     $this->ahjoProxy = $ahjo_proxy;
     $this->entityTypeManager = $entity_type_manager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
+    $this->fileRepository = $file_repository;
   }
 
   /**
@@ -242,7 +253,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $this->logger->info('Received ' . count($data[$list_key]) . ' results.');
-    file_save_data(json_encode($data), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $this->fileRepository->writeData(json_encode($data), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $this->logger->info('Stores data into public://' . $filename);
   }
 
@@ -912,7 +923,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
       $file_contents = file_get_contents($file_path);
       if (!empty($file_contents)) {
-        file_save_data($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
+        $this->fileRepository->writeData($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
         $this->logger->info('Saved file into public://' . $file);
       }
       else {

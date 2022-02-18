@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
@@ -70,6 +71,13 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected $logger;
 
   /**
+   * File repository service.
+   *
+   * @var \Drupal\file\FileRepositoryInterface
+   */
+  protected $fileRepository;
+
+  /**
    * Ahjo Open ID service.
    *
    * @var \Drupal\paatokset_ahjo_openid\AhjoOpenId
@@ -110,18 +118,21 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Migration manager.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory service.
+   * @param \Drupal\file\FileRepositoryInterface $file_repository
+   *   File repository.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
     $this->entityTypeManager = $entity_type_manager;
     $this->migrationManager = $migration_manager;
+    $this->fileRepository = $file_repository;
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
   }
 
@@ -135,6 +146,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('entity_type.manager'),
       $container->get('plugin.manager.migration'),
       $container->get('logger.factory'),
+      $container->get('file.repository'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -499,6 +511,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function finishBatch($success, array $results, array $operations) {
     $messenger = \Drupal::messenger();
+
     $total = count($results['items']);
 
     $end_time = microtime(TRUE);
@@ -513,11 +526,12 @@ class AhjoProxy implements ContainerInjectionInterface {
       $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
     }
 
-    file_save_data(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $ahjo_proxy->fileRepository->writeData(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
@@ -585,11 +599,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       $filename = 'positionsoftrust.json';
     }
 
-    file_save_data(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
@@ -657,11 +673,14 @@ class AhjoProxy implements ContainerInjectionInterface {
       $filename = 'trustees.json';
     }
 
-    file_save_data(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $ahjo_proxy->fileRepository->writeData(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    file_save_data(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
