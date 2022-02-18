@@ -803,7 +803,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @param string $endpoint
    *   Additional options for the command.
    * @param string $id
-   *   Entity ID
+   *   Entity ID.
    *
    * @command ahjo-proxy:update-entity
    *

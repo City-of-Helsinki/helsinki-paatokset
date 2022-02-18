@@ -123,7 +123,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees',
         'council' => '/ahjo-proxy/aggregated/trustees_council',
-        'single' => '/ahjo-proxy/trustees/single'
+        'single' => '/ahjo-proxy/trustees/single',
       ],
     ];
 

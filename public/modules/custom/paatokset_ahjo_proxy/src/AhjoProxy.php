@@ -1122,18 +1122,22 @@ class AhjoProxy implements ContainerInjectionInterface {
         $migration_id = 'ahjo_meetings:single';
         $migration_url = '/ahjo-proxy/meetings/single/';
         break;
+
       case 'decisions':
         $migration_id = 'ahjo_decisions:single';
         $migration_url = '/ahjo-proxy/decisions/single/';
         break;
+
       case 'cases':
         $migration_id = 'ahjo_cases:single';
         $migration_url = '/ahjo-proxy/cases/single/';
         break;
+
       case 'trustees':
         $migration_id = 'ahjo_trustees:single';
         $migration_url = '/ahjo-proxy/trustees/single/';
         break;
+
       default:
         $migration_id = NULL;
         $migration_url = NULL;
