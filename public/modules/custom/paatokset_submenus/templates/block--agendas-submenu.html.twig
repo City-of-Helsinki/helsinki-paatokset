@@ -89,7 +89,7 @@
 
         <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
           {% for document in documents %}
-            {% include '@paatokset_ahjo/component/document.html.twig' %}
+            {% include '@paatokset_ahjo_api/component/document.html.twig' %}
           {% endfor %}
         </div>
       {% endfor %}
@@ -108,7 +108,7 @@
 
         <div{{ decision_container_attributes.addClass(decision_container_classes).setAttribute('value', year) }}>
           {% for decision in decisions %}
-           {% include '@paatokset_ahjo/component/decision--list-item.html.twig' %}
+           {% include '@paatokset_ahjo_api/component/decision--list-item.html.twig' %}
           {% endfor %}
         </div>
       {% endfor %}
