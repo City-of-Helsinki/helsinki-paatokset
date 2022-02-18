@@ -89,20 +89,14 @@ class AhjoCallbackCommands extends DrushCommands {
    * @aliases ac:l
    */
   public function listCallbackQueue(?string $name = NULL): void {
-    if ($name) {
-      $this->output()->writeln('Queue: ' . $name);
-    }
-    else {
-      $this->output()->writeln('All queues.');
-    }
-
     $table = new Table($this->output());
     $table->setHeaders([
       'Queue', 'ID', 'Time', 'Operation', 'Entity',
     ]);
 
+    $count = 0;
     $items = [];
-    $queues = [];
+    $ids = [];
     $operations = [];
     while ($item = $this->queue->claimItem()) {
       $items[] = $item;
@@ -111,6 +105,8 @@ class AhjoCallbackCommands extends DrushCommands {
         continue;
       }
 
+      $count++;
+
       if (isset($item->data['content']->updatetype)) {
         $operation = $item->data['content']->updatetype;
       }
@@ -118,8 +114,8 @@ class AhjoCallbackCommands extends DrushCommands {
         $operation = NULL;
       }
 
-      if (!in_array($item->data['id'], $queues)) {
-        $queues[] = $item->data['id'];
+      if (!isset($ids[$item->data['id']])) {
+        $ids[$item->data['id']] = [];
       }
 
       if (!in_array($operation, $operations)) {
@@ -131,6 +127,10 @@ class AhjoCallbackCommands extends DrushCommands {
       }
       else {
         $entity = NULL;
+      }
+
+      if ($entity && !in_array($entity, $ids[$item->data['id']])) {
+        $ids[$item->data['id']][] = $entity;
       }
 
       $table->addRow([
@@ -149,7 +149,10 @@ class AhjoCallbackCommands extends DrushCommands {
 
     $table->render();
 
-    $this->writeln('Queues: ' . implode(', ', $queues) . '.');
+    foreach ($ids as $key => $value) {
+      $this->writeln('Queue: ' . $key . ' has ' . count($value) . ' unique IDs.');
+    }
+    $this->writeln('Total: ' . $count);
     $this->writeln('Operations: ' . implode(', ', $operations) . '.');
     $this->writeln('Run with: drush queue:run ' . SELF::QUEUE_NAME);
   }
