@@ -50,7 +50,7 @@ class SectorJSON extends ProcessorPluginBase {
     if ($datasourceId == 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if($node->getType() !== 'policymaker') {
+      if ($node->getType() !== 'policymaker') {
         return;
       }
 

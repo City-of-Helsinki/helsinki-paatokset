@@ -9,8 +9,8 @@ use Drupal\search_api\Processor\ProcessorProperty;
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 
 /**
- * Transforms trustee title into conventional name spelling
- * 
+ * Transforms trustee title into conventional name spelling.
+ *
  * @SearchApiProcessor(
  *    id = "trustee_name",
  *    label = @Translation("Trustee name"),
@@ -23,12 +23,13 @@ use Drupal\paatokset_ahjo_api\Service\TrusteeService;
  * )
  */
 class TrusteeName extends ProcessorPluginBase {
+
   /**
    * {@inheritdoc}
    */
   public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
     $properties = [];
-    
+
     if ($datasource) {
       $definition = [
         'label' => $this->t('Trustee name'),
@@ -47,18 +48,19 @@ class TrusteeName extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDataSourceId();
-    if($datasourceId === 'entity:node') {
+    if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if($node->getType() !== 'trustee') {
+      if ($node->getType() !== 'trustee') {
         return;
       }
 
       $name = TrusteeService::getTrusteeName($node);
       $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'trustee_name');
-      if(isset($fields['trustee_name'])) {
+      if (isset($fields['trustee_name'])) {
         $fields['trustee_name']->addValue($name);
       }
     }
   }
+
 }

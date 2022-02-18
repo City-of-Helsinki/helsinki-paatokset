@@ -10,7 +10,7 @@ use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 
 /**
  * Retrieves the trustee title with overrides.
- * 
+ *
  * @SearchApiProcessor(
  *    id = "trustee_title",
  *    label = @Translation("Trustee title"),
@@ -23,12 +23,13 @@ use Drupal\paatokset_ahjo_api\Service\TrusteeService;
  * )
  */
 class TrusteeTitle extends ProcessorPluginBase {
+
   /**
    * {@inheritdoc}
    */
   public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
     $properties = [];
-    
+
     if ($datasource) {
       $definition = [
         'label' => $this->t('Trustee title'),
@@ -47,18 +48,19 @@ class TrusteeTitle extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDataSourceId();
-    if($datasourceId === 'entity:node') {
+    if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if($node->getType() !== 'trustee') {
+      if ($node->getType() !== 'trustee') {
         return;
       }
 
       $name = TrusteeService::getTrusteeTitle($node);
       $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'trustee_title');
-      if(isset($fields['trustee_title'])) {
+      if (isset($fields['trustee_title'])) {
         $fields['trustee_title']->addValue($name);
       }
     }
   }
+
 }

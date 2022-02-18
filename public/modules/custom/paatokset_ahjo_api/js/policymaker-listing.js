@@ -5,26 +5,25 @@
  * Limits visible policymakers to 50 and adds load more functionality
  */
 
- (function($, Drupal) {
-
-  
+ (function ($, Drupal) {
 
   Drupal.behaviors.PolicymakerListing = {
     attach: function (context) {
-        $(document).ready(function(){
+        $(document).ready(function () {
           const accordions = $('.accordion-item__content__inner', context)
 
-          accordions.each(function() {
+          accordions.each(function () {
             console.log($(this).children().length)
             if($(this).children().length > 50) {
 
               let children = $(this).children()
               $(this).find('.load-more-btn', context).css( 'display', 'inline-flex' );
 
-              children.each(function() {
-                if($(this).attr('class') === 'policymaker-row__link' || $(this).attr('class') === 'sector-title')
+              children.each(function () {
+                if($(this).attr('class') === 'policymaker-row__link' || $(this).attr('class') === 'sector-title') {
                 $(this).hide()
-              })
+              }
+                })
 
               children.slice(0, 50).css( "display", "flex" )
 
@@ -43,7 +42,7 @@
             }
           });
         })
-    
+
     }
   }
 
