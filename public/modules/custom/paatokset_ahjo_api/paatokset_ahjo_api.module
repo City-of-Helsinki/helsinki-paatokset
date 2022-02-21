@@ -79,6 +79,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
 
+  $meetings_with_color = [];
   foreach($all_meetings as $meeting) {
     $meeting['organization_color'] = $policymakerService->getPolicymakerClassById($meeting['policymaker']);
     $meetings_with_color[] = $meeting;
