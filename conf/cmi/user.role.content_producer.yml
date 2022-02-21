@@ -35,7 +35,7 @@ dependencies:
 _core:
   default_config_hash: XhNzDGDspXeMyW4TAki8MB6z-vzBwmtP_efemgX6-HI
 id: content_producer
-label: Sisällöntuottaja
+label: 'Content producer'
 weight: 3
 is_admin: null
 permissions:
@@ -165,3 +165,10 @@ permissions:
   - 'create hel_map media'
   - 'delete own hel_map media'
   - 'edit own hel_map media'
+  - 'administer paragraphs library'
+  - 'set landing_page published on date'
+  - 'set page published on date'
+  - 'use text format full_html'
+  - 'use text format minimal'
+  - 'view any unpublished content'
+  - 'edit any helfi_chart media'

@@ -43,11 +43,12 @@ dependencies:
     - taxonomy
     - toolbar
     - view_unpublished
+    - content_lock
 _core:
   default_config_hash: wJWcExCcstsjfohW4IUVRm742x2vKz6nOlZpa3OG7yQ
 id: admin
-label: Ylläpitäjä
-weight: 2
+label: Administrator
+weight: 5
 is_admin: null
 permissions:
   - 'access administration pages'
@@ -251,3 +252,14 @@ permissions:
   - 'delete own hel_map media'
   - 'edit any hel_map media'
   - 'edit own hel_map media'
+  - 'access content'
+  - 'administer hotjar settings'
+  - 'assign editor role'
+  - 'set landing_page published on date'
+  - 'set page published on date'
+  - 'translate configuration'
+  - 'use menu link attributes'
+  - 'use text format full_html'
+  - 'use text format minimal'
+  - 'view media'
+  - 'break content lock'
