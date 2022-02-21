@@ -17,8 +17,6 @@ dependencies:
     - path
     - scheduler
     - select2
-_core:
-  default_config_hash: vE1ebRQw1g5wxCHlrC52xufxcAnGWkut8bOLaO37CyE
 id: node.article.default
 targetEntityType: node
 bundle: article

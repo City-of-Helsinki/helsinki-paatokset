@@ -6,8 +6,6 @@ dependencies:
     - filter.format.full_html
   module:
     - ckeditor
-_core:
-  default_config_hash: gbKl_x1IJKUaF94IUbOx7E4G4-5WM7C33s7ABH74Rz8
 format: full_html
 editor: ckeditor
 settings:
@@ -34,7 +32,7 @@ settings:
         -
           name: Media
           items:
-            1: quote
+            - quote
         -
           name: Links
           items:
@@ -50,6 +48,7 @@ settings:
             - Paste
             - PasteFromWord
             - SpecialChar
+            - Table
             - Source
   plugins:
     drupallink:

@@ -1,9 +1,12 @@
 uuid: 57d1d612-b4d8-4971-b597-253a85f8959e
 langcode: en
 status: true
-dependencies: {  }
-_core:
-  default_config_hash: ifshZc9C49jtLxCX0dHi5u22TmXRqf4YpOTupSJHf7Y
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
 id: accordion
 label: Accordion
 icon_uuid: null

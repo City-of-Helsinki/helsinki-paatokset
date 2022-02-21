@@ -9,8 +9,6 @@ dependencies:
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: jwPtQLPo8wWcMabnbNz-98N7x36gzjfbKw5utoTOf8A
 id: paragraph.columns.field_columns_right_column
 field_name: field_columns_right_column
 entity_type: paragraph

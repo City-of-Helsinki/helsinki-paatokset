@@ -14,8 +14,6 @@ dependencies:
     - entity_reference_revisions
     - metatag
     - user
-_core:
-  default_config_hash: iP63ruNj8P30AR0u-V9j_M03qHUEpzx-qneyWJtGvNw
 id: node.article.default
 targetEntityType: node
 bundle: article

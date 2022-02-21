@@ -2122,6 +2122,66 @@
             }
         },
         {
+            "name": "drupal/content_lock",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/content_lock.git",
+                "reference": "8.x-2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/content_lock-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "9ea5810067c0df18879a16a19236e0cb46f9fba7"
+            },
+            "require": {
+                "drupal/core": "^8.8|^9.0"
+            },
+            "require-dev": {
+                "drupal/conflict": "^2.0@ALPHA",
+                "drupal/prefetch_cache": "dev-1.x"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.2",
+                    "datestamp": "1607936866",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "chr.fritsch",
+                    "homepage": "https://www.drupal.org/user/2103716"
+                },
+                {
+                    "name": "ergonlogic",
+                    "homepage": "https://www.drupal.org/user/368613"
+                },
+                {
+                    "name": "mfb",
+                    "homepage": "https://www.drupal.org/user/12302"
+                },
+                {
+                    "name": "pandaski",
+                    "homepage": "https://www.drupal.org/user/1987218"
+                }
+            ],
+            "description": "Prevents multiple users from trying to edit a content entity simultaneously to prevent edit conflicts.",
+            "homepage": "https://www.drupal.org/project/content_lock",
+            "support": {
+                "source": "https://git.drupalcode.org/project/content_lock"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "9.3.5",
             "source": {
@@ -3707,16 +3767,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "2.2.6",
+            "version": "2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "654beba0403b51af0bad6536de111b9af474f489"
+                "reference": "5463ca40d84b5b4133fe26e0b09f4a04e6c4545a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/654beba0403b51af0bad6536de111b9af474f489",
-                "reference": "654beba0403b51af0bad6536de111b9af474f489",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/5463ca40d84b5b4133fe26e0b09f4a04e6c4545a",
+                "reference": "5463ca40d84b5b4133fe26e0b09f4a04e6c4545a",
                 "shasum": ""
             },
             "require": {
@@ -3731,10 +3791,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.2.6",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.2.8",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2022-02-09T07:31:16+00:00"
+            "time": "2022-02-17T08:11:34+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -3905,16 +3965,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "2.4.7",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "8d69dd7eed993f29aa6406de512945dfe21a92df"
+                "reference": "b1d3854a85bcb0ec01b4a910cd93c243d9da0856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/8d69dd7eed993f29aa6406de512945dfe21a92df",
-                "reference": "8d69dd7eed993f29aa6406de512945dfe21a92df",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/b1d3854a85bcb0ec01b4a910cd93c243d9da0856",
+                "reference": "b1d3854a85bcb0ec01b4a910cd93c243d9da0856",
                 "shasum": ""
             },
             "require": {
@@ -3924,6 +3984,7 @@
                 "drupal/config_ignore": "^2.3",
                 "drupal/config_replace": "^2.0",
                 "drupal/config_rewrite": "^1.4",
+                "drupal/content_lock": "^2.2",
                 "drupal/core-recommended": ">=9.3",
                 "drupal/crop": "^2.1",
                 "drupal/default_content": "^2.0.0-alpha1",
@@ -4005,10 +4066,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/2.4.7",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/2.5.0",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2022-02-09T07:31:08+00:00"
+            "time": "2022-02-18T10:00:22+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -6771,12 +6832,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10276,12 +10337,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -12974,16 +13035,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.1.1",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "15a90844ad40f127afd244c0cad228de2a80052a"
+                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/15a90844ad40f127afd244c0cad228de2a80052a",
-                "reference": "15a90844ad40f127afd244c0cad228de2a80052a",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
+                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
                 "shasum": ""
             },
             "require": {
@@ -13019,9 +13080,9 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.1.1"
+                "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
-            "time": "2022-02-07T21:56:48+00:00"
+            "time": "2022-02-21T01:04:05+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -13353,16 +13414,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.10",
+            "version": "9.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "d5850aaf931743067f4bfc1ae4cbd06468400687"
+                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d5850aaf931743067f4bfc1ae4cbd06468400687",
-                "reference": "d5850aaf931743067f4bfc1ae4cbd06468400687",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/665a1ac0a763c51afc30d6d130dac0813092b17f",
+                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f",
                 "shasum": ""
             },
             "require": {
@@ -13418,7 +13479,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.10"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.11"
             },
             "funding": [
                 {
@@ -13426,7 +13487,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-05T09:12:13+00:00"
+            "time": "2022-02-18T12:46:09+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -14278,16 +14339,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "5.0.4",
+            "version": "5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4"
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
-                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/0ca8db5a5fc9c8646244e629625ac486fa286bf2",
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2",
                 "shasum": ""
             },
             "require": {
@@ -14330,7 +14391,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.4"
+                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.5"
             },
             "funding": [
                 {
@@ -14338,7 +14399,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-10T07:01:19+00:00"
+            "time": "2022-02-14T08:28:10+00:00"
         },
         {
             "name": "sebastian/lines-of-code",

@@ -420,3 +420,12 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
 function helfi_paatokset_preprocess_menu(&$variables) {
   $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
 }
+
+/**
+ * Implements hook_preprocess_html() for HTML document templates.
+ *
+ * {@inheritdoc}
+ */
+function helfi_paatokset_preprocess_field__node__field_content(&$variables) {
+  $variables['attributes']['class'][] = 'container';
+}

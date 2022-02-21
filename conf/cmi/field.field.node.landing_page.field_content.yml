@@ -10,19 +10,25 @@ dependencies:
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.custom_content_links
+    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_liftups
+    - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.sidebar_text
+    - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: VuuTI6N8J827CZsvm_RrLmPzFcwY5kjDh9oF94YecsI
 id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: Content
+label: 'Content region'
 description: ''
 required: false
 translatable: true
@@ -32,15 +38,23 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
+      content_cards: content_cards
+      content_liftup: content_liftup
       columns: columns
       banner: banner
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
-      content_cards: content_cards
       accordion: accordion
+      gallery: gallery
+      map: map
+      image: image
+      text: text
       chart: chart
+      remote_video: remote_video
+      custom_content_links: custom_content_links
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
+      sidebar_text: sidebar_text
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -59,14 +73,17 @@ settings:
         weight: -27
         enabled: true
       content_cards:
-        weight: -23
+        weight: -33
+        enabled: true
+      content_liftup:
+        weight: -32
         enabled: true
       custom_content_links:
-        weight: 21
-        enabled: false
+        weight: 29
+        enabled: true
       gallery:
         weight: -20
-        enabled: false
+        enabled: true
       gallery_slide:
         weight: -19
         enabled: false
@@ -75,7 +92,7 @@ settings:
         enabled: false
       image:
         weight: -17
-        enabled: false
+        enabled: true
       liftup_with_image:
         weight: -24
         enabled: true
@@ -85,13 +102,22 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
+      map:
+        weight: -20
+        enabled: true
       meetings_calendar:
-        weight: 29
+        weight: 38
         enabled: true
       news_liftups:
-        weight: 30
+        weight: 39
+        enabled: true
+      remote_video:
+        weight: 27
+        enabled: true
+      sidebar_text:
+        weight: 41
         enabled: true
       text:
         weight: -15
-        enabled: false
+        enabled: true
 field_type: entity_reference_revisions

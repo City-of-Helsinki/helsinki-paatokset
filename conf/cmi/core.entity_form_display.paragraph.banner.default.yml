@@ -14,8 +14,6 @@ dependencies:
     - hdbt_admin_editorial
     - select2_icon
     - text
-_core:
-  default_config_hash: cUl5PG2elS-k5_0QkIjSKWmdrnqkv8IfEZC7PTqQWYc
 id: paragraph.banner.default
 targetEntityType: paragraph
 bundle: banner
@@ -36,15 +34,16 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_banner_link:
-    type: link_target_field_widget
+    type: link_target_icon_field_widget
     weight: 4
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      link_target: ''
-      linkit_auto_link_text: 0
       linkit_profile: tpr_content
+      linkit_auto_link_text: 0
+      link_target: ''
+      icon: ''
     third_party_settings: {  }
   field_banner_link_design:
     type: design_field_widget

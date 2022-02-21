@@ -10,8 +10,6 @@ dependencies:
   module:
     - hdbt_admin_editorial
     - paragraphs
-_core:
-  default_config_hash: LBbBIE1JvrmAnOImQR0rd-u3Nc3i-SRD2WicIGCCwqU
 id: paragraph.list_of_links.default
 targetEntityType: paragraph
 bundle: list_of_links

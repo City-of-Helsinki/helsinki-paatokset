@@ -10,8 +10,6 @@ dependencies:
   module:
     - entity_reference_revisions
     - select2_icon
-_core:
-  default_config_hash: XybQXQQX7zzw5YLuADlWTj9gM_FVrS-YSJyNmj75N00
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item

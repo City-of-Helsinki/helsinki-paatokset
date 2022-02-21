@@ -5,8 +5,6 @@ dependencies:
   module:
     - options
     - paragraphs
-_core:
-  default_config_hash: qGel2F-fciDzT6Jjy6u0MvZv_ZPV24Q6-q0d42YrxHU
 id: paragraph.field_hero_design
 field_name: field_hero_design
 entity_type: paragraph
@@ -34,12 +32,6 @@ settings:
     -
       value: diagonal
       label: Diagonal
-    -
-      value: paatokset-search-bar
-      label: 'Search bar'
-    -
-      value: advanced-search-form
-      label: 'Advanced search form'
   allowed_values_function: ''
 module: options
 locked: false

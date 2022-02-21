@@ -10,8 +10,6 @@ dependencies:
   module:
     - hdbt_admin_editorial
     - media_library
-_core:
-  default_config_hash: U-gNAaUoB_zo65wA8j_8yoVi4ZXBwhsrIEyzS8OMkeg
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
 bundle: list_of_links_item
@@ -39,9 +37,9 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      link_target: ''
-      linkit_auto_link_text: 0
       linkit_profile: tpr_content
+      linkit_auto_link_text: 0
+      link_target: ''
     third_party_settings: {  }
 hidden:
   created: true

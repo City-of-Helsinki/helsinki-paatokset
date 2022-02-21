@@ -6,11 +6,10 @@ dependencies:
     - field.storage.paragraph.field_accordion_item_content
     - paragraphs.paragraphs_type.accordion_item
     - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: bwS_FVJJmaXanJseLF9iTjvfYYHXzCvGHAaw4IQNEtc
 id: paragraph.accordion_item.field_accordion_item_content
 field_name: field_accordion_item_content
 entity_type: paragraph
@@ -26,8 +25,8 @@ settings:
   handler_settings:
     target_bundles:
       columns: columns
-      text: text
       image: image
+      text: text
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -66,7 +65,6 @@ settings:
       liftup_with_image:
         weight: 32
         enabled: false
-      link: {  }
       list_of_links:
         weight: 20
         enabled: false

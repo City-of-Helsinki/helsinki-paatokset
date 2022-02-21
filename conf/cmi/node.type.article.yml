@@ -22,8 +22,6 @@ third_party_settings:
     unpublish_enable: true
     unpublish_required: false
     unpublish_revision: false
-_core:
-  default_config_hash: 55S0TlpZeQGEnh_bhvpAW797f2LnTyORBp4AUhX2qwI
 name: Article
 type: article
 description: 'Content type for article-like content with rich editing capabilities.'

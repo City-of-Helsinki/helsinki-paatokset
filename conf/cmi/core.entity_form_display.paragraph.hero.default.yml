@@ -15,8 +15,6 @@ dependencies:
     - hdbt_admin_editorial
     - media_library
     - text
-_core:
-  default_config_hash: a7HT1FL6Lj9NGy6KYZjyVqpngR4ANDSgnjRSQ15UHmQ
 id: paragraph.hero.default
 targetEntityType: paragraph
 bundle: hero
@@ -50,15 +48,16 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_hero_link:
-    type: link_target_field_widget
+    type: link_target_icon_field_widget
     weight: 6
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      link_target: ''
-      linkit_auto_link_text: 0
       linkit_profile: tpr_content
+      linkit_auto_link_text: 0
+      link_target: ''
+      icon: ''
     third_party_settings: {  }
   field_hero_link_design:
     type: design_field_widget
