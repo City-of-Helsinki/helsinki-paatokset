@@ -7,8 +7,8 @@ dependencies:
     - toolbar
     - view_unpublished
 id: read_only
-label: 'Vain luku'
-weight: 4
+label: 'Read only'
+weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
