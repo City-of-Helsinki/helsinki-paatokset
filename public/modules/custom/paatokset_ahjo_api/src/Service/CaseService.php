@@ -585,6 +585,13 @@ class CaseService {
       return [];
     }
 
+    if ($this->selectedDecision->hasField('field_diary_number') && !$this->selectedDecision->get('field_diary_number')->isEmpty()) {
+      $has_case_id = TRUE;
+    }
+    else {
+      $has_case_id = FALSE;
+    }
+
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
 
@@ -663,7 +670,7 @@ class CaseService {
     // Add decision date to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
-    if ($content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
+    if ($has_case_id && $content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
       $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
       $appeal_content = '<p class="issue__decision-date">' . t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
@@ -671,7 +678,7 @@ class CaseService {
 
     // Appeal information. Only display for decisions (if content is available).
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($content && $appeal_info) {
+    if ($has_case_id && $content && $appeal_info) {
       $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
     }
 
