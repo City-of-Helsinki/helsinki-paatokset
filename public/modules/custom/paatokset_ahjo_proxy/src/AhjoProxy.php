@@ -896,8 +896,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_motion_parsed', $decision_motion);
     }
 
-    // If decision content can't be set, consider this failed.
-    if ($node->get('field_decision_content_parsed')->isEmpty()) {
+    // If both decision and motion content can't be set, consider this failed.
+    if ($node->get('field_decision_content_parsed')->isEmpty() && $node->get('field_decision_motion_parsed')->isEmpty()) {
       $messenger->addMessage('Content parsing failed for decision with nid: ' . $data['nid']);
       $context['results']['failed'][] = $node->id();
     }
