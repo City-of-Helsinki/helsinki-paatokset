@@ -655,6 +655,10 @@ class PolicymakerService {
 
     $ids = $query->execute();
 
+    if (empty($ids)) {
+      throw new NotFoundHttpException();
+    }
+
     $meeting = Node::load(reset($ids));
     if (!$meeting instanceof NodeInterface) {
       throw new NotFoundHttpException();
@@ -741,6 +745,7 @@ class PolicymakerService {
     $caseService = \Drupal::service('paatokset_ahjo_cases');
 
     $agendaItems = [];
+    $agendaItemsLast = [];
     foreach ($list_field as $item) {
 
       $data = json_decode($item->value, TRUE);
@@ -753,14 +758,20 @@ class PolicymakerService {
         continue;
       }
 
-      if (!empty($data['Section'])) {
+      if (!empty($data['Section']) && !empty($data['AgendaPoint']) && $data['AgendaPoint'] !== 'null') {
         $index = t('Case @point. / @section', [
           '@point' => $data['AgendaPoint'],
           '@section' => $data['Section'],
         ]);
       }
-      else {
+      elseif (!empty($data['Section'])) {
+        $index = $data['Section'];
+      }
+      elseif (!empty($data['AgendaPoint']) && $data['AgendaPoint'] !== 'null') {
         $index = $data['AgendaPoint'] . '.';
+      }
+      else {
+        $index = '';
       }
 
       $agenda_link = NULL;
@@ -772,14 +783,22 @@ class PolicymakerService {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
-      $agendaItems[] = [
-        'subject' => $data['AgendaItem'],
-        'index' => $index,
-        'link' => $agenda_link,
-      ];
+      if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
+        $agendaItemsLast[] = [
+          'subject' => $data['AgendaItem'],
+          'index' => $index,
+          'link' => $agenda_link,
+        ];
+      } else {
+        $agendaItems[] = [
+          'subject' => $data['AgendaItem'],
+          'index' => $index,
+          'link' => $agenda_link,
+        ];
+      }
     }
 
-    return $agendaItems;
+    return array_merge($agendaItems, $agendaItemsLast);
   }
 
   /**
