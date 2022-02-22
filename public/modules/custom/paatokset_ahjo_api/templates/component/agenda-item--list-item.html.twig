@@ -10,7 +10,9 @@
   {% if agenda_item.link %}
     <a href="{{ agenda_item.link }}">
   {% endif %}
-    <span class="agenda-item__index-number">{{ agenda_item.index }}</span>
+    {% if agenda_item.index %}
+      <span class="agenda-item__index-number">{{ agenda_item.index }}</span>
+    {% endif %}
     <span class="agenda-item__subject">{{ agenda_item.subject }}</span>
   {% if agenda_item.link %}
     {% include '@hdbt/misc/icon.twig' with {icon: 'arrow-right'} %}
