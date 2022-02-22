@@ -101,7 +101,7 @@ class ImportedArticle extends SourcePluginBase implements ContainerFactoryPlugin
         }
         if (isset($transformedItem['description'])) {
           $doc = new \DOMDocument();
-          $doc->loadHTML($transformedItem['description']);
+          @$doc->loadHTML($transformedItem['description']);
           $images = $doc->getElementsByTagName('img');
           if (count($images) > 0) {
             $transformedItem['image_url'] = $images[0]->getAttribute('src');

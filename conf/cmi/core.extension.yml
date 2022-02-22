@@ -50,6 +50,7 @@ module:
   helfi_gdpr_compliance: 0
   helfi_languages: 0
   helfi_media: 0
+  helfi_news_item: 0
   helfi_platform_config: 0
   helfi_toc: 0
   helfi_tpr: 0
@@ -121,6 +122,7 @@ module:
   content_translation: 10
   views: 10
   paragraphs: 11
+  publication_date: 99
   minimal: 1000
   eu_cookie_compliance: 1001
 theme:

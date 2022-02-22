@@ -1,0 +1,10 @@
+uuid: 82aa81e4-2722-44f1-8a62-f53e2e143ffb
+langcode: en
+status: true
+dependencies: {  }
+id: remote_video
+label: 'Remote video'
+icon_uuid: null
+icon_default: null
+description: 'Remote video paragraph that lets you add any video from video providers. Currently only YouTube.'
+behavior_plugins: {  }
