@@ -116,7 +116,19 @@ class PolicymakerSideNav extends BlockBase {
       $localizedRoute = "$route.$currentLanguage";
       if ($this->policymakerService->routeExists($localizedRoute)) {
         $route = $routeProvider->getRouteByName($localizedRoute);
-        $title = call_user_func($route->getDefault('_title_callback'))->render();
+        if ($key === 'documents') {
+          $title = t('Documents');
+        }
+        elseif ($key === 'decisions') {
+          $title = t('Decisions');
+        }
+        elseif ($key === 'discussion_minutes') {
+          $title = t('Discussion minutes');
+        }
+        else {
+          $title = call_user_func($route->getDefault('_title_callback'))->render();
+        }
+
         $items[] = [
           'title' => $title,
           'url' => Url::fromRoute($localizedRoute, ['organization' => $policymaker_org]),

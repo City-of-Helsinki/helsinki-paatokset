@@ -51,7 +51,15 @@ class PolicymakerController extends ControllerBase {
    *   Documents title.
    */
   public static function getDocumentsTitle(): TranslatableMarkup {
-    return t('Documents');
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService->setPolicyMakerByPath();
+    $policymaker = $policymakerService->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface) {
+      return t('Documents');
+    }
+
+    return t('Documents: @name', ['@name' => $policymaker->get('title')->value]);
   }
 
   /**
@@ -87,7 +95,15 @@ class PolicymakerController extends ControllerBase {
    *   Decisions title.
    */
   public static function getDecisionsTitle(): TranslatableMarkup {
-    return t('Decisions');
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService->setPolicyMakerByPath();
+    $policymaker = $policymakerService->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface) {
+      return t('Decisions');
+    }
+
+    return t('Decisions: @name', ['@name' => $policymaker->get('title')->value]);
   }
 
   /**
@@ -138,7 +154,15 @@ class PolicymakerController extends ControllerBase {
    *   Discussions title.
    */
   public static function getDiscussionMinutesTitle(): TranslatableMarkup {
-    return t('Discussion minutes');
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService->setPolicyMakerByPath();
+    $policymaker = $policymakerService->getPolicymaker();
+
+    if (!$policymaker instanceof NodeInterface) {
+      return t('Discussion minutes');
+    }
+
+    return t('Discussion minutes: @name', ['@name' => $policymaker->get('title')->value]);
   }
 
   /**
