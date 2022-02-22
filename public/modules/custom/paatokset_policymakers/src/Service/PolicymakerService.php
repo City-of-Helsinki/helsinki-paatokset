@@ -789,7 +789,8 @@ class PolicymakerService {
           'index' => $index,
           'link' => $agenda_link,
         ];
-      } else {
+      }
+      else {
         $agendaItems[] = [
           'subject' => $data['AgendaItem'],
           'index' => $index,
@@ -864,7 +865,7 @@ class PolicymakerService {
 
         if ($entity->get('field_document')->target_id) {
           $file_id = $entity->get('field_document')->target_id;
-          $download_link = file_create_url(File::load($file_id)->getFileUri());
+          $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
           $result['origin_url'] = $download_link;
         }
 
@@ -878,49 +879,6 @@ class PolicymakerService {
     }
 
     return $transformedResults;
-  }
-
-  /**
-   * Get all policymaker documents.
-   *
-   * @return array
-   *   Array of resulting documents
-   */
-  public function getDocumentData() : array {
-    $documents = $this->getMinutesOfDiscussion();
-    $declarationsOfAffiliation = $this->getDeclarationsOfAffilition();
-
-    foreach ($declarationsOfAffiliation as $declaration) {
-      $date = $declaration->get('created')->value;
-      $title = $declaration->name->value;
-      $year = date('Y', $date);
-      if (!isset($documents['years'])) {
-        $documents['years'][$year] = [
-          '#type' => 'link',
-          '#title' => $year,
-        ];
-      }
-
-      $file_id = $declaration->get('field_document')->target_id;
-      if ($declaration->get('field_document')->target_id) {
-        $download_link = Url::fromUri(file_create_url(File::load($file_id)->getFileUri()));
-      }
-
-      $documents['list'][$year][] = [
-        '#type' => 'link',
-        '#responsiveDate' => date("m-Y", $date),
-        '#responsiveTitle' => $title,
-        '#date' => date("d.m.Y", $date),
-        '#timestamp' => $date,
-        '#year' => $year,
-        '#title' => $title,
-        '#url' => '',
-        '#download_link' => $download_link ?? NULL,
-        '#download_label' => str_replace(' ', '_', $title),
-      ];
-    }
-
-    return $documents;
   }
 
   /**
