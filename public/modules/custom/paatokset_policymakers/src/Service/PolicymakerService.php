@@ -339,8 +339,8 @@ class PolicymakerService {
       ->condition('status', 1)
       ->condition('type', 'decision')
       ->condition('field_policymaker_id', $this->policymakerId)
-      ->condition('field_decision_date', '', '<>')
-      ->sort('field_decision_date', 'DESC');
+      ->condition('field_meeting_date', '', '<>')
+      ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
       $query->range('0', $limit);
@@ -356,13 +356,20 @@ class PolicymakerService {
 
     $transformedResults = [];
     foreach ($nodes as $node) {
-      $timestamp = strtotime($node->get('field_decision_date')->value);
+      $timestamp = strtotime($node->get('field_meeting_date')->value);
       $year = date('Y', $timestamp);
+
+      if ($node->hasField('field_decision_section') && !$node->get('field_decision_section')->isEmpty()) {
+        $decision_label = '§ ' . $node->field_decision_section->value . ' ' . $node->field_full_title->value;
+      }
+      else {
+        $decision_label = $node->field_full_title->value;
+      }
 
       $result = [
         'date_desktop' => date('d.m.Y', $timestamp),
         'date_mobile' => date('m - Y', $timestamp),
-        'subject' => $node->field_full_title->value,
+        'subject' => $decision_label,
         'link' => $node->toUrl()->toString(),
       ];
 
