@@ -452,6 +452,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @option update
    *   Update all decisions, not just ones with missing records.
+   * @option logic
+   *   Logic on how to check which decisions to update. Irrelevant if
+   *   update flag is set.
    * @option localdata
    *   Use only local and placeholder data, doesn't require VPN connection.
    * @option limit
@@ -466,6 +469,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function updateDecisions(array $options = [
     'update' => NULL,
+    'logic' => 'record',
     'localdata' => NULL,
     'limit' => NULL,
   ]): void {
@@ -475,6 +479,13 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $update_all = FALSE;
+    }
+
+    if (!empty($options['logic'])) {
+      $logic = $options['logic'];
+    }
+    else {
+      $logic = 'record';
     }
 
     if (!empty($options['localdata'])) {
@@ -495,7 +506,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->logger->info('Updating all nodes...');
     }
     else {
-      $this->logger->info('Only updating nodes with missing records...');
+      $this->logger->info('Only updating nodes based on missing ' . $logic . ' data.');
     }
 
     if ($use_local_data) {
@@ -513,7 +524,17 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
 
     if (!$update_all) {
-      $query->notExists('field_decision_record');
+      if ($logic === 'record') {
+        $query->notExists('field_decision_record');
+      }
+      else if ($logic === 'case') {
+        $query->notExists('field_decision_case_title');
+        $query->condition('field_diary_number', '', '<>');
+      }
+      else if ($logic === 'meeting') {
+        $query->notExists('field_meeting_date');
+        $query->condition('field_meeting_id', '', '<>');
+      }
     }
 
     if ($limit) {
@@ -524,7 +545,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Total nodes: ' . count($ids));
 
     $nodes = Node::loadMultiple($ids);
-
     $operations = [];
     $count = 0;
     foreach ($nodes as $node) {
