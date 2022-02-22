@@ -748,6 +748,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $ahjo_proxy->updateDecisionCaseData($node, $data['case_id'], $fetch_record_from_case);
     }
 
+    // If meeting date can't be set, use a default value.
+    if ($node->get('field_meeting_date')->isEmpty()) {
+      $node->set('field_meeting_date', '2001-01-01T00:00:00');
+    }
+
     // If decision date can't be set, use a default value.
     if ($node->get('field_decision_date')->isEmpty()) {
       $messenger->addMessage('Decision date fetching failed for decision with nid: ' . $node->id());
