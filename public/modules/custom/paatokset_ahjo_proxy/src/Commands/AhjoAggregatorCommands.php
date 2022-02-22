@@ -527,11 +527,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       if ($logic === 'record') {
         $query->notExists('field_decision_record');
       }
-      else if ($logic === 'case') {
+      elseif ($logic === 'case') {
         $query->notExists('field_decision_case_title');
         $query->condition('field_diary_number', '', '<>');
       }
-      else if ($logic === 'meeting') {
+      elseif ($logic === 'meeting') {
         $query->notExists('field_meeting_date');
         $query->condition('field_meeting_id', '', '<>');
       }
