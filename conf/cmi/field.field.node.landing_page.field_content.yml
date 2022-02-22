@@ -5,13 +5,21 @@ dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
+    - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.custom_content_links
+    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_liftups
+    - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
 _core:
@@ -35,15 +43,21 @@ settings:
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
       content_cards: content_cards
+      accordion: accordion
+      gallery: gallery
+      map: map
+      image: image
+      text: text
+      custom_content_links: custom_content_links
+      chart: chart
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
-      chart: chart
-      map: map
+      remote_video: remote_video
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -22
-        enabled: false
+        enabled: true
       accordion_item:
         weight: -21
         enabled: false
@@ -61,10 +75,10 @@ settings:
         enabled: true
       custom_content_links:
         weight: 21
-        enabled: false
+        enabled: true
       gallery:
         weight: -20
-        enabled: false
+        enabled: true
       gallery_slide:
         weight: -19
         enabled: false
@@ -73,7 +87,7 @@ settings:
         enabled: false
       image:
         weight: -17
-        enabled: false
+        enabled: true
       liftup_with_image:
         weight: -24
         enabled: true
@@ -92,7 +106,10 @@ settings:
       news_liftups:
         weight: 30
         enabled: true
+      remote_video:
+        weight: 37
+        enabled: true
       text:
         weight: -15
-        enabled: false
+        enabled: true
 field_type: entity_reference_revisions
