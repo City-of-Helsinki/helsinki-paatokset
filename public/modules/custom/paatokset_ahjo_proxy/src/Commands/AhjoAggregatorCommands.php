@@ -607,6 +607,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @option limit
    *   Limit processing to certain amount of nodes.
+   * @option logic
+   *   Determines if motion or content fields are checked.
    *
    * @usage ahjo-proxy:parse-decision-content --limit=50
    *   Parses fields for the first 50 decisions where content is empty.
@@ -614,6 +616,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:dc
    */
   public function parseDecisionContents(array $options = [
+    'logic' => 'content',
     'limit' => NULL,
   ]): void {
     if (!empty($options['limit'])) {
@@ -628,9 +631,16 @@ class AhjoAggregatorCommands extends DrushCommands {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'decision')
       ->condition('status', 1)
-      ->notExists('field_decision_content_parsed')
-      ->condition('field_decision_content', '', '<>')
       ->latestRevision();
+
+    if (isset($options['logic']) && $options['logic'] === 'motion') {
+      $query->notExists('field_decision_motion_parsed');
+      $query->condition('field_decision_motion', '', '<>');
+    }
+    else {
+      $query->notExists('field_decision_content_parsed');
+      $query->condition('field_decision_content', '', '<>');
+    }
 
     if ($limit) {
       $query->range('0', $limit);
