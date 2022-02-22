@@ -1,0 +1,23 @@
+uuid: 32809805-4bb1-45d9-acec-41e0714605f9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: B1dCDwiX6Z1jIHzpc5SVaKnMhdot6nA1x-vcQtn9mZw
+id: node.field_news_item_links_title
+field_name: field_news_item_links_title
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

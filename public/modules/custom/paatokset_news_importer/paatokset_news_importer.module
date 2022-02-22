@@ -24,5 +24,5 @@ function paatokset_news_importer_theme($exitsting, $type, $theme, $path) {
 function helfi_paatokset_preprocess_node__imported_article(&$variables) {
   $variables['content']['lead'] = $variables['node']->body->view('teaser');
   $variables['content']['lead_image'] = $variables['node']->field_image_url->uri;
-  $variables['content']['published'] = date('d.m.y H:i', $variables['node']->field_published->date->getTimeStamp());
+  $variables['content']['published'] = $variables['node']->field_published->date->getTimeStamp();
 }

@@ -1,0 +1,21 @@
+uuid: d8223ec1-190e-4dd6-a351-35f02e0dcc6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: PVwQ2V1YHrorxfbrGZq-PtLOd_krQUsAPL0wN9NjsYg
+id: node.field_main_image_caption
+field_name: field_main_image_caption
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
