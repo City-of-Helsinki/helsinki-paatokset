@@ -319,7 +319,7 @@ class CaseService {
    */
   private function formatDecisionLabel(NodeInterface $node): string {
     $meeting_number = $node->field_meeting_sequence_number->value;
-    $decision_timestamp = strtotime($node->field_decision_date->value);
+    $decision_timestamp = strtotime($node->field_meeting_date->value);
     $decision_date = date('d.m.Y', $decision_timestamp);
 
     if ($meeting_number) {

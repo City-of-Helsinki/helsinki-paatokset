@@ -731,15 +731,21 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
     }
 
-    // Fetch case data for decision.
-    // If record couldn't be fetched from endpoint, try to get it from case.
-    if ($data['case_id']) {
-      $ahjo_proxy->updateDecisionCaseData($node, $data['case_id'], $fetch_record_from_case);
+    if (isset($record_content['Created'])) {
+      $created_date = new \DateTime($record_content['Created'], new \DateTimeZone('Europe/Helsinki'));
+      $created_date->setTimezone(new \DateTimeZone('UTC'));
+      $node->set('field_meeting_date', $created_date->format('Y-m-d\TH:i:s'));
     }
 
     // Fetch meeting date for decision.
     if ($data['meeting_id']) {
       $ahjo_proxy->updateDecisionMeetingData($node, $data['meeting_id']);
+    }
+
+    // Fetch case data for decision.
+    // If record couldn't be fetched from endpoint, try to get it from case.
+    if ($data['case_id']) {
+      $ahjo_proxy->updateDecisionCaseData($node, $data['case_id'], $fetch_record_from_case);
     }
 
     // If decision date can't be set, use a default value.
@@ -845,6 +851,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
+    $node->set('field_meeting_date', $meeting->field_meeting_date->value);
     $node->set('field_meeting_sequence_number', $meeting->field_meeting_sequence_number->value);
   }
 
@@ -1032,6 +1039,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->set('field_diary_number', $case_id);
     $node->set('field_meeting_id', $meeting_id);
     $node->set('field_decision_date', $meeting_date);
+    $node->set('field_meeting_date', $meeting_date);
     $node->set('field_meeting_sequence_number', $meeting_number);
     $node->set('field_policymaker_id', $org_id);
     $node->set('field_dm_org_name', $org_name);
