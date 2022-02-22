@@ -38,6 +38,7 @@ settings:
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
       chart: chart
+      map: map
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -82,6 +83,9 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
+      map:
+        weight: -20
+        enabled: true
       meetings_calendar:
         weight: 29
         enabled: true

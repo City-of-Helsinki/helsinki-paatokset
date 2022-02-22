@@ -51,6 +51,8 @@ module:
   helfi_languages: 0
   helfi_media: 0
   helfi_news_item: 0
+  helfi_media_map: 0
+  helfi_media_map_config: 0
   helfi_platform_config: 0
   helfi_toc: 0
   helfi_tpr: 0

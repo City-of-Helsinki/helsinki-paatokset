@@ -38,6 +38,7 @@ settings:
       list_of_links: list_of_links
       content_cards: content_cards
       chart: chart
+      map: map
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -79,6 +80,9 @@ settings:
       list_of_links_item:
         weight: -17
         enabled: false
+      map:
+        weight: -20
+        enabled: true
       text:
         weight: -27
         enabled: true
