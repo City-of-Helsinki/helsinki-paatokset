@@ -24,39 +24,39 @@ bundle: news_item
 mode: default
 content:
   field_content:
-    weight: 5
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
+    weight: 5
     region: content
   field_lead_in:
-    weight: 2
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
   field_main_image:
     type: entity_reference_entity_view
-    weight: 4
     label: hidden
     settings:
       view_mode: image_content_area
       link: false
     third_party_settings: {  }
+    weight: 4
     region: content
   field_main_image_caption:
-    weight: 8
+    type: basic_string
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 8
     region: content
   field_news_item_links_link:
-    weight: 7
+    type: link
     label: hidden
     settings:
       trim_length: 255
@@ -65,39 +65,39 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    type: link
+    weight: 7
     region: content
   field_news_item_links_title:
-    weight: 6
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 6
     region: content
   field_short_title:
-    weight: 1
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   published_at:
     type: timestamp
-    weight: 3
-    region: content
     label: hidden
     settings:
       date_format: publication_date_format
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   field_news_item_tags: true
   langcode: true

@@ -26,36 +26,36 @@ mode: tiny_teaser
 content:
   field_main_image:
     type: media_thumbnail
-    weight: 1
     label: hidden
     settings:
-      image_style: tiny_square_image
       image_link: ''
+      image_style: tiny_square_image
     third_party_settings: {  }
+    weight: 1
     region: content
   field_short_title:
-    weight: 2
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   published_at:
     type: timestamp
-    weight: 3
-    region: content
     label: hidden
     settings:
       date_format: publication_date_format
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   field_content: true
   field_lead_in: true

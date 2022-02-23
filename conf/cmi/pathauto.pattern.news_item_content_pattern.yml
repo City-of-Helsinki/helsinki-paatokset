@@ -13,12 +13,12 @@ pattern: '[node:short-title]'
 selection_criteria:
   8ccdc8fb-ecd8-49c0-9d93-9c98924e87d6:
     id: node_type
-    bundles:
-      news_item: news_item
     negate: false
+    uuid: 8ccdc8fb-ecd8-49c0-9d93-9c98924e87d6
     context_mapping:
       node: node
-    uuid: 8ccdc8fb-ecd8-49c0-9d93-9c98924e87d6
+    bundles:
+      news_item: news_item
 selection_logic: and
 weight: -5
 relationships: {  }

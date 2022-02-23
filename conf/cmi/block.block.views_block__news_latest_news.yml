@@ -27,8 +27,8 @@ settings:
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles:
-      news_item: news_item
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles:
+      news_item: news_item

@@ -51,5 +51,6 @@ hidden:
   field_trustee_resolutions: true
   field_trustee_title: true
   langcode: true
+  published_at: true
   search_api_excerpt: true
   toc_enabled: true
