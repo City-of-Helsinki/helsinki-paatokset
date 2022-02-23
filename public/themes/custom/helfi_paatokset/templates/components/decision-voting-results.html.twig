@@ -10,9 +10,11 @@
     </h3>
     <div class="accordion-item__content handorgel__content">
       <div class="accordion-item__content__inner handorgel__content__inner">
+
         {% for results in vote_results %}
-          <p>{{ 'Ayes'|t }}: {{results.accordions.Ayes.Content }}</p>
-          <p>{{ 'Noes'|t }}: {{results.accordions.Noes.Content }}</p>
+          <p><b>{{ 'Äänestys'|t }} {{ loop.index }}</b></p>
+          <p><b>{{ 'Ayes'|t }}:</b> {{results.accordions.Ayes.Content }}</p>
+          <p><b>{{ 'Noes'|t }}:</b> {{results.accordions.Noes.Content }}</p>
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
               <div class="accordion__wrapper handorgel">
@@ -45,6 +47,9 @@
                       {% endfor %}
                       </tbody>
                     </table>
+                    <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+                      {{ 'Close'|t }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -59,18 +64,36 @@
                   <th>{{ 'Party'|t }}</th>
                   <th>{{ 'Jaa'|t }}</th>
                   <th>{{ 'Ei'|t }}</th>
-                  <th>{{ 'Empty'|t }}</th>
-                  <th>{{ 'Away'|t }}</th>
+                  <th>{{ 'Blank'|t }}</th>
+                  <th>{{ 'Absent'|t }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="results-table__row">
-                  <td>Kokoomus</td>
-                  <td class="color-kupari">1</td>
-                  <td class="color-tiili">1</td>
-                  <td class="color-sumu">1</td>
-                  <td class="color-gray-light">1</td>
-                </tr>
+                {% for key, row in results.by_party %}
+                  <tr class="results-table__row">
+                    <td>{{ key }}</td>
+                    {% if row.Ayes %}
+                      <td class="color-kupari">{{ row.Ayes }}</td>
+                    {% else %}
+                      <td class="color-kupari">0</td>
+                    {% endif %}
+                    {% if row.Noes %}
+                      <td class="color-tiili">{{ row.Noes }}</td>
+                    {% else %}
+                      <td class="color-tiili">0</td>
+                    {% endif %}
+                    {% if row.Blank %}
+                      <td class="color-sumu">{{ row.Blank }}</td>
+                    {% else %}
+                      <td class="color-sumu">0</td>
+                    {% endif %}
+                    {% if row.Absent %}
+                      <td class="color-gray-light">{{ row.Absent }}</td>
+                    {% else %}
+                      <td class="color-gray-light">0</td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
