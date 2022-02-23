@@ -856,16 +856,16 @@
         },
         {
             "name": "consolidation/robo",
-            "version": "3.0.9",
+            "version": "3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/robo.git",
-                "reference": "33b2649c3ba4b3bf5e3fb77098c3241eda117338"
+                "reference": "206bbe23b34081a36bfefc4de2abbc1abcd29ef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/robo/zipball/33b2649c3ba4b3bf5e3fb77098c3241eda117338",
-                "reference": "33b2649c3ba4b3bf5e3fb77098c3241eda117338",
+                "url": "https://api.github.com/repos/consolidation/robo/zipball/206bbe23b34081a36bfefc4de2abbc1abcd29ef4",
+                "reference": "206bbe23b34081a36bfefc4de2abbc1abcd29ef4",
                 "shasum": ""
             },
             "require": {
@@ -880,7 +880,7 @@
                 "symfony/event-dispatcher": "^4.4.19 || ^5 || ^6",
                 "symfony/filesystem": "^4.4.9 || ^5 || ^6",
                 "symfony/finder": "^4.4.9 || ^5 || ^6",
-                "symfony/process": "^4.4.9 || ^5",
+                "symfony/process": "^4.4.9 || ^5 || ^6",
                 "symfony/yaml": "^4.4 || ^5 || ^6"
             },
             "conflict": {
@@ -949,9 +949,9 @@
             "description": "Modern task runner",
             "support": {
                 "issues": "https://github.com/consolidation/robo/issues",
-                "source": "https://github.com/consolidation/robo/tree/3.0.9"
+                "source": "https://github.com/consolidation/robo/tree/3.0.10"
             },
-            "time": "2022-02-15T17:59:14+00:00"
+            "time": "2022-02-21T17:19:14+00:00"
         },
         {
             "name": "consolidation/self-update",
@@ -1010,22 +1010,22 @@
         },
         {
             "name": "consolidation/site-alias",
-            "version": "3.1.3",
+            "version": "3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/site-alias.git",
-                "reference": "e2784362e98f315c996fb2b9ed80a9118a0ba8b7"
+                "reference": "91b8965b3afae0cab10d2ec01a1dfd193e9cf755"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/e2784362e98f315c996fb2b9ed80a9118a0ba8b7",
-                "reference": "e2784362e98f315c996fb2b9ed80a9118a0ba8b7",
+                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/91b8965b3afae0cab10d2ec01a1dfd193e9cf755",
+                "reference": "91b8965b3afae0cab10d2ec01a1dfd193e9cf755",
                 "shasum": ""
             },
             "require": {
-                "consolidation/config": "^1.2.1|^2",
+                "consolidation/config": "^1.2.1 || ^2",
                 "php": ">=5.5.0",
-                "symfony/finder": "~2.3|^3|^4.4|^5"
+                "symfony/finder": "~2.3 || ^3 || ^4.4 || ^5 || ^6"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.4.2",
@@ -1062,9 +1062,9 @@
             "description": "Manage alias records for local and remote sites.",
             "support": {
                 "issues": "https://github.com/consolidation/site-alias/issues",
-                "source": "https://github.com/consolidation/site-alias/tree/3.1.3"
+                "source": "https://github.com/consolidation/site-alias/tree/3.1.4"
             },
-            "time": "2022-01-03T19:00:28+00:00"
+            "time": "2022-02-21T17:05:04+00:00"
         },
         {
             "name": "consolidation/site-process",
@@ -3767,16 +3767,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "2.2.8",
+            "version": "2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "5463ca40d84b5b4133fe26e0b09f4a04e6c4545a"
+                "reference": "8e16ce1ae5e37ab47ba1eedade0d7fbf13f00f9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/5463ca40d84b5b4133fe26e0b09f4a04e6c4545a",
-                "reference": "5463ca40d84b5b4133fe26e0b09f4a04e6c4545a",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/8e16ce1ae5e37ab47ba1eedade0d7fbf13f00f9c",
+                "reference": "8e16ce1ae5e37ab47ba1eedade0d7fbf13f00f9c",
                 "shasum": ""
             },
             "require": {
@@ -3791,10 +3791,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.2.8",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.2.9",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2022-02-17T08:11:34+00:00"
+            "time": "2022-02-18T13:01:06+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -6460,30 +6460,30 @@
         },
         {
             "name": "enlightn/security-checker",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/enlightn/security-checker.git",
-                "reference": "dc5bce653fa4d9c792e9dcffa728c0642847c1e1"
+                "reference": "196bacc76e7a72a63d0e1220926dbb190272db97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/enlightn/security-checker/zipball/dc5bce653fa4d9c792e9dcffa728c0642847c1e1",
-                "reference": "dc5bce653fa4d9c792e9dcffa728c0642847c1e1",
+                "url": "https://api.github.com/repos/enlightn/security-checker/zipball/196bacc76e7a72a63d0e1220926dbb190272db97",
+                "reference": "196bacc76e7a72a63d0e1220926dbb190272db97",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3|^7.0",
                 "php": ">=5.6",
-                "symfony/console": "^3.4|^4|^5",
-                "symfony/finder": "^3|^4|^5",
-                "symfony/process": "^3.4|^4|^5",
-                "symfony/yaml": "^3.4|^4|^5"
+                "symfony/console": "^3.4|^4|^5|^6",
+                "symfony/finder": "^3|^4|^5|^6",
+                "symfony/process": "^3.4|^4|^5|^6",
+                "symfony/yaml": "^3.4|^4|^5|^6"
             },
             "require-dev": {
                 "ext-zip": "*",
-                "friendsofphp/php-cs-fixer": "^2.18",
+                "friendsofphp/php-cs-fixer": "^2.18|^3.0",
                 "phpunit/phpunit": "^5.5|^6|^7|^8|^9"
             },
             "bin": [
@@ -6520,9 +6520,9 @@
             ],
             "support": {
                 "issues": "https://github.com/enlightn/security-checker/issues",
-                "source": "https://github.com/enlightn/security-checker/tree/v1.9.0"
+                "source": "https://github.com/enlightn/security-checker/tree/v1.10.0"
             },
-            "time": "2021-05-06T09:03:35+00:00"
+            "time": "2022-02-21T22:40:16+00:00"
         },
         {
             "name": "ezimuel/guzzlestreams",
@@ -7063,8 +7063,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
-                "reference": "v5.29.1"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
             },
             "type": "drupal-library"
         },
@@ -8695,12 +8694,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "6594f0e4c27e3b1cc573ed6f83769d6d3b420cf3"
+                "reference": "3a19d82758c23c82c84ebae659fa0ca06012a4db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/6594f0e4c27e3b1cc573ed6f83769d6d3b420cf3",
-                "reference": "6594f0e4c27e3b1cc573ed6f83769d6d3b420cf3",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/3a19d82758c23c82c84ebae659fa0ca06012a4db",
+                "reference": "3a19d82758c23c82c84ebae659fa0ca06012a4db",
                 "shasum": ""
             },
             "require": {
@@ -8756,7 +8755,7 @@
                 "issues": "https://github.com/ruflin/Elastica/issues",
                 "source": "https://github.com/ruflin/Elastica/tree/master"
             },
-            "time": "2022-02-14T07:19:04+00:00"
+            "time": "2022-02-23T07:44:44+00:00"
         },
         {
             "name": "stack/builder",
@@ -13407,16 +13406,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.11",
+            "version": "9.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f"
+                "reference": "c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/665a1ac0a763c51afc30d6d130dac0813092b17f",
-                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631",
+                "reference": "c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631",
                 "shasum": ""
             },
             "require": {
@@ -13472,7 +13471,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.11"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.12"
             },
             "funding": [
                 {
@@ -13480,7 +13479,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-18T12:46:09+00:00"
+            "time": "2022-02-23T06:30:26+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -14903,16 +14902,16 @@
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
-            "version": "v2.11.2",
+            "version": "v2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sirbrillig/phpcs-variable-analysis.git",
-                "reference": "3fad28475bfbdbf8aa5c440f8a8f89824983d85e"
+                "reference": "c921498b474212fe4552928bbeb68d70250ce5e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/3fad28475bfbdbf8aa5c440f8a8f89824983d85e",
-                "reference": "3fad28475bfbdbf8aa5c440f8a8f89824983d85e",
+                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/c921498b474212fe4552928bbeb68d70250ce5e8",
+                "reference": "c921498b474212fe4552928bbeb68d70250ce5e8",
                 "shasum": ""
             },
             "require": {
@@ -14952,7 +14951,7 @@
                 "source": "https://github.com/sirbrillig/phpcs-variable-analysis",
                 "wiki": "https://github.com/sirbrillig/phpcs-variable-analysis/wiki"
             },
-            "time": "2021-07-06T23:45:17+00:00"
+            "time": "2022-02-21T17:01:13+00:00"
         },
         {
             "name": "slevomat/coding-standard",
