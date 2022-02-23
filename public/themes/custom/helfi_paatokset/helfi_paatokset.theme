@@ -148,6 +148,19 @@ function helfi_paatokset_theme_suggestions_block_alter(&$suggestions, $variables
   foreach ($suggestions as &$suggestion) {
     $suggestion = str_replace('helfi_paatokset_', '', $suggestion);
   }
+
+  if(isset($element['#id']) && $element['#id'] === 'views_block__news_block_1') {
+    $suggestions[] = 'block__views_block__news_latest_news';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function helfi_paatokset_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  if($variables['view']->id() === 'news') {
+    $suggestions[] = 'views_view_unformatted__news__latest_news';
+  }
 }
 
 /**
