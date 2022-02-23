@@ -19,6 +19,11 @@ name: Policymakers
 description: ''
 read_only: false
 field_settings:
+  color_class:
+    label: 'Color Class'
+    datasource_id: 'entity:node'
+    property_path: color_class
+    type: string
   field_dm_org_name:
     label: 'Organization name'
     datasource_id: 'entity:node'
@@ -31,7 +36,7 @@ field_settings:
     label: 'First name'
     datasource_id: 'entity:node'
     property_path: field_first_name
-    type: string
+    type: text
     dependencies:
       config:
         - field.storage.node.field_first_name
@@ -39,7 +44,7 @@ field_settings:
     label: 'Last name'
     datasource_id: 'entity:node'
     property_path: field_last_name
-    type: string
+    type: text
     dependencies:
       config:
         - field.storage.node.field_last_name
@@ -72,6 +77,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_ahjo_title
+  trustee_name:
+    label: 'Trustee name'
+    datasource_id: 'entity:node'
+    property_path: trustee_name
+    type: text
+  trustee_title:
+    label: 'Trustee title'
+    datasource_id: 'entity:node'
+    property_path: trustee_title
+    type: string
   url:
     label: URI
     property_path: search_api_url
@@ -84,6 +99,7 @@ datasource_settings:
       default: false
       selected:
         - policymaker
+        - trustee
     languages:
       default: true
       selected: {  }
@@ -95,6 +111,8 @@ processor_settings:
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
+  trustee_name: {  }
+  trustee_title: {  }
 tracker_settings:
   default:
     indexing_order: fifo

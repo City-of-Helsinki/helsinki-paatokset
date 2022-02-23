@@ -13,6 +13,7 @@ use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 
 /**
  * Helper function to get the icons path.
@@ -288,14 +289,11 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     'content' => $content_speaking_turns
   ];
 
-  if($node->get('field_trustee_title')) {
-    if($node->get('field_trustee_title')->value == 'Jäsen') {
-      $variables['content']['field_trustee_title'] = t('Valtuutettu');
-    }
-
-    if($node->get('field_trustee_title')->value == 'Varajäsen') {
-      $variables['content']['field_trustee_title'] = t('Varavaltuutettu');
-    }
+  if(
+    $trustee_title = $node->get('field_trustee_title')->value &&
+    ($trustee_title === 'Jäsen' || $trustee_title === 'Varajäsen')
+  ) {
+    $variables['content']['field_trustee_title'] = TrusteeService::getTrusteeTitle($node);
   };
 
   if(isset($node->field_policymaker_reference->entity)) {
@@ -308,7 +306,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     $variables['policymaker_declaration'] = t(
       '@trustee is @policymaker',
       [
-        '@trustee' => _helfi_paatokset_title_to_name($node->getTitle()),
+        '@trustee' => TrusteeService::getTrusteeName($node),
         '@policymaker' => $pmLink
       ]
     );
@@ -327,7 +325,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     if(isset($doaEntity) && isset($doaEntity->uri)) {
       $doaUrl = $doaEntity->getFileUri();
       $doaLinkText = Markup::create(
-        '<i class="hel-icon hel-icon--document"></i>' . _helfi_paatokset_title_to_name($node->getTitle()). ' (pdf)'
+        '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node). ' (pdf)'
       );
       $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
       $variables['doa'] = $doaLink->toRenderable();
@@ -340,21 +338,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
  */
 function helfi_paatokset_preprocess_field__node__title__trustee(&$variables) {
   $title = $variables['items'][0]['content']['#context']['value'];
-  $variables['items'][0]['content']['#context']['value'] = _helfi_paatokset_title_to_name($title);
-}
-
-/**
- * Transforms the title value of trustee into conventional name.
- * Eg. 'Vapaavuori, Jan' -> 'Jan Vapaavuori' 
- * 
- * @param string $title
- * 
- * @return string
- *   the title transformed into name string.
- */
-function _helfi_paatokset_title_to_name(string $title) {
-  $old = explode(',', $title);
-  return $old[1] . ' ' . $old[0];
+  $variables['items'][0]['content']['#context']['value'] = TrusteeService::transformTrusteeName($title);
 }
 
 /**
