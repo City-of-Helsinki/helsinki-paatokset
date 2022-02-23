@@ -1,0 +1,86 @@
+<div class="paatokset-accordion voting-results-accordion">
+  <div class="accordion__wrapper handorgel">
+    <h3 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ 'Voting results'|t }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h3>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for results in vote_results %}
+          <p>{{ 'Ayes'|t }}: {{results.accordions.Ayes.Content }}</p>
+          <p>{{ 'Noes'|t }}: {{results.accordions.Noes.Content }}</p>
+          {% for key, accordion in results.accordions %}
+            <div class="voting-results-accordion__inner">
+              <div class="accordion__wrapper handorgel">
+                <h3 class="accordion-item__header handorgel__header">
+                  <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+                    <div class="result-type {{ key|lower }}">
+                      <span>{{ accordion.NumberOfVotes }}</span>
+                      <h5>{{ key|t }}</h5>
+                    </div>
+                    <div class="accordion-item__icon">
+                      {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+                    </div>
+                  </button>
+                </h3>
+                <div class="accordion-item__content handorgel__content">
+                  <div class="accordion-item__content__inner handorgel__content__inner">
+                    <table class="results-table">
+                      <thead>
+                        <tr class="results-table__row">
+                          <th>{{ 'Trustee'|t }}</th>
+                          <th>{{ 'Party'|t }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for voter in accordion.Voters %}
+                        <tr class="results-table__row">
+                          <td>{{ voter.Name }}</td>
+                          <td>{{ voter.CouncilGroup }}</td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          
+          <div class="results-by-party">
+            <h4>{{ 'By party'|t }}</h4>
+            <table class="results-table">
+              <thead>
+                <tr class="results-table__row">
+                  <th>{{ 'Party'|t }}</th>
+                  <th>{{ 'Jaa'|t }}</th>
+                  <th>{{ 'Ei'|t }}</th>
+                  <th>{{ 'Empty'|t }}</th>
+                  <th>{{ 'Away'|t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="results-table__row">
+                  <td>Kokoomus</td>
+                  <td class="color-kupari">1</td>
+                  <td class="color-tiili">1</td>
+                  <td class="color-sumu">1</td>
+                  <td class="color-gray-light">1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        {% endfor %}
+        
+
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

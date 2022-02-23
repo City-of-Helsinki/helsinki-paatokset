@@ -34,6 +34,7 @@
   <div{{ content_attributes.addClass('issue-content') }}>
     {{ decision_content.main }}
 
+    {% include '@helfi_paatokset/components/decision-voting-results.html.twig' %}
     <div class="paatokset-accordion">
       {% for accordion in decision_content.accordions %}
         <div class="accordion__wrapper handorgel">

@@ -457,6 +457,31 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $variables['previous_decision'] = $caseService->getPrevDecision();
   $variables['decision_content'] = $caseService->parseContent();
   $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
+
+  $vote_results_accordion = [];
+  $vote_results_by_party = [];
+  $vote_results = [];
+
+  if($caseService->getSelectedDecision()->get('field_voting_results')) {
+    $not_formatted = $caseService->getSelectedDecision()->get('field_voting_results');
+    
+    foreach($not_formatted as $row) {
+      $json = json_decode($row->value);
+      $vote_results_accordion = [
+        'Ayes' => $json->Ayes,
+        'Noes' => $json->Noes,
+        'Blanks' => $json->Blank,
+        'Absent' => $json->Absent
+      ];
+
+      $vote_results[] = [
+        'accordions' => $vote_results_accordion,
+        'by_party' => []
+      ];
+    }
+  }
+
+  $variables['vote_results'] = $vote_results;
 }
 
 /**
