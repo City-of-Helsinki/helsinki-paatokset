@@ -75,5 +75,6 @@ hidden:
   field_top_category_name: true
   field_voting_results: true
   langcode: true
+  published_at: true
   search_api_excerpt: true
   toc_enabled: true
