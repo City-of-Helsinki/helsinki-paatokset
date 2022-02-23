@@ -6886,12 +6886,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -7063,7 +7063,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
+                "reference": "v5.29.1"
             },
             "type": "drupal-library"
         },
@@ -8753,7 +8754,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ruflin/Elastica/issues",
-                "source": "https://github.com/ruflin/Elastica/tree/7.1.4"
+                "source": "https://github.com/ruflin/Elastica/tree/master"
             },
             "time": "2022-02-14T07:19:04+00:00"
         },
