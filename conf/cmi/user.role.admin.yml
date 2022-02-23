@@ -246,3 +246,8 @@ permissions:
   - 'edit terms in news_tags'
   - 'translate news_item node'
   - 'translate news_tags taxonomy_term'
+  - 'create hel_map media'
+  - 'delete any hel_map media'
+  - 'delete own hel_map media'
+  - 'edit any hel_map media'
+  - 'edit own hel_map media'

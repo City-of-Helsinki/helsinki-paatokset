@@ -37,6 +37,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_classification_title
+  color_class:
+    label: 'Color Class'
+    datasource_id: 'entity:node'
+    property_path: color_class
+    type: string
   decision_content:
     label: 'Decision content'
     datasource_id: 'entity:node'
@@ -54,11 +59,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_decision_motion_parsed
-  color_class:
-    label: 'Color Class'
-    datasource_id: 'entity:node'
-    property_path: color_class
-    type: string
   decision_url:
     label: 'Decision URL'
     datasource_id: 'entity:node'
@@ -155,9 +155,9 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  entity_type: {  }
   color_class: {  }
   decision_url: {  }
+  entity_type: {  }
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
