@@ -3,9 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.full_html
     - media.type.ahjo_document
     - media.type.declaration_of_affiliation
     - media.type.file
+    - media.type.hel_map
+    - media.type.helfi_chart
     - media.type.image
     - media.type.minutes_of_the_discussion
     - media.type.policymaker_images
@@ -16,19 +19,26 @@ dependencies:
     - node.type.imported_article
     - node.type.landing_page
     - node.type.meeting
+    - node.type.news_item
     - node.type.page
     - node.type.policymaker
     - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.news_tags
     - taxonomy.vocabulary.pdf_categories
   module:
     - block
+    - config_translation
+    - content_lock
     - content_translation
+    - editoria11y
     - eu_cookie_compliance
     - file
+    - filter
     - helfi_api_base
     - helfi_tpr
     - locale
     - media
+    - menu_link_attributes
     - menu_link_content
     - node
     - paatokset_ahjo_proxy
@@ -36,23 +46,25 @@ dependencies:
     - paragraphs_library
     - path
     - pathauto
+    - publication_date
     - redirect
+    - role_delegation
     - scheduler
     - simple_sitemap
     - system
     - taxonomy
     - toolbar
     - view_unpublished
-    - content_lock
 _core:
   default_config_hash: wJWcExCcstsjfohW4IUVRm742x2vKz6nOlZpa3OG7yQ
 id: admin
-label: Administrator
+label: Pääkäyttäjä
 weight: 5
 is_admin: null
 permissions:
   - 'access administration pages'
   - 'access ahjo documents'
+  - 'access content'
   - 'access content overview'
   - 'access files overview'
   - 'access media overview'
@@ -65,8 +77,10 @@ permissions:
   - 'access tpr_unit overview'
   - 'access user profiles'
   - 'administer blocks'
+  - 'administer editoria11y checker'
   - 'administer eu cookie compliance categories'
   - 'administer eu cookie compliance popup'
+  - 'administer hotjar settings'
   - 'administer media'
   - 'administer media types'
   - 'administer menu'
@@ -78,6 +92,11 @@ permissions:
   - 'administer taxonomy'
   - 'administer url aliases'
   - 'administer users'
+  - 'assign admin role'
+  - 'assign content_producer role'
+  - 'assign editor role'
+  - 'assign read_only role'
+  - 'break content lock'
   - 'bypass node access'
   - 'cancel account'
   - 'change own username'
@@ -85,11 +104,14 @@ permissions:
   - 'create content translations'
   - 'create declaration_of_affiliation media'
   - 'create file media'
+  - 'create hel_map media'
+  - 'create helfi_chart media'
   - 'create image media'
   - 'create imported_article content'
   - 'create landing_page content'
   - 'create media'
   - 'create minutes_of_the_discussion media'
+  - 'create news_item content'
   - 'create page content'
   - 'create paragraph library item'
   - 'create policymaker content'
@@ -98,6 +120,7 @@ permissions:
   - 'create remote_video media'
   - 'create soundcloud media'
   - 'create terms in keywords'
+  - 'create terms in news_tags'
   - 'create terms in pdf_categories'
   - 'create tpr_service'
   - 'create tpr_unit'
@@ -106,11 +129,14 @@ permissions:
   - 'delete any article content'
   - 'delete any declaration_of_affiliation media'
   - 'delete any file media'
+  - 'delete any hel_map media'
+  - 'delete any helfi_chart media'
   - 'delete any image media'
   - 'delete any imported_article content'
   - 'delete any landing_page content'
   - 'delete any media'
   - 'delete any minutes_of_the_discussion media'
+  - 'delete any news_item content'
   - 'delete any page content'
   - 'delete any policymaker content'
   - 'delete any policymaker_images media'
@@ -127,10 +153,13 @@ permissions:
   - 'delete own article content'
   - 'delete own declaration_of_affiliation media'
   - 'delete own file media'
+  - 'delete own hel_map media'
+  - 'delete own helfi_chart media'
   - 'delete own image media'
   - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
+  - 'delete own news_item content'
   - 'delete own page content'
   - 'delete own policymaker content'
   - 'delete own policymaker_images media'
@@ -142,16 +171,20 @@ permissions:
   - 'delete policymaker revisions'
   - 'delete remote entities'
   - 'delete terms in keywords'
+  - 'delete terms in news_tags'
   - 'delete terms in pdf_categories'
   - 'edit any article content'
   - 'edit any case content'
   - 'edit any declaration_of_affiliation media'
   - 'edit any file media'
+  - 'edit any hel_map media'
+  - 'edit any helfi_chart media'
   - 'edit any image media'
   - 'edit any imported_article content'
   - 'edit any landing_page content'
   - 'edit any meeting content'
   - 'edit any minutes_of_the_discussion media'
+  - 'edit any news_item content'
   - 'edit any page content'
   - 'edit any policymaker content'
   - 'edit any policymaker_images media'
@@ -161,11 +194,14 @@ permissions:
   - 'edit own case content'
   - 'edit own declaration_of_affiliation media'
   - 'edit own file media'
+  - 'edit own hel_map media'
+  - 'edit own helfi_chart media'
   - 'edit own image media'
   - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own meeting content'
   - 'edit own minutes_of_the_discussion media'
+  - 'edit own news_item content'
   - 'edit own page content'
   - 'edit own policymaker content'
   - 'edit own policymaker_images media'
@@ -174,6 +210,7 @@ permissions:
   - 'edit paragraph library item'
   - 'edit remote entities'
   - 'edit terms in keywords'
+  - 'edit terms in news_tags'
   - 'edit terms in pdf_categories'
   - 'revert all revisions'
   - 'revert article revisions'
@@ -183,8 +220,11 @@ permissions:
   - 'revert page revisions'
   - 'revert policymaker revisions'
   - 'schedule publishing of nodes'
+  - 'set landing_page published on date'
+  - 'set page published on date'
   - 'translate any entity'
   - 'translate article node'
+  - 'translate configuration'
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
@@ -192,6 +232,8 @@ permissions:
   - 'translate keywords taxonomy_term'
   - 'translate landing_page node'
   - 'translate menu_link_content'
+  - 'translate news_item node'
+  - 'translate news_tags taxonomy_term'
   - 'translate page node'
   - 'translate pdf_categories taxonomy_term'
   - 'translate remote_video media'
@@ -207,6 +249,9 @@ permissions:
   - 'update media'
   - 'update own tpr_service'
   - 'update own tpr_unit'
+  - 'use menu link attributes'
+  - 'use text format full_html'
+  - 'use text format minimal'
   - 'view all media revisions'
   - 'view all revisions'
   - 'view all tpr_service revisions'
@@ -214,8 +259,10 @@ permissions:
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view case revisions'
+  - 'view editoria11y checker'
   - 'view imported_article revisions'
   - 'view landing_page revisions'
+  - 'view media'
   - 'view meeting revisions'
   - 'view own unpublished content'
   - 'view own unpublished media'
@@ -229,37 +276,3 @@ permissions:
   - 'view tpr_service'
   - 'view tpr_unit'
   - 'view unpublished paragraphs'
-  - 'assign admin role'
-  - 'assign content_producer role'
-  - 'assign read_only role'
-  - 'create helfi_chart media'
-  - 'delete any helfi_chart media'
-  - 'delete own helfi_chart media'
-  - 'edit any helfi_chart media'
-  - 'edit own helfi_chart media'
-  - 'create news_item content'
-  - 'create terms in news_tags'
-  - 'delete any news_item content'
-  - 'delete own news_item content'
-  - 'delete terms in news_tags'
-  - 'edit any news_item content'
-  - 'edit own news_item content'
-  - 'edit terms in news_tags'
-  - 'translate news_item node'
-  - 'translate news_tags taxonomy_term'
-  - 'create hel_map media'
-  - 'delete any hel_map media'
-  - 'delete own hel_map media'
-  - 'edit any hel_map media'
-  - 'edit own hel_map media'
-  - 'access content'
-  - 'administer hotjar settings'
-  - 'assign editor role'
-  - 'set landing_page published on date'
-  - 'set page published on date'
-  - 'translate configuration'
-  - 'use menu link attributes'
-  - 'use text format full_html'
-  - 'use text format minimal'
-  - 'view media'
-  - 'break content lock'

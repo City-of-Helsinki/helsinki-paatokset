@@ -1,9 +1,40 @@
 uuid: 1c0c28c3-45e1-40b2-a342-f3c27da44120
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
+    - media.type.file
+    - media.type.helfi_chart
+    - media.type.image
+    - media.type.remote_video
+    - media.type.soundcloud
+    - node.type.landing_page
+    - node.type.page
+    - taxonomy.vocabulary.keywords
+  module:
+    - content_translation
+    - editoria11y
+    - file
+    - filter
+    - helfi_api_base
+    - locale
+    - media
+    - menu_link_attributes
+    - menu_link_content
+    - node
+    - paragraphs
+    - paragraphs_library
+    - path
+    - publication_date
+    - redirect
+    - scheduler
+    - system
+    - taxonomy
+    - toolbar
+    - view_unpublished
 id: editor
-label: Editor
+label: 'Sisällöntuottaja laaja'
 weight: 4
 is_admin: null
 permissions:
@@ -25,6 +56,7 @@ permissions:
   - 'change own username'
   - 'create content translations'
   - 'create file media'
+  - 'create helfi_chart media'
   - 'create image media'
   - 'create landing_page content'
   - 'create media'
@@ -36,6 +68,7 @@ permissions:
   - 'create terms in keywords'
   - 'create url aliases'
   - 'delete any file media'
+  - 'delete any helfi_chart media'
   - 'delete any image media'
   - 'delete any landing_page content'
   - 'delete any media'
@@ -46,6 +79,7 @@ permissions:
   - 'delete landing_page revisions'
   - 'delete media'
   - 'delete own file media'
+  - 'delete own helfi_chart media'
   - 'delete own image media'
   - 'delete own landing_page content'
   - 'delete own page content'
@@ -55,12 +89,14 @@ permissions:
   - 'delete remote entities'
   - 'delete terms in keywords'
   - 'edit any file media'
+  - 'edit any helfi_chart media'
   - 'edit any image media'
   - 'edit any landing_page content'
   - 'edit any page content'
   - 'edit any remote_video media'
   - 'edit any soundcloud media'
   - 'edit own file media'
+  - 'edit own helfi_chart media'
   - 'edit own image media'
   - 'edit own landing_page content'
   - 'edit own page content'
@@ -94,6 +130,7 @@ permissions:
   - 'view all media revisions'
   - 'view all revisions'
   - 'view any unpublished content'
+  - 'view editoria11y checker'
   - 'view landing_page revisions'
   - 'view own unpublished content'
   - 'view own unpublished media'
@@ -101,8 +138,3 @@ permissions:
   - 'view scheduled content'
   - 'view the administration theme'
   - 'view unpublished paragraphs'
-  - 'create helfi_chart media'
-  - 'delete any helfi_chart media'
-  - 'delete own helfi_chart media'
-  - 'edit any helfi_chart media'
-  - 'edit own helfi_chart media'

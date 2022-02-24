@@ -26,6 +26,7 @@ module:
   dynamic_page_cache: 0
   easy_breadcrumb: 0
   editor: 0
+  editoria11y: 0
   elasticsearch_connector: 0
   entity: 0
   entity_reference_revisions: 0
