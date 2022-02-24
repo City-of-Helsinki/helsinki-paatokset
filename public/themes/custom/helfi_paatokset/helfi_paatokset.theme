@@ -283,24 +283,17 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     ];
   };
 
-  //TO-DO: change to use actual data from datapumppu
-  $content_speaking_turns[] = [
-    'meeting' => 'Kaupunginvaltuuston kokous 2021/26',
-    'speaking_turn' => '13. Kansanäänestysaloite Malmin lentokentän säilyttämisestä ilmailukäytössä (2:13)',
-    'link' => '/'
-  ];
+  if ($speaking_turns = TrusteeService::getSpeakingTurns($node)) {
+    $variables['speaking_turns'] = [
+      'title' => t('Valtuutetun puheenvuorot'),
+      'content' => $speaking_turns,
+    ];
+  }
 
-  $variables['speaking_turns'] = [
-    'title' => t('Valtuutetun puheenvuorot'),
-    'content' => $content_speaking_turns
-  ];
-
-  if(
-    $trustee_title = $node->get('field_trustee_title')->value &&
-    ($trustee_title === 'Jäsen' || $trustee_title === 'Varajäsen')
-  ) {
-    $variables['content']['field_trustee_title'] = TrusteeService::getTrusteeTitle($node);
-  };
+  $trustee_title = TrusteeService::getTrusteeTitle($node);
+  if ($trustee_title) {
+    $variables['content']['field_trustee_title'] = $trustee_title;
+  }
 
   if(isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
@@ -317,13 +310,13 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
       ]
     );
   };
-  
+
   // Check if there are any DOAs for the trustee
   $doaQuery = \Drupal::entityQuery('media')
     ->condition('bundle', 'declaration_of_affiliation')
     ->condition('field__policymaker_reference', $node->id())
     ->execute();
-  
+
   if(!empty($doaQuery)) {
     // Display only one DOA for the page - there should be only one of these per trustee.
     $doa = Media::load(reset($doaQuery));

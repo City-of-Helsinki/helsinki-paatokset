@@ -20,7 +20,7 @@ class TrusteeService {
    * @return string
    *   The title transformed into name string
    */
-  public static function getTrusteeName(NodeInterface $trustee) {
+  public static function getTrusteeName(NodeInterface $trustee): string {
     return self::transformTrusteeName($trustee->getTitle());
   }
 
@@ -35,7 +35,7 @@ class TrusteeService {
    * @return string
    *   The title transformed into name string
    */
-  public static function transformTrusteeName(string $title) {
+  public static function transformTrusteeName(string $title): string {
     $nameParts = explode(',', $title);
     return $nameParts[1] . ' ' . $nameParts[0];
   }
@@ -46,21 +46,49 @@ class TrusteeService {
    * @param Drupal\node\NodeInterface $trustee
    *   The trustee node.
    *
-   * @return string|void
-   *   The trustee title to display or void
+   * @return string|null
+   *   The trustee title to display or NULL
    */
-  public static function getTrusteeTitle(NodeInterface $trustee) {
+  public static function getTrusteeTitle(NodeInterface $trustee): ?string {
+    if (!$trustee->hasField('field_trustee_title') || $trustee->get('field_trustee_title')->isEmpty()) {
+      return NULL;
+    }
+
     if ($title = $trustee->get('field_trustee_title')->value) {
-      if ($title == 'Jäsen') {
+
+      if ($title === 'Jäsen') {
         return t('Valtuutettu');
       }
 
-      if ($title == 'Varajäsen') {
+      if ($title === 'Varajäsen') {
         return t('Varavaltuutettu');
       }
 
       return $title;
     }
+  }
+
+  /**
+   * Get trustee speaking turns from Datapumppu integration.
+   *
+   * Note: Not implemented yet!
+   *
+   * @param Drupal\node\NodeInterface $trustee
+   *   Trustee node.
+   *
+   * @return array|null
+   *   Trustee's speaking turns from the API, if found.
+   */
+  public static function getSpeakingTurns(NodeInterface $trustee): ?array {
+    if (!$trustee->hasField('field_trustee_datapumppu_id') || $trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
+      return NULL;
+    }
+
+    return [[
+      'meeting' => 'Kaupunginvaltuuston kokous 2021/26',
+      'speaking_turn' => '13. Kansanäänestysaloite Malmin lentokentän säilyttämisestä ilmailukäytössä (2:13)',
+      'link' => '/'
+    ]];
   }
 
 }
