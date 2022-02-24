@@ -84,11 +84,14 @@ class TrusteeService {
       return NULL;
     }
 
-    return [[
+    // Placeholder content for layout before API integration is implemented.
+    $content = [
       'meeting' => 'Kaupunginvaltuuston kokous 2021/26',
       'speaking_turn' => '13. Kansanäänestysaloite Malmin lentokentän säilyttämisestä ilmailukäytössä (2:13)',
-      'link' => '/'
-    ]];
+      'link' => '/',
+    ];
+
+    return [$content];
   }
 
 }
