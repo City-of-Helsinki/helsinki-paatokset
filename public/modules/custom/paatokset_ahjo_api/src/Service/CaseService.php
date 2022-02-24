@@ -319,7 +319,13 @@ class CaseService {
    */
   private function formatDecisionLabel(NodeInterface $node): string {
     $meeting_number = $node->field_meeting_sequence_number->value;
-    $decision_timestamp = strtotime($node->field_meeting_date->value);
+    if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
+      $decision_timestamp = strtotime($node->field_meeting_date->value);
+    }
+    else {
+      $decision_timestamp = NULL;
+    }
+
     $decision_date = date('d.m.Y', $decision_timestamp);
 
     if ($meeting_number) {
@@ -499,6 +505,10 @@ class CaseService {
    *   ID and title of adjacent decision in list.
    */
   private function getAdjacentDecision(int $offset, ?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
     if (!$case_id) {
       $case_id = $this->caseId;
     }
@@ -626,6 +636,7 @@ class CaseService {
     $more_info_content = NULL;
     if ($more_info) {
       $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
+      $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
     }
 
     if ($more_info_content) {
