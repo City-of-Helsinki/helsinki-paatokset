@@ -3,9 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.full_html
     - media.type.ahjo_document
     - media.type.declaration_of_affiliation
     - media.type.file
+    - media.type.hel_map
+    - media.type.helfi_chart
     - media.type.image
     - media.type.minutes_of_the_discussion
     - media.type.policymaker_images
@@ -14,19 +17,23 @@ dependencies:
     - node.type.article
     - node.type.imported_article
     - node.type.landing_page
+    - node.type.news_item
     - node.type.page
     - node.type.policymaker
     - taxonomy.vocabulary.keywords
     - taxonomy.vocabulary.pdf_categories
   module:
     - content_translation
+    - editoria11y
     - file
+    - filter
     - helfi_api_base
     - media
     - node
     - paragraphs
     - paragraphs_library
     - path
+    - publication_date
     - scheduler
     - system
     - taxonomy
@@ -35,7 +42,7 @@ dependencies:
 _core:
   default_config_hash: XhNzDGDspXeMyW4TAki8MB6z-vzBwmtP_efemgX6-HI
 id: content_producer
-label: 'Content producer'
+label: 'Sisällöntuottaja suppea'
 weight: 3
 is_admin: null
 permissions:
@@ -50,17 +57,21 @@ permissions:
   - 'administer media'
   - 'administer media types'
   - 'administer nodes'
+  - 'administer paragraphs library'
   - 'administer taxonomy'
   - 'cancel account'
   - 'change own username'
   - 'create article content'
   - 'create declaration_of_affiliation media'
   - 'create file media'
+  - 'create hel_map media'
+  - 'create helfi_chart media'
   - 'create image media'
   - 'create imported_article content'
   - 'create landing_page content'
   - 'create media'
   - 'create minutes_of_the_discussion media'
+  - 'create news_item content'
   - 'create page content'
   - 'create paragraph library item'
   - 'create policymaker content'
@@ -91,10 +102,13 @@ permissions:
   - 'delete own article content'
   - 'delete own declaration_of_affiliation media'
   - 'delete own file media'
+  - 'delete own hel_map media'
+  - 'delete own helfi_chart media'
   - 'delete own image media'
   - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
+  - 'delete own news_item content'
   - 'delete own page content'
   - 'delete own policymaker content'
   - 'delete own policymaker_images media'
@@ -107,10 +121,12 @@ permissions:
   - 'edit any article content'
   - 'edit any declaration_of_affiliation media'
   - 'edit any file media'
+  - 'edit any helfi_chart media'
   - 'edit any image media'
   - 'edit any imported_article content'
   - 'edit any landing_page content'
   - 'edit any minutes_of_the_discussion media'
+  - 'edit any news_item content'
   - 'edit any page content'
   - 'edit any policymaker content'
   - 'edit any policymaker_images media'
@@ -119,10 +135,13 @@ permissions:
   - 'edit own article content'
   - 'edit own declaration_of_affiliation media'
   - 'edit own file media'
+  - 'edit own hel_map media'
+  - 'edit own helfi_chart media'
   - 'edit own image media'
   - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own minutes_of_the_discussion media'
+  - 'edit own news_item content'
   - 'edit own page content'
   - 'edit own policymaker content'
   - 'edit own policymaker_images media'
@@ -137,14 +156,20 @@ permissions:
   - 'revert page revisions'
   - 'revert policymaker revisions'
   - 'schedule publishing of nodes'
+  - 'set landing_page published on date'
+  - 'set page published on date'
   - 'translate editable entities'
   - 'update any media'
   - 'update media'
+  - 'use text format full_html'
+  - 'use text format minimal'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view any unpublished content'
   - 'view any unpublished landing_page content'
   - 'view any unpublished page content'
   - 'view article revisions'
+  - 'view editoria11y checker'
   - 'view imported_article revisions'
   - 'view landing_page revisions'
   - 'view own unpublished content'
@@ -155,20 +180,3 @@ permissions:
   - 'view scheduled content'
   - 'view the administration theme'
   - 'view unpublished paragraphs'
-  - 'create helfi_chart media'
-  - 'delete own helfi_chart media'
-  - 'edit own helfi_chart media'
-  - 'create news_item content'
-  - 'delete own news_item content'
-  - 'edit any news_item content'
-  - 'edit own news_item content'
-  - 'create hel_map media'
-  - 'delete own hel_map media'
-  - 'edit own hel_map media'
-  - 'administer paragraphs library'
-  - 'set landing_page published on date'
-  - 'set page published on date'
-  - 'use text format full_html'
-  - 'use text format minimal'
-  - 'view any unpublished content'
-  - 'edit any helfi_chart media'

@@ -2,26 +2,24 @@ uuid: 81cd258a-8e4e-4a01-869a-c329952a4773
 langcode: en
 status: true
 dependencies:
-  config:
-    - filter.format.full_html
   module:
     - eu_cookie_compliance
-    - filter
     - helfi_api_base
     - helfi_tpr
     - media
     - system
+    - toolbar
 _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
 id: authenticated
-label: 'Authenticated user'
+label: 'Sisäänkirjautunut käyttäjä'
 weight: 1
 is_admin: false
 permissions:
   - 'access content'
+  - 'access toolbar'
   - 'display eu cookie compliance popup'
   - 'view media'
   - 'view remote entities'
   - 'view tpr_service'
   - 'view tpr_unit'
-  - 'access toolbar'
