@@ -101,7 +101,7 @@
   <div class="trustee-image">
       {{ content.field_trustee_image }}
     </div>
-  {% if 
+  {% if
     content.field_trustee_profession|render or
     content.field_trustee_home_district|render or
     content.field_trustee_email|render or
@@ -137,6 +137,7 @@
     </div>
   {% endif %}
 
+  {% if speaking_turns.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_speaking-turn">
     <h4 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
@@ -152,7 +153,6 @@
         <div>
           <div class="speaking-turn__meeting">{{ row.meeting }}</div>
           <div class="speaking-turn__link-container">
-            {% include '@hdbt/misc/icon.twig' with {icon: 'videocamera'} %}
             <a class="speaking-turn__link" href="{{row.link}}">{{ row.speaking_turn }}</a>
           </div>
         </div>
@@ -164,8 +164,9 @@
       </div>
     </div>
   </div>
+  {% endif %}
 
-  {% if initiatives.content|length > 0 %}
+  {% if initiatives.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_initiatives">
     <h4 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
@@ -192,7 +193,7 @@
   </div>
   {% endif %}
 
-  {% if resolutions.content|length > 0 %}
+  {% if resolutions.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_resolutions">
     <h4 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
