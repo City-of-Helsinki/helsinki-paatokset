@@ -47,7 +47,7 @@ class ContactsBlock extends BlockBase {
       '#title' => t('Contact information'),
       'contacts' => $this->getContacts(),
       '#attributes' => [
-        'class' => ['policymaker-contacts', 'container'],
+        'class' => ['policymaker-contacts'],
       ],
     ];
   }

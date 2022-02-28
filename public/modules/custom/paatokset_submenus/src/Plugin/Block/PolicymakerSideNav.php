@@ -39,11 +39,7 @@ class PolicymakerSideNav extends BlockBase {
    * Build the attributes.
    */
   public function build() {
-    $options = $this->itemsToOptions();
-
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#title' => 'Viranhaltijapäätökset',
       '#items' => [[
         'title' => t('Policymakers'),
         'url' => Url::fromRoute('policymakers.fi')->setOption('attributes', ['icon' => 'angle-left']),
@@ -51,8 +47,6 @@ class PolicymakerSideNav extends BlockBase {
       ],
       ],
       '#currentPath' => \Drupal::service('path.current')->getPath(),
-      '#options' => $options['options'],
-      '#current_option' => $options['current_option'],
     ];
   }
 
@@ -148,39 +142,6 @@ class PolicymakerSideNav extends BlockBase {
     }
 
     return $items;
-  }
-
-  /**
-   * Transform items to HDS dropdown options.
-   *
-   * @return array
-   *   Array of options + current option
-   */
-  private function itemsToOptions() {
-    if (!is_array($this->items)) {
-      return [];
-    }
-
-    $currentPath = $currentPath = Url::fromRoute('<current>')->toString();
-    $currentOption = NULL;
-    $options = [];
-    foreach ($this->items as $option) {
-      $option = [
-        'label' => $option['title'],
-        'value' => $option['url']->toString(),
-      ];
-
-      if ($option['value'] === $currentPath) {
-        $currentOption = $option;
-      }
-
-      $options[] = $option;
-    }
-
-    return [
-      'options' => json_encode($options),
-      'current_option' => json_encode($currentOption),
-    ];
   }
 
 }

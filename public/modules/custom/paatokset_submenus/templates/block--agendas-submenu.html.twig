@@ -26,7 +26,7 @@
  */
 #}
 
-<div{{ attributes.addClass('container') }}>
+<div>
   {% if (years is not empty ) %}
   <div class="paatokset__decision-tree-container">
     <div class="decision-tree__title">
@@ -82,7 +82,6 @@
         {%
           set document_container_classes = [
             'policymakers-documents',
-            'container',
             loop.index == 1 ? 'selected-year'
           ]
         %}

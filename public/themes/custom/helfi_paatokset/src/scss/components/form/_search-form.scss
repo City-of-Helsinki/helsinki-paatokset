@@ -1,6 +1,5 @@
 // Hero section for search form
 .hero--paatokset-search-bar {
-  margin-top: -40px;
   margin-bottom: $spacing-double;
 
   @include breakpoint($breakpoint-xl) {
@@ -10,16 +9,6 @@
   .hero__text-content {
     padding-top: $spacing-triple;
     padding-bottom: $spacing-triple;
-
-    @include breakpoint($breakpoint-xl) {
-      max-width: 894px;
-    }
-  }
-
-  .container.hero__container {
-    @media (max-width: $breakpoint-s) {
-      max-width: $container-width-xs;
-    }
   }
 }
 
@@ -36,11 +25,9 @@
       display: flex;
       align-items: flex-end;
     }
-  }
 
-  .hds-text-input__input {
-    @include breakpoint($breakpoint-xl) {
-      width: 894px;
+    .form-item-hds-text-input__input {
+      width: 100%;
     }
   }
 

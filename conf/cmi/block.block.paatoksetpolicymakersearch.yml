@@ -11,7 +11,7 @@ dependencies:
 id: paatoksetpolicymakersearch
 theme: helfi_paatokset
 region: content
-weight: 0
+weight: -15
 provider: null
 plugin: policymaker_search_block
 settings:

@@ -126,6 +126,12 @@ function helfi_paatokset_theme_suggestions_menu_alter(&$suggestions, $variables)
   if (!empty($variables['menu_block_configuration']['custom_suggestion']) && $variables['menu_block_configuration']['custom_suggestion'] === 'block__menu_block__main__desktop') {
     $suggestions[] = 'menu__main__desktop';
   }
+
+  if (isset($variables['attributes']['block_id'])) {
+    if($variables['attributes']['block_id'] === 'helfi_paatokset_mobile_navigation') {
+      $suggestions[] = 'menu__mobile';
+    }
+  }
 }
 
 /**
@@ -403,4 +409,8 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
  */
 function helfi_paatokset_preprocess_menu(&$variables) {
   $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
+
+  if(isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
+    $variables['allow_collabsible'] = true;
+  }
 }
