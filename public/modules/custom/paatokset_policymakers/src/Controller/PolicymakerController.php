@@ -67,15 +67,13 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
-    $build['title'] = [
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-      '#markup' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+    $build = [
+      '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
     ];
 
     if ($policymaker->get('field_decisions_description')->value) {
       $build['description'] = [
-        '#markup' => '<div class="container">' . $policymaker->get('field_decisions_description')->value . '<div>',
+        '#markup' => '<div>' . $policymaker->get('field_decisions_description')->value . '</div>',
       ];
     }
 

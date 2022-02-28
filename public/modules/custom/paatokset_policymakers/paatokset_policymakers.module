@@ -26,10 +26,7 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
     ],
     'policymaker_minutes' => [
       'render element' => 'elements',
-      'template' => 'content/minutes',
-      'variables' => [
-        'page_has_sidebar' => true
-      ]
+      'template' => 'content/minutes'
     ],
     'block__policymaker_members' => [
       'base hook' => 'entity',
