@@ -288,12 +288,91 @@ class PolicymakerService {
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$route.$currentLanguage";
 
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, [
-        'organization' => strtolower($policymaker_org),
-        'id' => $id,
-      ]);
+    $routeSettings = [
+      'organization' => strtolower($policymaker_org),
+      'id' => $id,
+    ];
+
+    $routeOptions = [];
+    if ($this->checkDecisionAnnouncementById($id)) {
+      $anchor = $this->getDecisionAnnouncementAnchor();
+      $routeOptions['fragment'] = $anchor;
     }
+
+    if ($this->routeExists($localizedRoute)) {
+      return Url::fromRoute($localizedRoute, $routeSettings, $routeOptions);
+    }
+  }
+
+  /**
+   * Check decision announcement by ID.
+   *
+   * @param string $id
+   *   Meeting ID.
+   *
+   * @return bool
+   *
+   */
+  public function checkDecisionAnnouncementById(string $id): bool {
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_id', $id)
+      ->condition('field_meeting_decision', '', '<>')
+      ->condition('field_meeting_minutes_published', 1, '<>')
+      ->range(0, 1);
+
+    $ids = $query->execute();
+    return !empty($ids);
+  }
+
+  /**
+   * Parse decision announcement HTML from meeting node.
+   *
+   * @param Drupal\node\NodeInterface $meeting
+   *   Meeting to get announcement from.
+   *
+   * @return array|null
+   *   Render array with parsed HTML content, if found.
+   */
+  public function getDecisionAnnouncement(NodeInterface $meeting): ?array {
+    // If meeting minutes are published, do not display announcement.
+    if ($meeting->hasField('field_meeting_minutes_published') && $meeting->get('field_meeting_minutes_published')->value) {
+      return NULL;
+    }
+
+    if (!$meeting->hasField('field_meeting_decision') || $meeting->get('field_meeting_decision')->isEmpty()) {
+      return NULL;
+    }
+
+    $element_id = $this->getDecisionAnnouncementAnchor();
+
+    $dom = new \DOMDocument();
+    @$dom->loadHTML($meeting->get('field_meeting_decision')->value);
+    $announcement = NULL;
+    foreach ($dom->getElementsByTagName('body') as $body) {
+      foreach ($body->childNodes as $node) {
+        $announcement .= $node->ownerDocument->saveHTML($node);
+      }
+    }
+    return [
+      '#prefix' => '<div class="minutes-container__decision" id=' . $element_id . '>',
+      '#suffix' => '</div>',
+      '#markup' => $announcement,
+    ];
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @return string
+   */
+  public function getDecisionAnnouncementAnchor(): string {
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($currentLanguage === 'sv') {
+      return 'beslutsmeddelanden';
+    }
+    return 'paatostiedote';
   }
 
   /**
@@ -712,12 +791,15 @@ class PolicymakerService {
       $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
     }
 
+    $decisionAnnouncement = $this->getDecisionAnnouncement($meeting);
+
     return [
       'meeting' => [
         'page_title' => $pageTitle,
         'date_long' => $dateLong,
         'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
       ],
+      'decision_announcement' => $decisionAnnouncement,
       'list' => $agendaItems,
       'file' => [
         'document_title' => $documentTitle,

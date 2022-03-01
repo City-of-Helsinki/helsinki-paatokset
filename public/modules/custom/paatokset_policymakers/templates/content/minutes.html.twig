@@ -49,6 +49,10 @@
     </div>
   {% endif %}
 
+  {% if decision_announcement %}
+    {{ decision_announcement }}
+  {% endif %}
+
   {% if minutes_of_discussion %}
     <div class="minutes-file__container">
       {% for minute in minutes_of_discussion %}
