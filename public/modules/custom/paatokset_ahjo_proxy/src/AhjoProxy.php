@@ -908,6 +908,38 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Parse "is decision" flag for nodes where it is missing.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function setDecisionItemFlag($data, &$context) {
+    $context['message'] = 'Parsing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    $node = Node::load($data['nid']);
+    if ($node->hasField('field_is_decision')) {
+      $context['results']['items'][] = $node->id();
+      $node->set('field_is_decision', TRUE);
+      $node->save();
+    }
+    else {
+      $context['results']['failed'][] = $node->id();
+    }
+  }
+
+  /**
    * Static callback function for finishing group aggregation batch.
    *
    * @param mixed $success
