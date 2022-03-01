@@ -9,6 +9,9 @@
   font-size: 20px;
   font-weight: 500;
   position: relative;
+  hyphens: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   @include breakpoint($breakpoint-s) {
     padding: 28px;
