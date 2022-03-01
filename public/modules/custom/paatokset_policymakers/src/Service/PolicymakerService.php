@@ -311,7 +311,7 @@ class PolicymakerService {
    *   Meeting ID.
    *
    * @return bool
-   *
+   *   TRUE if meeting has a decision announcement but no published minutes.
    */
   public function checkDecisionAnnouncementById(string $id): bool {
     $query = \Drupal::entityQuery('node')
@@ -363,9 +363,10 @@ class PolicymakerService {
   }
 
   /**
-   * Undocumented function
+   * Get decision announcement URL fragment based on active language version.
    *
    * @return string
+   *   Element ID or URL fragment.
    */
   public function getDecisionAnnouncementAnchor(): string {
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
