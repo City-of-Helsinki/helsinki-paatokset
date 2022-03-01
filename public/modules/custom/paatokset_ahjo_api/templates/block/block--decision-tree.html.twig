@@ -12,18 +12,18 @@
       class: 'arrow-left'
     }%}
     {% for row in decision_process %}
-      <div class="decision-tree__box">
-        {{row}}
-      </div>
+      <a class="decision-tree__box" {% if row.link %} href="{{ row.link }}" {% endif %}>
+        {{ row.title }}
+      </a>
     {% endfor %}
     {% include '@paatokset_ahjo_api/component/decision-tree-arrow--dashed.html.twig' %}
   </div>
-  <div class="decision-tree__info-text">{{ info_1 }}</div>
+  <div class="decision-tree__info-text">{{ info_2 }}</div>
   <div class="decision-tree__lower-tree">
   {% for row in decisionmaker_process %}
-    <div class="decision-tree__box">
-      {{row}}
-    </div>
+    <a class="decision-tree__box" {% if row.link %} href="{{ row.link }}" {% endif %}>
+      {{ row.title }}
+    </a>
   {% endfor %}
   </div>
 </div>
