@@ -53,6 +53,7 @@
     text-decoration: none;
     font-size: 18px;
     font-weight: $font-weight-medium;
+    align-items: center;
   }
 }
 
@@ -77,16 +78,17 @@
     }
   }
 
-  @include breakpoint($breakpoint-s) {
+  @include breakpoint($breakpoint-m) {
     padding: $spacing-xs;
+    width: 50%;
+  }
+
+  @include breakpoint($breakpoint-l) {
+    width: 33.3%;
   }
 
   @include breakpoint($breakpoint-xl) {
     width: 25%;
-  }
-
-  @include breakpoint($breakpoint-m) {
-    width: 50%;
   }
 
   .motions-link {
@@ -122,8 +124,15 @@
     margin-bottom: $gutter;
   }
 
-  h4 {
+  h3 {
     flex-grow: 1;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-top: 0;
+
+    @include breakpoint($breakpoint-s) {
+      font-size: 1.5rem;
+    }
   }
 }
 
