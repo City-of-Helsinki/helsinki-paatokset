@@ -535,6 +535,10 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_meeting_date');
         $query->condition('field_meeting_id', '', '<>');
       }
+      elseif ($logic === 'creation') {
+        $query->notExists('field_meeting_date');
+        $query->notExists('field_meeting_id');
+      }
     }
 
     if ($limit) {
@@ -660,6 +664,76 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::parseDecisionItem',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Parsing data for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Sets "is decision" flag for decision nodes.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:set-decision-flag
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @usage ahjo-proxy:set-decicion-flag --limit=50
+   *   Sets decision flag for the first 50 decisions where it wasn't before.
+   *
+   * @aliases ap:sdf
+   */
+  public function setDecisionFlag(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->notExists('field_is_decision')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $operations = [];
+    $count = 0;
+    foreach ($ids as $nid) {
+      $count++;
+      $data = [
+        'nid' => $nid,
+        'count' => $count,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::setDecisionItemFlag',
         [$data],
       ];
     }
