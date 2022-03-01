@@ -179,6 +179,9 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
   if (isset($variables['elements']['minutes_of_discussion']) && !empty($variables['elements']['minutes_of_discussion'])) {
     $variables['minutes_of_discussion'] = $variables['elements']['minutes_of_discussion'];
   }
+  if (isset($variables['elements']['decision_announcement']) && !empty($variables['elements']['decision_announcement'])) {
+    $variables['decision_announcement'] = $variables['elements']['decision_announcement'];
+  }
 }
 
 /**
@@ -255,7 +258,7 @@ function paatokset_policymakers_preprocess_html(&$variables) {
 
 /**
  * Set a variable to always show sidebar in policymaker pages.
- * 
+ *
  * Implements hook_preprocess_page().
  */
 function paatokset_policymakers_preprocess_page(&$variables) {
