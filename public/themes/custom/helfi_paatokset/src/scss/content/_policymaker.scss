@@ -152,7 +152,6 @@
   border-bottom: 1px solid $color-black-20;
   padding:  $spacing-and-half 0;
   display: block;
-  text-decoration: none;
 
   &:hover {
     .list-item__subject {
@@ -164,8 +163,11 @@
     border-top: 1px solid $color-black-20;
   }
 
-  &.policymaker-list-item--document {
+  &.policymaker-list-item--document,
+  .policymaker-list-item--document {
+    display: block;
     border-color: $color-black;
+    text-decoration: none;
 
     .subject__date {
       display: block;
@@ -195,6 +197,10 @@
   .list-item__subject {
     font-weight: $font-weight-medium;
     font-size: 24px;
+
+    a {
+      text-decoration: none;
+    }
   }
 }
 
@@ -289,6 +295,8 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__container {
+  margin-top: $spacing-4-xl;
+
   .paatokset-accordion {
     margin-bottom: $spacing-double;
     border-bottom: 2px solid $color-black-20;
