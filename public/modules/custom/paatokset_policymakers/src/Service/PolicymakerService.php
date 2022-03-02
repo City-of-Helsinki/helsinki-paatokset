@@ -349,16 +349,40 @@ class PolicymakerService {
 
     $dom = new \DOMDocument();
     @$dom->loadHTML($meeting->get('field_meeting_decision')->value);
-    $announcement = NULL;
-    foreach ($dom->getElementsByTagName('body') as $body) {
-      foreach ($body->childNodes as $node) {
-        $announcement .= $node->ownerDocument->saveHTML($node);
+    $xpath = new \DOMXPath($dom);
+    $announcement_title = NULL;
+    $main_title = $xpath->query("//*[contains(@class, 'TiedotenumeroOtsikko')]");
+    if ($main_title) {
+      foreach ($main_title as $node) {
+        $announcement_title = $node->nodeValue;
       }
     }
+
+    $accordions = [];
+    $main_sections = $xpath->query("//*[@class='Tiedote']");
+    if ($main_sections) {
+      foreach ($main_sections as $node) {
+        $accordion = [];
+        foreach ($node->childNodes as $child_node) {
+          if ($child_node->nodeName === 'h3') {
+            $accordion['heading'] = $child_node->nodeValue;
+            continue;
+          }
+          if ($child_node->getAttribute('class') === 'TiedoteTeksti') {
+            $accordion['content']['#markup'] = $child_node->ownerDocument->saveHTML($child_node);
+          }
+        }
+
+        if (!empty($accordion['heading']) && !empty($accordion['content'])) {
+          $accordions[] = $accordion;
+        }
+      }
+    }
+
     return [
-      '#prefix' => '<div class="minutes-container__decision" id=' . $element_id . '>',
-      '#suffix' => '</div>',
-      '#markup' => $announcement,
+      'element_id' => $element_id,
+      'heading' => $announcement_title,
+      'accordions' => $accordions,
     ];
   }
 
