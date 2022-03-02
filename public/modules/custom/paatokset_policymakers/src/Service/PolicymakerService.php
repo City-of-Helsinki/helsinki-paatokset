@@ -362,6 +362,11 @@ class PolicymakerService {
       }
     }
 
+    $disclaimer = [];
+    if ($this->policymaker instanceof NodeInterface && $this->policymaker->hasField('field_documents_description') && !$this->policymaker->get('field_documents_description')->isEmpty()) {
+      $disclaimer['#markup'] = $this->policymaker->get('field_documents_description')->value;
+    }
+
     $accordions = [];
     $main_sections = $xpath->query("//*[@class='Tiedote']");
     if ($main_sections) {
@@ -385,6 +390,7 @@ class PolicymakerService {
 
     return [
       'element_id' => $element_id,
+      'disclaimer' => $disclaimer,
       'heading' => $announcement_title,
       'accordions' => $accordions,
     ];
