@@ -358,7 +358,7 @@ class PolicymakerService {
     $main_title = $xpath->query("//*[contains(@class, 'Paattaja')]");
     if ($main_title) {
       foreach ($main_title as $node) {
-        $announcement_title = t('Decision announcement: @title' , ['@title' => $node->nodeValue]);
+        $announcement_title = t('Decision announcement: @title', ['@title' => $node->nodeValue]);
       }
     }
 
