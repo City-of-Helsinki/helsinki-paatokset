@@ -257,11 +257,13 @@ class PolicymakerService {
    *   Meeting ID.
    * @param string|null $policymaker_id
    *   Policymaker ID. NULL if using default.
+   * @param bool $include_anchor
+   *   Include decision announcement anchor, if valid.
    *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL): ?Url {
+  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE): ?Url {
     if (!empty($policymaker_id)) {
       $this->setPolicyMaker($policymaker_id);
     }
@@ -294,7 +296,7 @@ class PolicymakerService {
     ];
 
     $routeOptions = [];
-    if ($this->checkDecisionAnnouncementById($id)) {
+    if ($include_anchor && $this->checkDecisionAnnouncementById($id)) {
       $anchor = $this->getDecisionAnnouncementAnchor();
       $routeOptions['fragment'] = $anchor;
     }
@@ -699,16 +701,15 @@ class PolicymakerService {
       $meeting_timestamp = strtotime($node->get('field_meeting_date')->value);
       $meeting_year = date('Y', $meeting_timestamp);
       $meeting_id = $node->get('field_meeting_id')->value;
+      $decision_link = NULL;
 
       if ($document = $meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
         $document_title = t('Minutes');
       }
       elseif ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
+        $document_title = t('Agenda');
         if (!$node->get('field_meeting_decision')->isEmpty()) {
-          $document_title = t('Decision');
-        }
-        else {
-          $document_title = t('Agenda');
+          $decision_link = $this->getMinutesRoute($meeting_id);
         }
       }
       else {
@@ -721,9 +722,10 @@ class PolicymakerService {
         'title' => $document_title,
         'meeting_number' => $node->get('field_meeting_sequence_number')->value . ' - ' . $meeting_year,
         'origin_url' => $meetingService->getUrlFromAhjoDocument($document),
+        'decision_link' => $decision_link,
       ];
 
-      $link = $this->getMinutesRoute($meeting_id);
+      $link = $this->getMinutesRoute($meeting_id, NULL, FALSE);
       if ($link) {
         $result['link'] = $link;
       }
