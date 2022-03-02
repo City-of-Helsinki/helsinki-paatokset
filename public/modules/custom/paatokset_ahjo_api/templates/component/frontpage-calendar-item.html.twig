@@ -1,4 +1,4 @@
-<a class="frontpage-calendar__item" {% if motions_link %} href="{{motions_link}}" {% elseif minutes_link %} href="{{minutes_link}}" {% endif %}>
+<a class="frontpage-calendar__item" {% if motions_link %} href="{{motions_link}}" {% elseif decision_link %} href="{{decision_link}}" {% elseif minutes_link %} href="{{minutes_link}}" {% endif %}>
   <div class="frontpage-calendar__item-inner">
     <div class="color-line {{ line_color }}"></div>
     <div class="content-container">
@@ -7,6 +7,11 @@
       {% if motions_link %}
         <div class="motions-link">
           <span>{{ open_motions }}</span>
+          <i class="hel-icon hel-icon--angle-right"></i>
+        </div>
+      {% elseif decision_link %}
+      <div class="motions-link">
+          <span>{{ open_decisions }}</span>
           <i class="hel-icon hel-icon--angle-right"></i>
         </div>
       {% elseif minutes_link %}

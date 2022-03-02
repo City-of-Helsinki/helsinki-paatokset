@@ -105,6 +105,9 @@ class MeetingService {
       if ($node->get('field_meeting_minutes_published')->value) {
         $transformedResult['minutes_link'] = $this->getMeetingUrl($node);
       }
+      elseif ($node->get('field_meeting_agenda_published')->value && !$node->get('field_meeting_decision')->isEmpty()) {
+        $transformedResult['decision_link'] = $this->getMeetingUrl($node);
+      }
       elseif ($node->get('field_meeting_agenda_published')->value) {
         $transformedResult['motions_list_link'] = $this->getMeetingUrl($node);
       }
