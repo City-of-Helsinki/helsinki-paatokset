@@ -302,6 +302,8 @@ class PolicymakerService {
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, $routeSettings, $routeOptions);
     }
+
+    return NULL;
   }
 
   /**
@@ -702,7 +704,12 @@ class PolicymakerService {
         $document_title = t('Minutes');
       }
       elseif ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
-        $document_title = t('Agenda');
+        if (!$node->get('field_meeting_decision')->isEmpty()) {
+          $document_title = t('Decision');
+        }
+        else {
+          $document_title = t('Agenda');
+        }
       }
       else {
         continue;
