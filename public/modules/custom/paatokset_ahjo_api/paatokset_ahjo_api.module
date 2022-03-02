@@ -90,6 +90,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   }
 
   $variables['open_motions'] = t('Open motions');
+  $variables['open_decisions'] = t('Open decisions');
   $variables['open_minutes'] = t('Open minutes');
   $variables['calendar_link'] = '/kokouskalenteri';
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
@@ -487,7 +488,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
 
   if($caseService->getSelectedDecision()->get('field_voting_results')) {
     $not_formatted = $caseService->getSelectedDecision()->get('field_voting_results');
-    
+
     foreach($not_formatted as $row) {
       $json = json_decode($row->value);
       $vote_results_accordion = [

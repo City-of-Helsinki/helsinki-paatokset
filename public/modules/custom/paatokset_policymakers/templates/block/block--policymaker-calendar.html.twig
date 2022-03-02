@@ -27,11 +27,18 @@
         <tr class="policymaker-calendar__table-row">
           <td>{{ date|date("d.m.Y") }}</td>
           <td>{{ row.start_time}}</td>
-          <td>Some info</td>
+          <td></td>
           {% if row.minutes_link %}
             <td>
               <a href="{{row.minutes_link}}">
                 {{ open_minutes }}
+                <i class="hel-icon hel-icon--angle-right"></i>
+              </a>
+            </td>
+          {% elseif row.decision_link %}
+            <td>
+              <a href="{{row.decision_link}}">
+                {{ open_decisions }}
                 <i class="hel-icon hel-icon--angle-right"></i>
               </a>
             </td>
