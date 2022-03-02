@@ -3,7 +3,7 @@
  * Template for policymaker minutes
  */
 #}
-
+{{ attach_library('hdbt/accordion') }}
 <div class="minutes-container">
   {% if meeting is not empty %}
     <h1 class="minutes__header">
@@ -49,8 +49,37 @@
     </div>
   {% endif %}
 
-  {% if decision_announcement %}
-    {{ decision_announcement }}
+  {% if decision_announcement is not empty %}
+    <div class="minutes-decision__container" id="{{ decision_announcement.element_id }}">
+      {% if decision_announcement.heading %}
+        <h2 class="minutes-decision__heading">
+          {{ decision_announcement.heading }}
+        </h2>
+      {% endif %}
+
+      <div class="paatokset-accordion">
+        {% for accordion in decision_announcement.accordions %}
+          <div class="accordion__wrapper handorgel">
+            <h3 class="accordion-item__header handorgel__header">
+              <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+                <span>{{ accordion.heading }}</span>
+                <div class="accordion-item__icon">
+                  {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+                </div>
+              </button>
+            </h3>
+            <div class="accordion-item__content handorgel__content">
+              <div class="accordion-item__content__inner handorgel__content__inner">
+                {{ accordion.content }}
+                <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+                  {{ 'Close'|t }}
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   {% endif %}
 
   {% if minutes_of_discussion %}
