@@ -95,17 +95,15 @@
         {% endfor %}
       {% endif %}
 
-      {% if type == 'decisions' %}
-        {% for year, decisions in list %}
-          {% set decision_container_attributes = create_attribute() %}
-          {%
-            set decision_container_classes = [
-              'policymakers-decisions',
-              'container',
-              loop.index == 1 ? 'selected-year'
-            ]
-          %}
-
+    {% if type == 'decisions' %}
+      {% for year, decisions in list %}
+        {% set decision_container_attributes = create_attribute() %}
+        {%
+          set decision_container_classes = [
+            'policymakers-decisions',
+            loop.index == 1 ? 'selected-year'
+          ]
+        %}
           <div{{ decision_container_attributes.addClass(decision_container_classes).setAttribute('value', year) }}>
             {% for decision in decisions %}
             {% include '@paatokset_ahjo_api/component/decision--list-item.html.twig' %}
@@ -121,7 +119,7 @@
     </div>
     {% endblock %}
   {% endif %}
-  
+
 </div>
 
 <noscript>
