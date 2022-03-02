@@ -1,3 +1,5 @@
 all_recordings_link: 'https://www.helsinkikanava.fi/fi_FI/web/helsinkikanava/player/folder/serie?seriesId=39419540&groupItemId=39419540'
 debug_mode: 0
 city_council_id: '02900'
+city_hall_id: '00400'
+trustee_organization_type_id: '19'
