@@ -57,6 +57,12 @@
         </h2>
       {% endif %}
 
+      {% if decision_announcement.metadata['#markup'] %}
+        <div class="minutes-decision__meta">
+          {{ decision_announcement.metadata }}
+        </div>
+      {% endif %}
+
       {% if decision_announcement.disclaimer is not empty %}
         {{ decision_announcement.disclaimer }}
       {% endif %}
@@ -83,6 +89,12 @@
           </div>
         {% endfor %}
       </div>
+
+      {% if decision_announcement.more_info['#markup'] %}
+        <div class="minutes-decision__meta">
+          {{ decision_announcement.more_info }}
+        </div>
+      {% endif %}
     </div>
   {% endif %}
 

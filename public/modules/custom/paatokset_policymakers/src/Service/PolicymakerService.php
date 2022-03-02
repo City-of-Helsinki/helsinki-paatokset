@@ -355,10 +355,29 @@ class PolicymakerService {
     @$dom->loadHTML($meeting->get('field_meeting_decision')->value);
     $xpath = new \DOMXPath($dom);
     $announcement_title = NULL;
-    $main_title = $xpath->query("//*[contains(@class, 'TiedotenumeroOtsikko')]");
+    $main_title = $xpath->query("//*[contains(@class, 'Paattaja')]");
     if ($main_title) {
       foreach ($main_title as $node) {
-        $announcement_title = $node->nodeValue;
+        $announcement_title = t('Decision announcement: @title' , ['@title' => $node->nodeValue]);
+      }
+    }
+
+    $announcement_meta = NULL;
+    $meta_content = $xpath->query("//*[contains(@class, 'Kokous')]");
+    if ($meta_content) {
+      foreach ($meta_content as $node) {
+        $announcement_meta .= $node->ownerDocument->saveHTML($node);
+      }
+    }
+
+    $announcement_info = NULL;
+    $info_content = $xpath->query("//*[contains(@class, 'Paikka Paivamaara')]");
+    if ($info_content->count() > 0) {
+      $current_item = $info_content->item(0);
+      $announcement_info .= $node->ownerDocument->saveHTML($current_item);
+      while ($current_item->nextSibling instanceof \DOMNode) {
+        $current_item = $current_item->nextSibling;
+        $announcement_info .= $node->ownerDocument->saveHTML($current_item);
       }
     }
 
@@ -391,8 +410,10 @@ class PolicymakerService {
     return [
       'element_id' => $element_id,
       'disclaimer' => $disclaimer,
+      'metadata' => ['#markup' => $announcement_meta],
       'heading' => $announcement_title,
       'accordions' => $accordions,
+      'more_info' => ['#markup' => $announcement_info],
     ];
   }
 
