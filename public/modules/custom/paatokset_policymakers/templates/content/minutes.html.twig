@@ -57,6 +57,10 @@
         </h2>
       {% endif %}
 
+      {% if decision_announcement.disclaimer is not empty %}
+        {{ decision_announcement.disclaimer }}
+      {% endif %}
+
       <div class="paatokset-accordion">
         {% for accordion in decision_announcement.accordions %}
           <div class="accordion__wrapper handorgel">
