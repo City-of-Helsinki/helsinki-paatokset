@@ -50,18 +50,26 @@ class SectorJSON extends ProcessorPluginBase {
     if ($datasourceId == 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if ($node->getType() !== 'policymaker') {
-        return;
+      $policymaker;
+      if ($node->getType() === 'policymaker') {
+        $policymaker = $node;
+      }
+      if ($node->getType() === 'decision') {
+        /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService */
+        $policymakerService = \Drupal::service('paatokset_policymakers');
+        $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value);
       }
 
-      $sectorData = $node->get('field_dm_sector')->value;
+      if ($policymaker) {
+        $sectorData = $policymaker->get('field_dm_sector')->value;
 
-      if ($sectorData && $sectorData !== 'null') {
-        $parsed = json_decode($sectorData);
-        if (isset($parsed->Sector)) {
-          $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'sector');
-          foreach ($fields as $field) {
-            $field->addValue($parsed->Sector);
+        if ($sectorData && $sectorData !== 'null') {
+          $parsed = json_decode($sectorData);
+          if (isset($parsed->Sector)) {
+            $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'sector');
+            foreach ($fields as $field) {
+              $field->addValue($parsed->Sector);
+            }
           }
         }
       }

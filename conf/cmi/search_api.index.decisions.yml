@@ -11,13 +11,9 @@ dependencies:
     - field.storage.node.field_diary_number
     - field.storage.node.field_full_title
     - field.storage.node.field_decision_native_id
-    - field.storage.node.field_diary_number
-    - field.storage.node.field_decision_case_title
-    - field.storage.node.field_decision_date
     - field.storage.node.field_dm_org_above_name
     - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
-    - field.storage.node.field_full_title
     - field.storage.node.field_top_category_name
     - search_api.server.elasticsearch
   module:
@@ -60,11 +56,6 @@ field_settings:
       config:
         - field.storage.node.field_decision_motion_parsed
   decision_url:
-    label: 'Decision URL'
-    datasource_id: 'entity:node'
-    property_path: decision_url
-    type: string
-  decision_url_1:
     label: 'Decision URL'
     datasource_id: 'entity:node'
     property_path: decision_url
@@ -126,6 +117,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_organization_type
+  sector:
+    label: Sector
+    datasource_id: 'entity:node'
+    property_path: sector
+    type: string
+  special_status:
+    label: 'Special status'
+    datasource_id: 'entity:node'
+    property_path: special_status
+    type: string
   subject:
     label: 'Full title'
     datasource_id: 'entity:node'
@@ -161,6 +162,9 @@ processor_settings:
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
+  special_status: {  }
+  trustee_name: {  }
+  trustee_title: {  }
 tracker_settings:
   default:
     indexing_order: fifo
