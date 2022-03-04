@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
     - paragraphs.paragraphs_type.custom_content_links
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
@@ -50,6 +51,7 @@ settings:
       liftup_with_image: liftup_with_image
       chart: chart
       custom_content_links: custom_content_links
+      content_liftup: content_liftup
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
       remote_video: remote_video
@@ -72,6 +74,9 @@ settings:
         enabled: true
       content_cards:
         weight: -21
+        enabled: true
+      content_liftup:
+        weight: 28
         enabled: true
       custom_content_links:
         weight: 26
@@ -109,6 +114,9 @@ settings:
       remote_video:
         weight: 37
         enabled: true
+      sidebar_text:
+        weight: 41
+        enabled: false
       text:
         weight: -27
         enabled: true
