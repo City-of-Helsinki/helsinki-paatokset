@@ -1,0 +1,33 @@
+uuid: 2edbc6f9-fce9-44b3-bafb-c7a5ff32c31f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - views.view.news
+  module:
+    - node
+    - views
+  theme:
+    - helfi_paatokset
+id: views_block__news_block_1
+theme: helfi_paatokset
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'views_block:news-block_1'
+settings:
+  id: 'views_block:news-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      imported_article: imported_article

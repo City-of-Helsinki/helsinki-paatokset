@@ -1,0 +1,10 @@
+.page-type--imported-article  .news-listing__img {
+  position: relative;
+
+  img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
