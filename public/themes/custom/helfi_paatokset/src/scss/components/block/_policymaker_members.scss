@@ -160,6 +160,7 @@
     font-weight: 500;
     line-height: 29px;
     margin-bottom: 0;
+    margin-top: 0;
 
     @include breakpoint($breakpoint-s) {
       font-size: 24px;

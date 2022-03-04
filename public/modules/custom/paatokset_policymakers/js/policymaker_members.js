@@ -39,9 +39,9 @@
           </div>
         </div>
         <div class="policymaker-members__list">
-          <a v-for="member in filteredMembers" class="member-row" :href="member.url">
+          <a v-for="member in filteredMembers" class="member-row" :href="member.url" :aria-label="memberAria(member.first_name, member.last_name)">
             <div class="member-info">
-              <h4 class="member-name">{{ member.first_name }} {{ member.last_name }}</h4>
+              <h3 class="member-name">{{ member.first_name }} {{ member.last_name }}</h3>
               <div>
                 <span class="member-role">{{ member.role }}</span>
                 <span v-if="member.party" class="member-party"> {{ member.party }}</span>
@@ -52,7 +52,7 @@
               </template>
             </div>
             <div class="member-image">
-              <img v-if="member.image_url" :src="member.image_url"/>
+              <img v-if="member.image_url" :src="member.image_url" alt=""/>
             </div>
           </a>
           <div v-if="filteredMembers.length === 0" class="no-results">
@@ -126,6 +126,9 @@
           },
           processId(string) {
             return string.replace(/\s/g, '-').toLowerCase()
+          },
+          memberAria(first_name, last_name) {
+            return window.Drupal.t('Siirry luottamushenkilön') + ' ' + first_name + ' ' + last_name + ' ' + window.Drupal.t('sivulle')
           }
         },
         computed: {

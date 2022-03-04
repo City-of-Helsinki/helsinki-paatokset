@@ -30,20 +30,20 @@
     <div class="paatokset-accordion">
     {% for key, values in accordions %}
     <div class="accordion__wrapper handorgel">
-      <h4 class="accordion-item__header handorgel__header">
+      <h3 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ key|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">
           <span>{{ key|t }}</span>
           <div class="accordion-item__icon">
             {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
           </div>
         </button>
-      </h4>
+      </h3>
       <div class="accordion-item__content handorgel__content">
         <div class="accordion-item__content__inner handorgel__content__inner">
           {% for row_key, row in values %}
             {% if key == 'Lautakunnat ja johtokunnat'%}
               {% if row_key %}
-                <h5 class="sector-title">{{ row_key|t }}</h5>
+                <h4 class="sector-title">{{ row_key|t }}</h4>
               {% endif %}
               {% for values in row %}
                 <a href="{{ values.link }}" class="policymaker-row__link">

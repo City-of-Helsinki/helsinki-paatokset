@@ -119,13 +119,13 @@
     color: $gray;
   }
 
-  & + h5 {
+  & + h4 {
     margin-top: 64px !important;
   }
 }
 
 .accordion-item__content__inner {
-  h5 {
+  h4 {
     font-weight: 500;
     margin-bottom: 32px;
     margin-top: 0;
