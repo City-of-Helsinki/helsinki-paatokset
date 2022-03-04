@@ -23,7 +23,7 @@ class CalendarBlock extends BlockBase {
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => t('Calendar'),
       '#attributes' => [
-        'class' => ['policymaker-calendar', 'container'],
+        'class' => ['policymaker-calendar'],
       ],
     ];
   }

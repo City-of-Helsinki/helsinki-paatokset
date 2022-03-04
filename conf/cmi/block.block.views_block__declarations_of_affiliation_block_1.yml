@@ -12,7 +12,7 @@ dependencies:
 id: views_block__declarations_of_affiliation_block_1
 theme: helfi_paatokset
 region: content
-weight: -13
+weight: -14
 provider: null
 plugin: 'views_block:declarations_of_affiliation-block_1'
 settings:

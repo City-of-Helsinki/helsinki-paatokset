@@ -420,3 +420,16 @@ function helfi_paatokset_preprocess_menu(&$variables) {
     $variables['allow_collabsible'] = true;
   }
 }
+
+/**
+ * Set a variable to always show sidebar in policymaker pages.
+ * 
+ * Implements hook_preprocess_page().
+ */
+function helfi_paatokset_preprocess_page(&$variables) {
+  if(isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first'])) {
+    $variables['page_has_sidebar'] = true;
+    $variables['move_before_content'] = true;
+    $variables['has_navigation'] = true;
+  }
+}

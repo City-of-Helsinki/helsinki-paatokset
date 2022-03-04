@@ -7,6 +7,7 @@ dependencies:
   module:
     - menu_block_current_language
     - node
+    - system
   theme:
     - helfi_paatokset
 id: helfi_paatokset_main_navigation_level_2
@@ -36,3 +37,7 @@ visibility:
     bundles:
       article: article
       landing_page: landing_page
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/paattajat/*'

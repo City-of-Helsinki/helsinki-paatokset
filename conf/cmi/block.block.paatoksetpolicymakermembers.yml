@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetpolicymakermembers
 theme: helfi_paatokset
 region: after_content
-weight: -11
+weight: -14
 provider: null
 plugin: policymaker_members
 settings:

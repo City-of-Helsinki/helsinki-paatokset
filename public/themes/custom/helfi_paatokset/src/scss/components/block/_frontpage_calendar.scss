@@ -1,8 +1,10 @@
 .container.frontpage-calendar__container {
   margin-top: $spacing-quadruple;
+  margin-bottom: $spacing-quadruple;
 
   @include breakpoint($breakpoint-l) {
     margin-top: $spacing-quadruple * 2;
+    margin-bottom: $spacing-quadruple * 2;
   }
 }
 
