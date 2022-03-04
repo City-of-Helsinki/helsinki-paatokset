@@ -79,6 +79,7 @@
   margin-bottom: 16px;
   position: relative;
   text-decoration: none;
+  align-items: center;
 
   &:hover {
     .hel-icon {
@@ -90,7 +91,7 @@
   .hel-icon {
     min-width: 30px;
     min-height: 30px;
-    width: 30px;
+    width: 10%;
     height: 30px;
     transition: all 0.2s ease-in-out;
   }
@@ -106,6 +107,11 @@
 
   .policymaker-row__title {
     font-size: 24px;
+    hyphens: auto;
+    width: 90%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding-right: 16px;
   }
 
   .policymaker-row__sub-title {
@@ -114,14 +120,15 @@
   }
 
   & + h5 {
-    margin-top: 64px;
+    margin-top: 64px !important;
   }
 }
 
 .accordion-item__content__inner {
   h5 {
     font-weight: 500;
-    
+    margin-bottom: 32px;
+    margin-top: 0;
   }
 }
 

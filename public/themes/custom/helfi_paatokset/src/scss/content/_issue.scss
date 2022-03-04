@@ -52,6 +52,8 @@
   background: $color-black;
   color: $color-white;
   padding: 6px 16px;
+  display: flex;
+  width: fit-content;
 }
 
 .issue__container {
