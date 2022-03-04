@@ -38,6 +38,8 @@
 .decision-tree__upper-tree {
   margin: 0 60px 72px 60px;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   .decision-tree__arrow {
     position: absolute;
@@ -75,6 +77,8 @@
 
 .decision-tree__lower-tree {
   margin: 0 60px 72px 60px;
+  display: flex;
+  flex-direction: column;
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {

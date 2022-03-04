@@ -383,6 +383,9 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
  * Preprocess frontpage calendar block.
  */
 function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): void {
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
@@ -392,21 +395,41 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
   }
 
   $variables['decision_process'] = [
-    t('Asia tulee vireille'),
-    t('Lauta- ja johtokunta'),
-    t('Kaupunginhallitus'),
-    t('Kaupuginvaltuusto'),
-    t('Päätös pannaan täytäntöön')
+    '0' => [
+      'title' => t('Asia tulee vireille'),
+    ],
+    '1' => [
+      'title' => t('Lauta- ja johtokunta'),
+      'link' => t('/fi/paattajat#lautakunnat-ja-johtokunnat')
+    ],
+    '2' => [
+      'title' => t('Kaupunginhallitus'),
+      'link' => $policymakerService->getPolicymaker('00400')->toUrl()->toString()
+    ],
+    '3' => [
+      'title' => t('Kaupuginvaltuusto'),
+      'link' => $policymakerService->getPolicymaker('02900')->toUrl()->toString()
+    ],
+    '4' => [
+      'title' => t('Päätös pannaan täytäntöön'),
+      ]
   ];
 
   $variables['decisionmaker_process'] = [
-    t('Asia tulee vireille'),
-    t('Viranhaltija päättää'),
-    t('Päätös pannaan täytäntöön'),
+    '0' => [
+      'title' => t('Asia tulee vireille'),
+    ],
+    '1' => [
+      'title' => t('Viranhaltija päättää'),
+      'link' => t('/fi/paattajat#viranhaltijat:-sosiaali--ja-terveystoimiala')
+    ],
+    '2' => [
+      'title' => t('Päätös pannaan täytäntöön'),
+    ]
   ];
 
   $variables['info_1'] = t('Tavallisin päätöksen tekemisen prosessi');
-  $variables['info_2'] = t('Viranhaltija tekee päätöksen');
+  $variables['info_2'] = t('Tavallinen viranhaltijapäätös');
 }
 
 /**

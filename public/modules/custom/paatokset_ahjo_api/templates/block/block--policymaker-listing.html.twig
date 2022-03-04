@@ -31,7 +31,7 @@
     {% for key, values in accordions %}
     <div class="accordion__wrapper handorgel">
       <h4 class="accordion-item__header handorgel__header">
-        <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ key|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">
           <span>{{ key|t }}</span>
           <div class="accordion-item__icon">
             {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
