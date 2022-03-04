@@ -28,93 +28,100 @@
 
 <div>
   {% if (years is not empty ) %}
-  <div class="paatokset__decision-tree-container">
-    <div class="decision-tree__title">
-      <h4>{{ 'Select year' |trans }}</h4>
-    </div>
-    {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
-      {% block container_content %}
-        <div class="accordion__wrapper handorgel">
-          <div class="accordion-item__content handorgel__content">
-            <div class="accordion-item__content__inner handorgel__content__inner">
-              <ul class="menu">
-                {% for year in years %}
-                  {% set item_attributes = create_attribute() %}
-                  {%
-                    set item_classes = [
-                      'item',
-                      loop.index == 1 ? 'selected'
-                    ]
-                  %}
-                  <li{{ item_attributes.addClass(item_classes) }}>
-                    {% if loop.index == 1 %}
-                      <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="true"/>
-                    {% else %}
-                      <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="false"/>
-                    {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-              <div class="custom-select-wrapper">
-                <div class="custom-select">
-                  <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
-                    <div class="arrow">
-                      <i class="hel-icon hel-icon--arrow-down"></i>
-                    </div>
-                  </div>
-                  <div class="custom-options" id="custom-options">
-                    {% for year in years %}
-                      <div class="custom-option">
-                        <input type="button" value="{{ year }}"/>
+    <div class="paatokset__decision-tree-container">
+      <div class="decision-tree__title">
+        <h4>{{ 'Select year' |trans }}</h4>
+      </div>
+      {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
+        {% block container_content %}
+          <div class="accordion__wrapper handorgel">
+            <div class="accordion-item__content handorgel__content">
+              <div class="accordion-item__content__inner handorgel__content__inner">
+                <ul class="menu">
+                  {% for year in years %}
+                    {% set item_attributes = create_attribute() %}
+                    {%
+                      set item_classes = [
+                        'item',
+                        loop.index == 1 ? 'selected'
+                      ]
+                    %}
+                    <li{{ item_attributes.addClass(item_classes) }}>
+                      {% if loop.index == 1 %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="true"/>
+                      {% else %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="false"/>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select">
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
+                      <div class="arrow">
+                        <i class="hel-icon hel-icon--arrow-down"></i>
                       </div>
-                    {% endfor %}
+                    </div>
+                    <div class="custom-options" id="custom-options">
+                      {% for year in years %}
+                        <div class="custom-option">
+                          <input type="button" value="{{ year }}"/>
+                        </div>
+                      {% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
           </div>
-        </div>
-      {% endblock %}
-    {% endembed %}
+        {% endblock %}
+      {% endembed %}
 
-    {% if type == 'documents' %}
-      {% for year, documents in list %}
-        {% set document_container_attributes = create_attribute() %}
-        {%
-          set document_container_classes = [
-            'policymakers-documents',
-            loop.index == 1 ? 'selected-year'
-          ]
-        %}
+      {% if type == 'documents' %}
+        {% for year, documents in list %}
+          {% set document_container_attributes = create_attribute() %}
+          {%
+            set document_container_classes = [
+              'policymakers-documents',
+              loop.index == 1 ? 'selected-year'
+            ]
+          %}
 
-        <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
-          {% for document in documents %}
-            {% include '@paatokset_ahjo_api/component/document.html.twig' %}
-          {% endfor %}
-        </div>
-      {% endfor %}
-    {% endif %}
+          <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
+            {% for document in documents %}
+              {% include '@paatokset_ahjo_api/component/document.html.twig' %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% endif %}
 
-    {% if type == 'decisions' %}
-      {% for year, decisions in list %}
-        {% set decision_container_attributes = create_attribute() %}
-        {%
-          set decision_container_classes = [
-            'policymakers-decisions',
-            'container',
-            loop.index == 1 ? 'selected-year'
-          ]
-        %}
+      {% if type == 'decisions' %}
+        {% for year, decisions in list %}
+          {% set decision_container_attributes = create_attribute() %}
+          {%
+            set decision_container_classes = [
+              'policymakers-decisions',
+              'container',
+              loop.index == 1 ? 'selected-year'
+            ]
+          %}
 
-        <div{{ decision_container_attributes.addClass(decision_container_classes).setAttribute('value', year) }}>
-          {% for decision in decisions %}
-           {% include '@paatokset_ahjo_api/component/decision--list-item.html.twig' %}
-          {% endfor %}
-        </div>
-      {% endfor %}
-    {% endif %}
-  </div>
+          <div{{ decision_container_attributes.addClass(decision_container_classes).setAttribute('value', year) }}>
+            {% for decision in decisions %}
+            {% include '@paatokset_ahjo_api/component/decision--list-item.html.twig' %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% else %}
+  {% block container_content %}
+    <div class="policymaker-no-content">
+      <span>{{ 'Tällä päättäjällä ei ole päätöksiä'|t }}</span>
+    </div>
+    {% endblock %}
   {% endif %}
-</div>
+  
 </div>
 
 <noscript>

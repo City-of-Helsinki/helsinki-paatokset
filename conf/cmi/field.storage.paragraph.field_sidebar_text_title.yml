@@ -1,0 +1,21 @@
+uuid: 992c307a-d03b-4ac7-b22d-27eedf082411
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_sidebar_text_title
+field_name: field_sidebar_text_title
+entity_type: paragraph
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

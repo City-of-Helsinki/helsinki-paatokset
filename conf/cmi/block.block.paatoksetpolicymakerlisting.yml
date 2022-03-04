@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetpolicymakerlisting
 theme: helfi_paatokset
 region: after_content
-weight: 0
+weight: -12
 provider: null
 plugin: policymaker_listing
 settings:

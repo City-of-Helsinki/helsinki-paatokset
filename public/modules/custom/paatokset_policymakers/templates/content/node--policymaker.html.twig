@@ -243,9 +243,17 @@
   {% endif %}
 
   {% if is_organization %}
-    <section id="members-list">
-      {{ drupal_block('policymaker_members') }}
-    </section>
+    {% if has_members %}
+      <section id="members-list">
+        {{ drupal_block('policymaker_members') }}
+      </section>
+    {% endif %}
+  {% endif %}
+  
+  {% if no_content %}
+    <div>
+      <span>{{ 'Tällä päättäjällä ei ole päätöksiä'|t }}</span>
+    </div>
   {% endif %}
 
 </article>
