@@ -45,6 +45,7 @@ class CaseController extends ControllerBase {
     $data['next_decision'] = $this->caseService->getNextDecision();
     $data['previous_decision'] = $this->caseService->getPrevDecision();
     $data['decision_content'] = $this->caseService->parseContent();
+    $data['vote_results'] = $this->caseService->getVotingResults();
     $all_decisions_link = $this->caseService->getDecisionMeetingLink();
     $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
 
@@ -59,6 +60,7 @@ class CaseController extends ControllerBase {
         'selected_class' => $data['selected_class'],
         'decision_content' => $data['decision_content'],
         'decision_section' => $data['decision_section'],
+        'vote_results' => $data['vote_results'],
       ]
     );
 
