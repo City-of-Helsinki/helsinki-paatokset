@@ -274,78 +274,53 @@ class CaseService {
   }
 
   public function getVotingResults(): ?array {
-    $vote_results_accordion = [];
-    $vote_results_by_party = [];
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    if (!$this->selectedDecision->hasField('field_voting_results') || $this->selectedDecision->get('field_voting_results')->isEmpty()) {
+      return NULL;
+    }
+
     $vote_results = [];
+    $not_formatted = $this->selectedDecision->get('field_voting_results');
+    $types = ['Ayes', 'Noes', 'Blank', 'Absent'];
 
-    if ($this->selectedDecision->get('field_voting_results')) {
-      $not_formatted = $this->selectedDecision->get('field_voting_results');
+    foreach($not_formatted as $row) {
+      $grouped_by_party = [];
+      $results = [];
+      $json = json_decode($row->value);
+      foreach ($types as $type) {
 
-      foreach($not_formatted as $row) {
-        $json = json_decode($row->value);
-        $vote_results_accordion = [
-          'Ayes' => $json->Ayes,
-          'Noes' => $json->Noes,
-          'Blanks' => $json->Blank,
-          'Absent' => $json->Absent
-        ];
-
-        $ayes_parties = [];
-        $noes_parties = [];
-        $blanks_parties = [];
-        $absent_parties = [];
-
-        foreach($json->Ayes->Voters as $voter) {
-          $ayes_parties[] = $voter->CouncilGroup;
-        }
-        $ayes_parties = array_count_values($ayes_parties);
-
-        foreach($json->Noes->Voters as $voter) {
-          $noes_parties[] = $voter->CouncilGroup;
-        }
-        $noes_parties = array_count_values($noes_parties);
-
-        foreach($json->Blank->Voters as $voter) {
-          $blanks_parties[] = $voter->CouncilGroup;
-        }
-        $blanks_parties = array_count_values($blanks_parties);
-
-        foreach($json->Absent->Voters as $voter) {
-          $absent_parties[] = $voter->CouncilGroup;
-        }
-        $absent_parties = array_count_values($absent_parties);
-
-        foreach($ayes_parties as $key => $value) {
-          $ayes_parties[$key] = [
-            'Ayes' => $value,
-          ];
+        if (empty($json->{$type})) {
+          continue;
         }
 
-        foreach($noes_parties as $key => $value) {
-          $noes_parties[$key] = [
-            'Noes' => $value
-          ];
+        // Set accordion for each vote type.
+        $results[$type] = $json->{$type};
+
+        if (empty($json->{$type}->Voters)) {
+          continue;
         }
 
-        foreach($blanks_parties as $key => $value) {
-          $blanks_parties[$key] = [
-            'Blank' => $value
-          ];
+        // Collate votes by council group and type.
+        foreach ($json->{$type}->Voters as $voter) {
+          if (!isset($grouped_by_party[$voter->CouncilGroup])) {
+            $grouped_by_party[$voter->CouncilGroup] = [];
+          }
+          if (!isset($grouped_by_party[$voter->CouncilGroup][$type])) {
+            $grouped_by_party[$voter->CouncilGroup][$type] = 1;
+          }
+          else {
+            $grouped_by_party[$voter->CouncilGroup][$type]++;
+          }
         }
-
-        foreach($absent_parties as $key => $value) {
-          $absent_parties[$key] = [
-            'Absent' => $value
-          ];
-        }
-
-        $by_party = array_merge_recursive($ayes_parties, $noes_parties, $blanks_parties, $absent_parties);
-
-        $vote_results[] = [
-          'accordions' => $vote_results_accordion,
-          'by_party' => $by_party
-        ];
       }
+
+      $vote_results[] = [
+        'accordions' => $results,
+        'by_party' => $grouped_by_party,
+      ];
     }
 
     return $vote_results;
