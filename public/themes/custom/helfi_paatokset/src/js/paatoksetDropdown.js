@@ -155,17 +155,23 @@ jQuery(function($) {
       success: function(response) {
         const data = JSON.parse(response);
 
-        if(data.content) {
+        if (data.content) {
           $('.issue__ajax-container').html(data.content);
         }
-        if(data.attachments) {
+        if (data.attachments) {
           $('.issue__attachments__wrapper').html(data.attachments);
         }
-        if(data.decision_navigation) {
+        if (data.decision_navigation) {
           $('.issue__decision-navigation__wrapper').html(data.decision_navigation);
         }
-        if(data.all_decisions_link) {
+        if (data.all_decisions_link) {
           $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
+          $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the meeting'));
+          $('.issue-dropdown__show-more').css('display', 'block');
+        }
+        else if (data.other_decisions_link) {
+          $('.issue-dropdown__show-more a').attr('href', data.other_decisions_link);
+          $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the policymaker'));
           $('.issue-dropdown__show-more').css('display', 'block');
         }
         else {
@@ -177,7 +183,7 @@ jQuery(function($) {
         } else {
           $('.issue__pdf').css('display', 'none');
         }
-        if(data.show_warning) {
+        if (data.show_warning) {
           showWarning();
         }
         else {

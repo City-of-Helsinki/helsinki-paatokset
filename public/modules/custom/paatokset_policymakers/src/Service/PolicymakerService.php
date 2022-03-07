@@ -217,14 +217,20 @@ class PolicymakerService {
   /**
    * Return route for policymaker decisions.
    *
+   * @param string|null $policymaker_id
+   *   Policymaker ID or NULL to use selected one.
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getDecisionsRoute(): ?Url {
+  public function getDecisionsRoute(?string $policymaker_id = NULL): ?Url {
     $trustee_types = [
       'Viranhaltija',
       'Luottamushenkilö',
     ];
+
+    if (!empty($policymaker_id)) {
+      $this->setPolicyMaker($policymaker_id);
+    }
 
     if (!$this->policymaker instanceof NodeInterface || !$this->policymaker->hasField('field_organization_type')) {
       return NULL;
