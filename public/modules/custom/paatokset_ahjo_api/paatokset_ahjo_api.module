@@ -468,6 +468,15 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $caseService = \Drupal::service('paatokset_ahjo_cases');
   $caseService->setEntitiesById($case_id, $decision_id);
 
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService->setPolicyMaker($node->get('field_policymaker_id')->value);
+  $decisions_url = $policymakerService->getDecisionsRoute();
+
+  if ($decisions_url instanceof Url) {
+    $decisions_url = $decisions_url->toString();
+  }
+
   $variables['main_heading'] = $caseService->getDecisionHeading();
   $variables['decision_pdf'] = $caseService->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
@@ -480,6 +489,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $variables['previous_decision'] = $caseService->getPrevDecision();
   $variables['decision_content'] = $caseService->parseContent();
   $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
+  $variables['other_decisions_link'] = $decisions_url;
 
   $vote_results_accordion = [];
   $vote_results_by_party = [];
