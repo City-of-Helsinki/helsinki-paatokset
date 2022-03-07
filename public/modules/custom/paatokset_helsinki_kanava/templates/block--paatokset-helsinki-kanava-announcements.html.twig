@@ -25,10 +25,16 @@
  * @see template_preprocess_block()
  */
 #}
-
 {% if content.announcement %}
-<div{{ attributes.addClass('container') }} role="region" aria-label="{{ 'Announcement'|t }}">
-  <div class="announcement announcement-attention">
+
+{% set classes = [
+  'announcement',
+  'announcement--helsinki-kanava',
+  'container'
+] %}
+
+<div{{ attributes.addClass(classes) }} role="region" aria-label="{{ 'Announcement'|t }}">
+  <div class="announcement__container announcement-attention">
     <div class="announcement__content">
       <span class="accouncement__content-body">
         <h2>{{ 'Upcoming council meeting'|t }}</h2>
