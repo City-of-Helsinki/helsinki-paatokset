@@ -12,7 +12,7 @@
       <div class="accordion-item__content__inner handorgel__content__inner">
 
         {% for results in vote_results %}
-          <h4><b>{{ 'Äänestys'|t }} {{ loop.index }}</b></h4>
+          <h3>{{ 'Äänestys'|t }} {{ loop.index }}</h3>
           <p><b>{{ 'Ayes'|t }}:</b> {{results.accordions.Ayes.Content }}</p>
           <p><b>{{ 'Noes'|t }}:</b> {{results.accordions.Noes.Content }}</p>
           {% for key, accordion in results.accordions %}

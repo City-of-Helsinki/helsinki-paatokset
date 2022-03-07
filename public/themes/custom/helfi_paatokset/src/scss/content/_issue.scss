@@ -342,6 +342,10 @@
   .color-gray-light {
     background-color: $gray-light !important;
   }
+
+  .accordion-item__content__inner > h3 {
+    font-size: 24px;
+  }
 }
 
 .voting-results-accordion__inner {
