@@ -92,7 +92,7 @@
   }
 
   .voting-results-accordion {
-    margin-bottom: -2px; 
+    margin-bottom: -2px;
   }
 
   @include breakpoint($breakpoint-xl) {
@@ -391,7 +391,7 @@
         color: $color-white;
       }
 
-      &.blanks .result-color {
+      &.blank .result-color {
         background-color: #9FC9EB;
       }
 
@@ -426,7 +426,7 @@
 
     thead .results-table__row {
       background-color: $gray-light;
-      
+
       th {
         color: $color-black;
       }
