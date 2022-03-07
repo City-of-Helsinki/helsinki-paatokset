@@ -196,7 +196,6 @@ class CaseService {
       return NULL;
     }
 
-
     if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
       return NULL;
     }
@@ -292,7 +291,7 @@ class CaseService {
     $not_formatted = $this->selectedDecision->get('field_voting_results');
     $types = ['Ayes', 'Noes', 'Blank', 'Absent'];
 
-    foreach($not_formatted as $row) {
+    foreach ($not_formatted as $row) {
       $grouped_by_party = [];
       $results = [];
       $json = json_decode($row->value);

@@ -53,6 +53,10 @@ class CaseController extends ControllerBase {
       $all_decisions_link = $all_decisions_link->toString();
     }
 
+    if ($other_decisions_link instanceof Url) {
+      $other_decisions_link = $other_decisions_link->toString();
+    }
+
     $content = twig_render_template(
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
       [
