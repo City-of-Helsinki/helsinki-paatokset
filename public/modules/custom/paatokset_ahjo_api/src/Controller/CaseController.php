@@ -46,6 +46,7 @@ class CaseController extends ControllerBase {
     $data['previous_decision'] = $this->caseService->getPrevDecision();
     $data['decision_content'] = $this->caseService->parseContent();
     $all_decisions_link = $this->caseService->getDecisionMeetingLink();
+    $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
 
     if ($all_decisions_link instanceof Url) {
       $all_decisions_link = $all_decisions_link->toString();
@@ -83,6 +84,7 @@ class CaseController extends ControllerBase {
       'show_warning' => !empty($data['next_decision']),
       'decision_pdf' => $data['decision_pdf'],
       'all_decisions_link' => $all_decisions_link,
+      'other_decisions_link' => $other_decisions_link,
     ]));
   }
 
