@@ -273,6 +273,84 @@ class CaseService {
     return NULL;
   }
 
+  public function getVotingResults(): ?array {
+    $vote_results_accordion = [];
+    $vote_results_by_party = [];
+    $vote_results = [];
+
+    if ($this->selectedDecision->get('field_voting_results')) {
+      $not_formatted = $this->selectedDecision->get('field_voting_results');
+
+      foreach($not_formatted as $row) {
+        $json = json_decode($row->value);
+        $vote_results_accordion = [
+          'Ayes' => $json->Ayes,
+          'Noes' => $json->Noes,
+          'Blanks' => $json->Blank,
+          'Absent' => $json->Absent
+        ];
+
+        $ayes_parties = [];
+        $noes_parties = [];
+        $blanks_parties = [];
+        $absent_parties = [];
+
+        foreach($json->Ayes->Voters as $voter) {
+          $ayes_parties[] = $voter->CouncilGroup;
+        }
+        $ayes_parties = array_count_values($ayes_parties);
+
+        foreach($json->Noes->Voters as $voter) {
+          $noes_parties[] = $voter->CouncilGroup;
+        }
+        $noes_parties = array_count_values($noes_parties);
+
+        foreach($json->Blank->Voters as $voter) {
+          $blanks_parties[] = $voter->CouncilGroup;
+        }
+        $blanks_parties = array_count_values($blanks_parties);
+
+        foreach($json->Absent->Voters as $voter) {
+          $absent_parties[] = $voter->CouncilGroup;
+        }
+        $absent_parties = array_count_values($absent_parties);
+
+        foreach($ayes_parties as $key => $value) {
+          $ayes_parties[$key] = [
+            'Ayes' => $value,
+          ];
+        }
+
+        foreach($noes_parties as $key => $value) {
+          $noes_parties[$key] = [
+            'Noes' => $value
+          ];
+        }
+
+        foreach($blanks_parties as $key => $value) {
+          $blanks_parties[$key] = [
+            'Blank' => $value
+          ];
+        }
+
+        foreach($absent_parties as $key => $value) {
+          $absent_parties[$key] = [
+            'Absent' => $value
+          ];
+        }
+
+        $by_party = array_merge_recursive($ayes_parties, $noes_parties, $blanks_parties, $absent_parties);
+
+        $vote_results[] = [
+          'accordions' => $vote_results_accordion,
+          'by_party' => $by_party
+        ];
+      }
+    }
+
+    return $vote_results;
+  }
+
   /**
    * Get decision URL by ID.
    *
