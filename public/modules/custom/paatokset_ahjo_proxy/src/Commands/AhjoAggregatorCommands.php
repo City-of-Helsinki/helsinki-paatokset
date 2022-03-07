@@ -693,7 +693,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @option limit
    *   Limit processing to certain amount of nodes.
    *
-   * @usage ahjo-proxy:set-decicion-flag --limit=50
+   * @usage ahjo-proxy:set-decision-flag --limit=50
    *   Sets decision flag for the first 50 decisions where it wasn't before.
    *
    * @aliases ap:sdf
