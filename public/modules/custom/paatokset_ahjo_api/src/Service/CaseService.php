@@ -273,6 +273,12 @@ class CaseService {
     return NULL;
   }
 
+  /**
+   * Get voting results as array for selected decision.
+   *
+   * @return array|null
+   *   Array with voting results or NULL.
+   */
   public function getVotingResults(): ?array {
     if (!$this->selectedDecision instanceof NodeInterface) {
       return NULL;
