@@ -151,16 +151,18 @@ function paatokset_policymakers_preprocess_field__node__title(&$variables) {
   $first_name = '';
   $last_name = '';
 
-  if($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
-    $first_name = $node->get('field_first_name')->value;
-  }
-
-  if($node->hasField('field_last_name') && !$node->get('field_last_name')->isEmpty()) {
-    $last_name = $node->get('field_last_name')->value;
-  }
-
-  if(!empty($first_name) || !empty($last_name)) {
-    $variables['items'][0]['content']['#context']['value'] = $title . ': ' . $first_name . ' ' . $last_name;
+  if($node->getType() === 'policymaker') {
+    if($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
+      $first_name = $node->get('field_first_name')->value;
+    }
+  
+    if($node->hasField('field_last_name') && !$node->get('field_last_name')->isEmpty()) {
+      $last_name = $node->get('field_last_name')->value;
+    }
+  
+    if(!empty($first_name) || !empty($last_name)) {
+      $variables['items'][0]['content']['#context']['value'] = $title . ': ' . $first_name . ' ' . $last_name;
+    }
   }
 }
 
