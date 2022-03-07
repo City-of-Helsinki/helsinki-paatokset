@@ -2,6 +2,7 @@
 
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
+use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -50,7 +51,7 @@ class SectorJSON extends ProcessorPluginBase {
     if ($datasourceId == 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      $policymaker;
+      $policymaker = NULL;
       if ($node->getType() === 'policymaker') {
         $policymaker = $node;
       }
@@ -60,7 +61,7 @@ class SectorJSON extends ProcessorPluginBase {
         $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value);
       }
 
-      if ($policymaker) {
+      if ($policymaker instanceof NodeInterface) {
         $sectorData = $policymaker->get('field_dm_sector')->value;
 
         if ($sectorData && $sectorData !== 'null') {
