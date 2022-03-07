@@ -470,8 +470,12 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
 
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
-  $policymakerService->setPolicyMaker($node->get('field_policymaker_id')->value);
-  $decisions_url = $policymakerService->getDecisionsRoute();
+
+  $decisions_url = NULL;
+  if($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+    $policymakerService->setPolicyMaker($node->get('field_policymaker_id')->value);
+    $decisions_url = $policymakerService->getDecisionsRoute();
+  }
 
   if ($decisions_url instanceof Url) {
     $decisions_url = $decisions_url->toString();
