@@ -789,6 +789,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     if (empty($nids)) {
       $messenger->addMessage('Case not found: ' . $case_id);
+      $this->addItemToAhjoQueue('cases', $case_id);
       return;
     }
 
@@ -846,6 +847,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     if (empty($nids)) {
       $messenger->addMessage('Meeting not found: ' . $meeting_id);
+      $this->addItemToAhjoQueue('meetings', $meeting_id);
       return;
     }
 
@@ -858,6 +860,26 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $node->set('field_meeting_date', $meeting->field_meeting_date->value);
     $node->set('field_meeting_sequence_number', $meeting->field_meeting_sequence_number->value);
+  }
+
+  /**
+   * Add entity to callback queue.
+   *
+   * @param string $endpoint
+   *   Endpoint to use (cases, meetings, decisions).
+   * @param string $id
+   *   Case diary number, meeting or decision ID.
+   */
+  protected function addItemToAhjoQueue(string $endpoint, string $id): void {
+    $queue = \Drupal::service('queue')->get('ahjo_api_subscriber_queue');
+    $queue->createItem([
+      'id' => $endpoint,
+      'content' => (object) [
+        'updatetype' => 'added',
+        'id' => $id,
+      ],
+      'request' => [],
+    ]);
   }
 
   /**
@@ -1118,7 +1140,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed, ' . $skipped . ' skipped) in ' . $total_time . ' seconds.');
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    file_save_data(json_encode($results['failed']), 'public://failed_motions.json', FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_motions.json', FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_motions.json');
     }
