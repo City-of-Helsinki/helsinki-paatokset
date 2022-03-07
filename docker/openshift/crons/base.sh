@@ -17,7 +17,8 @@ echo "Starting cron: $(date)"
 # @endcode
 
 exec "/crons/update-translations.sh" &
-exec "/crons/run-callback-queue.sh" &
+exec "/crons/run-immediate-ahjo-integrations.sh" &
+exec "/crons/run-aggregated-ahjo-integrations.sh" &
 
 while true
 do
