@@ -219,6 +219,7 @@ class PolicymakerService {
    *
    * @param string|null $policymaker_id
    *   Policymaker ID or NULL to use selected one.
+   *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
