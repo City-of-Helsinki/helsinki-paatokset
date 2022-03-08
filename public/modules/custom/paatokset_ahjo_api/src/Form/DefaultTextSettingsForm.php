@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Settings form for the AHJO API Open ID connector.
  *
- * @package Drupal\paatokset_ahjo_openid\Form
+ * @package Drupal\paatokset_ahjo_api\Form
  */
 class DefaultTextSettingsForm extends ConfigFormBase {
 
@@ -44,6 +44,40 @@ class DefaultTextSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('paatokset_ahjo_api.default_texts');
 
+    $form['defaults'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Default fields'),
+      '#open' => TRUE,
+    ];
+
+    $form['defaults']['documents_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Documents description'),
+      '#format' => $config->get('documents_description.format'),
+      '#default_value' => $config->get('documents_description.value'),
+    ];
+
+    $form['defaults']['meetings_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Meetings description'),
+      '#format' => $config->get('meetings_description.format'),
+      '#default_value' => $config->get('meetings_description.value'),
+    ];
+
+    $form['defaults']['recording_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Recording description'),
+      '#format' => $config->get('recording_description.format'),
+      '#default_value' => $config->get('recording_description.value'),
+    ];
+
+    $form['defaults']['decisions_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Decisions description'),
+      '#format' => $config->get('decisions_description.format'),
+      '#default_value' => $config->get('decisions_description.value'),
+    ];
+
     $form['banner'] = [
       '#type' => 'details',
       '#title' => $this->t('Decision banner'),
@@ -70,7 +104,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     ];
 
     $form['banner']['banner_url'] = [
-      '#type' => 'url',
+      '#type' => 'textfield',
       '#default_value' => $config->get('banner_url'),
       '#title' => t('CTA button link'),
     ];
@@ -85,6 +119,14 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_ahjo_api.default_texts')
+      ->set('documents_description.value', $form_state->getValue('documents_description')['value'])
+      ->set('documents_description.format', $form_state->getValue('documents_description')['format'])
+      ->set('meetings_description.value', $form_state->getValue('meetings_description')['value'])
+      ->set('meetings_description.format', $form_state->getValue('meetings_description')['format'])
+      ->set('recording_description.value', $form_state->getValue('recording_description')['value'])
+      ->set('recording_description.format', $form_state->getValue('recording_description')['format'])
+      ->set('decisions_description.value', $form_state->getValue('decisions_description')['value'])
+      ->set('decisions_description.format', $form_state->getValue('decisions_description')['format'])
       ->set('banner_heading', $form_state->getValue('banner_heading'))
       ->set('banner_text.value', $form_state->getValue('banner_text')['value'])
       ->set('banner_text.format', $form_state->getValue('banner_text')['format'])

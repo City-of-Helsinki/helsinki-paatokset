@@ -4,6 +4,46 @@ paatokset_ahjo_api.default_texts:
   type: config_object
   label: 'Default text configuration'
   mapping:
+    documents_description:
+      type: mapping
+      label: 'Documents description'
+      mapping:
+        value:
+          type: text
+          label: 'Documents description - Value'
+        format:
+          type: string
+          label: 'Documents description - Format'
+    meetings_description:
+      type: mapping
+      label: 'Meetings description'
+      mapping:
+        value:
+          type: text
+          label: 'Meetings description - Value'
+        format:
+          type: string
+          label: 'Meetings description - Format'
+    recording_description:
+      type: mapping
+      label: 'Recording description'
+      mapping:
+        value:
+          type: text
+          label: 'Recording description - Value'
+        format:
+          type: string
+          label: 'Recording description - Format'
+    decisions_description:
+      type: mapping
+      label: 'Decisions description'
+      mapping:
+        value:
+          type: text
+          label: 'Decisions description - Value'
+        format:
+          type: string
+          label: 'Decisions description - Format'
     banner_text:
       type: mapping
       label: 'Banner content'
