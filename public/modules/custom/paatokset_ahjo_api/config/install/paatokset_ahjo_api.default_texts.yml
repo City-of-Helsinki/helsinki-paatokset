@@ -1,3 +1,15 @@
+documents_description:
+  format: 'rich_text'
+  value: '<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista. Pöytäkirja korvaa ilmestyessään esityslistan.</p><p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa.</p>'
+meetings_description:
+  format: 'rich_text'
+  value: '<p>Valtuuston kokoukset järjestetään yleensä joka toisena keskiviikkona. Kokoukset lähetetään suorina lähetyksinä verkossa Helsinki-kanavalla, missä ne ovat katsottavissa myöhemmin myös tallenteina. Kokouksia voi lisäksi seurata paikan päällä istuntosalin lehteriltä (Sofiankatu 3).</p><p>Valtuuston esityslista tulee luettavaksi kokousta edeltävänä torstaina. Päätöksistä kerrotaan jo kokouksen aikana Helsinki-kanavan lähetyksen välilehdillä ja heti kokouksen jälkeen päätöstiedotteessa kohdassa uusimmat asiakirjat.</p>'
+recording_description:
+  format: 'rich_text'
+  value: '<p>Voit katsoa valtuuston kokousvideon tässä. Siirtymällä Helsinki-kanavalle Kaikki videot -linkistä näet myös kokoukseen liittyvät päätökset ja voit selata kokousta puheenvuorojen perusteella.</p>'
+decisions_description:
+  format: 'rich_text'
+  value: '<p>Asiakirjat ovat sekä pdf- että html-muodossa. Html-versiossa sivun asettelut voivat poiketa alkuperäisestä. Asiakirjat on jaettu sisällysluettelon mukaan asiakohdiksi, mutta tarjolla on myös pdf-muotoinen tulostusversio koko asiakirjasta.</p>'
 banner_text:
   format: 'rich_text'
   value: '<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>'
