@@ -21,10 +21,7 @@ label: 'Asiakirjojen kuvaus'
 description: 'Teksti, joka näytetään asiakirjalistausten yläpuolella. Käytetään kuvaamaan listauksen sisältöä käyttäjille.'
 required: false
 translatable: false
-default_value:
-  -
-    value: "<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista. Pöytäkirja korvaa ilmestyessään esityslistan. &nbsp;</p>\r\n\r\n<p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa.</p>\r\n"
-    format: full_html
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: text_long

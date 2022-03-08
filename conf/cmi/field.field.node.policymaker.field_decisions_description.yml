@@ -21,10 +21,7 @@ label: 'Päätöksien kuvaus'
 description: 'Viimeisimpien päätösten yläpuolella näytettävä teksti. Kuvaa tällä kentällä päätöslistausta loppukäyttäjälle.'
 required: false
 translatable: false
-default_value:
-  -
-    value: "<p>Asiakirjat ovat sekä pdf- että html-muodossa. Html-versiossa sivun asettelut voivat poiketa alkuperäisestä. Asiakirjat on jaettu sisällysluettelon mukaan asiakohdiksi, mutta tarjolla on myös pdf-muotoinen tulostusversio koko asiakirjasta.</p>\r\n"
-    format: full_html
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: text_long

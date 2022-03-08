@@ -21,10 +21,7 @@ label: 'Kokousten kuvaus'
 description: 'Teksti, joka näytetään kokouskalenterin yläpuolella. Käytä tekstiä kuvaamaan kokouskalenterin sisältöä loppukäyttäjälle.'
 required: false
 translatable: false
-default_value:
-  -
-    value: "<p>Valtuuston kokoukset järjestetään yleensä joka toisena keskiviikkona. Kokoukset lähetetään suorina lähetyksinä verkossa Helsinki-kanavalla, missä ne ovat katsottavissa myöhemmin myös tallenteina. Kokouksia voi lisäksi seurata paikan päällä istuntosalin lehteriltä (Sofiankatu 3).</p>\r\n\r\n<p>Valtuuston esityslista tulee luettavaksi kokousta edeltävänä torstaina. Päätöksistä kerrotaan jo kokouksen aikana Helsinki-kanavan lähetyksen välilehdillä ja heti kokouksen jälkeen päätöstiedotteessa kohdassa uusimmat asiakirjat</p>\r\n"
-    format: full_html
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: text_long
