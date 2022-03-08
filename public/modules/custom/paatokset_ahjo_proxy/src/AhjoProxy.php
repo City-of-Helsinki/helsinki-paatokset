@@ -993,6 +993,53 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Reset description fields from policymaker nodes.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function removePolicyMakerFieldsFromItem($data, &$context) {
+    $context['message'] = 'Parsing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    $node = Node::load($data['nid']);
+
+    $reset_fields = [
+      'field_documents_description',
+      'field_recording_description',
+      'field_meetings_description',
+      'field_decisions_description',
+    ];
+
+    $success = FALSE;
+    foreach ($reset_fields as $field) {
+      if ($node->hasField($field)) {
+        $success = TRUE;
+        $node->set($field, NULL);
+      }
+    }
+
+    if ($success) {
+      $context['results']['items'][] = $node->id();
+      $node->save();
+    }
+    else {
+      $context['results']['failed'][] = $node->id();
+    }
+  }
+
+  /**
    * Static callback function for finishing group aggregation batch.
    *
    * @param mixed $success
