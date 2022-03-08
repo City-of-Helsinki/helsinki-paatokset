@@ -310,12 +310,10 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $accordions_2 = [];
 
   foreach ($sectors_occupants as $key => $value) {
-    if (strlen($key) == 0 ) {
-      $accordion_key = 'Viranhaltijat: Muut';
-    } else {
+    if (strlen($key) !== 0 ) {
       $accordion_key = 'Viranhaltijat: ' . $key;
+      $accordions_2[$accordion_key] = $value;
     }
-    $accordions_2[$accordion_key] = $value;
   }
 
   $accordions_3 = [
@@ -323,7 +321,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted)
   ];
 
-  $accordions = array_merge($accordions_1, array_merge(array_reverse($accordions_2), $accordions_3));
+  $accordions = array_merge($accordions_1, array_merge($accordions_2, $accordions_3));
 
   $variables['accordions'] = $accordions;
 
