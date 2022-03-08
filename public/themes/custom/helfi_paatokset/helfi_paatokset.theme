@@ -372,6 +372,7 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
   $query = \Drupal::entityQuery('node')
     ->condition('status', 1)
     ->condition('type', 'imported_article')
+    ->sort('field_published', 'DESC')
     ->range(0, 5);
 
   if($main_article_id) {
