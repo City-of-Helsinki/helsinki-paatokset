@@ -51,7 +51,7 @@
         <a href="{{ main_liftup.url }}" aria-label="{{ 'Go to article'|t }}: {{ main_liftup.title }}">
           <article class="liftup liftup--main">
             {% if main_liftup.lead_image %}
-              <img src="{{ main_liftup.lead_image }}" alt=""/>
+              <img src="{{ main_liftup.lead_image }}" alt="{{ main_liftup.image_alt }}" title="{{ main_liftup.image_title }}"/>
             {% endif %}
             <h3>{{ main_liftup.title }}</h3>
             <div class="liftup--lead">

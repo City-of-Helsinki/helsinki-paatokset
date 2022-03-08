@@ -391,6 +391,8 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
           'title' => $article_node->title->value,
           'lead' => $article_node->body->view('teaser'),
           'lead_image' => $article_node->field_image_url->uri,
+          'image_alt' => $article_node->field_image_alt->value,
+          'image_title' => $article_node->field_image_title->value,
           'url' => $article_node->toUrl(),
           'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp())
         ];
