@@ -1,0 +1,21 @@
+uuid: db73afcd-ef37-4268-80a5-4dc26dd2c606
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image_alt
+    - node.type.imported_article
+id: node.imported_article.field_image_alt
+field_name: field_image_alt
+entity_type: node
+bundle: imported_article
+label: 'Image alt'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 'Artikkelin pääkuva'
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.imported_article.body
+    - field.field.node.imported_article.field_image_alt
+    - field.field.node.imported_article.field_image_title
     - field.field.node.imported_article.field_image_url
     - field.field.node.imported_article.field_published
     - node.type.imported_article
@@ -11,6 +13,7 @@ dependencies:
     - hdbt_admin_editorial
     - link
     - path
+    - publication_date
     - readonly_field_widget
     - scheduler
   enforced:
@@ -38,6 +41,22 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_image_alt:
+    type: string_textfield
+    weight: 124
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_image_title:
+    type: string_textfield
+    weight: 125
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_image_url:
     type: link_default

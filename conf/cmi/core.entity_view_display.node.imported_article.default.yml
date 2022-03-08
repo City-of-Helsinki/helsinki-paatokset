@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.imported_article.body
+    - field.field.node.imported_article.field_image_alt
+    - field.field.node.imported_article.field_image_title
     - field.field.node.imported_article.field_image_url
     - field.field.node.imported_article.field_published
     - node.type.imported_article
@@ -28,6 +30,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  field_image_alt:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_image_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 106
     region: content
   field_image_url:
     type: link

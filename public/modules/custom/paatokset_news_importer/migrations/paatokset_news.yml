@@ -28,6 +28,8 @@ process:
     plugin: default_value
     default_value: '1'
   field_image_url: image_url
+  field_image_alt: image_alt
+  field_image_title: image_title
   field_published:
     plugin: format_date
     from_format: 'd M Y H:i:s O'
@@ -35,12 +37,6 @@ process:
     from_timezone: Europe/Helsinki
     to_timezone: UTC
     source: pubDate
-  field_image/target_id:
-    plugin: migration_lookup
-    migration: paatokset_news_images
-    source: guid
-  field_image/alt: image_alt
-  field_image/title: image_title
   created:
     plugin: format_date
     from_format: 'd M Y H:i:s O'

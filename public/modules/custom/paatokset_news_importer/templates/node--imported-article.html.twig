@@ -22,7 +22,11 @@
     {# Main image #}
     {% if content.lead_image|render %}
       <figure class="image">
-        <img src={{ content.lead_image }} />
+        <img
+          src="{{ content.lead_image }}"
+          alt="{{ node.field_image_alt.value }}"
+          title="{{ node.field_image_title.value }}"
+        />
       </figure>
     {% endif %}
     {# End of Main image #}
