@@ -1,0 +1,6 @@
+banner_text:
+  format: 'rich_text'
+  value: '<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>'
+banner_heading: 'Sanat hukassa?'
+banner_label: 'Siirry sanakirjaan'
+banner_url: '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja'
