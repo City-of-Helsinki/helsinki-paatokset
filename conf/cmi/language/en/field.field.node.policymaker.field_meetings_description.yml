@@ -1,5 +1,2 @@
 label: 'Meetings description'
 description: 'Text shown above meetings calendar.'
-default_value:
-  -
-    value: ''

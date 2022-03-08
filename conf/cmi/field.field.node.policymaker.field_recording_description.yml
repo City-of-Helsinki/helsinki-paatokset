@@ -21,10 +21,7 @@ label: 'Kokoustallenteen kuvaus'
 description: 'Uusimman kokoustallenteen upotteen yläpuolella näytettävä teksti.'
 required: false
 translatable: false
-default_value:
-  -
-    value: "<p>Voit katsoa valtuuston kokousvideon tässä. Siirtymällä Helsinki-kanavalle Kaikki videot -linkistä näet myös kokoukseen liittyvät päätökset ja voit selata kokousta puheenvuorojen perusteella.</p>\r\n"
-    format: full_html
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: text_long

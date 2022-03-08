@@ -1,5 +1,2 @@
 label: 'Decisions description'
 description: 'Text shown above decisions list.'
-default_value:
-  -
-    value: "<p>The documents are in both pdf and html format. In the HTML version, page layouts may differ from the original. The documents are divided into items according to the table of contents, but a print version of the entire document in pdf format is also available.</p>\r\n"
