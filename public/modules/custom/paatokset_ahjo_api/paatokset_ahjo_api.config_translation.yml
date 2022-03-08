@@ -1,0 +1,5 @@
+paatokset_ahjo_api.default_texts:
+  title: 'Päätökset default texts'
+  base_route_name: paatokset_ahjo_api.default_texts
+  names:
+    - paatokset_ahjo_api.default_texts

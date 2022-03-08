@@ -1,0 +1,25 @@
+# Schema for the default text configuration files.
+
+paatokset_ahjo_api.default_texts:
+  type: config_object
+  label: 'Default text configuration'
+  mapping:
+    banner_text:
+      type: mapping
+      label: 'Banner content'
+      mapping:
+        value:
+          type: text
+          label: 'Banner content - Value'
+        format:
+          type: string
+          label: 'Banner content - Format'
+    banner_heading:
+      type: label
+      label: 'Banner heading'
+    banner_label:
+      type: label
+      label: 'Banner CTA button label'
+    banner_url:
+      type: label
+      label: 'Banner CTA button URL'

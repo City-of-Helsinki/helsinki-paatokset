@@ -1,3 +1,11 @@
+paatokset_ahjo_api.default_texts:
+  path: '/admin/tools/default-texts'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm
+    _title: 'Default text element settings.'
+  requirements:
+    _permission: 'administer site configuration'
+
 ahjo_meeting_endpoint:
   path: 'ahjo_api/meetings'
   defaults:
