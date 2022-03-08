@@ -22,7 +22,7 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: /paatokset
+    pages: "/paatokset\r\n/paattajat/*/*"
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false

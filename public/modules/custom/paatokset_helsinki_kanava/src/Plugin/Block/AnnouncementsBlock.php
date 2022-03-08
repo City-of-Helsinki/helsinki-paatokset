@@ -41,7 +41,9 @@ class AnnouncementsBlock extends BlockBase {
 
         $url = $councilNode->toUrl();
         if ($url) {
-          $linkText = t("You can see the stream on council's page");
+          $linkText = t("You can see the stream on council's page, starting at @time", [
+            '@time' => date('H:i', $nextMeetingDate),
+          ]);
           $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));
         }
       }

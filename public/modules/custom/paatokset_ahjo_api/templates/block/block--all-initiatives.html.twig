@@ -1,7 +1,6 @@
 {%
   set classes = [
   'all-initiatives',
-  'container',
   view_mode ? 'all-initiatives--view-mode-' ~ view_mode|clean_class,
 ]
 %}
@@ -36,6 +35,7 @@
                     </li>
                   {% endfor %}
                 </ul>
+              </div>
             </div>
           </div>
         {% endblock %}
@@ -45,7 +45,6 @@
         {%
           set document_container_classes = [
             'policymakers-documents',
-            'container',
             loop.index == 1 ? 'selected-year'
           ]
         %}

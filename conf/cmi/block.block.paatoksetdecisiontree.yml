@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetdecisiontree
 theme: helfi_paatokset
 region: content
-weight: -14
+weight: -15
 provider: null
 plugin: decision_tree
 settings:

@@ -253,6 +253,9 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   }
 }
 
+/**
+ * Implements hook_preprocess_html().
+ */
 function paatokset_policymakers_preprocess_html(&$variables) {
   if(isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first'])) {
     $variables['attributes']['class'][] = 'page-type--policymaker';
@@ -260,14 +263,10 @@ function paatokset_policymakers_preprocess_html(&$variables) {
 }
 
 /**
- * Set a variable to always show sidebar in policymaker pages.
- *
  * Implements hook_preprocess_page().
  */
 function paatokset_policymakers_preprocess_page(&$variables) {
-  if(isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first'])) {
-    $variables['page_has_sidebar'] = true;
-    $variables['move_before_content'] = true;
-    $variables['has_navigation'] = true;
+  if(isset($variables['page']['content']) && array_key_exists('paatoksetpolicymakersearch', $variables['page']['content'])) {
+    $variables['move_before_content'] = TRUE;
   }
 }
