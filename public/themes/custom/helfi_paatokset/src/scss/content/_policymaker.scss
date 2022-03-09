@@ -316,6 +316,12 @@ h2.minutes-list__header {
   }
 }
 
+.minutes-decision__meta {
+  .Kokousaika {
+    font-weight: $font-weight-bold;
+  }
+}
+
 .minutes-decision__heading {
   margin-bottom: 32px;
   line-height: 1.1;
