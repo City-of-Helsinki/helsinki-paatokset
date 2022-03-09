@@ -23,8 +23,10 @@ exec "/crons/run-aggregated-ahjo-integrations.sh" &
 
 while true
 do
+  # Sleep for 1 minute.
+  sleep 60
   echo "Running cron: $(date)\n"
   drush cron
-  # Sleep for 10 minutes.
-  sleep 600
+  # Sleep for 9 minutes.
+  sleep 540
 done

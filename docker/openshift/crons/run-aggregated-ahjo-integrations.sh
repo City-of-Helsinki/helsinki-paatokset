@@ -2,6 +2,8 @@
 
 while true
 do
+  # Sleep for 1 hour.
+  sleep 3600
   echo "Aggregating data for meetings: $(date)"
   drush ahjo-proxy:aggregate meetings --dataset=latest
   echo "Aggregating data for cases: $(date)"
@@ -23,6 +25,6 @@ do
   drush ahjo-proxy:get-motions
   echo "Updating decision and motion data: $(date)"
   drush ahjo-proxy:update-decisions
-  # Sleep for 24 hours.
-  sleep 86400
+  # Sleep for 23 hours.
+  sleep 82800
 done
