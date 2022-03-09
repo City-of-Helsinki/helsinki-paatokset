@@ -16,6 +16,7 @@
 
   th,
   td {
+    font-size: $font-size-body;
     background-color: $color-white;
     color: $color-black;
     padding: $spacing-and-half 0;
@@ -81,7 +82,7 @@
         align-items: center;
         color: $color-black;
         white-space: nowrap;
-    
+
         .hel-icon--angle-right {
           width: 16px;
           height: 16px;
