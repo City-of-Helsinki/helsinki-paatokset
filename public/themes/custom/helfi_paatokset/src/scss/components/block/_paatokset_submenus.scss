@@ -23,10 +23,8 @@
     }
   }
 
-  .decision-tree__title span {
-    font-size: 24px;
-    font-weight: $font-weight-medium;
-    margin-bottom: $spacing-double + $spacing-half;
+  .decision-tree__title h4 {
+    margin-bottom: $spacing;
   }
 
   .decision-tree__title-container {
@@ -69,7 +67,7 @@
   }
   .menu	{
     overflow: auto;
-    
+
     &:scroll {
       display: none;
     }
