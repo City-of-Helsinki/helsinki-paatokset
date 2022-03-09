@@ -8,6 +8,6 @@ do
   drush ahjo-proxy:get-motions
   echo "Updating decision and motion data: $(date)"
   drush ahjo-proxy:update-decisions
-  # Sleep for 30 minutes.
-  sleep 1800
+  # Sleep for 5 minutes.
+  sleep 300
 done
