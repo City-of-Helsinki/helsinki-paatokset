@@ -8,6 +8,7 @@ jQuery(function($) {
   var focusIndex = -1;
 
   $(document).ready(function() {
+    $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'true');
     // Add the default style class to button
     const defaultSelected = $('.issue__meetings-select li.selected');
     if(defaultSelected.length) {
@@ -193,7 +194,8 @@ jQuery(function($) {
         $('.issue-ajax-error__container').hide();
       },
       error: function() {
-        $('.issue-ajax-error__container').show();
+        $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'false');
+        $('.issue-ajax-error__container').attr('aria-hidden', 'false').show();
       },
       complete: function() {
         $('.issue__wrapper .ajax-progress-throbber').hide();
