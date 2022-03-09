@@ -92,7 +92,8 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   $variables['open_motions'] = t('Open motions');
   $variables['open_decisions'] = t('Open decisions');
   $variables['open_minutes'] = t('Open minutes');
-  $variables['calendar_link'] = '/kokouskalenteri';
+  $lang_prefix = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $variables['calendar_link'] = '/' . $lang_prefix . '/kokouskalenteri';
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $meetings_with_color;
 }
