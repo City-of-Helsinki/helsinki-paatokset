@@ -5,4 +5,5 @@ dependencies: {  }
 id: node__decision
 label: 'Sisältö: Decision'
 tags:
+  canonical_url: '[current-page:url]?decision=[current-page:query:decision]'
   title: '[node:title] – [node:field_dm_org_name:value] | [site:name] | Helsingin Kaupunki'

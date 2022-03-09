@@ -1,0 +1,29 @@
+uuid: 3e64ae99-4bc9-4f27-9aff-ec7eef00146d
+langcode: fi
+status: true
+dependencies:
+  module:
+    - hdbt_content
+    - node
+  theme:
+    - helfi_paatokset
+id: socialmediasharingblock_2
+theme: helfi_paatokset
+region: content
+weight: 0
+provider: null
+plugin: hdbt_content_social_sharing_block
+settings:
+  id: hdbt_content_social_sharing_block
+  label: 'Social Media Sharing block'
+  label_display: '0'
+  provider: hdbt_content
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      policymaker: policymaker
+      trustee: trustee

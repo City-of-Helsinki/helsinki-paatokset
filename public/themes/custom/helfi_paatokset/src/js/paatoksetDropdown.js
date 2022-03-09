@@ -4,6 +4,7 @@ jQuery(function($) {
   const options = $('.issue__meetings-select li');
   const container = $('.issue__meetings-container')
   const dropdown = $('.issue__meetings-dropdown');
+  const social_media = $('.social-media__items a');
   var focusIndex = -1;
 
   $(document).ready(function() {
@@ -203,7 +204,15 @@ jQuery(function($) {
       }
     });
 
+    const old_window_href = window.location.host + window.location.pathname + window.location.search;
+
     window.history.pushState({}, '', `${window.location.pathname}?decision=${id}`);
+
+    social_media.each(function() {
+      const old_href =  $(this).attr('href')
+      const new_window_href = window.location.host + window.location.pathname + window.location.search;
+      $(this).attr('href', old_href.replace(old_window_href, new_window_href))
+    });
   }
 
   function hideWarning() {
