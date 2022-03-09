@@ -233,6 +233,7 @@ h2.minutes-list__header {
 }
 
 .minutes-list__wrapper {
+  font-size: $font-size-body;
   margin-bottom: $spacing-double;
 }
 
@@ -318,6 +319,8 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__meta {
+  font-size: $font-size-body;
+
   .Kokousaika {
     font-weight: $font-weight-bold;
   }
