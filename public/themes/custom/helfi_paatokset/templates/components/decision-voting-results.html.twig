@@ -12,13 +12,13 @@
       <div class="accordion-item__content__inner handorgel__content__inner">
 
         {% for results in vote_results %}
-          <h3>{{ 'Äänestys'|t }} {{ loop.index }}</h3>
+          <h4>{{ 'Äänestys'|t }} {{ loop.index }}</h4>
           <p><b>{{ 'Ayes'|t }}:</b> {{results.accordions.Ayes.Content }}</p>
           <p><b>{{ 'Noes'|t }}:</b> {{results.accordions.Noes.Content }}</p>
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
               <div class="accordion__wrapper handorgel">
-                <h4 class="accordion-item__header handorgel__header"> 
+                <div class="accordion-item__header handorgel__header">
                   <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" {% if accordion.NumberOfVotes == 0 %} disabled {% endif %}>
                     <div class="result-type {{ key|lower }}">
                       <span class="result-color">{{ accordion.NumberOfVotes }}</span>
@@ -30,7 +30,7 @@
                     </div>
                     {% endif %}
                   </button>
-                </h4>
+                </div>
                 <div class="accordion-item__content handorgel__content">
                   <div class="accordion-item__content__inner handorgel__content__inner">
                     <table class="results-table">
@@ -57,7 +57,7 @@
               </div>
             </div>
           {% endfor %}
-          
+
           <div class="results-by-party">
             <h5>{{ 'By political group'|t }}</h5>
             <table class="results-table">
@@ -100,7 +100,7 @@
             </table>
           </div>
         {% endfor %}
-        
+
 
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
