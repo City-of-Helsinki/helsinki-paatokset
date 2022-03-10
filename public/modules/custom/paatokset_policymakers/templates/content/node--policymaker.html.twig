@@ -173,9 +173,7 @@
       <section class="recent-decisions" id="recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
         <div class="section-description">
-          {% if node.field_decisions_description.value|render|striptags|trim is not empty %}
-            {{ node.field_decisions_description.value | check_markup('full_html') }}
-          {% endif %}
+          {{ decisions_description|raw }}
         </div>
         <div class="policymaker-decisions-container">
         {% for decision in recent_decisions %}
@@ -197,9 +195,7 @@
       <section class="recent-documents policymaker-documents" id="recent-documents">
         <h2>{{ 'Recent documents'|trans }}</h2>
         <div class="section-description">
-          {% if node.field_documents_description.value|render|striptags|trim is not empty %}
-            {{ node.field_documents_description.value | check_markup('full_html') }}
-          {% endif %}
+          {{ documents_description|raw }}
         </div>
         <div class="policymaker-documents-container">
           {% for document in recent_documents %}
@@ -219,9 +215,7 @@
       <section class="policymaker-meetings" id="recent-meetings">
         <h2>{{ 'Recent meeting recording'|trans }}</h2>
         <div class="section-description">
-          {% if node.field_recording_description.value|render|striptags|trim is not empty %}
-            {{ node.field_recording_description.value | check_markup('full_html') }}
-          {% endif %}
+          {{ recording_description|raw }}
         </div>
        {{ most_recent_meeting }}
         {% if all_recordings_link %}
