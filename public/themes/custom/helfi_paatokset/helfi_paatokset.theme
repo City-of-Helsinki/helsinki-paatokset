@@ -217,6 +217,10 @@ function helfi_paatokset_preprocess_node(&$variables) {
     return;
   }
 
+  $config = \Drupal::config('paatokset_ahjo_api.default_texts'); 
+  $banner_title = $config->get('banner_heading');
+  $banner_text = $config->get('banner_text.value');
+
   if (in_array($node->bundle(), ['case', 'decision'])) {
     $variables['banner_content'] = [
       'link' => [
@@ -225,8 +229,8 @@ function helfi_paatokset_preprocess_node(&$variables) {
         'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
         'target_new' => TRUE,
       ],
-      'title' => t('Sanat hukassa?'),
-      'description' => t('Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.')
+      'title' => $banner_title,
+      'description' => $banner_text
     ];
   }
 }

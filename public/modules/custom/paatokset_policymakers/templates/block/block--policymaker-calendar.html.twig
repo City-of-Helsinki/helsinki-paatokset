@@ -9,9 +9,7 @@
 <div {{ attributes.addClass(classes) }}>
   <h2>{{ label }}</h2>
   <div class="section-description">
-    {% if meetings_description.value|render|striptags|trim is not empty %}
-      {{ meetings_description.value | check_markup('full_html') }}
-    {% endif %}
+    {{ meetings_description|raw }}
   </div>
   <table class="policymaker-calendar__table">
     <thead>
