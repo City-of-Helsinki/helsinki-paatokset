@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.imported_article.body
+    - field.field.node.imported_article.field_image_alt
+    - field.field.node.imported_article.field_image_title
     - field.field.node.imported_article.field_image_url
     - field.field.node.imported_article.field_published
     - node.type.imported_article
@@ -30,6 +32,8 @@ content:
     weight: 1
     region: content
 hidden:
+  field_image_alt: true
+  field_image_title: true
   field_image_url: true
   field_published: true
   langcode: true

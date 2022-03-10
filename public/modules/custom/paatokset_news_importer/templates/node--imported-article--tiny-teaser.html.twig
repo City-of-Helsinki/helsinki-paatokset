@@ -9,7 +9,11 @@
 <div class="news-listing__img">
   {% if content.lead_image|render %}
     <figure class="image">
-      <img src={{ content.lead_image }} />
+      <img
+        src="{{ content.lead_image }}"
+        alt="{{ node.field_image_alt.value }}"
+        title="{{ node.field_image_title.value }}"
+      />
     </figure>
   {% else %}
     {% include "@hdbt/misc/image-placeholder.twig" %}

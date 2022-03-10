@@ -1,3 +1,4 @@
+
 .news-liftups {
   margin-top: $spacing-quadruple;
 
@@ -13,7 +14,18 @@
     text-decoration: none;
 
     &:hover {
-      text-decoration: underline;
+
+      h3 {
+        text-decoration: underline;
+      }
+
+      .hel-icon {
+        transform: translate(10px);
+      }
+    }
+
+    .hel-icon {
+      transition: all 0.2s ease-in-out;
     }
   }
 
@@ -34,7 +46,6 @@
   
   .liftup--main {
     h3 {
-      font-size: 1.5rem;
       font-weight: $font-weight-medium;
     }
     
@@ -63,7 +74,11 @@
       font-size: 1.25rem;
       margin-bottom: $spacing-half;
       margin-top: 0;
-      font-weight: $font-weight-medium
+      font-weight: $font-weight-medium;
+
+      @include breakpoint($breakpoint-m) {
+        font-size: 1.5rem;
+      }
     }
 
     @include breakpoint($breakpoint-xl) {
