@@ -204,7 +204,11 @@ jQuery(function($) {
       }
     });
 
-    const old_window_href = window.location.host + window.location.pathname + window.location.search;
+    var queryparams = window.location.search;
+    if (queryparams === "") {
+      var queryparams = '?decision=';
+    }
+    const old_window_href = window.location.host + window.location.pathname + queryparams;
 
     window.history.pushState({}, '', `${window.location.pathname}?decision=${id}`);
 
