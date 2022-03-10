@@ -1,0 +1,8 @@
+uuid: 7156dd0f-3a0b-4fb0-adcd-9b4c958f16ab
+langcode: fi
+status: true
+dependencies: {  }
+id: node__case
+label: 'Sisältö: Case'
+tags:
+  canonical_url: '[current-page:url]?decision=[current-page:query:decision]'
