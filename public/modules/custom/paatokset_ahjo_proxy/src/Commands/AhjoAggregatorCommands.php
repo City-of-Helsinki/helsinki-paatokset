@@ -165,9 +165,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       case 'cases':
         $id_key = 'CaseID';
         break;
+
       case 'meetings':
         $id_key = 'MeetingId';
         break;
+
       default:
         $id_key = 'NativeId';
         break;
