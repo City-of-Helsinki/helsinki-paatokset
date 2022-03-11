@@ -319,6 +319,29 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get single record from Ahjo API.
+   *
+   * @param string $id
+   *   Native ID
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Record data inside 'records' to normalize output for migrations.
+   */
+  public function getRecord(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $records_url = self::API_BASE_URL . 'records/' . $id . '?' . urldecode($query_string);
+    $record = $this->getContent($records_url, $bypass_cache);
+
+    return ['records' => [$record]];
+  }
+
+  /**
    * Get single position of trust from Ahjo API.
    *
    * @param string $id

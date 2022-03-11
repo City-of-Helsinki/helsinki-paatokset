@@ -155,4 +155,21 @@ class AhjoProxyController extends ControllerBase {
     return $response;
   }
 
+  /**
+   * Get data for a single record.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Native ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for record.
+   */
+  public function getRecord(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getRecord($id, $query_string);
+    return new JsonResponse($data);
+  }
+
 }

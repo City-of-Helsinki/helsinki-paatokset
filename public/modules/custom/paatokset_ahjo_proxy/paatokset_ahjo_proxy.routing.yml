@@ -50,6 +50,14 @@ paatokset_ahjo_proxy.get_aggregated_data:
     _permission: 'access content'
   methods: [GET]
 
+paatokset_ahjo_proxy.get_record:
+  path: '/ahjo-proxy/records/{nativeId}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::getRecord'
+  requirements:
+    _permission: 'access ahjo documents'
+  methods: [GET]
+
 paatokset_ahjo_proxy.get_file:
   path: '/ahjo-proxy/document/{nativeId}'
   defaults:
