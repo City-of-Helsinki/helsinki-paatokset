@@ -160,12 +160,26 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $this->logger->info('Processing ' . count($data[$list_key]) . ' results.');
 
+    // Get property key for ID value based on endpoint.
+    switch ($endpoint) {
+      case 'cases':
+        $id_key = 'CaseID';
+        break;
+      case 'meetings':
+        $id_key = 'MeetingId';
+        break;
+      default:
+        $id_key = 'NativeId';
+        break;
+    }
+
     $operations = [];
     $count = 0;
     foreach ($data[$list_key] as $item) {
       $count++;
       $data = [
         'item' => $item,
+        'item_id' => $item[$id_key],
         'list_key' => $list_key,
         'endpoint' => $endpoint,
         'dataset' => $dataset,
