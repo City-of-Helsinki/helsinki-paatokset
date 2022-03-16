@@ -1,6 +1,15 @@
 # @TODO: Find out a way to translate routes / define same route for needed languages
 policymakers.fi:
   path: paattajat
+
+policymakers.sv:
+  path: paattajat-sv
+
+policymaker.page.sv:
+  path: 'paattajat-sv/{organization}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymaker'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymakerTitle'
   requirements:
     _access: 'TRUE'
 

@@ -145,22 +145,13 @@ class PolicymakerService {
     $node = \Drupal::routeMatch()->getParameter('node');
     $routeParams = \Drupal::routeMatch()->getParameters();
 
-    if (!$node instanceof NodeInterface) {
-      $current_path = \Drupal::service('path.current')->getPath();
-      $path_parts = explode('/', trim($current_path));
-      array_pop($path_parts);
-      $path_alias = implode('/', $path_parts);
-      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_alias);
-      if (preg_match('/node\/(\d+)/', $path, $matches)) {
-        $node = Node::load($matches[1]);
-      }
-    }
-
     // Determine policymaker in custom routes.
     if (!$node instanceof NodeInterface && $routeParams->get('organization')) {
-      array_pop($path_parts);
-      $path = \Drupal::service('path_alias.manager')->getPathByAlias(implode('/', $path_parts));
-
+      // Default path and language for policymakers should always be finnish.
+      $path_prefix = '/paattajat';
+      $path_lang = 'fi';
+      $organization = $routeParams->get('organization');
+      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $organization, $path_lang);
       if (preg_match('/node\/(\d+)/', $path, $matches)) {
         $node = Node::load($matches[1]);
       }
