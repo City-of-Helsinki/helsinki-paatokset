@@ -11,8 +11,10 @@ do
   echo "Migrating data for cases: $(date)"
   echo "Aggregating data for decisions: $(date)"
   drush ahjo-proxy:aggregate decisions --dataset=latest
-  echo "Aggregating data for council members: $(date)"
+  echo "Aggregating council org data: $(date)"
   drush ahjo-proxy:get-council-positionsoftrust
+  echo "Aggregating data for council members: $(date)"
+  drush ahjo-proxy:get-trustees positionsoftrust_council.json
   echo "Migrating data for meetings: $(date)"
   drush migrate-import ahjo_meetings:latest --update
   echo "Migrating data for cases: $(date)"
