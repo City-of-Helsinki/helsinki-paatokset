@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Render\Element;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_theme().
@@ -251,7 +252,15 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
  */
 function template_preprocess_block__policymaker_members(array &$variables) {
   $variables['#attached']['library'][] = 'paatokset_policymakers/policymaker_members';
-  $node = \Drupal::routeMatch()->getParameter('node');
+
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService->setPolicyMakerByPath();
+  $node = $policymakerService->getPolicyMaker();
+
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
 
   $variables['policymaker_name'] = $node->get('field_ahjo_title')->value;
   $variables['policymaker_id'] = $node->get('field_policymaker_id')->value;
