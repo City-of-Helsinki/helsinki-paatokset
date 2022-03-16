@@ -1,83 +1,48 @@
 {#
 /**
  * @file
- * Theme override to display a menu.
+ * Theme override for a menu block.
  *
  * Available variables:
- * - menu_name: The machine name of the menu.
- * - items: A nested list of menu items. Each menu item contains:
- *   - attributes: HTML attributes for the menu item.
- *   - below: The menu item child items.
- *   - title: The menu link title.
- *   - url: The menu link url, instance of \Drupal\Core\Url
- *   - localized_options: Menu link localized options.
- *   - is_expanded: TRUE if the link has visible children within the current
- *     menu tree.
- *   - is_collapsed: TRUE if the link has children within the current menu tree
- *     that are not currently visible.
- *   - in_active_trail: TRUE if the link is in the active trail.
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: HTML attributes for the containing element.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: HTML attributes for the title element.
+ * - content_attributes: HTML attributes for the content element.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * Headings should be used on navigation menus that consistently appear on
+ * multiple pages. When this menu block's label is configured to not be
+ * displayed, it is automatically made invisible using the 'visually-hidden' CSS
+ * class, which still keeps it visible for screen-readers and assistive
+ * technology. Headings allow screen-reader and keyboard only users to navigate
+ * to or skip the links.
+ * See http://juicystudio.com/article/screen-readers-display-none.php and
+ * http://www.w3.org/TR/WCAG-TECHS/H42.html for more information.
  */
 #}
-{% import _self as menus %}
+{% if menu_link_parent.title and menu_link_parent.url %}
+  {% set link_title = menu_link_parent.title %}
+  {% set link_url = menu_link_parent.url %}
+{% else %}
+  {% set link_title = 'Home'|t %}
+  {% set link_url = 'internal:/' ~ path('<front>') %}
+{% endif %}
 
-{#
-  We call a macro which calls itself to render the full tree.
-  @see https://twig.symfony.com/doc/1.x/tags/macro.html
-#}
-{{ menus.menu_links(items, attributes, 0, icons_path) }}
-
-{% macro menu_links(items, attributes, menu_level, icons_path) %}
-  {% import _self as menus %}
-
-  {% set menu_classes = ['menu'] %}
-
-  {% if items %}
-  <div class="policymaker-side-menu policymaker-side-menu--desktop">
-    <nav>
-      <ul{{ attributes.addClass(menu_classes).setAttribute('id', 'menu--level-' ~ menu_level) }}>
-        {% for item in items %}
-
-          {% set item_classes = [
-            'menu__item',
-            item.is_nolink ? 'menu__item--nolink',
-            item.is_external ? 'menu__item--external',
-            item.is_expanded or item.in_active_trail ? 'menu__item--children',
-            item.in_active_trail ? 'menu__item--active-trail',
-            item.in_active_trail ? 'menu__item--open',
-            item.is_active ? 'active'
-          ]%}
-
-          <li{{ item.attributes.addClass(item_classes) }}>
-            <span class="menu__link-wrapper">
-              {% if not item.is_nolink %}
-                {% set item_title = item.title %}
-
-                {%- set icon_name = (item.url.getOption('attributes')).icon -%}
-                {% if icon_name %}
-                  {% set item_title %}
-                    {% include '@hdbt/misc/icon.twig' with {icon: icon_name, icons_path: icons_path} %}
-                    {{ item.title }}
-                  {% endset %}
-                {% endif %}
-
-                {{ link(item_title, item.url) }}
-              {% else %}
-                <span{{ create_attribute({'class': item_classes} ) }}>{{ item.title }}</span>
-              {% endif %}
-
-              {% if item.is_collapsed or item.is_expanded %}
-                <button type="button" aria-expanded="true" aria-controls="menu--level-{{ menu_level + 1 }}" class="menu__toggle-button">
-                  {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up', icons_path: icons_path} %}
-                </button>
-              {% endif %}
-            </span>
-            {% if item.below %}
-              {{ menus.menu_links(item.below, attributes, menu_level + 1, icons_path) }}
-            {% endif %}
-          </li>
-        {% endfor %}
-        </ul>
-      </nav>
-    </div>
-  {% endif %}
-{% endmacro %}
+{% set heading_id = attributes.id ~ '-menu'|clean_id %}
+<nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes|without('role', 'aria-labelledby') }} class="sidebar-navigation">
+  <h2{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title">
+    {{ link(link_title, link_url) }}
+  </h2>
+    {% include '@hdbt/navigation/menu.html.twig' with { attributes: menu_attributes, allow_collabsible: true, auto_open: true } %}
+  </nav>

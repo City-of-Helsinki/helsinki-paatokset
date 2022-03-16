@@ -64,11 +64,19 @@ function paatokset_submenus_preprocess_block(&$variables) {
   if ($variables['plugin_id'] === 'policymaker_side_nav') {
     if(isset($variables['elements']['content']['#items'])) {
       $variables['items'] = $variables['elements']['content']['#items'];
+      $variables['menu_attributes'] = new Attribute(['class' => 'menu']);
+      $variables['attributes'] = new Attribute(['class' => ['sidebar-navigation']]);
+      $variables['menu_link_parent'] = [
+        'title' => t('Päättäjät'),
+        'url' => \Drupal\Core\Url::fromRoute('policymakers.fi')
+      ];
+      $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
     }
   }
 
   if($variables['plugin_id'] === 'policymaker_side_nav_mobile') {
     $variables['#attached']['library'][] = 'hds_web_components/Dropdown';
+    $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
   
     if(isset($variables['elements']['content']['#options'])) {
       $attributes = [

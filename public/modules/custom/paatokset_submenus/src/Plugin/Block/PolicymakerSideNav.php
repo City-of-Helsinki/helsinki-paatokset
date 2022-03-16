@@ -2,6 +2,7 @@
 
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -40,12 +41,7 @@ class PolicymakerSideNav extends BlockBase {
    */
   public function build() {
     return [
-      '#items' => [[
-        'title' => t('Policymakers'),
-        'url' => Url::fromRoute('policymakers.fi')->setOption('attributes', ['icon' => 'angle-left']),
-        'below' => $this->items,
-      ],
-      ],
+      '#items' => $this->items,
       '#currentPath' => \Drupal::service('path.current')->getPath(),
     ];
   }
@@ -94,8 +90,39 @@ class PolicymakerSideNav extends BlockBase {
     $policymaker_url = $policymaker->toUrl()->toString();
     $policymaker_url_bits = explode('/', $policymaker_url);
     $policymaker_org = array_pop($policymaker_url_bits);
-
+    $menu_tree = \Drupal::menuTree();
     $routeProvider = \Drupal::service('router.route_provider');
+    $dmRoute = NULL;
+    $dmMenuLink = NULL;
+    $localizedDmRoute = 'policymakers.' . $currentLanguage;
+
+    if ($this->policymakerService->routeExists($localizedDmRoute)) {
+      $parameters = new MenuTreeParameters();
+      $main_menu_top_level = $menu_tree->load('main', $parameters);
+      $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
+
+      foreach ($main_menu_top_level as $menuLink) {
+        $dmParentLink = NULL;
+        $linkUrl = $menuLink->link->getUrlObject();
+
+        if ($linkUrl && $linkUrl->toString() === $dmUrl) {
+          $dmParentLink = $menuLink;
+          break;
+        }
+      }
+
+      if ($dmParentLink) {
+        foreach ($dmParentLink->subtree as $subMenuLink) {
+          $linkUrl = $subMenuLink->link->getUrlObject();
+
+          if ($linkUrl && $linkUrl->toString() === $policymaker_url) {
+            $dmMenuLink = $subMenuLink;
+            break;
+          }
+        }
+      }
+    }
+
     $trustee_types = [
       'Viranhaltija',
       'Luottamushenkilö',
@@ -148,8 +175,19 @@ class PolicymakerSideNav extends BlockBase {
 
     foreach ($items as $key => $item) {
       if ($item['url']->toString() === $currentPath) {
-        $items[$key]['is_active'] = TRUE;
-        $items[$key]['attributes']->setAttribute('aria-current', 'page');
+        $items[$key]['in_active_trail'] = TRUE;
+        $items[$key]['is_currentPage'] = TRUE;
+      }
+    }
+
+    if ($dmMenuLink && $dmMenuLink->subtree) {
+      $items = array_merge($items, $menu_tree->build($dmMenuLink->subtree)['#items']);
+    }
+
+    // Apply HDBT attributes to navigation items.
+    if (function_exists('_hdbt_menu_item_apply_attributes')) {
+      foreach ($items as &$item) {
+        _hdbt_menu_item_apply_attributes($item);
       }
     }
 
