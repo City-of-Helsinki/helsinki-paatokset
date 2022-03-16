@@ -139,14 +139,14 @@
 
   {% if speaking_turns.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_speaking-turn">
-    <h4 class="accordion-item__header handorgel__header">
+    <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ speaking_turns.title }}</span>
         <div class="accordion-item__icon">
           {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
         </div>
       </button>
-    </h4>
+    </h2>
     <div class="accordion-item__content handorgel__content">
       <div class="accordion-item__content__inner handorgel__content__inner">
         {% for row in speaking_turns.content %}
@@ -168,14 +168,14 @@
 
   {% if initiatives.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_initiatives">
-    <h4 class="accordion-item__header handorgel__header">
+    <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ initiatives.title }}</span>
         <div class="accordion-item__icon">
           {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
         </div>
       </button>
-    </h4>
+    </h2>
     <div class="accordion-item__content handorgel__content">
       <div class="accordion-item__content__inner handorgel__content__inner">
         {% for row in initiatives.content %}
@@ -195,14 +195,14 @@
 
   {% if resolutions.content is not empty %}
   <div class="accordion__wrapper handorgel accordion_resolutions">
-    <h4 class="accordion-item__header handorgel__header">
+    <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ resolutions.title }}</span>
         <div class="accordion-item__icon">
           {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
         </div>
       </button>
-    </h4>
+    </h2>
     <div class="accordion-item__content handorgel__content">
       <div class="accordion-item__content__inner handorgel__content__inner">
         {% for row in resolutions.content %}
