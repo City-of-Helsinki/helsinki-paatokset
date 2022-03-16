@@ -51,6 +51,7 @@ class PolicymakerNodeViewController extends NodeViewController {
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymaker_service
+   *   Policymaker service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, RendererInterface $renderer, AccountInterface $current_user, EntityRepositoryInterface $entity_repository, PolicymakerService $policymaker_service) {
     parent::__construct($entity_type_manager, $renderer, $current_user, $entity_repository);
@@ -70,6 +71,9 @@ class PolicymakerNodeViewController extends NodeViewController {
     );
   }
 
+  /**
+   * Return untranslated policymaker node on other languages.
+   */
   public function policymaker() {
     $this->policymakerService->setPolicyMakerByPath();
     $node = $this->policymakerService->getPolicyMaker();
@@ -80,7 +84,13 @@ class PolicymakerNodeViewController extends NodeViewController {
     throw new NotFoundHttpException();
   }
 
-  public function policymakerTitle (string $organization) {
+  /**
+   * Return title for untranslated policymaker node.
+   *
+   * @param string $organization
+   *   Organization parameter.
+   */
+  public function policymakerTitle(string $organization) {
     $policymaker = $this->policymakerService->getPolicyMaker();
     if ($policymaker instanceof NodeInterface) {
       return $policymaker->title->value;
