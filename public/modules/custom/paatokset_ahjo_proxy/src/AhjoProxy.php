@@ -322,7 +322,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * Get single record from Ahjo API.
    *
    * @param string $id
-   *   Native ID
+   *   Native ID.
    * @param string|null $query_string
    *   Query string to pass on.
    * @param bool $bypass_cache
