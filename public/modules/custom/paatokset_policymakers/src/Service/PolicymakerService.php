@@ -838,7 +838,6 @@ class PolicymakerService {
       $fallbackLanguage = 'fi';
     }
 
-
     /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
     $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
