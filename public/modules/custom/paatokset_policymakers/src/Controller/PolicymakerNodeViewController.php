@@ -74,9 +74,14 @@ class PolicymakerNodeViewController extends NodeViewController {
   /**
    * Return untranslated policymaker node on other languages.
    */
-  public function policymaker() {
+  public function policymaker(string $organization) {
     $this->policymakerService->setPolicyMakerByPath();
     $node = $this->policymakerService->getPolicyMaker();
+
+    if (!$node instanceof EntityInterface) {
+      $node = $this->policymakerService->getTrusteeById($organization);
+    }
+
     if ($node instanceof EntityInterface) {
       return parent::view($node, 'full');
     }

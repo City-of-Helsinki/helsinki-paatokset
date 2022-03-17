@@ -689,6 +689,31 @@ class PolicymakerService {
   }
 
   /**
+   * Gets trustee node by agent ID.
+   *
+   * @param string $agent_id
+   *   Agent ID.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Trustee node, if found.
+   */
+  public function getTrusteeById(string $agent_id): ?NodeInterface {
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'trustee')
+      ->condition('field_trustee_id', $agent_id)
+      ->range('0', 1);
+
+    $ids = $query->execute();
+    $id = reset($ids);
+    if (empty($ids)) {
+      return NULL;
+    }
+
+    return Node::load($id);
+  }
+
+  /**
    * Load trustee nodes based on names.
    *
    * @param array $names
