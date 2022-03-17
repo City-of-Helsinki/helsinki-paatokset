@@ -15,7 +15,7 @@ bundle: policymaker
 label: 'Custom menu links'
 description: 'Custom links for the side navigation menu.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -20,7 +20,7 @@ bundle: policymaker
 label: 'Asiakirjojen kuvaus'
 description: 'Teksti, joka näytetään asiakirjalistausten yläpuolella. Käytetään kuvaamaan listauksen sisältöä käyttäjille.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

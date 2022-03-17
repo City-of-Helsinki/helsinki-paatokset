@@ -12,7 +12,7 @@ bundle: policymaker
 label: 'Custom organization type'
 description: 'This will override the default organization type field from Ahjo.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

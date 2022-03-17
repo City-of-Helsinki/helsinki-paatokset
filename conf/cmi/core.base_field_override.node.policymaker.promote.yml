@@ -1,0 +1,22 @@
+uuid: 806bd939-e19c-4c21-89c8-b8a057d74ade
+langcode: fi
+status: true
+dependencies:
+  config:
+    - node.type.policymaker
+id: node.policymaker.promote
+field_name: promote
+entity_type: node
+bundle: policymaker
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
