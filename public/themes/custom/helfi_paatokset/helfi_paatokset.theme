@@ -329,6 +329,7 @@ function helfi_paatokset_preprocess_paragraph__news_liftups(&$variables) {
     ->condition('status', 1)
     ->condition('type', 'imported_article')
     ->condition('field_image_url', '', '!=')
+    ->sort('field_published', 'DESC')
     ->range(0, 1);
   $main_article_results = $main_article_query->execute();
 
