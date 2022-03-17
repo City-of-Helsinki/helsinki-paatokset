@@ -1,0 +1,33 @@
+uuid: 65075e8d-edcf-430f-94a6-9ab066602a31
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: policymaker_pattern_sv
+label: 'Policymaker pattern SV'
+type: 'canonical_entities:node'
+pattern: 'beslutsfattare/[node:field_ahjo_title]'
+selection_criteria:
+  62a0012c-d132-4f1f-b1ee-0d1beaea02a1:
+    id: node_type
+    negate: false
+    uuid: 62a0012c-d132-4f1f-b1ee-0d1beaea02a1
+    context_mapping:
+      node: node
+    bundles:
+      policymaker: policymaker
+  15b1df04-6c6d-494f-ae3a-4cf8f0fe395a:
+    id: language
+    negate: false
+    uuid: 15b1df04-6c6d-494f-ae3a-4cf8f0fe395a
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      sv: sv
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli

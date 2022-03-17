@@ -454,7 +454,7 @@ class PolicymakerService {
    * @param string|null $langcode
    *   Langcode for URL.
    *
-   * @return Url|null
+   * @return \Drupal\Core\Url|null
    *   Localized URL, if route exists.
    */
   public function getLocalizedUrl(?string $id = NULL, ?string $langcode = NULL): ?Url {

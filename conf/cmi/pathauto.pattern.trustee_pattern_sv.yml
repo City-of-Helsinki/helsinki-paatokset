@@ -1,0 +1,33 @@
+uuid: 9c68e3d9-fdc4-465b-ae4a-7ad5b281704a
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: trustee_pattern_sv
+label: 'Trustee pattern SV'
+type: 'canonical_entities:node'
+pattern: 'beslutsfattare/[node:field_trustee_id]'
+selection_criteria:
+  c047e503-e10c-4863-be03-46e440558521:
+    id: node_type
+    negate: false
+    uuid: c047e503-e10c-4863-be03-46e440558521
+    context_mapping:
+      node: node
+    bundles:
+      trustee: trustee
+  bb4c8e4e-530b-4cc7-aa86-d3f8c4467f9e:
+    id: language
+    negate: false
+    uuid: bb4c8e4e-530b-4cc7-aa86-d3f8c4467f9e
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      sv: sv
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli
