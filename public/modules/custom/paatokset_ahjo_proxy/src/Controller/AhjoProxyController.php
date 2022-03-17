@@ -166,9 +166,9 @@ class AhjoProxyController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON data for record.
    */
-  public function getRecord(Request $request, string $id): JsonResponse {
+  public function getRecord(Request $request, string $nativeId): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getRecord($id, $query_string);
+    $data = $this->ahjoProxy->getRecord($nativeId, $query_string);
     return new JsonResponse($data);
   }
 
