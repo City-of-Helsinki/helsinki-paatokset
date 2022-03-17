@@ -447,6 +447,42 @@ class PolicymakerService {
   }
 
   /**
+   * Get localized URL for untranslated policymakers.
+   *
+   * @param string|null $id
+   *   Organization ID.
+   * @param string|null $langcode
+   *   Langcode for URL.
+   *
+   * @return Url|null
+   *   Localized URL, if route exists.
+   */
+  public function getLocalizedUrl(?string $id = NULL, ?string $langcode = NULL): ?Url {
+    if ($langcode === NULL) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    }
+
+    if ($id === NULL && $this->policymaker->get('langcode')->value === $langcode) {
+      return $this->policymaker->toUrl();
+    }
+
+    $policymaker = $this->getPolicyMaker($id);
+    if (!$policymaker instanceof NodeInterface || !$policymaker->hasField('field_ahjo_title') || $policymaker->get('field_ahjo_title')->isEmpty()) {
+      return NULL;
+    }
+
+    $organization = strtolower($policymaker->get('field_ahjo_title')->value);
+
+    // Use finnish route as default.
+    $route = 'policymaker.page.' . $langcode;
+    if (!$this->routeExists($route)) {
+      $route = 'policymaker.page.fi';
+    }
+
+    return Url::fromRoute($route, ['organization' => $organization]);
+  }
+
+  /**
    * Check if route exists.
    *
    * @param string $routeName
@@ -830,7 +866,7 @@ class PolicymakerService {
     $fileUrl = NULL;
 
     // Use either current language or fallback language for agenda items.
-    $currentLanguage = $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     if ($currentLanguage === 'fi') {
       $fallbackLanguage = 'sv';
     }

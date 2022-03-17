@@ -5,6 +5,14 @@ policymakers.fi:
 policymakers.sv:
   path: beslutsfattare
 
+policymaker.page.fi:
+  path: 'paattajat/{organization}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymaker'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymakerTitle'
+  requirements:
+    _access: 'TRUE'
+
 policymaker.page.sv:
   path: 'beslutsfattare/{organization}'
   defaults:

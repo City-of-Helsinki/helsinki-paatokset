@@ -19,6 +19,7 @@ use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
  * )
  */
 class PolicymakerSideNav extends BlockBase {
+
   /**
    * PolicymakerService instance.
    *
@@ -27,12 +28,20 @@ class PolicymakerSideNav extends BlockBase {
   private $policymakerService;
 
   /**
+   * Current language ID.
+   *
+   * @var string
+   */
+  private $currentLang;
+
+  /**
    * Class constructor.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService = \Drupal::service('paatokset_policymakers');
     $this->policymakerService->setPolicyMakerByPath();
+    $this->currentLang = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $this->items = $this->getItems();
   }
 
@@ -40,6 +49,12 @@ class PolicymakerSideNav extends BlockBase {
    * Build the attributes.
    */
   public function build() {
+
+    $route = 'policymakers.' . $this->currentLang;
+    if (!$this->policymakerService->routeExists($route)) {
+      $route = 'policymakers.fi';
+    }
+
     return [
       '#items' => $this->items,
       '#currentPath' => \Drupal::service('path.current')->getPath(),
@@ -71,7 +86,6 @@ class PolicymakerSideNav extends BlockBase {
    *    - attributes: element attributes
    */
   private function getItems() {
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $currentPath = Url::fromRoute('<current>')->toString();
     $items = [];
 
@@ -83,7 +97,7 @@ class PolicymakerSideNav extends BlockBase {
 
     $items[] = [
       'title' => $policymaker->get('field_ahjo_title')->value,
-      'url' => $policymaker->toUrl(),
+      'url' => $this->policymakerService->getLocalizedUrl(),
       'attributes' => new Attribute(),
     ];
 
@@ -140,7 +154,7 @@ class PolicymakerSideNav extends BlockBase {
         continue;
       }
 
-      $localizedRoute = "$route.$currentLanguage";
+      $localizedRoute = "$route.$this->currentLang";
       if ($this->policymakerService->routeExists($localizedRoute)) {
         $route = $routeProvider->getRouteByName($localizedRoute);
         if ($key === 'documents') {
