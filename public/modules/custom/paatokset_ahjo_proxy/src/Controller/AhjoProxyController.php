@@ -142,6 +142,9 @@ class AhjoProxyController extends ControllerBase {
   /**
    * Return file from Ahjo API.
    *
+   * @param string $nativeId
+   *   Native ID.
+   *
    * @return GuzzleHttp\Psr7\Response
    *   Response to HTTP request from Ahjo API.
    */
@@ -160,7 +163,7 @@ class AhjoProxyController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   HTTP request.
-   * @param string $id
+   * @param string $nativeId
    *   Native ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
