@@ -829,10 +829,15 @@ class PolicymakerService {
     $publishDate = NULL;
     $fileUrl = NULL;
 
-    // Only get finnish agenda points for now and use swedish as fallback.
-    // @todo Get current and fallback languages dynamically.
-    $currentLanguage = 'fi';
-    $fallbackLanguage = 'sv';
+    // Use either current language or fallback language for agenda items.
+    $currentLanguage = $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($currentLanguage === 'fi') {
+      $fallbackLanguage = 'sv';
+    }
+    else {
+      $fallbackLanguage = 'fi';
+    }
+
 
     /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
     $meetingService = \Drupal::service('paatokset_ahjo_meetings');
@@ -862,9 +867,23 @@ class PolicymakerService {
       $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
     }
 
+    // Get items in both languages because all aren't translated.
     $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
-    if (empty($agendaItems)) {
-      $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
+    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
+
+    // If the default language list is missing items, add them from fallback.
+    if (count($agendaItems) <= count($fallbackAgendaItems)) {
+      // Initiate new list to keep correct ordering.
+      $newList = [];
+      foreach ($fallbackAgendaItems as $key => $item) {
+        if (isset($agendaItems[$key])) {
+          $newList[$key] = $agendaItems[$key];
+        }
+        else {
+          $newList[$key] = $fallbackAgendaItems[$key];
+        }
+      }
+      $agendaItems = $newList;
     }
 
     $decisionAnnouncement = $this->getDecisionAnnouncement($meeting);
@@ -905,6 +924,7 @@ class PolicymakerService {
 
     $agendaItems = [];
     $agendaItemsLast = [];
+    $last_count = 0;
     foreach ($list_field as $item) {
 
       $data = json_decode($item->value, TRUE);
@@ -943,14 +963,17 @@ class PolicymakerService {
       }
 
       if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
-        $agendaItemsLast[] = [
+        $last_count++;
+        $id = 'x-' . $last_count . '-' . $data['Section'];
+        $agendaItemsLast[$id] = [
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
         ];
       }
       else {
-        $agendaItems[] = [
+        $id = $data['AgendaPoint'] . '-' . $data['Section'];
+        $agendaItems[$id] = [
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
