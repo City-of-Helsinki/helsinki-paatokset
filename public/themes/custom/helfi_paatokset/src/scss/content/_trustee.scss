@@ -57,6 +57,8 @@
 
 .node--type-trustee {
   .accordion-item__header {
+    font-size: 1.5rem;
+
     .handorgel__header__button {
       color: black;
       border: none;
@@ -78,7 +80,7 @@
       height: 30px;
       transition: all 0.1s ease-in-out;
     }
-    
+
   }
 
   .handorgel__header--open {
@@ -94,7 +96,7 @@
     }
   }
 
- 
+
 
   .handorgel__content {
     border: none;
