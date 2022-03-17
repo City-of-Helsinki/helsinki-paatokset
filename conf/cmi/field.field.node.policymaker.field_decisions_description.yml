@@ -20,7 +20,7 @@ bundle: policymaker
 label: 'Päätöksien kuvaus'
 description: 'Viimeisimpien päätösten yläpuolella näytettävä teksti. Kuvaa tällä kentällä päätöslistausta loppukäyttäjälle.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

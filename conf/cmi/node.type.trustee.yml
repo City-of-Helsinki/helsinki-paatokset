@@ -26,6 +26,6 @@ name: Trustee
 type: trustee
 description: 'Persons with position of trust, imported from Ahjo API.'
 help: ''
-new_revision: false
+new_revision: true
 preview_mode: 1
 display_submitted: false

@@ -20,7 +20,7 @@ bundle: policymaker
 label: 'Kokoustallenteen kuvaus'
 description: 'Uusimman kokoustallenteen upotteen yläpuolella näytettävä teksti.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

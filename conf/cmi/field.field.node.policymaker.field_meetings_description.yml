@@ -20,7 +20,7 @@ bundle: policymaker
 label: 'Kokousten kuvaus'
 description: 'Teksti, joka näytetään kokouskalenterin yläpuolella. Käytä tekstiä kuvaamaan kokouskalenterin sisältöä loppukäyttäjälle.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }
