@@ -46,6 +46,10 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--meetings-calendar',
     ],
+    'block__dictionary_banner' => [
+      'base hook' => 'entity',
+      'template' => 'block/block--dictionary-banner'
+    ]
   ];
 }
 
@@ -484,6 +488,26 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
   $variables['other_decisions_link'] = $caseService->getPolicymakerDecisionsLink();
   $variables['vote_results'] = $caseService->getVotingResults();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
+  $config = \Drupal::config('paatokset_ahjo_api.default_texts'); 
+  $title = $config->get('banner_heading');
+  $text = $config->get('banner_text.value');
+  $label = $config->get('banner_label');
+  $url = $config->get('banner_url');
+
+  $variables['banner_title'] = $title;
+  $variables['banner_desc'] = $text;
+  $variables['banner_link'] = [
+    'url' => $url,
+    'label' => $label,
+    'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
+    'target_new' => TRUE,
+  ];
 }
 
 /**

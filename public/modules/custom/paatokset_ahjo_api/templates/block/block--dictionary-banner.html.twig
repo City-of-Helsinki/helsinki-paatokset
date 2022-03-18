@@ -1,0 +1,44 @@
+{#
+/*
+ * Provides a template for decisions dictionary block.
+*/
+#}
+
+{% if design_class is empty %}
+  {% set design_class = 'component--banner-align-left' %}
+{% endif %}
+{% if banner_icon is not empty %}
+  {% set has_icon = true %}
+{% endif %}
+
+{% embed "@hdbt/misc/component.twig" with
+    {
+      component_classes: [
+        'component--banner',
+        design_class,
+        has_icon ? 'component--banner-has-icon'
+      ],
+      component_content_class: 'banner',
+    }
+%}
+
+  {% block component_content %}
+
+    <div class="banner__content-wrapper">
+      <div class="banner__content">
+        {% if banner_title %}
+          <h2 class="banner__title">{{ banner_title }}</h2>
+        {% endif %}
+        {% if banner_desc %}
+          <div class="banner__desc">{{ banner_desc|raw }}</div>
+        {% endif %}
+      </div>
+      {% if banner_link.url %}
+        <a href="{{ banner_link.url }}" {% if banner_link.target_new %}target="_blank"{% endif %} class="{{ banner_link.classes }}">
+          <span class="hds-button__label">{{ banner_link.label }}</span>
+        </a>
+      {% endif %}
+    </div>
+
+  {% endblock component_content %}
+{% endembed %}
