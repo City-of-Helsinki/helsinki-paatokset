@@ -512,11 +512,14 @@ class CaseService {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
     if (!$case_id) {
       $case_id = $this->caseId;
     }
     $decisions = $this->getAllDecisions($case_id);
 
+    $native_results = [];
     $results = [];
     foreach ($decisions as $node) {
       $label = $this->formatDecisionLabel($node);
@@ -528,8 +531,15 @@ class CaseService {
         $class = 'color-sumu';
       }
 
+      // Store all unique IDs for current langauge decisions.
+      if ($node->langcode->value === $currentLanguage) {
+        $native_results[] = $node->field_unique_id->value;
+      }
+
       $results[] = [
         'id' => $node->id(),
+        'unique_id' => $node->field_unique_id->value,
+        'langcode' => $node->langcode->value,
         'native_id' => $node->field_decision_native_id->value,
         'title' => $node->title->value,
         'organization' => $node->field_dm_org_name->value,
@@ -537,6 +547,15 @@ class CaseService {
         'label' => $label,
         'class' => $class,
       ];
+    }
+
+    // Loop through results again and remove any decisions where:
+    // - The language is not the currently active language.
+    // - Another decision with the same ID exists in the active language.
+    foreach ($results as $key => $result) {
+      if ($result['langcode'] !== $currentLanguage && in_array($result['unique_id'], $native_results)) {
+        unset($results[$key]);
+      }
     }
 
     return $results;
