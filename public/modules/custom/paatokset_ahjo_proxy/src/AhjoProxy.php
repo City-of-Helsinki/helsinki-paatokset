@@ -749,23 +749,17 @@ class AhjoProxy implements ContainerInjectionInterface {
       $record_content = $ahjo_proxy->getData($data['endpoint'], NULL);
     }
 
+    // Local data is formatted a bit differently.
+    if (isset($record_content['records'])) {
+      $record_content = $record_content['records'][0];
+    }
+
     if (!empty($record_content)) {
-      $node->set('field_decision_record', json_encode($record_content));
+      $ahjo_proxy->updateDecisionRecordData($node, $record_content);
     }
     else {
+      $messenger->addMessage('Could not fetch record for nid: ' . $node->id());
       $fetch_record_from_case = TRUE;
-    }
-
-    if (isset($record_content['Issued'])) {
-      $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
-      $date->setTimezone(new \DateTimeZone('UTC'));
-      $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
-    }
-
-    if (isset($record_content['Created'])) {
-      $created_date = new \DateTime($record_content['Created'], new \DateTimeZone('Europe/Helsinki'));
-      $created_date->setTimezone(new \DateTimeZone('UTC'));
-      $node->set('field_meeting_date', $created_date->format('Y-m-d\TH:i:s'));
     }
 
     // Fetch meeting date for decision.
@@ -796,6 +790,55 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $node->save();
+  }
+
+  /**
+   * Update decision node based on record data.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Decision node.
+   * @param array $record_content
+   *   Record data.
+   */
+  protected function updateDecisionRecordData(NodeInterface &$node, array $record_content): void {
+    $node->set('field_decision_record', json_encode($record_content));
+
+    if (isset($record_content['Issued'])) {
+      $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
+      $date->setTimezone(new \DateTimeZone('UTC'));
+      $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
+    }
+
+    if (isset($record_content['Created'])) {
+      $created_date = new \DateTime($record_content['Created'], new \DateTimeZone('Europe/Helsinki'));
+      $created_date->setTimezone(new \DateTimeZone('UTC'));
+      $node->set('field_meeting_date', $created_date->format('Y-m-d\TH:i:s'));
+    }
+
+    if (isset($record_content['Language']) && in_array($record_content['Language'], ['fi', 'sv'])) {
+      $node->set('langcode', $record_content['Language']);
+    }
+
+    $unique_id = '';
+    if (!$node->get('field_diary_number')->isEmpty()) {
+      $unique_id .= $node->get('field_diary_number')->value . '-';
+    }
+    else {
+      $unique_id .= '0-';
+    }
+    if (isset($record_content['MeetingID'])) {
+      $unique_id .= $record_content['MeetingID'] . '-';
+    }
+    else {
+      $unique_id .= '0-';
+    }
+    if (isset($record_content['AgendaPoint'])) {
+      $unique_id .= $record_content['AgendaPoint'];
+    }
+    else {
+      $unique_id .= '0';
+    }
+    $node->set('field_unique_id', $unique_id);
   }
 
   /**
@@ -1317,20 +1360,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       return 5;
     }
 
-    // Attempt to fetch content first, because
-    // migration doesn't complain about empty results.
-    if ($endpoint === 'trustees') {
-      $endpoint_url = self::API_BASE_URL . 'agents/positionoftrust/' . $id;
-    }
-    else {
-      $endpoint_url = self::API_BASE_URL . $endpoint . '/' . $id;
-    }
-
-    $data = $this->getContent($endpoint_url);
-    if (empty($data)) {
-      return 0;
-    }
-
     // Get either local proxy URL or OpenShift reverse proxy address.
     if (getenv('AHJO_PROXY_BASE_URL')) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
@@ -1342,10 +1371,19 @@ class AhjoProxy implements ContainerInjectionInterface {
       $base_url = '';
     }
 
+    $endpoint_url = $base_url . $migration_url . $id;
+
+    // Attempt to fetch content first, because
+    // migration doesn't complain about empty results.
+    $data = $this->getContent($endpoint_url);
+    if (empty(reset($data))) {
+      return 0;
+    }
+
     $migration = $this->migrationManager->createInstance($migration_id, [
       'source' => [
         'urls' => [
-          $base_url . $migration_url . $id,
+          $endpoint_url,
         ],
       ],
     ]);
@@ -1417,6 +1455,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
     catch (\Exception $e) {
     }
+
     return [];
   }
 
@@ -1457,6 +1496,10 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Headers for the request or empty array if config/token is missing.
    */
   private function getAuthHeaders(): ?array {
+    // We might want to skip auth headers locally if we're using the proxy.
+    if (getenv('SKIP_AUTH_HEADERS')) {
+      return NULL;
+    }
 
     // Check if access token is still valid (not expired).
     if ($this->ahjoOpenId->checkAuthToken()) {
