@@ -34,6 +34,8 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
    */
   protected $ahjoProxy;
 
+  private const VERBOSE_LOGGING = FALSE;
+
   /**
    * {@inheritdoc}
    */
@@ -63,9 +65,11 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
     }
 
     if (!$entity || !$operation) {
-      $this->logger->info('Empty callback from @queue queue, deleting.', [
-        '@queue' => $item['id'],
-      ]);
+      if (self::VERBOSE_LOGGING) {
+        $this->logger->info('Empty callback from @queue queue, deleting.', [
+          '@queue' => $item['id'],
+        ]);
+      }
       return;
     }
 
@@ -77,11 +81,13 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
     $status = $this->ahjoProxy->migrateSingleEntity($item['id'], $entity);
 
     if ($status !== 1) {
-      $this->logger->warning('Could not process entity @id from @queue, migration returned with status: @status.', [
-        '@id' => $entity,
-        '@queue' => $item['id'],
-        '@status' => $status,
-      ]);
+      if (self::VERBOSE_LOGGING) {
+        $this->logger->warning('Could not process entity @id from @queue, migration returned with status: @status.', [
+          '@id' => $entity,
+          '@queue' => $item['id'],
+          '@status' => $status,
+        ]);
+      }
 
       throw new \Exception(sprintf(
         'Could not process entity %s from %s, migration returned with status: %s.',

@@ -77,10 +77,24 @@ class AhjoSubscriberController extends ControllerBase {
     $item_id = $queue->createItem($data);
     $data['item_id'] = $item_id;
 
+    if (isset($content->updatetype)) {
+      $update_type = (string) $content->updatetype;
+    }
+    else {
+      $update_type = 'unknown';
+    }
+    if (isset($content->id)) {
+      $entity_id = (string) $content->id;
+    }
+    else {
+      $update_type = 'unknown';
+    }
+
     if ($item_id) {
-      $this->logger->info('Added item @item_id to @id queue.', [
-        '@item_id' => $item_id,
+      $this->logger->info('Added item to @id queue: @entity_id (@update_type).', [
         '@id' => $id,
+        '@entity_id' => $entity_id,
+        '@update_type' => $update_type,
       ]);
     }
 

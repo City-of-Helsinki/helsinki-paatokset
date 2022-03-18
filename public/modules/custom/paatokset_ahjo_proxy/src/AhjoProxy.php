@@ -949,7 +949,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $queue->createItem([
       'id' => $endpoint,
       'content' => (object) [
-        'updatetype' => 'added',
+        'updatetype' => 'AddedFromDrush',
         'id' => $id,
       ],
       'request' => [],
