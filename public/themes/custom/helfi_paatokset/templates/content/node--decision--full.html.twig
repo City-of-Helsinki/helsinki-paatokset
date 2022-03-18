@@ -92,7 +92,7 @@
   <div class="issue__wrapper">
     <div class="ajax-progress-throbber"></div>
 
-    <div class="issue__container issue__container--content container">
+    <div class="issue__container issue__container--content">
       <div class="issue__left-column__container">
         <div class="issue__decision-navigation__wrapper">
           {% include '@helfi_paatokset/components/decision-navigation.html.twig' %}
@@ -113,16 +113,4 @@
 
     </div>
   </div>
-
-  <div class="container">
-    {% include '@helfi_paatokset/components/banner.html.twig' with {
-      banner_title: banner_content.title,
-      banner_desc: banner_content.description,
-      banner_link: banner_content.link,
-    }%}
-
-    {# Social media share links #}
-    {{ drupal_block('hdbt_content_social_sharing_block') }}
-  </div>
-
 </article>
