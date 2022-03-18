@@ -1,0 +1,33 @@
+uuid: f70b275b-09a2-4526-8498-f04c70614d11
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: case_pattern_sv
+label: 'Case pattern SV'
+type: 'canonical_entities:node'
+pattern: 'arende/[node:field_diary_number]'
+selection_criteria:
+  73a93bde-5621-4df4-9aa3-495190e0def6:
+    id: node_type
+    negate: false
+    uuid: 73a93bde-5621-4df4-9aa3-495190e0def6
+    context_mapping:
+      node: node
+    bundles:
+      case: case
+  17810328-417d-44af-8267-fbbe86638a9b:
+    id: language
+    negate: false
+    uuid: 17810328-417d-44af-8267-fbbe86638a9b
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      sv: sv
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli

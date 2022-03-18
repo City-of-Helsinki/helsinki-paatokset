@@ -1,0 +1,3 @@
+tags:
+  canonical_url: '[current-page:url]?beslut=[current-page:query:beslut]'
+  title: '[node:title] – [node:field_dm_org_name:value] | [site:name] | Helsingfors stad'
