@@ -46,8 +46,12 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
  *   - elements: An array of elements to display in view mode.
  */
 function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$variables) {
+  /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-  $node = \Drupal::routeMatch()->getParameter('node');
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService->setPolicyMakerByPath();
+  $node = $policymakerService->getPolicyMaker();
 
   $params = [
     'policymaker' => $node->get('field_policymaker_id')->value,

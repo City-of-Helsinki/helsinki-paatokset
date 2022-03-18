@@ -51,18 +51,62 @@ class CaseService {
   private $caseId;
 
   /**
+   * Language ID.
+   *
+   * @var string
+   */
+  private $language;
+
+  /**
+   * Decision query string key.
+   *
+   * @var string
+   */
+  private $decision_query;
+
+  /**
+   * Creates a new CaseService.
+   */
+  public function __construct() {
+    $this->language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    switch ($this->language) {
+      case 'sv':
+        $this->decision_query = 'beslut';
+        break;
+
+      default:
+        $this->decision_query = 'paatos';
+        break;
+    }
+  }
+
+  /**
    * Set case and decision entities based on path. Only works on case paths!
    */
   public function setEntitiesByPath(): void {
     $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
     $case = \Drupal::routeMatch()->getParameter($entityTypeIndicator);
+
+    // For custom routes we just get the ID from the route parameter.
+    if (!$case instanceof NodeInterface) {
+      $node = $this->caseQuery([
+        'case_id' => $case,
+        'limit' => 1,
+      ]);
+
+      if (!empty($node)) {
+        $case = reset($node);
+      }
+    }
+
     if ($case instanceof NodeInterface && $case->bundle() === self::CASE_NODE_TYPE) {
       $this->case = $case;
     }
 
     $this->caseId = $case->get('field_diary_number')->value;
 
-    $decision_id = \Drupal::request()->query->get('decision');
+    $decision_id = \Drupal::request()->query->get($this->decision_query);
     if (!$decision_id) {
       $this->selectedDecision = $this->getDefaultDecision($this->caseId);
     }
@@ -95,6 +139,16 @@ class CaseService {
       'limit' => 1,
     ]);
     $this->selectedDecision = array_shift($decision_nodes);
+  }
+
+  /**
+   * Get active case, if set.
+   *
+   * @return Drupal\node\NodeInterface|null
+   *   Active case entity.
+   */
+  public function getSelectedCase(): ?NodeInterface {
+    return $this->case;
   }
 
   /**
@@ -358,7 +412,7 @@ class CaseService {
 
     if ($case instanceof NodeInterface) {
       $case_url = $case->toUrl();
-      $case_url->setOption('query', ['decision' => $decision_id]);
+      $case_url->setOption('query', [$this->decision_query => $decision_id]);
       return $case_url;
     }
 
@@ -512,7 +566,7 @@ class CaseService {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->language;
 
     if (!$case_id) {
       $case_id = $this->caseId;
