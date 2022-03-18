@@ -83,7 +83,7 @@
     {% endblock page_before_content %}
 
     <div class="main-content">
-      <div class="layout-content {% if has_navigation %}has-navigation{% endif %} {% if move_before_content %}before-content--in-main{% endif %}">
+      <div class="layout-content {% if has_navigation %}has-navigation{% endif %} {% if move_before_content %}before-content--in-main{% endif %} {% if main_container %}container{% endif %}">
         {% if page.before_content and move_before_content %}
           {{ page.before_content }}
         {% endif %}

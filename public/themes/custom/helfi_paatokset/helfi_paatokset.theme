@@ -383,3 +383,13 @@ function helfi_paatokset_preprocess_block(&$variables) {
     $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
   }
 }
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function helfi_paatokset_preprocess_page(&$variables) {
+  // Set a variable to always show sidebar in policymaker pages.
+  if(isset($variables['node']) && in_array($variables['node']->getType(), ['case', 'decision'])) {
+    $variables['main_container'] = TRUE;
+  }
+}
