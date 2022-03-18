@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_top_category_name
+    - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
     - node.type.decision
   module:
@@ -263,6 +264,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 18
+    region: content
+  field_unique_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 29
     region: content
   field_voting_results:
     type: json
