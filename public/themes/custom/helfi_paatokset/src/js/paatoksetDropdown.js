@@ -149,6 +149,7 @@ jQuery(function($) {
     const { baseUrl, pathPrefix, currentPath } = window.drupalSettings.path;
     const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}`;
 
+
     $.ajax({
       url: `${path}?decision=${id}`,
       beforeSend: function() {
@@ -206,13 +207,17 @@ jQuery(function($) {
       }
     });
 
+    var queryKey = 'paatos';
+    if (window.drupalSettings.path.currentLanguage === 'sv') {
+      queryKey = 'beslut';
+    }
     var queryparams = window.location.search;
     if (queryparams === "") {
-      var queryparams = '?decision=';
+      var queryparams = '?' + queryKey + '=';
     }
     const old_window_href = window.location.host + window.location.pathname + queryparams;
 
-    window.history.pushState({}, '', `${window.location.pathname}?decision=${id}`);
+    window.history.pushState({}, '', `${window.location.pathname}?${queryKey}=${id}`);
 
     social_media.each(function() {
       const old_href =  $(this).attr('href')
