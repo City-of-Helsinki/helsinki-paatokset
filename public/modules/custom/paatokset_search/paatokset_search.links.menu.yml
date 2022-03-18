@@ -1,0 +1,5 @@
+paatokset_search.settings_form:
+  title: 'Paatokset Search'
+  route_name: 'paatokset_search.settings_form'
+  description: 'Paatokset Search settings'
+  parent: system.admin_config_search
