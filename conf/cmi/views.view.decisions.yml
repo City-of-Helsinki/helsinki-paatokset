@@ -1188,8 +1188,11 @@ display:
           columns:
             title: title
             field_diary_number: field_diary_number
+            field_meeting_id: field_meeting_id
+            field_unique_id: field_unique_id
             field_dm_org_name: field_dm_org_name
             field_decision_date: field_decision_date
+            langcode: langcode
             field_decision_content: field_decision_content
             field_decision_motion: field_decision_motion
             field_is_decision: field_is_decision
@@ -1210,6 +1213,20 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            field_meeting_id:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_unique_id:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             field_dm_org_name:
               sortable: true
               default_sort_order: asc
@@ -1220,6 +1237,13 @@ display:
             field_decision_date:
               sortable: true
               default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            langcode:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
