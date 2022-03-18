@@ -62,7 +62,7 @@ class CaseService {
    *
    * @var string
    */
-  private $decision_query;
+  private $decisionQueryKey;
 
   /**
    * Creates a new CaseService.
@@ -72,11 +72,11 @@ class CaseService {
 
     switch ($this->language) {
       case 'sv':
-        $this->decision_query = 'beslut';
+        $this->decisionQueryKey = 'beslut';
         break;
 
       default:
-        $this->decision_query = 'paatos';
+        $this->decisionQueryKey = 'paatos';
         break;
     }
   }
@@ -106,7 +106,7 @@ class CaseService {
 
     $this->caseId = $case->get('field_diary_number')->value;
 
-    $decision_id = \Drupal::request()->query->get($this->decision_query);
+    $decision_id = \Drupal::request()->query->get($this->decisionQueryKey);
     if (!$decision_id) {
       $this->selectedDecision = $this->getDefaultDecision($this->caseId);
     }
@@ -412,7 +412,7 @@ class CaseService {
 
     if ($case instanceof NodeInterface) {
       $case_url = $case->toUrl();
-      $case_url->setOption('query', [$this->decision_query => $decision_id]);
+      $case_url->setOption('query', [$this->decisionQueryKey => $decision_id]);
       return $case_url;
     }
 

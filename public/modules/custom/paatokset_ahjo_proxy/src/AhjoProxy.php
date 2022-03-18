@@ -815,7 +815,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_meeting_date', $created_date->format('Y-m-d\TH:i:s'));
     }
 
-    if (isset($record_content['Language']) && in_array($record_content['Language'], ['fi', 'sv'])) {
+    $enabled_languages = ['fi', 'sv'];
+    if (isset($record_content['Language']) && in_array($record_content['Language'], $enabled_languages)) {
       $node->set('langcode', $record_content['Language']);
     }
 
