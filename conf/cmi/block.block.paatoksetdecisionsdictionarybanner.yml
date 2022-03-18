@@ -1,23 +1,23 @@
-uuid: 3e64ae99-4bc9-4f27-9aff-ec7eef00146d
+uuid: 91986ecd-1279-4b17-8502-331690efe488
 langcode: fi
 status: true
 dependencies:
   module:
-    - hdbt_content
     - node
+    - paatokset_ahjo_api
   theme:
     - helfi_paatokset
-id: socialmediasharingblock_2
+id: paatoksetdecisionsdictionarybanner
 theme: helfi_paatokset
 region: content
-weight: -8
+weight: -9
 provider: null
-plugin: hdbt_content_social_sharing_block
+plugin: dictionary_banner
 settings:
-  id: hdbt_content_social_sharing_block
-  label: 'Social Media Sharing block'
-  label_display: '0'
-  provider: hdbt_content
+  id: dictionary_banner
+  label: 'Paatokset decisions dictionary banner'
+  label_display: visible
+  provider: paatokset_ahjo_api
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
@@ -26,5 +26,3 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       case: case
-      policymaker: policymaker
-      trustee: trustee

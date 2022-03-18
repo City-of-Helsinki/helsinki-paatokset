@@ -1,3 +1,8 @@
+.page-type--case .main-content {
+  padding-right: $spacing-double;
+  padding-left: $spacing-double;
+}
+
 .issue-header__container {
   border-bottom: 2px solid $color-black-20;
 
@@ -494,5 +499,15 @@
         }
       }
     }
+  }
+}
+
+.component.component--banner {
+  margin-top: $spacing-triple;
+
+  // Set max width for banner element on issue page to match left-container
+
+  @include breakpoint($breakpoint-xl) {
+    width: 65%;
   }
 }
