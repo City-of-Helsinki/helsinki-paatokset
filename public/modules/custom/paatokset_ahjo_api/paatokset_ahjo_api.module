@@ -584,6 +584,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
     ->condition('type', 'decision')
     ->condition('field_diary_number', $case_id)
     ->condition('field_meeting_id', $meeting_id)
+    ->condition('field_is_decision', 0)
     ->range(0, 1)
     ->latestRevision();
   $ids = $query->execute();
