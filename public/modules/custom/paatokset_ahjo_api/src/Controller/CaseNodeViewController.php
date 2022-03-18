@@ -85,7 +85,7 @@ class CaseNodeViewController extends NodeViewController {
 
     // If we don't get a case node, try to get a decision instead.
     if (empty($node)) {
-      $decision_id = '{' . strtoupper($case_id) .'}';
+      $decision_id = '{' . strtoupper($case_id) . '}';
       $node = $this->caseService->decisionQuery([
         'decision_id' => $decision_id,
         'limit' => 1,
@@ -123,9 +123,6 @@ class CaseNodeViewController extends NodeViewController {
 
   /**
    * Return title for untranslated case (or decision) node.
-   *
-   * @param string $case_id
-   *   Case diary number (or decision native ID).
    */
   public function caseTitle() {
     $node = $this->caseService->getSelectedCase();
@@ -141,11 +138,6 @@ class CaseNodeViewController extends NodeViewController {
 
   /**
    * Return title for untranslated decision node.
-   *
-   * @param string $case_id
-   *   Case diary number.
-   * @param string $decision_id
-   *   Decision native ID.
    */
   public function decisionTitle() {
     $node = $this->caseService->getSelectedDecision();
