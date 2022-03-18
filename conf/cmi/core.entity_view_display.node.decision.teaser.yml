@@ -32,6 +32,7 @@ dependencies:
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_top_category_name
+    - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
     - node.type.decision
   module:
@@ -75,6 +76,7 @@ hidden:
   field_organization_type: true
   field_policymaker_id: true
   field_top_category_name: true
+  field_unique_id: true
   field_voting_results: true
   langcode: true
   published_at: true
