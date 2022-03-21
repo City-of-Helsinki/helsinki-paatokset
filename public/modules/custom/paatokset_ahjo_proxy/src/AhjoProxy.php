@@ -167,11 +167,19 @@ class AhjoProxy implements ContainerInjectionInterface {
       $query_string = '';
     }
 
+    // Special case for fetching decisionmakers.
     if ($url === 'decisionmakers') {
       $url = 'agents/decisionmakers';
     }
 
     $api_url = self::API_BASE_URL . $url . '/?' . urldecode($query_string);
+
+    // Local adjustments for fetching records through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+    }
+
     $data = $this->getContent($api_url);
     return $data;
   }
@@ -1534,6 +1542,11 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   If proxy is operational.
    */
   public function isOperational(): bool {
+    // If we're using a proxy instead of the Ahjo API, we can skip this check.
+    if (getenv('SKIP_AUTH_HEADERS')) {
+      return TRUE;
+    }
+
     // Check if access token is still valid (not expired).
     if ($this->ahjoOpenId->checkAuthToken()) {
       $access_token = $this->ahjoOpenId->getAuthToken();
