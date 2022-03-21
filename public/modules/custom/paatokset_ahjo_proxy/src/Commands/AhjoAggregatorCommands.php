@@ -555,6 +555,9 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_meeting_date');
         $query->notExists('field_meeting_id');
       }
+      elseif ($logic === 'uniqueid') {
+        $query->notExists('field_unique_id');
+      }
     }
 
     if ($limit) {
