@@ -164,7 +164,16 @@ class CaseService {
     $nodes = $this->decisionQuery([
       'case_id' => $case_id,
       'limit' => 1,
+      'langcode' => $this->language,
     ]);
+
+    // If there isn't a decision for current language, retry without language.
+    if (empty($nodes)) {
+      $nodes = $this->decisionQuery([
+        'case_id' => $case_id,
+        'limit' => 1,
+      ]);
+    }
     return array_shift($nodes);
   }
 
@@ -548,9 +557,30 @@ class CaseService {
       return [];
     }
 
-    return $this->decisionQuery([
+    $currentLanguage = $this->language;
+
+    $results = $this->decisionQuery([
       'case_id' => $case_id,
     ]);
+
+    $native_results = [];
+    foreach ($results as $node) {
+      // Store all unique IDs for current language decisions.
+      if ($node->langcode->value === $currentLanguage) {
+        $native_results[] = $node->field_unique_id->value;
+      }
+    }
+
+    // Loop through results again and remove any decisions where:
+    // - The language is not the currently active language.
+    // - Another decision with the same ID exists in the active language.
+    foreach ($results as $key => $node) {
+      if ($node->langcode->value !== $currentLanguage && in_array($node->field_unique_id->value, $native_results)) {
+        unset($results[$key]);
+      }
+    }
+
+    return $results;
   }
 
   /**
@@ -1178,6 +1208,10 @@ class CaseService {
 
     if (isset($params['limit'])) {
       $query->range('0', $params['limit']);
+    }
+
+    if (isset($params['langcode'])) {
+      $query->condition('langcode', $params['langcode']);
     }
 
     if (isset($params['title'])) {
