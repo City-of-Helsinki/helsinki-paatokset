@@ -19,7 +19,7 @@
     "json-schema": ">=0.4.0",
     "postcss": ">=8.2.13",
     "node-forge": ">=1.0.0",
-    "follow-redirects": ">=1.14.7"
+    "follow-redirects": ">=1.14.8"
   },
   "devDependencies": {
     "parcel": "^2.0.0"
