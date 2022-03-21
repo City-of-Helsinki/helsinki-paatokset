@@ -33,13 +33,11 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
+    $documentsDescription = $policymaker->get('field_documents_description')->value;
     $build = [
       '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
+      '#markup' => '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>'
     ];
-
-    if ($policymaker->get('field_documents_description')->value) {
-      $build['#markup'] = '<div>' . $policymaker->get('field_documents_description')->value . '</div>';
-    }
 
     return $build;
   }
@@ -75,15 +73,11 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
+    $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     $build = [
       '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+      '#markup' => '<div>' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value'))  . '</div>'
     ];
-
-    if ($policymaker->get('field_decisions_description')->value) {
-      $build['description'] = [
-        '#markup' => '<div>' . $policymaker->get('field_decisions_description')->value . '</div>',
-      ];
-    }
 
     return $build;
   }
@@ -134,9 +128,13 @@ class PolicymakerController extends ControllerBase {
     ];
 
     if ($meetingData) {
+      $policymaker = $this->policymakerService->getPolicymaker();
+      $documentsDescription = $policymaker->get('field_documents_description')->value;
+
       $build['meeting'] = $meetingData['meeting'];
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
+      $build['#documents_description'] = '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>';
     }
 
     if ($meetingData['decision_announcement']) {
