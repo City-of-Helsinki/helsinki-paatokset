@@ -2,4 +2,4 @@ all_recordings_link: 'https://www.helsinkikanava.fi/fi_FI/web/helsinkikanava/pla
 debug_mode: 0
 city_council_id: '02900'
 city_hall_id: '00400'
-trustee_organization_type_id: '19'
+trustee_organization_type_id: '12'

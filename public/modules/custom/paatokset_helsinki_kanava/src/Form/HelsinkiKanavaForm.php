@@ -39,20 +39,6 @@ class HelsinkiKanavaForm extends ConfigFormBase {
       '#description' => 'Id for the city council policymaker.',
     ];
 
-    $form['city_hall_id'] = [
-      '#type' => 'textfield',
-      '#default_value' => $config->get('city_hall_id'),
-      '#title' => t('City Hall ID'),
-      '#description' => 'Id for the city hall policymaker',
-    ];
-
-    $form['trustee_organization_type_id'] = [
-      '#type' => 'textfield',
-      '#default_value' => $config->get('trustee_organization_type_id'),
-      '#title' => t('Trustee organization type id'),
-      '#description' => 'Id for the trustee type for policymakers',
-    ];
-
     $form['all_recordings_link'] = [
       '#type' => 'url',
       '#default_value' => $config->get('all_recordings_link'),
