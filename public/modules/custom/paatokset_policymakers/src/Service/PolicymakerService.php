@@ -471,7 +471,9 @@ class PolicymakerService {
       return NULL;
     }
 
-    $organization = strtolower($policymaker->get('field_ahjo_title')->value);
+    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $organization = array_pop($policymaker_url_bits);
 
     // Use finnish route as default.
     $route = 'policymaker.page.' . $langcode;
