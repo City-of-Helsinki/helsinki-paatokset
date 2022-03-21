@@ -1,0 +1,19 @@
+uuid: 3c25d5fc-8989-424b-913c-e6c73920d1f0
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_remote_video_description
+field_name: field_remote_video_description
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
