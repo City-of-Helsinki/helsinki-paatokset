@@ -17,6 +17,12 @@
     </h1>
   {% endif %}
 
+  {% if documents_description|render %}
+    <div class="minutes-description">
+      {{ documents_description|raw }}
+    </div>
+  {% endif %}
+
   {% if list is not empty %}
     <div class="minutes-list__wrapper">
       <h2 class="minutes-list__header">

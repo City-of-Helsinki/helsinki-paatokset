@@ -214,6 +214,9 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
   if (isset($variables['elements']['decision_announcement']) && !empty($variables['elements']['decision_announcement'])) {
     $variables['decision_announcement'] = $variables['elements']['decision_announcement'];
   }
+  if (isset($variables['elements']['#documents_description']) && !empty($variables['elements']['#documents_description'])) {
+    $variables['documents_description'] = $variables['elements']['#documents_description'];
+  }
 }
 
 /**
