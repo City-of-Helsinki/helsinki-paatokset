@@ -4,14 +4,14 @@ display:
   default:
     display_title: Oletus
     display_options:
+      title: 'Uudet käyttäjät'
       exposed_form:
         options:
           submit_button: Käytä
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
-      title: 'Uudet käyttäjät'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
   block_1:
     display_title: 'Uudet käyttäjät'
     display_options:

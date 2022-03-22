@@ -1,4 +1,4 @@
-label: 'Näytetään etusivulla'
+label: 'Promoted to front page'
 settings:
-  on_label: Käytössä
-  off_label: 'Pois päältä'
+  on_label: 'On'
+  off_label: 'Off'

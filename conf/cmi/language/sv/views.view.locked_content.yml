@@ -1,0 +1,58 @@
+label: 'Locked content'
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Verkställ
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« Första'
+            last: 'Sista »'
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      fields:
+        node_bulk_form:
+          action_title: Åtgärd
+        title:
+          label: Titel
+          separator: ', '
+        type:
+          label: Innehållstyp
+          separator: ', '
+        name:
+          label: 'Lock owner'
+          separator: ', '
+        operations:
+          label: Funktioner
+      filters:
+        status:
+          expose:
+            label: 'Status för publicering'
+          group_info:
+            label: 'Status för publicering'
+            group_items:
+              1:
+                title: Publicerad
+        type:
+          expose:
+            label: Innehållstyp
+        title:
+          expose:
+            label: Titel
+      title: 'Locked content'
+  page_1:
+    display_title: Sida
+    display_options:
+      menu:
+        title: 'Locked content'
