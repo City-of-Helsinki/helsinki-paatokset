@@ -165,6 +165,23 @@ class PolicymakerService {
         $node = Node::load($matches[1]);
       }
     }
+
+    // Determine policymaker on subpages.
+    if ($node instanceof NodeInterface && $node->getType() !== 'policymaker') {
+      $url = Url::fromRoute('<current>')->toString();
+      $url_parts = explode('/', trim($url));
+      if (count($url_parts) > 4) {
+        // Url contains langcode, ie. '/fi/paattajat/kaupunginvaltuusto/*'
+        // Alias check fails with langcode - slice only the part we need
+        // Ie. '/paattajat/kaupunginvaltuusto'.
+        $alias_parts = array_slice($url_parts, 2, 2);
+        $path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . implode('/', $alias_parts));
+        if (preg_match('/node\/(\d+)/', $path, $matches)) {
+          $node = Node::load($matches[1]);
+        }
+      }
+    }
+
     if ($node instanceof NodeInterface) {
       $this->setPolicyMakerNode($node);
     }

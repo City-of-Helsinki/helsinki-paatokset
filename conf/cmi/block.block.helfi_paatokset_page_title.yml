@@ -21,4 +21,4 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: '/asia/*'
+    pages: "/asia\r\n/asia/*"
