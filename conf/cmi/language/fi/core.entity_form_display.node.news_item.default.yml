@@ -1,0 +1,13 @@
+third_party_settings:
+  field_group:
+    group_news_item_links:
+      label: Links
+    group_news_item_links_wrapper:
+      label: Links
+    group_main_image:
+      label: 'Main image'
+content:
+  field_content:
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
