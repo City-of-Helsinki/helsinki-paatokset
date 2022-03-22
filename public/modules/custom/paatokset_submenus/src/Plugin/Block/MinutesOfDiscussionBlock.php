@@ -37,18 +37,19 @@ class MinutesOfDiscussionBlock extends BlockBase {
     $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
 
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#years' => array_keys($minutes),
       '#list' => $minutes,
     ];
   }
 
   /**
-   * Set cache age to zero.
+   * Get cache tags.
    */
-  public function getCacheMaxAge() {
-    // If you need to redefine the Max Age for that block.
-    return 0;
+  public function getCacheTags() {
+    return [
+      'media_list:minutes_of_the_discussion',
+      'node_list:meeting',
+    ];
   }
 
   /**

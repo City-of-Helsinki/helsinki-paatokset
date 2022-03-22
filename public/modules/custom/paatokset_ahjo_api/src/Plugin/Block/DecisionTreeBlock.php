@@ -20,12 +20,18 @@ class DecisionTreeBlock extends BlockBase {
    */
   public function build() {
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       'label' => t('Decision tree'),
       '#attributes' => [
         'class' => ['decision-tree'],
       ],
     ];
+  }
+
+  /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return ['node_list:meeting'];
   }
 
   /**

@@ -29,6 +29,13 @@ class CalendarBlock extends BlockBase {
   }
 
   /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return ['node_list:meeting'];
+  }
+
+  /**
    * Get cache contexts.
    */
   public function getCacheContexts() {

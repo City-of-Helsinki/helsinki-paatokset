@@ -135,7 +135,13 @@ class PolicymakerController extends ControllerBase {
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
       $build['#documents_description'] = '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>';
+
+      // Add cache context for current node.
+      $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
     }
+
+    // Add cache context for minutes of the discussion for the link to show up.
+    $build['#cache']['tags'][] = 'media_list:minutes_of_the_discussion';
 
     if ($meetingData['decision_announcement']) {
       $build['decision_announcement'] = $meetingData['decision_announcement'];

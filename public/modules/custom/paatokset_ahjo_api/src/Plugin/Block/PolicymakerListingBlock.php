@@ -20,11 +20,20 @@ class PolicymakerListingBlock extends BlockBase {
    */
   public function build() {
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       'label' => t('Browse policymakers'),
       '#attributes' => [
         'class' => ['policymaker-listing'],
       ],
+    ];
+  }
+
+  /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return [
+      'node_list:policymaker',
+      'node_list:trustee',
     ];
   }
 

@@ -880,6 +880,7 @@ class PolicymakerService {
 
     return [
       'meeting' => [
+        'nid' => $meeting->id(),
         'page_title' => $pageTitle,
         'date_long' => $dateLong,
         'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
