@@ -217,6 +217,10 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     return;
   }
 
+  $variables['#cache'] = [
+    'tags' => ['media_list:declaration_of_affiliation'],
+  ];
+
   if($node->get('field_trustee_initiatives')) {
     $content_initiatives = [];
     foreach($node->get('field_trustee_initiatives') as $json) {
