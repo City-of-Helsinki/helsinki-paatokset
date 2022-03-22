@@ -89,6 +89,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
   $policymaker = $variables['node'];
+
   $policymakerService->setPolicyMakerNode($policymaker);
   $variables['organization_type'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
   $variables['organization_type_color'] = $policymakerService->getPolicymakerClass($policymaker);
@@ -99,12 +100,15 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     'Viranhaltija',
   ];
 
+  $cache_tags = [];
+
   $orgType = $policymaker->get('field_organization_type')->value;
+  $variables['is_organization'] = FALSE;
 
   if ($orgType) {
     if (!in_array($orgType, $not_organization_types)) {
       $variables['is_organization'] = TRUE;
-      
+
       $members = $policymakerService->getComposition();
       if($members) {
         $variables['has_members'] = TRUE;
@@ -143,6 +147,23 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   if ($councilId && ($policymaker->get('field_policymaker_id')->value === $councilId)) {
     $variables['render_announcement_block'] = TRUE;
     $no_content = FALSE;
+
+    // Add cache tag for Helsinki Kanava videos.
+    $cache_tags[] = 'meeting_video_list';
+  }
+
+  // Add cache tags for meetings or decisions based on org type.
+  if ($variables['is_organization']) {
+    $cache_tags[] = 'node_list:meeting';
+  }
+  else {
+    $cache_tags[] = 'node_list:decisions';
+  }
+
+  if (!empty($cache_tags)) {
+    $variables['#cache'] = [
+      'tags' => $cache_tags,
+    ];
   }
 
   $variables['no_content'] = $no_content;
@@ -184,11 +205,11 @@ function paatokset_policymakers_preprocess_field__node__title(&$variables) {
     if($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
       $first_name = $node->get('field_first_name')->value;
     }
-  
+
     if($node->hasField('field_last_name') && !$node->get('field_last_name')->isEmpty()) {
       $last_name = $node->get('field_last_name')->value;
     }
-  
+
     if(!empty($first_name) || !empty($last_name)) {
       $variables['items'][0]['content']['#context']['value'] = $title . ': ' . $first_name . ' ' . $last_name;
     }
@@ -309,7 +330,8 @@ function paatokset_policymakers_preprocess_html(&$variables) {
   if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['attributes']['class'][] = 'has-policymaker-nav';
   }
-  // Remmove title block on minutes page.
+
+  // Remove title block on minutes page.
   if(preg_match('/policymaker\.minutes\./', \Drupal::routeMatch()->getRouteName()) && isset($variables['page']['before_content']['helfi_paatokset_page_title'])) {
     unset($variables['page']['before_content']['helfi_paatokset_page_title']);
   }
@@ -317,10 +339,10 @@ function paatokset_policymakers_preprocess_html(&$variables) {
 
 /**
  * Helper function to decipher if page is policymaker subpage
- * 
+ *
  * @param array $variables
  *    Drupal-provided variables arary
- * 
+ *
  * @return bool
  *    Return result of conditional check
  */

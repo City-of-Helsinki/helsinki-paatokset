@@ -38,7 +38,6 @@ class AgendasSubmenuBlock extends BlockBase {
     $years = array_keys($list);
 
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => 'Viranhaltijapäätökset',
       '#years' => $years,
       '#list' => $list,
@@ -46,11 +45,10 @@ class AgendasSubmenuBlock extends BlockBase {
   }
 
   /**
-   * Set cache age to zero.
+   * Get cache tags.
    */
-  public function getCacheMaxAge() {
-    // If you need to redefine the Max Age for that block.
-    return 0;
+  public function getCacheTags() {
+    return ['node_list:decision'];
   }
 
   /**

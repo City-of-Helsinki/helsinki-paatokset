@@ -78,6 +78,13 @@ class ContactsBlock extends BlockBase {
   }
 
   /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return ['tpr_unit_list'];
+  }
+
+  /**
    * Get cache contexts.
    */
   public function getCacheContexts() {

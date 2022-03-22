@@ -29,6 +29,13 @@ class MembersBlock extends BlockBase {
   }
 
   /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return ['node_list:trustee'];
+  }
+
+  /**
    * Get cache contexts.
    */
   public function getCacheContexts() {
