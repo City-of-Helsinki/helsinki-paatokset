@@ -389,7 +389,10 @@ function helfi_paatokset_preprocess_menu(&$variables) {
 
   if(isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
     $variables['allow_collabsible'] = true;
-    $variables['auto_open'] = true;
+  
+    if(isset($variables['attributes']['block_id']) && $variables['attributes']['block_id'] === 'helfi_paatokset_main_navigation_level_2') {
+      $variables['auto_open'] = true;
+    }
   }
 }
 
