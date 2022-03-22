@@ -397,21 +397,6 @@ function helfi_paatokset_preprocess_menu(&$variables) {
 }
 
 /**
- * Set a variable to always show sidebar in policymaker pages.
- * 
- * Implements hook_preprocess_page().
- */
-function helfi_paatokset_preprocess_page(&$variables) {
-  $policymakerService = \Drupal::service('paatokset_policymakers');
-
-  if($policymakerService->getPolicymaker()) {
-    $variables['page_has_sidebar'] = true;
-    $variables['move_before_content'] = true;
-    $variables['has_navigation'] = true;
-  }
-}
-
-/**
  * Implements hook_preprocess_block().
  */
 function helfi_paatokset_preprocess_block(&$variables) {

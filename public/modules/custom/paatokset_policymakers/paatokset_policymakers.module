@@ -257,8 +257,16 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
  * Implements hook_preprocess_page().
  */
 function paatokset_policymakers_preprocess_page(&$variables) {
+  // DM search page is landing page, fix title alignment
   if(isset($variables['page']['content']) && array_key_exists('paatoksetpolicymakersearch', $variables['page']['content'])) {
     $variables['move_before_content'] = TRUE;
+  }
+
+  // Add template variables on dm pages
+  if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
+    $variables['page_has_sidebar'] = true;
+    $variables['move_before_content'] = true;
+    $variables['has_navigation'] = true;
   }
 }
 
