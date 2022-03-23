@@ -3,8 +3,8 @@ langcode: fi
 status: true
 dependencies:
   module:
-    - node
     - paatokset_ahjo_api
+    - system
   theme:
     - helfi_paatokset
 id: paatoksetdecisionsdictionarybanner
@@ -19,10 +19,7 @@ settings:
   label_display: visible
   provider: paatokset_ahjo_api
 visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
+  request_path:
+    id: request_path
     negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      case: case
+    pages: "/asia/*\r\n/asia/*/*\r\n/arende/*\r\n/arende/*/*"
