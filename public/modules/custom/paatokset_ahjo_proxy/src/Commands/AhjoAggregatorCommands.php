@@ -835,7 +835,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     batch_set([
-      'title' => 'Parsing data for decisions.',
+      'title' => 'Removing policymaker descriptions.',
       'operations' => $operations,
       'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
     ]);
