@@ -106,6 +106,12 @@ class PolicymakerService {
     if (!$result) {
       return NULL;
     }
+
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($result->hasTranslation($currentLanguage)) {
+      $result = $result->getTranslation($currentLanguage);
+    }
+
     return $result;
   }
 
@@ -129,6 +135,11 @@ class PolicymakerService {
    *   Policy maker ID.
    */
   public function setPolicyMakerNode(NodeInterface $node): void {
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($node->hasTranslation($currentLanguage)) {
+      $node = $node->getTranslation($currentLanguage);
+    }
+
     if ($node->getType() === 'policymaker') {
       $this->policymaker = $node;
     }
