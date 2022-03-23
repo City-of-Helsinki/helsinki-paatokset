@@ -106,15 +106,14 @@ class PolicymakerSideNav extends BlockBase {
     $policymaker_org = array_pop($policymaker_url_bits);
     $menu_tree = \Drupal::menuTree();
     $routeProvider = \Drupal::service('router.route_provider');
-    $dmRoute = NULL;
     $dmMenuLink = NULL;
-    $localizedDmRoute = 'policymakers.' . $currentLanguage;
+    $localizedDmRoute = 'policymakers.' . $this->currentLang;
 
     if ($this->policymakerService->routeExists($localizedDmRoute)) {
       $parameters = new MenuTreeParameters();
       $main_menu_top_level = $menu_tree->load('main', $parameters);
       $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
-
+      $dmParentLink = NULL;
       foreach ($main_menu_top_level as $menuLink) {
         $dmParentLink = NULL;
         $linkUrl = $menuLink->link->getUrlObject();
@@ -180,6 +179,10 @@ class PolicymakerSideNav extends BlockBase {
 
     $customLinks = $policymaker->field_custom_menu_links->referencedEntities();
     foreach ($customLinks as $link) {
+      if (empty($link->field_referenced_content->entity)) {
+        continue;
+      }
+
       $items[] = [
         'title' => $link->get('field_link_label')->value,
         'url' => $link->field_referenced_content->entity->toUrl(),
