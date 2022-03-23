@@ -57,7 +57,7 @@ class ColorClass extends ProcessorPluginBase {
       $policymakerService = \Drupal::service('paatokset_policymakers');
       $colorClass = NULL;
       if ($type === 'decision' && $id = $node->get('field_policymaker_id')->value) {
-        $colorClass = $policymakerService->getPolicymakerClass($node);
+        $colorClass = $policymakerService->getPolicymakerClassById($id);
       }
       elseif (in_array($type, $decisionMakers)) {
         $colorClass = $policymakerService->getPolicymakerClass($node);
