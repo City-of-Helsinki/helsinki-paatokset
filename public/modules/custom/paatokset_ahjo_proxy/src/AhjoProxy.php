@@ -851,13 +851,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       $unique_id .= $record_content['AgendaPoint'];
     }
     else {
-      $unique_id .= '0';
+      $unique_id .= '0-';
     }
     if (!$node->get('field_policymaker_id')->isEmpty()) {
       $unique_id .= $node->get('field_policymaker_id')->value . '-';
     }
     else {
-      $unique_id .= '0-';
+      $unique_id .= '0';
     }
     $node->set('field_unique_id', $unique_id);
   }
