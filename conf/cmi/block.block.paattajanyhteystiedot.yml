@@ -1,0 +1,28 @@
+uuid: f814a0d2-842b-4331-a5bb-adcc7b5d4d62
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+    - paatokset_policymakers
+  theme:
+    - helfi_paatokset
+id: paattajanyhteystiedot
+theme: helfi_paatokset
+region: sidebar_first
+weight: 0
+provider: null
+plugin: policymaker_contacts
+settings:
+  id: policymaker_contacts
+  label: 'Päättäjän yhteystiedot'
+  label_display: visible
+  provider: paatokset_policymakers
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      policymaker: policymaker

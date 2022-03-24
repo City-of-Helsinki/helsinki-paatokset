@@ -3883,24 +3883,29 @@
         },
         {
             "name": "drupal/helfi_api_base",
-            "version": "1.3.3",
+            "version": "2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base.git",
-                "reference": "667cc81ed0b269ecb48dbfe9fb55d879241053af"
+                "reference": "67a2de221018e8e987b7205966b7878003f9033a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/667cc81ed0b269ecb48dbfe9fb55d879241053af",
-                "reference": "667cc81ed0b269ecb48dbfe9fb55d879241053af",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/67a2de221018e8e987b7205966b7878003f9033a",
+                "reference": "67a2de221018e8e987b7205966b7878003f9033a",
                 "shasum": ""
             },
             "require": {
                 "drupal/entity": "^1.0",
-                "php": "^8.0"
+                "php": "^8.0",
+                "t4web/composer-lock-parser": "^1.0"
+            },
+            "conflict": {
+                "drupal/helfi_debug": "*"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "donatj/mock-webserver": "dev-master",
                 "drupal/coder": "^8.3"
             },
             "type": "drupal-module",
@@ -3909,10 +3914,10 @@
             ],
             "description": "Helfi - API Base",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/1.3.3",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.1.9",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
-            "time": "2022-01-24T10:34:50+00:00"
+            "time": "2022-03-22T07:56:10+00:00"
         },
         {
             "name": "drupal/helfi_hauki",
@@ -4136,21 +4141,21 @@
         },
         {
             "name": "drupal/helfi_tpr",
-            "version": "1.7.2",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-tpr.git",
-                "reference": "5f1f3e81578b866f5bf116813c15862b43903b4a"
+                "reference": "bf6d435b5b0d887d263078ad70cc5fdfd3563b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tpr/zipball/5f1f3e81578b866f5bf116813c15862b43903b4a",
-                "reference": "5f1f3e81578b866f5bf116813c15862b43903b4a",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tpr/zipball/bf6d435b5b0d887d263078ad70cc5fdfd3563b61",
+                "reference": "bf6d435b5b0d887d263078ad70cc5fdfd3563b61",
                 "shasum": ""
             },
             "require": {
                 "drupal/address": "~1.0",
-                "drupal/helfi_api_base": "^1.0",
+                "drupal/helfi_api_base": "^2.0",
                 "drupal/readonly_field_widget": "^1.0",
                 "drupal/twig_tweak": "^2.0 || ^3.0",
                 "drupal/views_infinite_scroll": "^2.0",
@@ -4167,10 +4172,10 @@
             ],
             "description": "TPR integration",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tpr/tree/1.7.2",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tpr/tree/2.0.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-tpr/issues"
             },
-            "time": "2022-02-02T10:43:46+00:00"
+            "time": "2022-03-18T10:46:31+00:00"
         },
         {
             "name": "drupal/helfi_tunnistamo",
@@ -11526,6 +11531,54 @@
                 }
             ],
             "time": "2021-11-18T18:49:23+00:00"
+        },
+        {
+            "name": "t4web/composer-lock-parser",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/t4web/ComposerLockParser.git",
+                "reference": "b2e19cc128dbc97830d4a58e2428304a1d88c591"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/t4web/ComposerLockParser/zipball/b2e19cc128dbc97830d4a58e2428304a1d88c591",
+                "reference": "b2e19cc128dbc97830d4a58e2428304a1d88c591",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "<2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ComposerLockParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Max Gulturyan",
+                    "email": "gulturyan@gmail.com",
+                    "homepage": "http://about.me/maxgu"
+                }
+            ],
+            "description": "OOP reader of composer.lock file.",
+            "homepage": "https://github.com/t4web/ComposerLockParser",
+            "keywords": [
+                "composer.lock reader"
+            ],
+            "support": {
+                "issues": "https://github.com/t4web/ComposerLockParser/issues",
+                "source": "https://github.com/t4web/ComposerLockParser/tree/1.2.0"
+            },
+            "time": "2022-02-23T14:59:32+00:00"
         },
         {
             "name": "twig/twig",

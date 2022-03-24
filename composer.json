@@ -18,7 +18,7 @@
         "drupal/hdbt_admin": "1.4.11",
         "drupal/helfi_hauki": "^1.0",
         "drupal/helfi_platform_config": "^2.0",
-        "drupal/helfi_tpr": "^1.0",
+        "drupal/helfi_tpr": "^2.0.5",
         "drupal/helfi_tunnistamo": "^2.0",
         "drupal/json_field": "^1.0@RC",
         "drupal/migrate_plus": "^5.1",
