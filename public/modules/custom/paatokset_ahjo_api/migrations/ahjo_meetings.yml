@@ -188,6 +188,9 @@ process:
     values:
       field_document_native_id: NativeId
       field_media_ahjo_file: root_json
+  field_agenda_items_processed:
+    plugin: default_value
+    default_value: 0
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }
