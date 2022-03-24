@@ -110,6 +110,7 @@ class CaseNodeViewController extends NodeViewController {
    * Return title for untranslated case (or decision) node.
    *
    * @param string $case_id
+   *   Case diary number (or decision native ID).
    */
   public function caseTitle(string $case_id) {
     $node = $this->getCaseOrDecisionNode($case_id);
@@ -145,9 +146,9 @@ class CaseNodeViewController extends NodeViewController {
    * Get case or decision node by given ID.
    *
    * @param string $id
-   *  Case diary number or decision native ID.
+   *   Case diary number or decision native ID.
    *
-   * @return NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Case or decision node, if found.
    */
   protected function getCaseOrDecisionNode(string $id): ?NodeInterface {
