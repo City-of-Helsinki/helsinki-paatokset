@@ -197,6 +197,9 @@ class CaseService {
    *   Decision entity, if found.
    */
   public function getDecision(string $decision_id): ?NodeInterface {
+    // Remove corrupted or otherwise garbled characters from ID.
+    $decision_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $decision_id);
+
     $decision_nodes = $this->decisionQuery([
       'decision_id' => $decision_id,
       'limit' => 1,
