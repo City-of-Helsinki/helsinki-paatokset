@@ -411,23 +411,44 @@ class CaseService {
       return $decision->toUrl();
     }
 
+    if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
+      return $decision->toUrl();
+    }
+
     $decision_id = $decision->get('field_decision_native_id')->value;
 
     $case = NULL;
-    if ($decision->hasField('field_diary_number') && !$decision->get('field_diary_number')->isEmpty()) {
-      $case = $this->caseQuery([
-        'case_id' => $decision->get('field_diary_number')->value,
-        'limit' => 1,
-      ]);
-      $case = array_shift($case);
-    }
+    $case = $this->caseQuery([
+      'case_id' => $decision->get('field_diary_number')->value,
+      'limit' => 1,
+    ]);
+    $case = array_shift($case);
 
+    // If a case exists, use case route with query parameter.
     if ($case instanceof NodeInterface) {
-      $case_url = $case->toUrl();
+      // Try to get localized route if one exists for current language.
+      $localizedRoute = 'paatokset_case.' . $this->language;
+      if ($this->routeExists($localizedRoute)) {
+        $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision->get('field_diary_number')->value]);
+      }
+      // If route doesn't exist, just use case URL.
+      else {
+        $case_url = $case->toUrl();
+      }
       $case_url->setOption('query', [$this->decisionQueryKey => $decision_id]);
       return $case_url;
     }
 
+    // If case node doesn't exist, try to get localized route for decision.
+    $localizedRoute = 'paatokset_decision.' . $this->language;
+    if ($this->routeExists($localizedRoute)) {
+      return Url::fromRoute($localizedRoute, [
+        'case_id' => $decision->get('field_diary_number')->value,
+        'decision_id' => $decision->get('field_decision_native_id')->value,
+      ]);
+    }
+
+    // If route isn't localized, just return decision's normal URL.
     return $decision->toUrl();
   }
 
@@ -1245,4 +1266,26 @@ class CaseService {
     return Node::loadMultiple($ids);
   }
 
+  /**
+   * Check if route exists.
+   *
+   * @param string $routeName
+   *   Route to check.
+   *
+   * @return bool
+   *   If route exists or not.
+   */
+  public static function routeExists(string $routeName): bool {
+    $routeProvider = \Drupal::service('router.route_provider');
+
+    // getRouteByName() throws an exception if route not found.
+    try {
+      $routeProvider->getRouteByName($routeName);
+    }
+    catch (\Throwable $throwable) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
 }
