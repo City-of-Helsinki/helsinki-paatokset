@@ -78,21 +78,7 @@ class CaseNodeViewController extends NodeViewController {
    *   Case diary number (or decision native ID).
    */
   public function case(string $case_id) {
-    $node = $this->caseService->caseQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-    ]);
-
-    // If we don't get a case node, try to get a decision instead.
-    if (empty($node)) {
-      $decision_id = '{' . strtoupper($case_id) . '}';
-      $node = $this->caseService->decisionQuery([
-        'decision_id' => $decision_id,
-        'limit' => 1,
-      ]);
-    }
-
-    $node = reset($node);
+    $node = $this->getCaseOrDecisionNode($case_id);
 
     if ($node instanceof EntityInterface) {
       return parent::view($node, 'full');
@@ -110,8 +96,7 @@ class CaseNodeViewController extends NodeViewController {
    *   Decision native ID.
    */
   public function decision(string $case_id, string $decision_id) {
-    $decision_id = '{' . strtoupper($decision_id) . '}';
-    $this->caseService->setEntitiesById($case_id, $decision_id);
+    $this->setCaseAndDecisionNodes($case_id, $decision_id);
     $node = $this->caseService->getSelectedDecision();
 
     if ($node instanceof EntityInterface) {
@@ -123,13 +108,33 @@ class CaseNodeViewController extends NodeViewController {
 
   /**
    * Return title for untranslated case (or decision) node.
+   *
+   * @param string $case_id
    */
-  public function caseTitle() {
-    $node = $this->caseService->getSelectedCase();
-    if ($node instanceof NodeInterface) {
-      return $node->title->value;
+  public function caseTitle(string $case_id) {
+    $node = $this->getCaseOrDecisionNode($case_id);
+
+    if (!$node instanceof NodeInterface) {
+      return NULL;
     }
 
+    if ($node->bundle() === 'decision' && $node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
+      return $node->title->value . ' - ' . $node->field_dm_org_name->value;
+    }
+
+    return $node->title->value;
+  }
+
+  /**
+   * Return title for untranslated decision node.
+   *
+   * @param string $case_id
+   *   Case diary number.
+   * @param string $decision_id
+   *   Decision native ID.
+   */
+  public function decisionTitle(string $case_id, string $decision_id) {
+    $this->setCaseAndDecisionNode($case_id, $decision_id);
     $node = $this->caseService->getSelectedDecision();
     if ($node instanceof NodeInterface) {
       return $node->title->value . ' - ' . $node->field_dm_org_name->value;
@@ -137,13 +142,43 @@ class CaseNodeViewController extends NodeViewController {
   }
 
   /**
-   * Return title for untranslated decision node.
+   * Get case or decision node by given ID.
+   *
+   * @param string $id
+   *  Case diary number or decision native ID.
+   *
+   * @return NodeInterface|null
+   *   Case or decision node, if found.
    */
-  public function decisionTitle() {
-    $node = $this->caseService->getSelectedDecision();
-    if ($node instanceof NodeInterface) {
-      return $node->title->value . ' - ' . $node->field_dm_org_name->value;
+  protected function getCaseOrDecisionNode(string $id): ?NodeInterface {
+    $node = $this->caseService->caseQuery([
+      'case_id' => $id,
+      'limit' => 1,
+    ]);
+
+    // If we don't get a case node, try to get a decision instead.
+    if (empty($node)) {
+      $decision_id = '{' . strtoupper($id) . '}';
+      $node = $this->caseService->decisionQuery([
+        'decision_id' => $decision_id,
+        'limit' => 1,
+      ]);
     }
+
+    return reset($node);
+  }
+
+  /**
+   * Set decision node by ID.
+   *
+   * @param string $case_id
+   *   Decision native ID.
+   * @param string $decision_id
+   *   Decision native ID.
+   */
+  protected function setCaseAndDecisionNode(string $case_id, string $decision_id): void {
+    $decision_id = '{' . strtoupper($decision_id) . '}';
+    $this->caseService->setEntitiesById($case_id, $decision_id);
   }
 
 }
