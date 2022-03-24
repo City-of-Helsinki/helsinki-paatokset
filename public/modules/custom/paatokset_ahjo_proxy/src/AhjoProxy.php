@@ -756,6 +756,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($data['endpoint']) {
       $record_content = $ahjo_proxy->getData($data['endpoint'], NULL);
     }
+    elseif ($node->hasField('field_decision_record') && !$node->get('field_decision_record')->isEmpty()) {
+      $record_content = json_decode($node->get('field_decision_record')->value, TRUE);
+    }
 
     // Local data is formatted a bit differently.
     if (isset($record_content['records'])) {
@@ -848,13 +851,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       $unique_id .= '0-';
     }
     if (isset($record_content['AgendaPoint'])) {
-      $unique_id .= $record_content['AgendaPoint'];
+      $unique_id .= $record_content['AgendaPoint'] . '-';
     }
     else {
       $unique_id .= '0-';
     }
     if (!$node->get('field_policymaker_id')->isEmpty()) {
-      $unique_id .= $node->get('field_policymaker_id')->value . '-';
+      $unique_id .= $node->get('field_policymaker_id')->value;
     }
     else {
       $unique_id .= '0';
@@ -1084,6 +1087,50 @@ class AhjoProxy implements ContainerInjectionInterface {
       'field_recording_description',
       'field_meetings_description',
       'field_decisions_description',
+    ];
+
+    $success = FALSE;
+    foreach ($reset_fields as $field) {
+      if ($node->hasField($field)) {
+        $success = TRUE;
+        $node->set($field, NULL);
+      }
+    }
+
+    if ($success) {
+      $context['results']['items'][] = $node->id();
+      $node->save();
+    }
+    else {
+      $context['results']['failed'][] = $node->id();
+    }
+  }
+
+  /**
+   * Reset unique ID field for decision nodes.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function removeUniqueIdFromItem($data, &$context) {
+    $context['message'] = 'Parsing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    $node = Node::load($data['nid']);
+
+    $reset_fields = [
+      'field_unique_id',
     ];
 
     $success = FALSE;

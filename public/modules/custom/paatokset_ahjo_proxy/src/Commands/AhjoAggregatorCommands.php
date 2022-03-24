@@ -847,6 +847,76 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Reset decision unique ID fields.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:remove-decision-uniqueids
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @usage ahjo-proxy:remove-policymaker-fields --limit=50
+   *   Remove unique id fields for first 50 nodes.
+   *
+   * @aliases ap:ruid
+   */
+  public function removeDecisionUniqueIdFields(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_unique_id', '', '<>')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $operations = [];
+    $count = 0;
+    foreach ($ids as $nid) {
+      $count++;
+      $data = [
+        'nid' => $nid,
+        'count' => $count,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::removeUniqueIdFromItem',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Removing policymaker descriptions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Resets all meetings so their motions can be processed again.
    *
    * @command ahjo-proxy:reset-meeting-motion-check
