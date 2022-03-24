@@ -33,6 +33,10 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-members',
     ],
+    'tpr_unit__contact_card' => [
+      'base hook' => 'entity',
+      'template' => 'content/tpr-unit--contact-card'
+    ]
   ];
 }
 

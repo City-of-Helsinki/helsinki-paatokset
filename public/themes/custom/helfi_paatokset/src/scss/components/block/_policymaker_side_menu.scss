@@ -8,9 +8,12 @@
     }
   }
 
-
   &.policymaker-side-menu--mobile {
     margin-bottom: $spacing-double;
+
+    li + li {
+      margin-top: 0;
+    }
 
     @include breakpoint($breakpoint-l) {
       display: none;

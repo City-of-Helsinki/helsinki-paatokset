@@ -1,18 +1,23 @@
-.sidebar-first__container .policymaker-contacts {
-  margin-top: $spacing-triple;
-  display: none;
+.policymaker-contacts {
+  width: 100%;
 
   h2 {
-    display: none;
+    @include breakpoint($breakpoint-l) {
+      display: none;
+    }
   }
 
-  @include breakpoint($breakpoint-l) {
-    display: block;
+  h3 {
+    margin-bottom: $spacing-and-half;
   }
-}
 
-.main-content .policymaker-contacts {
-  @include breakpoint($breakpoint-l) {
-    display: none;
+  label.unit__contact-row__label {
+    font-weight: $font-weight-bold;
   }
+
+  .hel-icon {
+    --icon-size: 1.5rem;
+  }
+
+  font-size: 1.125rem;
 }
