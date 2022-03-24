@@ -393,7 +393,8 @@ function helfi_paatokset_preprocess_block(&$variables) {
  */
 function helfi_paatokset_preprocess_page(&$variables) {
   // Set a variable to always show sidebar in policymaker pages.
-  if(isset($variables['node']) && in_array($variables['node']->getType(), ['case', 'decision'])) {
+  // Check by dictionary block appearing to handle unstranslated nodes on sv.
+  if (isset($variables['page']['content']) && array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])) {
     $variables['main_container'] = TRUE;
   }
 }
