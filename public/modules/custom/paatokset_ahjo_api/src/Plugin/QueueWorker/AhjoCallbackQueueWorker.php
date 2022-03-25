@@ -97,7 +97,7 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
       ));
     }
 
-    $this->logger->info('Migrated item from @queue with data: @operation, @id.', [
+    $this->logger->info('Migrated @id from @queue as @operation.', [
       '@queue' => $item['id'],
       '@operation' => $operation,
       '@id' => $entity,
