@@ -1,0 +1,18 @@
+uuid: 6e72fc33-1671-4b31-b3ac-b3f8a46a3bcc
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tunnistamo
+_core:
+  default_config_hash: nGpk9fP8YMhP_c3Sz_aCQFVhAJyN6eJI6E4Qpnqna-A
+id: tunnistamo
+label: Tunnistamo
+plugin: tunnistamo
+settings:
+  client_id: helfi-paatokset-dev
+  client_secret: 06426526-4e68-41c2-81a3-fe22ec8c318b
+  is_production: 0
+  auto_login: 0
+  client_scopes: ''
+  environment_url: 'https://tunnistamo.test.hel.ninja'
