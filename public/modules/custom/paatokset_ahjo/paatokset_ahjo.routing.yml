@@ -11,4 +11,4 @@ paatokset_ahjo.index:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Ahjo entities'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'

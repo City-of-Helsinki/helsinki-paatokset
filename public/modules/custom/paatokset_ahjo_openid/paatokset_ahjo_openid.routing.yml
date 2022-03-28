@@ -3,7 +3,7 @@ paatokset_ahjo_openid.index:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::index'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
   options:
     no_cache: 'TRUE'
 
@@ -31,7 +31,7 @@ paatokset_ahjo_openid.auth:
     code: NULL
     _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::auth'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
   options:
     no_cache: 'TRUE'
 
@@ -40,7 +40,7 @@ paatokset_ahjo_openid.refresh:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::refresh'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
   options:
     no_cache: 'TRUE'
 
@@ -49,7 +49,7 @@ paatokset_ahjo_openid.token:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::getToken'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
   options:
     no_cache: 'TRUE'
 
@@ -58,6 +58,6 @@ paatokset_ahjo_openid.debug:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::debug'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
   options:
     no_cache: 'TRUE'

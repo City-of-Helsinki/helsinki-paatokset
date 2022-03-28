@@ -4,7 +4,7 @@ paatokset_ahjo_api.default_texts:
     _form: \Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm
     _title: 'Default text element settings.'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer nodes'
 
 paatokset_case.fi:
   path: 'asia/{case_id}'
@@ -59,7 +59,7 @@ paatokset_ahjo_api.queue_list:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::listQueue'
     id: all
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer site configuration'
 
 paatokset_ahjo_api.case_ajax:
   path: 'ahjo_api/case/{case_id}'
