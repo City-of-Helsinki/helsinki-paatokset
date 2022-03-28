@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67e50e26f645852a15618866117e37b1",
+    "content-hash": "6bec3b1155e3e538c1213b5e9c40b114",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1788,17 +1788,17 @@
         },
         {
             "name": "drupal/allowed_formats",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/allowed_formats.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/allowed_formats-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "6c73fd69781e8a7c3ebc394ce74f981b6da50eae"
+                "url": "https://ftp.drupal.org/files/projects/allowed_formats-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "dbf61bee7aec87beaa2cf307c1d0d9d5b896328c"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9"
@@ -1806,8 +1806,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1643490593",
+                    "version": "8.x-1.5",
+                    "datestamp": "1648060331",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2968,17 +2968,17 @@
         },
         {
             "name": "drupal/editoria11y",
-            "version": "1.0.12",
+            "version": "1.0.13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/editoria11y.git",
-                "reference": "1.0.12"
+                "reference": "1.0.13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/editoria11y-1.0.12.zip",
-                "reference": "1.0.12",
-                "shasum": "be193e8d05ca0598712f549f54385b4d8afe888b"
+                "url": "https://ftp.drupal.org/files/projects/editoria11y-1.0.13.zip",
+                "reference": "1.0.13",
+                "shasum": "ed7211efffe143330eb1e9530704babe7afcccca"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -2986,8 +2986,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.12",
-                    "datestamp": "1647439729",
+                    "version": "1.0.13",
+                    "datestamp": "1648044837",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3820,16 +3820,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "173fc03f22f00000e761d23f8995295a5f28d8b0"
+                "reference": "dbaeab4e2f94e84e9cb587ca0d039353137ef087"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/173fc03f22f00000e761d23f8995295a5f28d8b0",
-                "reference": "173fc03f22f00000e761d23f8995295a5f28d8b0",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/dbaeab4e2f94e84e9cb587ca0d039353137ef087",
+                "reference": "dbaeab4e2f94e84e9cb587ca0d039353137ef087",
                 "shasum": ""
             },
             "require": {
@@ -3844,23 +3844,23 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.3.4",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.3.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2022-03-22T10:07:22+00:00"
+            "time": "2022-03-22T12:11:11+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
-            "version": "1.5.1",
+            "version": "1.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt-admin.git",
-                "reference": "07f3f216b5795bf2e835459141108afba394cf9b"
+                "reference": "2e90ab01c7c808ac6f3c35ca50aea49726e170b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt-admin/zipball/07f3f216b5795bf2e835459141108afba394cf9b",
-                "reference": "07f3f216b5795bf2e835459141108afba394cf9b",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt-admin/zipball/2e90ab01c7c808ac6f3c35ca50aea49726e170b4",
+                "reference": "2e90ab01c7c808ac6f3c35ca50aea49726e170b4",
                 "shasum": ""
             },
             "require": {
@@ -3876,10 +3876,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt-admin/tree/1.5.1",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt-admin/tree/1.4.11",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt-admin/issues"
             },
-            "time": "2022-03-22T08:36:36+00:00"
+            "time": "2022-03-16T11:19:51+00:00"
         },
         {
             "name": "drupal/helfi_api_base",
@@ -4018,16 +4018,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "2.6.1",
+            "version": "2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "7afda94c3f81ce0cd2b7d2b877e65aacee83835e"
+                "reference": "f5ec4bff4e1932433db2ff38d7805abdf2e15aa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/7afda94c3f81ce0cd2b7d2b877e65aacee83835e",
-                "reference": "7afda94c3f81ce0cd2b7d2b877e65aacee83835e",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/f5ec4bff4e1932433db2ff38d7805abdf2e15aa5",
+                "reference": "f5ec4bff4e1932433db2ff38d7805abdf2e15aa5",
                 "shasum": ""
             },
             "require": {
@@ -4118,6 +4118,9 @@
                     },
                     "drupal/field_group": {
                         "[#UHF-3268] Support for field group translations": "https://www.drupal.org/files/issues/2021-11-22/field_group_fix-translations_label_description-3111107-31.patch"
+                    },
+                    "drupal/easy_breadcrumb": {
+                        "[#UHF-3631] Breadcrumb allow dashes and underscores": "https://www.drupal.org/files/issues/2020-07-23/easy_breadcrumb-allow_hyphens_underscores-3161100-2.patch"
                     }
                 }
             },
@@ -4126,10 +4129,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/2.6.1",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/2.6.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2022-03-22T08:33:50+00:00"
+            "time": "2022-03-28T07:03:10+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -5404,7 +5407,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1644486753",
+                    "datestamp": "1644487627",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13418,35 +13421,30 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "dbc093d7af60eff5cd575d2ed761b15ed40bd08e"
+                "reference": "c08946968bda74869e696982b0af40a9a8784c84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/dbc093d7af60eff5cd575d2ed761b15ed40bd08e",
-                "reference": "dbc093d7af60eff5cd575d2ed761b15ed40bd08e",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/c08946968bda74869e696982b0af40a9a8784c84",
+                "reference": "c08946968bda74869e696982b0af40a9a8784c84",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan": "^1.5",
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5",
                 "symfony/process": "^5.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "PHPStan\\PhpDocParser\\": [
@@ -13461,9 +13459,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.2.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.3.0"
             },
-            "time": "2021-09-16T20:46:02+00:00"
+            "time": "2022-03-28T07:53:31+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -15016,16 +15014,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "7.0.19",
+            "version": "7.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "bef66a43815bbf9b5f49775e9ded3f7c6ba0cc37"
+                "reference": "cbfadfe34c2c29473bf1e891306b3950b3b4350b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/bef66a43815bbf9b5f49775e9ded3f7c6ba0cc37",
-                "reference": "bef66a43815bbf9b5f49775e9ded3f7c6ba0cc37",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/cbfadfe34c2c29473bf1e891306b3950b3b4350b",
+                "reference": "cbfadfe34c2c29473bf1e891306b3950b3b4350b",
                 "shasum": ""
             },
             "require": {
@@ -15037,11 +15035,11 @@
             "require-dev": {
                 "phing/phing": "2.17.2",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpstan/phpstan": "1.4.6",
+                "phpstan/phpstan": "1.4.10|1.5.0",
                 "phpstan/phpstan-deprecation-rules": "1.0.0",
                 "phpstan/phpstan-phpunit": "1.0.0",
                 "phpstan/phpstan-strict-rules": "1.1.0",
-                "phpunit/phpunit": "7.5.20|8.5.21|9.5.16"
+                "phpunit/phpunit": "7.5.20|8.5.21|9.5.19"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
@@ -15061,7 +15059,7 @@
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/7.0.19"
+                "source": "https://github.com/slevomat/coding-standard/tree/7.0.20"
             },
             "funding": [
                 {
@@ -15073,7 +15071,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-01T18:01:41+00:00"
+            "time": "2022-03-25T09:43:20+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
