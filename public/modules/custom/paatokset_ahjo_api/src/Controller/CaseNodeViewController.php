@@ -135,7 +135,7 @@ class CaseNodeViewController extends NodeViewController {
    *   Decision native ID.
    */
   public function decisionTitle(string $case_id, string $decision_id) {
-    $this->setCaseAndDecisionNode($case_id, $decision_id);
+    $this->setCaseAndDecisionNodes($case_id, $decision_id);
     $node = $this->caseService->getSelectedDecision();
     if ($node instanceof NodeInterface) {
       return $node->title->value . ' - ' . $node->field_dm_org_name->value;
@@ -166,6 +166,10 @@ class CaseNodeViewController extends NodeViewController {
       ]);
     }
 
+    if (empty($node)) {
+      return NULL;
+    }
+
     return reset($node);
   }
 
@@ -177,7 +181,7 @@ class CaseNodeViewController extends NodeViewController {
    * @param string $decision_id
    *   Decision native ID.
    */
-  protected function setCaseAndDecisionNode(string $case_id, string $decision_id): void {
+  protected function setCaseAndDecisionNodes(string $case_id, string $decision_id): void {
     $decision_id = '{' . strtoupper($decision_id) . '}';
     $this->caseService->setEntitiesById($case_id, $decision_id);
   }
