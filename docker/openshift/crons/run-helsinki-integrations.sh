@@ -5,7 +5,7 @@ do
   # Sleep for 1 minute.
   sleep 360
   echo "Running Helsinki kanava migration: $(date)"
-  drush migrate-import paatokset_helsinki_kanava --update
+  drush migrate-import paatokset_meeting_videos --update
   echo "Running news migration: $(date)"
   drush migrate-import paatokset_news --update
   # Sleep for 1 hour.
