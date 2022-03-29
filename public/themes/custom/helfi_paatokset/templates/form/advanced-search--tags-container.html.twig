@@ -33,6 +33,6 @@
     </span>
   {% endfor %}
   {% if tags is not empty %}
-    {% include '@hdbt/button/button.html.twig' with {type: 'supplementary', disabled: false, label: 'Reset filters'|t } %}
+    {% include 'helfi_paatokset/components/button.html.twig' with {type: 'supplementary', disabled: false, label: 'Reset filters'|t } %}
   {% endif %}
 </div>
