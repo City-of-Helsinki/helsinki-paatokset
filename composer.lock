@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6bec3b1155e3e538c1213b5e9c40b114",
+    "content-hash": "20b9f3980aa5b21ecde5dabe138aeca6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7130,7 +7130,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
+                "reference": "v5.29.1"
             },
             "type": "drupal-library"
         },
@@ -8820,7 +8821,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ruflin/Elastica/issues",
-                "source": "https://github.com/ruflin/Elastica/tree/master"
+                "source": "https://github.com/ruflin/Elastica/tree/7.1.5"
             },
             "time": "2022-02-23T07:44:44+00:00"
         },
