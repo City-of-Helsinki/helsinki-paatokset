@@ -1180,6 +1180,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'resolutions_all.json',
       'resolutions_latest.json',
       'decisionmakers.json',
+      'decisionmakers_sv.json',
       'positionsoftrust.json',
       'positionsoftrust_council.json',
       'trustees.json',

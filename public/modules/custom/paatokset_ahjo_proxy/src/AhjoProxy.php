@@ -442,6 +442,10 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'decisionmakers.json';
         break;
 
+      case 'decisionmakers_sv':
+        $filename = 'decisionmakers_sv.json';
+        break;
+
       case 'callback_test':
         $filename = 'callback_test.json';
         break;
