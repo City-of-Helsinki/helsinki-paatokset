@@ -88,6 +88,7 @@ process:
       - '@nid'
       - 'constants/title_field'
       - 'title'
+      - '@langcode'
   field_ahjo_title:
     plugin: default_value
     source: title
