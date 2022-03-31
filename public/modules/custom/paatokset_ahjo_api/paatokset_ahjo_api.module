@@ -505,7 +505,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
  * Implements hook_preprocess_HOOK().
  */
 function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
-  $config = \Drupal::config('paatokset_ahjo_api.default_texts'); 
+  $config = \Drupal::config('paatokset_ahjo_api.default_texts');
   $title = $config->get('banner_heading');
   $text = $config->get('banner_text.value');
   $label = $config->get('banner_label');
@@ -770,12 +770,19 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
   $nid = $values[0];
   $field = $values[1];
   $default = $values[2];
+  $langcode = $values[3];
 
   if (!$nid) {
     return $default;
   }
 
   $node = Node::load($nid);
+  if ($node->hasTranslation($langcode)) {
+    $node = $node->getTranslation($langcode);
+  }
+  else {
+    return $default;
+  }
   if ($node instanceof NodeInterface && $node->hasField($field) && !$node->get($field)->isEmpty()) {
     return $node->get($field)->value;
   }
