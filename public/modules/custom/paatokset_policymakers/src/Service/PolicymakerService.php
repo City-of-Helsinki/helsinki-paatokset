@@ -175,7 +175,8 @@ class PolicymakerService {
       $fallback_path = \Drupal::service('path_alias.manager')->getPathByAlias($fallback_prefix . '/' . $organization, $fallback_lang);
       if (preg_match('/node\/(\d+)/', $path, $matches)) {
         $node = Node::load($matches[1]);
-      } elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
+      }
+      elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
         $node = Node::load($matches[1]);
       }
 
