@@ -77,7 +77,7 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   $variables['open_decisions'] = t('Open decisions');
   $variables['open_minutes'] = t('Open minutes');
   $variables['meetings'] = $meetingService->query($params);
-  
+
   if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
     $variables['meetings_description'] = $node->get('field_meetings_description')->value;
   }
@@ -316,9 +316,18 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
     return;
   }
 
+  // Handle translated langcodes.
+  if ($node->get('langcode')->value === 'sv') {
+    $prefix = 'beslutsfattare';
+  }
+  else {
+    $prefix = 'paattajat';
+  }
+
+
   // If org name exists, add it to the path.
   if (!$node->get('field_dm_org_name')->isEmpty()) {
-    $pattern->setPattern('paattajat/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
+    $pattern->setPattern($prefix . '/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
     return;
   }
 }
