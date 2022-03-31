@@ -37,12 +37,24 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'ahjo_decisionmakers',
     ];
 
+    $sv_translations = [
+      'ahjo_decisionmakers',
+    ];
+
     if (in_array($base_plugin_definition['id'], $only_all)) {
       $derivatives = ['all'];
     }
 
     if ($base_plugin_definition['id'] === 'ahjo_trustees') {
       $derivatives = ['all', 'council', 'single'];
+    }
+
+    if (in_array($base_plugin_definition['id'], $sv_translations)) {
+      $sv_derivatives = [];
+      foreach ($derivatives as $value) {
+        $sv_derivatives[] = $value . '_sv';
+      }
+      $derivatives = array_merge($derivatives, $sv_derivatives);
     }
 
     foreach ($derivatives as $key) {
@@ -74,6 +86,12 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
     $base_plugin_definition['source']['urls'] = [
       $source_url,
     ];
+
+    // Set values for translation migrations.
+    if (strpos($key, '_sv') !== FALSE) {
+      $base_plugin_definition['destination']['translations'] = TRUE;
+      $base_plugin_definition['process']['langcode']['default_value'] = 'sv';
+    }
 
     return $base_plugin_definition;
   }
@@ -119,6 +137,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       ],
       'ahjo_decisionmakers' => [
         'all' => '/ahjo-proxy/aggregated/decisionmakers',
+        'all_sv' => '/ahjo-proxy/aggregated/decisionmakers_sv',
       ],
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees',
