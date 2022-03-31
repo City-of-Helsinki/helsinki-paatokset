@@ -5,7 +5,7 @@
  * Creates vue applcation for the meetings calendar
  */
 
- (function($, Drupal) {
+(function($, Drupal, drupalSettings) {
 
   Drupal.behaviors.paatoksetAhjoMeetingsCalendar = {
     attach() {
@@ -37,7 +37,7 @@
               }"
               >
               <div class="date-header" role="heading" aria-level="3">
-                <span>{{ getDay(day.date) }}.</span>
+                <span>{{ getDay(day.date) }}</span>
                 <span>{{ formatDay(day.date) }}.</span>
               </div>
               <template v-if="day.meetings.length > 0">
@@ -78,7 +78,7 @@
 
       /* URL to get all meetings */
       const yearAgo = dayjs().subtract(1, "year").format("YYYY-MM-DD");
-      const dataURL = window.location.origin + '/fi/ahjo_api/meetings?from=' + yearAgo;
+      const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + yearAgo;
 
       new Vue({
         el: '#meetings-calendar-vue',
@@ -146,25 +146,25 @@
           },
           getDay(date) {
             if(dayjs(date).day() === 1) {
-              return window.Drupal.t('Monday');
+              return window.Drupal.t('Monday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 2) {
-              return window.Drupal.t('Tuesday');
+              return window.Drupal.t('Tuesday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 3) {
-              return window.Drupal.t('Wednesday');
+              return window.Drupal.t('Wednesday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 4) {
-              return window.Drupal.t('Thursday');
+              return window.Drupal.t('Thursday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 5) {
-              return window.Drupal.t('Friday');
+              return window.Drupal.t('Friday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 6) {
-              return window.Drupal.t('Saturday');
+              return window.Drupal.t('Saturday', {}, {context: "Meeting calendar weekday."});
             }
             if(dayjs(date).day() === 0) {
-              return window.Drupal.t('Sunday');
+              return window.Drupal.t('Sunday', {}, {context: "Meeting calendar weekday."});
             }
           },
           isToday(date) {
@@ -299,4 +299,4 @@
     }
   }
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, drupalSettings));
