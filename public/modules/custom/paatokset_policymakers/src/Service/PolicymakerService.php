@@ -155,17 +155,30 @@ class PolicymakerService {
   public function setPolicyMakerByPath(): void {
     $node = \Drupal::routeMatch()->getParameter('node');
     $routeParams = \Drupal::routeMatch()->getParameters();
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     // Determine policymaker in custom routes.
     if (!$node instanceof NodeInterface && $routeParams->get('organization')) {
-      // Default path and language for policymakers should always be finnish.
-      $path_prefix = '/paattajat';
-      $path_lang = 'fi';
+
+      $fallback_prefix = '/paattajat';
+      $fallback_lang = 'fi';
+      if ($currentLanguage === 'sv') {
+        $path_prefix = '/beslutsfattare';
+      }
+      else {
+        $path_prefix = '/paattajat';
+      }
+
+      // Attempt to load path either by current language path or fallback.
       $organization = $routeParams->get('organization');
-      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $organization, $path_lang);
+      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $organization, $currentLanguage);
+      $fallback_path = \Drupal::service('path_alias.manager')->getPathByAlias($fallback_prefix . '/' . $organization, $fallback_lang);
       if (preg_match('/node\/(\d+)/', $path, $matches)) {
         $node = Node::load($matches[1]);
+      } elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
+        $node = Node::load($matches[1]);
       }
+
     }
 
     // Determine policymaker on subpages.
