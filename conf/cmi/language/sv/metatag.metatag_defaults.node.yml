@@ -1,3 +1,3 @@
 label: Innehåll
 tags:
-  title: "[node:title] | [site:name] |\_Helsingin Kaupunki"
+  title: "[node:title] | [site:name] |\_[site:page-title-suffix]"
