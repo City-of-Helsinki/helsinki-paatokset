@@ -12,7 +12,7 @@ bundle: policymaker
 label: 'Organization name'
 description: 'Name of the organization level above this decisionmaker.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }
