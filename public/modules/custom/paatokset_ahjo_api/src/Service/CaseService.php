@@ -442,9 +442,10 @@ class CaseService {
     // If case node doesn't exist, try to get localized route for decision.
     $localizedRoute = 'paatokset_decision.' . $this->language;
     if ($this->routeExists($localizedRoute)) {
+      $native_id_url = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
       return Url::fromRoute($localizedRoute, [
         'case_id' => $decision->get('field_diary_number')->value,
-        'decision_id' => $decision->get('field_decision_native_id')->value,
+        'decision_id' => $native_id_url,
       ]);
     }
 
