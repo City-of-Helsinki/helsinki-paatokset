@@ -199,21 +199,6 @@
 .issue__pdf {
   margin-bottom: $spacing-double;
 
-  .hds-button {
-    --background-color: var(--color-black);
-    --background-color-hover: var(--color-bus);
-    --background-color-focus: var(--color-bus);
-    --background-color-hover-focus: var(--color-bus);
-    --border-color: var(--color-black);
-    --border-color-hover: var(--color-bus);
-    --border-color-focus: var(--color-bus);
-    --border-color-hover-focus: var(--color-bus);
-
-    span {
-      font-size: 16px;
-    }
-  }
-
   &.issue__pdf--desktop {
     display: none;
   }
@@ -501,11 +486,11 @@
 .page-type--case, .page-type--decision {
   .component.component--banner {
     margin-top: $spacing-triple;
-  
+
     // Set max width for banner element on issue page to match left-container
-  
+
     @include breakpoint($breakpoint-xl) {
       width: 65%;
     }
   }
-} 
+}
