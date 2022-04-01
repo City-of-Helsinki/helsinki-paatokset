@@ -138,6 +138,9 @@ class PolicymakerController extends ControllerBase {
 
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
+
+      // Add cache tags for decisions list so links can be updated.
+      $build['#cache']['tags'][] = 'node_list:decision';
     }
 
     // Add cache context for minutes of the discussion for the link to show up.
