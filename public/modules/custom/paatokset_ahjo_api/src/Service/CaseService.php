@@ -1134,15 +1134,26 @@ class CaseService {
    *   Meeting ID for motion.
    * @param string $title
    *   Motion title (used in case there are multiple motions with same id).
+   * @param bool $check_title
+   *   Check if title matches. If not, create new node. FALSE by default.
    *
    * @return Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found or if a decision was found.
    */
-  public function findOrCreateMotion(string $case_id, string $meeting_id, string $title): ?NodeInterface {
-    $nodes = $this->decisionQuery([
-      'case_id' => $case_id,
-      'meeting_id' => $meeting_id,
-    ]);
+  public function findOrCreateMotion(string $case_id, string $meeting_id, string $title, bool $check_title = FALSE): ?NodeInterface {
+    if ($check_title) {
+      $nodes = $this->decisionQuery([
+        'case_id' => $case_id,
+        'meeting_id' => $meeting_id,
+        'title' => $title,
+      ]);
+    }
+    else {
+      $nodes = $this->decisionQuery([
+        'case_id' => $case_id,
+        'meeting_id' => $meeting_id,
+      ]);
+    }
 
     // If there is only one node, use that.
     $found_node = NULL;

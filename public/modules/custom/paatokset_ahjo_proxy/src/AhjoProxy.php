@@ -1246,7 +1246,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $top_category = NULL;
     }
 
-    $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title);
+    $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title, TRUE);
     if (!$node instanceof NodeInterface) {
       $context['results']['failed'][] = $data['title'];
       return;
