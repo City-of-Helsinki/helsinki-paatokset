@@ -1,0 +1,90 @@
+{#
+/**
+ * @file
+ * Theme override for a set of links.
+ *
+ * Available variables:
+ * - attributes: Attributes for the UL containing the list of links.
+ * - links: Links to be output.
+ *   Each link will have the following elements:
+ *   - title: The link text.
+ *   - href: The link URL. If omitted, the 'title' is shown as a plain text
+ *     item in the links list. If 'href' is supplied, the entire link is passed
+ *     to l() as its $options parameter.
+ *   - attributes: (optional) HTML attributes for the anchor, or for the <span>
+ *     tag if no 'href' is supplied.
+ * - heading: (optional) A heading to precede the links.
+ *   - text: The heading text.
+ *   - level: The heading level (e.g. 'h2', 'h3').
+ *   - attributes: (optional) A keyed list of attributes for the heading.
+ *   If the heading is a string, it will be used as the text of the heading and
+ *   the level will default to 'h2'.
+ *
+ *   Headings should be used on navigation menus and any list of links that
+ *   consistently appears on multiple pages. To make the heading invisible use
+ *   the 'visually-hidden' CSS class. Do not use 'display:none', which
+ *   removes it from screen readers and assistive technology. Headings allow
+ *   screen reader and keyboard only users to navigate to or skip the links.
+ *   See http://juicystudio.com/article/screen-readers-display-none.php and
+ *   http://www.w3.org/TR/WCAG-TECHS/H42.html for more information.
+ *
+ * @see template_preprocess_links()
+ */
+#}
+
+{% if links %}
+  <div {{ attributes.addClass('language-switcher') }}>
+    <div class="language-links">
+      {% for item in links %}
+        {% set language_link = '' %}
+        {% set lang = item.link['#options']['#abbreviation'] %}
+        {% set untranslated = item.link['#options']['#untranslated'] %}
+        {% set alternative_language = item.link['#options']['#alternative_language'] %}
+        {% set classes = ['language-link'] %}
+        {% set ariaCurrent = null %}
+        {% set title = null %}
+
+        {# Some custom routes / untranslated content might have a special URL. #}
+        {% set lang_override = item.link['#options']['#lang_override'] %}
+        {% set override_url = item.link['#options']['#override_url'] %}
+
+        {# Check if link is part of alternative menu and set class accordingly. #}
+        {% set classes = classes|merge([alternative_language ? 'is-alternative' : '']) %}
+
+        {% if lang_override and override_url is not empty %}
+          {% set language_link = override_url %}
+          {% set element = 'a' %}
+        {% elseif not untranslated and not alternative_language and lang != current_langcode %}
+          {% set language_link = path('<current>', {}, {'language': item.link['#options']['language']}) %}
+          {% set element = 'a' %}
+        {% elseif lang == current_langcode %}
+          {% set language_link = path('<current>', {}, {'language': item.link['#options']['language']}) %}
+          {% set element = 'a' %}
+          {% set ariaCurrent = create_attribute({'aria-current': 'page'}) %}
+        {% else %}
+          {% set element = 'span' %}
+          {% set classes = classes|merge(['is-disabled']) %}
+          {% if lang == 'en' %}
+            {% set title = create_attribute({'title': 'There is no English translation for this page'}) %}
+          {% elseif lang == 'fi' %}
+            {% set title = create_attribute({'title': 'Tästä sivusta ei ole suomenkielistä käännöstä'}) %}
+          {% elseif lang == 'sv' %}
+            {% set title = create_attribute({'title': 'Det finns ingen svensk översättning för denna sida'}) %}
+          {% elseif lang == 'ru' %}
+            {% set title = create_attribute({'title': 'Для этой страницы нет русского перевода'}) %}
+          {% endif %}
+        {% endif %}
+
+        {# Construct the element based on variables. #}
+        {# TODO: Find out the best way to indicate inactive languages from accessibility point of view #}
+        <{{ element }}
+          {{ create_attribute({'class': classes}) }}
+          {{ language_link ? create_attribute({'href': language_link}) }}
+          {{ create_attribute({'lang': lang}) }}
+          {{ ariaCurrent }}
+          {{ title }}
+        >{{ item.text|capitalize }}</{{ element }}>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

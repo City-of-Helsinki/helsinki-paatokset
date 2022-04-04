@@ -1,0 +1,9 @@
+name: Päätökset language switcher
+type: module
+description: Language switcher overrides for Päätökset palvelu.
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:paatokset_ahjo_api
+  - drupal:paatokset_policymakers
