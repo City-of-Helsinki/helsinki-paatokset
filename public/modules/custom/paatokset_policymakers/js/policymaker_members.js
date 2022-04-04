@@ -5,7 +5,7 @@
  * Creates vue applcation for the meetings calendar
  */
 
- (function($, Drupal) {
+ (function($, Drupal, drupalSettings) {
 
   Drupal.behaviors.paatoksetPolicymakersPolicymakerMembers = {
     attach() {
@@ -64,7 +64,7 @@
       const container = document.querySelector('.policymaker-members__block');
       const policymakerID = container.dataset.policymaker;
       const policymakerType = container.dataset.type;
-      const dataURL = window.location.origin + '/fi/ahjo_api/org_composition/' + policymakerID;
+      const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/org_composition/' + policymakerID;
 
       new Vue({
         el: '#policymaker-members-vue',
@@ -191,4 +191,4 @@
     }
   }
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, drupalSettings));

@@ -255,6 +255,10 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     $variables['content']['field_trustee_title'] = $trustee_title;
   }
 
+  if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
+    $variables['content']['field_trustee_council_group'] = t($node->field_trustee_council_group->value, [], ['context' => 'Trustee listing']);
+  }
+
   if(isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
     $pmLink = Link::fromTextAndUrl(

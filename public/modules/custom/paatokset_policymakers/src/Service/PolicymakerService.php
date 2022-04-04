@@ -234,8 +234,7 @@ class PolicymakerService {
     if ($policymaker === NULL) {
       $policymaker = $this->getPolicyMaker();
     }
-    if (!$policymaker instanceof NodeInterface)
-    {
+    if (!$policymaker instanceof NodeInterface) {
       return NULL;
     }
 
@@ -715,7 +714,12 @@ class PolicymakerService {
 
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     foreach ($person_nodes as $node) {
+      if ($node->hasTranslation($currentLanguage)) {
+        $node = $node->getTranslation($currentLanguage);
+      }
+
       $name = $node->title->value;
 
       if ($node->hasField('field_trustee_image') && !$node->get('field_trustee_image')->isEmpty()) {
@@ -728,14 +732,36 @@ class PolicymakerService {
       }
 
       if (isset($composition[$name])) {
+        $url = $this->getTrusteeUrl($node);
+        if ($url instanceof Url) {
+          $url = $url->toString();
+        }
+        else {
+          $url = NULL;
+        }
+
+        if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
+          $party = (string) t($node->get('field_trustee_council_group')->value, [], ['context' => 'Trustee listing']);
+        }
+        else {
+          $party = NULL;
+        }
+
+        if (!empty($composition[$name]['Role'])) {
+          $role = (string) t($composition[$name]['Role'], [], ['context' => 'Trustee listing']);
+        }
+        else {
+          $role = NULL;
+        }
+
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
           'last_name' => $node->get('field_last_name')->value,
           'image_url' => $image_url,
-          'url' => $node->toUrl()->setAbsolute(TRUE)->toString(),
-          'role' => $composition[$name]['Role'],
+          'url' => $url,
+          'role' => $role,
           'email' => $node->get('field_trustee_email')->value,
-          'party' => $node->get('field_trustee_council_group')->value,
+          'party' => $party,
           'deputy_of' => $composition[$name]['DeputyOf'],
         ];
 
@@ -762,13 +788,47 @@ class PolicymakerService {
         'last_name' => $last_name,
         'image_url' => NULL,
         'url' => NULL,
-        'role' => $data['Role'],
+        'role' => t($data['Role'], [], ['context' => 'Trustee listing']),
         'email' => NULL,
         'party' => NULL,
         'deputy_of' => $data['DeputyOf'],
       ];
     }
     return $results;
+  }
+
+  /**
+   * Get localized trustee URL.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Trustee node.
+   * @param string|null $langcode
+   *   Langcode to get URL for.
+   *
+   * @return \Drupal\Core\Url|null
+   *   Localized trustee URL, if found.
+   */
+  public function getTrusteeUrl(NodeInterface $node, ?string $langcode = NULL): ?Url {
+    if ($langcode === NULL) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    }
+
+    if ($node->get('langcode')->value === $langcode) {
+      return $node->toUrl()->setAbsolute(TRUE);
+    }
+
+    if (!$node->hasField('field_trustee_id') || $node->get('field_trustee_id')->isEmpty()) {
+      return NULL;
+    }
+
+    $localized_route = 'policymaker.page.' . $langcode;
+    if ($this->routeExists($localized_route)) {
+      return Url::fromRoute($localized_route, [
+        'organization' => $node->get('field_trustee_id')->value,
+      ])->setAbsolute(TRUE);
+    }
+    return NULL;
+
   }
 
   /**
