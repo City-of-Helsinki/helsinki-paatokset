@@ -76,7 +76,10 @@ class CaseService {
    * Get decision query key.
    *
    * @param string|null $langcode
+   *   Langcode to use. If NULL, use current language.
+   *
    * @return string
+   *   Decision query key.
    */
   public function getDecisionQueryKey(?string $langcode = NULL): string {
     if ($langcode === NULL) {
@@ -85,13 +88,15 @@ class CaseService {
 
     switch ($langcode) {
       case 'sv':
-        return 'beslut';
+        $value = 'beslut';
         break;
 
       default:
-        return 'paatos';
+        $value = 'paatos';
         break;
     }
+
+    return $value;
   }
 
   /**
@@ -416,7 +421,8 @@ class CaseService {
    * @param \Drupal\node\NodeInterface $case
    *   Case node.
    * @param string|null $langcode
-   *   Langcode to get URL for. Defaults to current language
+   *   Langcode to get URL for. Defaults to current language.
+   *
    * @return \Drupal\Core\Url|null
    *   Localized URL, if found.
    */
@@ -435,7 +441,7 @@ class CaseService {
       $case_url = Url::fromRoute($localizedRoute, ['case_id' => $case->get('field_diary_number')->value]);
     }
     // If langcode is set, we don't want an URL without a localized route.
-    else if ($strict_lang) {
+    elseif ($strict_lang) {
       return NULL;
     }
     // If route doesn't exist, just use case URL.
@@ -499,7 +505,7 @@ class CaseService {
         $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision->get('field_diary_number')->value]);
       }
       // If langcode is set, we don't want an URL without a localized route.
-      else if ($strict_lang) {
+      elseif ($strict_lang) {
         return NULL;
       }
       // If route doesn't exist, just use case URL.

@@ -224,7 +224,7 @@ class PolicymakerService {
    * @param string|null $langcode
    *   Langcode to get route for.
    *
-   * @return Url|null
+   * @return \Drupal\Core\Url|null
    *   Policymaker URL.
    */
   public function getPolicymakerRoute(?NodeInterface $policymaker = NULL, ?string $langcode = NULL): ?Url {
@@ -376,7 +376,7 @@ class PolicymakerService {
   /**
    * Get policymaker organization from URL.
    *
-   * @param NodeInterface|null $policymaker
+   * @param \Drupal\node\NodeInterface|null $policymaker
    *   Policymaker node. NULL to use default.
    * @param string|null $langcode
    *   Langcode to get organization for.
@@ -740,28 +740,14 @@ class PolicymakerService {
           $url = NULL;
         }
 
-        if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
-          $party = (string) t($node->get('field_trustee_council_group')->value, [], ['context' => 'Trustee listing']);
-        }
-        else {
-          $party = NULL;
-        }
-
-        if (!empty($composition[$name]['Role'])) {
-          $role = (string) t($composition[$name]['Role'], [], ['context' => 'Trustee listing']);
-        }
-        else {
-          $role = NULL;
-        }
-
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
           'last_name' => $node->get('field_last_name')->value,
           'image_url' => $image_url,
           'url' => $url,
-          'role' => $role,
+          'role' => $composition[$name]['Role'],
           'email' => $node->get('field_trustee_email')->value,
-          'party' => $party,
+          'party' => $node->get('field_trustee_council_group')->value,
           'deputy_of' => $composition[$name]['DeputyOf'],
         ];
 
@@ -788,7 +774,7 @@ class PolicymakerService {
         'last_name' => $last_name,
         'image_url' => NULL,
         'url' => NULL,
-        'role' => t($data['Role'], [], ['context' => 'Trustee listing']),
+        'role' => $data['Role'],
         'email' => NULL,
         'party' => NULL,
         'deputy_of' => $data['DeputyOf'],
