@@ -66,10 +66,21 @@ function paatokset_submenus_preprocess_block(&$variables) {
       $variables['items'] = $variables['elements']['content']['#items'];
       $variables['menu_attributes'] = new Attribute(['class' => 'menu']);
       $variables['attributes'] = new Attribute(['class' => ['sidebar-navigation']]);
-      $variables['menu_link_parent'] = [
-        'title' => t('Päättäjät'),
-        'url' => \Drupal\Core\Url::fromRoute('policymakers.fi')
-      ];
+
+      $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      if ($currentLanguage === 'fi') {
+        $variables['menu_link_parent'] = [
+          'title' => t('Päättäjät'),
+          'url' => \Drupal\Core\Url::fromRoute('policymakers.fi')
+        ];
+      }
+      elseif ($currentLanguage === 'sv') {
+        $variables['menu_link_parent'] = [
+          'title' => t('Beslutsfattare'),
+          'url' => \Drupal\Core\Url::fromRoute('policymakers.sv')
+        ];
+      }
+
       $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
     }
   }
@@ -77,18 +88,18 @@ function paatokset_submenus_preprocess_block(&$variables) {
   if($variables['plugin_id'] === 'policymaker_side_nav_mobile') {
     $variables['#attached']['library'][] = 'hds_web_components/Dropdown';
     $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
-  
+
     if(isset($variables['elements']['content']['#options'])) {
       $attributes = [
         'link-to-selection' => 'link-to-selection',
         'placeholder' => t('Move to page'),
         'options' => $variables['elements']['content']['#options']
       ];
-  
+
       if(isset($variables['elements']['content']['#current_option'])) {
         $attributes['value'] = $variables['elements']['content']['#current_option'];
       }
-  
+
       $variables['dropdown_attributes'] = new Attribute($attributes);
     }
   }
