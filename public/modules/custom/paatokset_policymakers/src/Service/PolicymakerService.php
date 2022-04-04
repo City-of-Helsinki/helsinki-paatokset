@@ -217,6 +217,38 @@ class PolicymakerService {
   }
 
   /**
+   * Get policymaker route.
+   *
+   * @param \Drupal\node\NodeInterface|null $policymaker
+   *   Policymaker node.
+   * @param string|null $langcode
+   *   Langcode to get route for.
+   *
+   * @return Url|null
+   *   Policymaker URL.
+   */
+  public function getPolicymakerRoute(?NodeInterface $policymaker = NULL, ?string $langcode = NULL): ?Url {
+    if ($langcode === NULL) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    }
+    if ($policymaker === NULL) {
+      $policymaker = $this->getPolicyMaker();
+    }
+    if (!$policymaker instanceof NodeInterface)
+    {
+      return NULL;
+    }
+
+    $localized_route = 'policymaker.page.' . $langcode;
+    if ($this->routeExists($localized_route)) {
+      return Url::fromRoute($localized_route, [
+        'organization' => $this->getPolicymakerOrganizationFromUrl($policymaker),
+      ]);
+    }
+    return NULL;
+  }
+
+  /**
    * Return route for policymaker documents.
    *
    * @return Drupal\Core\Url|null
@@ -236,9 +268,7 @@ class PolicymakerService {
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
-    $policymaker_url = $this->policymaker->toUrl()->toString();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker);
 
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
@@ -274,9 +304,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    $policymaker_url = $this->policymaker->toUrl()->toString();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker);
 
     $routes = PolicymakerRoutes::getTrusteeRoutes();
     $baseRoute = $routes['decisions'];
@@ -322,16 +350,14 @@ class PolicymakerService {
       return NULL;
     }
 
-    $policymaker_url = $policymaker->toUrl()->toString();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker);
 
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $localizedRoute = "$route.$currentLanguage";
 
     $routeSettings = [
-      'organization' => strtolower($policymaker_org),
+      'organization' => $policymaker_org,
       'id' => $id,
     ];
 
@@ -346,6 +372,36 @@ class PolicymakerService {
     }
 
     return NULL;
+  }
+
+  /**
+   * Get policymaker organization from URL.
+   *
+   * @param NodeInterface|null $policymaker
+   *   Policymaker node. NULL to use default.
+   * @param string|null $langcode
+   *   Langcode to get organization for.
+   *
+   * @return string|null
+   *   Policymaker URL slug, if found.
+   */
+  public function getPolicymakerOrganizationFromUrl(?NodeInterface $policymaker = NULL, ?string $langcode = NULL): ?string {
+    if ($policymaker === NULL) {
+      $policymaker = $this->getPolicyMaker();
+    }
+    if (!$policymaker instanceof NodeInterface) {
+      return NULL;
+    }
+
+    // If we want the URL for specific language, attempt to switch translation.
+    if ($langcode !== NULL && $policymaker->hasTranslation($langcode)) {
+      $policymaker = $policymaker->getTranslation($langcode);
+    }
+
+    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+    return strtolower($policymaker_org);
   }
 
   /**

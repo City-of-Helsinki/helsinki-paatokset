@@ -69,14 +69,27 @@ class CaseService {
    */
   public function __construct() {
     $this->language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $this->decisionQueryKey = $this->getDecisionQueryKey($this->language);
+  }
 
-    switch ($this->language) {
+  /**
+   * Get decision query key.
+   *
+   * @param string|null $langcode
+   * @return string
+   */
+  public function getDecisionQueryKey(?string $langcode = NULL): string {
+    if ($langcode === NULL) {
+      $langcode = $this->language;
+    }
+
+    switch ($langcode) {
       case 'sv':
-        $this->decisionQueryKey = 'beslut';
+        return 'beslut';
         break;
 
       default:
-        $this->decisionQueryKey = 'paatos';
+        return 'paatos';
         break;
     }
   }
@@ -398,15 +411,69 @@ class CaseService {
   }
 
   /**
-   * Get decision URL by ID.
+   * Get localized case URL from node.
+   *
+   * @param \Drupal\node\NodeInterface $case
+   *   Case node.
+   * @param string|null $langcode
+   *   Langcode to get URL for. Defaults to current language
+   * @return \Drupal\Core\Url|null
+   *   Localized URL, if found.
+   */
+  public function getCaseUrlFromNode(NodeInterface $case, ?string $langcode = NULL): ?Url {
+    if ($langcode === NULL) {
+      $langcode === $this->language;
+      $strict_lang = FALSE;
+    }
+    // If langcode is set, we wan't that localized URL specifically or nothing.
+    else {
+      $strict_lang = TRUE;
+    }
+
+    $localizedRoute = 'paatokset_case.' . $langcode;
+    if ($this->routeExists($localizedRoute)) {
+      $case_url = Url::fromRoute($localizedRoute, ['case_id' => $case->get('field_diary_number')->value]);
+    }
+    // If langcode is set, we don't want an URL without a localized route.
+    else if ($strict_lang) {
+      return NULL;
+    }
+    // If route doesn't exist, just use case URL.
+    else {
+      $case_url = $case->toUrl();
+    }
+
+    // Use current language for getting the current request query.
+    $decision_id = \Drupal::request()->query->get($this->decisionQueryKey);
+    if ($decision_id !== NULL) {
+      $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
+    }
+
+    return $case_url;
+  }
+
+  /**
+   * Get localized decision URL from node.
    *
    * @param Drupal\node\NodeInterface $decision
    *   Decision node.
+   * @param string|null $langcode
+   *   Langcode to get URL for. Defaults to current language.
    *
-   * @return Drupal\Core\Url
+   * @return Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
    */
-  public function getDecisionUrlFromNode(NodeInterface $decision): Url {
+  public function getDecisionUrlFromNode(NodeInterface $decision, ?string $langcode = NULL): ?Url {
+    // Which language to get URL for.
+    if ($langcode === NULL) {
+      $langcode = $this->language;
+      $strict_lang = FALSE;
+    }
+    // If langcode is set, we wan't that localized URL specifically or nothing.
+    else {
+      $strict_lang = TRUE;
+    }
+
     if (!$decision->hasField('field_decision_native_id') || $decision->get('field_decision_native_id')->isEmpty()) {
       return $decision->toUrl();
     }
@@ -427,20 +494,25 @@ class CaseService {
     // If a case exists, use case route with query parameter.
     if ($case instanceof NodeInterface) {
       // Try to get localized route if one exists for current language.
-      $localizedRoute = 'paatokset_case.' . $this->language;
+      $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
         $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision->get('field_diary_number')->value]);
+      }
+      // If langcode is set, we don't want an URL without a localized route.
+      else if ($strict_lang) {
+        return NULL;
       }
       // If route doesn't exist, just use case URL.
       else {
         $case_url = $case->toUrl();
       }
-      $case_url->setOption('query', [$this->decisionQueryKey => $decision_id]);
+
+      $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
       return $case_url;
     }
 
     // If case node doesn't exist, try to get localized route for decision.
-    $localizedRoute = 'paatokset_decision.' . $this->language;
+    $localizedRoute = 'paatokset_decision.' . $langcode;
     if ($this->routeExists($localizedRoute)) {
       $native_id_url = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
       return Url::fromRoute($localizedRoute, [
@@ -449,7 +521,12 @@ class CaseService {
       ]);
     }
 
-    // If route isn't localized, just return decision's normal URL.
+    // If langcode is set, we don't want an URL without a localized route.
+    if ($strict_lang) {
+      return NULL;
+    }
+
+    // If route isn't localized for current language return decision's URL.
     return $decision->toUrl();
   }
 
