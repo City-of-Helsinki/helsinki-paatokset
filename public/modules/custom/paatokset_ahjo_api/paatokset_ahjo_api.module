@@ -213,10 +213,11 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ->condition('type','policymaker')
     ->condition('status', 1)
     ->execute();
-  $nodes_policymakers =  \Drupal\node\Entity\Node::loadMultiple($nids_policymakers);
+  $nodes_policymakers = \Drupal\node\Entity\Node::loadMultiple($nids_policymakers);
+
+  $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   $filtered = [];
-
   foreach ($nodes_policymakers as $node) {
     if (!$node instanceof NodeInterface) {
       continue;
@@ -226,10 +227,13 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       continue;
     }
 
-    $options = ['absolute' => TRUE];
+    if ($node->hasTranslation($currentLanguage)) {
+      $node = $node->getTranslation($currentLanguage);
+    }
+
     $filtered[] = [
       'title' => $node->get('field_ahjo_title')->value,
-      'link' => \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options),
+      'link' => $policymakerService->getPolicymakerRoute($node, $currentLanguage),
       'organization_type' => $node->get('field_organization_type')->value,
       'organization_name' => $node->get('field_dm_org_name')->value,
       'image' => $node->get('field_policymaker_image')->view('default'),
