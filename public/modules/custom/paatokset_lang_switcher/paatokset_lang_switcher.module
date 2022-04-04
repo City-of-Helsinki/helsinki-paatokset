@@ -76,9 +76,12 @@ function _paatokset_lang_switcher_get_alt_urls_for_node(NodeInterface $node, str
     $caseService = \Drupal::service('paatokset_ahjo_cases');
   }
 
-  if ($node->bundle() === 'policymaker') {
+  if ($node->bundle() === 'policymaker' || $node->bundle() === 'trustee') {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
+  }
+
+  if ($node->bundle() === 'policymaker') {
     return $policymakerService->getPolicymakerRoute($node, $langCode);
   }
   elseif ($node->bundle() === 'case') {
@@ -86,6 +89,9 @@ function _paatokset_lang_switcher_get_alt_urls_for_node(NodeInterface $node, str
   }
   elseif ($node->bundle() === 'decision') {
     return $caseService->getDecisionUrlFromNode($node, $langCode);
+  }
+  elseif ($node->bundle() === 'trustee') {
+    return $policymakerService->getTrusteeUrl($node, $langCode);
   }
 
   return NULL;
@@ -121,7 +127,14 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   foreach ($route->getParameters() as $key => $value) {
     // Special case for translating policymaker organization parameter.
     if ($key === 'organization') {
-      $parameters[$key] = $policymakerService->getPolicymakerOrganizationFromUrl(NULL, $langCode);
+      $organization = $policymakerService->getPolicymakerOrganizationFromUrl(NULL, $langCode);
+      if ($organization) {
+        $parameters[$key] = $organization;
+      }
+      // Fallback for trustee nodes.
+      else {
+        $parameters[$key] = $value;
+      }
     }
     else {
       $parameters[$key] = $value;
