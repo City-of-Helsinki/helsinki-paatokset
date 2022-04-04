@@ -1,4 +1,3 @@
-# @TODO: Find out a way to translate routes / define same route for needed languages
 policymakers.fi:
   path: paattajat
 

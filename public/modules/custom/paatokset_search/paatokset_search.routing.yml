@@ -1,5 +1,13 @@
-paatokset_search.decisions:
+paatokset_search.decisions.fi:
   path: 'asia'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
+    _title: 'Hae päätöksiä'
+  requirements:
+    _access: 'TRUE'
+
+paatokset_search.decisions.sv:
+  path: 'arende'
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
     _title: 'Search decisions'
