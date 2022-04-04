@@ -71,6 +71,7 @@ function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array 
 function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
   $policymakerService = \Drupal::service('paatokset_policymakers');
+  $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   $params = [
     'from' => date("Y-m-d"),
@@ -96,8 +97,13 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   $variables['open_motions'] = t('Open motions');
   $variables['open_decisions'] = t('Open decisions');
   $variables['open_minutes'] = t('Open minutes');
-  $lang_prefix = \Drupal::languageManager()->getCurrentLanguage()->getId();
-  $variables['calendar_link'] = '/' . $lang_prefix . '/kokouskalenteri';
+  if ($currentLanguage === 'fi') {
+    $variables['calendar_link'] = '/fi/kokouskalenteri';
+  }
+  elseif ($currentLanguage === 'sv') {
+    $variables['calendar_link'] = '/sv/moteskalender';
+  }
+
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $meetings_with_color;
 }
@@ -384,7 +390,7 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
 }
 
 /**
- * Preprocess frontpage calendar block.
+ * Preprocess decision tree page.
  */
 function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): void {
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
