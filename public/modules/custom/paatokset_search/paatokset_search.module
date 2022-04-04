@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * Implements hook_preprocess_html().
  */
 function paatokset_search_preprocess_html(array &$variables) {
-  if(\Drupal::routeMatch()->getRouteName() === 'paatokset_search.decisions') {
+  if(strpos(\Drupal::routeMatch()->getRouteName(), 'paatokset_search.decisions') !== FALSE) {
     $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
   }
 }
@@ -22,7 +22,7 @@ function paatokset_search_preprocess_html(array &$variables) {
 function paatokset_search_elasticsearch_connector_load_library_options_alter(&$options, &$context) {
   /**
    * Set cURL options to trust self-signed certificate.
-   * 
+   *
    * @fixme rather than disabling verification, should set CURLOPT_SSLCERT to correct value.
    */
     $options['curl'][CURLOPT_SSL_VERIFYPEER] = FALSE;
