@@ -93,6 +93,17 @@ class MeetingService {
       $timestamp = $node->get('field_meeting_date')->date->getTimeStamp();
       $date = date('Y-m-d', $timestamp);
 
+      // Check if meeting was moved.
+      $orig_timestamp = NULL;
+      if ($node->hasField('field_meeting_date_original') && !$node->get('field_meeting_date_original')->isEmpty()) {
+        $orig_timestamp = $node->get('field_meeting_date_original')->date->getTimeStamp();
+      }
+
+      $additional_info = NULL;
+      if ($orig_timestamp && $orig_timestamp !== $timestamp) {
+        $additional_info = t('Meeting moved');
+      }
+
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
@@ -100,6 +111,7 @@ class MeetingService {
         'policymaker_name' => $node->get('field_meeting_dm')->value,
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
+        'additional_info' => $additional_info,
       ];
 
       if ($node->get('field_meeting_minutes_published')->value) {
