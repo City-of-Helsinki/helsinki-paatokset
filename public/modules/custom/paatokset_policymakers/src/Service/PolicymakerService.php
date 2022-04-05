@@ -1227,17 +1227,13 @@ class PolicymakerService {
           'publish_date' => $dateLong,
           'publish_date_short' => $dateShort,
           'title' => $entity->label(),
+          'type' => 'minutes-of-discussion',
         ];
-
-        $link = $this->getMinutesRoute($nodes[$meeting_id]->get('field_meeting_id')->value);
-        if ($link) {
-          $result['link'] = $link;
-        }
 
         if ($entity->get('field_document')->target_id) {
           $file_id = $entity->get('field_document')->target_id;
           $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
-          $result['origin_url'] = $download_link;
+          $result['link'] = $download_link;
         }
 
         if ($byYear) {
