@@ -327,7 +327,7 @@ class MeetingService {
     $minutes_id = NULL;
     foreach ($entity->get('field_meeting_documents') as $field) {
       $json = json_decode($field->value, TRUE);
-      if (isset($json['Language']) && $json['Language'] !== $langcode) {
+      if (isset($json['Language']) && strpos($json['Language'], $langcode) === FALSE) {
         continue;
       }
 
