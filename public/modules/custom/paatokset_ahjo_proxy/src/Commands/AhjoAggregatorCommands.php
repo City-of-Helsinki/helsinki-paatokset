@@ -943,6 +943,53 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Resets meeting original date time field.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:reset-meeting-orig-date
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:rmod
+   */
+  public function resetMeetingsOriginalDate(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->notExists('field_meeting_date_original')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_meeting_date') || $node->get('field_meeting_date')->isEmpty()) {
+        continue;
+      }
+      $meeting_date = $node->get('field_meeting_date')->value;
+      $node->set('field_meeting_date_original', $meeting_date);
+      $node->save();
+    }
+  }
+
+  /**
    * Saves motions from meeting agenda items into decision nodes.
    *
    * @param array $options
