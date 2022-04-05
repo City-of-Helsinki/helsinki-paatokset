@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_composition
     - field.field.node.meeting.field_meeting_date
+    - field.field.node.meeting.field_meeting_date_original
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
@@ -93,6 +94,15 @@ content:
       format_type: long
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_meeting_date_original:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 23
     region: content
   field_meeting_decision:
     type: text_default
