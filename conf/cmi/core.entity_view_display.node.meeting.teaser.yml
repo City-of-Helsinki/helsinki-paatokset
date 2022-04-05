@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_composition
     - field.field.node.meeting.field_meeting_date
+    - field.field.node.meeting.field_meeting_date_original
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
@@ -46,6 +47,7 @@ hidden:
   field_meeting_attachment_info: true
   field_meeting_composition: true
   field_meeting_date: true
+  field_meeting_date_original: true
   field_meeting_decision: true
   field_meeting_dm: true
   field_meeting_dm_id: true

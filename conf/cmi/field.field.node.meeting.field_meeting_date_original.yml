@@ -1,0 +1,21 @@
+uuid: e0b6783c-ea66-45ff-a41f-66f591a35f30
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_date_original
+    - node.type.meeting
+  module:
+    - datetime
+id: node.meeting.field_meeting_date_original
+field_name: field_meeting_date_original
+entity_type: node
+bundle: meeting
+label: 'Meeting date (original)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

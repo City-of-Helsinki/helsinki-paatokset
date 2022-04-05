@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.meeting.field_meeting_attachment_info
     - field.field.node.meeting.field_meeting_composition
     - field.field.node.meeting.field_meeting_date
+    - field.field.node.meeting.field_meeting_date_original
     - field.field.node.meeting.field_meeting_decision
     - field.field.node.meeting.field_meeting_dm
     - field.field.node.meeting.field_meeting_dm_id
@@ -32,6 +33,7 @@ dependencies:
     - json_field
     - media_library
     - path
+    - publication_date
     - scheduler
     - text
 third_party_settings:
@@ -59,6 +61,7 @@ third_party_settings:
       children:
         - field_meeting_id
         - field_meeting_date
+        - field_meeting_date_original
         - field_meeting_location
         - field_meeting_status
         - field_meeting_dm_id
@@ -186,7 +189,7 @@ content:
     third_party_settings: {  }
   field_agenda_items_processed:
     type: boolean_checkbox
-    weight: 37
+    weight: 38
     region: content
     settings:
       display_label: true
@@ -205,14 +208,14 @@ content:
     third_party_settings: {  }
   field_meeting_agenda_published:
     type: boolean_checkbox
-    weight: 36
+    weight: 37
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_meeting_attachment_info:
     type: text_textarea
-    weight: 39
+    weight: 40
     region: content
     settings:
       rows: 5
@@ -236,9 +239,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meeting_date_original:
+    type: datetime_default
+    weight: 31
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_meeting_decision:
     type: text_textarea
-    weight: 35
+    weight: 36
     region: content
     settings:
       rows: 5
@@ -246,7 +255,7 @@ content:
     third_party_settings: {  }
   field_meeting_dm:
     type: string_textfield
-    weight: 34
+    weight: 35
     region: content
     settings:
       size: 60
@@ -254,7 +263,7 @@ content:
     third_party_settings: {  }
   field_meeting_dm_id:
     type: string_textfield
-    weight: 33
+    weight: 34
     region: content
     settings:
       size: 60
@@ -289,7 +298,7 @@ content:
     third_party_settings: {  }
   field_meeting_location:
     type: string_textfield
-    weight: 31
+    weight: 32
     region: content
     settings:
       size: 60
@@ -297,7 +306,7 @@ content:
     third_party_settings: {  }
   field_meeting_minutes_published:
     type: boolean_checkbox
-    weight: 38
+    weight: 39
     region: content
     settings:
       display_label: true
@@ -351,7 +360,7 @@ content:
     third_party_settings: {  }
   field_meeting_status:
     type: string_textfield
-    weight: 32
+    weight: 33
     region: content
     settings:
       size: 60
