@@ -96,6 +96,8 @@ source:
   ids:
     meeting_id:
       type: string
+  constants:
+    meeting_date_orig_field: field_meeting_date_original
 process:
   type:
     plugin: default_value
@@ -153,13 +155,21 @@ process:
     plugin: callback
     callable: json_encode
     source: meeting_documents
-  field_meeting_date:
+  _meeting_date:
     plugin: format_date
     from_format: 'Y-m-d\TH:i:s.000'
     to_format: 'Y-m-d\TH:i:s'
     from_timezone: Europe/Helsinki
     to_timezone: UTC
     source: meeting_date
+  field_meeting_date: '@_meeting_date'
+  field_meeting_date_original:
+    plugin: callback
+    callable: _paatokset_ahjo_api_get_existing_value
+    source:
+      - '@nid'
+      - 'constants/meeting_date_orig_field'
+      - '@_meeting_date'
   field_meeting_agenda_published:
     -
       callable: _paatokset_ahjo_api_true_if_not_empty
