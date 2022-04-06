@@ -621,7 +621,8 @@ class PolicymakerService {
     }
 
     $nodes = Node::loadMultiple($ids);
-
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
     $transformedResults = [];
     foreach ($nodes as $node) {
       $timestamp = strtotime($node->get('field_meeting_date')->value);
@@ -638,7 +639,7 @@ class PolicymakerService {
         'date_desktop' => date('d.m.Y', $timestamp),
         'date_mobile' => date('m - Y', $timestamp),
         'subject' => $decision_label,
-        'link' => $node->toUrl()->toString(),
+        'link' => $caseService->getDecisionUrlFromNode($node),
       ];
 
       if ($byYear) {
