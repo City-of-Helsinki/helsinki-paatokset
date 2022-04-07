@@ -700,6 +700,12 @@ class PolicymakerService {
       if (!empty($data)) {
         $formatted_name = $this->formatTrusteeName($data['Name']);
         $names[] = $formatted_name;
+
+        // Normalize unknown deputyof fields.
+        if ($data['DeputyOf'] === 'null null' || $data['DeputyOf'] === 'null') {
+          $data['DeputyOf'] = NULL;
+        }
+
         $composition[$formatted_name] = $data;
 
         // Special handling for combined last names or middle names.

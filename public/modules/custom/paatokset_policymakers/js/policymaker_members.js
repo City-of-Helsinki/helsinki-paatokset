@@ -47,7 +47,7 @@
                 <span v-if="member.party" class="member-party"> {{ member.party }}</span>
               </div>
               <span v-if="member.email" class="member-email">{{ processEmail(member.email) }}</span>
-              <template v-if="policymakerType !== 'Valtuusto'">
+              <template v-if="member.deputy_of">
                 <span v-if ="member.deputy_of" class="deputy-of">{{ deputyOf }}: {{ member.deputy_of }}</span>
               </template>
             </div>
