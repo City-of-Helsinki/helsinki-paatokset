@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.decision.field_dm_org_above_name
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_hide_decision_content
     - field.field.node.decision.field_is_decision
     - field.field.node.decision.field_meeting_date
     - field.field.node.decision.field_meeting_id
@@ -69,6 +70,7 @@ hidden:
   field_dm_org_above_name: true
   field_dm_org_name: true
   field_full_title: true
+  field_hide_decision_content: true
   field_is_decision: true
   field_meeting_date: true
   field_meeting_id: true

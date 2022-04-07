@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.decision.field_dm_org_above_name
     - field.field.node.decision.field_dm_org_name
     - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_hide_decision_content
     - field.field.node.decision.field_is_decision
     - field.field.node.decision.field_meeting_date
     - field.field.node.decision.field_meeting_id
@@ -281,6 +282,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_hide_decision_content:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_is_decision:
     type: boolean_checkbox
