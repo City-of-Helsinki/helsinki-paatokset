@@ -7,7 +7,7 @@ dependencies:
     - toolbar
     - view_unpublished
 id: read_only
-label: 'Lukija'
+label: Lukija
 weight: 2
 is_admin: null
 permissions:
