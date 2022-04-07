@@ -14,5 +14,6 @@ settings:
   client_secret: 06426526-4e68-41c2-81a3-fe22ec8c318b
   is_production: 0
   auto_login: 0
-  client_scopes: ''
   environment_url: 'https://tunnistamo.test.hel.ninja'
+  client_scopes: ''
+  client_roles: {  }
