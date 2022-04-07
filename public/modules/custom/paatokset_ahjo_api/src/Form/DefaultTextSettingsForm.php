@@ -44,6 +44,19 @@ class DefaultTextSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('paatokset_ahjo_api.default_texts');
 
+    $form['alerts'] = $form['defaults'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Messages and alerts'),
+      '#open' => TRUE,
+    ];
+
+    $form['alerts']['hidden_decisions_text'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Hidden decisions text'),
+      '#format' => $config->get('hidden_decisions_text.format'),
+      '#default_value' => $config->get('hidden_decisions_text.value'),
+    ];
+
     $form['defaults'] = [
       '#type' => 'details',
       '#title' => $this->t('Default fields'),
@@ -119,6 +132,8 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_ahjo_api.default_texts')
+      ->set('hidden_decisions_text.value', $form_state->getValue('hidden_decisions_text')['value'])
+      ->set('hidden_decisions_text.format', $form_state->getValue('hidden_decisions_text')['format'])
       ->set('documents_description.value', $form_state->getValue('documents_description')['value'])
       ->set('documents_description.format', $form_state->getValue('documents_description')['format'])
       ->set('meetings_description.value', $form_state->getValue('meetings_description')['value'])

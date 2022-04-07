@@ -10,6 +10,9 @@ recording_description:
 decisions_description:
   format: 'rich_text'
   value: '<p>Asiakirjat ovat sekä pdf- että html-muodossa. Html-versiossa sivun asettelut voivat poiketa alkuperäisestä. Asiakirjat on jaettu sisällysluettelon mukaan asiakohdiksi, mutta tarjolla on myös pdf-muotoinen tulostusversio koko asiakirjasta.</p>'
+hidden_decisions_text:
+  format: 'rich_text'
+  value: '<p>Päätös on piilotettu henkilötietosuojalain nojalla ja se on nähtävissä kaupungin kirjaamossa.</p>'
 banner_text:
   format: 'rich_text'
   value: '<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>'
