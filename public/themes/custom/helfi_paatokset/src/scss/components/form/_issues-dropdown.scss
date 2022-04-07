@@ -141,35 +141,11 @@
 }
 
 .new-handlings-warning__wrapper {
+  .warning-label {
+    visibility: hidden;
+  }
+
   @include breakpoint($breakpoint-l) {
     margin-left: auto;
   }
-}
-
-.issue__new-handlings-warning {
-  display: inline-block;
-  background-color: $yellow-light;
-  padding: 5px;
-  margin-bottom: 5px;
-  visibility: hidden;
-  margin-bottom: $spacing-and-half;
-  display: inline-block;
-  font-size: $fontsize-body-m;
-
-  &.visible {
-    visibility: visible;
-  }
-
-  @include breakpoint($breakpoint-l) {
-    margin-bottom: 7px;
-  }
-
-  span {
-    margin-left: 5px;
-  }
-}
-
-.new-handlings-warning__container {
-  display: flex;
-  align-items: center;
 }
