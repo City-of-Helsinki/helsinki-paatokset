@@ -2,13 +2,13 @@ _core:
   default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
 langcode: en
 uuid: 060ed3cf-5793-4d2d-bdb7-06423f433850
-name: Päätökset
+name: Decisions
 mail: admin@example.com
 slogan: ''
 page:
   403: ''
   404: ''
-  front: /etusivu
+  front: /node/2799
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: en
