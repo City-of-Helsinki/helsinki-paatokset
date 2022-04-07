@@ -12,12 +12,13 @@
     <div class="new-handlings-warning__wrapper">
       {%
         set warning_classes = [
+          'warning-label',
           'issue__new-handlings-warning',
           show_warning ? 'visible'
         ]
       %}
       <div{{ attributes.addClass(warning_classes) }}>
-        <div class="new-handlings-warning__container">
+        <div class="warning-label__container new-handlings-warning__container">
           {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'More recent handlings'|t } %}
           <span>{{ warning_label }}</span>
         </div>

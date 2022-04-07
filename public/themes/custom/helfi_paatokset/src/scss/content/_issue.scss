@@ -136,7 +136,8 @@
 }
 
 .issue-content__title h2 {
-  margin-bottom: 32px;
+  margin-top: $spacing;
+  margin-bottom: $spacing-double;
   line-height: 1.1;
   font-weight: normal;
   font-size: 24px;
@@ -493,4 +494,41 @@
       width: 65%;
     }
   }
+}
+
+.motion-tag {
+  display: block;
+  margin: 0;
+}
+
+.warning-label {
+  display: inline-block;
+  background-color: $yellow-light;
+  padding: 5px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  margin-bottom: $spacing-and-half;
+  display: inline-block;
+
+  span {
+    font-size: $fontsize-body-m;
+    font-weight: $font-weight-bold;
+  }
+
+  &.visible {
+    visibility: visible;
+  }
+
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: 7px;
+  }
+
+  span {
+    margin-left: 5px;
+  }
+}
+
+.warning-label__container {
+  display: flex;
+  align-items: center;
 }

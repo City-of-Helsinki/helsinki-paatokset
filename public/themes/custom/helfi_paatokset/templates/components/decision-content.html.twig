@@ -10,6 +10,17 @@
       </div>
     {% endif %}
 
+    {% if not selectedDecision.field_is_decision.value %}
+    <div class="motion-tag">
+      <div class="warning-label">
+        <div class="warning-label__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This is a motion'|t } %}
+          <span>{{ 'This is a motion'|t }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="issue-content__title">
       <h2>{{ selectedDecision.field_full_title.value }}</h2>
     </div>
@@ -32,6 +43,7 @@
 
 <div class="issue-content__container">
   <div{{ content_attributes.addClass('issue-content') }}>
+
     {{ decision_content.main }}
     {% if vote_results %}
       {% include '@helfi_paatokset/components/decision-voting-results.html.twig' %}
