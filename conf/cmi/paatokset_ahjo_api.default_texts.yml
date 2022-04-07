@@ -1,3 +1,6 @@
+hidden_decisions_text:
+  value: "<p>Päätös on piilotettu henkilötietosuojalain nojalla ja se on nähtävissä kaupungin kirjaamossa.</p>\r\n"
+  format: full_html
 documents_description:
   value: "<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista. Pöytäkirja korvaa ilmestyessään esityslistan.</p>\r\n\r\n<p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa.</p>\r\n"
   format: full_html
