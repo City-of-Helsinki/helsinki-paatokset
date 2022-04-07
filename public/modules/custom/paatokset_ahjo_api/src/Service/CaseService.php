@@ -986,6 +986,17 @@ class CaseService {
       return [];
     }
 
+    if ($this->selectedDecision->hasField('field_hide_decision_content') && $this->selectedDecision->get('field_hide_decision_content')->value) {
+      $hidden_decisions_text = \Drupal::config('paatokset_ahjo_api.default_texts')->get('hidden_decisions_text.value');
+      return [
+        'message' => [
+          '#prefix' => '<div class="issue__hidden-message">',
+          '#suffix' => '</div>',
+          '#markup' => $hidden_decisions_text,
+        ],
+      ];
+    }
+
     if ($this->selectedDecision->hasField('field_diary_number') && !$this->selectedDecision->get('field_diary_number')->isEmpty()) {
       $has_case_id = TRUE;
     }
