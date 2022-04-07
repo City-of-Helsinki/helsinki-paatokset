@@ -12,6 +12,14 @@ weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
+  - 'view any unpublished article content'
+  - 'view any unpublished case content'
+  - 'view any unpublished decision content'
+  - 'view any unpublished imported_article content'
   - 'view any unpublished landing_page content'
+  - 'view any unpublished meeting content'
+  - 'view any unpublished news_item content'
   - 'view any unpublished page content'
+  - 'view any unpublished policymaker content'
+  - 'view any unpublished trustee content'
   - 'view unpublished paragraphs'
