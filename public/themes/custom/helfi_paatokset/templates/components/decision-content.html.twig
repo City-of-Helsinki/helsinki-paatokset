@@ -43,7 +43,7 @@
 
 <div class="issue-content__container">
   <div{{ content_attributes.addClass('issue-content') }}>
-
+    {{ decision_content.message }}
     {{ decision_content.main }}
     {% if vote_results %}
       {% include '@helfi_paatokset/components/decision-voting-results.html.twig' %}
