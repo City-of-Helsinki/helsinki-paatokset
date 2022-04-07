@@ -6,4 +6,4 @@ id: node__decision
 label: 'Sisältö: Decision'
 tags:
   canonical_url: '[current-page:url]?paatos=[current-page:query:asia]'
-  title: '[node:title] – [node:field_dm_org_name:value] | [site:name] | Helsingin Kaupunki'
+  title: '[node:title] – [node:field_dm_org_name:value] | [site:name] | [site:page-title-suffix]'
