@@ -67,6 +67,7 @@
   }
 
   .option {
+    margin-top:0;
     height: 52px;
     display: flex;
     align-items: center;
@@ -93,7 +94,7 @@
     cursor: pointer;
 
     &:not(.selected):hover {
-      background-color: var(--color-bus);
+      background-color: #000;
       a {
         color: $color-white;
       }
@@ -120,6 +121,9 @@
   overflow-x: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  position: relative;
+  z-index: 2;
+  background: #fff;
 
   .paatokset__link-plain:hover {
     color: inherit;

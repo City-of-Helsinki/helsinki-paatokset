@@ -297,3 +297,10 @@
     }
   }
 }
+
+/* Quick search form fixes */
+.paatokset-search--decisions, .paatokset-search-wrapper {
+  button + ul li {
+    margin-top: 0;
+  }
+}
