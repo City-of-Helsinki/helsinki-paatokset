@@ -180,8 +180,8 @@
       <div class="accordion-item__content__inner handorgel__content__inner">
         {% for row in initiatives.content %}
         <div>
-          <div class="date">{{ row[0].Date|date("d.m.Y") }}</div>
-          <a class="title" href="{{ row[0].FileURI }}">{{row[0].Title}}</a>
+          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
         </div>
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
@@ -207,8 +207,8 @@
       <div class="accordion-item__content__inner handorgel__content__inner">
         {% for row in resolutions.content %}
         <div>
-          <div class="date">{{ row[0].Date|date("d.m.Y") }}</div>
-          <a class="title" href="{{ row[0].FileURI }}">{{row[0].Title}}</a>
+          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
         </div>
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
