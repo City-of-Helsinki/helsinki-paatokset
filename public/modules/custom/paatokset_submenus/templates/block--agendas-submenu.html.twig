@@ -30,7 +30,7 @@
   {% if (years is not empty ) %}
     <div class="paatokset__decision-tree-container">
       <div class="decision-tree__title">
-        <h4>{{ 'Select year' |trans }}</h4>
+        <span>{{ 'Select year' |trans }}</span>
       </div>
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}

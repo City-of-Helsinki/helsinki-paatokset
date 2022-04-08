@@ -23,7 +23,11 @@
     }
   }
 
-  .decision-tree__title h4 {
+  .decision-tree__title span {
+    display: block;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-top: $spacing-3-xl;
     margin-bottom: $spacing;
   }
 
