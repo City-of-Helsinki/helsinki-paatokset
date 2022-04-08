@@ -395,7 +395,10 @@ class CaseService {
         // Collate votes by council group and type.
         foreach ($json->{$type}->Voters as $voter) {
           if (!isset($grouped_by_party[$voter->CouncilGroup])) {
-            $grouped_by_party[$voter->CouncilGroup] = [];
+            $grouped_by_party[$voter->CouncilGroup] = [
+              'Name' => $voter->CouncilGroup,
+              'Ayes' => 0,
+            ];
           }
           if (!isset($grouped_by_party[$voter->CouncilGroup][$type])) {
             $grouped_by_party[$voter->CouncilGroup][$type] = 1;
@@ -405,6 +408,14 @@ class CaseService {
           }
         }
       }
+
+      usort($grouped_by_party, function ($a, $b) {
+        return strcmp($a['Name'], $b['Name']);
+      });
+
+      usort($grouped_by_party, function ($a, $b) {
+        return $b['Ayes'] - $a['Ayes'];
+      });
 
       $vote_results[] = [
         'accordions' => $results,

@@ -71,9 +71,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for key, row in results.by_party %}
+                {% for row in results.by_party %}
                   <tr class="results-table__row">
-                    <td>{{ key }}</td>
+                    <td>{{ row.Name }}</td>
                     {% if row.Ayes %}
                       <td class="color-kupari">{{ row.Ayes }}</td>
                     {% else %}
