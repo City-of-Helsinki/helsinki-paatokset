@@ -134,8 +134,13 @@
   }
 
   .date {
+    font-size: 16px;
     color: $color-black-light;
     margin-bottom: $spacing-2-xs;
+  }
+  .title {
+    display: block;
+    margin-bottom: $spacing-and-half;
   }
 }
 
