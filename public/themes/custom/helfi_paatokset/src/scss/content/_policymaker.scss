@@ -239,12 +239,6 @@ h2.minutes-list__header {
 
 .minutes__file-link {
   margin-bottom: $spacing-half;
-
-  @include breakpoint($breakpoint-l) {
-    .paatokset-button-link {
-      text-decoration: none;
-    }
-  }
 }
 
 .policymaker-live-sream {
