@@ -39,8 +39,9 @@
 
   a {
     text-decoration: none;
-    &:hover, &:focus {
-      background-color: $color-black-20;
+
+    &:hover .agenda-item__subject {
+        text-decoration: underline;
     }
   }
 
