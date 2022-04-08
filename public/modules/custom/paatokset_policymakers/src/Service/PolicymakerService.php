@@ -1269,15 +1269,21 @@ class PolicymakerService {
         $result = [
           'publish_date' => $dateLong,
           'publish_date_short' => $dateShort,
-          'title' => $entity->label(),
+          'title' => $entity->label() . ' (PDF)',
           'type' => 'minutes-of-discussion',
         ];
 
+        $download_link = NULL;
         if ($entity->get('field_document')->target_id) {
           $file_id = $entity->get('field_document')->target_id;
           $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
-          $result['link'] = $download_link;
         }
+
+        if (!$download_link) {
+          continue;
+        }
+
+        $result['link'] = $download_link;
 
         if ($byYear) {
           $transformedResults[$meeting_year][] = $result;

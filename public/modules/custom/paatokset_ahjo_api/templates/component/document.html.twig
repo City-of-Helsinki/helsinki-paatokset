@@ -29,14 +29,6 @@
         {% endif %}
       </span>
     </div>
-    {% if document.type == 'minutes-of-discussion' %}
-    <div class="paatokset_download-link-container">
-      <span class="paatokset__link-plain">
-        {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
-        {{ 'Download minutes of discussion (PDF)'|trans }}
-      </span>
-    </div>
-    {% endif %}
   </a>
 
   {% if document.decision_link %}
