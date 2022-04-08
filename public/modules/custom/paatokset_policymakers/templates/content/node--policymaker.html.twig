@@ -130,26 +130,26 @@
   ] %}
 
   {% if true in sections %}
-    <div>
-      <section class="content-menu">
-        <h2 class="content-menu__description">{{ 'On this page you will find'|trans }}</h2>
-        <ul>
+    <div class="table-of-contents">
+      <section class="table-of-contents__container">
+        <h2 class="table-of-contents__title">{{ 'On this page you will find'|trans }}</h2>
+        <nav class="table-of-contents__content"><ul class="table-of-contents__list">
           {% if recent_documents %}
-            <li><a href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
+            <li class="table-of-contents__item"><a class="table-of-contents__link" href="#recent-documents">{{ 'Recent documents'|trans }}</a></li>
           {% endif %}
           {% if most_recent_meeting %}
-          <li><a href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
+            <li class="table-of-contents__item"><a class="table-of-contents__link" href="#recent-meetings">{{ 'Most recent meeting recording'|trans }}</a></li>
           {% endif %}
           {% if recent_decisions %}
-          <li><a href="#recent-decisions">{{ 'Recent decisions'|trans }}</a></li>
+            <li class="table-of-contents__item"><a class="table-of-contents__link" href="#recent-decisions">{{ 'Recent decisions'|trans }}</a></li>
           {% endif %}
           {% if meeting_calendar %}
-            <li><a href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
+            <li class="table-of-contents__item"><a class="table-of-contents__link" href="#meeting-calendar">{{ 'Meeting calendar'|trans }}</a></li>
           {% endif %}
           {% if is_organization %}
-            <li><a href="#members-list">{{ 'Members list'|trans }}</a></li>
+            <li class="table-of-contents__item"><a class="table-of-contents__link" href="#members-list">{{ 'Members list'|trans }}</a></li>
           {% endif %}
-        </ul>
+        </ul></nav>
         {% include '@hdbt/misc/icon.twig' with { icon: 'hero-arrow-desktop', class: 'content-menu__arrow' } %}
       </section>
     </div>
@@ -243,7 +243,7 @@
       </section>
     {% endif %}
   {% endif %}
-  
+
   {% if no_content %}
     <div>
       <span>{{ 'Tällä päättäjällä ei ole päätöksiä'|t }}</span>
