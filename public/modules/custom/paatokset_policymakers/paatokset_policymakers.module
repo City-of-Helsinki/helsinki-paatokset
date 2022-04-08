@@ -220,7 +220,7 @@ function paatokset_policymakers_preprocess_field__node__title(&$variables) {
     }
 
     if(!empty($first_name) || !empty($last_name)) {
-      $variables['items'][0]['content']['#context']['value'] = $title . ': ' . $first_name . ' ' . $last_name;
+      $variables['items'][0]['content']['#context']['value'] = $title . ' ' . $first_name . ' ' . $last_name;
     }
   }
 }
