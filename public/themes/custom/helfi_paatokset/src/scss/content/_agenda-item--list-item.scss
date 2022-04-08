@@ -1,12 +1,18 @@
 .policymaker-list-item--agenda-item {
-  a {
+  & > a, & > div {
     display: flex;
     flex-direction: column;
-    text-decoration: none;
+    align-items: flex-start;
 
     @include breakpoint($breakpoint-l) {
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
+
+      .hel-icon {
+        align-self: center;
+        margin-left: auto;
+        margin-right: $spacing-half;
+      }
     }
   }
 
@@ -32,6 +38,7 @@
   }
 
   a {
+    text-decoration: none;
     &:hover, &:focus {
       background-color: $color-black-20;
     }
@@ -40,11 +47,6 @@
   .hel-icon {
     min-width: $spacing-and-half;
     min-height: $spacing-and-half;
-
-    @include breakpoint($breakpoint-l) {
-      margin-left: auto;
-      margin-right: $spacing-half;
-    }
   }
 
   &.policymaker-list-item {
