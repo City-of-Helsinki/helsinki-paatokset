@@ -221,22 +221,32 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     'tags' => ['media_list:declaration_of_affiliation'],
   ];
 
+  function datecmp ($a, $b) {
+    return strtotime($b['Date']) - strtotime($a['Date']);
+  }
+
   if($node->get('field_trustee_initiatives')) {
     $content_initiatives = [];
     foreach($node->get('field_trustee_initiatives') as $json) {
-      $content_initiatives[] = [json_decode($json->value)];
+      $content_initiatives[] = json_decode($json->value, TRUE);
     };
+
+    usort($content_initiatives, 'datecmp');
+
     $variables['initiatives'] = [
       'title' => t('Valtuutetun tekemät aloitteet'),
-      'content' => $content_initiatives
+      'content' => $content_initiatives,
     ];
   };
 
   if($node->get('field_trustee_resolutions')) {
     $content_resolutions = [];
     foreach($node->get('field_trustee_resolutions') as $json) {
-      $content_resolutions[] = [json_decode($json->value)];
+      $content_resolutions[] = json_decode($json->value);
     };
+
+    usort($content_resolutions, 'datecmp');
+
     $variables['resolutions'] = [
       'title' => t('Valtuutetun tekemät ponnet'),
       'content' => $content_resolutions
