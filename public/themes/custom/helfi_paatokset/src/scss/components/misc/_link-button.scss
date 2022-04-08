@@ -4,6 +4,7 @@
   font-weight: $font-weight-medium;
   display: flex;
   align-items: center;
+  text-decoration: none;
 
   i, span {
     margin-right: $gutter - 2px;
@@ -14,11 +15,16 @@
     height: var(--spacing-m);
   }
 
-  @include breakpoint($breakpoint-l) {
+  &:hover {
     text-decoration: underline;
   }
+}
+
+.paatokset__link-plain {
+  color: $color-black;
+  text-decoration: none;
 
   &:hover {
-    background-color: $color-black-20;
+    text-decoration: underline;
   }
 }
