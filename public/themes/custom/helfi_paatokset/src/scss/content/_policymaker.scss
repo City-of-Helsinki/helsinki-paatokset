@@ -77,54 +77,24 @@
   }
 }
 
-.content-menu {
-  background: rgb(247, 247, 248);
-  border-radius: 0;
-  padding: 49px 29px;
-  border-left: 8px rgb(194, 162, 81) solid;
-  z-index:1;
+
+.node--type-policymaker .table-of-contents__container {
   position: relative;
-  margin-bottom: 129px;
+}
+.content-menu__arrow {
+  display: none;
 
-  h2.content-menu__description {
-    font-size: 24px;
-    line-height: 27px;
-    margin-top: 0;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    li {
-      font-size: 20px;
-      font-weight: 700;
-      height: 43px;
-      color: black;
-      line-height: 43px;
-      text-decoration: underline;
-      padding: 16px 0;
-
-      a, a:hover{
-        color: black;
-      }
-    }
-  }
-
-  .content-menu__arrow {
-    display: none;
-
-    @include breakpoint($breakpoint-xs) {
-      display: block;
-      height: 111px;
-      color: #FD4F00;
-      width: 90px;
-      position: absolute;
-      right: 0;
-    }
-  }
-  .hel-icon--arrow-up {
+  &.hel-icon--arrow-up {
     transform: rotate(180deg);
+  }
+
+  @include breakpoint($breakpoint-xs) {
+    display: block;
+    height: 111px;
+    color: #FD4F00;
+    width: 90px;
+    position: absolute;
+    right: 0;
   }
 }
 
