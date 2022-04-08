@@ -7,7 +7,7 @@
 {% endif %}
 <div class="issue__pdf" {% if hide_decision_pdf %}style="display:none;"{% endif %}>
   <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
-    {{ 'Download decision (pdf)'|t }}
+    <span class="hds-button__label">{{ 'Download decision (pdf)'|t }}</span>
   </a>
 </div>
 
