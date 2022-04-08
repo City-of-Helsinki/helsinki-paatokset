@@ -9,6 +9,8 @@
 <div class="policymaker-list-item policymaker-list-item--agenda-item" role="region" aria-label="{{ 'Agenda item'|t }}">
   {% if agenda_item.link %}
     <a href="{{ agenda_item.link }}">
+  {% else %}
+    <div>
   {% endif %}
     {% if agenda_item.index %}
       <span class="agenda-item__index-number">{{ agenda_item.index }}</span>
@@ -17,5 +19,7 @@
   {% if agenda_item.link %}
     {% include '@hdbt/misc/icon.twig' with {icon: 'arrow-right'} %}
     </a>
+  {% else %}
+    </div>
   {% endif %}
 </div>
