@@ -153,16 +153,24 @@
 }
 
 .issue-content__policymaker-label {
-  margin-bottom: 36px;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
-  padding: 10px 0;
   font-weight: bold;
+  padding: 10px $spacing-triple;
+  margin-bottom: 36px;
+  display: inline-block;
+  max-width: 100%;
+  font-size: $fontsize-body-s;
 
   &.policymaker-label--small {
     display: inline-block;
     padding: 10px 40px;
     font-size: 14px;
+  }
+
+  @include breakpoint($breakpoint-m) {
+    display: inline-block;
+    padding: 10px 55px;
   }
 }
 
@@ -229,21 +237,6 @@
 
 .issue__meetings-labels label {
   font-weight: 500;
-}
-
-.issue-content__policymaker-label {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  padding: 10px $spacing-triple;
-  display: inline-block;
-  max-width: 100%;
-  font-size: $fontsize-body-s;
-
-  @include breakpoint($breakpoint-m) {
-    display: inline-block;
-    padding: 10px 55px;
-  }
 }
 
 .issue-dropdown__show-more .paatokset-button-link {
