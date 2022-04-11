@@ -42,8 +42,22 @@ class ContactsBlock extends BlockBase {
       return;
     }
 
+    $policymaker = $this->policymakerService->getPolicymaker();
+    if (!$policymaker instanceof NodeInterface) {
+      return;
+    }
+
     return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
+      '#cache' => [
+        'tags' => [
+          'node:' . $policymaker->id(),
+          'tpr_unit_list',
+        ],
+        'contexts' => [
+          'url.path',
+          'url.query_args',
+        ],
+      ],
       '#title' => t('Contact information'),
       'contacts' => $this->getContacts(),
       '#attributes' => [
