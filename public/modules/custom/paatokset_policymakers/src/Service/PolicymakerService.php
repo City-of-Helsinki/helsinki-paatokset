@@ -857,7 +857,7 @@ class PolicymakerService {
    * @param string $agent_id
    *   Cleaned up version of agent id, without special characters.
    *
-   * @return NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Trustee node, if found.
    */
   public function getTrusteeByPath(string $agent_id): ?NodeInterface {
