@@ -1,5 +1,5 @@
 uuid: 14654594-a163-49e3-953c-e8e476f10437
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_home_district
 field_name: field_trustee_home_district
 entity_type: node
 bundle: trustee
-label: Kotikaupunginosa
+label: 'Home district'
 description: ''
 required: false
 translatable: true
