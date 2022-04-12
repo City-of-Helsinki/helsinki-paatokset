@@ -79,7 +79,7 @@ class PolicymakerNodeViewController extends NodeViewController {
     $node = $this->policymakerService->getPolicyMaker();
 
     if (!$node instanceof EntityInterface) {
-      $node = $this->policymakerService->getTrusteeById($organization);
+      $node = $this->policymakerService->getTrusteeByPath($organization);
     }
 
     if ($node instanceof EntityInterface) {
@@ -97,6 +97,9 @@ class PolicymakerNodeViewController extends NodeViewController {
    */
   public function policymakerTitle(string $organization) {
     $policymaker = $this->policymakerService->getPolicyMaker();
+    if (!$policymaker instanceof EntityInterface) {
+      $policymaker = $this->policymakerService->getTrusteeByPath($organization);
+    }
     if ($policymaker instanceof NodeInterface) {
       return $policymaker->title->value;
     }
