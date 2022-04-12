@@ -1,5 +1,5 @@
 uuid: 03f9b63d-1a22-4337-abf5-0ea3bae1062f
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_phone
 field_name: field_trustee_phone
 entity_type: node
 bundle: trustee
-label: Puhelinnumero
+label: 'Phone number'
 description: ''
 required: false
 translatable: true

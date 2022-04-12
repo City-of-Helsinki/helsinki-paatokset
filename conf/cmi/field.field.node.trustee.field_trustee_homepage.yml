@@ -1,5 +1,5 @@
 uuid: 15c298b8-542d-435e-a0ca-74664d587beb
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ id: node.trustee.field_trustee_homepage
 field_name: field_trustee_homepage
 entity_type: node
 bundle: trustee
-label: Kotisivut
+label: Homepage
 description: ''
 required: false
 translatable: true

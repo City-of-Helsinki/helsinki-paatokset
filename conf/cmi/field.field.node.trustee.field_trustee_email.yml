@@ -1,5 +1,5 @@
 uuid: cf28dd36-cae5-4025-a62a-4647913becee
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ id: node.trustee.field_trustee_email
 field_name: field_trustee_email
 entity_type: node
 bundle: trustee
-label: Sähköposti
+label: Email
 description: ''
 required: false
 translatable: true
