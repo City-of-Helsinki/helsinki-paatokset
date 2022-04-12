@@ -808,10 +808,12 @@ class PolicymakerService {
       return NULL;
     }
 
+    $trustee_id = \Drupal::service('pathauto.alias_cleaner')->cleanString($node->get('field_trustee_id')->value);
+
     $localized_route = 'policymaker.page.' . $langcode;
     if ($this->routeExists($localized_route)) {
       return Url::fromRoute($localized_route, [
-        'organization' => $node->get('field_trustee_id')->value,
+        'organization' => $trustee_id,
       ])->setAbsolute(TRUE);
     }
     return NULL;
@@ -841,6 +843,40 @@ class PolicymakerService {
     }
 
     return Node::load($id);
+  }
+
+  /**
+   * Get trustee node by path alias segment.
+   *
+   * @param string $agent_id
+   *   Cleaned up version of agent id, without special characters.
+   *
+   * @return NodeInterface|null
+   *   Trustee node, if found.
+   */
+  public function getTrusteeByPath(string $agent_id): ?NodeInterface {
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $fallback_prefix = '/paattajat';
+    $fallback_lang = 'fi';
+    if ($currentLanguage === 'sv') {
+      $path_prefix = '/beslutsfattare';
+    }
+    else {
+      $path_prefix = '/paattajat';
+    }
+
+    $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $agent_id, $currentLanguage);
+    $fallback_path = \Drupal::service('path_alias.manager')->getPathByAlias($fallback_prefix . '/' . $agent_id, $fallback_lang);
+
+    $node = NULL;
+    if (preg_match('/node\/(\d+)/', $path, $matches)) {
+      $node = Node::load($matches[1]);
+    }
+    elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
+      $node = Node::load($matches[1]);
+    }
+
+    return $node;
   }
 
   /**
