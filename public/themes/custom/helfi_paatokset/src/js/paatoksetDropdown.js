@@ -186,6 +186,11 @@ jQuery(function($) {
         } else {
           $('.issue__pdf').css('display', 'none');
         }
+        if (data.language_urls) {
+          for (langcode in data.language_urls) {
+            $('.language-link[lang="' + langcode + '"]').attr('href', data.language_urls[langcode]);
+          }
+        }
         if (data.show_warning) {
           showWarning();
         }

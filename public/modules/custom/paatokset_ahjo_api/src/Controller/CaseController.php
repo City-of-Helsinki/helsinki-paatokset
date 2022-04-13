@@ -58,6 +58,16 @@ class CaseController extends ControllerBase {
       $other_decisions_link = $other_decisions_link->toString();
     }
 
+    $languages = \Drupal::languageManager()->getLanguages();
+    $language_urls = [];
+    foreach ($languages as $langcode => $language) {
+      $lang_url = $this->caseService->getCaseUrlFromNode(NULL, $langcode);
+      if ($lang_url) {
+        $lang_url->setOption('language', $language);
+        $language_urls[$langcode] = $lang_url->toString();
+      }
+    }
+
     $content = twig_render_template(
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
       [
@@ -87,6 +97,7 @@ class CaseController extends ControllerBase {
 
     return new Response(json_encode([
       'content' => $content,
+      'language_urls' => $language_urls,
       'attachments' => $attachments,
       'decision_navigation' => $decision_navigation,
       'show_warning' => !empty($data['next_decision']),
