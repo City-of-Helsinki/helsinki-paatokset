@@ -633,6 +633,36 @@ class CaseService {
   }
 
   /**
+   * Get translated decision org name.
+   *
+   * @param string|null $decision_id
+   *   Decision ID, or use default decision.
+   *
+   * @return string|null
+   *   Org name, if found.
+   */
+  public function getDecisionOrgName(?string $decision_id = NULL): ?string {
+    if (!$decision_id) {
+      $decision = $this->selectedDecision;
+    }
+    else {
+      $decision = $this->getDecision($decision_id);
+    }
+
+    if (!$decision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    if (!$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
+      return NULL;
+    }
+
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    return $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value);
+  }
+
+  /**
    * Format decision label.
    *
    * @param Drupal\node\NodeInterface $node
@@ -642,6 +672,13 @@ class CaseService {
    *   Formatted label.
    */
   private function formatDecisionLabel(NodeInterface $node): string {
+    $org_label = NULL;
+    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+      /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+      $policymakerService = \Drupal::service('paatokset_policymakers');
+      $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value);
+    }
+
     $meeting_number = $node->field_meeting_sequence_number->value;
     if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
       $decision_timestamp = strtotime($node->field_meeting_date->value);
@@ -656,8 +693,8 @@ class CaseService {
       $decision_date = $meeting_number . '/' . $decision_date;
     }
 
-    if ($node->field_dm_org_name->value) {
-      $label = $node->field_dm_org_name->value . ' ' . $decision_date;
+    if ($org_label) {
+      $label = $org_label . ' ' . $decision_date;
     }
     else {
       $label = $node->title->value;

@@ -1447,6 +1447,23 @@ class PolicymakerService {
   }
 
   /**
+   * Get organization name by ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @return string|null
+   *   Organization anme or NULL if policymaker can't be found.
+   */
+  public function getPolicymakerNameById(string $id): ?string {
+    $node = $this->getPolicyMaker($id);
+    if ($node instanceof NodeInterface) {
+      return $node->get('field_ahjo_title')->value;
+    }
+    return NULL;
+  }
+
+  /**
    * Gets policymaker color coding from node.
    *
    * @param Drupal\node\NodeInterface|null $node
