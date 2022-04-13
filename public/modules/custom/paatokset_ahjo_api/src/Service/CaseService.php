@@ -418,15 +418,23 @@ class CaseService {
   /**
    * Get localized case URL from node.
    *
-   * @param \Drupal\node\NodeInterface $case
-   *   Case node.
+   * @param \Drupal\node\NodeInterface|null $case
+   *   Case node, or default.
    * @param string|null $langcode
    *   Langcode to get URL for. Defaults to current language.
    *
    * @return \Drupal\Core\Url|null
    *   Localized URL, if found.
    */
-  public function getCaseUrlFromNode(NodeInterface $case, ?string $langcode = NULL): ?Url {
+  public function getCaseUrlFromNode(?NodeInterface $case = NULL, ?string $langcode = NULL): ?Url {
+    if ($case === NULL) {
+      $case = $this->case;
+    }
+
+    if (!$case instanceof NodeInterface) {
+      return NULL;
+    }
+
     if ($langcode === NULL) {
       $langcode === $this->language;
       $strict_lang = FALSE;
@@ -449,8 +457,13 @@ class CaseService {
       $case_url = $case->toUrl();
     }
 
-    // Use current language for getting the current request query.
-    $decision_id = \Drupal::request()->query->get($this->decisionQueryKey);
+    // Get decision ID from selected decision.
+    $decision_id = NULL;
+    if ($this->selectedDecision instanceof NodeInterface) {
+      $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
+      $decision_id = $decision->get('field_decision_native_id')->value;
+    }
+
     if ($decision_id !== NULL) {
       $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
     }
@@ -461,15 +474,17 @@ class CaseService {
   /**
    * Get localized decision URL from node.
    *
-   * @param Drupal\node\NodeInterface $decision
-   *   Decision node.
+   * @param Drupal\node\NodeInterface|null $decision
+   *   Decision node, or default.
    * @param string|null $langcode
    *   Langcode to get URL for. Defaults to current language.
+   * @param bool $get_translation
+   *   Get translated decision via unique ID field.
    *
    * @return Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
    */
-  public function getDecisionUrlFromNode(NodeInterface $decision, ?string $langcode = NULL): ?Url {
+  public function getDecisionUrlFromNode(?NodeInterface $decision = NULL, ?string $langcode = NULL, bool $get_translation = FALSE): ?Url {
     // Which language to get URL for.
     if ($langcode === NULL) {
       $langcode = $this->language;
@@ -480,13 +495,30 @@ class CaseService {
       $strict_lang = TRUE;
     }
 
+    if ($decision === NULL) {
+      $decision = $this->selectedDecision;
+    }
+
+    if (!$decision instanceof NodeInterface) {
+      return NULL;
+    }
+
     if (!$decision->hasField('field_decision_native_id') || $decision->get('field_decision_native_id')->isEmpty()) {
       return $decision->toUrl();
     }
 
+    // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
-      return $decision->toUrl();
+      $localizedRoute = 'paatokset_case.' . $langcode;
+      if ($this->routeExists($localizedRoute)) {
+        $decision_id = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
+        $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision_id]);
+        return $case_url;
+      }
+      return NULL;
     }
+
+    $decision = $this->getDecisionTranslation($decision, $langcode);
 
     $decision_id = $decision->get('field_decision_native_id')->value;
 
@@ -534,6 +566,46 @@ class CaseService {
 
     // If route isn't localized for current language return decision's URL.
     return $decision->toUrl();
+  }
+
+  /**
+   * Get translated version of decision by unique ID.
+   *
+   * @param \Drupal\node\NodeInterface $decision
+   *   Decision node.
+   * @param string $langcode
+   *   Which language version to get.
+   *
+   * @return \Drupal\node\NodeInterface
+   *   Translated or original decision node.
+   */
+  public function getDecisionTranslation(NodeInterface $decision, ?string $langcode = NULL): NodeInterface {
+    if ($langcode === NULL) {
+      $langcode = $this->language;
+    }
+
+    // If we already have the correct langcode, return the original node.
+    if ($decision->get('langcode')->value === $langcode) {
+      return $decision;
+    }
+
+    // If we can't get unique ID field, return the original node.
+    if (!$decision->hasField('field_unique_id') || $decision->get('field_unique_id')->isEmpty()) {
+      return $decision;
+    }
+
+    // Attempt to get node with same unique ID but correct langcode.
+    $node = $this->decisionQuery([
+      'unique_id' => $decision->get('field_unique_id')->value,
+      'langcode' => $langcode,
+    ]);
+
+    // If language version can't be found, return original node.
+    if (empty($node)) {
+      return $decision;
+    }
+
+    return reset($node);
   }
 
   /**
@@ -1351,6 +1423,10 @@ class CaseService {
 
     if (isset($params['decision_id'])) {
       $query->condition('field_decision_native_id', $params['decision_id']);
+    }
+
+    if (isset($params['unique_id'])) {
+      $query->condition('field_unique_id', $params['unique_id']);
     }
 
     $ids = $query->execute();
