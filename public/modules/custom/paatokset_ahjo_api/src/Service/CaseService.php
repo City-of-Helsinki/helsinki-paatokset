@@ -573,8 +573,8 @@ class CaseService {
    *
    * @param \Drupal\node\NodeInterface $decision
    *   Decision node.
-   * @param string $langcode
-   *   Which language version to get.
+   * @param string|null $langcode
+   *   Which language version to get, or default.
    *
    * @return \Drupal\node\NodeInterface
    *   Translated or original decision node.
