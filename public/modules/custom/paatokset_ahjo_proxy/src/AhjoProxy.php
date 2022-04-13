@@ -271,7 +271,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @return array
    *   Meeting data inside 'meetings' to normalize output for migrations.
    */
-  public function getSingleMeeting(string $id, ?string $query_string, bool $bypass_cache = TRUE): array {
+  public function getSingleMeeting(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
     if ($query_string === NULL) {
       $query_string = '';
     }
@@ -293,7 +293,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @return array
    *   Cases data inside 'cases' to normalize output for migrations.
    */
-  public function getSingleCase(string $id, ?string $query_string, bool $bypass_cache = TRUE): array {
+  public function getSingleCase(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
     if ($query_string === NULL) {
       $query_string = '';
     }
@@ -315,7 +315,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @return array
    *   Decision data inside 'decisions' to normalize output for migrations.
    */
-  public function getSingleDecision(string $id, ?string $query_string, bool $bypass_cache = TRUE): array {
+  public function getSingleDecision(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
     if ($query_string === NULL) {
       $query_string = '';
     }
