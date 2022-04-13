@@ -115,6 +115,19 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   $policymakerService = \Drupal::service('paatokset_policymakers');
 
   $route_name = $route->getRouteName();
+
+  // Special case for getting case URLs.
+  // This is because we might want to get translated decision IDs.
+  if (strpos($route_name, 'paatokset_case') !== FALSE) {
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $url = $caseService->getCaseUrlFromNode(NULL, $langCode);
+    if ($url === NULL) {
+      $url = $caseService->getDecisionUrlFromNode(NULL, $langCode);
+    }
+    return $url;
+  }
+
   $localized_route = str_replace($currentLanguage, $langCode, $route_name);
 
   // Quit early if route doesn't exist.
@@ -142,17 +155,6 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   }
 
   $url = Url::fromRoute($localized_route, $parameters);
-
-  // Get decision ID query parameter.
-  if (strpos($route_name, 'paatokset_case') !== FALSE) {
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-
-    $decision_id = \Drupal::request()->query->get($caseService->getDecisionQueryKey($currentLanguage));
-    if ($decision_id) {
-      $url->setOption('query', [$caseService->getDecisionQueryKey($langCode) => $decision_id]);
-    }
-  }
 
   return $url;
 }
