@@ -25,9 +25,9 @@
       <h2>{{ selectedDecision.field_full_title.value }}</h2>
     </div>
 
-    {% if selectedDecision.field_dm_org_name.value %}
+    {% if decision_org_name %}
       <div class="issue-content__policymaker-label {{ selected_class }}">
-        <span>{{ selectedDecision.field_dm_org_name.value }} </span>
+        <span>{{ decision_org_name }} </span>
       </div>
     {% endif %}
 
