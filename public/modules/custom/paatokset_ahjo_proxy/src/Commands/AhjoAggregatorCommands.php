@@ -12,6 +12,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\node\Entity\Node;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Ahjo Aggregator drush commands.
@@ -1202,6 +1203,47 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $this->logger()->info('Created ' . $count . ' items.');
+  }
+
+  /**
+   * List decisions without records.
+   *
+   * @command ahjo-proxy:list-decisions-without-records
+   *
+   * @aliases ap:ldwr
+   */
+  public function listDecisionsWithoutRecord(): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->latestRevision();
+
+    $or = $query->orConditionGroup();
+    $or->notExists('field_decision_record');
+    $or->notExists('field_meeting_date');
+    $or->condition('field_meeting_date', '2001-01-01T00:00:00');
+    $query->condition($or);
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+    $nodes = Node::loadMultiple($ids);
+
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'ID', 'NID', 'UniqueID',
+    ]);
+
+    $count = 0;
+    foreach ($nodes as $node) {
+      $table->addRow([
+        $node->field_decision_native_id->value,
+        $node->id(),
+        $node->field_unique_id->value,
+      ]);
+      $count++;
+    }
+    $table->render();
+    $this->writeln('Total: ' . $count);
   }
 
   /**
