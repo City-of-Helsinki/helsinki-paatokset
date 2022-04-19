@@ -83,7 +83,7 @@ class AhjoProxyController extends ControllerBase {
    *   Native ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   JSON data for meetings.
+   *   JSON data for decisions.
    */
   public function decisionsSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
@@ -100,7 +100,7 @@ class AhjoProxyController extends ControllerBase {
    *   Case ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   JSON data for meetings.
+   *   JSON data for cases.
    */
   public function casesSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
@@ -117,11 +117,28 @@ class AhjoProxyController extends ControllerBase {
    *   Agent ID.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   JSON data for meetings.
+   *   JSON data for trustees.
    */
   public function trusteesSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getSingleTrustee($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Get data for a single organization.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Organization ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for organizations.
+   */
+  public function organizationSingle(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getSingleOrganization($id, $query_string);
     return new JsonResponse($data);
   }
 

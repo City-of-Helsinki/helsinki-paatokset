@@ -372,6 +372,32 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get single organization from Ahjo API.
+   *
+   * @param string $id
+   *   Organization ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Organization data inside 'decisionMakers' to normalize output.
+   */
+  public function getSingleOrganization(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $agent_url = self::API_BASE_URL . 'organization?orgid=' . $id . '&' . urldecode($query_string);
+    $org = $this->getContent($agent_url, $bypass_cache);
+    return [
+      'decisionMakers' => [
+        ['Organization' => $org],
+      ],
+    ];
+  }
+
+  /**
    * Get aggregated data.
    *
    * @param string $dataset
@@ -1421,6 +1447,16 @@ class AhjoProxy implements ContainerInjectionInterface {
         $migration_url = '/ahjo-proxy/trustees/single/';
         break;
 
+      case 'organization':
+        $migration_id = 'ahjo_decisionmakers:single';
+        $migration_url = '/ahjo-proxy/organization/single/';
+        break;
+
+      case 'organization_sv':
+        $migration_id = 'ahjo_decisionmakers:single_sv';
+        $migration_url = '/ahjo-proxy/organization/single/';
+        break;
+
       default:
         $migration_id = NULL;
         $migration_url = NULL;
@@ -1444,6 +1480,10 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $endpoint_url = $base_url . $migration_url . $id;
+
+    if (strpos($migration_id, '_sv') !== FALSE) {
+      $endpoint_url .= '?apireglang=sv';
+    }
 
     // Attempt to fetch content first, because
     // migration doesn't complain about empty results.
