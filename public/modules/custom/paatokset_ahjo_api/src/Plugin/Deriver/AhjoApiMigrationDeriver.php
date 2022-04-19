@@ -33,28 +33,12 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'single',
     ];
 
-    $only_all = [
-      'ahjo_decisionmakers',
-    ];
-
-    $sv_translations = [
-      'ahjo_decisionmakers',
-    ];
-
-    if (in_array($base_plugin_definition['id'], $only_all)) {
-      $derivatives = ['all'];
+    if ($base_plugin_definition['id'] === 'ahjo_decisionmakers') {
+      $derivatives = ['all', 'all_sv', 'single', 'single_sv'];
     }
 
     if ($base_plugin_definition['id'] === 'ahjo_trustees') {
       $derivatives = ['all', 'council', 'single'];
-    }
-
-    if (in_array($base_plugin_definition['id'], $sv_translations)) {
-      $sv_derivatives = [];
-      foreach ($derivatives as $value) {
-        $sv_derivatives[] = $value . '_sv';
-      }
-      $derivatives = array_merge($derivatives, $sv_derivatives);
     }
 
     foreach ($derivatives as $key) {
@@ -138,6 +122,8 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'ahjo_decisionmakers' => [
         'all' => '/ahjo-proxy/aggregated/decisionmakers',
         'all_sv' => '/ahjo-proxy/aggregated/decisionmakers_sv',
+        'single' => '/ahjo-proxy/organization/single',
+        'single_sv' => '/ahjo-proxy/organization/single',
       ],
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees',
