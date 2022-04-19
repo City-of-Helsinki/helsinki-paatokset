@@ -1247,6 +1247,92 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * List missing decision makers.
+   *
+   * @command ahjo-proxy:list-missing-decision-makers
+   *
+   * @aliases ap:lmdm
+   */
+  public function listMissingDecisionMakers(): void {
+    $database = \Drupal::database();
+
+    $pm_query = $database->select('node__field_policymaker_id', 'field')
+      ->fields('field', ['field_policymaker_id_value'])
+      ->condition('field.bundle', 'policymaker');
+    $pm_results = $pm_query->distinct()->execute()->fetchAll();
+
+    $pm_ids = [];
+    foreach ($pm_results as $result) {
+      $pm_ids[] = $result->field_policymaker_id_value;
+    }
+
+    if (empty($pm_ids)) {
+      $this->writeln('No policymaker IDs found.');
+      return;
+    }
+
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'Organization ID',
+    ]);
+
+    $decision_query = $database->select('node__field_policymaker_id', 'field')
+      ->fields('field', ['field_policymaker_id_value'])
+      ->condition('field.bundle', 'decision');
+    $decision_results = $decision_query->distinct()->execute()->fetchAll();
+    $not_found = 0;
+    foreach ($decision_results as $result) {
+      if (!in_array($result->field_policymaker_id_value, $pm_ids)) {
+        $table->addRow([
+          $result->field_policymaker_id_value,
+        ]);
+        $not_found++;
+      }
+    }
+
+    $table->render();
+    $this->writeln('Not found: ' . $not_found);
+  }
+
+  /**
+   * List decisions by organization ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @command ahjo-proxy:list-decisions-by-org
+   *
+   * @aliases ap:ldbo
+   */
+  public function listDecisionsByPolicymakerId(string $id): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_policymaker_id', $id)
+      ->latestRevision();
+
+    $ids = $query->execute();
+
+    $nodes = Node::loadMultiple($ids);
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'ID', 'NID', 'Organization ID',
+    ]);
+
+    $count = 0;
+    foreach ($nodes as $node) {
+      $table->addRow([
+        $node->field_decision_native_id->value,
+        $node->id(),
+        $node->field_policymaker_id->value,
+      ]);
+      $count++;
+    }
+    $table->render();
+    $this->writeln('Total: ' . $count);
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @command ahjo-proxy:store-static-files
