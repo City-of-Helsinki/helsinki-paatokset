@@ -1333,6 +1333,117 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * List decisions by meeting ID.
+   *
+   * @param string $meeting_id
+   *   Meeting ID.
+   *
+   * @command ahjo-proxy:list-meeting-agenda
+   *
+   * @aliases ap:lma
+   */
+  public function listMeetingAgenda(string $meeting_id): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->range(0, 1)
+      ->condition('field_meeting_id', $meeting_id)
+      ->latestRevision();
+
+    $ids = $query->execute();
+
+    $nodes = Node::loadMultiple($ids);
+    if (empty($nodes)) {
+      $this->writeln(sprintf('No meeting found with ID: %s', $meeting_id));
+      return;
+    }
+
+    $node = reset($nodes);
+
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'ID', 'Lang', 'Type', 'Title',
+    ]);
+
+    if (!$node->hasField('field_meeting_agenda')) {
+      return;
+    }
+
+    $table->setHeaderTitle($node->title->value);
+
+    foreach ($node->get('field_meeting_agenda') as $field) {
+      $item = json_decode($field->value, TRUE);
+
+      if (!isset($item['PDF'])) {
+        continue;
+      }
+
+      if (!isset($item['PDF']['NativeId'])) {
+        continue;
+      }
+
+      $title = substr($item['AgendaItem'], 0, 50);
+
+      $table->addRow([
+        $item['PDF']['NativeId'],
+        $item['PDF']['Language'],
+        $item['PDF']['Type'],
+        $title,
+      ]);
+    }
+
+    $table->render();
+  }
+
+  /**
+   * Import decisions for meeting, based on ID.
+   *
+   * @param string $meeting_id
+   *   Meeting ID.
+   *
+   * @command ahjo-proxy:import-meeting-decisions
+   *
+   * @aliases ap:imd
+   */
+  public function importMeetingDecisions(string $meeting_id): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->range(0, 1)
+      ->condition('field_meeting_id', $meeting_id)
+      ->latestRevision();
+
+    $ids = $query->execute();
+
+    $nodes = Node::loadMultiple($ids);
+    if (empty($nodes)) {
+      $this->writeln(sprintf('No meeting found with ID: %s', $meeting_id));
+      return;
+    }
+
+    $node = reset($nodes);
+
+    foreach ($node->get('field_meeting_agenda') as $field) {
+      $item = json_decode($field->value, TRUE);
+
+      if (!isset($item['PDF'])) {
+        continue;
+      }
+
+      if (!isset($item['PDF']['NativeId'])) {
+        continue;
+      }
+
+      if (!isset($item['PDF']['Type']) || $item['PDF']['Type'] !== 'päätös') {
+        continue;
+      }
+
+      $this->writeln(sprintf('Decision added to queue: %s', $item['PDF']['NativeId']));
+      $this->ahjoProxy->addItemToAhjoQueue('decisions', $item['PDF']['NativeId']);
+    }
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @param string|null $filename
