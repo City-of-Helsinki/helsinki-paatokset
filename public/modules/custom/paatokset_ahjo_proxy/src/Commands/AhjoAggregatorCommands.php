@@ -1335,6 +1335,9 @@ class AhjoAggregatorCommands extends DrushCommands {
   /**
    * Store static files into filesystem.
    *
+   * @param string|null $filename
+   *   Which file to store.
+   *
    * @command ahjo-proxy:store-static-files
    *
    * @usage ahjo-proxy:store-static-files
@@ -1342,8 +1345,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:fs
    */
-  public function storeStaticFiles() {
-    $static_files = [
+  public function storeStaticFiles(?string $filename = NULL): void {
+    $allowed_static_files = [
       'cases_all.json',
       'cases_latest.json',
       'meetings_all.json',
@@ -1362,6 +1365,17 @@ class AhjoAggregatorCommands extends DrushCommands {
       'trustees_council.json',
       'callback_test.json',
     ];
+
+    if ($filename === NULL) {
+      $static_files = $allowed_static_files;
+    }
+    elseif (in_array($filename, $allowed_static_files)) {
+      $static_files = [$filename];
+    }
+    else {
+      $this->writeln('Invalid filename.');
+      return;
+    }
 
     foreach ($static_files as $file) {
       $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
