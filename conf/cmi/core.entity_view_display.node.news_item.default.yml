@@ -33,7 +33,7 @@ content:
     weight: 5
     region: content
   field_lead_in:
-    type: basic_string
+    type: text_span
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -49,7 +49,7 @@ content:
     weight: 4
     region: content
   field_main_image_caption:
-    type: basic_string
+    type: text_span
     label: inline
     settings: {  }
     third_party_settings: {  }

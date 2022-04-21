@@ -51,6 +51,7 @@ settings:
             - PasteFromWord
             - SpecialChar
             - Source
+            - language_selector
             - Table
   plugins:
     drupallink:

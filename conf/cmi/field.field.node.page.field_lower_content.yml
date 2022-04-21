@@ -53,6 +53,7 @@ settings:
       map: map
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
+      contact_card_listing: contact_card_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -69,6 +70,12 @@ settings:
         enabled: true
       columns:
         weight: -28
+        enabled: true
+      contact_card:
+        weight: 30
+        enabled: false
+      contact_card_listing:
+        weight: 31
         enabled: true
       content_cards:
         weight: -23
@@ -114,6 +121,9 @@ settings:
         enabled: true
       sidebar_text:
         weight: 41
+        enabled: false
+      social_media_link:
+        weight: 46
         enabled: false
       text:
         weight: -29
