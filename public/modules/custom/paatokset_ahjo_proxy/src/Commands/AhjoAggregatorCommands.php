@@ -249,7 +249,10 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $query_string = '';
     if (!empty($options['start'])) {
-      $query_string .= 'start=' . $options['start'];
+      $query_string .= 'changedsince=' . $options['start'];
+    }
+    if (!empty($options['end'])) {
+      $query_string .= 'changedbefore=' . $options['end'];
     }
 
     $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
