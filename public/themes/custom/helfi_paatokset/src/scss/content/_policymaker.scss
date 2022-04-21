@@ -78,9 +78,17 @@
 }
 
 
+
+
 .node--type-policymaker .table-of-contents__container {
   position: relative;
+  margin-bottom: $spacing-4-xl;
 }
+
+.table-of-contents + .policymaker-image {
+  padding-top: $spacing-2-xl;
+}
+
 .content-menu__arrow {
   display: none;
 
