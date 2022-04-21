@@ -231,6 +231,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Custom timestamp for fetching data.
    * @option filename
    *   Filename to use instead of default. Can be used to split/batch results.
+   * @option langcode
+   *   Langcode to get data for.
    *
    * @usage ahjo-proxy:get decisionmakers
    *   Stores all decisionmakers into decisionmakers.json
@@ -242,6 +244,7 @@ class AhjoAggregatorCommands extends DrushCommands {
   public function get(string $endpoint, array $options = [
     'start' => NULL,
     'end' => NULL,
+    'langcode' => NULL,
     'filename' => NULL,
   ]): void {
     $data = [];
@@ -253,6 +256,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     if (!empty($options['end'])) {
       $query_string .= 'changedbefore=' . $options['end'];
+    }
+    if (!empty($options['langcode'])) {
+      $query_string .= 'apireqlang=' . $options['langcode'];
     }
 
     $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
@@ -1473,6 +1479,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       'resolutions_latest.json',
       'decisionmakers.json',
       'decisionmakers_sv.json',
+      'decisionmakers_latest.json',
+      'decisionmakers_latest_sv.json',
       'positionsoftrust.json',
       'positionsoftrust_council.json',
       'trustees.json',
