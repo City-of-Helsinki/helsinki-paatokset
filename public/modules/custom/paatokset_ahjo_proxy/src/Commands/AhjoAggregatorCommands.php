@@ -242,6 +242,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:get
    */
   public function get(string $endpoint, array $options = [
+    'dataset' => NULL,
     'start' => NULL,
     'end' => NULL,
     'changedsince' => NULL,
@@ -254,6 +255,18 @@ class AhjoAggregatorCommands extends DrushCommands {
     $data = [];
     $list_key = $this->getListKey($endpoint);
 
+    if (!empty($options['dataset'])) {
+      $dataset = $options['dataset'];
+    }
+    else {
+      $dataset = 'all';
+    }
+
+    if ($dataset === 'latest') {
+      $week_ago = strtotime("-1 week");
+      $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
+    }
+
     $query_string = '';
     if (!empty($options['start'])) {
       $query_string .= 'start=' . $options['start'];
@@ -264,11 +277,16 @@ class AhjoAggregatorCommands extends DrushCommands {
     if (!empty($options['changedsince'])) {
       $query_string .= '&changedsince=' . $options['changedsince'];
     }
-    if (!empty($options['changedbefore'])) {
-      $query_string .= '&changedbefore=' . $options['changedbefore'];
+    elseif ($endpoint === 'decisionmakers' && $dataset === 'latest') {
+      $query_string .= '&changedsince=' . $timestamp;
     }
+
     if (!empty($options['handledsince'])) {
       $query_string .= '&handledsince=' . $options['handledsince'];
+    }
+
+    if (!empty($options['changedbefore'])) {
+      $query_string .= '&changedbefore=' . $options['changedbefore'];
     }
     if (!empty($options['handledbefore'])) {
       $query_string .= '&handledbefore=' . $options['handledbefore'];
