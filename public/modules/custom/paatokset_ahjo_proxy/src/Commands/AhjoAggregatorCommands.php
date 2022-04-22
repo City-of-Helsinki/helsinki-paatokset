@@ -225,9 +225,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @command ahjo-proxy:get
    *
-   * @option start
+   * @option changedsince
    *   Custom timestamp for fetching data.
-   * @option end
+   * @option changedbefore
    *   Custom timestamp for fetching data.
    * @option filename
    *   Filename to use instead of default. Can be used to split/batch results.
@@ -244,6 +244,10 @@ class AhjoAggregatorCommands extends DrushCommands {
   public function get(string $endpoint, array $options = [
     'start' => NULL,
     'end' => NULL,
+    'changedsince' => NULL,
+    'changedbefore' => NULL,
+    'handledsince' => NULL,
+    'handledbefore' => NULL,
     'langcode' => NULL,
     'filename' => NULL,
   ]): void {
@@ -252,13 +256,25 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $query_string = '';
     if (!empty($options['start'])) {
-      $query_string .= 'changedsince=' . $options['start'];
+      $query_string .= 'start=' . $options['start'];
     }
     if (!empty($options['end'])) {
-      $query_string .= 'changedbefore=' . $options['end'];
+      $query_string .= '&end=' . $options['end'];
+    }
+    if (!empty($options['changedsince'])) {
+      $query_string .= '&changedsince=' . $options['changedsince'];
+    }
+    if (!empty($options['changedbefore'])) {
+      $query_string .= '&changedbefore=' . $options['changedbefore'];
+    }
+    if (!empty($options['handledsince'])) {
+      $query_string .= '&handledsince=' . $options['handledsince'];
+    }
+    if (!empty($options['handledbefore'])) {
+      $query_string .= '&handledbefore=' . $options['handledbefore'];
     }
     if (!empty($options['langcode'])) {
-      $query_string .= 'apireqlang=' . $options['langcode'];
+      $query_string .= '&apireqlang=' . $options['langcode'];
     }
 
     $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);

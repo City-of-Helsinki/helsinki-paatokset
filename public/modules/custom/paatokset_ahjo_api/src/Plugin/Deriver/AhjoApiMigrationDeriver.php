@@ -40,7 +40,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
         'latest',
         'latest_sv',
         'single',
-        'single_sv'
+        'single_sv',
       ];
     }
 
