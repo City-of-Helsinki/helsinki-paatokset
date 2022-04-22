@@ -1,0 +1,980 @@
+{
+  "decisionMakers": [
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Kanslichef",
+              "ID": "U02100VH2",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2018-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U02100&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Stadskansliet",
+                          "ID": "U02100",
+                          "TypeId": "17",
+                          "Existing": "true",
+                          "Formed": "2018-01-15T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Servicechef, Tjänster för arbetslivsinriktad rehabilitering 2",
+              "ID": "U0212007086VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-03-15T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U0212007086&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Tjänster för arbetslivsinriktad rehabilitering 2",
+                          "ID": "U0212007086",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-03-15T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Turvallisuus- ja valmiuspäällikkö",
+              "ID": "U0219009010VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U0219009010&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Turvallisuus- ja valmiustiimi",
+                          "ID": "U0219009010",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Strategichef",
+              "ID": "U02190090VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U02190090&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Kaupunkistrategiayksikkö",
+                          "ID": "U02190090",
+                          "TypeId": "14",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Strategidirektör",
+              "ID": "U021900VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2020-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U021900&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "SV_Strategiaosasto",
+                          "ID": "U021900",
+                          "TypeId": "9",
+                          "Existing": "true",
+                          "Formed": "2020-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Förvaltningsdirektör",
+              "ID": "U3100070VH2",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2017-06-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U50",
+                  "Sector": "Centralförvaltningen",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U3100070&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Förvaltning",
+                          "ID": "U3100070",
+                          "TypeId": "9",
+                          "Existing": "true",
+                          "Formed": "2017-06-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U50",
+              "Sector": "Centralförvaltningen",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Barnhemsföreståndare",
+              "ID": "U32020010503006VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U320200",
+                  "Sector": "Social- och hälsovårdsektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U32020010503006&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Mottagningsverksamhet för unga 1",
+                          "ID": "U32020010503006",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U320200",
+              "Sector": "Social- och hälsovårdsektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Barnhemsföreståndare",
+              "ID": "U32020010503007VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-03-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U320200",
+                  "Sector": "Social- och hälsovårdsektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U32020010503007&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Mottagningsverksamhet för unga 2",
+                          "ID": "U32020010503007",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-03-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U320200",
+              "Sector": "Social- och hälsovårdsektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Chef för familjerehabilitering",
+              "ID": "U32020010503008VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-03-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U320200",
+                  "Sector": "Social- och hälsovårdsektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U32020010503008&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Familjerehabilitering",
+                          "ID": "U32020010503008",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-03-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U320200",
+              "Sector": "Social- och hälsovårdsektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Chef för elevvården",
+              "ID": "U42030020100VH2",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-02-03T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U420300",
+                  "Sector": "Sektorn för fostran och utbildning",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U42030020100&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Elevvårdstjänster i förskoleundervisning och grundläggande utbildning",
+                          "ID": "U42030020100",
+                          "TypeId": "9",
+                          "Existing": "true",
+                          "Formed": "2017-06-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U420300",
+              "Sector": "Sektorn för fostran och utbildning",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "SV_Rehtori",
+              "ID": "U4203002024040VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2021-09-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U420300",
+                  "Sector": "Sektorn för fostran och utbildning",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U4203002024040&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "SV_Myllypuron peruskoulu",
+                          "ID": "U4203002024040",
+                          "TypeId": "14",
+                          "Existing": "true",
+                          "Formed": "2021-09-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U420300",
+              "Sector": "Sektorn för fostran och utbildning",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "SV_Rehtori",
+              "ID": "U4203002024050VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2021-09-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U420300",
+                  "Sector": "Sektorn för fostran och utbildning",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U4203002024050&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "SV_Merilahden peruskoulu",
+                          "ID": "U4203002024050",
+                          "TypeId": "14",
+                          "Existing": "true",
+                          "Formed": "2021-09-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U420300",
+              "Sector": "Sektorn för fostran och utbildning",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Chef för studerandevården",
+              "ID": "U4203003040VH2",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-02-03T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U420300",
+                  "Sector": "Sektorn för fostran och utbildning",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U4203003040&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Studerandevårdstjänster på andra stadiet",
+                          "ID": "U4203003040",
+                          "TypeId": "9",
+                          "Existing": "true",
+                          "Formed": "2017-06-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U420300",
+              "Sector": "Sektorn för fostran och utbildning",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Teamchef",
+              "ID": "U51105300103020VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-02-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Gatuarbets- och platstjänster",
+                          "ID": "U51105300103020",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-02-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Ledande inspektör",
+              "ID": "U51105300103020VH2",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-02-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Gatuarbets- och platstjänster",
+                          "ID": "U51105300103020",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-02-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Teamchef",
+              "ID": "U51105300405040VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300405040&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Livsmedelsrådgivning",
+                          "ID": "U51105300405040",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Stadsveterinär",
+              "ID": "U51105300405050VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300405050&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Livsmedelstillverkning",
+                          "ID": "U51105300405050",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Ledande tillsynsveterinär",
+              "ID": "U51105300405060VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2022-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300405060&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Djurskydd",
+                          "ID": "U51105300405060",
+                          "TypeId": "20",
+                          "Existing": "true",
+                          "Formed": "2022-01-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      },
+      {
+          "Organization": {
+              "links": [],
+              "Name": "Verkställande direktör",
+              "ID": "U75001VH1",
+              "TypeId": "12",
+              "Existing": "true",
+              "Formed": "2020-02-27T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000",
+              "Type": "Viranhaltija",
+              "Sector": {
+                  "links": [],
+                  "SectorID": "U541000",
+                  "Sector": "Stadsmiljösektorn",
+                  "PendingCases": 0
+              },
+              "OrganizationLevelAbove": {
+                  "organizations": [
+                      {
+                          "links": [
+                              {
+                                  "rel": "self",
+                                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U75001&apireqlang=sv"
+                              }
+                          ],
+                          "Name": "Trafikaffärsverket",
+                          "ID": "U75001",
+                          "TypeId": "17",
+                          "Existing": "true",
+                          "Formed": "2017-06-01T00:00:00.000",
+                          "Dissolved": "2100-01-01T00:00:00.000"
+                      }
+                  ],
+                  "count": 1,
+                  "links": []
+              },
+              "OrganizationLevelBelow": {
+                  "organizations": [],
+                  "count": 0,
+                  "links": []
+              },
+              "IsDecisionMaker": true
+          },
+          "Sector": {
+              "links": [],
+              "SectorID": "U541000",
+              "Sector": "Stadsmiljösektorn",
+              "PendingCases": 0
+          },
+          "Composition": []
+      }
+  ],
+  "count": 19,
+  "links": [
+      {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/agents/decisionmakers?q=null&start=null&changedsince=2022-01-01T00:00:00&changedbefore=&apireqlang=sv"
+      }
+  ]
+}
