@@ -1564,11 +1564,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       case 'meetings':
         $timestamp_key = 'start';
         $timestamp_key_end = 'end';
+        $date_range = strtotime('-4 weeks');
         break;
 
       default:
         $timestamp_key = 'handledsince';
         $timestamp_key_end = 'handledbefore';
+        $date_range = strtotime("-1 week");
         break;
     }
 
@@ -1577,8 +1579,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query_string = $timestamp_key . '=2001-10-01T12:34:45Z';
       }
       else {
-        $week_ago = strtotime("-1 week");
-        $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
+        $timestamp = date('Y-m-d\TH:i:s\Z', $date_range);
         $query_string = $timestamp_key . '=' . $timestamp;
       }
     }
