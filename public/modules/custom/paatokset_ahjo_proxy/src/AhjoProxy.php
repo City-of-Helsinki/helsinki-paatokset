@@ -1256,10 +1256,11 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $ids = $ahjo_proxy->getCaseDataFromHtml($data['html']);
 
-    // Skip items without diary numbers.
+    // Handle cases where ids are blank.
     if (empty($ids) || !isset($ids['case_id'])) {
-      $context['results']['skipped'][] = $data['title'];
-      return;
+      $ids = [
+        'case_id' => '',
+      ];
     }
 
     // Make sure meeting data exists.
