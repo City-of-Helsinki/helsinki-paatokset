@@ -220,7 +220,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Query string to pass on to endpoint.
    *
    * @return array
-   *   Data from endpoint or static file.
+   *   Data from endpoint.
    */
   public function getMeetings(?string $query_string): array {
     if ($query_string === NULL) {
@@ -230,32 +230,47 @@ class AhjoProxy implements ContainerInjectionInterface {
     $meetings_url = self::API_BASE_URL . 'meetings/?' . urldecode($query_string);
     $meetings = $this->getContent($meetings_url);
 
-    if (empty($meetings['meetings'])) {
-      return $meetings;
-    }
-
-    // Follow single meeting URLs to get full data.
-    // @todo Limit amount of requests.
-    $meetings_full = [];
-    foreach ($meetings['meetings'] as $meeting) {
-      if (empty($meeting['links'])) {
-        continue;
-      }
-
-      $self_url = $this->getSelfUrl($meeting['links']);
-      $meeting_content = $this->getContent($self_url);
-      if (!empty($meeting_content) && !empty($meeting_content['MeetingID'])) {
-        $meetings_full[] = $meeting_content;
-      }
-    }
-
-    // If we got any full meeting results, return them and update count.
-    if (!empty($meetings_full)) {
-      $meetings['meetings'] = $meetings_full;
-      $meetings['count'] = count($meetings_full);
-    }
-
     return $meetings;
+  }
+
+  /**
+   * Get cases data.
+   *
+   * @param string|null $query_string
+   *   Query string to pass on to endpoint.
+   *
+   * @return array
+   *   Data from endpoint.
+   */
+  public function getCases(?string $query_string): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+
+    $cases_url = self::API_BASE_URL . 'cases/?' . urldecode($query_string);
+    $cases = $this->getContent($cases_url);
+
+    return $cases;
+  }
+
+  /**
+   * Get decisions data.
+   *
+   * @param string|null $query_string
+   *   Query string to pass on to endpoint.
+   *
+   * @return array
+   *   Data from endpoint.
+   */
+  public function getDecisions(?string $query_string): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+
+    $decisions_url = self::API_BASE_URL . 'decisions/?' . urldecode($query_string);
+    $decisions = $this->getContent($decisions_url);
+
+    return $decisions;
   }
 
   /**

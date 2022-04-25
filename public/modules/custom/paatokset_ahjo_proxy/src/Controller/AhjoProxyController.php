@@ -58,6 +58,36 @@ class AhjoProxyController extends ControllerBase {
   }
 
   /**
+   * Return cases data.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for cases.
+   */
+  public function cases(Request $request): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getCases($query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Return decisions data.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for decisions.
+   */
+  public function decisions(Request $request): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getDecisions($query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
    * Get data for a single meeting.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request

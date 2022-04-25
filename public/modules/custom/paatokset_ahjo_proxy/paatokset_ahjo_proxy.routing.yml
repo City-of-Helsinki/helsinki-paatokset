@@ -6,6 +6,22 @@ paatokset_ahjo_proxy.meetings:
     _permission: 'access content'
   methods: [GET]
 
+paatokset_ahjo_proxy.cases:
+  path: '/ahjo-proxy/cases'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::cases'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+paatokset_ahjo_proxy.decisions:
+  path: '/ahjo-proxy/decisions'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::decisions'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
 paatokset_ahjo_proxy.meetings_single:
   path: '/ahjo-proxy/meetings/single/{id}'
   defaults:
