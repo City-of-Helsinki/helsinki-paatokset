@@ -1,0 +1,32 @@
+uuid: c4002d65-f25f-4e17-8a8c-9c46d07fd840
+langcode: fi
+status: true
+dependencies:
+  config:
+    - views.view.related_terms
+  module:
+    - taxonomy
+    - views
+  theme:
+    - helfi_paatokset
+id: views_block__related_terms_block_1
+theme: helfi_paatokset
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'views_block:related_terms-block_1'
+settings:
+  id: 'views_block:related_terms-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:taxonomy_term':
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: '@taxonomy_term.taxonomy_term_route_context:taxonomy_term'
+    bundles:
+      keywords: keywords

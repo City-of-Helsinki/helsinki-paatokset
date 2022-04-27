@@ -418,6 +418,11 @@ function helfi_paatokset_preprocess_page(&$variables) {
     $variables['main_container'] = TRUE;
   }
 
+  if ($route_name === 'entity.taxonomy_term.canonical') {
+    $variables['page_has_sidebar'] = true;
+    $variables['move_before_content'] = true;
+  }
+
   if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
     $variables['page_has_sidebar'] = true;
     $variables['move_before_content'] = true;
