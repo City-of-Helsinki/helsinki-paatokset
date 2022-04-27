@@ -1,0 +1,41 @@
+{% embed '@hdbt/content/node.html.twig' with {'node_class': 'components components--news'} %}
+  {% block main_content %}
+
+    {# Lead text #}
+    {% if content.field_lead|render or content.field_keywords|render %}
+      <section class="preamble">
+        {{ content.field_lead }}
+        {{ content.field_keywords }}
+      </section>
+    {% endif %}
+
+
+    {# Article author #}
+    {% if content.field_author|render %}
+      <div class="content-author">
+        {{ content.field_author }}
+      </div>
+    {% endif %}
+
+    {# Created date and modified date #}
+    {% if published_at %}
+      <div class="content-date">
+        {% set html_published_at = published_at|format_date('custom', 'Y-m-d') ~ 'T' ~ published_at|format_date('custom', 'H:i') %}
+        <time datetime="{{ html_published_at }}" class="content-date__datetime content-date__datetime--published">
+          <span class="visually-hidden">{{ 'Published'|t({}, {'context': 'The helper text before the node published timestamp'}) }}</span>
+          {{ published_at|format_date('publication_date_format') }}
+        </time>
+      </div>
+    {% endif %}
+
+    {# Content region #}
+    <section class="article__body">
+      {{ content|without(['field_lead', 'field_author', 'field_keywords']) }}
+    </section>
+
+    {# Social media share links #}
+    {{ drupal_block('hdbt_content_social_sharing_block') }}
+
+  {% endblock main_content %}
+
+{% endembed %}
