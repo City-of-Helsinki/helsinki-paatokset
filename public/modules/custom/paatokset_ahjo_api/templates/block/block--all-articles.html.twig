@@ -1,0 +1,74 @@
+{%
+  set classes = [
+  'all-initiatives',
+  view_mode ? 'all-initiatives--view-mode-' ~ view_mode|clean_class,
+]
+%}
+{% if articles %}
+<div {{ attributes.addClass(classes) }}>
+  {% if (years is not empty ) %}
+    <div class="paatokset__decision-tree-container">
+      <div class="decision-tree__title">
+        <span>{{ 'Select year' |trans }}</span>
+      </div>
+      {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
+        {% block container_content %}
+          <div class="accordion__wrapper handorgel">
+            <div class="accordion-item__content handorgel__content">
+              <div class="accordion-item__content__inner handorgel__content__inner">
+                <ul class="menu">
+                  {% for year in years %}
+                    {% set item_attributes = create_attribute() %}
+                    {%
+                      set item_classes = [
+                        'item',
+                        loop.index == 1 ? 'selected'
+                      ]
+                    %}
+                    <li{{ item_attributes.addClass(item_classes) }}>
+                      {% if loop.index == 1 %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="true"/>
+                      {% else %}
+                        <input type="button" id="yearSelection_{{ year }}" value="{{ year }}" aria-pressed="false"/>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endblock %}
+      {% endembed %}
+      {% for year, documents in articles %}
+        {% set document_container_attributes = create_attribute() %}
+        {%
+          set document_container_classes = [
+            'policymakers-documents',
+            loop.index == 1 ? 'selected-year'
+          ]
+        %}
+
+        <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
+          {% for document in documents %}
+            <a href="{{ document.url }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
+              <div class="list-item__date">
+                {% if document.date %}
+                  <span class="list-item__date--desktop">{{ document.date|date("d.m.Y") }}</span>
+                {% endif %}
+                {% if document.date %}
+                  <span class="list-item__date--mobile">{{ document.date|date("m - Y")  }}</span>
+                {% endif %}
+              </div>
+              <div class="list-item__subject">
+                <span>
+                  {{ document.title }}
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endif %}

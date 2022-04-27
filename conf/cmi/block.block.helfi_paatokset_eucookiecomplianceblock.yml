@@ -10,7 +10,7 @@ dependencies:
 id: helfi_paatokset_eucookiecomplianceblock
 theme: helfi_paatokset
 region: content
-weight: -17
+weight: -19
 provider: null
 plugin: eu_cookie_compliance_block
 settings:
