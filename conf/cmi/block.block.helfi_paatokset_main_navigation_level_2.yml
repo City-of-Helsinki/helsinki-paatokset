@@ -13,7 +13,7 @@ dependencies:
 id: helfi_paatokset_main_navigation_level_2
 theme: helfi_paatokset
 region: sidebar_first
-weight: 0
+weight: -17
 provider: null
 plugin: 'menu_block_current_language:main'
 settings:

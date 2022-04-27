@@ -10,7 +10,7 @@ dependencies:
 id: paattajanyhteystiedot
 theme: helfi_paatokset
 region: sidebar_first
-weight: 0
+weight: -14
 provider: null
 plugin: policymaker_contacts
 settings:
