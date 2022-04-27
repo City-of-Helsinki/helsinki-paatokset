@@ -21,14 +21,6 @@ targetEntityType: node
 bundle: article
 mode: default
 content:
-  field_author:
-    type: string
-    label: inline
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
   field_content:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -36,38 +28,29 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 1
     region: content
   field_keywords:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
-    region: content
-  field_lead:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   field_metatags:
     type: metatag_empty_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 5
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
+    weight: 2
     region: content
 hidden:
+  field_author: true
+  field_lead: true
   field_liftup_image: true
   langcode: true
+  links: true
   published_at: true
   search_api_excerpt: true
   toc_enabled: true
