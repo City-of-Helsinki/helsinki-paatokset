@@ -1,0 +1,33 @@
+uuid: 028f865f-a9d3-40dd-b579-6171cb409375
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: article_pattern_fi
+label: 'Article pattern FI'
+type: 'canonical_entities:node'
+pattern: '/tietoa-paatoksenteosta/kuulutukset/[node:title]'
+selection_criteria:
+  13c2ff00-e2a4-4c58-a575-774c35b96c9c:
+    id: node_type
+    negate: false
+    uuid: 13c2ff00-e2a4-4c58-a575-774c35b96c9c
+    context_mapping:
+      node: node
+    bundles:
+      article: article
+  bbf1c8ea-bead-4084-9a8d-8bd56db885aa:
+    id: language
+    negate: false
+    uuid: bbf1c8ea-bead-4084-9a8d-8bd56db885aa
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      fi: fi
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli

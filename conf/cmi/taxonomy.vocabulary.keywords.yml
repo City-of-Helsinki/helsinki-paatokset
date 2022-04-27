@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 _core:
   default_config_hash: d5rETFNsjsIV5l3mRop-SdWxiSRJFUvK2YnOGFn4pUw
-name: Keywords
+name: 'Article keywords'
 vid: keywords
 description: ''
 weight: 0
