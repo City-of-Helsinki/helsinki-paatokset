@@ -9,7 +9,7 @@ dependencies:
 id: sidebarcontentblock
 theme: helfi_paatokset
 region: sidebar_first
-weight: 0
+weight: -13
 provider: null
 plugin: sidebar_content_block
 settings:

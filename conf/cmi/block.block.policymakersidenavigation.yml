@@ -10,7 +10,7 @@ dependencies:
 id: policymakersidenavigation
 theme: helfi_paatokset
 region: sidebar_first
-weight: -10
+weight: -18
 provider: null
 plugin: policymaker_side_nav
 settings:
