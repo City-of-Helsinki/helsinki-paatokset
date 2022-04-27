@@ -1,4 +1,4 @@
-uuid: 38ee9bb7-76db-46a4-b1d7-a587f928f513
+uuid: 185b7366-2f88-41c6-87fe-eb49b1826336
 langcode: fi
 status: true
 dependencies:
@@ -7,19 +7,19 @@ dependencies:
     - system
   theme:
     - helfi_paatokset
-id: paatoksetallinitiatives
+id: paatoksetallarticles
 theme: helfi_paatokset
 region: content
-weight: -13
+weight: -12
 provider: null
-plugin: all_initiatives
+plugin: all_articles
 settings:
-  id: all_initiatives
-  label: 'Paatokset all initiatives'
-  label_display: visible
+  id: all_articles
+  label: 'Paatokset all articles'
+  label_display: '0'
   provider: paatokset_ahjo_api
 visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "*/aloitteet\r\n*/motioner\r\n*/motions"
+    pages: /tietoa-paatoksenteosta/kuulutukset

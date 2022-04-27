@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetdecisionsdictionarybanner
 theme: helfi_paatokset
 region: content
-weight: -9
+weight: -10
 provider: null
 plugin: dictionary_banner
 settings:
