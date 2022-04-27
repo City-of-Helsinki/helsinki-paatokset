@@ -8,7 +8,6 @@
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
-use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -417,5 +416,20 @@ function helfi_paatokset_preprocess_page(&$variables) {
   // Check by dictionary block appearing to handle unstranslated nodes on sv.
   if (isset($variables['page']['content']) && array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])) {
     $variables['main_container'] = TRUE;
+  }
+
+  if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
+    $variables['page_has_sidebar'] = true;
+    $variables['move_before_content'] = true;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_paatokset_preprocess_node__article(&$variables) {
+  $node = $variables['node'];
+  if ($node->hasField('published_at') && $node->get('published_at')->isEmpty()) {
+    $variables['published_at'] = $node->get('published_at')->value;
   }
 }
