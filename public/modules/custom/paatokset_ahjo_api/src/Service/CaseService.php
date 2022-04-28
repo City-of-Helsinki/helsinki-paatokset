@@ -1101,7 +1101,7 @@ class CaseService {
 
     // Appeal information. Only display for decisions (if content is available).
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($has_case_id && $content && $appeal_info) {
+    if ($content && $appeal_info) {
       $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
     }
 
@@ -1177,43 +1177,23 @@ class CaseService {
       return [];
     }
 
-    $section = ['content' => ['#markup' => NULL]];
-    // First section should always be motion description.
-    $current_item = $list->item(0);
-    foreach ($current_item->childNodes as $node) {
-      if ($node->nodeName === 'h3') {
-        $section['heading'] = $node->nodeValue;
+    foreach ($list as $node) {
+      if (!$node instanceof \DOMElement) {
         continue;
       }
 
-      $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
-    }
-
-    $output[] = $section;
-
-    // Move on to other sections.
-    $other_sections = $list->item(1);
-    if (!$other_sections instanceof \DOMNode) {
-      return $output;
-    }
-
-    $section = ['content' => ['#markup' => NULL]];
-    foreach ($other_sections->childNodes as $node) {
-      // If a h3 is reached, start over a new section.
-      if ($node->nodeName === 'h3') {
-        if (!empty($section['content']['#markup'])) {
-          $output[] = $section;
-          $section = ['content' => ['#markup' => NULL]];
+      $section = ['content' => ['#markup' => NULL]];
+      $heading_found = FALSE;
+      foreach ($node->childNodes as $node) {
+        if (!$heading_found && $node->nodeName === 'h3') {
+          $section['heading'] = $node->nodeValue;
+          $heading_found = TRUE;
+          continue;
         }
 
-        $section['heading'] = $node->nodeValue;
-        continue;
+        $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
       }
 
-      $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
-    }
-
-    if (!empty($section['content']['#markup'])) {
       $output[] = $section;
     }
 
