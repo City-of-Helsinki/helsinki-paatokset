@@ -229,7 +229,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     $content_initiatives = [];
     foreach($node->get('field_trustee_initiatives') as $json) {
       $content_initiatives[] = json_decode($json->value, TRUE);
-    };
+    }
 
     usort($content_initiatives, 'datecmp');
 
@@ -242,7 +242,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
   if($node->get('field_trustee_resolutions')) {
     $content_resolutions = [];
     foreach($node->get('field_trustee_resolutions') as $json) {
-      $content_resolutions[] = json_decode($json->value);
+      $content_resolutions[] = json_decode($json->value, TRUE);
     };
 
     usort($content_resolutions, 'datecmp');
