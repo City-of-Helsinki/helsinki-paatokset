@@ -1031,6 +1031,7 @@ class CaseService {
     $motion_xpath = new \DOMXPath($motion_dom);
 
     // If content is not set, use motion html instead.
+    // Keep $content variable NULL so we can use that for checking later.
     if (empty($content)) {
       $content_xpath = $motion_xpath;
     }
