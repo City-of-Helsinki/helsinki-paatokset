@@ -369,7 +369,7 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
     $filtered = array_filter($initiatives, function ($var) use ($year) {
         return (str_contains(date_format(date_create($var['Date']),"Y"), $year));
     });
-    $by_year[$year] = array_reverse($filtered);
+    $by_year[$year] = $filtered;
   };
 
   $variables['initiatives'] = $by_year;
