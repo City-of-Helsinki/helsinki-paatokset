@@ -1506,7 +1506,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $endpoint_url = $base_url . $migration_url . $id;
 
     if (strpos($migration_id, '_sv') !== FALSE) {
-      $endpoint_url .= '?apireglang=sv';
+      $endpoint_url .= '?apireqlang=sv';
     }
 
     // Attempt to fetch content first, because
