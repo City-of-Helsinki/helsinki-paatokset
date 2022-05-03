@@ -398,7 +398,7 @@ function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): v
     ->condition('type', 'article')
     ->condition('status', 1)
     ->condition('langcode', $currentLanguage)
-    ->sort('created', 'ASC')
+    ->sort('published_at', 'DESC')
     ->execute();
 
   $nodes = Node::loadMultiple($nids);
