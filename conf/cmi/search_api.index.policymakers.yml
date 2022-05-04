@@ -64,6 +64,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_sector_name
+  has_translation:
+    label: 'Has Translation'
+    datasource_id: 'entity:node'
+    property_path: has_translation
+    type: boolean
   sector:
     label: Sector
     datasource_id: 'entity:node'
@@ -108,9 +113,12 @@ processor_settings:
   aggregated_field: {  }
   color_class: {  }
   decision_url: {  }
+  entity_type: {  }
+  has_translation: {  }
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
+  special_status: {  }
   trustee_name: {  }
   trustee_title: {  }
 tracker_settings:
