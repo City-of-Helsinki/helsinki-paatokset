@@ -58,7 +58,7 @@ class SectorJSON extends ProcessorPluginBase {
       if ($node->getType() === 'decision') {
         /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService */
         $policymakerService = \Drupal::service('paatokset_policymakers');
-        $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value);
+        $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value, $item->getLanguage());
       }
 
       if ($policymaker instanceof NodeInterface) {

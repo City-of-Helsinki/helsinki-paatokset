@@ -88,11 +88,13 @@ class PolicymakerService {
    *
    * @param string|null $id
    *   Policymaker id. Leave null to return current instance.
+   * @param string|null $langcode
+   *   Translation to get. Leave null to return active translation.
    *
    * @return Drupal\node\NodeInterface|null
    *   Policymaker node or NULL.
    */
-  public function getPolicyMaker(?string $id = NULL): ?Node {
+  public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?Node {
     if ($id === NULL) {
       return $this->policymaker;
     }
@@ -107,9 +109,12 @@ class PolicymakerService {
       return NULL;
     }
 
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    if ($result->hasTranslation($currentLanguage)) {
-      $result = $result->getTranslation($currentLanguage);
+    if ($langcode === NULL) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    }
+
+    if ($result->hasTranslation($langcode)) {
+      $result = $result->getTranslation($langcode);
     }
 
     return $result;
