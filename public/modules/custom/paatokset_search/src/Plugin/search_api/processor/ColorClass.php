@@ -32,7 +32,7 @@ class ColorClass extends ProcessorPluginBase {
     if ($datasource) {
       $definition = [
         'label' => $this->t('Color Class'),
-        'description' => $this->t('Computes CSS class for enitity'),
+        'description' => $this->t('Computes CSS class for entity'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ];
