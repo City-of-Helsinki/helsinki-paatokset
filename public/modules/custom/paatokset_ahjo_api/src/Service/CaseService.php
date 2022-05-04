@@ -1382,13 +1382,15 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
+   * @param bool $load_nodes
+   *   Load nodes or just return nids.
    *
    * @return array
    *   List of case nodes.
    */
-  public function caseQuery(array $params): array {
+  public function caseQuery(array $params, bool $load_nodes = TRUE): array {
     $params['type'] = self::CASE_NODE_TYPE;
-    return $this->query($params);
+    return $this->query($params, $load_nodes);
   }
 
   /**
@@ -1396,14 +1398,16 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
+   * @param bool $load_nodes
+   *   Load nodes or just return nids.
    *
    * @return array
-   *   List of decision nodes.
+   *   List of decision nodes or nids.
    */
-  public function decisionQuery(array $params): array {
+  public function decisionQuery(array $params, bool $load_nodes = TRUE): array {
     $params['type'] = self::DECISION_NODE_TYPE;
     $params['sort_by'] = 'field_decision_date';
-    return $this->query($params);
+    return $this->query($params, $load_nodes);
   }
 
   /**
@@ -1411,11 +1415,13 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
+   * @param bool $load_nodes
+   *   Load nodes or just return nids.
    *
    * @return array
-   *   List of nodes.
+   *   List of nodes or nids.
    */
-  private function query(array $params): array {
+  private function query(array $params, bool $load_nodes = TRUE): array {
     if (isset($params['sort'])) {
       $sort = $params['sort'];
     }
@@ -1472,6 +1478,10 @@ class CaseService {
     $ids = $query->execute();
     if (empty($ids)) {
       return [];
+    }
+
+    if (!$load_nodes) {
+      return $ids;
     }
 
     return Node::loadMultiple($ids);
