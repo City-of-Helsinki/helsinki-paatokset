@@ -10,8 +10,12 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\path_alias\Entity\PathAlias;
 use Symfony\Component\Console\Helper\Table;
 
 /**
@@ -1484,6 +1488,313 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->writeln(sprintf('Decision added to queue: %s', $item['PDF']['NativeId']));
       $this->ahjoProxy->addItemToAhjoQueue('decisions', $item['PDF']['NativeId']);
     }
+  }
+
+  /**
+   * Create basic site structure after fresh install.
+   *
+   * @command ahjo-proxy:create-site-structure
+   *
+   * @aliases ap:site
+   */
+  public function createSiteStructure(): void {
+    $pages = [
+      [
+        'title' => 'Etusivu',
+        'path' => '/etusivu',
+        'type' => 'landing_page',
+        'translations' => [
+          'sv' => [
+            'title' => 'Framsidan',
+            'path' => '/etusivu',
+          ],
+          'en' => [
+            'title' => 'Home',
+            'path' => '/etusivu',
+          ],
+        ]
+      ],
+      [
+        'title' => 'Päättäjät',
+        'path' => '/paattajat',
+        'type' => 'landing_page',
+        'translations' => [
+          'sv' => [
+            'title' => 'Beslutsfattare',
+            'path' => '/beslutsfattare',
+          ],
+        ],
+      ],
+      [
+        'title' => 'Kokouskalenteri',
+        'path' => '/kokouskalenteri',
+        'type' => 'landing_page',
+        'translations' => [
+          'sv' => [
+            'title' => 'Möteskalender',
+            'path' => '/moteskalender',
+          ],
+        ],
+      ],
+      [
+        'title' => 'Tietoa Helsingin päätöksenteosta',
+        'path' => '/tietoa-paatoksenteosta',
+        'type' => 'page',
+        'translations' => [
+          'sv' => [
+            'title' => 'Information om beslutsfattning',
+            'path' => '/information-om-beslutsfattning'
+          ]
+        ],
+      ],
+      [
+        'title' => 'Kuulutukset',
+        'path' => '/tietoa-paatoksenteosta/kuulutukset',
+        'type' => 'page',
+        'translations' => [
+          'sv' => [
+            'title' => 'Kungörelser',
+            'path' => '/information-om-beslutsfattning/kungorelser'
+          ]
+        ],
+      ],
+      [
+        'title' => 'Sidonnaisuusilmoitukset',
+        'path' => '/tietoa-paatoksenteosta/sidonnaisuusilmoitukset',
+        'type' => 'page',
+        'translations' => [],
+      ],
+    ];
+
+    $menu = [
+      [
+        'title' => 'Hae päätöksiä',
+        'path' => 'internal:/fi/asia',
+        'translations' => [
+          'sv' => [
+            'title' => 'Arende',
+            'path' => 'internal:/sv/arende',
+          ]
+        ],
+      ],
+      [
+        'title' => 'Päättäjät',
+        'path' => 'internal:/fi/paattajat',
+        'translations' => [
+          'sv' => [
+            'title' => 'Beslutsfattare',
+            'path' => 'internal:/sv/beslutsfattare',
+          ]
+        ],
+      ],
+      [
+        'title' => 'Kokouskalenteri',
+        'path' => 'internal:/fi/kokouskalenteri',
+        'translations' => [
+          'sv' => [
+            'title' => 'Möteskalender',
+            'path' => 'internal:/sv/moteskalender',
+          ],
+        ],
+      ],
+      [
+        'title' => 'Tietoa päätöksenteosta',
+        'path' => 'internal:/fi/tietoa-paatoksenteosta',
+        'translations' => [
+          'sv' => [
+            'title' => 'Information om beslutsfattning',
+            'path' => 'internal:/sv/information-om-beslutsfattning',
+          ],
+        ],
+        'children' => [
+          [
+            'title' => 'Kuulutukset',
+            'path' => 'internal:/fi/tietoa-paatoksenteosta/kuulutukset',
+            'translations' => [
+              'sv' => [
+                'title' => 'Kungörelser',
+                'path' => 'internal:/sv/information-om-beslutsfattning/kungorelser'
+              ],
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    foreach ($pages as $page) {
+      $node = $this->createNode($page['title'], $page['type'], $page['path']);
+      if (!$node) {
+        $this->writeln(sprintf('Could not create node: %s', $page['title']));
+        continue;
+      }
+      $this->writeln(sprintf('Created node: %s', $page['title']));
+
+      foreach ($page['translations'] as $langcode => $translation) {
+        $this->addNodeTranslation($node, $langcode, $translation['title'], $translation['path']);
+        $this->writeln(sprintf('...Added %s translation: %s', $langcode, $translation['title']));
+      }
+    }
+
+    foreach ($menu as $item) {
+      $menu_item = $this->addMenuItem($item['title'], $item['path']);
+
+      if (!$menu_item) {
+        $this->writeln(sprintf('Could not create menu item: %s', $item['title']));
+        continue;
+      }
+      $this->writeln(sprintf('Created menu item: %s', $item['title']));
+
+      foreach ($item['translations'] as $langcode => $translation) {
+        $this->addMenuTranslation($menu_item, $langcode, $translation['title'], $translation['path']);
+        $this->writeln(sprintf('...Added %s translation: %s', $langcode, $translation['title']));
+      }
+
+      if (empty($item['children'])) {
+        continue;
+      }
+
+      foreach ($item['children'] as $child) {
+        $child_item = $this->addMenuItem($child['title'], $child['path'], $menu_item);
+
+        if (!$child_item) {
+          $this->writeln(sprintf('...Could not create menu item: %s', $child['title']));
+        }
+
+        $this->writeln(sprintf('...Created child menu item: %s', $child['title']));
+
+        foreach ($child['translations'] as $langcode => $ct_item) {
+          $this->addMenuTranslation($child_item, $langcode, $ct_item['title'], $ct_item['path']);
+          $this->writeln(sprintf('......Added %s translation: %s', $langcode, $ct_item['title']));
+        }
+      }
+    }
+  }
+
+  private function createNode(string $title, string $type, string $path): ?NodeInterface {
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', $type)
+      ->condition('title', $title)
+      ->range('0', 1)
+      ->latestRevision();
+    $nids = $query->execute();
+
+    if (empty($nids)) {
+      $node = Node::create([
+        'type' => $type,
+        'title' => $title,
+        'langcode' => 'fi',
+      ]);
+    } else {
+      $node = Node::load(reset($nids));
+    }
+
+    if (!$node instanceof NodeInterface) {
+      return NULL;
+    }
+
+    $node->save();
+
+    $path_storage = $this->entityTypeManager->getStorage('path_alias');
+    $query = $path_storage->getQuery()
+      ->condition('path', '/node/' . $node->id())
+      ->range('0', 1)
+      ->condition('langcode', 'fi');
+    $pids = $query->execute();
+    if (empty($pids)) {
+      $path_alias = PathAlias::create([
+        'path' => '/node/' . $node->id(),
+        'alias' => $path,
+        'langcode' => 'fi',
+      ]);
+      $path_alias->save();
+    }
+    else {
+      $path_alias = PathAlias::load(reset($pids));
+      $path_alias->set('alias', $path);
+      $path_alias->save();
+    }
+
+    return $node;
+  }
+
+  private function addNodeTranslation(NodeInterface $node, string $langcode, string $title, string $path): ?NodeInterface {
+    if ($node->hasTranslation($langcode)) {
+      return $node;
+    }
+    $node->addTranslation($langcode, [
+      'title' => $title,
+    ]);
+
+    $node->save();
+
+    $path_storage = $this->entityTypeManager->getStorage('path_alias');
+    $query = $path_storage->getQuery()
+      ->condition('path', '/node/' . $node->id())
+      ->range('0', 1)
+      ->condition('langcode', $langcode);
+    $pids = $query->execute();
+    if (empty($pids)) {
+      $path_alias = PathAlias::create([
+        'path' => '/node/' . $node->id(),
+        'alias' => $path,
+        'langcode' => $langcode,
+      ]);
+      $path_alias->save();
+    }
+    else {
+      $path_alias = PathAlias::load(reset($pids));
+      $path_alias->set('alias', $path);
+      $path_alias->save();
+    }
+
+    return $node;
+  }
+
+  private function addMenuItem(string $title, string $path, ?MenuLinkContentInterface $parent = NULL): ?MenuLinkContentInterface {
+    $menu_storage = $this->entityTypeManager->getStorage('menu_link_content');
+    $query = $menu_storage->getQuery()
+      ->condition('title', $title)
+      ->condition('langcode', 'fi');
+    $mids = $query->execute();
+    if (empty($mids)) {
+      $menu_item = MenuLinkContent::create([
+        'menu_name' => 'main',
+        'title' => $title,
+        'link' => ['uri' => $path],
+        'langcode' => 'fi',
+        'expanded' => TRUE,
+      ]);
+    } else {
+      $menu_item = MenuLinkContent::load(reset($mids));
+    }
+
+    if (!$menu_item instanceof MenuLinkContentInterface) {
+      return NULL;
+    }
+
+    if ($parent instanceof MenuLinkContentInterface) {
+      $menu_item->set('parent', 'menu_link_content:' . $parent->uuid());
+    }
+
+    $menu_item->save();
+
+    return $menu_item;
+  }
+
+  private function addMenuTranslation(MenuLinkContentInterface $item, string $langcode, string $title, string $path): ?MenuLinkContentInterface {
+    if ($item->hasTranslation($langcode)) {
+      return $item;
+    }
+
+    $item->addTranslation($langcode, [
+      'title' => $title,
+      'link' => ['uri' => $path],
+      'expanded' => TRUE,
+    ]);
+
+    $item->save();
+
+    return $item;
   }
 
   /**
