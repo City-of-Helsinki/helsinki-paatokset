@@ -1512,7 +1512,7 @@ class AhjoAggregatorCommands extends DrushCommands {
             'title' => 'Home',
             'path' => '/etusivu',
           ],
-        ]
+        ],
       ],
       [
         'title' => 'Päättäjät',
@@ -1543,8 +1543,8 @@ class AhjoAggregatorCommands extends DrushCommands {
         'translations' => [
           'sv' => [
             'title' => 'Information om beslutsfattning',
-            'path' => '/information-om-beslutsfattning'
-          ]
+            'path' => '/information-om-beslutsfattning',
+          ],
         ],
       ],
       [
@@ -1554,8 +1554,8 @@ class AhjoAggregatorCommands extends DrushCommands {
         'translations' => [
           'sv' => [
             'title' => 'Kungörelser',
-            'path' => '/information-om-beslutsfattning/kungorelser'
-          ]
+            'path' => '/information-om-beslutsfattning/kungorelser',
+          ],
         ],
       ],
       [
@@ -1574,7 +1574,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           'sv' => [
             'title' => 'Arende',
             'path' => 'internal:/sv/arende',
-          ]
+          ],
         ],
       ],
       [
@@ -1584,7 +1584,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           'sv' => [
             'title' => 'Beslutsfattare',
             'path' => 'internal:/sv/beslutsfattare',
-          ]
+          ],
         ],
       ],
       [
@@ -1613,7 +1613,7 @@ class AhjoAggregatorCommands extends DrushCommands {
             'translations' => [
               'sv' => [
                 'title' => 'Kungörelser',
-                'path' => 'internal:/sv/information-om-beslutsfattning/kungorelser'
+                'path' => 'internal:/sv/information-om-beslutsfattning/kungorelser',
               ],
             ],
           ],
@@ -1670,6 +1670,19 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
   }
 
+  /**
+   * Create or update node and add a custom path.
+   *
+   * @param string $title
+   *   Node title.
+   * @param string $type
+   *   Node type.
+   * @param string $path
+   *   Custom path alias.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Created node or NULL if one couldn't be created.
+   */
   private function createNode(string $title, string $type, string $path): ?NodeInterface {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', $type)
@@ -1684,7 +1697,8 @@ class AhjoAggregatorCommands extends DrushCommands {
         'title' => $title,
         'langcode' => 'fi',
       ]);
-    } else {
+    }
+    else {
       $node = Node::load(reset($nids));
     }
 
@@ -1717,6 +1731,21 @@ class AhjoAggregatorCommands extends DrushCommands {
     return $node;
   }
 
+  /**
+   * Add a translation for a node.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to add translation to.
+   * @param string $langcode
+   *   Langcode for translation.
+   * @param string $title
+   *   Node title.
+   * @param string $path
+   *   Custom path for translation.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Original node or NULL if adding translation fails.
+   */
   private function addNodeTranslation(NodeInterface $node, string $langcode, string $title, string $path): ?NodeInterface {
     if ($node->hasTranslation($langcode)) {
       return $node;
@@ -1750,6 +1779,19 @@ class AhjoAggregatorCommands extends DrushCommands {
     return $node;
   }
 
+  /**
+   * Add a menu link content item.
+   *
+   * @param string $title
+   *   Menu link title.
+   * @param string $path
+   *   Menu link URI.
+   * @param \Drupal\menu_link_content\MenuLinkContentInterface|null $parent
+   *   Parent menu link item, or NULL if this item is at root.
+   *
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
+   *   Created menu link item or NULL if one couldn't be created.
+   */
   private function addMenuItem(string $title, string $path, ?MenuLinkContentInterface $parent = NULL): ?MenuLinkContentInterface {
     $menu_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $query = $menu_storage->getQuery()
@@ -1764,7 +1806,8 @@ class AhjoAggregatorCommands extends DrushCommands {
         'langcode' => 'fi',
         'expanded' => TRUE,
       ]);
-    } else {
+    }
+    else {
       $menu_item = MenuLinkContent::load(reset($mids));
     }
 
@@ -1781,6 +1824,21 @@ class AhjoAggregatorCommands extends DrushCommands {
     return $menu_item;
   }
 
+  /**
+   * Add translation to menu link item.
+   *
+   * @param \Drupal\menu_link_content\MenuLinkContentInterface $item
+   *   Item to add translation to.
+   * @param string $langcode
+   *   Langcode for translation.
+   * @param string $title
+   *   Link title.
+   * @param string $path
+   *   Link URL.
+   *
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
+   *   Original menu link item, or NULL if adding translation fails.
+   */
   private function addMenuTranslation(MenuLinkContentInterface $item, string $langcode, string $title, string $path): ?MenuLinkContentInterface {
     if ($item->hasTranslation($langcode)) {
       return $item;
