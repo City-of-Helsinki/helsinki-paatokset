@@ -200,6 +200,14 @@ if (file_exists(__DIR__ . '/all.settings.php')) {
   include __DIR__ . '/all.settings.php';
 }
 
+if (file_exists(__DIR__ . '/local.services.yml')) {
+  $settings['container_yamls'][] = __DIR__ . '/local.services.yml';
+}
+
+if (file_exists(__DIR__ . '/local.settings.php')) {
+  include __DIR__ . '/local.settings.php';
+}
+
 if ($env = getenv('APP_ENV')) {
   if (file_exists(__DIR__ . '/' . $env . '.settings.php')) {
     include __DIR__ . '/' . $env . '.settings.php';
