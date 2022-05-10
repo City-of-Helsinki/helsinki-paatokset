@@ -1259,7 +1259,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     // Handle cases where ids are blank.
     if (empty($ids) || !isset($ids['case_id'])) {
       $ids = [
-        'case_id' => '',
+        'case_id' => NULL,
       ];
     }
 

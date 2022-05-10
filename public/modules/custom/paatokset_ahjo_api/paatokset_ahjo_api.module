@@ -613,16 +613,25 @@ function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?string {
 function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   // First attempt to find node with native ID.
   $native_id = $values[0];
-  if (isset($values[1]) && isset($values[2]) && isset($values[3])) {
+  if (!empty($values[1])) {
     $case_id = $values[1];
-    $meeting_id = $values[2];
-    $title = $values[3];
   }
   else {
     $case_id = NULL;
+  }
+  if (!empty($values[2])) {
+    $meeting_id = $values[2];
+  }
+  else {
     $meeting_id = NULL;
+  }
+  if (!empty($values[3])) {
+    $title = $values[3];
+  }
+  else {
     $title = NULL;
   }
+
   $query = Drupal::entityQuery('node')
     ->condition('type', 'decision')
     ->condition('field_decision_native_id', $native_id)
@@ -634,18 +643,29 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
     return reset($ids);
   }
 
-  if (!$case_id || !$meeting_id) {
+  if (!$meeting_id) {
+    return NULL;
+  }
+
+  if (!$case_id && !$title) {
     return NULL;
   }
 
   $query = Drupal::entityQuery('node')
     ->condition('type', 'decision')
-    ->condition('field_diary_number', $case_id)
     ->condition('field_meeting_id', $meeting_id)
     ->condition('field_is_decision', 0)
+    ->condition('status', 1)
     ->range(0, 1)
     ->latestRevision();
   $ids = $query->execute();
+
+  if ($case_id) {
+    $query->condition('field_diary_number', $case_id);
+  }
+  else {
+    $query->condition('field_full_title', $title);
+  }
 
   if (!empty($ids)) {
     return reset($ids);

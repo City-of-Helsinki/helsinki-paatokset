@@ -1323,8 +1323,8 @@ class CaseService {
   /**
    * Find or create motion as decision node.
    *
-   * @param string $case_id
-   *   Diary number for motion.
+   * @param string|null $case_id
+   *   Diary number for motion. Can be NULL.
    * @param string $meeting_id
    *   Meeting ID for motion.
    * @param string $title
@@ -1335,7 +1335,7 @@ class CaseService {
    * @return Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found or if a decision was found.
    */
-  public function findOrCreateMotion(string $case_id, string $meeting_id, string $title, bool $check_title = FALSE): ?NodeInterface {
+  public function findOrCreateMotion(?string $case_id, string $meeting_id, string $title, bool $check_title = FALSE): ?NodeInterface {
     if ($check_title) {
       $nodes = $this->decisionQuery([
         'case_id' => $case_id,
