@@ -423,11 +423,55 @@ function helfi_paatokset_preprocess_page(&$variables) {
     $variables['move_before_content'] = true;
   }
 
+
   if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
     $variables['page_has_sidebar'] = true;
     $variables['move_before_content'] = true;
   }
+
+  // Display navigation side under specific conditions.
+  // Only on node routes and if the second level navi block is present.
+  if ($route_name === 'entity.node.canonical' && isset($variables['node']) && isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2'])) {
+    $node_id = $variables['node']->id();
+    $display_sidebar_nav = FALSE;
+
+    // Check if there are links associated with this node.
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node_id]);
+    foreach ($links as $link) {
+      $definition = $link->getPluginDefinition();
+
+      // Must be in main menu.
+      if ($definition['menu_name'] !== 'main') {
+        continue;
+      }
+
+      // Show navi if current node has a parent link.
+      if (!empty($definition['parent'])) {
+        $display_sidebar_nav = TRUE;
+        break;
+      }
+
+      // Display navi if current node has children.
+      $menu_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+      $children = $menu_storage->loadByProperties([
+        'menu_name' => 'main',
+        'parent' => $link->getPluginId(),
+      ]);
+      if (!empty($children)) {
+        $display_sidebar_nav = TRUE;
+        break;
+      }
+    }
+
+    if ($display_sidebar_nav) {
+      $variables['page_has_sidebar'] = TRUE;
+      $variables['move_before_content'] = TRUE;
+      $variables['has_navigation'] = TRUE;
+    }
+  }
 }
+
 
 /**
  * Implements hook_preprocess_HOOK().
