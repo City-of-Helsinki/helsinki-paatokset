@@ -1376,6 +1376,107 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * List orphaned motions.
+   *
+   * @param string $action
+   *   Action to take on found orphans. Defaults to list.
+   *   - 'list': Only list nodes.
+   *   - 'unpublish': Unpublish nodes.
+   *   - 'delete': Delete nodes.
+   *
+   * @command ahjo-proxy:orphaned-motions
+   *
+   * @aliases ap:om
+   */
+  public function handleOrphanedMotions(string $action = 'list'): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_is_decision', 0)
+      ->latestRevision();
+
+    $ids = $query->execute();
+
+    $motions = [];
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_meeting_id') || $node->get('field_meeting_id')->isEmpty()) {
+        continue;
+      }
+
+      $meeting_id = $node->get('field_meeting_id')->value;
+
+      if (!isset($motions[$meeting_id])) {
+        $motions[$meeting_id] = [];
+      }
+      $motions[$meeting_id][] = $node;
+    }
+
+    $meeting_query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_id', array_keys($motions), 'IN')
+      ->latestRevision();
+    $meeting_ids = $meeting_query->execute();
+
+    $meetings = Node::loadMultiple($meeting_ids);
+
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'Meeting', 'Title', 'ID',
+    ]);
+
+    $orphans = 0;
+    $operations = [];
+    foreach ($meetings as $meeting) {
+      if (!$meeting->hasField('field_meeting_minutes_published')) {
+        continue;
+      }
+      if (!$meeting->get('field_meeting_minutes_published')->value) {
+        continue;
+      }
+      $meeting_id = $meeting->get('field_meeting_id')->value;
+      if (!isset($motions[$meeting_id])) {
+        continue;
+      }
+
+      foreach ($motions[$meeting_id] as $motion) {
+        $orphans++;
+        if ($action === 'unpublish' || $action === 'delete') {
+          $operations[] = $motion;
+        }
+
+        $title = substr($motion->title->value, 0, 50);
+        $table->addRow([
+          $meeting_id,
+          $title,
+          $motion->get('field_decision_native_id')->value,
+        ]);
+      }
+    }
+
+    $table->render();
+    $this->writeln('Total orphans: ' . $orphans);
+
+    if (empty($operations) || ($action !== 'unpublish' && $action !== 'delete')) {
+      return;
+    }
+
+    if ($action === 'unpublish' && $this->io()->confirm('Are you sure you want to unpublish these nodes?')) {
+      foreach ($operations as $node) {
+        $node->set('status', 0);
+        $node->save();
+      }
+      $this->writeln('Nodes unpublished.');
+    }
+
+    if ($action === 'delete' && $this->io()->confirm('Are you sure you want to delete these nodes?')) {
+      $this->nodeStorage->delete($operations);
+      $this->writeln('Nodes deleted');
+    }
+  }
+
+  /**
    * List decisions by meeting ID.
    *
    * @param string $meeting_id
