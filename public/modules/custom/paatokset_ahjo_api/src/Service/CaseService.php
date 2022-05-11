@@ -664,13 +664,24 @@ class CaseService {
       return NULL;
     }
 
+    if ($decision->hasField('field_dm_org_name') && !$decision->get('field_dm_org_name')->isEmpty()) {
+      $default_name = $decision->get('field_dm_org_name')->value;
+    }
+    else {
+      $default_name = NULL;
+    }
+
     if (!$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
-      return NULL;
+      return $default_name;
     }
 
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value);
+    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value);
+    if (!$policymaker_name) {
+      return $default_name;
+    }
+    return $policymaker_name;
   }
 
   /**
