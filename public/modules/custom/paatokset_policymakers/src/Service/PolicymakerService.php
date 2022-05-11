@@ -1552,7 +1552,7 @@ class PolicymakerService {
     if ($node instanceof NodeInterface) {
       return $this->getPolicyMakerClass($node);
     }
-    return 'color-none';
+    return 'color-sumu';
   }
 
 }
