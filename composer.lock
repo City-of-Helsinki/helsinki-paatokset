@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20b9f3980aa5b21ecde5dabe138aeca6",
+    "content-hash": "5bbd5c395ff54851670bc1c240fd2542",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3426,10 +3426,6 @@
                 {
                     "name": "See other contributors",
                     "homepage": "https://www.drupal.org/node/1538032/committers"
-                },
-                {
-                    "name": "svenryen",
-                    "homepage": "https://www.drupal.org/user/667244"
                 }
             ],
             "description": "This module aims at making the website compliant with the new EU cookie regulation.",
@@ -3873,16 +3869,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "2.3.14",
+            "version": "2.3.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "886a0004c10bf0922f55667d695374bfe4389854"
+                "reference": "2dfeb5669487b261ef2de06bd730d7a1f473e1f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/886a0004c10bf0922f55667d695374bfe4389854",
-                "reference": "886a0004c10bf0922f55667d695374bfe4389854",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/2dfeb5669487b261ef2de06bd730d7a1f473e1f0",
+                "reference": "2dfeb5669487b261ef2de06bd730d7a1f473e1f0",
                 "shasum": ""
             },
             "require": {
@@ -3897,10 +3893,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.3.14",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/2.3.22",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2022-04-19T10:45:56+00:00"
+            "time": "2022-05-06T11:46:46+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -7363,7 +7359,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
+                "reference": "v5.29.1"
             },
             "type": "drupal-library"
         },
