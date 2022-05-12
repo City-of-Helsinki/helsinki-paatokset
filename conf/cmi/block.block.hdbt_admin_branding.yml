@@ -8,8 +8,8 @@ dependencies:
     - hdbt_admin
 id: hdbt_admin_branding
 theme: hdbt_admin
-region: header
-weight: -4
+region: breadcrumb
+weight: -5
 provider: null
 plugin: system_branding_block
 settings:
