@@ -1,18 +1,19 @@
-uuid: 8521157f-86ec-4dd5-98af-9688597a2957
 langcode: en
 status: true
 dependencies:
   theme:
     - hdbt_admin
-id: hdbt_admin_page_title
+id: hdbt_admin_primary_local_tasks
 theme: hdbt_admin
 region: header
-weight: -7
+weight: -5
 provider: null
-plugin: page_title_block
+plugin: local_tasks_block
 settings:
-  id: page_title_block
-  label: 'Page title'
+  id: local_tasks_block
+  label: 'Primary tabs'
   label_display: '0'
   provider: core
+  primary: true
+  secondary: false
 visibility: {  }

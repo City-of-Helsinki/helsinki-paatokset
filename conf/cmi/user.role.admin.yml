@@ -246,6 +246,7 @@ permissions:
   - 'use menu link attributes'
   - 'use text format full_html'
   - 'use text format minimal'
+  - 'use views bulk edit'
   - 'view all media revisions'
   - 'view all revisions'
   - 'view any unpublished content'
@@ -267,4 +268,3 @@ permissions:
   - 'view the administration theme'
   - 'view trustee revisions'
   - 'view unpublished paragraphs'
-  - 'use views bulk edit'
