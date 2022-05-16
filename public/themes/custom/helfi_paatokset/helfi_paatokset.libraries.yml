@@ -12,3 +12,10 @@ global-scripting:
     - core/drupal
     - core/jquery
     - core/once
+
+accordion_inner:
+  version: 1.x
+  js:
+    dist/js/accordion-inner-settings.min.js: {}
+  dependencies:
+    - hdbt/handorgel
