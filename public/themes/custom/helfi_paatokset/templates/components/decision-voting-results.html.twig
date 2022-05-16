@@ -1,3 +1,5 @@
+{{ attach_library('helfi_paatokset/accordion_inner') }}
+
 <div class="paatokset-accordion voting-results-accordion">
   <div class="accordion__wrapper handorgel">
     <h3 class="accordion-item__header handorgel__header">
@@ -17,7 +19,7 @@
           <p><b>{{ 'Noes'|t }}:</b> {{results.accordions.Noes.Content }}</p>
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
-              <div class="accordion__wrapper handorgel">
+              <div class="accordion__wrapper handorgel-inner">
                 <div class="accordion-item__header handorgel__header">
                   <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" {% if accordion.NumberOfVotes == 0 %} disabled {% endif %}>
                     <div class="result-type {{ key|lower }}">
@@ -49,7 +51,7 @@
                       {% endfor %}
                       </tbody>
                     </table>
-                    <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+                    <span class="accordion-item__button accordion-item__button--close-inner" role="button" tabindex="0">
                       {{ 'Close'|t }}
                     </span>
                   </div>
