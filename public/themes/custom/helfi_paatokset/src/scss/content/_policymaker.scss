@@ -9,14 +9,6 @@
       margin-bottom: 32px;
     }
   }
-
-  .layout-main-wrapper {
-    margin-top: 32px;
-
-    @include breakpoint($breakpoint-m) {
-      margin-top: 96px;
-    }
-  }
 }
 
 .node--type-policymaker > section.policymaker-summary {

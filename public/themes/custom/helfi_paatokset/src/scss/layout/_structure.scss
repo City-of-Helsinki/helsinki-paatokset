@@ -1,0 +1,7 @@
+.layout-main-wrapper > .before-content > .page-title {
+  margin-top: 32px;
+
+  @include breakpoint($breakpoint-m) {
+    margin-top: 96px;
+  }
+}
