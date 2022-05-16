@@ -44,7 +44,8 @@
     border: none;
   }
 
-  .accordion-item__button--close {
+  .accordion-item__button--close,
+  .accordion-item__button--close-inner {
     display: flex;
     justify-content: right;
     padding: 24px;
