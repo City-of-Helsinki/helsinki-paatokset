@@ -8242,10 +8242,10 @@
         },
         {
             "name": "paatokset/paatokset_search",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.1/paatokset_search.zip"
+                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.2/paatokset_search.zip"
             },
             "type": "library"
         },

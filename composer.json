@@ -26,7 +26,7 @@
         "drush/drush": "^10.4",
         "elasticsearch/elasticsearch": "^7.15",
         "josdejong/jsoneditor": "^5.29",
-        "paatokset/paatokset_search": "1.0.1"
+        "paatokset/paatokset_search": "1.0.2"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -113,9 +113,9 @@
             "type": "package",
             "package": {
                 "name": "paatokset/paatokset_search",
-                "version": "1.0.1",
+                "version": "1.0.2",
                 "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.1/paatokset_search.zip",
+                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.2/paatokset_search.zip",
                     "type": "zip"
                 }
             }
