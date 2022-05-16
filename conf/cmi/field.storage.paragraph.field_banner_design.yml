@@ -15,10 +15,16 @@ settings:
   allowed_values:
     -
       value: align-center
-      label: 'Aligned to the center'
+      label: Keskitetty
     -
       value: align-left
-      label: 'Aligned to the left'
+      label: 'Tasattu vasemmalle'
+    -
+      value: align-center-secondary
+      label: 'Keskitetty, toissijainen väri'
+    -
+      value: align-left-secondary
+      label: 'Tasattu vasemmalle, toissijainen väri'
   allowed_values_function: ''
 module: options
 locked: false

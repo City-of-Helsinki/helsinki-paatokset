@@ -300,6 +300,9 @@
 
 /* Quick search form fixes */
 .paatokset-search--decisions, .paatokset-search-wrapper {
+  h1, label {
+    color: #000;
+  }
   button + ul li {
     font-size: 16px;
     margin-top: 0;
