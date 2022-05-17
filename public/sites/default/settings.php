@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '512M');
 }
@@ -21,21 +23,11 @@ $databases['default']['default'] = [
   'port' => getenv('DRUPAL_DB_PORT') ?: 3306,
   'namespace' => 'Drupal\Core\Database\Driver\mysql',
   'driver' => 'mysql',
+  'charset' => 'utf8mb4',
+  'collation' => 'utf8mb4_swedish_ci',
 ];
 
 $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: '000';
-
-if ($ssl_ca_path = getenv('AZURE_SQL_SSL_CA_PATH')) {
-  $databases['default']['default']['pdo'] = [
-    \PDO::MYSQL_ATTR_SSL_CA => $ssl_ca_path,
-    \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => FALSE,
-  ];
-  // Azure specific filesystem fixes.
-  $settings['php_storage']['twig']['directory'] = '/tmp';
-  $settings['php_storage']['twig']['secret'] = $settings['hash_salt'];
-  $settings['file_chmod_directory'] = 16895;
-  $settings['file_chmod_file'] = 16895;
-}
 
 // Only in Wodby environment.
 // @see https://wodby.com/docs/stacks/drupal/#overriding-settings-from-wodbysettingsphp
@@ -44,10 +36,21 @@ if (isset($_SERVER['WODBY_APP_NAME'])) {
   include '/var/www/conf/wodby.settings.php';
 }
 
-// Config values from evinronment variables
 $config['openid_connect.client.tunnistamo']['settings']['client_id'] = getenv('TUNNISTAMO_CLIENT_ID');
 $config['openid_connect.client.tunnistamo']['settings']['client_secret'] = getenv('TUNNISTAMO_CLIENT_SECRET');
 
+if ($tunnistamo_environment_url = getenv('TUNNISTAMO_ENVIRONMENT_URL')) {
+  $config['openid_connect.client.tunnistamo']['settings']['environment_url'] = $tunnistamo_environment_url;
+}
+
+$config['siteimprove.settings']['prepublish_enabled'] = TRUE;
+$config['siteimprove.settings']['api_username'] = getenv('SITEIMPROVE_API_USERNAME');
+$config['siteimprove.settings']['api_key'] = getenv('SITEIMPROVE_API_KEY');
+
+$settings['matomo_site_id'] = getenv('MATOMO_SITE_ID');
+$settings['siteimprove_id'] = getenv('SITEIMPROVE_ID');
+
+// Elasticsearch settings.
 if(getenv('ELASTIC_CONNECTOR_URL')) {
   $config['elasticsearch_connector.cluster.paatokset']['url'] = getenv('ELASTIC_CONNECTOR_URL');
 
@@ -61,9 +64,10 @@ if(getenv('ELASTIC_CONNECTOR_URL')) {
 
 // Drupal route(s).
 $routes = (getenv('DRUPAL_ROUTES')) ? explode(',', getenv('DRUPAL_ROUTES')) : [];
+$routes[] = 'http://127.0.0.1';
 
 foreach ($routes as $route) {
-  $hosts[] = $host = parse_url($route)['host'];
+  $host = parse_url($route)['host'];
   $trusted_host = str_replace('.', '\.', $host);
   $settings['trusted_host_patterns'][] = '^' . $trusted_host . '$';
 }
@@ -110,7 +114,6 @@ if ($blob_storage_name = getenv('AZURE_BLOB_STORAGE_NAME')) {
   $settings['flysystem'] = $schemes;
 }
 
-
 if ($varnish_host = getenv('DRUPAL_VARNISH_HOST')) {
   $config['varnish_purger.settings.default']['hostname'] = $varnish_host;
   $config['varnish_purger.settings.varnish_purge_all']['hostname'] = $varnish_host;
@@ -153,6 +156,22 @@ if ($varnish_purge_key = getenv('VARNISH_PURGE_KEY')) {
     'field' => 'X-VC-Purge-Key',
     'value' => $varnish_purge_key,
   ];
+}
+
+if ($stage_file_proxy_origin = getenv('STAGE_FILE_PROXY_ORIGIN')) {
+  $config['stage_file_proxy.settings']['origin'] = $stage_file_proxy_origin;
+  $config['stage_file_proxy.settings']['origin_dir'] = getenv('STAGE_FILE_PROXY_ORIGIN_DIR') ?: 'test';
+  $config['stage_file_proxy.settings']['hotlink'] = FALSE;
+  $config['stage_file_proxy.settings']['use_imagecache_root'] = FALSE;
+}
+
+// Override session suffix when present.
+if ($session_suffix = getenv('DRUPAL_SESSION_SUFFIX')) {
+  $config['helfi_proxy.settings']['session_suffix'] = $session_suffix;
+}
+
+if ($robots_header_enabled = getenv('DRUPAL_X_ROBOTS_TAG_HEADER')) {
+  $config['helfi_proxy.settings']['robots_header_enabled'] = (bool) $robots_header_enabled;
 }
 
 $config['filelog.settings']['rotation']['schedule'] = 'never';
