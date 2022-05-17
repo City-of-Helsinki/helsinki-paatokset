@@ -9,6 +9,8 @@ declare(strict_types = 1);
 
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Implements hook_theme().
@@ -354,9 +356,27 @@ function paatokset_policymakers_preprocess_page(&$variables) {
 
   // Add template variables on dm pages
   if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
-    $variables['page_has_sidebar'] = true;
-    $variables['move_before_content'] = true;
-    $variables['has_navigation'] = true;
+    $variables['page_has_sidebar'] = TRUE;
+    $variables['move_before_content'] = TRUE;
+    $variables['has_navigation'] = TRUE;
+
+    // Unset main navigation.
+    unset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2']);
+  }
+  elseif (_paatokset_policymakers_page_is_pm_custom_link($variables)) {
+    $variables['page_has_sidebar'] = TRUE;
+    $variables['move_before_content'] = TRUE;
+    $variables['has_navigation'] = TRUE;
+
+    // Force pm sidebar and mobile navi to be visible.
+    $variables['policymaker_navigation'] = TRUE;
+
+    // Unset main navigation.
+    unset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2']);
+  }
+  // Unset policymaker side navi.
+  else {
+    unset($variables['page']['sidebar_first']['policymakersidenavigation']);
   }
 }
 
@@ -383,6 +403,77 @@ function paatokset_policymakers_preprocess_html(&$variables) {
  * @return bool
  *    Return result of conditional check
  */
-function _paatokset_policymakers_page_is_pm_subpage(array $variables) {
+function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
+  if (isset($variables['node']) && $variables['node']) {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService->setPolicyMakerByPath();
+    if ($policymakerService->getPolicyMaker() instanceof NodeInterface) {
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
+  }
+
   return isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first']);
+}
+
+function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool {
+  if (!isset($variables['node'])) {
+    return FALSE;
+  }
+
+  $node = $variables['node'];
+  if (!$node instanceof NodeInterface) {
+    return FALSE;
+  }
+
+  $node_id = $node->id();
+
+  // Don't act if this node is in a menu already.
+  $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+  $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node_id]);
+
+  if (!empty($links)) {
+    return FALSE;
+  }
+
+  // Query for a custom link that has this node as its target.
+  $paragraph_query = \Drupal::entityTypeManager()->getStorage('paragraph')->getQuery()
+    ->condition('type', 'custom_content_links')
+    ->condition('field_referenced_content.target_id', $node_id)
+    ->latestRevision();
+
+  $pids = $paragraph_query->execute();
+  if (empty($pids)) {
+    return FALSE;
+  }
+
+  // Always pick the first one if multiple are found.
+  $paragraph_id = reset($pids);
+  $paragraph = Paragraph::load($paragraph_id);
+
+  if (!$paragraph instanceof ParagraphInterface) {
+    return FALSE;
+  }
+
+  // Check that the parent node is a policymaker node.
+  $parent = $paragraph->getParentEntity();
+  if (!$parent instanceof NodeInterface) {
+    return FALSE;
+  }
+  if ($parent->bundle() !== 'policymaker') {
+    return FALSE;
+  }
+
+  // Check that the ID value exists.
+  if (!$parent->hasField('field_policymaker_id') || $parent->get('field_policymaker_id')->isEmpty()) {
+    return FALSE;
+  }
+
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService->setPolicyMakerNode($parent);
+  return TRUE;
 }
