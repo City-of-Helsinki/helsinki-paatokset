@@ -253,4 +253,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  hide_sidebar_navigation: true

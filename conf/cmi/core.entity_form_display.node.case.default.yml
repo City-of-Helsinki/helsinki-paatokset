@@ -194,3 +194,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_case_record_files: true
+  hide_sidebar_navigation: true

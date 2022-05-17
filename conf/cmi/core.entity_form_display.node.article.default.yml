@@ -157,3 +157,4 @@ hidden:
   field_author: true
   field_lead: true
   field_liftup_image: true
+  hide_sidebar_navigation: true

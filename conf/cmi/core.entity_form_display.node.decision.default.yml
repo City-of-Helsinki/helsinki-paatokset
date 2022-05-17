@@ -438,3 +438,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_decision_attachment_files: true
+  hide_sidebar_navigation: true
