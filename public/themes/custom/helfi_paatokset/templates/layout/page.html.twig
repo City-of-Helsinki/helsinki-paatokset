@@ -87,18 +87,28 @@
 
     <div class="main-content">
       <div class="layout-content {% if has_navigation %}has-navigation{% endif %} {% if move_before_content %}before-content--in-main{% endif %} {% if main_container %}container{% endif %}">
-        {% if page.before_content and move_before_content %}
+        {% if (page.before_content or policymaker_navigation) and move_before_content %}
+          {% if policymaker_navigation %}
+          <div class="before-content">
+            {{ drupal_block('policymaker_side_nav_mobile') }}
+          </div>
+          {% endif %}
           {{ page.before_content }}
         {% endif %}
-
         {% block page_content %}
           {{ page.content.system_main }}
           {{ page.content|without('system_main') }}
         {% endblock page_content %}
       </div>{# /.layout-content #}
 
-      {% if sidebar_first_output %}
+
+      {% if sidebar_first_output or policymaker_navigation %}
         <aside class="layout-sidebar-first {% if has_navigation %}has-navigation{% endif %}" role="complementary">
+          {% if policymaker_navigation %}
+            <div class="sidebar-first">
+              {{ drupal_block('policymaker_side_nav') }}
+            </div>
+          {% endif %}
           {{ page.sidebar_first }}
         </aside>
       {% endif %}
