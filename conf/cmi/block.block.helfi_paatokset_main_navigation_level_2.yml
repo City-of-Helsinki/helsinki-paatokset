@@ -34,10 +34,8 @@ visibility:
     negate: true
     context_mapping:
       node: '@node.node_route_context:node'
-    bundles:
-      article: article
-      landing_page: landing_page
+    bundles: {  }
   request_path:
     id: request_path
     negate: true
-    pages: "/paattajat/*\r\n/beslutsfattare/*"
+    pages: "/paattajat\r\n/beslutsfattare"
