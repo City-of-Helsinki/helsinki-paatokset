@@ -509,6 +509,16 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
     $variables['entity'] = $variables['elements']['#block__decision_tree'];
   }
 
+  $municipality_url = NULL;
+  if ($policymakerService->getPolicymaker('00400')) {
+    $municipality_url = $policymakerService->getPolicymaker('00400')->toUrl()->toString();
+  }
+
+  $council_url = NULL;
+  if ($policymakerService->getPolicymaker('02900')) {
+    $council_url = $policymakerService->getPolicymaker('02900')->toUrl()->toString();
+  }
+
   $variables['decision_process'] = [
     '0' => [
       'title' => t('Initiation'),
@@ -518,12 +528,12 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
       'link' => $committees_url,
     ],
     '2' => [
-      'title' => t('City council'),
-      'link' => $policymakerService->getPolicymaker('00400')->toUrl()->toString()
+      'title' => t('City board'),
+      'link' => $municipality_url,
     ],
     '3' => [
-      'title' => t('City board'),
-      'link' => $policymakerService->getPolicymaker('02900')->toUrl()->toString()
+      'title' => t('City council'),
+      'link' => $council_url,
     ],
     '4' => [
       'title' => t('Implementation'),
