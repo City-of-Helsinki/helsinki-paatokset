@@ -156,15 +156,17 @@ class PolicymakerService {
 
   /**
    * Set policy maker by current path.
+   *
+   * @return bool
+   *   TRUE if setting pm was succesful.
    */
-  public function setPolicyMakerByPath(): void {
+  public function setPolicyMakerByPath(): bool {
     $node = \Drupal::routeMatch()->getParameter('node');
     $routeParams = \Drupal::routeMatch()->getParameters();
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     // Determine policymaker in custom routes.
     if (!$node instanceof NodeInterface && $routeParams->get('organization')) {
-
       $fallback_prefix = '/paattajat';
       $fallback_lang = 'fi';
       if ($currentLanguage === 'sv') {
@@ -203,9 +205,12 @@ class PolicymakerService {
       }
     }
 
-    if ($node instanceof NodeInterface) {
+    if ($node instanceof NodeInterface && $node->bundle() === 'policymaker') {
       $this->setPolicyMakerNode($node);
+      return TRUE;
     }
+
+    return FALSE;
   }
 
   /**
