@@ -407,7 +407,9 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
   if (isset($variables['node']) && $variables['node']) {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-    $policymakerService->setPolicyMakerByPath();
+    if (!$policymakerService->setPolicyMakerByPath()) {
+      return FALSE;
+    }
     if ($policymakerService->getPolicyMaker() instanceof NodeInterface) {
       return TRUE;
     }
