@@ -358,7 +358,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="{{ field_document }}">{{ field_first_name }} {{ field_lastname }} (pdf){{ field_title }}</a>'
+            text: '<a href="{{ field_document }}">{{ field_first_name }} {{ field_lastname }} (pdf)</a>{{ field_title }}'
             make_link: false
             path: '{{ field_document }}'
             absolute: false
