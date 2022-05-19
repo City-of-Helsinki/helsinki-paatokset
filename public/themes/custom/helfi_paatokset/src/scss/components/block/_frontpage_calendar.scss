@@ -56,6 +56,10 @@
     font-size: 18px;
     font-weight: $font-weight-medium;
     align-items: center;
+
+    &:hover, &:focus, &:active {
+      text-decoration: underline;
+    }
   }
 }
 
