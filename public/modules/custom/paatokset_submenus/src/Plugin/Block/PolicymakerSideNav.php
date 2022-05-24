@@ -62,11 +62,20 @@ class PolicymakerSideNav extends BlockBase {
   }
 
   /**
-   * Set cache age to zero.
+   * Get cache tags.
    */
-  public function getCacheMaxAge() {
-    // If you need to redefine the Max Age for that block.
-    return 0;
+  public function getCacheTags() {
+    $cache_tags = [
+      'config:system.menu.main',
+    ];
+
+    // Add cache tag for current node, if set.
+    $policymaker = $this->policymakerService->getPolicymaker();
+    if ($policymaker instanceof NodeInterface) {
+      $cache_tags[] = 'node:' . $policymaker->id();
+    }
+
+    return $cache_tags;
   }
 
   /**
@@ -88,12 +97,55 @@ class PolicymakerSideNav extends BlockBase {
   private function getItems() {
     $currentPath = Url::fromRoute('<current>')->toString();
     $items = [];
+    $dynamic_links = [];
+    $menu_links = [];
+    $custom_links = [];
 
+    // Return empty result if policymaker can't be found.
     $policymaker = $this->policymakerService->getPolicymaker();
-
     if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
       return $items;
     }
+
+    $policymaker_url = $policymaker->toUrl()->toString();
+
+    $dynamic_links = $this->getDynamicLinks($policymaker);
+    $menu_links = $this->getMenuLinks($policymaker_url);
+    $custom_links = $this->getCustomlinks($policymaker);
+    $items = array_merge($dynamic_links, $menu_links, $custom_links);
+
+    foreach ($items as $key => $item) {
+      if ($item['url']->toString() === $currentPath) {
+        $items[$key]['in_active_trail'] = TRUE;
+        $items[$key]['is_currentPage'] = TRUE;
+      }
+    }
+
+    // Apply HDBT attributes to navigation items.
+    if (function_exists('_hdbt_menu_item_apply_attributes')) {
+      foreach ($items as &$item) {
+        _hdbt_menu_item_apply_attributes($item);
+      }
+    }
+
+    return $items;
+  }
+
+  /**
+   * Get dynamic links for policymaker.
+   *
+   * @param \Drupal\node\NodeInterface $policymaker
+   *   Policymaker node.
+   *
+   * @return array
+   *   Dynamic links.
+   */
+  protected function getDynamicLinks(NodeInterface $policymaker): array {
+    $items = [];
+    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+    $routeProvider = \Drupal::service('router.route_provider');
 
     $items[] = [
       'title' => $policymaker->get('field_ahjo_title')->value,
@@ -101,45 +153,11 @@ class PolicymakerSideNav extends BlockBase {
       'attributes' => new Attribute(),
     ];
 
-    $policymaker_url = $policymaker->toUrl()->toString();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
-    $menu_tree = \Drupal::menuTree();
-    $routeProvider = \Drupal::service('router.route_provider');
-    $dmMenuLink = NULL;
-    $localizedDmRoute = 'policymakers.' . $this->currentLang;
-
-    if ($this->policymakerService->routeExists($localizedDmRoute)) {
-      $parameters = new MenuTreeParameters();
-      $main_menu_top_level = $menu_tree->load('main', $parameters);
-      $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
-      $dmParentLink = NULL;
-      foreach ($main_menu_top_level as $menuLink) {
-        $dmParentLink = NULL;
-        $linkUrl = $menuLink->link->getUrlObject();
-
-        if ($linkUrl && $linkUrl->toString() === $dmUrl) {
-          $dmParentLink = $menuLink;
-          break;
-        }
-      }
-
-      if ($dmParentLink) {
-        foreach ($dmParentLink->subtree as $subMenuLink) {
-          $linkUrl = $subMenuLink->link->getUrlObject();
-
-          if ($linkUrl && $linkUrl->toString() === $policymaker_url) {
-            $dmMenuLink = $subMenuLink;
-            break;
-          }
-        }
-      }
-    }
-
     $trustee_types = [
       'Viranhaltija',
       'Luottamushenkilö',
     ];
+
     $org_type = $policymaker->get('field_organization_type')->value;
     if (in_array($org_type, $trustee_types)) {
       $routes = PolicymakerRoutes::getTrusteeRoutes();
@@ -148,35 +166,118 @@ class PolicymakerSideNav extends BlockBase {
       $routes = PolicymakerRoutes::getOrganizationRoutes();
     }
 
-    foreach ($routes as $key => $route) {
+    foreach ($routes as $key => $name) {
       if ($key === 'discussion_minutes' && $org_type !== 'Valtuusto') {
         continue;
       }
 
-      $localizedRoute = "$route.$this->currentLang";
-      if ($this->policymakerService->routeExists($localizedRoute)) {
-        $route = $routeProvider->getRouteByName($localizedRoute);
-        if ($key === 'documents') {
-          $title = t('Documents');
-        }
-        elseif ($key === 'decisions') {
-          $title = t('Decisions');
-        }
-        elseif ($key === 'discussion_minutes') {
-          $title = t('Discussion minutes');
-        }
-        else {
-          $title = call_user_func($route->getDefault('_title_callback'))->render();
-        }
+      $localizedRoute = "$name.$this->currentLang";
 
-        $items[] = [
-          'title' => $title,
-          'url' => Url::fromRoute($localizedRoute, ['organization' => $policymaker_org]),
-          'attributes' => new Attribute(),
-        ];
+      if (!$this->policymakerService->routeExists($localizedRoute)) {
+        continue;
+      }
+
+      $route = $routeProvider->getRouteByName($localizedRoute);
+
+      if ($key === 'documents') {
+        $title = t('Documents');
+      }
+      elseif ($key === 'decisions') {
+        $title = t('Decisions');
+      }
+      elseif ($key === 'discussion_minutes') {
+        $title = t('Discussion minutes');
+      }
+      else {
+        $title = call_user_func($route->getDefault('_title_callback'))->render();
+      }
+
+      $items[] = [
+        'title' => $title,
+        'url' => Url::fromRoute($localizedRoute, ['organization' => $policymaker_org]),
+        'attributes' => new Attribute(),
+      ];
+    }
+
+    return $items;
+  }
+
+  /**
+   * Get menu links for policymaker side navigation.
+   *
+   * @param string $policymaker_url
+   *   Policymaker URL.
+   *
+   * @return array
+   *   Menu links under current policymaker.
+   */
+  protected function getMenuLinks(string $policymaker_url): array {
+    $menu_tree = \Drupal::menuTree();
+    $localizedDmRoute = 'policymakers.' . $this->currentLang;
+    if (!$this->policymakerService->routeExists($localizedDmRoute)) {
+      return [];
+    }
+
+    $parameters = new MenuTreeParameters();
+    $main_menu_top_level = $menu_tree->load('main', $parameters);
+    $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
+
+    // Get decisionmakers menu link.
+    $dmParentLink = NULL;
+    foreach ($main_menu_top_level as $menuLink) {
+      $linkUrl = $menuLink->link->getUrlObject();
+
+      if ($linkUrl && $linkUrl->toString() === $dmUrl) {
+        $dmParentLink = $menuLink;
+        break;
       }
     }
 
+    // Empty result if parent link can't be found.
+    if ($dmParentLink === NULL) {
+      return [];
+    }
+
+    // Try to find current decisionmaker under decisionmakers item.
+    $dmMenuLink = NULL;
+    foreach ($dmParentLink->subtree as $subMenuLink) {
+      $linkUrl = $subMenuLink->link->getUrlObject();
+
+      if ($linkUrl && $linkUrl->toString() === $policymaker_url) {
+        $dmMenuLink = $subMenuLink;
+        break;
+      }
+    }
+
+    if ($dmMenuLink === NULL || empty($dmMenuLink->subtree)) {
+      return [];
+    }
+
+    // Use manipulators to get correct item order.
+    $subtree = $dmMenuLink->subtree;
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
+    $subtree = $menu_tree->transform($subtree, $manipulators);
+    $build = $menu_tree->build($subtree);
+
+    if (!isset($build['#items']) || empty($build['#items'])) {
+      return [];
+    }
+    return $build['#items'];
+  }
+
+  /**
+   * Get custom links from policymaker.
+   *
+   * @param \Drupal\node\NodeInterface $policymaker
+   *   Policymaker node.
+   *
+   * @return array
+   *   Custom links.
+   */
+  protected function getCustomLinks(NodeInterface $policymaker): array {
+    $items = [];
     $customLinks = $policymaker->field_custom_menu_links->referencedEntities();
     foreach ($customLinks as $link) {
       if (empty($link->field_referenced_content->entity)) {
@@ -189,25 +290,6 @@ class PolicymakerSideNav extends BlockBase {
         'attributes' => new Attribute(),
       ];
     }
-
-    foreach ($items as $key => $item) {
-      if ($item['url']->toString() === $currentPath) {
-        $items[$key]['in_active_trail'] = TRUE;
-        $items[$key]['is_currentPage'] = TRUE;
-      }
-    }
-
-    if ($dmMenuLink && $dmMenuLink->subtree) {
-      $items = array_merge($items, $menu_tree->build($dmMenuLink->subtree)['#items']);
-    }
-
-    // Apply HDBT attributes to navigation items.
-    if (function_exists('_hdbt_menu_item_apply_attributes')) {
-      foreach ($items as &$item) {
-        _hdbt_menu_item_apply_attributes($item);
-      }
-    }
-
     return $items;
   }
 
