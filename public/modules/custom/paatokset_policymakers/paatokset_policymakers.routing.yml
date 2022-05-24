@@ -4,6 +4,9 @@ policymakers.fi:
 policymakers.sv:
   path: beslutsfattare
 
+policymakers.en:
+  path: decisionmakers
+
 policymaker.page.fi:
   path: 'paattajat/{organization}'
   defaults:
@@ -36,6 +39,14 @@ policymaker.documents.sv:
   requirements:
     _access: 'TRUE'
 
+policymaker.page.en:
+  path: 'decisionmakers/{organization}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymaker'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymakerTitle'
+  requirements:
+    _access: 'TRUE'
+
 policymaker.decisions.fi:
   path: 'paattajat/{organization}/paatokset'
   defaults:
@@ -46,6 +57,14 @@ policymaker.decisions.fi:
 
 policymaker.decisions.sv:
   path: 'beslutsfattare/{organization}/beslut'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.en:
+  path: 'decisionmakers/{organization}/decisions'
   defaults:
     _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::decisions'
     _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDecisionsTitle'
@@ -68,6 +87,14 @@ policymaker.discussion_minutes.sv:
   requirements:
     _access: 'TRUE'
 
+policymaker.discussion_minutes.en:
+  path: 'decisionmakers/{organization}/discussion-minutes'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
 policymaker.minutes.fi:
   path: 'paattajat/{organization}/asiakirjat/{id}'
   defaults:
@@ -78,6 +105,14 @@ policymaker.minutes.fi:
 
 policymaker.minutes.sv:
   path: 'beslutsfattare/{organization}/dokumenter/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.minutes.en:
+  path: 'decisionmakers/{organization}/documents/{id}'
   defaults:
     _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::minutes'
     _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getMinutesTitle'
