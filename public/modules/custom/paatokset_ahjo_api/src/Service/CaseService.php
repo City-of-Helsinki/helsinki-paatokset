@@ -91,6 +91,10 @@ class CaseService {
         $value = 'beslut';
         break;
 
+      case 'en':
+        $value = 'decision';
+        break;
+
       default:
         $value = 'paatos';
         break;
