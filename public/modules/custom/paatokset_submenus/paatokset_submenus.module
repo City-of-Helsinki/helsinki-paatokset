@@ -70,14 +70,20 @@ function paatokset_submenus_preprocess_block(&$variables) {
       $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
       if ($currentLanguage === 'fi') {
         $variables['menu_link_parent'] = [
-          'title' => t('Päättäjät'),
+          'title' => t('Decisionmakers'),
           'url' => \Drupal\Core\Url::fromRoute('policymakers.fi')
         ];
       }
       elseif ($currentLanguage === 'sv') {
         $variables['menu_link_parent'] = [
-          'title' => t('Beslutsfattare'),
+          'title' => t('Decisionmakers'),
           'url' => \Drupal\Core\Url::fromRoute('policymakers.sv')
+        ];
+      }
+      elseif ($currentLanguage === 'en') {
+        $variables['menu_link_parent'] = [
+          'title' => t('Decisionmakers'),
+          'url' => \Drupal\Core\Url::fromRoute('policymakers.en')
         ];
       }
 

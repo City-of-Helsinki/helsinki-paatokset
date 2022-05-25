@@ -109,6 +109,9 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   elseif ($currentLanguage === 'sv') {
     $variables['calendar_link'] = '/sv/moteskalender';
   }
+  elseif ($currentLanguage === 'en') {
+    $variables['calendar_link'] = '/en/meetings-calendar';
+  }
 
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $meetings_with_color;

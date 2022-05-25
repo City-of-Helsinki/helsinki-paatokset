@@ -23,6 +23,14 @@ policymaker.page.sv:
   requirements:
     _access: 'TRUE'
 
+policymaker.page.en:
+  path: 'decisionmakers/{organization}'
+  defaults:
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymaker'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymakerTitle'
+  requirements:
+    _access: 'TRUE'
+
 policymaker.documents.fi:
   path: 'paattajat/{organization}/asiakirjat'
   defaults:
@@ -39,11 +47,11 @@ policymaker.documents.sv:
   requirements:
     _access: 'TRUE'
 
-policymaker.page.en:
-  path: 'decisionmakers/{organization}'
+policymaker.documents.en:
+  path: 'decisionmakers/{organization}/documents'
   defaults:
-    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymaker'
-    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerNodeViewController::policymakerTitle'
+    _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDocumentsTitle'
   requirements:
     _access: 'TRUE'
 

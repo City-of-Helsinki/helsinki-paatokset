@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/kokouskalenteri\r\n/moteskalender"
+    pages: "/kokouskalenteri\r\n/moteskalender\r\n/meetings-calendar"

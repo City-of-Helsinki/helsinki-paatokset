@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/asia/*\r\n/asia/*/*\r\n/arende/*\r\n/arende/*/*"
+    pages: "/asia/*\r\n/asia/*/*\r\n/arende/*\r\n/arende/*/*\r\n/case/*\r\n/case/*/*"

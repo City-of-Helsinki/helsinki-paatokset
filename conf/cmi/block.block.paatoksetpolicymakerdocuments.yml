@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/paattajat/*/asiakirjat\r\n/beslutsfattare/*/dokumenter"
+    pages: "/paattajat/*/asiakirjat\r\n/beslutsfattare/*/dokumenter\r\n/decisionmakers/*/documents"
