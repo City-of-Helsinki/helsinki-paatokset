@@ -3,23 +3,23 @@ langcode: fi
 status: true
 dependencies:
   config:
-    - field.storage.node.field_decision_case_title
     - field.storage.node.field_classification_title
     - field.storage.node.field_decision_content_parsed
     - field.storage.node.field_decision_motion_parsed
-    - field.storage.node.field_diary_number
-    - field.storage.node.field_full_title
-    - field.storage.node.field_meeting_date
     - field.storage.node.field_decision_native_id
+    - field.storage.node.field_diary_number
+    - field.storage.node.field_decision_case_title
+    - field.storage.node.field_meeting_date
     - field.storage.node.field_dm_org_above_name
     - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
+    - field.storage.node.field_full_title
     - field.storage.node.field_top_category_name
     - search_api.server.elasticsearch
   module:
+    - node
     - search_api
     - paatokset_search
-    - node
 id: decisions
 name: Decisions
 description: ''
@@ -98,6 +98,13 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_meeting_date
+  node_grants:
+    label: 'Node access information'
+    property_path: search_api_node_grants
+    type: string
+    indexed_locked: true
+    type_locked: true
+    hidden: true
   organization_above_name:
     label: 'Organization level above name'
     datasource_id: 'entity:node'
@@ -132,6 +139,16 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: special_status
     type: string
+  status:
+    label: null
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
   subject:
     label: 'Full title'
     datasource_id: 'entity:node'
@@ -149,6 +166,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_top_category_name
+  uid:
+    label: null
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
 datasource_settings:
   'entity:node':
     bundles:
@@ -162,7 +189,11 @@ processor_settings:
   add_url: {  }
   aggregated_field: {  }
   color_class: {  }
+  content_access:
+    weights:
+      preprocess_query: -30
   decision_url: {  }
+  entity_status: {  }
   entity_type: {  }
   has_translation: {  }
   language_with_fallback: {  }
