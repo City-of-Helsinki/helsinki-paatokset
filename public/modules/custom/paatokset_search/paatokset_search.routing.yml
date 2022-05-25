@@ -10,6 +10,14 @@ paatokset_search.decisions.sv:
   path: 'arende'
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
+    _title: 'Sök beslut'
+  requirements:
+    _access: 'TRUE'
+
+paatokset_search.decisions.en:
+  path: 'decision'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
     _title: 'Search decisions'
   requirements:
     _access: 'TRUE'
