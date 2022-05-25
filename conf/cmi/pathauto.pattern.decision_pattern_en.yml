@@ -1,0 +1,33 @@
+uuid: 2d2e6bdf-f2e3-4c22-9f11-654f9425c0ab
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: decision_pattern_en
+label: 'Decision pattern EN'
+type: 'canonical_entities:node'
+pattern: 'case/[node:field_diary_number]/[node:field_decision_native_id]'
+selection_criteria:
+  fce8a903-1c5c-4604-b85a-426195f5877a:
+    id: node_type
+    negate: false
+    uuid: fce8a903-1c5c-4604-b85a-426195f5877a
+    context_mapping:
+      node: node
+    bundles:
+      decision: decision
+  657f6f3d-d877-4acd-81cd-247dbd7b91c2:
+    id: language
+    negate: false
+    uuid: 657f6f3d-d877-4acd-81cd-247dbd7b91c2
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en: en
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli
