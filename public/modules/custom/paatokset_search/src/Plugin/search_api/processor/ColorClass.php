@@ -63,11 +63,9 @@ class ColorClass extends ProcessorPluginBase {
         $colorClass = $policymakerService->getPolicymakerClass($node);
       }
 
-      if ($colorClass) {
-        $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'color_class');
-        if (isset($fields['color_class'])) {
-          $fields['color_class']->addValue($colorClass);
-        }
+      $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'color_class');
+      if (isset($fields['color_class'])) {
+        $fields['color_class']->addValue($colorClass);
       }
     }
   }
