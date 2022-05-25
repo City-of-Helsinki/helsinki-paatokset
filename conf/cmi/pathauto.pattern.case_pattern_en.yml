@@ -1,0 +1,33 @@
+uuid: 1a3b1dff-32e6-45d2-8641-6b19395292f1
+langcode: fi
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: case_pattern_en
+label: 'Case pattern EN'
+type: 'canonical_entities:node'
+pattern: 'case/[node:field_diary_number]'
+selection_criteria:
+  7f23849f-3f14-48fa-9157-4c45ddcb7007:
+    id: node_type
+    negate: false
+    uuid: 7f23849f-3f14-48fa-9157-4c45ddcb7007
+    context_mapping:
+      node: node
+    bundles:
+      case: case
+  35aa1deb-2e51-436b-8352-ed5468363400:
+    id: language
+    negate: false
+    uuid: 35aa1deb-2e51-436b-8352-ed5468363400
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en: en
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Kieli
