@@ -6,6 +6,7 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Drupal\Core\Url;
 
 /**
  * Computes the decision URL for the indexed decision.
@@ -52,7 +53,7 @@ class DecisionUrl extends ProcessorPluginBase {
       $caseService = \Drupal::service('paatokset_ahjo_cases');
       $decisionUrl = $caseService->getDecisionUrlFromNode($decision);
       $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decision_url');
-      if (isset($fields['decision_url'])) {
+      if ($decisionUrl instanceof Url && isset($fields['decision_url'])) {
         $fields['decision_url']->addValue($decisionUrl->toString());
       }
     }

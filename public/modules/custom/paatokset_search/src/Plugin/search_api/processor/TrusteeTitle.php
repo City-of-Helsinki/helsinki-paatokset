@@ -57,7 +57,7 @@ class TrusteeTitle extends ProcessorPluginBase {
 
       $name = TrusteeService::getTrusteeTitle($node);
       $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'trustee_title');
-      if (isset($fields['trustee_title'])) {
+      if ($name && isset($fields['trustee_title'])) {
         $fields['trustee_title']->addValue($name);
       }
     }
