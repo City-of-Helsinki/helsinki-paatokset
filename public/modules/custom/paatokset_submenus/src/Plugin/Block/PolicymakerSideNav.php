@@ -284,9 +284,15 @@ class PolicymakerSideNav extends BlockBase {
         continue;
       }
 
+      $entity = $link->field_referenced_content->entity;
+
+      if ($entity->hasTranslation($this->currentLang)) {
+        $entity = $entity->getTranslation($this->currentLang);
+      }
+
       $items[] = [
         'title' => $link->get('field_link_label')->value,
-        'url' => $link->field_referenced_content->entity->toUrl(),
+        'url' => $entity->toUrl(),
         'attributes' => new Attribute(),
       ];
     }
