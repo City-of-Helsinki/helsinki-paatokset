@@ -307,8 +307,13 @@
     font-size: 16px;
     margin-top: 0;
   }
-  button + ul li:hover {
+  button + ul li[class*='Select-module_highlighted'] {
+    color: #fff!important;
     background-color: #000!important;
+
+    span {
+      border-color: #fff!important;
+    }
   }
   .DateSelect__predefined-ranges-container + button {
     border-top-color: #ccc;
