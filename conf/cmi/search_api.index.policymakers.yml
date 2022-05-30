@@ -146,6 +146,7 @@ processor_settings:
   entity_status: {  }
   entity_type: {  }
   has_translation: {  }
+  inactive_decisionmakers: {  }
   language_with_fallback: {  }
   rendered_item: {  }
   sector_json: {  }
