@@ -49,8 +49,9 @@ class DecisionUrl extends ProcessorPluginBase {
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDatasourceId();
     if ($datasourceId === 'entity:node' && $decision = $item->getOriginalObject()->getValue()) {
+      $langcode = $decision->get('langcode');
       /** @var \Drupal\paatokset_ahjo_api\Service\CaseService */
-      $caseService = \Drupal::service('paatokset_ahjo_cases');
+      $caseService = \Drupal::service('paatokset_ahjo_cases', $langcode);
       $decisionUrl = $caseService->getDecisionUrlFromNode($decision);
       $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decision_url');
       if ($decisionUrl instanceof Url && isset($fields['decision_url'])) {
