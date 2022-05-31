@@ -313,7 +313,11 @@
 
     span {
       border-color: #fff!important;
+      box-shadow: none!important;
     }
+  }
+  button > span[class*='Select-module_buttonLabel'] {
+    color: rgb(102, 102, 102);
   }
   .DateSelect__predefined-ranges-container + button {
     border-top-color: #ccc;
