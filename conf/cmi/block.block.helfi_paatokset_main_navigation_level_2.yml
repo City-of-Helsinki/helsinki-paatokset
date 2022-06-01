@@ -38,4 +38,4 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: "/paattajat\r\n/beslutsfattare"
+    pages: "/paattajat\r\n/beslutsfattare\r\n/decisionmakers"
