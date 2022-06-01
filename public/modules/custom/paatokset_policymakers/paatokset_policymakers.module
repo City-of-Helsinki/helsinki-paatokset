@@ -111,8 +111,17 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $cache_tags = [];
 
+
   $orgType = $policymaker->get('field_organization_type')->value;
   $variables['is_organization'] = FALSE;
+
+  // If policymaker is not existing, hide all content.
+  if ($policymaker->hasField('field_policymaker_existing') && !$policymaker->get('field_policymaker_existing')->isEmpty() && !$policymaker->get('field_policymaker_existing')->value) {
+    if (!in_array($orgType, $not_organization_types)) {
+      $variables['is_organization'] = TRUE;
+    }
+    return;
+  }
 
   if ($orgType) {
     if (!in_array($orgType, $not_organization_types)) {
