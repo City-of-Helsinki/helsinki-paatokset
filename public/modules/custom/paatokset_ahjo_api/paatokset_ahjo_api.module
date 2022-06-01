@@ -237,6 +237,13 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       $node = $node->getTranslation($currentLanguage);
     }
 
+    if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
+      $sector = _paatokset_ahjo_api_get_sector_english_translation($node->get('field_sector_name')->value);
+    }
+    else {
+      $sector = '';
+    }
+
     $filtered[] = [
       'title' => $node->get('field_ahjo_title')->value,
       'link' => $policymakerService->getPolicymakerRoute($node, $currentLanguage),
@@ -245,7 +252,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'image' => $node->get('field_policymaker_image')->view('default'),
       'organization_color' => $policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
       'is_city_council_division' => $node->get('field_city_council_division')->value,
-      'sector' => $node->get('field_sector_name')->value,
+      'sector' => $sector,
     ];
   }
 
@@ -331,27 +338,8 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $accordions_2 = [];
 
   foreach ($sectors_occupants as $key => $value) {
-    switch ($key) {
-      case 'Kasvatuksen ja koulutuksen toimiala':
-        $tkey = 'Education Division';
-        break;
-      case 'Kaupunkiympäristön toimiala':
-        $tkey = 'Urban Environment Division';
-        break;
-      case 'Keskushallinto':
-        $tkey = 'Central Administration';
-        break;
-      case 'Kulttuurin ja vapaa-ajan toimiala':
-        $tkey = 'Culture and Leisure Division';
-        break;
-      case 'Sosiaali- ja terveystoimiala':
-        $tkey = 'Social Services and Health Care Division';
-        break;
-      default:
-        $tkey = $key;
-        break;
-    }
-    if (strlen($key) !== 0 ) {
+    $tkey = _paatokset_ahjo_api_get_sector_english_translation($key);
+    if (strlen($tkey) !== 0 ) {
       $accordion_key = 'Office holders: ' . $tkey;
       $accordions_2[$accordion_key] = $value;
     }
@@ -367,6 +355,39 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $variables['accordions'] = $accordions;
 
   $variables['title'] = $variables['elements']['content']['label'];
+}
+
+/**
+ * Get english version of finnish sector name.
+ *
+ * @param string $sector
+ *   Sector name.
+ * @return string
+ *   English translation of sector, or original value.
+ */
+function _paatokset_ahjo_api_get_sector_english_translation(string $sector): string {
+  switch ($sector) {
+    case 'Kasvatuksen ja koulutuksen toimiala':
+      $value = 'Education Division';
+      break;
+    case 'Kaupunkiympäristön toimiala':
+      $value = 'Urban Environment Division';
+      break;
+    case 'Keskushallinto':
+      $value = 'Central Administration';
+      break;
+    case 'Kulttuurin ja vapaa-ajan toimiala':
+      $value = 'Culture and Leisure Division';
+      break;
+    case 'Sosiaali- ja terveystoimiala':
+      $value = 'Social Services and Health Care Division';
+      break;
+    default:
+      $value = $sector;
+      break;
+  }
+
+  return $value;
 }
 
 /**
