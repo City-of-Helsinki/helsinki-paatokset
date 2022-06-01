@@ -100,6 +100,14 @@
         </div>
       </div>
     {% endif %}
+    {% if not is_active %}
+      <div class="warning-label">
+        <div class="warning-label__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This is a motion'|t } %}
+          <span>{{ 'This decisionmaker is no longer active'|t }}</span>
+        </div>
+      </div>
+    {% endif %}
 
     {% if render_announcement_block %}
       {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
