@@ -10,6 +10,17 @@
       </div>
     {% endif %}
 
+    {% if not policymaker_is_active %}
+    <div class="motion-tag">
+      <div class="warning-label">
+        <div class="warning-label__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This is a motion'|t } %}
+          <span>{{ 'This decisionmaker is no longer active'|t }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     {% if not selectedDecision.field_is_decision.value %}
     <div class="motion-tag">
       <div class="warning-label">

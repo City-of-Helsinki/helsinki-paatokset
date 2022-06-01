@@ -39,6 +39,7 @@ class CaseController extends ControllerBase {
 
     $data['decision_pdf'] = $this->caseService->getDecisionPdf();
     $data['selectedDecision'] = $this->caseService->getSelectedDecision();
+    $data['policymaker_is_active'] = $this->caseService->decisionPmIsActive();
     $data['decision_section'] = $this->caseService->getFormattedDecisionSection();
     $data['decision_org_name'] = $this->caseService->getDecisionOrgName();
     $data['selected_class'] = $this->caseService->getDecisionClass();
@@ -72,6 +73,7 @@ class CaseController extends ControllerBase {
       drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
       [
         'selectedDecision' => $data['selectedDecision'],
+        'policymaker_is_active' => $data['policymaker_is_active'],
         'selected_class' => $data['selected_class'],
         'decision_org_name' => $data['decision_org_name'],
         'decision_content' => $data['decision_content'],

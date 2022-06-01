@@ -998,6 +998,29 @@ class CaseService {
   }
 
   /**
+   * Check if selected decision's decisionmaker is active.
+   *
+   * @return bool
+   *   Decisionmaker activity status.
+   */
+  public function decisionPmIsActive(): bool {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return FALSE;
+    }
+
+    // Return TRUE if policymaker is not set.
+    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
+      return TRUE;
+    }
+
+    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
+
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    return $policymakerService->policymakerIsActiveById($policymaker_id);
+  }
+
+  /**
    * Parse decision content and motion data from HTML.
    *
    * @return array
