@@ -19,3 +19,5 @@ banner_text:
 banner_heading: 'Sanat hukassa?'
 banner_label: 'Siirry sanakirjaan'
 banner_url: '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja'
+committees_boards_url: '/fi/paattajat'
+office_holders_url: '/fi/paattajat'
