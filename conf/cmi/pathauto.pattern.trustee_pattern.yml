@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: 'paattajat/[node:field_trustee_id]'
 selection_criteria:
   af202feb-3cf2-425e-9120-0b058ba941a1:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: af202feb-3cf2-425e-9120-0b058ba941a1
     context_mapping:
