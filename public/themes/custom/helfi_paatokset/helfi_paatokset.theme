@@ -233,7 +233,7 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     usort($content_initiatives, 'datecmp');
 
     $variables['initiatives'] = [
-      'title' => t('Valtuutetun tekemät aloitteet'),
+      'title' => t('Initiatives by the councillor'),
       'content' => $content_initiatives,
     ];
   };
@@ -247,14 +247,14 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     usort($content_resolutions, 'datecmp');
 
     $variables['resolutions'] = [
-      'title' => t('Valtuutetun tekemät ponnet'),
+      'title' => t('Resolutions by the councillor'),
       'content' => $content_resolutions
     ];
   };
 
   if ($speaking_turns = TrusteeService::getSpeakingTurns($node)) {
     $variables['speaking_turns'] = [
-      'title' => t('Valtuutetun puheenvuorot'),
+      'title' => t('Speaking turns by the councillor'),
       'content' => $speaking_turns,
     ];
   }
