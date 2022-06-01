@@ -215,6 +215,7 @@ class PolicymakerService {
    *   Policymaker ID.
    *
    * @return bool
+   *   Policymaker existing status.
    */
   public function policymakerIsActiveById(string $id): bool {
     $policymaker = $this->getPolicyMaker($id);
