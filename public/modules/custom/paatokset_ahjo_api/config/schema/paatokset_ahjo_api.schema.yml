@@ -73,3 +73,9 @@ paatokset_ahjo_api.default_texts:
     banner_url:
       type: label
       label: 'Banner CTA button URL'
+    committees_boards_url:
+      type: label
+      label: 'Committees and boards URL'
+    office_holders_url:
+      type: label
+      label: 'Office holders URL'

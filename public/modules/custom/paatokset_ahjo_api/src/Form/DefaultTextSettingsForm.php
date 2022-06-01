@@ -44,7 +44,27 @@ class DefaultTextSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('paatokset_ahjo_api.default_texts');
 
-    $form['alerts'] = $form['defaults'] = [
+    $form['links'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Links and URLs'),
+      '#open' => TRUE,
+    ];
+
+    $form['links']['committees_boards_url'] = [
+      '#type' => 'textfield',
+      '#default_value' => $config->get('committees_boards_url'),
+      '#title' => t('Committees and boards URL'),
+      '#description' => t('Used on the decision tree page.'),
+    ];
+
+    $form['links']['office_holders_url'] = [
+      '#type' => 'textfield',
+      '#default_value' => $config->get('office_holders_url'),
+      '#title' => t('Office holders URL'),
+      '#description' => t('Used on the decision tree page.'),
+    ];
+
+    $form['alerts'] = [
       '#type' => 'details',
       '#title' => $this->t('Messages and alerts'),
       '#open' => TRUE,
@@ -132,6 +152,8 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_ahjo_api.default_texts')
+      ->set('committees_boards_url', $form_state->getValue('committees_boards_url'))
+      ->set('office_holders_url', $form_state->getValue('office_holders_url'))
       ->set('hidden_decisions_text.value', $form_state->getValue('hidden_decisions_text')['value'])
       ->set('hidden_decisions_text.format', $form_state->getValue('hidden_decisions_text')['format'])
       ->set('documents_description.value', $form_state->getValue('documents_description')['value'])
