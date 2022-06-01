@@ -209,6 +209,52 @@ class PolicymakerService {
   }
 
   /**
+   * Check if policymaker is currently active by ID.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   *
+   * @return bool
+   */
+  public function policymakerIsActiveById(string $id): bool {
+    $policymaker = $this->getPolicyMaker($id);
+    if ($policymaker instanceof NodeInterface) {
+      return $this->policymakerIsActive($policymaker);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Check if policymaker is currently active.
+   *
+   * @param \Drupal\node\NodeInterface|null $policymaker
+   *   Policymaker to check. Leave empty to use currently active.
+   *
+   * @return bool
+   *   Policymaker existing status.
+   */
+  public function policymakerIsActive(?NodeInterface $policymaker = NULL): bool {
+    if ($policymaker === NULL) {
+      $policymaker = $this->policymaker;
+    }
+
+    if (!$policymaker instanceof NodeInterface) {
+      return FALSE;
+    }
+
+    // If field doesn't exist or is empty, assume this isn't active.
+    if (!$policymaker->hasField('field_policymaker_existing') || $policymaker->get('field_policymaker_existing')->isEmpty()) {
+      return FALSE;
+    }
+
+    if ($policymaker->get('field_policymaker_existing')->value) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Transform org_type value to css class.
    *
    * @param string $org_type
@@ -304,6 +350,10 @@ class PolicymakerService {
       return NULL;
     }
 
+    if (!$this->policymakerIsActive()) {
+      return NULL;
+    }
+
     if (!in_array($this->policymaker->get('field_organization_type')->value, $trustee_types)) {
       return NULL;
     }
@@ -341,6 +391,10 @@ class PolicymakerService {
     }
 
     if (!$this->policymaker instanceof NodeInterface) {
+      return NULL;
+    }
+
+    if (!$this->policymakerIsActive()) {
       return NULL;
     }
 
