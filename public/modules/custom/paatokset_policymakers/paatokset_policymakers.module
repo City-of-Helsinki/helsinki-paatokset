@@ -405,6 +405,11 @@ function paatokset_policymakers_preprocess_html(&$variables) {
  */
 function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
   if (isset($variables['node']) && $variables['node']) {
+    // Always show on trustee pages.
+    if ($variables['node']->bundle() === 'trustee') {
+      return TRUE;
+    }
+
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
     if (!$policymakerService->setPolicyMakerByPath()) {
