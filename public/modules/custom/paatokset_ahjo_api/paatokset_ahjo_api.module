@@ -15,6 +15,8 @@ use Drupal\Core\Link;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
+use function GuzzleHttp\default_ca_bundle;
+
 /**
  * Implements hook_theme().
  */
@@ -198,7 +200,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'title' => $node['first_name'] . ' ' . $node['last_name'],
       'link' => $node['url'],
       'organization_type' => 'trustee',
-      'trustee_type' => t('Valtuutettu')
+      'trustee_type' => t('Councillor')
     ];
   };
 
@@ -209,7 +211,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
       'title' => $node['first_name'] . ' ' . $node['last_name'],
       'link' => $node['url'],
       'organization_type' => 'trustee',
-      'trustee_type' => t('Varavaltuutettu')
+      'trustee_type' => t('Deputy councillor')
     ];
   };
 
@@ -322,22 +324,42 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
   $variables['cards'] = [$accordion_contents['valtuusto'][1], $accordion_contents['hallitus'][1]];
 
   $accordions_1 = [
-    'Kaupunginhallituksen jaostot' => $hallituksen_jaosto,
-    'Lautakunnat ja johtokunnat' => $sectors,
+    'City Board sub-committees' => $hallituksen_jaosto,
+    'Committees and Boards' => $sectors,
   ];
 
   $accordions_2 = [];
 
   foreach ($sectors_occupants as $key => $value) {
+    switch ($key) {
+      case 'Kasvatuksen ja koulutuksen toimiala':
+        $tkey = 'Education Division';
+        break;
+      case 'Kaupunkiympäristön toimiala':
+        $tkey = 'Urban Environment Division';
+        break;
+      case 'Keskushallinto':
+        $tkey = 'Central Administration';
+        break;
+      case 'Kulttuurin ja vapaa-ajan toimiala':
+        $tkey = 'Culture and Leisure Division';
+        break;
+      case 'Sosiaali- ja terveystoimiala':
+        $tkey = 'Social Services and Health Care Division';
+        break;
+      default:
+        $tkey = $key;
+        break;
+    }
     if (strlen($key) !== 0 ) {
-      $accordion_key = 'Viranhaltijat: ' . $key;
+      $accordion_key = 'Office holders: ' . $tkey;
       $accordions_2[$accordion_key] = $value;
     }
   }
 
   $accordions_3 = [
-    'Luottamushenkilöpäättäjät' => $accordion_contents['trustee'][1],
-    'Kaupunginvaltuuston jäsenet' => array_merge($members_formatted, $deputies_formatted)
+    'Elected official decisionmakers' => $accordion_contents['trustee'][1],
+    'City Council members' => array_merge($members_formatted, $deputies_formatted)
   ];
 
   $accordions = array_merge($accordions_1, array_merge($accordions_2, $accordions_3));
@@ -446,6 +468,17 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
 
+  $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
+  $committees_url = $defaults_config->get('committees_boards_url');
+  if (!$committees_url) {
+    $committees_url = '/fi/paattajat';
+  }
+  $office_holders_url = $defaults_config->get('office_holders_url');
+  if (!$office_holders_url) {
+    $office_holders_url = '/fi/paattajat';
+  }
+
+
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
@@ -456,40 +489,40 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
 
   $variables['decision_process'] = [
     '0' => [
-      'title' => t('Asia tulee vireille'),
+      'title' => t('Initiation'),
     ],
     '1' => [
-      'title' => t('Lauta- ja johtokunta'),
-      'link' => t('/fi/paattajat#lautakunnat-ja-johtokunnat')
+      'title' => t('Committees and Boards'),
+      'link' => $committees_url,
     ],
     '2' => [
-      'title' => t('Kaupunginhallitus'),
+      'title' => t('City council'),
       'link' => $policymakerService->getPolicymaker('00400')->toUrl()->toString()
     ],
     '3' => [
-      'title' => t('Kaupuginvaltuusto'),
+      'title' => t('City board'),
       'link' => $policymakerService->getPolicymaker('02900')->toUrl()->toString()
     ],
     '4' => [
-      'title' => t('Päätös pannaan täytäntöön'),
+      'title' => t('Implementation'),
       ]
   ];
 
   $variables['decisionmaker_process'] = [
     '0' => [
-      'title' => t('Asia tulee vireille'),
+      'title' => t('Initiation'),
     ],
     '1' => [
-      'title' => t('Viranhaltija päättää'),
-      'link' => t('/fi/paattajat#viranhaltijat:-sosiaali--ja-terveystoimiala')
+      'title' => t('Office holder decision'),
+      'link' => $office_holders_url,
     ],
     '2' => [
-      'title' => t('Päätös pannaan täytäntöön'),
+      'title' => t('Implementation'),
     ]
   ];
 
-  $variables['info_1'] = t('Tavallisin päätöksen tekemisen prosessi');
-  $variables['info_2'] = t('Tavallinen viranhaltijapäätös');
+  $variables['info_1'] = t('Standard decision-making process');
+  $variables['info_2'] = t('Standard process for office holder decisions');
 }
 
 /**
