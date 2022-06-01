@@ -10,18 +10,18 @@ label: 'Case pattern EN'
 type: 'canonical_entities:node'
 pattern: 'case/[node:field_diary_number]'
 selection_criteria:
-  7f23849f-3f14-48fa-9157-4c45ddcb7007:
-    id: node_type
+  6351ddb9-8c66-4270-8f98-f5ccc5caf7e5:
+    id: 'entity_bundle:node'
     negate: false
-    uuid: 7f23849f-3f14-48fa-9157-4c45ddcb7007
+    uuid: 6351ddb9-8c66-4270-8f98-f5ccc5caf7e5
     context_mapping:
       node: node
     bundles:
       case: case
-  35aa1deb-2e51-436b-8352-ed5468363400:
+  dfad44dd-86b5-4a67-ae1a-096d8500337f:
     id: language
     negate: false
-    uuid: 35aa1deb-2e51-436b-8352-ed5468363400
+    uuid: dfad44dd-86b5-4a67-ae1a-096d8500337f
     context_mapping:
       language: 'node:langcode:language'
     langcodes:

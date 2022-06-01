@@ -10,18 +10,18 @@ label: 'Trustee pattern EN'
 type: 'canonical_entities:node'
 pattern: 'decisionmakers/[node:field_trustee_id]'
 selection_criteria:
-  01a8ad2b-bea8-4c55-a5f1-c6e4f647523f:
-    id: node_type
+  241754b1-0b11-4d0b-b551-58876ff2b58c:
+    id: 'entity_bundle:node'
     negate: false
-    uuid: 01a8ad2b-bea8-4c55-a5f1-c6e4f647523f
+    uuid: 241754b1-0b11-4d0b-b551-58876ff2b58c
     context_mapping:
       node: node
     bundles:
       trustee: trustee
-  6c708095-853e-428e-a1e3-a07fbf1647df:
+  df135b7a-ebf1-4c74-bfdb-65a75d584272:
     id: language
     negate: false
-    uuid: 6c708095-853e-428e-a1e3-a07fbf1647df
+    uuid: df135b7a-ebf1-4c74-bfdb-65a75d584272
     context_mapping:
       language: 'node:langcode:language'
     langcodes:

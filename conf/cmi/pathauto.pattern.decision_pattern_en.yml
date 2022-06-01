@@ -10,18 +10,18 @@ label: 'Decision pattern EN'
 type: 'canonical_entities:node'
 pattern: 'case/[node:field_diary_number]/[node:field_decision_native_id]'
 selection_criteria:
-  fce8a903-1c5c-4604-b85a-426195f5877a:
-    id: node_type
+  824d24ca-7e9a-4a8c-aac5-32e8ad47e95a:
+    id: 'entity_bundle:node'
     negate: false
-    uuid: fce8a903-1c5c-4604-b85a-426195f5877a
+    uuid: 824d24ca-7e9a-4a8c-aac5-32e8ad47e95a
     context_mapping:
       node: node
     bundles:
       decision: decision
-  657f6f3d-d877-4acd-81cd-247dbd7b91c2:
+  9d4c2f93-4fc6-4480-b0ae-d193ebe517cf:
     id: language
     negate: false
-    uuid: 657f6f3d-d877-4acd-81cd-247dbd7b91c2
+    uuid: 9d4c2f93-4fc6-4480-b0ae-d193ebe517cf
     context_mapping:
       language: 'node:langcode:language'
     langcodes:
