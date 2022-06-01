@@ -668,6 +668,50 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_policymaker_id_value:
+          id: field_policymaker_id_value
+          table: node__field_policymaker_id
+          field: field_policymaker_id_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_policymaker_id_value_op
+            label: ID
+            description: ''
+            use_operator: false
+            operator: field_policymaker_id_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_policymaker_id_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         field_organization_type_value:
           id: field_organization_type_value
           table: node__field_organization_type
