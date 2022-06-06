@@ -290,7 +290,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $meeting_url = self::API_BASE_URL . 'meetings/' . $id . '?' . urldecode($query_string);
+    $meeting_url = self::API_BASE_URL . 'meetings/' . strtoupper($id) . '?' . urldecode($query_string);
     $meeting = $this->getContent($meeting_url, $bypass_cache);
     return ['meetings' => [$meeting]];
   }
@@ -312,7 +312,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $cases_url = self::API_BASE_URL . 'cases/' . $id . '?' . urldecode($query_string);
+    $cases_url = self::API_BASE_URL . 'cases/' . strtoupper($id) . '?' . urldecode($query_string);
     $case = $this->getContent($cases_url, $bypass_cache);
     return ['cases' => [$case]];
   }
@@ -334,7 +334,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $decisions_url = self::API_BASE_URL . 'decisions/' . $id . '?' . urldecode($query_string);
+    $decisions_url = self::API_BASE_URL . 'decisions/' . strtoupper($id) . '?' . urldecode($query_string);
     $decision = $this->getContent($decisions_url, $bypass_cache);
 
     // Single decisions are already inside an array.
@@ -358,7 +358,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $records_url = self::API_BASE_URL . 'records/' . $id . '?' . urldecode($query_string);
+    $records_url = self::API_BASE_URL . 'records/' . strtoupper($id) . '?' . urldecode($query_string);
     $record = $this->getContent($records_url, $bypass_cache);
 
     return ['records' => [$record]];
@@ -381,7 +381,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = self::API_BASE_URL . 'agents/positionoftrust/' . $id . '?' . urldecode($query_string);
+    $agent_url = self::API_BASE_URL . 'agents/positionoftrust/' . strtoupper($id) . '?' . urldecode($query_string);
     $agent = $this->getContent($agent_url, $bypass_cache);
     return ['trustees' => [$agent]];
   }
@@ -403,7 +403,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = self::API_BASE_URL . 'organization?orgid=' . $id . '&' . urldecode($query_string);
+    $agent_url = self::API_BASE_URL . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
     $org = $this->getContent($agent_url, $bypass_cache);
     return [
       'decisionMakers' => [
