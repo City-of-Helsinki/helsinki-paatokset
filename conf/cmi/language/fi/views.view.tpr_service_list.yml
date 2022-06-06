@@ -1,4 +1,3 @@
-label: 'TPR service list'
 display:
   default:
     display_title: Oletus
@@ -52,7 +51,6 @@ display:
         langcode:
           expose:
             label: Kieli
-      title: 'TPR Services'
       header:
         result:
           content: 'Näytetään @start - @end / @total'
