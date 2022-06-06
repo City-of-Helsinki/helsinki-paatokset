@@ -991,6 +991,34 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Resets single meeting by ID so its motions can be processed again.
+   *
+   * @param string $id
+   *   Meeting ID.
+   *
+   * @command ahjo-proxy:reset-single-meeting-motion-check
+   *
+   * @aliases ap:rsm
+   */
+  public function resetSingleMeetingsMotionProcessing(string $id): void {
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_id', $id)
+      ->range(0, 1)
+      ->latestRevision();
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      $node->set('field_agenda_items_processed', 0);
+      $node->save();
+    }
+  }
+
+  /**
    * Resets meeting original date time field.
    *
    * @param array $options
@@ -1133,6 +1161,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $operations = [];
     $count = 0;
     foreach ($nodes as $node) {
+      if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
+        continue;
+      }
+
       $meeting_data = [
         'meeting_id' => $node->field_meeting_id->value,
         'meeting_number' => $node->field_meeting_sequence_number->value,
