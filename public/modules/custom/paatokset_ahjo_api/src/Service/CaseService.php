@@ -219,9 +219,6 @@ class CaseService {
    *   Decision entity, if found.
    */
   public function getDecision(string $decision_id): ?NodeInterface {
-    // Remove corrupted or otherwise garbled characters from ID.
-    $decision_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $decision_id);
-
     $decision_nodes = $this->decisionQuery([
       'decision_id' => $decision_id,
       'limit' => 1,
@@ -461,7 +458,7 @@ class CaseService {
 
     $localizedRoute = 'paatokset_case.' . $langcode;
     if ($this->routeExists($localizedRoute)) {
-      $case_url = Url::fromRoute($localizedRoute, ['case_id' => $case->get('field_diary_number')->value]);
+      $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($case->get('field_diary_number')->value)]);
     }
     // If langcode is set, we don't want an URL without a localized route.
     elseif ($strict_lang) {
@@ -478,6 +475,8 @@ class CaseService {
       $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
       $decision_id = $decision->get('field_decision_native_id')->value;
     }
+
+    $decision_id = $this->normalizeNativeId($decision_id);
 
     if ($decision_id !== NULL) {
       $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
@@ -536,6 +535,7 @@ class CaseService {
     $decision = $this->getDecisionTranslation($decision, $langcode);
 
     $decision_id = $decision->get('field_decision_native_id')->value;
+    $decision_id = $this->normalizeNativeId($decision_id);
 
     $case = NULL;
     $case = $this->caseQuery([
@@ -549,7 +549,7 @@ class CaseService {
       // Try to get localized route if one exists for current language.
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision->get('field_diary_number')->value]);
+        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($decision->get('field_diary_number')->value)]);
       }
       // If langcode is set, we don't want an URL without a localized route.
       elseif ($strict_lang) {
@@ -569,7 +569,7 @@ class CaseService {
     if ($this->routeExists($localizedRoute)) {
       $native_id_url = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
       return Url::fromRoute($localizedRoute, [
-        'case_id' => $decision->get('field_diary_number')->value,
+        'case_id' => strtolower($decision->get('field_diary_number')->value),
         'decision_id' => $native_id_url,
       ]);
     }
@@ -581,6 +581,28 @@ class CaseService {
 
     // If route isn't localized for current language return decision's URL.
     return $decision->toUrl();
+  }
+
+  /**
+   * Normalize decision native ID for URL purposes.
+   *
+   * @param string|null $native_id
+   *   Native ID or NULL if field is empty.
+   * @return string|null
+   *   Normalized ID or NULL.
+   */
+  public function normalizeNativeId(?string $native_id): ?string {
+    if ($native_id === NULL) {
+      return NULL;
+    }
+
+    // Remove brackets / special characters.
+    $native_id = str_replace(['{','}'], '', $native_id);
+
+    // Convert to lowercase.
+    $native_id = strtolower($native_id);
+
+    return $native_id;
   }
 
   /**
@@ -867,7 +889,7 @@ class CaseService {
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
         'langcode' => $node->langcode->value,
-        'native_id' => $node->field_decision_native_id->value,
+        'native_id' => $this->normalizeNativeId($node->field_decision_native_id->value),
         'title' => $node->title->value,
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,
@@ -963,7 +985,7 @@ class CaseService {
 
     return [
       'title' => $found_node->title->value,
-      'id' => $found_node->field_decision_native_id->value,
+      'id' => $this->normalizeNativeId($found_node->field_decision_native_id->value),
     ];
   }
 
@@ -1506,7 +1528,16 @@ class CaseService {
     }
 
     if (isset($params['decision_id'])) {
-      $query->condition('field_decision_native_id', $params['decision_id']);
+      $decision_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $params['decision_id']);
+      if (!str_starts_with($decision_id, '{')) {
+        $decision_id = '{' . $decision_id;
+      }
+
+      if (!str_ends_with($decision_id, '}')) {
+        $decision_id .= '}';
+      }
+
+      $query->condition('field_decision_native_id', $decision_id);
     }
 
     if (isset($params['unique_id'])) {
