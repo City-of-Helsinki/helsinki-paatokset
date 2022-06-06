@@ -588,6 +588,7 @@ class CaseService {
    *
    * @param string|null $native_id
    *   Native ID or NULL if field is empty.
+   *
    * @return string|null
    *   Normalized ID or NULL.
    */
@@ -597,7 +598,7 @@ class CaseService {
     }
 
     // Remove brackets / special characters.
-    $native_id = str_replace(['{','}'], '', $native_id);
+    $native_id = str_replace(['{', '}'], '', $native_id);
 
     // Convert to lowercase.
     $native_id = strtolower($native_id);
