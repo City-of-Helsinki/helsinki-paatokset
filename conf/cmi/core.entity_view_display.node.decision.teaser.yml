@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
+    - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
@@ -76,6 +77,7 @@ hidden:
   field_meeting_id: true
   field_meeting_sequence_number: true
   field_organization_type: true
+  field_outdated_document: true
   field_policymaker_id: true
   field_top_category_name: true
   field_unique_id: true

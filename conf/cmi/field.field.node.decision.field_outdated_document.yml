@@ -1,0 +1,23 @@
+uuid: fb133b57-1df0-4623-8fa0-62a620640c76
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_outdated_document
+    - node.type.decision
+id: node.decision.field_outdated_document
+field_name: field_outdated_document
+entity_type: node
+bundle: decision
+label: 'Outdated document'
+description: 'PDF document is outdated and needs to be updated from Ahjo API.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
