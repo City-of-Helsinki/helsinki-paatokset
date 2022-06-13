@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Url;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
@@ -1394,6 +1395,95 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_motions.json');
     }
+  }
+
+  /**
+   * Check if meeting has missing motions.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Meeting to check agenda for.
+   *
+   * @return bool
+   *   Returns TRUE if all valid agenda items have motions.
+   */
+  public function checkMeetingMotions(NodeInterface $node): bool {
+    if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
+      return TRUE;
+    }
+
+    $meeting_id = $node->get('field_meeting_id')->value;
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
+    $missing = FALSE;
+    foreach ($node->get('field_meeting_agenda') as $field) {
+      $item = json_decode($field->value, TRUE);
+
+      // Only check finnish language motions.
+      if (!isset($item['PDF']) || $item['PDF']['Language'] !== 'fi') {
+        continue;
+      }
+
+      if (!isset($item['PDF']['NativeId'])) {
+        continue;
+      }
+
+      $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+      if (!$url instanceof Url) {
+        $missing = TRUE;
+        break;
+      }
+    }
+
+    return !$missing;
+  }
+
+  /**
+   * Check if meeting has missing decisions.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Meeting to check agenda for.
+   *
+   * @return bool
+   *   Returns TRUE if all valid agenda items have decisions.
+   */
+  public function checkMeetingDecisions(NodeInterface $node): bool {
+    if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
+      return TRUE;
+    }
+
+    $meeting_id = $node->get('field_meeting_id')->value;
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $missing = FALSE;
+    foreach ($node->get('field_meeting_agenda') as $field) {
+      $item = json_decode($field->value, TRUE);
+
+      if (!isset($item['PDF']) || !isset($item['PDF']['NativeId'])) {
+        continue;
+      }
+
+      if (!isset($item['PDF']['Type']) || $item['PDF']['Type'] !== 'päätös') {
+        continue;
+      }
+
+      if (isset($item['Section'])) {
+        $section_clean = (string) intval($item['Section']);
+        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id, $section_clean);
+      }
+      else {
+        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+      }
+
+      if (!$url instanceof Url) {
+        $missing = TRUE;
+        break;
+      }
+    }
+
+    return !$missing;
   }
 
   /**

@@ -1023,6 +1023,128 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Checks meeting motion processing to see if motions were generated.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-motion-processing
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:cmp
+   */
+  public function checkMeetingsMotionProcessing(array $options = [
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_agenda_published', 1)
+      ->condition('field_meeting_minutes_published', 0)
+      ->condition('field_agenda_items_processed', 1)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      if (!$this->ahjoProxy->checkMeetingMotions($node)) {
+        $this->logger->info('Missing motions for meeting: ' . $node->get('field_meeting_id')->value);
+        $node->set('field_agenda_items_processed', 0);
+        $node->save();
+      }
+    }
+  }
+
+  /**
+   * Checks meeting agenda to see that all decisions are found.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-decision-processing
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   * @option queue
+   *   Queue decisions to be imported automatically.
+   *
+   * @aliases ap:cdp
+   */
+  public function checkMeetingsDecisionProcessing(array $options = [
+    'queue' => FALSE,
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+    if (!empty($options['queue'])) {
+      $queue = TRUE;
+    }
+    else {
+      $queue = FALSE;
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_minutes_published', 1)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $or = $query->orConditionGroup();
+    $or->notExists('field_decisions_checked');
+    $or->condition('field_decisions_checked', 0);
+
+    $query->condition($or);
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+
+    foreach ($nodes as $node) {
+      $meeting_id = $node->get('field_meeting_id')->value;
+
+      // Set checked value to true if decisions are found.
+      if ($this->ahjoProxy->checkMeetingDecisions($node)) {
+        $this->logger->info('No missing decisions for: ' . $meeting_id);
+        $node->set('field_decisions_checked', 1);
+        $node->save();
+      }
+      // Add decisions to callback queue if they are not found.
+      else {
+        $this->logger->info($meeting_id . ' has missing decisions.');
+        if ($queue) {
+          $this->importMeetingDecisions($meeting_id);
+        }
+      }
+    }
+  }
+
+  /**
    * Resets meeting original date time field.
    *
    * @param array $options
