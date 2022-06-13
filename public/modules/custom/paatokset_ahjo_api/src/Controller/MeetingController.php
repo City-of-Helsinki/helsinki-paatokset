@@ -5,6 +5,8 @@ namespace Drupal\paatokset_ahjo_api\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Controller for retrieving meeting data.
@@ -64,13 +66,20 @@ class MeetingController extends ControllerBase {
       );
     }
 
-    return new Response(
-      json_encode([
-        'data' => $meetings,
-      ]),
-      Response::HTTP_OK,
-      ['content-type' => 'application/json']
-    );
+    $data = [
+      'data' => $meetings,
+      '#cache' => [
+        'max-age' => -1,
+        'contexts' => [
+          'url',
+        ],
+        'tags' => ['node_list:meeting'],
+      ],
+    ];
+
+    $response = new CacheableJsonResponse($data);
+    $response->addCacheableDependency(CacheableMetadata::createFromRenderArray($data));
+    return $response;
   }
 
 }
