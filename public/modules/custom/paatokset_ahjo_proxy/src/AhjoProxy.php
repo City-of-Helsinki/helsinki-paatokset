@@ -867,7 +867,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected function updateDecisionRecordData(NodeInterface &$node, array $record_content): void {
     $node->set('field_decision_record', json_encode($record_content));
 
-    // If this is a decision (not a motion), set outdated flag to false
+    // If this is a decision (not a motion), set outdated flag to false.
     if ($node->get('field_is_decision')->value) {
       $node->set('field_outdated_document', 0);
     }
