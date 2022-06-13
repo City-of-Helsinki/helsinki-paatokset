@@ -77,8 +77,8 @@
       `
 
       /* URL to get all meetings */
-      const yearAgo = dayjs().subtract(1, "year").format("YYYY-MM-DD");
-      const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + yearAgo;
+      const startDate = dayjs().subtract(6, "month").format("YYYY-MM-DD");
+      const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + startDate;
 
       new Vue({
         el: '#meetings-calendar-vue',
