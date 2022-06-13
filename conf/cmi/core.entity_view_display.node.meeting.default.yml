@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.meeting.field_agenda_items_processed
+    - field.field.node.meeting.field_decisions_checked
     - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_files
     - field.field.node.meeting.field_meeting_agenda_published
@@ -45,6 +46,16 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     weight: 22
+    region: content
+  field_decisions_checked:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 24
     region: content
   field_meeting_agenda:
     type: json
