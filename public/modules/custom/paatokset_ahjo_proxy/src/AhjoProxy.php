@@ -867,6 +867,11 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected function updateDecisionRecordData(NodeInterface &$node, array $record_content): void {
     $node->set('field_decision_record', json_encode($record_content));
 
+    // If this is a decision (not a motion), set outdated flag to false
+    if ($node->get('field_is_decision')->value) {
+      $node->set('field_outdated_document', 0);
+    }
+
     if (isset($record_content['Issued'])) {
       $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
       $date->setTimezone(new \DateTimeZone('UTC'));
@@ -1335,6 +1340,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $node->set('field_full_title', $title);
     $node->set('field_is_decision', 0);
+    $node->set('field_outdated_document', 1);
     $node->set('field_top_category_name', $top_category);
     $node->set('field_classification_code', $classification_code);
     $node->set('field_decision_native_id', $native_id);
