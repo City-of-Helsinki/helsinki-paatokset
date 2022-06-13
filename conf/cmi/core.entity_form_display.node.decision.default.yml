@@ -30,6 +30,7 @@ dependencies:
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
     - field.field.node.decision.field_organization_type
+    - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
@@ -68,7 +69,7 @@ third_party_settings:
       label: 'Decision data'
       region: content
       parent_name: ''
-      weight: 5
+      weight: 7
       format_type: details
       format_settings:
         classes: ''
@@ -87,7 +88,7 @@ third_party_settings:
       label: 'Organization data'
       region: content
       parent_name: ''
-      weight: 6
+      weight: 8
       format_type: details
       format_settings:
         classes: ''
@@ -105,7 +106,7 @@ third_party_settings:
       label: 'Meeting data'
       region: content
       parent_name: ''
-      weight: 7
+      weight: 9
       format_type: details
       format_settings:
         classes: ''
@@ -121,7 +122,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -221,7 +222,7 @@ content:
     third_party_settings: {  }
   field_decision_previous:
     type: json_textarea
-    weight: 8
+    weight: 10
     region: content
     settings:
       rows: 5
@@ -292,7 +293,7 @@ content:
     third_party_settings: {  }
   field_is_decision:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -325,6 +326,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_outdated_document:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_policymaker_id:
     type: string_textfield
@@ -370,39 +378,39 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 14
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 12
+    weight: 14
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 15
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 11
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 18
+    weight: 20
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 13
+    weight: 15
     region: content
     settings:
       display_label: true
@@ -417,7 +425,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 11
     region: content
     settings:
       match_operator: CONTAINS
@@ -427,12 +435,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 16
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 17
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
