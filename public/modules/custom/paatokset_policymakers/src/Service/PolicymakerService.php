@@ -462,7 +462,7 @@ class PolicymakerService {
       $policymaker = $policymaker->getTranslation($langcode);
     }
 
-    $policymaker_url = $policymaker->toUrl()->toString();
+    $policymaker_url = $policymaker->toUrl()->toString(TRUE)->getGeneratedUrl();
     $policymaker_url_bits = explode('/', $policymaker_url);
     $policymaker_org = array_pop($policymaker_url_bits);
     return strtolower($policymaker_org);
