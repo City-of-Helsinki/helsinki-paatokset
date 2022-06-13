@@ -1,0 +1,23 @@
+uuid: ca38f60b-bd2f-4eda-bbfd-6e507a0ecac5
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decisions_checked
+    - node.type.meeting
+id: node.meeting.field_decisions_checked
+field_name: field_decisions_checked
+entity_type: node
+bundle: meeting
+label: 'Decisions checked'
+description: 'Check if all valid decisions are found for meeting.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

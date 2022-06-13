@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.meeting.field_agenda_items_processed
+    - field.field.node.meeting.field_decisions_checked
     - field.field.node.meeting.field_meeting_agenda
     - field.field.node.meeting.field_meeting_agenda_files
     - field.field.node.meeting.field_meeting_agenda_published
@@ -70,6 +71,7 @@ third_party_settings:
         - field_meeting_agenda_published
         - field_agenda_items_processed
         - field_meeting_minutes_published
+        - field_decisions_checked
         - field_meeting_attachment_info
       label: 'Basic information'
       region: content
@@ -194,6 +196,13 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  field_decisions_checked:
+    type: boolean_checkbox
+    weight: 40
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_meeting_agenda:
     type: json_editor
     weight: 36
@@ -215,7 +224,7 @@ content:
     third_party_settings: {  }
   field_meeting_attachment_info:
     type: text_textarea
-    weight: 40
+    weight: 41
     region: content
     settings:
       rows: 5
