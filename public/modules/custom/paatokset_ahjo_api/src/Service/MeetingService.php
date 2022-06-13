@@ -255,7 +255,7 @@ class MeetingService {
     $policymaker_id = $node->get('field_meeting_dm_id')->value;
     $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
     if ($url instanceof Url) {
-      return $url->toString();
+      return $url->toString(TRUE)->getGeneratedUrl();
     }
 
     return NULL;
