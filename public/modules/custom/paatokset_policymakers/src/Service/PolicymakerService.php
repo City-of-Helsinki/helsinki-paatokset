@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\paatokset_policymakers\Service;
 
 use Drupal\Core\Url;
@@ -721,18 +723,29 @@ class PolicymakerService {
   /**
    * Get policymaker composition based on latest meeting.
    *
+   * @param string|null $id
+   *   Policymaker ID, leave NULL to use currently set.
+   *
    * @return array
    *   Policymaker composition, if found.
    */
-  public function getComposition(): ?array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+  public function getComposition(?string $id = NULL): ?array {
+    if ($id === NULL) {
+      $policymaker = $this->policymaker;
+    } else {
+      $policymaker = $this->getPolicyMaker($id);
+    }
+
+    if (!$policymaker instanceof NodeInterface || $policymaker->get('field_policymaker_id')->isEmpty()) {
       return [];
     }
+
+    $policymaker_id = $policymaker->get('field_policymaker_id')->value;
 
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->condition('field_meeting_dm_id', $policymaker_id)
       ->condition('field_meeting_composition', '', '<>')
       ->range(0, 1)
       ->sort('field_meeting_date', 'DESC');
@@ -1618,6 +1631,39 @@ class PolicymakerService {
       return $this->getPolicyMakerClass($node);
     }
     return 'color-sumu';
+  }
+
+  /**
+   * Get english version of finnish sector name.
+   *
+   * @param string $sector
+   *   Sector name.
+   * @return string
+   *   English translation of sector, or original value.
+   */
+  public function getSectorEnglishTranslation(string $sector): string {
+    switch ($sector) {
+      case 'Kasvatuksen ja koulutuksen toimiala':
+        $value = 'Education Division';
+        break;
+      case 'Kaupunkiympäristön toimiala':
+        $value = 'Urban Environment Division';
+        break;
+      case 'Keskushallinto':
+        $value = 'Central Administration';
+        break;
+      case 'Kulttuurin ja vapaa-ajan toimiala':
+        $value = 'Culture and Leisure Division';
+        break;
+      case 'Sosiaali- ja terveystoimiala':
+        $value = 'Social Services and Health Care Division';
+        break;
+      default:
+        $value = $sector;
+        break;
+    }
+
+    return $value;
   }
 
 }
