@@ -171,12 +171,14 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     '#lazy_builder' => [
       'policymakers_lazy_builder:policymakersCards', [],
     ],
+    '#create_placeholder' => TRUE,
   ];
 
   $variables['accordions'] = [
     '#lazy_builder' => [
       'policymakers_lazy_builder:policymakersAccordions', [],
     ],
+    '#create_placeholder' => TRUE,
   ];
 }
 
