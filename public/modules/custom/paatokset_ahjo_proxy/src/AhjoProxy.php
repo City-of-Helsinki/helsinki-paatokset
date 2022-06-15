@@ -1326,6 +1326,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $record_content = $ahjo_proxy->getData($data['endpoint'], NULL);
     }
 
+    // Local data is formatted a bit differently.
+    if (isset($record_content['records'])) {
+      $record_content = $record_content['records'][0];
+    }
+
     if (!empty($record_content)) {
       $node->set('field_decision_record', json_encode($record_content));
     }
@@ -1395,6 +1400,40 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_motions.json');
     }
+  }
+
+  /**
+   * Check if decision has an outdated document.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Decision to check.
+   *
+   * @return bool
+   *   Returns TRUE if record is not outdated.
+   */
+  public function checkDecisionRecord(NodeInterface $node): bool {
+    if (!$node->hasField('field_decision_record') || $node->get('field_decision_record')->isEmpty()) {
+      return FALSE;
+    }
+
+    $allowed_types = [
+      'päätös',
+      'viranhaltijan päätös',
+      'luottamushenkilön päätös',
+    ];
+
+    $record_content = json_decode($node->get('field_decision_record')->value, TRUE);
+    if (empty($record_content) || !isset($record_content['Type'])) {
+      return FALSE;
+    }
+    elseif (in_array($record_content['Type'], $allowed_types)) {
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
+
+    return FALSE;
   }
 
   /**
