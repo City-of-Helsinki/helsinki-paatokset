@@ -19,3 +19,10 @@ accordion_inner:
     dist/js/accordion-inner-settings.min.js: {}
   dependencies:
     - hdbt/handorgel
+
+accordion_lazy:
+  version: 1.x
+  js:
+    dist/js/accordion-lazy-settings.min.js: {}
+  dependencies:
+    - hdbt/handorgel
