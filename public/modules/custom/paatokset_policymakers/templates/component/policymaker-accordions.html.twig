@@ -17,7 +17,7 @@
           {% for item in accordion.items %}
             {% if item.subitems is not empty %}
               {% if item.title %}
-                <h4 class="sector-title">{{ item.title }}</h4>
+                <h4 class="sector-title">{{ item.title|t }}</h4>
               {% endif %}
               {% for subitem in item.subitems %}
                 <a href="{{ subitem.link }}" class="policymaker-row__link">
@@ -35,7 +35,11 @@
               <a href="{{ item.link }}" class="policymaker-row__link">
                 <div class="policymaker-row__color {{ item.organization_color }}"></div>
                 <div class="policymaker-row__title">
-                  {{ item.title }}
+                  {% if organization_type == 'trustee' %}
+                    {{ item.title }}
+                  {% else %}
+                    {{ item.title|t }}
+                  {% endif %}
                   {% if item.organization_name is not empty %}
                     <div class="policymaker-row__sub-title" >{{ item.organization_name }}</div>
                   {% endif %}

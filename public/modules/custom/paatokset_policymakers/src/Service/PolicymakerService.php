@@ -732,7 +732,8 @@ class PolicymakerService {
   public function getComposition(?string $id = NULL): ?array {
     if ($id === NULL) {
       $policymaker = $this->policymaker;
-    } else {
+    }
+    else {
       $policymaker = $this->getPolicyMaker($id);
     }
 
@@ -1638,6 +1639,7 @@ class PolicymakerService {
    *
    * @param string $sector
    *   Sector name.
+   *
    * @return string
    *   English translation of sector, or original value.
    */
@@ -1646,18 +1648,23 @@ class PolicymakerService {
       case 'Kasvatuksen ja koulutuksen toimiala':
         $value = 'Education Division';
         break;
+
       case 'Kaupunkiympäristön toimiala':
         $value = 'Urban Environment Division';
         break;
+
       case 'Keskushallinto':
         $value = 'Central Administration';
         break;
+
       case 'Kulttuurin ja vapaa-ajan toimiala':
         $value = 'Culture and Leisure Division';
         break;
+
       case 'Sosiaali- ja terveystoimiala':
         $value = 'Social Services and Health Care Division';
         break;
+
       default:
         $value = $sector;
         break;

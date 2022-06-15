@@ -53,7 +53,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
    *   The language manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService
+   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymaker_service
    *   Policymaker service.
    */
   public function __construct(LanguageManager $language_manager, EntityTypeManagerInterface $entity_type_manager, PolicymakerService $policymaker_service) {
@@ -93,9 +93,6 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $cache_tags[] = 'node:' . $node->id();
 
       $title = $node->get('field_ahjo_title')->value;
-      if ($this->currentLanguage === 'fi') {
-        $title = $this->t($title);
-      }
 
       $cards[] = [
         'title' => $title,
@@ -151,7 +148,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
     });
 
     $filtered = array_filter($policymakers, function ($var) {
-      return ($var['is_city_council_division'] === null || $var['is_city_council_division'] === '0');
+      return ($var['is_city_council_division'] === NULL || $var['is_city_council_division'] === '0');
     });
 
     // Filter policymakers into correct sections.
@@ -161,7 +158,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'items' => [],
       ],
       'hallitus' => [
-        'filter' =>'Hallitus',
+        'filter' => 'Hallitus',
         'items' => [],
       ],
       'viranhaltijat' => [
@@ -217,7 +214,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         continue;
       }
       $sectors[$row['sector']] = [
-        'title' => t($row['sector']),
+        'title' => $row['sector'],
         'subitems' => [],
       ];
     }
@@ -228,6 +225,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         return ($var['sector'] === $filter);
       });
     };
+
     ksort($sectors);
 
     // Divide officials by sector.
@@ -244,7 +242,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
       $title = 'Office holders: ' . $this->policymakerService->getSectorEnglishTranslation($row['sector']);
       $sectors_occupants[$row['sector']] = [
-        'title' => t($title),
+        'title' => $title,
         'items' => [],
       ];
     }
@@ -301,7 +299,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
    */
   protected function getActivePolicyMakers(): array {
     $storage = $this->entityTypeManager->getStorage('node');
-    $nids = $storage->getQuery()->condition('type','policymaker')
+    $nids = $storage->getQuery()->condition('type', 'policymaker')
       ->condition('field_policymaker_existing', 1)
       ->condition('status', 1)
       ->execute();
@@ -372,20 +370,20 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
     });
 
     $items = [];
-    foreach($members as $node) {
+    foreach ($members as $node) {
       $items[] = [
         'title' => $node['first_name'] . ' ' . $node['last_name'],
         'link' => $node['url'],
         'organization_type' => 'trustee',
-        'trustee_type' => t('Councillor')
+        'trustee_type' => t('Councillor'),
       ];
     };
-    foreach($deputies as $node) {
+    foreach ($deputies as $node) {
       $items[] = [
         'title' => $node['first_name'] . ' ' . $node['last_name'],
         'link' => $node['url'],
         'organization_type' => 'trustee',
-        'trustee_type' => t('Deputy councillor')
+        'trustee_type' => t('Deputy councillor'),
       ];
     };
 
