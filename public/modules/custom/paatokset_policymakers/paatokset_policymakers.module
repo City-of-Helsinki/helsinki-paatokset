@@ -17,6 +17,18 @@ use Drupal\paragraphs\ParagraphInterface;
  */
 function paatokset_policymakers_theme($existing, $type, $theme, $path) {
   return [
+    'policymaker_cards' => [
+      'variables' => [
+        'cards' => [],
+      ],
+      'path' => $path . '/templates/component',
+    ],
+    'policymaker_accordions' => [
+      'variables' => [
+        'accordions' => [],
+      ],
+      'path' => $path . '/templates/component',
+    ],
     'node__policymaker' => [
       'render element' => 'elements',
       'template' => 'node--policymaker',

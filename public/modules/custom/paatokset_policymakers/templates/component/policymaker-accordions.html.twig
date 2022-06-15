@@ -1,0 +1,58 @@
+{{ attach_library('hdbt/accordion') }}
+{{ attach_library('paatokset_ahjo_api/policymaker_listing') }}
+<div class="paatokset-accordion">
+  {% for accordion in accordions if accordion is not empty %}
+    <div class="accordion__wrapper handorgel-lazy">
+      <h3 class="accordion-item__header handorgel__header">
+        <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ accordion.heading|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">
+          <span>{{ accordion.heading }}</span>
+          <div class="accordion-item__icon">
+            {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
+          </div>
+        </button>
+      </h3>
+
+      <div class="accordion-item__content handorgel__content">
+        <div class="accordion-item__content__inner handorgel__content__inner">
+          {% for item in accordion.items %}
+            {% if item.subitems is not empty %}
+              {% if item.title %}
+                <h4 class="sector-title">{{ item.title }}</h4>
+              {% endif %}
+              {% for subitem in item.subitems %}
+                <a href="{{ subitem.link }}" class="policymaker-row__link">
+                  <div class="policymaker-row__color {{ subitem.organization_color }}"></div>
+                  <div class="policymaker-row__title">
+                    {{ subitem.title }}
+                    {% if subitem.organization_type == 'Viranhaltija'%}
+                      <div class="policymaker-row__sub-title" >{{ subitem.organization_name }}</div>
+                    {% endif %}
+                  </div>
+                  <i class="hel-icon hel-icon--arrow-right"></i>
+                </a>
+              {% endfor %}
+            {% else %}
+              <a href="{{ item.link }}" class="policymaker-row__link">
+                <div class="policymaker-row__color {{ item.organization_color }}"></div>
+                <div class="policymaker-row__title">
+                  {{ item.title }}
+                  {% if item.organization_name is not empty %}
+                    <div class="policymaker-row__sub-title" >{{ item.organization_name }}</div>
+                  {% endif %}
+                  {% if item.trustee_type is not empty %}
+                    <div class="policymaker-row__sub-title" >{{ item.trustee_type }}</div>
+                  {% endif %}
+                </div>
+                <i class="hel-icon hel-icon--arrow-right"></i>
+              </a>
+            {% endif %}
+          {% endfor %}
+          <button class="button hds-button hds-button--primary load-more-btn">{{ 'Load more'|t}}</button>
+          <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+            {{ 'Close'|t }}
+          </span>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
