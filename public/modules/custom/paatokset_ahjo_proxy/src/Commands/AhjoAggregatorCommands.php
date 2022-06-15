@@ -1023,6 +1023,108 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Checks existing decisions for outdated documents.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-outdated-documents
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   * @option motions
+   *   Check motions instead of decisions.
+   *
+   * @aliases ap:cod
+   */
+  public function checkOutdatedDocuments(array $options = [
+    'motions' => FALSE,
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_decision_record', '', '<>')
+      ->notExists('field_outdated_document')
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      if (!$this->ahjoProxy->checkDecisionRecord($node)) {
+        $node->set('field_outdated_document', 1);
+      }
+      else {
+        $node->set('field_outdated_document', 0);
+      }
+      $node->save();
+    }
+  }
+
+  /**
+   * Checks motion documents for wrong format.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-motion-document-format
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:cmdf
+   */
+  public function checkMotionDocuments(array $options = [
+    'motions' => FALSE,
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_decision_record', '', '<>')
+      ->condition('field_is_decision', 0)
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      $record_content = json_decode($node->get('field_decision_record')->value, TRUE);
+      if (empty($record_content) || !isset($record_content['Type'])) {
+        $node->set('field_decision_record', NULL);
+        $node->save();
+      }
+    }
+  }
+
+  /**
    * Checks meeting motion processing to see if motions were generated.
    *
    * @param array $options
@@ -1045,6 +1147,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     else {
       $limit = 0;
     }
+
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'meeting')
       ->condition('status', 1)
