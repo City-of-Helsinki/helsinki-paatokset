@@ -78,7 +78,9 @@
 
       /* URL to get all meetings */
       const startDate = dayjs().subtract(6, "month").format("YYYY-MM-DD");
+      const fullStartDate = dayjs().subtract(3, "year").format("YYYY-MM-DD");
       const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + startDate;
+      const fullDataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?sleep=10&from=' + fullStartDate;
 
       new Vue({
         el: '#meetings-calendar-vue',
@@ -86,6 +88,7 @@
         data: {
           meetings: [],
           daysWithMeetings:[],
+          isMounted: false,
           isReady: false,
           selectedDate: dayjs(),
           currentDate: dayjs().format("YYYY-MM-DD"),
@@ -93,6 +96,7 @@
         methods: {
           getJson() {
             const self = this;
+            console.log('Getting initial data.');
             $.getJSON(dataURL, function(data) {
               self.meetings = data.data;
             })
@@ -107,6 +111,20 @@
               });
 
               self.daysWithMeetings = temp;
+              console.log('Initial data loaded, getting full data.');
+              self.getFullJson();
+            })
+          },
+          getFullJson() {
+            const self = this;
+            console.log('Getting full data.');
+            $.getJSON(fullDataURL, function(data) {
+              self.meetings = data.data;
+            })
+            .done(function( json ) {
+              self.isReady = true;
+
+              console.log('Got full data.');
             })
           },
           selectPrevious() {
@@ -293,7 +311,10 @@
           }
         },
         mounted() {
-          this.getJson();
+          if (!this.isMounted) {
+            this.getJson();
+            this.isMounted = true;
+          }
         },
       });
     }
