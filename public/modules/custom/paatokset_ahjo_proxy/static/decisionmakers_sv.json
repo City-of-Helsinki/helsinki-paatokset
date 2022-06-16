@@ -532,7 +532,7 @@
               "ID": "U02110080VH1",
               "TypeId": "12",
               "Existing": "true",
-              "Formed": "2018-06-01T00:00:00.000",
+              "Formed": "2020-01-01T00:00:00.000",
               "Dissolved": "2100-01-01T00:00:00.000",
               "Type": "Viranhaltija",
               "Sector": {
@@ -787,7 +787,7 @@
               "ID": "U0212007010VH1",
               "TypeId": "12",
               "Existing": "true",
-              "Formed": "2021-03-18T00:00:00.000",
+              "Formed": "2100-01-01T00:00:00.000",
               "Dissolved": "2100-01-01T00:00:00.000",
               "Type": "Viranhaltija",
               "Sector": {
@@ -14802,7 +14802,7 @@
               "ID": "U32020020308545VH2",
               "TypeId": "12",
               "Existing": "true",
-              "Formed": "2022-01-01T00:00:00.000",
+              "Formed": "2022-06-08T13:41:51.097",
               "Dissolved": "2100-01-01T00:00:00.000",
               "Type": "Viranhaltija",
               "Sector": {
@@ -29643,7 +29643,7 @@
               "ID": "U51105200604010VH1",
               "TypeId": "12",
               "Existing": "true",
-              "Formed": "2021-01-01T00:00:00.000",
+              "Formed": "2100-01-01T00:00:00.000",
               "Dissolved": "2100-01-01T00:00:00.000",
               "Type": "Viranhaltija",
               "Sector": {
@@ -30936,7 +30936,7 @@
                                   "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=sv"
                               }
                           ],
-                          "Name": "Gatuarbeten och platstjänster",
+                          "Name": "Gatuarbets- och platstjänster",
                           "ID": "U51105300103020",
                           "TypeId": "20",
                           "Existing": "true",
@@ -30987,7 +30987,7 @@
                                   "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=sv"
                               }
                           ],
-                          "Name": "Gatuarbeten och platstjänster",
+                          "Name": "Gatuarbets- och platstjänster",
                           "ID": "U51105300103020",
                           "TypeId": "20",
                           "Existing": "true",
@@ -34078,7 +34078,7 @@
   "links": [
       {
           "rel": "self",
-          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/agents/decisionmakers?q=null&start=null&apireqlang=sv"
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/agents/decisionmakers?q=null&start=null&changedsince=2001-01-01T00:00:00&changedbefore=&apireqlang=sv"
       }
   ]
 }
