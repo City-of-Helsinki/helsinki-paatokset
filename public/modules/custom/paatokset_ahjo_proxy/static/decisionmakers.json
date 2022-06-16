@@ -1297,7 +1297,7 @@
               "ID": "U02120070VH2",
               "TypeId": "12",
               "Existing": "true",
-              "Formed": "2020-09-10T00:00:00.000",
+              "Formed": "2020-09-01T00:00:00.000",
               "Dissolved": "2100-01-01T00:00:00.000",
               "Type": "Viranhaltija",
               "Sector": {
@@ -1982,8 +1982,8 @@
                           "ID": "U021700",
                           "TypeId": "9",
                           "Existing": "true",
-                          "Formed": "2017-06-01T00:00:00.000",
-                          "Dissolved": "2100-01-01T00:00:00.000"
+                          "Formed": "2019-01-01T00:00:00.000",
+                          "Dissolved": "0021-07-29T00:00:00.000"
                       }
                   ],
                   "count": 1,
@@ -5236,7 +5236,7 @@
                           "ID": "U32020010302005",
                           "TypeId": "20",
                           "Existing": "true",
-                          "Formed": "2019-01-01T00:00:00.000",
+                          "Formed": "2019-01-01T01:00:00.000",
                           "Dissolved": "2100-01-01T00:00:00.000"
                       }
                   ],
@@ -30936,7 +30936,7 @@
                                   "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=fi"
                               }
                           ],
-                          "Name": "Katutyöt ja sijaintipalvelut",
+                          "Name": "Katutyö- ja sijaintipalvelut",
                           "ID": "U51105300103020",
                           "TypeId": "20",
                           "Existing": "true",
@@ -30987,7 +30987,7 @@
                                   "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U51105300103020&apireqlang=fi"
                               }
                           ],
-                          "Name": "Katutyöt ja sijaintipalvelut",
+                          "Name": "Katutyö- ja sijaintipalvelut",
                           "ID": "U51105300103020",
                           "TypeId": "20",
                           "Existing": "true",
@@ -31195,7 +31195,7 @@
                           "ID": "U511053002010",
                           "TypeId": "14",
                           "Existing": "true",
-                          "Formed": "2017-06-01T00:00:00.000",
+                          "Formed": "2017-01-01T00:00:00.000",
                           "Dissolved": "2100-01-01T00:00:00.000"
                       }
                   ],
@@ -34078,7 +34078,7 @@
   "links": [
       {
           "rel": "self",
-          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/agents/decisionmakers?q=null&start=null&apireqlang=fi"
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/agents/decisionmakers?q=null&start=null&changedsince=2001-01-01T00:00:00&changedbefore=&apireqlang=fi"
       }
   ]
 }
