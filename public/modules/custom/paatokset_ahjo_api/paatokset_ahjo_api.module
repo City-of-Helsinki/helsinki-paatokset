@@ -261,11 +261,9 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
  */
 function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): void {
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
-
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'article')
     ->condition('status', 1)
-    ->condition('langcode', $currentLanguage)
     ->sort('published_at', 'DESC')
     ->execute();
 
@@ -274,6 +272,10 @@ function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): v
   $years = [];
   $by_year = [];
   foreach ($nodes as $node) {
+    if ($node->hasTranslation($currentLanguage)) {
+      $node = $node->getTranslation($currentLanguage);
+    }
+
     if ($node->hasField('published_at') && !$node->get('published_at')->isEmpty()) {
       $timestamp = (int) $node->get('published_at')->value;
     }
