@@ -1,31 +1,31 @@
-uuid: 028f865f-a9d3-40dd-b579-6171cb409375
+uuid: 46fce145-1446-4c74-a67d-0cffcd6ea85e
 langcode: fi
 status: true
 dependencies:
   module:
     - language
     - node
-id: article_pattern_fi
-label: 'Article pattern FI'
+id: article_pattern_sv
+label: 'Article pattern SV'
 type: 'canonical_entities:node'
-pattern: '/kuulutukset-ilmoitukset-ja-julkipanot/[node:title]'
+pattern: '/kungorelser-och-annonser/[node:title]'
 selection_criteria:
-  b63a5ee5-5965-4c7e-87b7-e1b6f41f581a:
+  685db6ad-8e33-47fd-a99f-f2764e91688e:
     id: node_type
     negate: false
-    uuid: b63a5ee5-5965-4c7e-87b7-e1b6f41f581a
+    uuid: 685db6ad-8e33-47fd-a99f-f2764e91688e
     context_mapping:
       node: node
     bundles:
       article: article
-  bcc41f37-b596-43fe-9f63-aa3fcaf352e3:
+  e4398456-f089-4a42-8f6f-e54a69e96299:
     id: language
     negate: false
-    uuid: bcc41f37-b596-43fe-9f63-aa3fcaf352e3
+    uuid: e4398456-f089-4a42-8f6f-e54a69e96299
     context_mapping:
       language: 'node:langcode:language'
     langcodes:
-      fi: fi
+      sv: sv
 selection_logic: and
 weight: -10
 relationships:
