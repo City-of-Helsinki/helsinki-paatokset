@@ -1635,42 +1635,69 @@ class PolicymakerService {
   }
 
   /**
-   * Get english version of finnish sector name.
+   * Get language versions of finnish sector name.
    *
    * @param string $sector
    *   Sector name.
+   * @param string $language
+   *   Language to get translation for.
    *
    * @return string
    *   English translation of sector, or original value.
    */
-  public function getSectorEnglishTranslation(string $sector): string {
+  public function getSectorTranslation(string $sector, string $language = 'en'): string {
     switch ($sector) {
       case 'Kasvatuksen ja koulutuksen toimiala':
-        $value = 'Education Division';
+        $values = [
+          'en' => 'Education Division',
+          'fi' => 'Kasvatuksen ja koulutuksen toimiala',
+          'sv' => 'Sektorn för fostran och utbildning',
+        ];
         break;
 
       case 'Kaupunkiympäristön toimiala':
-        $value = 'Urban Environment Division';
+        $values = [
+          'en' => 'Urban Environment Division',
+          'fi' => 'Kaupunkiympäristön toimiala',
+          'sv' => 'Stadsmiljösektorn',
+        ];
         break;
 
       case 'Keskushallinto':
-        $value = 'Central Administration';
+        $values = [
+          'en' => 'Central Administration',
+          'fi' => 'Keskushallinto',
+          'sv' => 'Centralförvaltningen',
+        ];
         break;
 
       case 'Kulttuurin ja vapaa-ajan toimiala':
-        $value = 'Culture and Leisure Division';
+        $values = [
+          'en' => 'Culture and Leisure Division',
+          'fi' => 'Kulttuurin ja vapaa-ajan toimiala',
+          'sv' => 'Kultur- och fritidssektorn',
+        ];
         break;
 
       case 'Sosiaali- ja terveystoimiala':
-        $value = 'Social Services and Health Care Division';
+        $values = [
+          'en' => 'Social Services and Health Care Division',
+          'fi' => 'Sosiaali- ja terveystoimiala',
+          'sv' => 'Social- och hälsovårdsektorn',
+        ];
         break;
 
       default:
-        $value = $sector;
+        $values = [];
         break;
     }
 
-    return $value;
+    if (!empty($values) && isset($values[$language])) {
+      return $values[$language];
+    }
+    else {
+      return $sector;
+    }
   }
 
 }

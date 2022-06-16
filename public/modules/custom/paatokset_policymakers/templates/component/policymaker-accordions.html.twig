@@ -5,7 +5,7 @@
     <div class="accordion__wrapper handorgel-lazy">
       <h3 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ accordion.heading|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">
-          <span>{{ accordion.heading|t }}</span>
+          <span>{{ accordion.heading }}</span>
           <div class="accordion-item__icon">
             {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
           </div>

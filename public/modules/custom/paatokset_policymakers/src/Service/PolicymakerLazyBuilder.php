@@ -235,12 +235,13 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         continue;
       }
 
-      $sector_title = $this->policymakerService->getSectorEnglishTranslation($row['sector']);
-      if (!$sector_title) {
-        continue;
+      if (empty($row['sector'])) {
+        $title = t('Office holders');
+      }
+      else {
+        $title = t('Office holders: @sector_title', ['@sector_title' => $row['sector']]);
       }
 
-      $title = 'Office holders: ' . $this->policymakerService->getSectorEnglishTranslation($row['sector']);
       $sectors_occupants[$row['sector']] = [
         'title' => $title,
         'items' => [],
@@ -321,7 +322,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       }
 
       if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
-        $sector = $this->policymakerService->getSectorEnglishTranslation($node->get('field_sector_name')->value);
+        $sector = $this->policymakerService->getSectorTranslation($node->get('field_sector_name')->value, $this->currentLanguage);
       }
       else {
         $sector = '';
