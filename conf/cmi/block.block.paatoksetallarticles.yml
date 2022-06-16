@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /tietoa-paatoksenteosta/kuulutukset
+    pages: "/kuulutukset-ilmoitukset-ja-julkipanot\r\n/kungorelser-och-annonser"
