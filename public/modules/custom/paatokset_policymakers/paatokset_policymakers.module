@@ -337,7 +337,12 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   }
 
   // Special case: Dont' add org name to Pormestari URL.
-  if ($node->get('field_ahjo_title')->value === 'Pormestari') {
+  $skipped_titles = [
+    'Pormestari',
+    'Borgmästare',
+  ];
+
+  if (in_array($node->get('field_ahjo_title')->value, $skipped_titles)) {
     return;
   }
 
