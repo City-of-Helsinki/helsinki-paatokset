@@ -19,6 +19,11 @@ function paatokset_lang_switcher_language_switch_links_alter(array &$links, $typ
   $route = \Drupal::routeMatch();
   $route_name = $route->getRouteName();
 
+  // Don't act on NULL routes.
+  if ($route_name === NULL) {
+    return;
+  }
+
   $node = NULL;
   if ($route_name === 'entity.node.canonical') {
     $node = $route->getParameter('node');
