@@ -10,6 +10,11 @@
   {% include '@hdbt/misc/koro.twig' with {koro: koro, flip: false, color: '#f7f7f8' } %}
   <div class="container">
     <h2>{{ content.label }}</h2>
+    <div class="frontpage-calendar__notice">
+      {% if calendar_notice %}
+      <p>{{ calendar_notice }}</p>
+      {% endif %}
+    </div>
     <div class="frontpage-calendar__item-container">
       {% for row in meetings %}
         {% include '@paatokset_ahjo_api/component/frontpage-calendar-item.html.twig' with {
@@ -22,11 +27,6 @@
           decision_link: row.decision_link,
         }%}
       {% endfor %}
-      {% if calendar_notice %}
-      <div class="frontpage-calendar__notice">
-        {{ calendar_notice }}
-      </div>
-      {% endif %}
     </div>
 
     <div class="frontpage-calendar__link-container">
