@@ -83,6 +83,12 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#open' => TRUE,
     ];
 
+    $form['defaults']['calendar_notice_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Frontpage calendar notice text'),
+      '#default_value' => $config->get('calendar_notice_text'),
+    ];
+
     $form['defaults']['documents_description'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Documents description'),
@@ -152,6 +158,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_ahjo_api.default_texts')
+      ->set('calendar_notice_text', $form_state->getValue('calendar_notice_text'))
       ->set('committees_boards_url', $form_state->getValue('committees_boards_url'))
       ->set('office_holders_url', $form_state->getValue('office_holders_url'))
       ->set('hidden_decisions_text.value', $form_state->getValue('hidden_decisions_text')['value'])

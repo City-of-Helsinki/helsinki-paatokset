@@ -4,6 +4,9 @@ paatokset_ahjo_api.default_texts:
   type: config_object
   label: 'Default text configuration'
   mapping:
+    calendar_notice_text:
+      type: label
+      label: 'Frontpage calendar notice text.'
     hidden_decisions_text:
       type: mapping
       label: 'Hidden decisions text'
