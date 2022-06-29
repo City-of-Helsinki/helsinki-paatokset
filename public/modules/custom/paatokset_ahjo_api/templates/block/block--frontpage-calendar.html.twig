@@ -22,7 +22,13 @@
           decision_link: row.decision_link,
         }%}
       {% endfor %}
+      {% if calendar_notice %}
+      <div class="frontpage-calendar__notice">
+        {{ calendar_notice }}
+      </div>
+      {% endif %}
     </div>
+
     <div class="frontpage-calendar__link-container">
        <a href="{{ calendar_link }}">
         <span>{{ open_meeting_calendar }}</span>

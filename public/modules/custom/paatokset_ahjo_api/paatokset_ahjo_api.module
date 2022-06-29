@@ -111,6 +111,12 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
     $variables['calendar_link'] = '/en/meetings-calendar';
   }
 
+  $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
+  $calendar_notice = $defaults_config->get('calendar_notice_text');
+  if ($calendar_notice !== NULL) {
+    $variables['calendar_notice'] = $calendar_notice;
+  }
+
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $meetings_with_color;
 }
