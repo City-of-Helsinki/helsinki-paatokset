@@ -2,6 +2,16 @@
   /* Force breadcrumbs to be in one line */
   white-space: nowrap;
 }
+
+.breadcrumb .breadcrumb__link:last-of-type {
+  @media screen and (max-width: $breakpoint-m) {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 /* Truncate titles, specifically for cases and decisions. */
 .breadcrumb__link:nth-child(6),
 .breadcrumb__current {
