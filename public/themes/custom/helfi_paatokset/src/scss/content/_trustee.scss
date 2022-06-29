@@ -34,7 +34,6 @@
 
 .trustee-top-container {
   margin-bottom: $spacing-m;
-  padding-left: 32px;
 
   @include breakpoint($breakpoint-l) {
     padding: 0;
@@ -67,10 +66,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      @include breakpoint($breakpoint-l) {
-        padding: 32px 32px 32px 0;
-      }
+      padding: 32px 32px 32px 0;
     }
 
     .icon {
@@ -100,11 +96,7 @@
 
   .handorgel__content {
     border: none;
-    padding: 0 24px;
-
-    @include breakpoint($breakpoint-l) {
-      padding: 0;
-    }
+    padding: 0;
   }
 
   .accordion-item__content__inner {
