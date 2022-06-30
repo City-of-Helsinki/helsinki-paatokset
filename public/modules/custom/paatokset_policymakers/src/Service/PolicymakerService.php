@@ -1542,16 +1542,23 @@ class PolicymakerService {
    *
    * @param string $id
    *   Policymaker ID.
+   * @param string $langcode
+   *   Which node translation to get.
+   * @param bool $get_ahjo_title
+   *   Get Ahjo title instead of node title.
    *
    * @return string|null
    *   Organization anme or NULL if policymaker can't be found.
    */
-  public function getPolicymakerNameById(string $id): ?string {
-    $node = $this->getPolicyMaker($id);
-    if ($node instanceof NodeInterface) {
+  public function getPolicymakerNameById(string $id, string $langcode = 'fi', bool $get_ahjo_title = TRUE): ?string {
+    $node = $this->getPolicyMaker($id, $langcode);
+    if (!$node instanceof NodeInterface) {
+      return NULL;
+    }
+    if ($get_ahjo_title) {
       return $node->get('field_ahjo_title')->value;
     }
-    return NULL;
+    return $node->title->value;
   }
 
   /**
