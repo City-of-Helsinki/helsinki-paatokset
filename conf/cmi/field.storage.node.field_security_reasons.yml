@@ -1,0 +1,19 @@
+uuid: da10b48c-b968-4516-bfe0-2490b408ef48
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_security_reasons
+field_name: field_security_reasons
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
