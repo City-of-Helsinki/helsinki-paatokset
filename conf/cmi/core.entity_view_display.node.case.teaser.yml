@@ -14,6 +14,8 @@ dependencies:
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
     - field.field.node.case.field_full_title
+    - field.field.node.case.field_publicity_class
+    - field.field.node.case.field_security_reasons
     - field.field.node.case.field_status
     - field.field.node.case.field_top_category_name
     - node.type.case
@@ -40,6 +42,8 @@ hidden:
   field_diary_number: true
   field_diary_number_label: true
   field_full_title: true
+  field_publicity_class: true
+  field_security_reasons: true
   field_status: true
   field_top_category_name: true
   langcode: true
