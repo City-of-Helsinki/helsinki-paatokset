@@ -88,6 +88,8 @@ class MeetingService {
       return [];
     }
 
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
     $result = [];
     foreach (Node::loadMultiple($ids) as $node) {
       $timestamp = $node->get('field_meeting_date')->date->getTimeStamp();
@@ -108,7 +110,7 @@ class MeetingService {
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
         'policymaker_type' => $this->getPolicymakerType($node->get('field_meeting_dm')->value),
-        'policymaker_name' => $node->get('field_meeting_dm')->value,
+        'policymaker_name' => $this->getPolicymakerName($node->get('field_meeting_dm_id')->value, $node->get('field_meeting_dm')->value, $langcode),
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
         'additional_info' => $additional_info,
@@ -155,6 +157,30 @@ class MeetingService {
       return 'hallitus';
     }
     return 'trustee';
+  }
+
+  /**
+   * Get policymaker name for meeting.
+   *
+   * @param string $id
+   *   Policymaker ID.
+   * @param string $default_name
+   *   Default policymaker name if node can't be loaded.
+   * @param string $langcode
+   *   Which translation of policymaker node to get.
+   *
+   * @return string
+   *   Policymaker name.
+   */
+  private function getPolicymakerName(string $id, string $default_name, string $langcode = 'fi'): string {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
+    $name = $policymakerService->getPolicymakerNameById($id, $langcode, FALSE);
+    if ($name !== NULL) {
+      return $name;
+    }
+    return $default_name;
   }
 
   /**

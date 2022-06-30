@@ -45,7 +45,7 @@
                 v-for="meeting in day.meetings"
                 class="meeting-row"
                 >
-                  <h4 class="meeting-title">{{meeting.title}}</h4>
+                  <h4 class="meeting-title">{{meeting.policymaker_name}}</h4>
                   <div class="meeting-start-time">{{ meeting.start_time}}</div>
                   <template v-if="meeting.decision_link">
                     <a :href="meeting.decision_link" :aria-label="openDecisions + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
