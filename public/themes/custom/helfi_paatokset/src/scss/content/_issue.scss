@@ -47,14 +47,22 @@
   }
 }
 
-.issue__category .hds-tag {
-  font-size: 16px;
-  border-radius: 24px;
-  background: $color-black;
-  color: $color-white;
-  padding: 6px 16px;
+.issue__category {
   display: flex;
-  width: fit-content;
+
+  .hds-tag {
+    margin-right: 12px;
+    font-size: 16px;
+    border-radius: 24px;
+    background: $color-black;
+    color: $color-white;
+    padding: 6px 16px;
+    display: flex;
+    width: fit-content;
+  }
+  .hds-tag--confidential {
+    background: var(--color-brick);
+  }
 }
 
 .issue__container {
