@@ -61,6 +61,14 @@ source:
       name: records
       label: Records
       selector: Records
+    -
+      name: publicity_class
+      label: Publicity Class
+      selector: PublicityClass
+    -
+      name: security_reasons
+      label: Security Reasons
+      selector: SecurityReasons
   ids:
     case_id:
       type: string
@@ -99,6 +107,8 @@ process:
   field_classification_code: classification_code
   field_classification_title: classification_title
   field_status: status
+  field_publicity_class: publicity_class
+  field_security_reasons: security_reasons
   field_case_handlings:
     plugin: callback
     callable: json_encode
