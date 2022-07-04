@@ -3,8 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_classification_code
     - field.storage.node.field_created
     - field.storage.node.field_diary_number
+    - field.storage.node.field_publicity_class
     - field.storage.node.field_status
     - node.type.case
   module:
@@ -146,6 +148,132 @@ display:
           admin_label: ''
           plugin_id: field
           label: Status
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_publicity_class:
+          id: field_publicity_class
+          table: node__field_publicity_class
+          field: field_publicity_class
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Publicity Class'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_classification_code:
+          id: field_classification_code
+          table: node__field_classification_code
+          field: field_classification_code
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Classification
           exclude: false
           alter:
             alter_text: false
@@ -578,6 +706,50 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_classification_code_value:
+          id: field_classification_code_value
+          table: node__field_classification_code
+          field: field_classification_code_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_classification_code_value_op
+            label: 'Classification Code'
+            description: ''
+            use_operator: false
+            operator: field_classification_code_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_classification_code_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -590,11 +762,12 @@ display:
           default_row_class: true
           columns:
             title: title
-            field_policymaker_id: field_policymaker_id
-            field_organization_type: field_organization_type
+            field_diary_number: field_diary_number
+            field_status: field_status
+            field_publicity_class: field_publicity_class
+            field_classification_code: field_classification_code
+            field_created: field_created
             changed: changed
-            field_policymaker_existing: field_policymaker_existing
-            field_is_decisionmaker: field_is_decisionmaker
             operations: operations
           default: '-1'
           info:
@@ -605,15 +778,36 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_policymaker_id:
+            field_diary_number:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_organization_type:
+            field_status:
               sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_publicity_class:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_classification_code:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_created:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -622,20 +816,6 @@ display:
             changed:
               sortable: true
               default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_policymaker_existing:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_is_decisionmaker:
-              sortable: true
-              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
@@ -675,8 +855,10 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_classification_code'
         - 'config:field.storage.node.field_created'
         - 'config:field.storage.node.field_diary_number'
+        - 'config:field.storage.node.field_publicity_class'
         - 'config:field.storage.node.field_status'
   page_1:
     id: page_1
@@ -708,6 +890,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_classification_code'
         - 'config:field.storage.node.field_created'
         - 'config:field.storage.node.field_diary_number'
+        - 'config:field.storage.node.field_publicity_class'
         - 'config:field.storage.node.field_status'
