@@ -794,8 +794,10 @@ class CaseService {
 
     $attachments = [];
     foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
-
       $data = json_decode($field->value, TRUE);
+      if (empty($data['FileURI']) || empty($data['Title'])) {
+        continue;
+      }
       $attachments[] = [
         'file_url' => $data['FileURI'],
         'title' => $data['Title'],
