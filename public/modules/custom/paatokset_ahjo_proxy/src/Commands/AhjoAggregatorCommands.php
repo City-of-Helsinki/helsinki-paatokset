@@ -734,7 +734,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $or->condition('field_publicity_class', '');
       $query->condition($or);
     }
-    else if ($logic === 'securityreasons') {
+    elseif ($logic === 'securityreasons') {
       $or = $query->orConditionGroup();
       $or->notExists('field_security_reasons');
       $or->condition('field_security_reasons', '');
