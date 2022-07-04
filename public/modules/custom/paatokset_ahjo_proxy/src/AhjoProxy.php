@@ -181,6 +181,12 @@ class AhjoProxy implements ContainerInjectionInterface {
       $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
     }
 
+    // Local adjustments for fetching cases through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'cases') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+    }
+
     $data = $this->getContent($api_url);
     return $data;
   }
@@ -1021,6 +1027,56 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $node->set('field_meeting_date', $meeting->field_meeting_date->value);
     $node->set('field_meeting_sequence_number', $meeting->field_meeting_sequence_number->value);
+  }
+
+  /**
+   * Static callback function for processing case data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processCaseItem($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    if ($node->bundle() !== 'case') {
+      return;
+    }
+
+    // Fetch updated content from endpoint.
+    $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+
+    // Local and proxy data is formatted a bit differently than API data.
+    if (isset($content['cases'])) {
+      $content = $content['cases'][0];
+    }
+
+    if (!empty($content)) {
+      $node->set('field_publicity_class', $content['PublicityClass']);
+      $node->set('field_security_reasons', $content['SecurityReasons']);
+      $node->save();
+      $context['results']['items'][] = $node->id();
+    }
+    else {
+      $messenger->addMessage('Could not fetch content for nid: ' . $node->id());
+      $context['results']['failed'][] = $node->id();
+    }
   }
 
   /**

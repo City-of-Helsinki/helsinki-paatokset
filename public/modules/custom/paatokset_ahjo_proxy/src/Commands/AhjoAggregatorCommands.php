@@ -675,6 +675,125 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Updates migrated case nodes with missing info.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:update-cases
+   *
+   * @option logic
+   *   Logic on how to check which cases to update.
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @usage ahjo-proxy:update-cases
+   *   Fetches data for decisions where the publicity class field is null.
+   *
+   * @aliases ap:uc
+   */
+  public function updateCases(array $options = [
+    'logic' => 'publicity',
+    'localdata' => NULL,
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['update'])) {
+      $update_all = TRUE;
+    }
+    else {
+      $update_all = FALSE;
+    }
+
+    if (!empty($options['logic'])) {
+      $logic = $options['logic'];
+    }
+    else {
+      $logic = 'publicity';
+    }
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Updating nodes based on missing ' . $logic . ' data.');
+    $this->logger->info('Fetching data from API...');
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'case')
+      ->condition('status', 1)
+      ->latestRevision();
+
+    if ($logic === 'publicity') {
+      $or = $query->orConditionGroup();
+      $or->notExists('field_publicity_class');
+      $or->condition('field_publicity_class', '');
+      $query->condition($or);
+    }
+    else if ($logic === 'securityreasons') {
+      $or = $query->orConditionGroup();
+      $or->notExists('field_security_reasons');
+      $or->condition('field_security_reasons', '');
+      $query->condition($or);
+    }
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_diary_number') || $node->get('field_diary_number')->isEmpty()) {
+        continue;
+      }
+
+      $case_id = $node->field_diary_number->value;
+      // Local adjustments for fetching cases through proxy.
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $endpoint = 'cases/single/' . $case_id;
+      }
+      else {
+        $endpoint = 'cases/' . $case_id;
+      }
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'count' => $count,
+        'case_id' => $case_id,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processCaseItem',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Aggregating data for cases.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Parses decision content and motion fields from raw HTML.
    *
    * @param array $options
