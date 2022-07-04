@@ -793,8 +793,8 @@ display:
               empty_column: false
               responsive: ''
             field_publicity_class:
-              sortable: false
-              default_sort_order: asc
+              sortable: true
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
