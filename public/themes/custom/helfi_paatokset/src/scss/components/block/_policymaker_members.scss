@@ -22,6 +22,10 @@
     appearance: none;
   }
 
+  option {
+    color: $color-black;
+  }
+
   .search-wrapper {
     width: 100%;
     margin-bottom: 36px;
@@ -71,6 +75,7 @@
 
     span {
       white-space: nowrap;
+      padding-left: 12px;
     }
 
     input {
@@ -91,7 +96,6 @@
         max-width: 24px;
         max-height: 24px;
         border: 2px solid $gray;
-        margin-right: 12px;
       }
 
       &:checked::before {
