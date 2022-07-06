@@ -1421,6 +1421,13 @@ class AhjoAggregatorCommands extends DrushCommands {
 
         $item['PDF']['AgendaPoint'] = $item['AgendaPoint'];
 
+        if (!empty($item['Attachments'])) {
+          $attachments = $item['Attachments'];
+        }
+        else {
+          $attachments = [];
+        }
+
         $endpoint = NULL;
         if (!$use_local_data) {
           $endpoint = 'records/' . $native_id;
@@ -1434,7 +1441,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           'native_id' => $native_id,
           'pdf' => $item['PDF'],
           'html' => $item['HTML'],
-          'attachments' => $item['Attachments'],
+          'attachments' => $attachments,
           'meeting_data' => $meeting_data,
         ];
 
