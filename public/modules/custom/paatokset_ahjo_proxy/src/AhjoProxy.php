@@ -181,6 +181,12 @@ class AhjoProxy implements ContainerInjectionInterface {
       $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
     }
 
+    // Local adjustments for fetching decisions through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'decisions') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+    }
+
     $data = $this->getContent($api_url);
     return $data;
   }
