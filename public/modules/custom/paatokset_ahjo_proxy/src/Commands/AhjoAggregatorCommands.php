@@ -1457,7 +1457,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
   }
 
-   /**
+  /**
    * Checks decision attachments.
    *
    * @param array $options
@@ -1505,7 +1505,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $nodes = Node::loadMultiple($ids);
     $table = new Table($this->output());
     $table->setHeaders([
-      'NID', 'ID', 'Attachments', 'URLs missing', 'Non-public'
+      'NID', 'ID', 'Attachments', 'URLs missing', 'Non-public',
     ]);
 
     $classes = [];
