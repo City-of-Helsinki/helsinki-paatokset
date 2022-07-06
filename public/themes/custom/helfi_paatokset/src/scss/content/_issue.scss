@@ -118,7 +118,7 @@
 
 .issue-right-column__container {
   .issue__attachment {
-    a {
+    & > a, & > div {
       display: flex;
     }
 
