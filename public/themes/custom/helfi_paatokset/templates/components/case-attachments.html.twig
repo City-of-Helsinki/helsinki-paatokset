@@ -4,15 +4,17 @@
   Variable attachments should be passed.
 #}
 <div class="issue__attachments__wrapper">
-{% if attachments %}
+{% if attachments.items %}
   <div class="issue__attachments">
     <h3>{{ 'Attachments'|trans }}</h3>
     <div class="issue__attachments-container">
-      {% for attachment in attachments %}
+      {% set non_public_attachments = false %}
+      {% for attachment in attachments.items %}
         {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
           {% set icon_class = 'download' %}
         {% elseif attachment.publicity_class != 'Julkinen'%}
           {% set icon_class = 'eye-crossed' %}
+          {% set non_public_attachments = true %}
         {% else %}
           {% set icon_class = 'cross-circle' %}
         {% endif %}
@@ -22,20 +24,24 @@
             <div>
               <i class="hel-icon hel-icon--{{ icon_class }}" aria-hidden="true" style="vertical-align: middle"></i>
             </div>
-            <div>{{ attachment.title }}</div>
+            <div>{{ attachment.number }}{{ attachment.title }}</div>
           </a>
         {% else %}
           <div>
             <div>
               <i class="hel-icon hel-icon--{{ icon_class }}" aria-hidden="true" style="vertical-align: middle"></i>
             </div>
-            <div>{{ attachment.title }}</div>
+            <div>{{ attachment.number }}{{ attachment.title }}</div>
           </div>
         {% endif %}
         </div>
       {% endfor %}
     </div>
-    <p>Lorem ipsum dolor sit amet.</p>
+    {% if non_public_attachments and attachments.publicity_reason %}
+    <div class="issue__attachment__reason">
+      {{ attachments.publicity_reason }}
+    </div>
+    {% endif %}
   </div>
 {% endif %}
 </div>
