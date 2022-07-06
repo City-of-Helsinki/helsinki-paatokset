@@ -1374,6 +1374,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $ids = $query->execute();
+
     $this->logger->info('Total nodes: ' . count($ids));
 
     $nodes = Node::loadMultiple($ids);
@@ -1382,11 +1383,15 @@ class AhjoAggregatorCommands extends DrushCommands {
       'NID', 'ID', 'Attachments', 'URLs missing', 'Non-public',
     ]);
 
+    $count = 0;
+    $files = 0;
     $classes = [];
     foreach ($nodes as $node) {
       if (!$node->hasField('field_decision_attachments') || $node->get('field_decision_attachments')->isEmpty()) {
         continue;
       }
+
+      $count++;
 
       $attachment_count = 0;
       $urls_missing = 0;
@@ -1394,7 +1399,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       foreach ($node->get('field_decision_attachments') as $field) {
         $data = json_decode($field->value, TRUE);
-
+        $files++;
         $attachment_count++;
 
         if (!isset($data['FileURI'])) {
@@ -1422,6 +1427,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ]);
     }
     $table->render();
+    $this->logger->info($count . ' nodes with attachments and ' . $files . ' files total.');
     $this->logger->info('Publicity classes: ' . implode(',', $classes));
   }
 
