@@ -794,6 +794,88 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Updates decision node attachments.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:update-decision-attachments
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:uda
+   */
+  public function updateDecisionAttachments(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Fetching data from API...');
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_is_decision', 1)
+      ->latestRevision();
+
+    $or = $query->orConditionGroup();
+    $or->notExists('field_attachments_checked');
+    $or->condition('field_attachments_checked', 0);
+    $query->condition($or);
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
+        continue;
+      }
+
+      $endpoint = 'decisions/' . $node->field_decision_native_id->value;
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'native_id' => $node->field_decision_native_id->value,
+        'count' => $count,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::updateDecisionAttachments',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Updating attachments for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Parses decision content and motion fields from raw HTML.
    *
    * @param array $options
@@ -1373,6 +1455,100 @@ class AhjoAggregatorCommands extends DrushCommands {
         }
       }
     }
+  }
+
+   /**
+   * Checks decision attachments.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-decision-attachments
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   * @option offset
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:cda
+   */
+  public function checkDecisionAttachments(array $options = [
+    'limit' => NULL,
+    'offset' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+    if (!empty($options['offset'])) {
+      $offset = (int) $options['offset'];
+    }
+    else {
+      $offset = 0;
+    }
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_is_decision', 1)
+      ->latestRevision();
+
+    if ($limit) {
+      $query->range($offset, $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'NID', 'ID', 'Attachments', 'URLs missing', 'Non-public'
+    ]);
+
+    $classes = [];
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_decision_attachments') || $node->get('field_decision_attachments')->isEmpty()) {
+        continue;
+      }
+
+      $attachment_count = 0;
+      $urls_missing = 0;
+      $non_public = 0;
+
+      foreach ($node->get('field_decision_attachments') as $field) {
+        $data = json_decode($field->value, TRUE);
+
+        $attachment_count++;
+
+        if (!isset($data['FileURI'])) {
+          $urls_missing++;
+        }
+
+        $publicity_class = NULL;
+        if (isset($data['PublicityClass'])) {
+          $publicity_class = $data['PublicityClass'];
+        }
+        if ($publicity_class !== 'Julkinen') {
+          $non_public++;
+        }
+        if (!in_array($publicity_class, $classes)) {
+          $classes[] = $publicity_class;
+        }
+      }
+
+      $table->addRow([
+        $node->id(),
+        $node->field_decision_native_id->value,
+        $attachment_count,
+        $urls_missing,
+        $non_public,
+      ]);
+    }
+    $table->render();
+    $this->logger->info('Publicity classes: ' . implode(',', $classes));
   }
 
   /**

@@ -1080,6 +1080,61 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Static callback function for processing decision attachment data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function updateDecisionAttachments($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    // Fetch decision content from endpoint.
+    $content = NULL;
+    if ($data['endpoint']) {
+      $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    }
+
+    // Local data is formatted a bit differently.
+    if (isset($content['decisions'])) {
+      $content = $content['decisions'][0];
+    }
+
+    if (!empty($record_content)) {
+      $attachments = [];
+      if (!empty($content['Attachments'])) {
+        foreach ($content['Attachments'] as $attachment) {
+          $attachments[] = json_encode($attachment);
+        }
+      }
+      $node->set('field_decision_attachments', $attachments);
+      $node->set('field_attachments_checked', 1);
+      $node->save();
+      $context['results']['items'][] = $node->id();
+    }
+    else {
+      $messenger->addMessage('Could not fetch attachments for for nid: ' . $node->id());
+      $context['results']['failed'][] = $node->id();
+    }
+  }
+
+  /**
    * Add entity to callback queue.
    *
    * @param string $endpoint
