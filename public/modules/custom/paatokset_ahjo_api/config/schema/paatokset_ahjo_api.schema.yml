@@ -17,6 +17,16 @@ paatokset_ahjo_api.default_texts:
         format:
           type: string
           label: 'Hidden decisions text - Format'
+    non_public_attachments_text:
+      type: mapping
+      label: 'Non public attachments text'
+      mapping:
+        value:
+          type: text
+          label: 'Non public attachments text - Value'
+        format:
+          type: string
+          label: 'Non public attachments text - Format'
     documents_description:
       type: mapping
       label: 'Documents description'
