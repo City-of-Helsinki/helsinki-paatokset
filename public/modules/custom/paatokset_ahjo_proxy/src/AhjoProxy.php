@@ -1351,6 +1351,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $meeting_number = $data['meeting_data']['meeting_number'];
     $org_id = $data['meeting_data']['org_id'];
     $org_name = $data['meeting_data']['org_name'];
+    $attachments = $data['attachments'];
 
     // Get top category name.
     if (isset($ids['classification_code'])) {
@@ -1404,6 +1405,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
+    $attachments_json = [];
+    if (!empty($attachments)) {
+      foreach ($attachments as $attachment) {
+        $attachments_json[] = json_encode($attachment);
+      }
+    }
+
     $node->set('field_full_title', $title);
     $node->set('field_is_decision', 0);
     $node->set('field_outdated_document', 1);
@@ -1417,6 +1425,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->set('field_meeting_sequence_number', $meeting_number);
     $node->set('field_policymaker_id', $org_id);
     $node->set('field_dm_org_name', $org_name);
+    $node->set('field_decision_attachments', $attachments_json);
     $node->set('field_decision_motion', [
       'value' => $motion,
       'format' => 'plain_text',

@@ -1560,6 +1560,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           'native_id' => $native_id,
           'pdf' => $item['PDF'],
           'html' => $item['HTML'],
+          'attachments' => $item['Attachments'],
           'meeting_data' => $meeting_data,
         ];
 
