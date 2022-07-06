@@ -9,17 +9,29 @@
     <h3>{{ 'Attachments'|trans }}</h3>
     <div class="issue__attachments-container">
       {% for attachment in attachments %}
+        {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
+          {% set icon_class = 'download' %}
+        {% elseif attachment.publicity_class != 'Julkinen'%}
+          {% set icon_class = 'eye-crossed' %}
+        {% else %}
+          {% set icon_class = 'cross-circle' %}
+        {% endif %}
         <div class="issue__attachment">
-          <a
-            href="{{ attachment.file_url }}"
-            class="paatokset__link-plain"
-            aria-label="Link opens a file"
-          >
+        {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
+          <a href="{{ attachment.file_url }}" class="paatokset__link-plain" aria-label="{{ 'Link opens a file'|t }}">
             <div>
-              <i class="hel-icon hel-icon--download" aria-hidden="true" style="vertical-align: middle"></i>
+              <i class="hel-icon hel-icon--{{ icon_class }}" aria-hidden="true" style="vertical-align: middle"></i>
             </div>
             <div>{{ attachment.title }}</div>
           </a>
+        {% else %}
+          <div>
+            <div>
+              <i class="hel-icon hel-icon--{{ icon_class }}" aria-hidden="true" style="vertical-align: middle"></i>
+            </div>
+            <div>{{ attachment.title }}</div>
+          </div>
+        {% endif %}
         </div>
       {% endfor %}
     </div>

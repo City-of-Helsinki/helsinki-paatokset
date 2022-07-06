@@ -794,11 +794,27 @@ class CaseService {
 
     $attachments = [];
     foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
-
       $data = json_decode($field->value, TRUE);
+
+      $publicity_class = NULL;
+      if (isset($data['PublicityClass'])) {
+        $publicity_class = $data['PublicityClass'];
+      }
+
+      $file_url = NULL;
+      if (isset($data['FileURI'])) {
+        $file_url = $data['FileURI'];
+      }
+
+      $title = t('Attachment');
+      if (isset($data['Title'])) {
+        $title = $data['Title'];
+      }
+
       $attachments[] = [
-        'file_url' => $data['FileURI'],
-        'title' => $data['Title'],
+        'file_url' => $file_url,
+        'title' => $title,
+        'publicity_class' => $publicity_class,
       ];
     }
 
