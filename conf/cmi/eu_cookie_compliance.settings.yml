@@ -27,7 +27,7 @@ popup_agreed:
   format: full_html
 popup_find_more_button_message: 'Show cookies'
 popup_hide_button_message: Hide
-popup_link: /node/1
+popup_link: /cookie-information-and-settings
 popup_link_new_window: false
 popup_height: null
 popup_width: ''
