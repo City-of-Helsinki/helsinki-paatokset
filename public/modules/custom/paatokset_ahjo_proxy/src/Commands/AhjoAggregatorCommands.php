@@ -2299,6 +2299,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         $timestamp_key = 'start';
         $timestamp_key_end = 'end';
         $date_range = strtotime('-4 weeks');
+        $date_range_end = strtotime('+2 months');
         break;
 
       default:
@@ -2323,6 +2324,10 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if (!empty($options['end'])) {
       $query_string .= '&' . $timestamp_key_end . '=' . $options['end'];
+    }
+    elseif ($endpoint === 'meetings') {
+      $timestamp_end = date('Y-m-d\TH:i:s\Z', $date_range_end);
+      $query_string .= '&' . $timestamp_key_end . '=' . $timestamp_end;
     }
 
     if ($endpoint === 'cases' || $endpoint === 'decisions') {
