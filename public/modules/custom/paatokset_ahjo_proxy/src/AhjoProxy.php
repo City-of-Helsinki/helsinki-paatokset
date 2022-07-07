@@ -432,6 +432,10 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'meetings_latest.json';
         break;
 
+      case 'meetings_cancelled':
+        $filename = 'meetings_cancelled.json';
+        break;
+
       case 'decisions_all':
         $filename = 'decisions_all.json';
         break;

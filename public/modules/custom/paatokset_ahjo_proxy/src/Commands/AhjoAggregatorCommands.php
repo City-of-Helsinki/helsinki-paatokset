@@ -114,6 +114,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'dataset' => NULL,
     'start' => NULL,
     'end' => NULL,
+    'cancelledonly' => NULL,
     'retry' => NULL,
     'filename' => NULL,
     'append' => NULL,
@@ -122,6 +123,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $allowed_datasets = [
       'all',
       'latest',
+      'cancelled',
     ];
 
     if (in_array($options['dataset'], $allowed_datasets)) {
@@ -2236,6 +2238,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'cases_latest.json',
       'meetings_all.json',
       'meetings_latest.json',
+      'meetings_cancelled.json',
       'decisions_all.json',
       'decisions_latest.json',
       'initiatives_all.json',
@@ -2324,6 +2327,10 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if ($endpoint === 'cases' || $endpoint === 'decisions') {
       $query_string .= '&size=1000&count_limit=1000';
+    }
+
+    if (!empty($options['cancelledonly'])) {
+      $query_string .= '&cancelledonly=true';
     }
 
     $options['query_string'] = $query_string;

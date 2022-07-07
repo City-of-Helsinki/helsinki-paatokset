@@ -44,6 +44,10 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       ];
     }
 
+    if ($base_plugin_definition['id'] === 'meetings') {
+      $derivatives[] = 'cancelled';
+    }
+
     if ($base_plugin_definition['id'] === 'ahjo_trustees') {
       $derivatives = ['all', 'council', 'single'];
     }
@@ -115,6 +119,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
         'all' => '/ahjo-proxy/aggregated/meetings_all',
         'latest' => '/ahjo-proxy/aggregated/meetings_latest',
         'single' => '/ahjo-proxy/meetings/single',
+        'cancelled' => '/ahjo-proxy/aggregated/meetings_cancelled',
       ],
       'ahjo_cases' => [
         'all' => '/ahjo-proxy/aggregated/cases_all',
