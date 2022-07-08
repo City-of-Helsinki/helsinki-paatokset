@@ -845,7 +845,14 @@ class AhjoAggregatorCommands extends DrushCommands {
         continue;
       }
 
-      $endpoint = 'decisions/' . $node->field_decision_native_id->value;
+      $native_id = $node->field_decision_native_id->value;
+      // Local adjustments for fetching decisions through proxy.
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $endpoint = 'decisions/single/' . $native_id;
+      }
+      else {
+        $endpoint = 'decisions/' . $native_id;
+      }
 
       $count++;
       $data = [
@@ -1465,6 +1472,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @command ahjo-proxy:check-decision-attachments
    *
+   * @option motions
+   *   Check motions instead of decisions.
    * @option limit
    *   Limit processing to certain amount of nodes.
    * @option offset
@@ -1473,9 +1482,16 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:cda
    */
   public function checkDecisionAttachments(array $options = [
+    'motions' => NULL,
     'limit' => NULL,
     'offset' => NULL,
   ]): void {
+    if (!empty($options['motions'])) {
+      $motions = TRUE;
+    }
+    else {
+      $motions = FALSE;
+    }
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1492,8 +1508,14 @@ class AhjoAggregatorCommands extends DrushCommands {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'decision')
       ->condition('status', 1)
-      ->condition('field_is_decision', 1)
       ->latestRevision();
+
+    if ($motions) {
+      $query->condition('field_is_decision', 0);
+    }
+    else {
+      $query->condition('field_is_decision', 1);
+    }
 
     if ($limit) {
       $query->range($offset, $limit);
@@ -1536,11 +1558,14 @@ class AhjoAggregatorCommands extends DrushCommands {
         if (isset($data['PublicityClass'])) {
           $publicity_class = $data['PublicityClass'];
         }
+        if (!in_array($publicity_class, $classes)) {
+          $classes[] = $publicity_class;
+        }
         if ($publicity_class !== 'Julkinen') {
           $non_public++;
         }
-        if (!in_array($publicity_class, $classes)) {
-          $classes[] = $publicity_class;
+        else {
+          continue;
         }
       }
 
