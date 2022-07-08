@@ -79,6 +79,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $params = [
     'from' => date("Y-m-d"),
+    'not_cancelled' => TRUE,
     'limit' => 8,
   ];
 
