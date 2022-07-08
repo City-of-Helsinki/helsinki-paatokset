@@ -321,6 +321,11 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   /** @var \Drupal\node\NodeInterface $node */
   $node = $context['data']['node'];
 
+  // No overrides for english language nodes.
+  if ($node->get('langcode')->value === 'en') {
+    return;
+  }
+
   // Only act on policymaker nodes and make sure fields exist.
   if (!$node->bundle() === 'policymaker' || !$node->hasField('field_ahjo_title') || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
     return;
