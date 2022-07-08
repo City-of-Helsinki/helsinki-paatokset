@@ -142,9 +142,8 @@ class PolicymakerSideNav extends BlockBase {
    */
   protected function getDynamicLinks(NodeInterface $policymaker): array {
     $items = [];
-    $policymaker_url = $policymaker->toUrl()->toString();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
+    $policymaker_org = $this->policymakerService->getPolicymakerOrganizationFromUrl($policymaker, $this->currentLang);
+
     $routeProvider = \Drupal::service('router.route_provider');
 
     $items[] = [
