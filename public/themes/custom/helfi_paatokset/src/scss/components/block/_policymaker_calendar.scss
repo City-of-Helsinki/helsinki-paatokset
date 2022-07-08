@@ -110,3 +110,9 @@
     }
   }
 }
+
+.policymaker-calendar__table-row--cancelled {
+  td:nth-child(1), td:nth-child(2) {
+    text-decoration: line-through;
+  }
+}

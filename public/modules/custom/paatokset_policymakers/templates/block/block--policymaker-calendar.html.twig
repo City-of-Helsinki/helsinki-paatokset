@@ -22,7 +22,7 @@
     <tbody>
       {% for date, meeting in meetings %}
         {% for row in meeting %}
-        <tr class="policymaker-calendar__table-row">
+        <tr class="policymaker-calendar__table-row {% if row.meeting_cancelled %} policymaker-calendar__table-row--cancelled {%endif%}">
           <td>{{ date|date("d.m.Y") }}</td>
           <td>{{ row.start_time}}</td>
           <td>
