@@ -3,6 +3,7 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.field.node.decision.field_attachments_checked
     - field.field.node.decision.field_classification_code
     - field.field.node.decision.field_classification_title
     - field.field.node.decision.field_decision_attachment_files
@@ -46,6 +47,16 @@ targetEntityType: node
 bundle: decision
 mode: default
 content:
+  field_attachments_checked:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 32
+    region: content
   field_classification_code:
     type: string
     label: above

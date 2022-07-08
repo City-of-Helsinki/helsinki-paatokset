@@ -110,7 +110,7 @@
 
 .issue-right-column__container {
   .issue__attachment {
-    a {
+    & > a, & > div {
       display: flex;
     }
 
@@ -134,6 +134,10 @@
   @include breakpoint($breakpoint-xl) {
     width: 35%;
   }
+}
+
+.issue__attachment__reason {
+  font-size: 16px;
 }
 
 .issue-content__title h2 {

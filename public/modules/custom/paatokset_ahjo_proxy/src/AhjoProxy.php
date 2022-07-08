@@ -181,6 +181,12 @@ class AhjoProxy implements ContainerInjectionInterface {
       $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
     }
 
+    // Local adjustments for fetching decisions through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'decisions') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+    }
+
     $data = $this->getContent($api_url);
     return $data;
   }
@@ -1024,6 +1030,61 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Static callback function for processing decision attachment data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function updateDecisionAttachments($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    // Fetch decision content from endpoint.
+    $content = NULL;
+    if ($data['endpoint']) {
+      $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    }
+
+    // Local data is formatted a bit differently.
+    if (isset($content['decisions'])) {
+      $content = $content['decisions'][0];
+    }
+
+    if (!empty($content)) {
+      $attachments = [];
+      if (!empty($content['Attachments'])) {
+        foreach ($content['Attachments'] as $attachment) {
+          $attachments[] = json_encode($attachment);
+        }
+      }
+      $node->set('field_decision_attachments', $attachments);
+      $node->set('field_attachments_checked', 1);
+      $node->save();
+      $context['results']['items'][] = $node->id();
+    }
+    else {
+      $messenger->addMessage('Could not fetch attachments for for nid: ' . $node->id());
+      $context['results']['failed'][] = $node->id();
+    }
+  }
+
+  /**
    * Add entity to callback queue.
    *
    * @param string $endpoint
@@ -1295,6 +1356,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $meeting_number = $data['meeting_data']['meeting_number'];
     $org_id = $data['meeting_data']['org_id'];
     $org_name = $data['meeting_data']['org_name'];
+    $attachments = $data['attachments'];
 
     // Get top category name.
     if (isset($ids['classification_code'])) {
@@ -1348,6 +1410,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
+    $attachments_json = [];
+    if (!empty($attachments)) {
+      foreach ($attachments as $attachment) {
+        $attachments_json[] = json_encode($attachment);
+      }
+    }
+
     $node->set('field_full_title', $title);
     $node->set('field_is_decision', 0);
     $node->set('field_outdated_document', 1);
@@ -1361,6 +1430,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->set('field_meeting_sequence_number', $meeting_number);
     $node->set('field_policymaker_id', $org_id);
     $node->set('field_dm_org_name', $org_name);
+    $node->set('field_decision_attachments', $attachments_json);
     $node->set('field_decision_motion', [
       'value' => $motion,
       'format' => 'plain_text',

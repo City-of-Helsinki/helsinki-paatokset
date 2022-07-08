@@ -77,6 +77,13 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('hidden_decisions_text.value'),
     ];
 
+    $form['alerts']['non_public_attachments_text'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Non public decision attachments text'),
+      '#format' => $config->get('non_public_attachments_text.format'),
+      '#default_value' => $config->get('non_public_attachments_text.value'),
+    ];
+
     $form['defaults'] = [
       '#type' => 'details',
       '#title' => $this->t('Default fields'),
@@ -163,6 +170,8 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       ->set('office_holders_url', $form_state->getValue('office_holders_url'))
       ->set('hidden_decisions_text.value', $form_state->getValue('hidden_decisions_text')['value'])
       ->set('hidden_decisions_text.format', $form_state->getValue('hidden_decisions_text')['format'])
+      ->set('non_public_attachments_text.value', $form_state->getValue('non_public_attachments_text')['value'])
+      ->set('non_public_attachments_text.format', $form_state->getValue('non_public_attachments_text')['format'])
       ->set('documents_description.value', $form_state->getValue('documents_description')['value'])
       ->set('documents_description.format', $form_state->getValue('documents_description')['format'])
       ->set('meetings_description.value', $form_state->getValue('meetings_description')['value'])

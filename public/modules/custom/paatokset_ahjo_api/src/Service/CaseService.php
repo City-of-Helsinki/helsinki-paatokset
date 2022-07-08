@@ -794,15 +794,51 @@ class CaseService {
 
     $attachments = [];
     foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
-
       $data = json_decode($field->value, TRUE);
+
+      $number = NULL;
+      if (isset($data['AttachmentNumber'])) {
+        $number = $data['AttachmentNumber'] . '. ';
+      }
+
+      $title = t('Attachment');
+      if (isset($data['Title'])) {
+        $title = $data['Title'];
+      }
+
+      $publicity_class = NULL;
+      if (isset($data['PublicityClass'])) {
+        $publicity_class = $data['PublicityClass'];
+
+      }
+
+      // Override title if attachment is not public.
+      if ($publicity_class !== 'Julkinen') {
+        $title = t('Non-public');
+      }
+
+      $file_url = NULL;
+      if (isset($data['FileURI'])) {
+        $file_url = $data['FileURI'];
+      }
+
       $attachments[] = [
-        'file_url' => $data['FileURI'],
-        'title' => $data['Title'],
+        'number' => $number,
+        'file_url' => $file_url,
+        'title' => $title,
+        'publicity_class' => $publicity_class,
       ];
     }
 
-    return $attachments;
+    $publicity_reason = \Drupal::config('paatokset_ahjo_api.default_texts')->get('non_public_attachments_text.value');
+    if (!empty($attachments)) {
+      return [
+        'items' => $attachments,
+        'publicity_reason' => ['#markup' => $publicity_reason],
+      ];
+    }
+
+    return [];
   }
 
   /**

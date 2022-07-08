@@ -13,6 +13,9 @@ decisions_description:
 hidden_decisions_text:
   format: 'rich_text'
   value: '<p>Päätös on piilotettu henkilötietosuojalain nojalla ja se on nähtävissä kaupungin kirjaamossa.</p>'
+non_public_attachments_text:
+  format: 'rich_text'
+  value: '<p>Päätösasiakirjoissa on mainittu liitteitä, joita ei julkaista internetissä. Pois jätetään liitteet, jotka sisältävät salassa pidettäviä tietoja, tai joissa olevien tietojen julkistaminen voi vaarantaa yksityisyyden suojan tai elinkeinonharjoittajan liike- tai ammattisalaisuuden, tai joita ei ole teknisistä syistä saatu sähköiseen muotoon. (Julkisuuslaki § 621/1999, Sähköisen viestinnän tietosuojalaki § 516/2004, Henkilötietolaki § 523/1999, Sosiaalihuollon asiakaslaki § 812/2000, Potilaslaki § 785/1992, Laki julkisista hankinnoista § 348/2007)</p>'
 banner_text:
   format: 'rich_text'
   value: '<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>'
