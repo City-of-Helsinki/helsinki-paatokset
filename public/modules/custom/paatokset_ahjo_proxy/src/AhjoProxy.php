@@ -1118,7 +1118,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $content = $content['decisions'][0];
     }
 
-    if (!empty($record_content)) {
+    if (!empty($content)) {
       $attachments = [];
       if (!empty($content['Attachments'])) {
         foreach ($content['Attachments'] as $attachment) {
