@@ -44,8 +44,17 @@
                 <div
                 v-for="meeting in day.meetings"
                 class="meeting-row"
+                :class="meeting.meeting_cancelled ? 'meeting-row--cancelled': ''"
                 >
-                  <h4 class="meeting-title">{{meeting.policymaker_name}}</h4>
+                  <h4 class="meeting-title">
+                    {{ meeting.policymaker_name }}
+                    <span v-if="meeting.meeting_moved">
+                      ({{ meetingMoved }})
+                    </span>
+                    <span v-else-if="meeting.meeting_cancelled">
+                      ({{ meetingCancelled }})
+                    </span>
+                  </h4>
                   <div class="meeting-start-time">{{ meeting.start_time}}</div>
                   <template v-if="meeting.decision_link">
                     <a :href="meeting.decision_link" :aria-label="openDecisions + ': ' + meeting.title + ' ' + formatDayFull(day.date)">
@@ -237,6 +246,12 @@
           },
           noMeetings() {
             return window.Drupal.t('No meetings');
+          },
+          meetingCancelled() {
+            return window.Drupal.t('meeting cancelled', {}, {context: 'Meetings calendar'});
+          },
+          meetingMoved() {
+            return window.Drupal.t('meeting moved', {}, {context: 'Meetings calendar'});
           },
           nextMonth() {
             return window.Drupal.t('Seuraava kuukausi');

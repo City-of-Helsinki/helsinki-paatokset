@@ -44,7 +44,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       ];
     }
 
-    if ($base_plugin_definition['id'] === 'meetings') {
+    if ($base_plugin_definition['id'] === 'ahjo_meetings') {
       $derivatives[] = 'cancelled';
     }
 

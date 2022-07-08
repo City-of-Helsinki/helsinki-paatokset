@@ -6,6 +6,8 @@ do
   sleep 3600
   echo "Aggregating data for meetings: $(date)"
   drush ahjo-proxy:aggregate meetings --dataset=latest -v
+  echo "Aggregating data for cancelled meetings: $(date)"
+  drush ahjo-proxy:aggregate meetings --dataset=cancelled -v
   echo "Aggregating data for cases: $(date)"
   drush ahjo-proxy:aggregate cases --dataset=latest -v
   echo "Aggregating data for decisions: $(date)"
@@ -20,6 +22,9 @@ do
   echo "Migrating data for meetings: $(date)"
   drush migrate-reset-status ahjo_meetings:latest
   drush migrate-import ahjo_meetings:latest --update
+  echo "Migrating data for cancelled meetings: $(date)"
+  drush migrate-reset-status ahjo_meetings:cancelled
+  drush migrate-import ahjo_meetings:cancelled --update
   echo "Migrating data for cases: $(date)"
   drush migrate-reset-status ahjo_cases:latest
   drush migrate-import ahjo_cases:latest --update

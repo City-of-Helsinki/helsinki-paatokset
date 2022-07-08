@@ -38,7 +38,9 @@ class MeetingController extends ControllerBase {
    *   Return response with queried data or errors.
    */
   public function query(Request $request) : Response {
-    $params = [];
+    $params = [
+      'only_future_cancelled' => TRUE,
+    ];
 
     $allowedParams = [
       'from',
