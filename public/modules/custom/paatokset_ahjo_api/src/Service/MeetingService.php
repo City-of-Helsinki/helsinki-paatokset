@@ -74,6 +74,10 @@ class MeetingService {
       $query->range('0', $params['limit']);
     }
 
+    if (isset($params['not_cancelled'])) {
+      $query->condition('field_meeting_status', 'peruttu', '<>');
+    }
+
     if (isset($params['policymaker'])) {
       $query->condition('field_meeting_dm_id', $params['policymaker']);
     }
@@ -95,6 +99,18 @@ class MeetingService {
       $timestamp = $node->get('field_meeting_date')->date->getTimeStamp();
       $date = date('Y-m-d', $timestamp);
 
+      $meeting_cancelled = FALSE;
+      if ($node->get('field_meeting_status')->value === 'peruttu') {
+        $meeting_cancelled = TRUE;
+      }
+
+      if ($meeting_cancelled && isset($params['only_future_cancelled'])) {
+        $now = strtotime('now');
+        if ($meeting_cancelled && $timestamp < $now) {
+          continue;
+        }
+      }
+
       // Check if meeting was moved.
       $orig_timestamp = NULL;
       if ($node->hasField('field_meeting_date_original') && !$node->get('field_meeting_date_original')->isEmpty()) {
@@ -102,27 +118,35 @@ class MeetingService {
       }
 
       $additional_info = NULL;
-      if ($orig_timestamp && $orig_timestamp !== $timestamp) {
+      $meeting_moved = FALSE;
+      if ($meeting_cancelled) {
+        $additional_info = t('Meeting cancelled');
+      }
+      elseif ($orig_timestamp && $orig_timestamp !== $timestamp) {
         $additional_info = t('Meeting moved');
+        $meeting_moved = TRUE;
       }
 
       $transformedResult = [
         'title' => $node->get('title')->value,
         'meeting_date' => $timestamp,
+        'meeting_moved' => $meeting_moved,
+        'meeting_cancelled' => $meeting_cancelled,
         'policymaker_type' => $this->getPolicymakerType($node->get('field_meeting_dm')->value),
         'policymaker_name' => $this->getPolicymakerName($node->get('field_meeting_dm_id')->value, $node->get('field_meeting_dm')->value, $langcode),
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
+        'status' => $node->get('field_meeting_status')->value,
         'additional_info' => $additional_info,
       ];
 
-      if ($node->get('field_meeting_minutes_published')->value) {
+      if (!$meeting_cancelled && $node->get('field_meeting_minutes_published')->value) {
         $transformedResult['minutes_link'] = $this->getMeetingUrl($node);
       }
-      elseif ($node->get('field_meeting_agenda_published')->value && !$node->get('field_meeting_decision')->isEmpty()) {
+      elseif (!$meeting_cancelled && $node->get('field_meeting_agenda_published')->value && !$node->get('field_meeting_decision')->isEmpty()) {
         $transformedResult['decision_link'] = $this->getMeetingUrl($node);
       }
-      elseif ($node->get('field_meeting_agenda_published')->value) {
+      elseif (!$meeting_cancelled && $node->get('field_meeting_agenda_published')->value) {
         $transformedResult['motions_list_link'] = $this->getMeetingUrl($node);
       }
 
