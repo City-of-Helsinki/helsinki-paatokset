@@ -1564,9 +1564,6 @@ class AhjoAggregatorCommands extends DrushCommands {
         if ($publicity_class !== 'Julkinen') {
           $non_public++;
         }
-        else {
-          continue;
-        }
       }
 
       $table->addRow([
