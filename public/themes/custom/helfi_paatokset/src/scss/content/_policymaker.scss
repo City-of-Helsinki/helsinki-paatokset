@@ -69,8 +69,11 @@
   }
 }
 
-
-
+.policymaker-meetings {
+  .warning-label {
+    margin-top: $spacing;
+  }
+}
 
 .node--type-policymaker .table-of-contents__container {
   position: relative;
