@@ -1,12 +1,12 @@
 <div class="policymaker-card__container">
   {% for card in cards %}
     <a class="policymaker-card" href="{{ card.link }}">
-      <div class="policymaker-card__color-title {{ card.organization_color }}">{{ card.title|t }}</div>
+      <div class="policymaker-card__color-title {{ card.organization_color }}">{{ card.ahjo_title|t }}</div>
       <div class="policymaker-card__image">
         {{ card.image }}
       </div>
       <div class="policymaker-card__title-icon">
-        <h4>{{ card.title|t }}</h4>
+        <h4>{{ card.title }}</h4>
         <i class="hel-icon hel-icon--arrow-right"></i>
       </div>
     </a>
