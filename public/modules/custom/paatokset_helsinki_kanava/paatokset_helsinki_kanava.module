@@ -99,7 +99,10 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   }
 
   if ($liveStream instanceof MeetingVideo) {
-    if (_paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
+    if (!$liveStream->get('start_time')->isEmpty() && _paatokset_helsinki_kanava_should_show_label($liveStream->get('start_time')->value)) {
+      $variables['next_meeting_time'] = date('j.n.Y G:i', (int) $liveStream->get('start_time')->value);
+    }
+    if (!$liveStream->get('start_time')->isEmpty() && _paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
       $view_builder = \Drupal::entityTypeManager()
         ->getViewBuilder($liveStream
         ->getEntityTypeId());
@@ -124,6 +127,16 @@ function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
   }
 
   return strtotime('+1 hour') > $time;
+}
+
+function _paatokset_helsinki_kanava_should_show_label(string $time): bool {
+  if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+    return TRUE;
+  }
+
+  // Convert start time to date only.
+  $date = strtotime(date('j.n.Y', (int) $time));
+  return strtotime('now') < $date;
 }
 
 /**
