@@ -147,7 +147,7 @@ class PolicymakerSideNav extends BlockBase {
     $routeProvider = \Drupal::service('router.route_provider');
 
     $items[] = [
-      'title' => $policymaker->get('field_ahjo_title')->value,
+      'title' => $policymaker->get('title')->value,
       'url' => $this->policymakerService->getLocalizedUrl(),
       'attributes' => new Attribute(),
     ];
