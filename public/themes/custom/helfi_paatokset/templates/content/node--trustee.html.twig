@@ -220,4 +220,30 @@
     </div>
   </div>
   {% endif %}
+
+  {% if memberships.content is not empty %}
+  <div class="accordion__wrapper handorgel accordion_speaking-turn">
+    <h2 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ memberships.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h2>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in memberships.content %}
+        <div>
+          {{ row }}
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </article>
