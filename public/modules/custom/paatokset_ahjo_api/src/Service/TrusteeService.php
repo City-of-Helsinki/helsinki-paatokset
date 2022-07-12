@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\node\NodeInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Service class for retrieving trustee-related data.
@@ -37,7 +38,7 @@ class TrusteeService {
    */
   public static function transformTrusteeName(string $title): string {
     $nameParts = explode(',', $title);
-    return $nameParts[1] . ' ' . $nameParts[0];
+    return trim($nameParts[1] . ' ' . $nameParts[0]);
   }
 
   /**
@@ -92,6 +93,63 @@ class TrusteeService {
     ];
 
     return [$content];
+  }
+
+  /**
+   * Get memberships and roles for trustee.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Trustee node.
+   *
+   * @return array
+   *   Array of chairmanships and roles.
+   */
+  public static function getMemberships(NodeInterface $node): array {
+    $chairmanships = [];
+    if($node->hasField('field_trustee_chairmanships') && !$node->get('field_trustee_chairmanships')->isEmpty()) {
+      foreach($node->get('field_trustee_chairmanships') as $json) {
+        $data = json_decode($json->value, TRUE);
+        $chairmanships[] = $data['Position'] . ', ' . $data['OrganizationName'];
+      };
+    };
+
+    // Only get meetings for the last year.
+    $date_limit = date('Y-m-d', strtotime('-1 year'));
+    $name = self::getTrusteeName($node);
+    $meeting_nids = \Drupal::entityQuery('node')
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_composition', $name, 'CONTAINS')
+      ->condition('field_meeting_date', $date_limit, '>=')
+      ->sort('field_meeting_date', 'DESC')
+      ->execute();
+
+    $memberships = [];
+    $organizations = [];
+    foreach (Node::loadMultiple($meeting_nids) as $node) {
+      if (!$node->hasField('field_meeting_dm_id') || $node->get('field_meeting_dm_id')->isEmpty()) {
+        continue;
+      }
+
+      if (in_array($node->field_meeting_dm_id->value, $organizations)) {
+        continue;
+      }
+      $organizations[] = $node->field_meeting_dm_id->value;
+      $org_name = $node->field_meeting_dm->value;
+
+      foreach ($node->field_meeting_composition as $field) {
+        $data = json_decode($field->value, TRUE);
+        if ($data['Name'] !== $name) {
+          continue;
+        }
+        if ($data['Role'] === 'Puheenjohtaja') {
+          continue;
+        }
+        $memberships[] = $data['Role'] . ', ' . $org_name;
+      }
+    }
+
+    asort($memberships);
+    return array_merge($chairmanships, $memberships);
   }
 
 }
