@@ -106,8 +106,8 @@ class TrusteeService {
    */
   public static function getMemberships(NodeInterface $node): array {
     $chairmanships = [];
-    if($node->hasField('field_trustee_chairmanships') && !$node->get('field_trustee_chairmanships')->isEmpty()) {
-      foreach($node->get('field_trustee_chairmanships') as $json) {
+    if ($node->hasField('field_trustee_chairmanships') && !$node->get('field_trustee_chairmanships')->isEmpty()) {
+      foreach ($node->get('field_trustee_chairmanships') as $json) {
         $data = json_decode($json->value, TRUE);
         $chairmanships[] = $data['Position'] . ', ' . $data['OrganizationName'];
       };

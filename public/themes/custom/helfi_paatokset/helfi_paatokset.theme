@@ -259,6 +259,13 @@ function helfi_paatokset_preprocess_node__trustee(&$variables) {
     ];
   }
 
+  if ($memberships = TrusteeService::getMemberships($node)) {
+    $variables['memberships'] = [
+      'title' => t('Memberships and roles'),
+      'content' => $memberships,
+    ];
+  }
+
   $trustee_title = TrusteeService::getTrusteeTitle($node);
   if ($trustee_title) {
     $variables['content']['field_trustee_title'] = $trustee_title;
