@@ -71,6 +71,13 @@ class AnnouncementsBlock extends BlockBase {
   }
 
   /**
+   * Get cache tags.
+   */
+  public function getCacheTags() {
+    return ['meeting_video_list'];
+  }
+
+  /**
    * Check if it is less than one day to the next meeting or test mode is on.
    *
    * @param string $time
