@@ -91,8 +91,23 @@
         </div>
       </div>
     {% else %}
-      <div aria-label="{{ 'Organization'|t }}" class="policymaker-label__org-name">
-        {{ content.field_dm_org_name }}
+      <div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-label__tags">
+        <div class="hds-tag__container">
+          {% if content.field_sector_name|render %}
+            <div class="hds-tag">
+              <span class="hds-tag__label">
+                {{ content.field_sector_name }}
+              </span>
+            </div>
+          {% endif %}
+          {% if content.field_dm_org_name|render %}
+            <div class="hds-tag">
+              <span class="hds-tag__label">
+                {{ content.field_dm_org_name }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
       </div>
       <div role="region" aria-label="{{ 'Page tags'|t }}" class="policymaker-summary__label">
         <div class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color }}">
