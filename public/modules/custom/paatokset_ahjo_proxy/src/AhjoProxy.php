@@ -1488,19 +1488,19 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param \Drupal\node\NodeInterface $node
    *   Meeting to check agenda for.
    *
-   * @return bool
-   *   Returns TRUE if all valid agenda items have decisions.
+   * @return array
+   *   List of missing decisions.
    */
-  public function checkMeetingDecisions(NodeInterface $node): bool {
+  public function checkMeetingDecisions(NodeInterface $node): array {
     if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
-      return TRUE;
+      return [];
     }
 
     $meeting_id = $node->get('field_meeting_id')->value;
 
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
-    $missing = FALSE;
+    $missing = [];
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
 
@@ -1521,12 +1521,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       }
 
       if (!$url instanceof Url) {
-        $missing = TRUE;
-        break;
+        $missing[] = $item['PDF']['NativeId'];
       }
     }
 
-    return !$missing;
+    return $missing;
   }
 
   /**
