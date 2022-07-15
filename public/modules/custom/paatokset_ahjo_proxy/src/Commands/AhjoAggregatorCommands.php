@@ -1233,8 +1233,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     foreach ($nodes as $node) {
       $meeting_id = $node->get('field_meeting_id')->value;
 
+      $missing = $this->ahjoProxy->checkMeetingDecisions($node);
       // Set checked value to true if decisions are found.
-      if ($this->ahjoProxy->checkMeetingDecisions($node)) {
+      if (empty($missing)) {
         $this->logger->info('No missing decisions for: ' . $meeting_id);
         $node->set('field_decisions_checked', 1);
         $node->save();
@@ -1242,8 +1243,14 @@ class AhjoAggregatorCommands extends DrushCommands {
       // Add decisions to callback queue if they are not found.
       else {
         $this->logger->info($meeting_id . ' has missing decisions.');
-        if ($queue) {
-          $this->importMeetingDecisions($meeting_id);
+        foreach ($missing as $native_id) {
+          if ($queue) {
+            $this->writeln(sprintf('Decision added to queue: %s', $native_id));
+            $this->ahjoProxy->addItemToAhjoQueue('decisions', $native_id);
+          }
+          else {
+            $this->logger->info(sprintf('-- Missing: %s', $native_id));
+          }
         }
       }
     }

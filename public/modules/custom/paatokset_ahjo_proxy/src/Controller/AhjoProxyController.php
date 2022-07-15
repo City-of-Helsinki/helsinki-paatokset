@@ -54,6 +54,9 @@ class AhjoProxyController extends ControllerBase {
   public function meetings(Request $request): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getMeetings($query_string);
+    if (empty($data)) {
+      throw new NotFoundHttpException();
+    }
     return new JsonResponse($data);
   }
 
@@ -69,6 +72,9 @@ class AhjoProxyController extends ControllerBase {
   public function cases(Request $request): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getCases($query_string);
+    if (empty($data)) {
+      throw new NotFoundHttpException();
+    }
     return new JsonResponse($data);
   }
 
@@ -84,6 +90,9 @@ class AhjoProxyController extends ControllerBase {
   public function decisions(Request $request): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getDecisions($query_string);
+    if (empty($data)) {
+      throw new NotFoundHttpException();
+    }
     return new JsonResponse($data);
   }
 
