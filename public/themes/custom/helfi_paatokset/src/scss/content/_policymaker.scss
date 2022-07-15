@@ -235,10 +235,23 @@ h2.minutes-list__header {
   }
 }
 
-.policymaker-label__org-name {
-  font-size: 18px;
-  margin-top: $spacing * -1;
+.policymaker-label__tags {
   margin-bottom: $spacing-double;
+
+  .hds-tag {
+    font-size: 16px;
+    border-radius: 24px;
+    background: $color-black;
+    color: $color-white;
+    padding: 6px 16px;
+    margin-right: 12px;
+    display: flex;
+    width: fit-content;
+  }
+
+  .hds-tag__container {
+    display: flex;
+  }
 
   &:after {
     content: "";
