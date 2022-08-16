@@ -7,7 +7,7 @@ do
   echo "Aggregating data for meetings: $(date)"
   drush ahjo-proxy:aggregate meetings --dataset=latest -v
   echo "Aggregating data for cancelled meetings: $(date)"
-  drush ahjo-proxy:aggregate meetings --dataset=cancelled -v
+  drush ahjo-proxy:aggregate meetings --dataset=cancelled --cancelledonly -v
   echo "Aggregating data for cases: $(date)"
   drush ahjo-proxy:aggregate cases --dataset=latest -v
   echo "Aggregating data for decisions: $(date)"
