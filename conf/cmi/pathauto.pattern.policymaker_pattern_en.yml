@@ -8,20 +8,20 @@ dependencies:
 id: policymaker_pattern_en
 label: 'Policymaker pattern EN'
 type: 'canonical_entities:node'
-pattern: 'decisionmakers/[node:field_ahjo_title]'
+pattern: 'decisionmakers/[node:field_policymaker_id]'
 selection_criteria:
-  fce2a778-4f73-40a0-ac27-0829738bb6cb:
-    id: node_type
+  0fc6813c-92f0-4152-83c3-5a154b35dd17:
+    id: 'entity_bundle:node'
     negate: false
-    uuid: fce2a778-4f73-40a0-ac27-0829738bb6cb
+    uuid: 0fc6813c-92f0-4152-83c3-5a154b35dd17
     context_mapping:
       node: node
     bundles:
       policymaker: policymaker
-  9f824cd8-2573-4e72-b25c-66b24017070e:
+  bccaf524-1a2b-4bc1-84ee-6fc17b990280:
     id: language
     negate: false
-    uuid: 9f824cd8-2573-4e72-b25c-66b24017070e
+    uuid: bccaf524-1a2b-4bc1-84ee-6fc17b990280
     context_mapping:
       language: 'node:langcode:language'
     langcodes:

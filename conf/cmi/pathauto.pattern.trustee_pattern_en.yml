@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: 'decisionmakers/[node:field_trustee_id]'
 selection_criteria:
   01a8ad2b-bea8-4c55-a5f1-c6e4f647523f:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: 01a8ad2b-bea8-4c55-a5f1-c6e4f647523f
     context_mapping:

@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: 'paattajat/[node:field_ahjo_title]'
 selection_criteria:
   7a3f122a-f9c0-4f61-af33-9bb71b1b09cb:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: 7a3f122a-f9c0-4f61-af33-9bb71b1b09cb
     context_mapping:

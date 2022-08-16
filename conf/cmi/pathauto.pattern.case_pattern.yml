@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: 'asia/[node:field_diary_number]'
 selection_criteria:
   ceb55a5f-a2be-4c20-984c-8ea719ac80b0:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: ceb55a5f-a2be-4c20-984c-8ea719ac80b0
     context_mapping:

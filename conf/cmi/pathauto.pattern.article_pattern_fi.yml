@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: '/kuulutukset-ilmoitukset-ja-julkipanot/[node:title]'
 selection_criteria:
   b63a5ee5-5965-4c7e-87b7-e1b6f41f581a:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: b63a5ee5-5965-4c7e-87b7-e1b6f41f581a
     context_mapping:

@@ -11,7 +11,7 @@ type: 'canonical_entities:node'
 pattern: 'kokoukset/[node:field_meeting_id]'
 selection_criteria:
   0b8bbe5f-2d67-4c48-a0d3-77b076b1551f:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: 0b8bbe5f-2d67-4c48-a0d3-77b076b1551f
     context_mapping:
