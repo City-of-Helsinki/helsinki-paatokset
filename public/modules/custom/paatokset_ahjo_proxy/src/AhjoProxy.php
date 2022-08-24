@@ -189,6 +189,14 @@ class AhjoProxy implements ContainerInjectionInterface {
       }
     }
 
+    // Local adjustments for fetching org data through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+      if (strpos($url, 'organization') === 0) {
+        $base_url = getenv('AHJO_PROXY_BASE_URL');
+        $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+      }
+    }
+
     $data = $this->getContent($api_url);
     return $data;
   }
@@ -419,6 +427,106 @@ class AhjoProxy implements ContainerInjectionInterface {
         ['Organization' => $org],
       ],
     ];
+  }
+
+  /**
+   * Return organization chart structure.
+   *
+   * @param string $orgId
+   *   Organization ID to start from.
+   * @param int $steps
+   *   Maximum levels to include in chart.
+   *
+   * @return array|null
+   *   Structured array with organizations, or NULL if first org is not found.
+   */
+  public function getOrgChart(string $orgId, int $steps = 3): ?array {
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->range(0, 1)
+      ->condition('langcode', 'fi')
+      ->condition('field_policymaker_id', $orgId)
+      ->condition('type', 'organization');
+
+    $ids = $query->execute();
+    if (empty($ids)) {
+      return NULL;
+    }
+
+    $id = reset($ids);
+    $node = Node::load($id);
+    if (!$node instanceof NodeInterface) {
+      return NULL;
+    }
+
+    $data = $this->getOrgChartStructure($node, 0, $steps);
+    return [$data];
+  }
+
+  /**
+   * Recursive method for getting organization structure.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to get child organizations for.
+   * @param int $step
+   *   Current level.
+   * @param int $max_steps
+   *   Maximum level.
+   *
+   * @return array
+   *   Structured organization data.
+   */
+  protected function getOrgChartStructure(NodeInterface $node, int $step = 0, int $max_steps = 3): array {
+    $data = [
+      'Name' => $node->title->value,
+      'ID' => $node->field_policymaker_id->value,
+    ];
+
+    if ($node->hasField('field_organization_data') && !$node->get('field_organization_data')->isEmpty()) {
+      $org = json_decode($node->get('field_organization_data')->value, TRUE);
+      $values = [
+        'Type',
+        'TypeId',
+        'Sector',
+        'Formed',
+      ];
+      foreach ($values as $value) {
+        if (isset($org[$value])) {
+          $data[$value] = $org[$value];
+        }
+      }
+    }
+
+    if ($node->field_org_level_below_ids->isEmpty() || $step >= $max_steps) {
+      return $data;
+    }
+
+    $data['OrganizationLevelBelow'] = [];
+
+    $orgs_below = [];
+
+    foreach ($node->field_org_level_below_ids as $field) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->range(0, 1)
+        ->condition('langcode', 'fi')
+        ->condition('field_policymaker_id', $field->value)
+        ->condition('type', 'organization');
+
+      $ids = $query->execute();
+      if (empty($ids)) {
+        continue;
+      }
+
+      $id = reset($ids);
+      $child_node = Node::load($id);
+      if ($child_node instanceof NodeInterface) {
+        $orgs_below[] = $this->getOrgChartStructure($child_node, $step + 1, $max_steps);
+      }
+    }
+
+    $data['OrganizationLevelBelow'] = $orgs_below;
+    return $data;
   }
 
   /**
