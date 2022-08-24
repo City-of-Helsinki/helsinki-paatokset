@@ -1,0 +1,59 @@
+uuid: 363c69b6-1e41-4385-9c82-362f9a8862e1
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.node.organization.field_org_level_above_id
+    - field.field.node.organization.field_org_level_below_ids
+    - field.field.node.organization.field_organization_data
+    - field.field.node.organization.field_policymaker_id
+    - node.type.organization
+  module:
+    - json_field
+    - user
+id: node.organization.default
+targetEntityType: node
+bundle: organization
+mode: default
+content:
+  field_org_level_above_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_org_level_below_ids:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_organization_data:
+    type: json
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_policymaker_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true
+  published_at: true
+  search_api_excerpt: true
+  toc_enabled: true
