@@ -378,4 +378,5 @@ class AhjoCallbackCommands extends DrushCommands {
 
     $this->output()->writeln('Deleted ' . $count . ' items.');
   }
+
 }
