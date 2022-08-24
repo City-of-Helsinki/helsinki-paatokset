@@ -1,0 +1,32 @@
+uuid: 8c0de10e-af99-4687-a6b2-f5705a8fbcb3
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.organization.field_org_level_above_id
+    - field.field.node.organization.field_org_level_below_ids
+    - field.field.node.organization.field_organization_data
+    - field.field.node.organization.field_policymaker_id
+    - node.type.organization
+  module:
+    - user
+id: node.organization.teaser
+targetEntityType: node
+bundle: organization
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_org_level_above_id: true
+  field_org_level_below_ids: true
+  field_organization_data: true
+  field_policymaker_id: true
+  langcode: true
+  published_at: true
+  search_api_excerpt: true
+  toc_enabled: true
