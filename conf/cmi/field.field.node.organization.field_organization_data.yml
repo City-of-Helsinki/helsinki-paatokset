@@ -1,0 +1,21 @@
+uuid: 682b5849-7e47-458e-a069-0f2ec1f37df2
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organization_data
+    - node.type.organization
+  module:
+    - json_field
+id: node.organization.field_organization_data
+field_name: field_organization_data
+entity_type: node
+bundle: organization
+label: 'Organization data'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
