@@ -231,4 +231,20 @@ class AhjoProxyController extends ControllerBase {
     return new JsonResponse($data);
   }
 
+  /**
+   * Get organization chart.
+   *
+   * @param string $orgId
+   *   Organization to start from.
+   * @param int $steps
+   *   Maximum amount of levels to include.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data containing organization chart.
+   */
+  public function getOrgChart(string $orgId, int $steps): JsonResponse {
+    $data = $this->ahjoProxy->getOrgChart($orgId, $steps);
+    return new JsonResponse($data);
+  }
+
 }
