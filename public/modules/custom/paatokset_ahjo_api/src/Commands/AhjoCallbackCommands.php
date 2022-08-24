@@ -19,6 +19,7 @@ use Symfony\Component\Console\Helper\Table;
 class AhjoCallbackCommands extends DrushCommands {
 
   private const QUEUE_NAME = 'ahjo_api_subscriber_queue';
+  private const ORG_QUEUE_NAME = 'ahjo_api_org_queue';
 
   /**
    * Ahjo callback queue.
@@ -26,6 +27,13 @@ class AhjoCallbackCommands extends DrushCommands {
    * @var \Drupal\Core\Queue\QueueInterface
    */
   protected $queue;
+
+  /**
+   * Ahjo organization chart queue.
+   *
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected $orgQueue;
 
   /**
    * Ahjo proxy service.
@@ -70,6 +78,7 @@ class AhjoCallbackCommands extends DrushCommands {
   public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory, Connection $database, AhjoProxy $ahjo_proxy) {
     $this->queueFactory = $queue_factory;
     $this->queue = $this->queueFactory->get(self::QUEUE_NAME);
+    $this->orgQueue = $this->queueFactory->get(self::ORG_QUEUE_NAME);
     $this->logger = $logger_factory->get('ahjo_api_subscriber');
     $this->database = $database;
     $this->ahjoProxy = $ahjo_proxy;
@@ -250,4 +259,123 @@ class AhjoCallbackCommands extends DrushCommands {
     return $query->execute()->fetchObject();
   }
 
+  /**
+   * Initialize organization chart queue.
+   *
+   * @param string $start_id
+   *   Org ID to start from.
+   * @param int $max_steps
+   *   Maximum amount of steps.
+   *
+   * @command ahjo-callback:start-org-queue
+   *
+   * @usage ahjo-callback:start-org-queue 00001 3
+   *   Get first three levels of organization data.
+   *
+   * @aliases ac:sorg
+   */
+  public function startOrgQueue(string $start_id, int $max_steps = 5) {
+    $data = [
+      'id' => $start_id,
+      'step' => 0,
+      'max_steps' => $max_steps,
+    ];
+
+    $item_id = $this->orgQueue->createItem($data);
+
+    if ($item_id) {
+      $this->writeln(sprintf('Started org queue from %s with %d steps.', $start_id, $max_steps));
+      $this->logger->info('Added item to org chart queue: @id, @step out of @max_steps).', [
+        '@id' => $start_id,
+        '@step' => 0,
+        '@max_steps' => $max_steps,
+      ]);
+    }
+    else {
+      $this->writeln('Could not start org chart queue');
+    }
+  }
+
+  /**
+   * List organization chart queue contents.
+   *
+   * @command ahjo-callback:list-org-queue
+   *
+   * @aliases ac:org
+   */
+  public function listOrgQueue(): void {
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'OrgID', 'ID', 'Time', 'Step', 'Max steps',
+    ]);
+
+    $count = 0;
+    $items = [];
+    $ids = [];
+
+    while ($item = $this->orgQueue->claimItem()) {
+      $items[] = $item;
+
+      $count++;
+
+      if (isset($item->data['step'])) {
+        $step = $item->data['step'];
+      }
+      else {
+        $step = NULL;
+      }
+
+      if (isset($item->data['max_steps'])) {
+        $max_steps = $item->data['max_steps'];
+      }
+      else {
+        $max_steps = NULL;
+      }
+
+      if (!in_array($item->data['id'], $ids)) {
+        $ids[] = $item->data['id'];
+      }
+
+      $table->addRow([
+        $item->data['id'],
+        $item->item_id,
+        date('Y-m-d H:i:s', (int) $item->created),
+        $step,
+        $max_steps,
+      ]);
+    }
+
+    // Release claimed items.
+    foreach ($items as $item) {
+      $this->queue->releaseItem(($item));
+    }
+
+    $table->render();
+    $this->writeln('Queue has ' . count($ids) . ' unique IDs.');
+    $this->writeln('Total: ' . $count);
+    $this->writeln('Run with: drush queue:run ' . self::ORG_QUEUE_NAME);
+  }
+
+  /**
+   * Clear organization chart queue contents.
+   *
+   * @command ahjo-callback:clear-org-queue
+   *
+   * @aliases ac:corg
+   */
+  public function clearOrgQueue(): void {
+    $this->output()->writeln('Clearing organization chart queue.');
+
+    if (!$this->io()->confirm('Are you sure?')) {
+      return;
+    }
+
+    $count = 0;
+    while ($item = $this->orgQueue->claimItem()) {
+      $this->orgQueue->deleteItem($item);
+      $count++;
+    }
+
+    $this->output()->writeln('Deleted ' . $count . ' items.');
+  }
 }
