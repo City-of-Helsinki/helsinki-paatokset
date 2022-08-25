@@ -2005,6 +2005,12 @@ class AhjoProxy implements ContainerInjectionInterface {
   private function getAuthHeaders(): ?array {
     // We might want to skip auth headers locally if we're using the proxy.
     if (getenv('SKIP_AUTH_HEADERS')) {
+      // Unless we want to use an API key when querying the proxy.
+      if (!empty(getenv('LOCAL_PROXY_API_KEY'))) {
+        return [
+          'api-key' => getenv('LOCAL_PROXY_API_KEY'),
+        ];
+      }
       return NULL;
     }
 
