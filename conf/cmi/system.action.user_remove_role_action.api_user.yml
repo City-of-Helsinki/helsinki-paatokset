@@ -1,0 +1,14 @@
+uuid: cf6d758b-b566-4610-9f9d-50ed37865785
+langcode: fi
+status: true
+dependencies:
+  config:
+    - user.role.api_user
+  module:
+    - user
+id: user_remove_role_action.api_user
+label: 'Poista rooli API user valituilta käyttäjiltä'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: api_user
