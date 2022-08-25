@@ -82,6 +82,8 @@ paatokset_ahjo_proxy.get_record:
   requirements:
     _permission: 'access ahjo documents'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.get_file:
   path: '/ahjo-proxy/document/{nativeId}'
