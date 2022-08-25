@@ -97,5 +97,7 @@ paatokset_ahjo_proxy.org_chart:
     steps: 3
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::getOrgChart'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
