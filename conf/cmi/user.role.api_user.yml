@@ -1,0 +1,15 @@
+uuid: d49185e3-6cec-44d5-b21c-065fecd9deb5
+langcode: fi
+status: true
+dependencies:
+  module:
+    - key_auth
+    - paatokset_ahjo_proxy
+id: api_user
+label: 'API user'
+weight: 6
+is_admin: null
+permissions:
+  - 'access ahjo documents'
+  - 'access ahjo proxy'
+  - 'use key authentication'
