@@ -432,7 +432,7 @@ class MeetingService {
    *   URL for document, if possible to get.
    */
   public function getUrlFromAhjoDocument(MediaInterface $entity): ?string {
-    $uri_field = $entity->get('field_document_uri')->first();
+    $uri_field = $entity->get('field_document_orig_uri')->first();
     if (!$uri_field) {
       return NULL;
     }
