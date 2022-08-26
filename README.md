@@ -7,7 +7,7 @@ Drupal 9 Website for the Helsinki Päätökset project.
 Env | Branch | Drush alias | URL | Notes
 --- | ------ | ----------- | --- | -----
 development | * | - | http://helsinki-paatokset.docker.so/ | Local development environment
-~~production~~ | main | @main | TBD | Not implemented yet
+production | tag based | - | https://paatokset.hel.fi | Production environment
 
 ## Requirements
 
@@ -148,13 +148,9 @@ The Gitflow workflow is followed, with the following conventions:
 
 **Main branch**: `develop`. All feature branches are created from `develop` and merged back with pull requests. All new code must be added with pull requests, not committed directly.
 
-**Production branch:** `main`. Code running in production. Code is merged to `main` with release and hotfix branches.
-
 **Feature branches**: For example, `PP-123-add-search-functionality`, Always created from and merged back to `develop` with pull requests after code review and testing. Should contain the Jira ticket ID or `PP-0` if a ticket doesn't exist.
 
-**Release branches**: Code for future and currently developed releases. Should include the version number, for example: `1.1.0-release`
-
-**Hotfix branches**: Branches for small fixes to production code. Should include the ticket number and the word hotfix, for example: `PP-124-hotfix-drupal-updates`. Remember to also merge these back to `develop`.
+**Release tags**: Code for future releases. For example: `release/1.1.0`. These tags should be created as Github releases so we can get full release not. Deploying releases happens manually in Azure.
 
 ### Pull requests
 The pull request should contain:
