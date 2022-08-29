@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
+    - field.field.node.decision.field_record_language_checked
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
@@ -289,6 +290,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 25
+    region: content
+  field_record_language_checked:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 33
     region: content
   field_top_category_name:
     type: string

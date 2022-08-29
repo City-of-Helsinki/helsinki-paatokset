@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
+    - field.field.node.decision.field_record_language_checked
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
@@ -71,7 +72,7 @@ third_party_settings:
       label: 'Decision data'
       region: content
       parent_name: ''
-      weight: 7
+      weight: 8
       format_type: details
       format_settings:
         classes: ''
@@ -90,7 +91,7 @@ third_party_settings:
       label: 'Organization data'
       region: content
       parent_name: ''
-      weight: 8
+      weight: 9
       format_type: details
       format_settings:
         classes: ''
@@ -108,7 +109,7 @@ third_party_settings:
       label: 'Meeting data'
       region: content
       parent_name: ''
-      weight: 9
+      weight: 10
       format_type: details
       format_settings:
         classes: ''
@@ -130,20 +131,12 @@ content:
     third_party_settings: {  }
   field_attachments_checked:
     type: boolean_checkbox
-    weight: 18
+    weight: 19
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_classification_code:
-    type: string_textfield
-    weight: 12
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_classification_title:
     type: string_textfield
     weight: 13
     region: content
@@ -151,9 +144,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_classification_title:
+    type: string_textfield
+    weight: 14
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_decision_attachments:
     type: json_textarea
-    weight: 19
+    weight: 20
     region: content
     settings:
       rows: 5
@@ -161,7 +162,7 @@ content:
     third_party_settings: {  }
   field_decision_case_title:
     type: string_textfield
-    weight: 9
+    weight: 10
     region: content
     settings:
       size: 60
@@ -169,7 +170,7 @@ content:
     third_party_settings: {  }
   field_decision_content:
     type: text_textarea
-    weight: 16
+    weight: 17
     region: content
     settings:
       rows: 5
@@ -191,7 +192,7 @@ content:
     third_party_settings: {  }
   field_decision_meeting:
     type: json_textarea
-    weight: 13
+    weight: 14
     region: content
     settings:
       rows: 5
@@ -199,7 +200,7 @@ content:
     third_party_settings: {  }
   field_decision_motion:
     type: text_textarea
-    weight: 17
+    weight: 18
     region: content
     settings:
       rows: 5
@@ -239,7 +240,7 @@ content:
     third_party_settings: {  }
   field_decision_record:
     type: json_textarea
-    weight: 15
+    weight: 16
     region: content
     settings:
       rows: 5
@@ -247,7 +248,7 @@ content:
     third_party_settings: {  }
   field_decision_section:
     type: string_textfield
-    weight: 8
+    weight: 9
     region: content
     settings:
       size: 60
@@ -255,7 +256,7 @@ content:
     third_party_settings: {  }
   field_diary_number:
     type: string_textfield
-    weight: 10
+    weight: 11
     region: content
     settings:
       size: 60
@@ -263,7 +264,7 @@ content:
     third_party_settings: {  }
   field_diary_number_label:
     type: string_textfield
-    weight: 11
+    weight: 12
     region: content
     settings:
       size: 60
@@ -279,7 +280,7 @@ content:
     third_party_settings: {  }
   field_dm_org_name:
     type: string_textfield
-    weight: 21
+    weight: 22
     region: content
     settings:
       size: 60
@@ -309,7 +310,7 @@ content:
     third_party_settings: {  }
   field_meeting_date:
     type: datetime_default
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -351,9 +352,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_record_language_checked:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_top_category_name:
     type: string_textfield
-    weight: 14
+    weight: 15
     region: content
     settings:
       size: 60
@@ -369,7 +377,7 @@ content:
     third_party_settings: {  }
   field_voting_results:
     type: json_textarea
-    weight: 14
+    weight: 15
     region: content
     settings:
       rows: 5
