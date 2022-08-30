@@ -9,6 +9,7 @@
     <h3>{{ 'Attachments'|trans }}</h3>
     <div class="issue__attachments-container">
       {% set non_public_attachments = false %}
+      {% set missing_attachment_links = false %}
       {% for attachment in attachments.items %}
         {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
           {% set icon_class = 'download' %}
@@ -17,6 +18,7 @@
           {% set non_public_attachments = true %}
         {% else %}
           {% set icon_class = 'cross-circle' %}
+          {% set missing_attachment_links = true %}
         {% endif %}
         <div class="issue__attachment">
         {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
@@ -37,7 +39,7 @@
         </div>
       {% endfor %}
     </div>
-    {% if non_public_attachments and attachments.publicity_reason %}
+    {% if (non_public_attachments or missing_attachment_links) and attachments.publicity_reason %}
     <div class="issue__attachment__reason">
       {{ attachments.publicity_reason }}
     </div>

@@ -809,7 +809,6 @@ class CaseService {
       $publicity_class = NULL;
       if (isset($data['PublicityClass'])) {
         $publicity_class = $data['PublicityClass'];
-
       }
 
       // Override title if attachment is not public.
