@@ -1007,6 +1007,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $enabled_languages = ['fi', 'sv'];
     if (isset($record_content['Language']) && in_array($record_content['Language'], $enabled_languages)) {
+      $node->set('field_record_language_checked', 1);
       $node->set('langcode', $record_content['Language']);
     }
 
