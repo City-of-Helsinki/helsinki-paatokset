@@ -1818,6 +1818,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:update
    */
   public function updateSingleEntity(string $endpoint, string $id): void {
+    // Sometimes callbacks send ID label with spaces.
+    $id = str_replace(' ', '-', $id);
     $this->logger->info('Migrating single entity from ' . $endpoint . ' with ID: ' . $id);
     $status = $this->ahjoProxy->migrateSingleEntity($endpoint, $id);
     $this->logger->info('Completed with status: ' . $status);
