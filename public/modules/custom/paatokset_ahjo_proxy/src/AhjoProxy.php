@@ -1710,6 +1710,9 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   - Disabled: 6
    */
   public function migrateSingleEntity(string $endpoint, string $id): int {
+    // Sometimes callbacks send ID label with spaces.
+    $id = str_replace(' ', '-', $id);
+
     switch ($endpoint) {
       case 'meetings':
         $migration_id = 'ahjo_meetings:single';
