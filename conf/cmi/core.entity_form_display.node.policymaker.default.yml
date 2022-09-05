@@ -145,8 +145,8 @@ content:
     settings:
       label: above
       formatter_type: basic_string
-      show_description: '1'
       formatter_settings: null
+      show_description: true
     third_party_settings: {  }
   field_ahjo_title:
     type: readonly_field_widget
@@ -159,7 +159,7 @@ content:
         service_map_embed:
           iframe_title: 'Service map'
           link_title: 'Katso suurempi kartta'
-          target: '1'
+          target: true
         imagecache_external_image:
           imagecache_external_style: ''
           imagecache_external_link: ''
@@ -171,8 +171,8 @@ content:
           link_title: 'View all meeting recordings'
           target: '1'
         string:
-          link_to_entity: 0
-      show_description: 0
+          link_to_entity: false
+      show_description: false
     third_party_settings: {  }
   field_city_council_division:
     type: boolean_checkbox
@@ -393,6 +393,11 @@ content:
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
     weight: 10
     region: content
     settings: {  }
