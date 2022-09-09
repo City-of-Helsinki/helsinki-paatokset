@@ -1021,7 +1021,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (isset($record_content['MeetingID'])) {
       $unique_id .= $record_content['MeetingID'] . '-';
     }
-    else if (!$node->get('field_meeting_id')->isEmpty()) {
+    elseif (!$node->get('field_meeting_id')->isEmpty()) {
       $unique_id .= $node->get('field_meeting_id')->value . '-';
     }
     else {
