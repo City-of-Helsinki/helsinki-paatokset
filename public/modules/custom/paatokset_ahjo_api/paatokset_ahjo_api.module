@@ -532,6 +532,13 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
     $title = NULL;
   }
 
+  if (!empty($values[4])) {
+    $language = $values[4];
+  }
+  else {
+    $language = NULL;
+  }
+
   $query = Drupal::entityQuery('node')
     ->condition('type', 'decision')
     ->condition('field_decision_native_id', $native_id)
@@ -558,7 +565,10 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
     ->condition('status', 1)
     ->range(0, 1)
     ->latestRevision();
-  $ids = $query->execute();
+
+  if ($language) {
+    $query->condition('langcode', $language);
+  }
 
   if ($case_id) {
     $query->condition('field_diary_number', $case_id);
@@ -566,6 +576,8 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   else {
     $query->condition('field_full_title', $title);
   }
+
+  $ids = $query->execute();
 
   if (!empty($ids)) {
     return reset($ids);

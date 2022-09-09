@@ -521,6 +521,8 @@ class CaseService {
       return $decision->toUrl();
     }
 
+    $decision = $this->getDecisionTranslation($decision, $langcode);
+
     // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
       $localizedRoute = 'paatokset_case.' . $langcode;
@@ -531,8 +533,6 @@ class CaseService {
       }
       return NULL;
     }
-
-    $decision = $this->getDecisionTranslation($decision, $langcode);
 
     $decision_id = $decision->get('field_decision_native_id')->value;
     $decision_id = $this->normalizeNativeId($decision_id);
