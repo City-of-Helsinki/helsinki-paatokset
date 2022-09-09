@@ -32,6 +32,10 @@ source:
       label: Native ID
       selector: NativeId
     -
+      name: language
+      label: Language
+      selector: PDF/Language
+    -
       name: case_id
       label: Case ID
       selector: CaseID
@@ -108,6 +112,7 @@ process:
     default_value: decision
   langcode:
     plugin: default_value
+    source: language
     default_value: fi
   field_decision_native_id: native_id
   nid:
@@ -118,6 +123,7 @@ process:
       - case_id
       - meeting_id
       - title
+      - language
   title:
     callable: _paatokset_ahjo_api_truncate_value
     plugin: callback

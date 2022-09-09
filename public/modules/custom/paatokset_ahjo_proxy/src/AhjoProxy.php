@@ -1021,6 +1021,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (isset($record_content['MeetingID'])) {
       $unique_id .= $record_content['MeetingID'] . '-';
     }
+    else if (!$node->get('field_meeting_id')->isEmpty()) {
+      $unique_id .= $node->get('field_meeting_id')->value . '-';
+    }
     else {
       $unique_id .= '0-';
     }
@@ -1486,7 +1489,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService */
     $case_service = \Drupal::service('paatokset_ahjo_cases');
 
-    $ids = $ahjo_proxy->getCaseDataFromHtml($data['html']);
+    if (!empty($data['html'])) {
+      $ids = $ahjo_proxy->getCaseDataFromHtml($data['html']);
+    }
+    else {
+      $ids = [];
+    }
 
     // Handle cases where ids are blank.
     if (empty($ids) || !isset($ids['case_id'])) {
@@ -1564,6 +1572,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     // If record content can't or won't be fetched, use PDF from agenda item.
     elseif (!empty($data['pdf'])) {
       $node->set('field_decision_record', json_encode($data['pdf']));
+      $record_content = $data['pdf'];
     }
     // If neither can't be used, mark this item as failed.
     else {
@@ -1596,6 +1605,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       'value' => $motion,
       'format' => 'plain_text',
     ]);
+
+    if (!empty($record_content)) {
+      $ahjo_proxy->updateDecisionRecordData($node, $record_content);
+    }
 
     if ($node->save()) {
       $context['results']['items'][] = $data['title'];

@@ -1741,8 +1741,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       foreach ($node->get('field_meeting_agenda') as $field) {
         $item = json_decode($field->value, TRUE);
 
-        // Only create finnish language motions.
-        if (!isset($item['PDF']) || $item['PDF']['Language'] !== 'fi') {
+        // Only create finnish or swedish language motions.
+        if (!isset($item['PDF']) || !in_array($item['PDF']['Language'], ['fi', 'sv'])) {
           continue;
         }
 
