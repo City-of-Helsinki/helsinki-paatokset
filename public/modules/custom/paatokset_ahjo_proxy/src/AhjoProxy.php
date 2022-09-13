@@ -1945,10 +1945,18 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     try {
+      // Check if URL is internal to Drupal or a proxy URL.
+      if ($this->isLocalOrProxyUrl($url)) {
+        $headers = $this->getLocalAuthHeaders();
+      }
+      else {
+        $headers = $this->getAuthHeaders();
+      }
+
       $response = $this->httpClient->request('GET', $url,
       [
         'http_errors' => FALSE,
-        'headers' => $this->getAuthHeaders(),
+        'headers' => $headers,
       ]);
 
       if ($response->getStatusCode() !== 200) {
@@ -2003,8 +2011,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @return array
    *   Headers for the request or empty array if config/token is missing.
    */
-  private function getAuthHeaders(): ?array {
-    // We might want to skip auth headers locally if we're using the proxy.
+  private function getAuthHeaders(): array {
+    // We might want to skip auth headers locally.
     if (getenv('SKIP_AUTH_HEADERS')) {
       // Unless we want to use an API key when querying the proxy.
       if (!empty(getenv('LOCAL_PROXY_API_KEY'))) {
@@ -2012,7 +2020,7 @@ class AhjoProxy implements ContainerInjectionInterface {
           'api-key' => getenv('LOCAL_PROXY_API_KEY'),
         ];
       }
-      return NULL;
+      return [];
     }
 
     // Check if access token is still valid (not expired).
@@ -2038,6 +2046,49 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     return $headers;
+  }
+
+  /**
+   * Get authentication headers for local or proxy URL HTTP requests.
+   *
+   * @return array
+   *   Headers for the request or empty array if api key is missing.
+   */
+  private function getLocalAuthHeaders(): array {
+    if (!empty(getenv('LOCAL_PROXY_API_KEY'))) {
+      return [
+        'api-key' => getenv('LOCAL_PROXY_API_KEY'),
+      ];
+    }
+
+    return [];
+  }
+
+  /**
+   * Checks if URL is local or a proxy URL.
+   *
+   * @param string $url
+   *   URL to check.
+   *
+   * @return bool
+   *   Returns TRUE if URL is internal to Drupal.
+   */
+  private function isLocalOrProxyUrl(string $url): bool {
+    if (!empty('AHJO_PROXY_BASE_URL')) {
+      $proxy_base = getenv('AHJO_PROXY_BASE_URL');
+    }
+    elseif (!empty('DRUPAL_REVERSE_PROXY_ADDRESS')) {
+      $proxy_base = getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
+    }
+    else {
+      return FALSE;
+    }
+
+    if (strpos($url, $proxy_base) === 0) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**
