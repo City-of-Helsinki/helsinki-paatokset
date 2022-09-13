@@ -2,11 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\paatokset_ahjo_openid\Plugin\migrate_plus\authentication;
+namespace Drupal\paatokset_ahjo_api\Plugin\migrate_plus\authentication;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate_plus\AuthenticationPluginBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an api key header for authentication.
@@ -16,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = @Translation("Local API key auth.")
  * )
  */
-class LocalApiKey extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
+class PaatoksetLocalKeyAuth extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * Holds the environment variable.
