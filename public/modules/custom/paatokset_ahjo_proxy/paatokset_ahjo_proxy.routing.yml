@@ -3,24 +3,30 @@ paatokset_ahjo_proxy.meetings:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::meetings'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.cases:
   path: '/ahjo-proxy/cases'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::cases'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.decisions:
   path: '/ahjo-proxy/decisions'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::decisions'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.meetings_single:
   path: '/ahjo-proxy/meetings/single/{id}'
@@ -28,8 +34,10 @@ paatokset_ahjo_proxy.meetings_single:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::meetingsSingle'
     id: placeholder
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.cases_single:
   path: '/ahjo-proxy/cases/single/{id}'
@@ -37,8 +45,10 @@ paatokset_ahjo_proxy.cases_single:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::casesSingle'
     id: placeholder
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.decisions_single:
   path: '/ahjo-proxy/decisions/single/{id}'
@@ -46,8 +56,10 @@ paatokset_ahjo_proxy.decisions_single:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::decisionsSingle'
     id: placeholder
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.trustees_single:
   path: '/ahjo-proxy/trustees/single/{id}'
@@ -55,8 +67,10 @@ paatokset_ahjo_proxy.trustees_single:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::trusteesSingle'
     id: placeholder
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.organization_single:
   path: '/ahjo-proxy/organization/single/{id}'
@@ -64,16 +78,20 @@ paatokset_ahjo_proxy.organization_single:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::organizationSingle'
     id: placeholder
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.get_aggregated_data:
   path: '/ahjo-proxy/aggregated/{dataset}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::getAggregatedData'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo proxy'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.get_record:
   path: '/ahjo-proxy/records/{nativeId}'
@@ -92,6 +110,8 @@ paatokset_ahjo_proxy.get_file:
   requirements:
     _permission: 'access ahjo documents'
   methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_proxy.org_chart:
   path: '/ahjo-proxy/org-chart/{orgId}/{steps}'
