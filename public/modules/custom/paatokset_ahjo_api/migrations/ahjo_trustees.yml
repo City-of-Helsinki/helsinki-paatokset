@@ -17,7 +17,7 @@ deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
 source:
   plugin: url
   track_changes: true
-  data_fetcher_plugin: file
+  data_fetcher_plugin: http
   data_parser_plugin: json
   authentication:
     plugin: paatokset_local_key_auth
