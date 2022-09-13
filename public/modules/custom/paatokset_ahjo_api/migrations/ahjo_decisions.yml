@@ -19,6 +19,8 @@ source:
   track_changes: true
   data_fetcher_plugin: file
   data_parser_plugin: json
+  authentication:
+    plugin: paatokset_local_key_auth
   item_selector: decisions
   fields:
     -
