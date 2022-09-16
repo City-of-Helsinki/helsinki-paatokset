@@ -1,0 +1,30 @@
+uuid: 1af36dd9-ad42-4f31-8f5d-412ec3d5e5d1
+langcode: fi
+status: true
+dependencies:
+  module:
+    - helfi_platform_config
+    - node
+  theme:
+    - helfi_paatokset
+id: reactandshare
+theme: helfi_paatokset
+region: after_content
+weight: 0
+provider: null
+plugin: react_and_share
+settings:
+  id: react_and_share
+  label: 'React and Share'
+  label_display: visible
+  provider: helfi_platform_config
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      landing_page: landing_page
+      organization: organization
+      page: page
