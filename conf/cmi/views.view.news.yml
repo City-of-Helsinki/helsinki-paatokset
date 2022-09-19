@@ -19,7 +19,7 @@ dependencies:
 _core:
   default_config_hash: SZqO5m00-m_85j4SvXFgDw5YnJoXBvwS29Wu2pIINsM
 id: news
-label: News
+label: 'Platform News'
 module: views
 description: ''
 tag: ''
