@@ -13,8 +13,8 @@ _core:
   default_config_hash: k71EZKZqakilgj_zCofaVN_l2DkG8MM_s3KGdtdD7Tw
 id: views_block__news_latest_news
 theme: hdbt
-region: sidebar_first
-weight: -10
+region: sidebar_second
+weight: -11
 provider: null
 plugin: 'views_block:news-latest_news'
 settings:

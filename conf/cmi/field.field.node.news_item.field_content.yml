@@ -29,8 +29,8 @@ settings:
     target_bundles:
       text: text
       image: image
-      gallery: gallery
       remote_video: remote_video
+      banner: banner
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -41,9 +41,18 @@ settings:
         enabled: false
       banner:
         weight: -36
+        enabled: true
+      chart:
+        weight: 28
         enabled: false
       columns:
         weight: -26
+        enabled: false
+      contact_card:
+        weight: 30
+        enabled: false
+      contact_card_listing:
+        weight: 31
         enabled: false
       content_cards:
         weight: -35
@@ -56,7 +65,7 @@ settings:
         enabled: false
       gallery:
         weight: -39
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: -31
         enabled: false
@@ -86,6 +95,9 @@ settings:
         enabled: false
       sidebar_text:
         weight: -34
+        enabled: false
+      social_media_link:
+        weight: 46
         enabled: false
       text:
         weight: -41
