@@ -43,7 +43,6 @@ settings:
       columns: columns
       accordion: accordion
       image: image
-      gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
       map: map
@@ -56,6 +55,8 @@ settings:
       news_liftups: news_liftups
       remote_video: remote_video
       contact_card_listing: contact_card_listing
+      phasing: phasing
+      event_list: event_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -88,9 +89,12 @@ settings:
       custom_content_links:
         weight: 26
         enabled: true
+      event_list:
+        weight: 30
+        enabled: true
       gallery:
         weight: -23
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: -19
         enabled: false
@@ -118,6 +122,12 @@ settings:
       news_liftups:
         weight: 36
         enabled: true
+      phasing:
+        weight: 50
+        enabled: true
+      phasing_item:
+        weight: 30
+        enabled: false
       remote_video:
         weight: 37
         enabled: true

@@ -41,7 +41,6 @@ settings:
       columns: columns
       accordion: accordion
       image: image
-      gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
       content_liftup: content_liftup
@@ -54,6 +53,8 @@ settings:
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
       contact_card_listing: contact_card_listing
+      phasing: phasing
+      event_list: event_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -86,9 +87,12 @@ settings:
       custom_content_links:
         weight: 29
         enabled: true
+      event_list:
+        weight: 30
+        enabled: true
       gallery:
         weight: -25
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: -20
         enabled: false
@@ -116,6 +120,12 @@ settings:
       news_liftups:
         weight: 39
         enabled: true
+      phasing:
+        weight: 50
+        enabled: true
+      phasing_item:
+        weight: 30
+        enabled: false
       remote_video:
         weight: 32
         enabled: true
