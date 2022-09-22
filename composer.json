@@ -29,6 +29,7 @@
         "drush/drush": "^10.4",
         "elasticsearch/elasticsearch": "^7.15",
         "josdejong/jsoneditor": "^5.29",
+        "league/csv": "^9.8",
         "paatokset/paatokset_search": "1.0.9"
     },
     "require-dev": {
