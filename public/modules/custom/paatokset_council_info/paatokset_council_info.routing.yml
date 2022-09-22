@@ -1,0 +1,7 @@
+paatokset_council_info.import:
+  path: '/admin/config/system/council-import'
+  defaults:
+    _title: 'Councilmember info import'
+    _form: '\Drupal\paatokset_council_info\Form\InfoImportForm'
+  requirements:
+    _permission: 'administer content'
