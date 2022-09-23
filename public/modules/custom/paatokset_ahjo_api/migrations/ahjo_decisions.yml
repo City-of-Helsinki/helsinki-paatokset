@@ -119,9 +119,13 @@ process:
       - meeting_id
       - title
   title:
-    callable: _paatokset_ahjo_api_truncate_value
-    plugin: callback
-    source: title
+    -
+      plugin: default_value
+      source: title
+      default_value: 'NO TITLE'
+    -
+      callable: _paatokset_ahjo_api_truncate_value
+      plugin: callback
   field_full_title: title
   field_diary_number: case_id
   field_diary_number_label: case_id_label
