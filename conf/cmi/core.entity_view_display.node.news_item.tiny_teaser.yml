@@ -26,6 +26,7 @@ mode: tiny_teaser
 content:
   field_main_image:
     settings: {  }
+    region: content
   field_short_title:
     type: string
     label: hidden
@@ -52,6 +53,7 @@ content:
 hidden:
   field_content: true
   field_lead_in: true
+  field_main_image: true
   field_main_image_caption: true
   field_news_item_links_link: true
   field_news_item_links_title: true
@@ -59,4 +61,3 @@ hidden:
   langcode: true
   search_api_excerpt: true
   toc_enabled: true
-  field_main_image: true
