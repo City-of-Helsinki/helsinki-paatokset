@@ -10,7 +10,6 @@ use Drupal\file\FileInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use League\Csv\Reader;
-use Drupal\Component\Utility;
 use Drupal\Component\Utility\UrlHelper;
 
 /**
@@ -279,18 +278,23 @@ class InfoImportForm extends FormBase {
       case "Kotikaupunginosa":
         $key = 'field_trustee_home_district';
         break;
+
       case "Puhelinnumero verkossa":
         $key = 'field_trustee_phone';
         break;
+
       case "Sähköposti verkossa":
         $key = 'field_trustee_email';
         break;
+
       case "Kotisivu":
         $key = 'field_trustee_homepage';
         break;
+
       case "Ammatti":
         $key = 'field_trustee_profession';
         break;
+
       default:
         $key = NULL;
         break;
