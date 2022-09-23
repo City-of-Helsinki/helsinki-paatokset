@@ -97,6 +97,7 @@ module:
   paatokset_ahjo_api: 0
   paatokset_ahjo_openid: 0
   paatokset_ahjo_proxy: 0
+  paatokset_council_info: 0
   paatokset_helsinki_kanava: 0
   paatokset_lang_switcher: 0
   paatokset_news_importer: 0
