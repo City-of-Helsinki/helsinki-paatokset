@@ -8,7 +8,10 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use League\Csv\Reader;
+use Drupal\Component\Utility;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Councilmember info import form.
@@ -207,13 +210,92 @@ class InfoImportForm extends FormBase {
 
     if (!empty($ids)) {
       $node = Node::load(reset($ids));
-      $logger->info('Found node for ' . $data['Sukunimi'] . ', ' . $data['Etunimet'] . ' with title ' . $node->title->value . ' (' . $node->id() . ').');
+      self::updateNode($node, $data);
+      $logger->info('Updated note: ' . $node->title->value . ' (' . $node->id() . ').');
       $context['results']['items'][] = $data;
     }
     else {
       $logger->notice('Could not find node for ' . $data['Sukunimi'] . ', ' . $data['Etunimet']);
       $context['results']['failed'][] = $data;
     }
+  }
+
+  /**
+   * Update node with data from CSV.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to update.
+   * @param array $data
+   *   Data from CSV.
+   */
+  public static function updateNode(NodeInterface $node, array $data): void {
+    $updated = FALSE;
+    foreach ($data as $key => $value) {
+      $field = self::getFieldKey($key);
+
+      // Do nothing if field can't be found or if field is empty.
+      if (!$field || empty($value)) {
+        continue;
+      }
+
+      // Trim whitespace.
+      if ($value instanceof string) {
+        $value = trim($value);
+      }
+
+      // Validation for homepage links.
+      if ($field === 'field_trustee_homepage' && !UrlHelper::isValid($value, TRUE)) {
+        continue;
+      }
+
+      // Only update node if values are present.
+      $updated = TRUE;
+
+      // If value is '-' erase previous value.
+      if ($value === '-') {
+        $node->set($field, NULL);
+      }
+      else {
+        $node->set($field, $value);
+      }
+    }
+
+    if ($updated) {
+      $node->save();
+    }
+  }
+
+  /**
+   * Get field ID by CSV header.
+   *
+   * @param string $header
+   *   CSV header to check.
+   *
+   * @return string|null
+   *   Mapped field ID or NULL.
+   */
+  public static function getFieldKey(string $header): ?string {
+    switch ($header) {
+      case "Kotikaupunginosa":
+        $key = 'field_trustee_home_district';
+        break;
+      case "Puhelinnumero verkossa":
+        $key = 'field_trustee_phone';
+        break;
+      case "Sähköposti verkossa":
+        $key = 'field_trustee_email';
+        break;
+      case "Kotisivu":
+        $key = 'field_trustee_homepage';
+        break;
+      case "Ammatti":
+        $key = 'field_trustee_profession';
+        break;
+      default:
+        $key = NULL;
+        break;
+    }
+    return $key;
   }
 
   /**
