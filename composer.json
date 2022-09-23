@@ -15,7 +15,7 @@
         "drupal/core-recommended": "^9.1",
         "drupal/editoria11y": "^1.0",
         "drupal/elasticsearch_connector": "^7.0@alpha",
-        "drupal/hdbt": "2.3.23",
+        "drupal/hdbt": "3.0.1",
         "drupal/hdbt_admin": "1.6.11",
         "drupal/helfi_api_base": "2.3.1",
         "drupal/helfi_hauki": "^1.0",
