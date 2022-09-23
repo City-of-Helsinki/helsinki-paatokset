@@ -38,7 +38,12 @@ class TrusteeService {
    */
   public static function transformTrusteeName(string $title): string {
     $nameParts = explode(',', $title);
-    return trim($nameParts[1] . ' ' . $nameParts[0]);
+    if (isset($nameParts[1])) {
+      return trim($nameParts[1] . ' ' . $nameParts[0]);
+    }
+    else {
+      return $nameParts[0];
+    }
   }
 
   /**
