@@ -54,10 +54,7 @@
             <a href="{{ document.FileURI }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
               <div class="list-item__date">
                 {% if document.Date %}
-                  <span class="list-item__date--desktop">{{ document.Date|date("d.m.Y") }}</span>
-                {% endif %}
-                {% if document.Date %}
-                  <span class="list-item__date--mobile">{{ document.Date|date("m - Y")  }}</span>
+                  <span>{{ document.Date|date("d.m.Y") }}</span>
                 {% endif %}
               </div>
               <div class="list-item__subject">
