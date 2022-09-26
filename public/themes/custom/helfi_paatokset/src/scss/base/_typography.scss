@@ -6,7 +6,7 @@
 
 html {
 // ########## General ########## //
-  h1, .page-title__container h1 {
+  h1, .page-title h1 {
     margin-bottom: $spacing;
 
     @include font-size($fontsize-heading-xl);

@@ -14,6 +14,10 @@
   line-height: 1.1;
   font-weight: normal;
 
+  .issue__header & {
+    margin-top: 0;
+  }
+
   @include breakpoint($breakpoint-l) {
     font-size: 52px;
   }
