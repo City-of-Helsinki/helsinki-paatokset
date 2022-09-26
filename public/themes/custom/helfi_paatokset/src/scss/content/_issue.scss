@@ -278,6 +278,10 @@
   margin-bottom: $spacing-double;
 }
 
+.issue__container table {
+  border: none;
+}
+
 // Styling from Ahjo API HTML content.
 .issue-content__container {
   td, div {
