@@ -5,3 +5,20 @@
     margin-top: 96px;
   }
 }
+
+.main-content .layout-sidebar-first {
+  display: block;
+  grid-area: sidebar;
+}
+
+// Swap around sidebar and content on some content types.
+.page-type--imported-article,
+.page-type--article {
+  &.has-sidebar--first .main-content {
+    @include breakpoint($breakpoint-l) {
+      grid-template-areas: "content subnav" "content sidebar";
+      grid-template-columns: auto 340px;
+      grid-template-rows: auto 1fr;
+    }
+  }
+}
