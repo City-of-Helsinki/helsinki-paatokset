@@ -32,6 +32,17 @@
     </div>
     {% endif %}
 
+    {% if selectedDecision and selectedDecision.field_no_title_for_decision.value %}
+    <div class="title-tag">
+      <div class="info-label">
+        <div class="info-label__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'info', label: 'For decisions released prior to 2019 a related decision heading is displayed for cases.'|t } %}
+          <span>{{ 'For decisions released prior to 2019 a related decision heading is displayed for cases.'|t }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="issue-content__title">
       <h2>{{ selectedDecision.field_full_title.value }}</h2>
     </div>
