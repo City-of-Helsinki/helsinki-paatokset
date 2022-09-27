@@ -30,6 +30,7 @@ dependencies:
     - field.field.node.decision.field_meeting_date
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
+    - field.field.node.decision.field_no_title_for_decision
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
@@ -328,6 +329,13 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_no_title_for_decision:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_organization_type:
     type: string_textfield
