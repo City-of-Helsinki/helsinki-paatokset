@@ -1,11 +1,11 @@
-uuid: 40b26f91-a073-40b4-b538-79451a21f769
+uuid: 5110386e-8dfd-491a-8372-53b1f0e8dd97
 langcode: fi
 status: true
 dependencies:
   module:
     - node
-id: node.field_no_title_for_decision
-field_name: field_no_title_for_decision
+id: node.field_no_title_for_case
+field_name: field_no_title_for_case
 entity_type: node
 type: boolean
 settings: {  }
