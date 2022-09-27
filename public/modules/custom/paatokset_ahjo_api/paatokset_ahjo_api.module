@@ -668,7 +668,7 @@ function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): s
 }
 
 /**
- * Callback to check if array or text value is empty.
+ * Callback to check if array or text value is not empty.
  *
  * @param mixed $value
  *   The value to work with.
@@ -678,6 +678,19 @@ function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): s
  */
 function _paatokset_ahjo_api_true_if_not_empty($value): bool {
   return !empty($value);
+}
+
+/**
+ * Callback to check if array or text value is empty.
+ *
+ * @param mixed $value
+ *   The value to work with.
+ *
+ * @return bool
+ *   TRUE is value is empty, FALSE if it isn't.
+ */
+function _paatokset_ahjo_api_true_if_empty($value): bool {
+  return empty($value);
 }
 
 /**
