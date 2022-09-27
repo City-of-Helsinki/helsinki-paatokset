@@ -253,6 +253,25 @@ class CaseService {
   }
 
   /**
+   * Check if selected case has no title.
+   *
+   * @return bool
+   *   TRUE if case is set but has no own title.
+   */
+  public function checkIfNoCaseTitle(): bool {
+    // If no case is set, return FALSE.
+    if (!$this->case instanceof NodeInterface) {
+      return FALSE;
+    }
+
+    if ($this->case->hasField('field_no_title_for_case') && $this->case->get('field_no_title_for_case')->value) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Get active decision's PDF file.
    *
    * @return string|null
