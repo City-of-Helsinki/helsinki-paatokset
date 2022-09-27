@@ -15,6 +15,7 @@ use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
+use Drupal\Component\Utility\Unicode;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Psr7\Response;
 use Drupal\node\Entity\Node;
@@ -1189,6 +1190,11 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty($content)) {
       $node->set('field_publicity_class', $content['PublicityClass']);
       $node->set('field_security_reasons', $content['SecurityReasons']);
+
+      if (!empty($data['decision_endpoint']) && $node->hasField('field_no_title_for_case') && $node->get('field_no_title_for_case')->value) {
+        $ahjo_proxy->updateCaseTitleFromDecision($node, $data['decision_endpoint']);
+      }
+
       $node->save();
       $context['results']['items'][] = $node->id();
     }
@@ -1196,6 +1202,41 @@ class AhjoProxy implements ContainerInjectionInterface {
       $messenger->addMessage('Could not fetch content for nid: ' . $node->id());
       $context['results']['failed'][] = $node->id();
     }
+  }
+
+  /**
+   * Update case title from latest decision.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Case node to update.
+   * @param string $endpoint
+   *   Decision endpoint to get data from.
+   */
+  protected function updateCaseTitleFromDecision(NodeInterface &$node, string $endpoint): void {
+    // Fetch decision content from endpoint.
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $content = $ahjo_proxy->getData($endpoint, NULL);
+
+    // Local and proxy data is formatted a bit differently than API data.
+    if (isset($content['decisions'])) {
+      $content = $content['decisions'][0];
+    }
+    // Single decisions from endpoint still come as an array.
+    else {
+      $content = reset($content);
+    }
+
+    if (empty($content)) {
+      return;
+    }
+    if (empty($content['Title'])) {
+      return;
+    }
+
+    $title = $content['Title'];
+    $truncated_title = Unicode::truncate($title, 255, TRUE, TRUE);
+    $node->set('title', $truncated_title);
+    $node->set('field_full_title', $title);
   }
 
   /**
