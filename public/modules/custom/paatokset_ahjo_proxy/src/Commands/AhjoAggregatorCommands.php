@@ -509,6 +509,71 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Checks decisionmaker status and removes non-existing ones.
+   *
+   * @command ahjo-proxy:check-dm-status
+   *
+   * @aliases ap:cdms
+   */
+  public function checkDecisionMakerStatus() {
+    $this->logger->info('Checking organization and office holder status.');
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'policymaker')
+      ->condition('status', 1)
+      ->condition('field_policymaker_existing', 1)
+      ->latestRevision();
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->isEmpty()) {
+        continue;
+      }
+
+      $org_id = $node->field_policymaker_id->value;
+
+      // Local adjustments for fetching cases through proxy.
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $endpoint = 'organization/single/' . $org_id;
+      }
+      else {
+        $endpoint = 'organization?orgid=' . $org_id;
+      }
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'count' => $count,
+        'org_id' => $org_id,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processDmStatusCheck',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to check.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Checking decisionmaker status.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
    * Updates migrated decision nodes with record, case and meeting info.
    *
    * @param array $options

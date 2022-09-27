@@ -1357,6 +1357,58 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Static callback function for checking decisionmaker status.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function processDmStatusCheck($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    if ($node->bundle() !== 'policymaker') {
+      return;
+    }
+
+    // Fetch updated content from endpoint.
+    $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+
+    // Local and proxy data is formatted a bit differently than API data.
+    if (isset($content['decisionMakers'][0]['Organization'])) {
+      $content = $content['decisionMakers'][0]['Organization'];
+    }
+
+    if (empty($content)) {
+      $messenger->addMessage('Could not fetch data for Org ID ' . $data['org_id'] . ' (nid: ' . $node->id() . ')');
+      $context['results']['failed'][] = $node->id();
+    }
+    else {
+      $context['results']['items'][] = $node->id();
+      if (isset($content['Existing']) && $content['Existing'] === 'false') {
+        $messenger->addMessage('Found inactive organization with Org ID ' . $data['org_id'] . '(nid:' . $node->id() . ')');
+        $node->set('field_policymaker_existing', 0);
+        $node->save();
+      }
+    }
+  }
+
+  /**
    * Add entity to callback queue.
    *
    * @param string $endpoint
