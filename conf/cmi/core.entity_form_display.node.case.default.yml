@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
     - field.field.node.case.field_full_title
+    - field.field.node.case.field_no_title_for_case
     - field.field.node.case.field_publicity_class
     - field.field.node.case.field_security_reasons
     - field.field.node.case.field_status
@@ -103,6 +104,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_no_title_for_case:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_publicity_class:
     type: string_textfield
