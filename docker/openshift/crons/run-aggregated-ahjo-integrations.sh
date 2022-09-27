@@ -43,6 +43,8 @@ do
   drush migrate-reset-status ahjo_decisionmakers:latest_sv
   drush migrate-import ahjo_decisionmakers:latest --update
   drush migrate-import ahjo_decisionmakers:latest_sv --update
+  echo "Checking for inactive decisionmakers: $(date)"
+  drush ahjo-proxy:check-dm-status -v
   # Sleep for 23 hours.
   sleep 82800
 done
