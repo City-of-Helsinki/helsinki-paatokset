@@ -100,7 +100,7 @@
               </span>
             </div>
           {% endif %}
-          {% if content.field_dm_org_name|render %}
+          {% if content.field_dm_org_name|render and node.field_dm_org_name.value != node.field_sector_name.value %}
             <div class="hds-tag">
               <span class="hds-tag__label">
                 {{ content.field_dm_org_name }}
