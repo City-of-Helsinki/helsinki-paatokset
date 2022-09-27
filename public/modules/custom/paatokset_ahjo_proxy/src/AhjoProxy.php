@@ -2084,7 +2084,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return FALSE;
     }
 
-    if (strpos($url, $proxy_base) === 0) {
+    if (strpos($url, $proxy_base) !== FALSE) {
       return TRUE;
     }
 
