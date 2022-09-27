@@ -605,6 +605,10 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_decision_case_title');
         $query->condition('field_diary_number', '', '<>');
       }
+      elseif ($logic === 'title') {
+        $query->condition('title', 'TITLE');
+        $query->condition('field_no_title_for_decision', 1);
+      }
       elseif ($logic === 'meeting') {
         $query->notExists('field_meeting_date');
         $query->condition('field_meeting_id', '', '<>');
