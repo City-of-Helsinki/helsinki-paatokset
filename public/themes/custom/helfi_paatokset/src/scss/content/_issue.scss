@@ -521,9 +521,9 @@
   margin: 0;
 }
 
+.info-label,
 .warning-label {
   display: inline-block;
-  background-color: $yellow-light;
   padding: 5px;
   padding-right: 10px;
   margin-bottom: 5px;
@@ -548,6 +548,15 @@
   }
 }
 
+.info-label {
+  background-color: $blue-light-secondary;
+}
+
+.warning-label {
+  background-color: $yellow-light;
+}
+
+.info-label__container,
 .warning-label__container {
   display: flex;
   align-items: center;
