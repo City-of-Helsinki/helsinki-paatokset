@@ -605,10 +605,6 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_decision_case_title');
         $query->condition('field_diary_number', '', '<>');
       }
-      elseif ($logic === 'title') {
-        $query->condition('title', 'NO TITLE');
-        $query->condition('field_no_title_for_decision', 1);
-      }
       elseif ($logic === 'meeting') {
         $query->notExists('field_meeting_date');
         $query->condition('field_meeting_id', '', '<>');
@@ -706,13 +702,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     'limit' => NULL,
   ]): void {
 
-    if (!empty($options['update'])) {
-      $update_all = TRUE;
-    }
-    else {
-      $update_all = FALSE;
-    }
-
     if (!empty($options['logic'])) {
       $logic = $options['logic'];
     }
@@ -748,6 +737,10 @@ class AhjoAggregatorCommands extends DrushCommands {
       $or->condition('field_security_reasons', '');
       $query->condition($or);
     }
+    elseif ($logic === 'title') {
+      $query->condition('title', 'NO TITLE');
+      $query->condition('field_no_title_for_case', 1);
+    }
 
     if ($limit) {
       $query->range('0', $limit);
@@ -768,9 +761,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       // Local adjustments for fetching cases through proxy.
       if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
         $endpoint = 'cases/single/' . $case_id;
+        $decision_endpoint = 'decisions/single/' . $case_id;
       }
       else {
         $endpoint = 'cases/' . $case_id;
+        $decision_endpoint = 'decisions/' . $case_id;
       }
 
       $count++;
@@ -779,6 +774,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         'count' => $count,
         'case_id' => $case_id,
         'endpoint' => $endpoint,
+        'decision_endpoint' => $decision_endpoint,
       ];
 
       $operations[] = [
