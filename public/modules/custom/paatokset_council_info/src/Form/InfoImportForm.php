@@ -214,7 +214,7 @@ class InfoImportForm extends FormBase {
       $context['results']['items'][] = $data;
     }
     else {
-      $logger->notice('Could not find node for ' . $data['Sukunimi'] . ', ' . $data['Etunimet']);
+      $logger->warning('Could not find node for ' . $data['Sukunimi'] . ', ' . $data['Etunimet']);
       $context['results']['failed'][] = $data;
     }
   }
