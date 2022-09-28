@@ -1082,11 +1082,9 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $node->set('field_decision_case_title', $case->field_full_title->value);
-
-    if ($node->hasField('field_no_title_for_decision') && $node->get('field_no_title_for_decision')->value) {
-      $node->set('title', $case->title->value);
-      $node->set('field_full_title', $case->field_full_title->value);
+    // If case doesn't have a title, just reuse own title.
+    if ($case->hasField('field_no_title_for_case') && $case->get('field_no_title_for_case')->value) {
+      $node->set('field_decision_case_title', $node->field_full_title->value);
     }
 
     if (!$set_record) {
