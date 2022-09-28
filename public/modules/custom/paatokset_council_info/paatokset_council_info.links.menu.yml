@@ -1,0 +1,4 @@
+paatokset_council_info.import:
+  title: 'Council member info import'
+  parent: system.admin_config_system
+  route_name: paatokset_council_info.import
