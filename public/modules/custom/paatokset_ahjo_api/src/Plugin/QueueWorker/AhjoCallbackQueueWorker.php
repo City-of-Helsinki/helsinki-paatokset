@@ -34,7 +34,7 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
    */
   protected $ahjoProxy;
 
-  private const VERBOSE_LOGGING = FALSE;
+  private const VERBOSE_LOGGING = TRUE;
 
   /**
    * {@inheritdoc}
