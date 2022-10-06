@@ -69,4 +69,5 @@ class DisallowedDecisions extends ConfigEntityBase {
    * @var string
    */
   public $configuration;
+
 }
