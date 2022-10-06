@@ -87,4 +87,5 @@ class DisallowedDecisionsStorageManager extends ConfigEntityStorage {
     }
     return NULL;
   }
+
 }
