@@ -1,0 +1,5 @@
+entity.disallowed_decisions.add_form:
+  route_name: entity.disallowed_decisions.add_form
+  title: 'Add Disallowed Decisions'
+  appears_on:
+    - entity.disallowed_decisions.collection
