@@ -96,4 +96,5 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     }
     return FALSE;
   }
+
 }

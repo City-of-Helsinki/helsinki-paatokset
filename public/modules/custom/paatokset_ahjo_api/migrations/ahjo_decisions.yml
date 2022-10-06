@@ -103,10 +103,20 @@ source:
       name: previous_decisions
       label: Previous Decisions
       selector: PreviousDecisions
+    -
+      name: decision_date
+      label: Decision Date
+      selector: DateDecision
   ids:
     native_id:
       type: string
 process:
+  _skip:
+    plugin: skip_disallowed_decisions
+    source:
+      - organization_id
+      - decision_date
+      - section
   type:
     plugin: default_value
     default_value: decision
