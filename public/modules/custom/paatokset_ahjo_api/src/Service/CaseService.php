@@ -765,7 +765,7 @@ class CaseService {
       $label = $org_label . ' ' . $decision_date;
     }
     else {
-      $label = $node->title->value;
+      $label = $node->title->value . ' ' . $decision_date;
     }
 
     return $label;
