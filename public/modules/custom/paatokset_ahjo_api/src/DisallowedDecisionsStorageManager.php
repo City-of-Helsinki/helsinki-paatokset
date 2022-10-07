@@ -49,6 +49,51 @@ class DisallowedDecisionsStorageManager extends ConfigEntityStorage {
   }
 
   /**
+   * Get disallowed decision org IDs.
+   *
+   * @return array
+   *   Org IDs in uppercase.
+   */
+  public function getDisallowedDecisionOrgs(): array {
+    $orgs = [];
+    $entities = $this->loadMultiple();
+    foreach ($entities as $entity) {
+      if (!$entity->get('status')) {
+        continue;
+      }
+      $orgs[] = strtoupper($entity->id());
+    }
+    return $orgs;
+  }
+
+  /**
+   * Check if decision values match a disallowed entity.
+   *
+   * @param string $dm_id
+   *   Organization ID.
+   * @param string $year
+   *   Year from decision date.
+   * @param string $section
+   *   Decision section.
+   *
+   * @return bool
+   *   If decision is flagged for mass removal.
+   */
+  public function checkIfDisallowed(string $dm_id, string $year, string $section): bool {
+    $disallowed = $this->getDisallowedDecisionsById($dm_id);
+    if (empty($disallowed)) {
+      return FALSE;
+    }
+    if (empty($disallowed[$year])) {
+      return FALSE;
+    }
+    if (in_array($section, $disallowed[$year])) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
    * Get disallowed sections grouped by year from config entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
