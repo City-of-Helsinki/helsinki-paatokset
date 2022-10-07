@@ -72,7 +72,7 @@ class DisallowedDecisionsForm extends EntityForm {
       '#type' => 'textarea',
       '#title' => $this->t('Configuration'),
       '#default_value' => $disallowed_decisions->get('configuration'),
-      '#description' => $this->t("Configuration of disallowed decisions. Year followed by section numberm, separated by a | character. One per line."),
+      '#description' => $this->t("Configuration of disallowed decisions. Year followed by section numbers. Years separated by ---"),
       '#required' => TRUE,
     ];
 

@@ -82,19 +82,34 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
    *   TRUE if values match a disallowed decision config entity.
    */
   protected function checkIfDisallowed(string $dm_id, string $date_str, string $section): bool {
+    // Check if decision years match before proceeding.
+    $years = [
+      '2017',
+      '2018',
+      '2019',
+    ];
     $year = date('Y', strtotime($date_str));
+    if (!in_array($year, $years)) {
+      return;
+    }
+
+    // Check ID prefix matches before loading disallowed decision entities.
+    $dm_ids = [
+      'U320200',
+    ];
+    $id_match = FALSE;
+    foreach ($dm_ids as $id_prefix) {
+      if (strpos($id_prefix, $dm_id) !== FALSE) {
+        $id_match = TRUE;
+        break;
+      }
+    }
+    if (!$id_match) {
+      return FALSE;
+    }
+
     $dd_manager = \Drupal::service('entity_type.manager')->getStorage('disallowed_decisions');
-    $disallowed = $dd_manager->getDisallowedDecisionsById($dm_id);
-    if (empty($disallowed)) {
-      return FALSE;
-    }
-    if (empty($disallowed[$year])) {
-      return FALSE;
-    }
-    if (in_array($section, $disallowed[$year])) {
-      return TRUE;
-    }
-    return FALSE;
+    return $dd_manager->checkIfDisallowed($dm_id, $year, $section);
   }
 
 }
