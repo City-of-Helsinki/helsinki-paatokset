@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.decision.field_attachments_checked
     - field.field.node.decision.field_classification_code
     - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_dates_checked
     - field.field.node.decision.field_decision_attachment_files
     - field.field.node.decision.field_decision_attachments
     - field.field.node.decision.field_decision_case_title
@@ -55,6 +56,7 @@ hidden:
   field_attachments_checked: true
   field_classification_code: true
   field_classification_title: true
+  field_dates_checked: true
   field_decision_attachment_files: true
   field_decision_attachments: true
   field_decision_case_title: true
