@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.decision.field_attachments_checked
     - field.field.node.decision.field_classification_code
     - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_dates_checked
     - field.field.node.decision.field_decision_attachment_files
     - field.field.node.decision.field_decision_attachments
     - field.field.node.decision.field_decision_case_title
@@ -73,6 +74,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_dates_checked:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 34
     region: content
   field_decision_attachment_files:
     type: entity_reference_entity_view
