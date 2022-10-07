@@ -92,6 +92,10 @@ source:
       label: Meeting Id
       selector: Meeting/MeetingID
     -
+      name: meeting_date
+      label: Meeting Date
+      selector: Meeting/DateMeeting
+    -
       name: voting_results
       label: Voting Results
       selector: VotingResults
@@ -107,6 +111,10 @@ source:
       name: decision_date
       label: Decision Date
       selector: DateDecision
+    -
+      name: issued_date
+      label: Issued Date
+      selector: PDF/Issued
   ids:
     native_id:
       type: string
@@ -199,6 +207,35 @@ process:
     -
       plugin: callback
       callable: json_encode
+  field_decision_date:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.000'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: issued_date
+  _created_date:
+    -
+      plugin: get
+      source:
+        - meeting_date
+        - decision_date
+    -
+      plugin: callback
+      callable: array_filter
+    -
+      plugin: callback
+      callable: current
+  field_meeting_date:
+    plugin: format_date
+    from_format: 'Y-m-d\TH:i:s.000'
+    to_format: 'Y-m-d\TH:i:s'
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC
+    source: '@_created_date'
+  field_dates_checked:
+    plugin: default_value
+    default_value: 1
   field_top_category_name:
     callable: _paatokset_ahjo_api_get_top_category
     plugin: callback

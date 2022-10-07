@@ -1000,12 +1000,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_decision_date', $date->format('Y-m-d\TH:i:s'));
     }
 
-    if (isset($record_content['Created'])) {
-      $created_date = new \DateTime($record_content['Created'], new \DateTimeZone('Europe/Helsinki'));
-      $created_date->setTimezone(new \DateTimeZone('UTC'));
-      $node->set('field_meeting_date', $created_date->format('Y-m-d\TH:i:s'));
-    }
-
     $enabled_languages = ['fi', 'sv'];
     if (isset($record_content['Language']) && in_array($record_content['Language'], $enabled_languages)) {
       $node->set('field_record_language_checked', 1);
@@ -1235,6 +1229,76 @@ class AhjoProxy implements ContainerInjectionInterface {
     $truncated_title = Unicode::truncate($title, 255, TRUE, TRUE);
     $node->set('title', $truncated_title);
     $node->set('field_full_title', $title);
+  }
+
+  /**
+   * Static callback function for processing decision date data.
+   *
+   * @param mixed $data
+   *   Data for operation.
+   * @param mixed $context
+   *   Context for batch operation.
+   */
+  public static function updateDecisionDate($data, &$context) {
+    $messenger = \Drupal::messenger();
+    $context['message'] = 'Importing item number ' . $data['count'];
+
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $node = Node::load($data['nid']);
+
+    // Fetch decision content from endpoint.
+    $content = NULL;
+    if ($data['endpoint']) {
+      $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    }
+
+    // Local data is formatted a bit differently.
+    if (isset($content['decisions'])) {
+      $content = $content['decisions'][0];
+    }
+
+    if (!empty($content)) {
+
+      if (!empty($content['PDF']) && !empty($content['PDF']['Issued'])) {
+        $issued_date = new \DateTime($content['PDF']['Issued'], new \DateTimeZone('Europe/Helsinki'));
+        $issued_date->setTimezone(new \DateTimeZone('UTC'));
+      }
+      if (!empty($content['Meeting']) && !empty($content['Meeting']['DateMeeting'])) {
+        $decision_date = new \DateTime($content['Meeting']['DateMeeting'], new \DateTimeZone('Europe/Helsinki'));
+        $decision_date->setTimezone(new \DateTimeZone('UTC'));
+      }
+      elseif (!empty($content['DateDecision'])) {
+        $decision_date = new \DateTime($content['DateDecision'], new \DateTimeZone('Europe/Helsinki'));
+        $decision_date->setTimezone(new \DateTimeZone('UTC'));
+      }
+
+      if ($issued_date) {
+        $node->set('field_decision_date', $issued_date->format('Y-m-d\TH:i:s'));
+        $node->set('field_dates_checked', 1);
+      }
+      // Only save node if decision date could be fetched.
+      if ($decision_date) {
+        $node->set('field_meeting_date', $decision_date->format('Y-m-d\TH:i:s'));
+        $node->set('field_dates_checked', 1);
+        $node->save();
+      }
+      $context['results']['items'][] = $node->id();
+    }
+    else {
+      $messenger->addMessage('Could not fetch dates for for nid: ' . $node->id());
+      $context['results']['failed'][] = $node->id();
+    }
   }
 
   /**
