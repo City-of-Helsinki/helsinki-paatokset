@@ -90,7 +90,7 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     ];
     $year = date('Y', strtotime($date_str));
     if (!in_array($year, $years)) {
-      return;
+      return FALSE;
     }
 
     // Check ID prefix matches before loading disallowed decision entities.
