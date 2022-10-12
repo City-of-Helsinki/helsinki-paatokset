@@ -119,7 +119,7 @@
     <div class="minutes-file__container">
       {% for minute in minutes_of_discussion %}
         <div class="minutes__file-link">
-          <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ minute.origin_url }}">
+          <a class="paatokset-button-link" aria-label="Link downloads a file" href="{{ minute.link }}">
             <i class="hel-icon hel-icon--document"></i>
             <span>{{ 'Download minutes of discussion (PDF)'|t }}</span>
           </a>
