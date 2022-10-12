@@ -150,6 +150,10 @@ class PolicymakerController extends ControllerBase {
       $build['decision_announcement'] = $meetingData['decision_announcement'];
     }
 
+    if ($meetingData['meeting_metadata']) {
+      $build['meeting_metadata'] = $meetingData['meeting_metadata'];
+    }
+
     $minutesOfDiscussion = $this->policymakerService->getMinutesOfDiscussion(1, FALSE, $id);
     if ($minutesOfDiscussion) {
       $build['minutes_of_discussion'] = $minutesOfDiscussion;
