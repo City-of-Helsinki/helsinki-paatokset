@@ -20,7 +20,7 @@
   {% if meeting_metadata.date or meeting_metadata.location %}
     <div class="minutes-decision__meta">
       {% if meeting_metadata.date %}
-        <div class="Kokousaika">{{ "Kokousaika"|t }} {{ meeting_metadata.date }}</div>
+        <div class="Kokousaika">{{ "Kokousaika"|t }}: {{ meeting_metadata.date }}</div>
       {% endif %}
       {% if meeting_metadata.location %}
         <div class="Kokouspaikka">{{ "Kokouspaikka"|t }}: {{ meeting_metadata.location }}</div>
