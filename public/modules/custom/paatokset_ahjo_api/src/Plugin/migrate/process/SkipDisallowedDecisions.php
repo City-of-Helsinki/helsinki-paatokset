@@ -96,10 +96,11 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     // Check ID prefix matches before loading disallowed decision entities.
     $dm_ids = [
       'U320200',
+      'U420300',
     ];
     $id_match = FALSE;
     foreach ($dm_ids as $id_prefix) {
-      if (strpos($id_prefix, $dm_id) !== FALSE) {
+      if (strpos($dm_id, $id_prefix) !== FALSE) {
         $id_match = TRUE;
         break;
       }
