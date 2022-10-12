@@ -26,8 +26,13 @@
     </div>
   </div>
   <div class="issue__meetings-dropdown">
+    {% if options|length == 1 and selectedDecision.id == options[0].id %}
+      {% set disabled = true %}
+    {% else %}
+      {% set disabled = false %}
+    {% endif %}
     {% if selectedDecision %}
-      {% include '@helfi_paatokset/components/button.html.twig' with {type: 'secondary', disabled: false, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
+      {% include '@helfi_paatokset/components/button.html.twig' with {type: 'secondary', disabled: disabled, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
     {% else %}
       {% include '@helfi_paatokset/components/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
     {% endif %}
