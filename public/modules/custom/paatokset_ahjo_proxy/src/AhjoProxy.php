@@ -2006,6 +2006,23 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Send a HEAD request and return status code.
+   *
+   * @param string $url
+   *   URL to send request for.
+   *
+   * @return string
+   *   HTTP status code.
+   */
+  public function headStatusRequest(string $url): int {
+    $response = $this->httpClient->request('HEAD', $url,
+    [
+      'http_errors' => FALSE,
+    ]);
+    return $response->getStatusCode();
+  }
+
+  /**
    * Get authentication headers for HTTP requests.
    *
    * @return array

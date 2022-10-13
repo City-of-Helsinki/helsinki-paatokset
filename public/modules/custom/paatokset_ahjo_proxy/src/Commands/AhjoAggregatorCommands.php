@@ -1947,6 +1947,96 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Check decisionmakers by ID.
+   *
+   * @command ahjo-proxy:check-decision-makers
+   *
+   * @param array $options
+   *   Options from command line parameters.
+   *
+   * @option base_url
+   *   Base URL to use for comparison check.
+   * @option ids
+   *   Org IDs to check, separated by a command.
+   *
+   * @aliases ap:cdm
+   */
+  public function checkDecisionMakers(array $options = [
+    'base_url' => NULL,
+    'ids' => NULL,
+  ]): void {
+
+    if (!empty($options['base_url'])) {
+      $base_url = (string) $options['base_url'];
+    }
+    else {
+      $base_url = NULL;
+    }
+
+    if (empty($options['ids'])) {
+      $this->writeln('No IDS provided');
+      return;
+    }
+    $ids = explode(',', (string) $options['ids']);
+    if (empty($ids)) {
+      $this->writeln('No IDS provided');
+      return;
+    }
+
+    $table = new Table($this->output());
+    $table->setHeaders([
+      'ID',
+      'Found locally',
+      'Found in comparison'
+    ]);
+
+    $start_time = microtime(TRUE);
+
+    foreach ($ids as $id) {
+      $query = $this->nodeStorage->getQuery()
+        ->condition('type', 'policymaker')
+        ->condition('status', 1)
+        ->condition('field_policymaker_id', $id)
+        ->latestRevision();
+
+      $ids = $query->execute();
+
+      if (!empty($ids)) {
+        $found_locally = '✓';
+      }
+      else {
+        $found_locally = '✗';
+      }
+
+      if ($base_url) {
+        $response = $this->ahjoProxy->headStatusRequest($base_url . '/' . $id);
+        if ($response === 200) {
+          $found_in_test = '✓';
+        }
+        else {
+          $found_in_test = '✗';
+        }
+        $this->writeln($base_url . '/' . $id . ': ' . $response);
+      }
+      else {
+        $found_in_test = '-';
+      }
+
+      $table->addRow([
+        $id,
+        $found_locally,
+        $found_in_test,
+      ]);
+    }
+
+    $table->render();
+
+    $end_time = microtime(TRUE);
+    $total_time = $end_time - $start_time;
+    $this->writeln('Took ' . $total_time . 'seconds');
+  }
+
+  /**
    * List decisions by organization ID.
    *
    * @param string $id
