@@ -1949,10 +1949,10 @@ class AhjoAggregatorCommands extends DrushCommands {
   /**
    * Check decisionmakers by ID.
    *
-   * @command ahjo-proxy:check-decision-makers
-   *
    * @param array $options
    *   Options from command line parameters.
+   *
+   * @command ahjo-proxy:check-decision-makers
    *
    * @option base_url
    *   Base URL to use for comparison check.
@@ -1987,7 +1987,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $table->setHeaders([
       'ID',
       'Found locally',
-      'Found in comparison'
+      'Found in comparison',
     ]);
 
     $start_time = microtime(TRUE);
@@ -2016,7 +2016,6 @@ class AhjoAggregatorCommands extends DrushCommands {
         else {
           $found_in_test = '✗';
         }
-        $this->writeln($base_url . '/' . $id . ': ' . $response);
       }
       else {
         $found_in_test = '-';
