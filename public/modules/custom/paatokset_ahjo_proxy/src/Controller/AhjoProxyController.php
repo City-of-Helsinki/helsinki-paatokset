@@ -109,7 +109,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public function meetingsSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getSingleMeeting($id, $query_string);
+    $data = $this->ahjoProxy->getSingleMeeting($id, $query_string, TRUE);
     return new JsonResponse($data);
   }
 
@@ -126,7 +126,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public function decisionsSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getSingleDecision($id, $query_string);
+    $data = $this->ahjoProxy->getSingleDecision($id, $query_string, TRUE);
     return new JsonResponse($data);
   }
 
@@ -143,7 +143,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public function casesSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getSingleCase($id, $query_string);
+    $data = $this->ahjoProxy->getSingleCase($id, $query_string, TRUE);
     return new JsonResponse($data);
   }
 
@@ -160,7 +160,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public function trusteesSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getSingleTrustee($id, $query_string);
+    $data = $this->ahjoProxy->getSingleTrustee($id, $query_string, TRUE);
     return new JsonResponse($data);
   }
 
@@ -177,7 +177,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public function organizationSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
-    $data = $this->ahjoProxy->getSingleOrganization($id, $query_string);
+    $data = $this->ahjoProxy->getSingleOrganization($id, $query_string, TRUE);
     return new JsonResponse($data);
   }
 
