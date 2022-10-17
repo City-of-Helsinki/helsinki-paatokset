@@ -240,8 +240,3 @@ if ($env = getenv('APP_ENV')) {
     include __DIR__ . '/azure.settings.php';
   }
 }
-
-/**
- * HTTP Client config.
- */
-$settings['http_client_config']['timeout'] = 60;
