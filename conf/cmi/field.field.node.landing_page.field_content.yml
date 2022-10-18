@@ -53,6 +53,10 @@ settings:
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
       remote_video: remote_video
+      phasing: phasing
+      popular_services: popular_services
+      target_group_links: target_group_links
+      event_list: event_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -75,6 +79,9 @@ settings:
         enabled: true
       custom_content_links:
         weight: 21
+        enabled: true
+      event_list:
+        weight: 30
         enabled: true
       gallery:
         weight: -20
@@ -106,8 +113,23 @@ settings:
       news_liftups:
         weight: 30
         enabled: true
+      phasing:
+        weight: 50
+        enabled: true
+      phasing_item:
+        weight: 30
+        enabled: false
+      popular_services:
+        weight: 42
+        enabled: true
       remote_video:
         weight: 37
+        enabled: true
+      target_group_link_item:
+        weight: 45
+        enabled: false
+      target_group_links:
+        weight: 24
         enabled: true
       text:
         weight: -15

@@ -1,2 +1,5 @@
 label: Otsikko
-description: 'Link list title'
+description: 'Linkkilistan otsikko'
+default_value:
+  -
+    value: 'Lisää aiheesta'

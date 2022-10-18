@@ -25,13 +25,7 @@ bundle: news_item
 mode: tiny_teaser
 content:
   field_main_image:
-    type: media_thumbnail
-    label: hidden
-    settings:
-      image_link: ''
-      image_style: tiny_square_image
-    third_party_settings: {  }
-    weight: 1
+    settings: {  }
     region: content
   field_short_title:
     type: string
@@ -39,7 +33,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   links:
     settings: {  }
@@ -54,11 +48,12 @@ content:
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
 hidden:
   field_content: true
   field_lead_in: true
+  field_main_image: true
   field_main_image_caption: true
   field_news_item_links_link: true
   field_news_item_links_title: true

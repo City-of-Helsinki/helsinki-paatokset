@@ -3,7 +3,7 @@ _core:
 langcode: en
 uuid: 060ed3cf-5793-4d2d-bdb7-06423f433850
 name: Decisions
-mail: admin@example.com
+mail: drupal@hel.fi
 slogan: ''
 page:
   403: ''
