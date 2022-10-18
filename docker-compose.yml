@@ -10,7 +10,8 @@ services:
       - .:/app:delegated
       - ssh:/tmp/druid_ssh-agent:ro
     environment:
-      APP_ENV: "${APP_ENV:-dev}"
+      APP_ENV: "${APP_ENV:-local}"
+      PROJECT_NAME: "${PROJECT_NAME}"
       DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME}"
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
       XDEBUG_ENABLE: "true"
@@ -76,7 +77,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes: 
+    volumes:
       - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
