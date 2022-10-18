@@ -6,6 +6,17 @@
     <h1{{ title_attributes.addClass('issue__title') }}>
       {{ main_heading }}
     </h1>
+
+    {% if no_title_for_case %}
+    <div class="title-tag">
+      <div class="info-label">
+        <div class="info-label__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'info', label: 'For decisions released prior to 2019 a related decision heading is displayed for cases.'|t } %}
+          <span>{{ 'For decisions released prior to 2019 a related decision heading is displayed for cases.'|t }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
   {% if content.field_diary_number_label|render %}
     <div class="issue__diarynumber">
