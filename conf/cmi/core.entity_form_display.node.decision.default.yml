@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.decision.field_attachments_checked
     - field.field.node.decision.field_classification_code
     - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_dates_checked
     - field.field.node.decision.field_decision_attachment_files
     - field.field.node.decision.field_decision_attachments
     - field.field.node.decision.field_decision_case_title
@@ -151,6 +152,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_dates_checked:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_decision_attachments:
     type: json_textarea

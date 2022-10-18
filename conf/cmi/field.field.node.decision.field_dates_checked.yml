@@ -1,0 +1,23 @@
+uuid: 0aadc557-b8c1-4c0a-a994-27e7d2b74d27
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dates_checked
+    - node.type.decision
+id: node.decision.field_dates_checked
+field_name: field_dates_checked
+entity_type: node
+bundle: decision
+label: 'Dates checked'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

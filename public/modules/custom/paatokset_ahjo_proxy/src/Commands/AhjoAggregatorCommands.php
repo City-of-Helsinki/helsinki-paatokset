@@ -798,6 +798,121 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Unpublishes decisions marked for mass removal.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-disallowed-decisions
+   *
+   * @option org
+   *   Organisation ID to check for.
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   * @option dry
+   *   Dry run, does not actually unpublish nodes.
+   *
+   * @usage ahjo-proxy:check-disallowed-decisions
+   *   Unpublishes disallowed decisions.
+   *
+   * @aliases ap:cdd
+   */
+  public function checkDisallowedDecisions(array $options = [
+    'org' => NULL,
+    'dry' => NULL,
+    'limit' => NULL,
+  ]): void {
+
+    if (!empty($options['dry'])) {
+      $do_unpublish = FALSE;
+    }
+    else {
+      $do_unpublish = TRUE;
+    }
+
+    if (!empty($options['org'])) {
+      $org = (string) $options['org'];
+    }
+    else {
+      $org = FALSE;
+    }
+
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->latestRevision();
+
+    $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
+
+    if ($org) {
+      $this->logger->info('Finding decisions for: ' . $org);
+      $query->condition('field_policymaker_id', strtoupper($org));
+    }
+    else {
+      $orgroup = $query->orConditionGroup();
+      $orgs = $dd_manager->getDisallowedDecisionOrgs();
+      foreach ($orgs as $org) {
+        $orgroup->condition('field_policymaker_id', $org);
+      }
+      $query->condition($orgroup);
+    }
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $count = 0;
+    foreach ($nodes as $node) {
+      if ($node->get('field_decision_section')->isEmpty() || $node->get('field_meeting_date')->isEmpty()) {
+        continue;
+      }
+      $dm_id = $node->get('field_policymaker_id')->value;
+      $date = $node->get('field_meeting_date')->value;
+      $year = date('Y', strtotime($date));
+      $section = $node->get('field_decision_section')->value;
+      if ($dd_manager->checkIfDisallowed($dm_id, $year, $section)) {
+        $count++;
+        if ($do_unpublish) {
+          $node->setUnpublished();
+          $node->save();
+        }
+        $this->logger->info($dm_id . ', ' . $date . ', ' . $section);
+        $this->logger->info('Unpublishing decision: ' . $node->field_decision_native_id->value . ' (' . $node->id() . ')');
+      }
+    }
+
+    $this->logger->info('Total nodes unpublished: ' . $count);
+  }
+
+  /**
+   * Get list of org IDs with disallowed decisions.
+   *
+   * @command ahjo-proxy:get-flagged-ids
+   *
+   * @aliases ap:gfi
+   */
+  public function getFlaggedOrgIds(): void {
+    $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
+    $orgs = $dd_manager->getDisallowedDecisionOrgs();
+    foreach ($orgs as $org) {
+      $this->io()->writeln($org);
+    }
+  }
+
+  /**
    * Updates decision node attachments.
    *
    * @param array $options
@@ -868,6 +983,95 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::updateDecisionAttachments',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Updating attachments for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Updates decision node dates.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:update-decision-dates
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:udd
+   */
+  public function updateDecisionDates(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Fetching data from API...');
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_is_decision', 1)
+      ->latestRevision();
+
+    $or = $query->orConditionGroup();
+    $or->notExists('field_dates_checked');
+    $or->condition('field_dates_checked', 0);
+    $query->condition($or);
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
+        continue;
+      }
+
+      $native_id = $node->field_decision_native_id->value;
+      // Local adjustments for fetching decisions through proxy.
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $endpoint = 'decisions/single/' . $native_id;
+      }
+      else {
+        $endpoint = 'decisions/' . $native_id;
+      }
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'native_id' => $node->field_decision_native_id->value,
+        'count' => $count,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::updateDecisionDate',
         [$data],
       ];
     }
