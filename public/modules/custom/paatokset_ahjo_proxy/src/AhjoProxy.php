@@ -2196,7 +2196,6 @@ class AhjoProxy implements ContainerInjectionInterface {
    *
    * @param string $endpoint
    *   Which endpoint to use.
-   *
    * @param string $id
    *   ID for entity.
    */
