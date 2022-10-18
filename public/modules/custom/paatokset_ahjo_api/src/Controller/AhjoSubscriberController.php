@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Controller;
 
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Queue\QueueFactory;
@@ -35,11 +36,19 @@ class AhjoSubscriberController extends ControllerBase {
   protected $logger;
 
   /**
+   * Ahjo proxy service.
+   *
+   * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
+   */
+  protected $ahjoProxy;
+
+  /**
    * Constructor.
    */
-  public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy) {
     $this->queueFactory = $queue_factory;
     $this->logger = $logger_factory->get('ahjo_api_subscriber');
+    $this->ahjoProxy = $ahjo_proxy;
   }
 
   /**
@@ -48,7 +57,8 @@ class AhjoSubscriberController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('queue'),
-      $container->get('logger.factory')
+      $container->get('logger.factory'),
+      $container->get('paatokset_ahjo_proxy')
     );
   }
 
@@ -97,6 +107,8 @@ class AhjoSubscriberController extends ControllerBase {
         '@update_type' => $update_type,
       ]);
     }
+
+    $this->ahjoProxy->invalideCacheForProxy($id, $entity_id);
 
     return new JsonResponse($data);
   }

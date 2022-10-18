@@ -2191,4 +2191,21 @@ class AhjoProxy implements ContainerInjectionInterface {
     $this->dataCache->set($key, $data, $this->getCacheMaxAge(), []);
   }
 
+  /**
+   * Invalidate ahjo proxy cache, mainly for callbacks.
+   *
+   * @param string $endpoint
+   *   Which endpoint to use.
+   *
+   * @param string $id
+   *   ID for entity.
+   */
+  public function invalideCacheForProxy(string $endpoint, string $id): void {
+    $url = self::API_BASE_URL . $endpoint . '/' . strtoupper($id);
+    $this->dataCache->invalidate($url);
+    $this->logger->info('Invalidated cache for URL: @url', [
+      '@url' => $url,
+    ]);
+  }
+
 }

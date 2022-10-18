@@ -38,7 +38,6 @@ paatokset_ahjo_proxy.meetings_single:
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
-    no_cache: TRUE
 
 paatokset_ahjo_proxy.cases_single:
   path: '/ahjo-proxy/cases/single/{id}'
@@ -50,7 +49,6 @@ paatokset_ahjo_proxy.cases_single:
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
-    no_cache: TRUE
 
 paatokset_ahjo_proxy.decisions_single:
   path: '/ahjo-proxy/decisions/single/{id}'
@@ -62,7 +60,6 @@ paatokset_ahjo_proxy.decisions_single:
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
-    no_cache: TRUE
 
 paatokset_ahjo_proxy.trustees_single:
   path: '/ahjo-proxy/trustees/single/{id}'
@@ -74,7 +71,6 @@ paatokset_ahjo_proxy.trustees_single:
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
-    no_cache: TRUE
 
 paatokset_ahjo_proxy.organization_single:
   path: '/ahjo-proxy/organization/single/{id}'
@@ -86,7 +82,6 @@ paatokset_ahjo_proxy.organization_single:
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
-    no_cache: TRUE
 
 paatokset_ahjo_proxy.get_aggregated_data:
   path: '/ahjo-proxy/aggregated/{dataset}'
