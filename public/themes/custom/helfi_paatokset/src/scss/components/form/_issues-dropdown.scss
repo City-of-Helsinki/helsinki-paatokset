@@ -28,6 +28,10 @@
       color: $color-black;
     }
 
+    &[disabled] .hel-icon.hel-icon--angle-down {
+      display: none;
+    }
+
     .hel-icon.hel-icon--angle-down {
       margin-left: auto;
     }

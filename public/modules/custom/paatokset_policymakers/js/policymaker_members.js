@@ -167,7 +167,7 @@
             return this.members.filter(result => result.role === 'Varajäsen').length > 0;
           },
           deputyOf() {
-            return window.Drupal.t('Personal deputy')
+            return window.Drupal.t('Personal deputy of')
           },
           noResults() {
             return window.Drupal.t('No search results')

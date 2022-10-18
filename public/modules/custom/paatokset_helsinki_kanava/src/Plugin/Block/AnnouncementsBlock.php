@@ -32,7 +32,7 @@ class AnnouncementsBlock extends BlockBase {
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
 
-        $announcement['text'] = t('Next meeting will be held on @date at @time',
+        $announcement['text'] = t('Next council stream will start on @date at @time',
           [
             '@date' => date('d.m', $nextMeetingDate),
             '@time' => date('H:i', $nextMeetingDate),

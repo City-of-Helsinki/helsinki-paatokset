@@ -1202,6 +1202,16 @@ class PolicymakerService {
       $agendaItems = $newList;
     }
 
+    // Meeting metadata.
+    $metadata = [];
+    if ($meeting->hasField('field_meeting_date') && !$meeting->get('field_meeting_date')->isEmpty()) {
+      $metadata['date'] = date('d.m.Y k\l\o H:i', strtotime($meeting->get('field_meeting_date')->value));
+    }
+    if ($meeting->hasField('field_meeting_location') && !$meeting->get('field_meeting_location')->isEmpty()) {
+      $metadata['location'] = $meeting->get('field_meeting_location')->value;
+    }
+
+    // Decision announcement.
     $decisionAnnouncement = $this->getDecisionAnnouncement($meeting);
 
     return [
@@ -1211,6 +1221,7 @@ class PolicymakerService {
         'date_long' => $dateLong,
         'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
       ],
+      'meeting_metadata' => $metadata,
       'decision_announcement' => $decisionAnnouncement,
       'list' => $agendaItems,
       'file' => [
