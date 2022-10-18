@@ -214,6 +214,9 @@ if (
   $settings['container_yamls'][] = 'modules/contrib/redis/redis.services.yml';
 }
 
+$config['helfi_api_base.environment_resolver.settings']['environment_name'] = getenv('APP_ENV');
+$config['helfi_api_base.environment_resolver.settings']['project_name'] = getenv('PROJECT_NAME');
+
 // Environment specific overrides.
 if (file_exists(__DIR__ . '/all.settings.php')) {
   include __DIR__ . '/all.settings.php';
