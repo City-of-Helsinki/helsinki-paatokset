@@ -905,12 +905,3 @@ function paatokset_ahjo_api_update_9003() {
   $config->set('settings', $settings);
   $config->save();
 }
-
-/**
- * Quick fix to disable helfi platform config breadcrumb alterations.
- */
-function paatokset_ahjo_api_module_implements_alter(&$implementations, $hook): void {
-  if ($hook === 'system_breadcrumb_alter') {
-    unset($implementations['helfi_platform_config']);
-  }
-}

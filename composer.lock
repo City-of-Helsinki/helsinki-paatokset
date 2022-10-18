@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b937902dab9c9af67a79fea8b45d62e8",
+    "content-hash": "c8d26b6962a5db4cd17c65f7f16b7e5e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4163,16 +4163,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "2.13.5",
+            "version": "dev-UHF-6960_fix_for_non_helfi_project",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "567af1eab1c3ebf0012a7ad2c308a08dfe7a87ba"
+                "reference": "f74eb088046c39af9d9838b2b2b725a8e116186b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/567af1eab1c3ebf0012a7ad2c308a08dfe7a87ba",
-                "reference": "567af1eab1c3ebf0012a7ad2c308a08dfe7a87ba",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/f74eb088046c39af9d9838b2b2b725a8e116186b",
+                "reference": "f74eb088046c39af9d9838b2b2b725a8e116186b",
                 "shasum": ""
             },
             "require": {
@@ -4282,10 +4282,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/2.13.5",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/UHF-6960_fix_for_non_helfi_project",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2022-10-14T11:00:01+00:00"
+            "time": "2022-10-18T13:51:52+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -15985,11 +15985,12 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/elasticsearch_connector": 15,
+        "drupal/helfi_platform_config": 20,
         "drupal/json_field": 5
     },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
