@@ -222,6 +222,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       return NULL;
     }
 
+    // Set timeouts to larger values.
+    ini_set('default_socket_timeout', 240);
+    ini_set('max_execution_time', 240);
+
     $data = $this->getContent($item_url);
 
     if (!empty($data) && strpos($item_url, "decisions/")) {
@@ -2053,6 +2057,13 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (strpos($migration_id, '_sv') !== FALSE) {
       $endpoint_url .= '?apireqlang=sv';
     }
+    else {
+      $endpoint_url .= '?apireqlang=fi';
+    }
+
+    // Set timeouts to larger values.
+    ini_set('default_socket_timeout', 240);
+    ini_set('max_execution_time', 240);
 
     // Attempt to fetch content first, because
     // migration doesn't complain about empty results.
