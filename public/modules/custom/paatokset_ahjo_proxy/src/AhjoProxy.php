@@ -222,10 +222,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       return NULL;
     }
 
-    // Set timeouts to larger values.
-    ini_set('default_socket_timeout', '240');
-    ini_set('max_execution_time', '240');
-
     $data = $this->getContent($item_url);
 
     if (!empty($data) && strpos($item_url, "decisions/")) {
@@ -2061,10 +2057,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       $endpoint_url .= '?apireqlang=fi';
     }
 
-    // Set timeouts to larger values.
-    ini_set('default_socket_timeout', '240');
-    ini_set('max_execution_time', '240');
-
     // Attempt to fetch content first, because
     // migration doesn't complain about empty results.
     $data = $this->getContent($endpoint_url);
@@ -2133,8 +2125,12 @@ class AhjoProxy implements ContainerInjectionInterface {
       if ($this->isLocalOrProxyUrl($url)) {
         $headers = $this->getLocalAuthHeaders();
       }
+      // External Ahjo API URL, so get auth headers and increase timeout.
       else {
         $headers = $this->getAuthHeaders();
+        // Set timeouts to larger values.
+        ini_set('default_socket_timeout', '300');
+        ini_set('max_execution_time', '300');
       }
 
       $response = $this->httpClient->request('GET', $url,
