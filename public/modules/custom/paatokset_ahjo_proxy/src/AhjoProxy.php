@@ -223,8 +223,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     // Set timeouts to larger values.
-    ini_set('default_socket_timeout', 240);
-    ini_set('max_execution_time', 240);
+    ini_set('default_socket_timeout', '240');
+    ini_set('max_execution_time', '240');
 
     $data = $this->getContent($item_url);
 
@@ -2062,8 +2062,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     // Set timeouts to larger values.
-    ini_set('default_socket_timeout', 240);
-    ini_set('max_execution_time', 240);
+    ini_set('default_socket_timeout', '240');
+    ini_set('max_execution_time', '240');
 
     // Attempt to fetch content first, because
     // migration doesn't complain about empty results.
