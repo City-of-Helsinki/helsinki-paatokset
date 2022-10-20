@@ -221,8 +221,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!$item_url) {
       return NULL;
     }
-
-    $data = $this->getContent($item_url);
+    try {
+      $data = $this->getContent($item_url);
+    }
+    catch (\Exception $e) {
+      $data = [];
+    }
 
     if (!empty($data) && strpos($item_url, "decisions/")) {
       $data = array_shift($data);
