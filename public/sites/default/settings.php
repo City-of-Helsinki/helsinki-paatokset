@@ -4,6 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '512M');
+  ini_set('default_socket_timeout', 240);
 }
 
 if ($simpletest_db = getenv('SIMPLETEST_DB')) {
