@@ -2141,6 +2141,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       [
         'http_errors' => FALSE,
         'headers' => $headers,
+        'timeout' => 120,
       ]);
 
       if ($response->getStatusCode() !== 200) {
