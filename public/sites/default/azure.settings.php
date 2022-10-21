@@ -22,5 +22,3 @@ $config['filelog.settings']['location'] = '/tmp';
 $config['system.performance']['stale_file_threshold'] = 7776000;
 
 $settings['http_client_config']['timeout'] = 120;
-ini_set('default_socket_timeout', '300');
-ini_set('max_execution_time', '360');
