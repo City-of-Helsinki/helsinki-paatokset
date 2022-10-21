@@ -169,7 +169,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $setting = \Drupal\Core\Site\Settings::get('http_client_config');
     if (isset($setting['timeout'])) {
-      $this->logger->info('HTTP timeout: ' . $setting);
+      $this->logger->info('HTTP timeout: ' . $setting['timeout']);
     }
     else {
       $this->logger->info('HTTP timeout not set');
