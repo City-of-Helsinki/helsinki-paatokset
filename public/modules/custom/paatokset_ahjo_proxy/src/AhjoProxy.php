@@ -225,7 +225,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $data = $this->getContent($item_url);
     }
     catch (\Exception $e) {
-      $data = [];
+      $data = NULL;
     }
 
     if (!empty($data) && strpos($item_url, "decisions/")) {
@@ -2387,6 +2387,8 @@ class AhjoProxy implements ContainerInjectionInterface {
   public function invalideCacheForProxy(string $endpoint, string $id): void {
     $url = self::API_BASE_URL . $endpoint . '/' . strtoupper($id);
     $this->dataCache->invalidate($url);
+    $this->dataCache->invalidate($url . '?apireqlang=fi');
+    $this->dataCache->invalidate($url . '?apireqlang=sv');
     $this->logger->info('Invalidated cache for URL: @url', [
       '@url' => $url,
     ]);

@@ -167,6 +167,14 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $this->logger->info('Processing ' . count($data[$list_key]) . ' results.');
 
+    $setting = \Drupal\Core\Site\Settings::get('http_client_config');
+    if (isset($setting['timeout'])) {
+      $this->logger->info('HTTP timeout: ' . $setting);
+    }
+    else {
+      $this->logger->info('HTTP timeout not set');
+    }
+
     // Get property key for ID value based on endpoint.
     switch ($endpoint) {
       case 'cases':
