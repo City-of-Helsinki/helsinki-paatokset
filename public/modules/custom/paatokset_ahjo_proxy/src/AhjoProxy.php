@@ -225,7 +225,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $data = $this->getContent($item_url);
     }
     catch (\Exception $e) {
-      $this->logger('Exception: ' . $e->getMessage());
+      $this->logger->info('Exception: ' . $e->getMessage());
       $data = NULL;
     }
 
