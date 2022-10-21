@@ -670,8 +670,11 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Context for batch operation.
    */
   public static function processBatchItem($data, &$context) {
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+
     if (isset($data['item_id'])) {
-      $context['message'] = 'Importing item number ' . $data['count'] . ' with ID: ' . $data['item_id'];
+      $item_url = $ahjo_proxy->getSelfUrl($data['item']['links']);
+      $context['message'] = 'Importing item number ' . $data['count'] . ' with ID: ' . $data['item_id'] . ', URL: ' . $item_url;
     }
     else {
       $context['message'] = 'Importing item number ' . $data['count'];
@@ -714,7 +717,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       // Add failed items to callback queue so they can be retried later.
       if (!empty($data['endpoint']) && !empty($data['item_id'])) {
         /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-        $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
         $ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
       }
 
@@ -2139,8 +2141,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       else {
         $headers = $this->getAuthHeaders();
         // Set timeouts to larger values.
-        ini_set('default_socket_timeout', '300');
-        ini_set('max_execution_time', '360');
+        ini_set('default_socket_timeout', '60');
+        ini_set('max_execution_time', '120');
       }
 
       $response = $this->httpClient->request('GET', $url,
