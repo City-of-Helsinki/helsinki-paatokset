@@ -717,7 +717,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       // Add failed items to callback queue so they can be retried later.
       if (!empty($data['endpoint']) && !empty($data['item_id'])) {
         /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-        $ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
+        //$ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
       }
 
       // Mark as failed.
