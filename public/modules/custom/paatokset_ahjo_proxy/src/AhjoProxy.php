@@ -2129,6 +2129,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   protected function getContent(string $url, bool $bypass_cache = FALSE) : array {
     if (!$bypass_cache && $data = $this->getFromCache($url)) {
+      $this->logger->info('Got response from cache.');
       return $data;
     }
 
@@ -2136,14 +2137,19 @@ class AhjoProxy implements ContainerInjectionInterface {
       // Check if URL is internal to Drupal or a proxy URL.
       if ($this->isLocalOrProxyUrl($url)) {
         $headers = $this->getLocalAuthHeaders();
+        $this->logger->info('Local URL.');
       }
       // External Ahjo API URL, so get auth headers and increase timeout.
       else {
+        $this->logger->info('External URL.');
         $headers = $this->getAuthHeaders();
         // Set timeouts to larger values.
         ini_set('default_socket_timeout', '60');
         ini_set('max_execution_time', '120');
+        $this->logger->info('Socket timeout: ' . ini_get('default_socket_timeout') . ', Execution time: ' . ini_get('max_execution_time'));
       }
+
+      $this->logger->info('Sending request...');
 
       $response = $this->httpClient->request('GET', $url,
       [
@@ -2157,6 +2163,8 @@ class AhjoProxy implements ContainerInjectionInterface {
         return [];
       }
 
+      $this->logger->info('Response received!');
+
       $content = (string) $response->getBody();
       $content = \GuzzleHttp\json_decode($content, TRUE);
       $this->setCache($url, $content);
@@ -2164,6 +2172,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return $content ?? [];
     }
     catch (\Exception $e) {
+      $this->logger->info('Exception: ' . $e->getMessage());
       return [];
     }
 
