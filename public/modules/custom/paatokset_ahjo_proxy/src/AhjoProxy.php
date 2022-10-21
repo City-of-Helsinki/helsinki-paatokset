@@ -2133,8 +2133,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       else {
         $headers = $this->getAuthHeaders();
         // Set timeouts to larger values.
-        ini_set('default_socket_timeout', '300');
-        ini_set('max_execution_time', '300');
+        ini_set('default_socket_timeout', '360');
+        ini_set('max_execution_time', '360');
       }
 
       $response = $this->httpClient->request('GET', $url,
