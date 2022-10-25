@@ -590,6 +590,10 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Use only local and placeholder data, doesn't require VPN connection.
    * @option limit
    *   Limit processing to certain amount of nodes.
+   * @option start
+   *   Filter query start by decision date (field_meeting_date).
+   * @option limit
+   *   Filter query end by decision date (field_meeting_date).
    *
    * @usage ahjo-proxy:update-decisions
    *   Fetches data for decisions where the record field is null.
@@ -603,6 +607,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     'logic' => 'record',
     'localdata' => NULL,
     'limit' => NULL,
+    'start' => NULL,
+    'end' => NULL,
   ]): void {
 
     if (!empty($options['update'])) {
@@ -633,6 +639,20 @@ class AhjoAggregatorCommands extends DrushCommands {
       $limit = 0;
     }
 
+    if (!empty($options['start'])) {
+      $start = $options['start'];
+    }
+    else {
+      $start = NULL;
+    }
+
+    if (!empty($options['end'])) {
+      $end = $options['end'];
+    }
+    else {
+      $end = NULL;
+    }
+
     if ($update_all) {
       $this->logger->info('Updating all nodes...');
     }
@@ -652,7 +672,15 @@ class AhjoAggregatorCommands extends DrushCommands {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'decision')
       ->condition('status', 1)
+      ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
+
+    if ($start) {
+      $query->condition('field_meeting_date', $start, '>');
+    }
+    if ($end) {
+      $query->condition('field_meeting_date', $end, '<');
+    }
 
     if (!$update_all) {
       if ($logic === 'record') {
@@ -860,6 +888,80 @@ class AhjoAggregatorCommands extends DrushCommands {
     ]);
 
     drush_backend_batch_process();
+  }
+
+  /**
+   * Mark decisions records as outdated so they can be fetched again.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:reset-decision-records
+   *
+   * @option start
+   *   Date of where to start query, based on decision date field.
+   * @option end
+   *   Date of where to end query, based on decision date field.
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:rdr
+   */
+  public function resetDecisionRecords(array $options = [
+    'start' => NULL,
+    'end' => NULL,
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    if (!empty($options['start'])) {
+      $start = $options['start'];
+    }
+    else {
+      $start = NULL;
+    }
+
+    if (!empty($options['end'])) {
+      $end = $options['end'];
+    }
+    else {
+      $end = NULL;
+    }
+
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_meeting_date', '', '<>')
+      ->condition('field_outdated_document', 0)
+      ->sort('field_meeting_date', 'DESC')
+      ->latestRevision();
+
+    if ($start) {
+      $query->condition('field_meeting_date', $start, '>');
+    }
+    if ($end) {
+      $query->condition('field_meeting_date', $end, '<');
+    }
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      $node->set('field_outdated_document', 1);
+      $node->save();
+    }
   }
 
   /**
