@@ -17,7 +17,12 @@
           <div></div>
         </div>
         <div v-if="isReady" class="calendar-header">
-          <div class="icon-container" @click="selectPrevious" @keyup.enter="selectPrevious" role="button" :aria-label="previousMonth" tabindex="0">
+          <div
+            class="icon-container"
+            :class="{
+              'icon-container--disabled' : canGoBack()
+            }"
+            @click="selectPrevious" @keyup.enter="selectPrevious" role="button" :aria-label="previousMonth" tabindex="0">
             <i class="hel-icon hel-icon--angle-left"></i>
           </div>
           <h2>{{ selectedMonth }} {{ year }}</h2>
@@ -86,10 +91,9 @@
       `
 
       /* URL to get all meetings */
-      const startDate = dayjs().subtract(6, "month").format("YYYY-MM-DD");
-      const fullStartDate = dayjs().subtract(3, "year").format("YYYY-MM-DD");
+      const startDate = dayjs().subtract(1, "year").format("YYYY-MM-DD");
+      const origStartDate = dayjs().subtract(1, "year");
       const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + startDate;
-      const fullDataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + fullStartDate;
 
       new Vue({
         el: '#meetings-calendar-vue',
@@ -119,20 +123,15 @@
               });
 
               self.daysWithMeetings = temp;
-              self.getFullJson();
-            })
-          },
-          getFullJson() {
-            const self = this;
-            $.getJSON(fullDataURL, function(data) {
-              self.meetings = data.data;
-            })
-            .done(function( json ) {
-              self.isReady = true;
             })
           },
           selectPrevious() {
             let newSelectedDate = dayjs(this.selectedDate).subtract(1, "month");
+
+            if (newSelectedDate < origStartDate) {
+              return;
+            }
+
             this.selectedDate = newSelectedDate;
             const self = this;
             let temp = this.days;
@@ -188,6 +187,13 @@
             if(dayjs(date).day() === 0) {
               return window.Drupal.t('Sunday', {}, {context: "Meeting calendar weekday."});
             }
+          },
+          canGoBack() {
+            let nextPrevDate = dayjs(this.selectedDate).subtract(1, "month");
+            if (nextPrevDate < origStartDate) {
+              return true;
+            }
+            return false;
           },
           isToday(date) {
             return dayjs(date).format("YYYY-MM-DD") === this.currentDate;
