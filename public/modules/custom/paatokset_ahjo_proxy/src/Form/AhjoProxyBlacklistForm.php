@@ -63,4 +63,5 @@ class AhjoProxyBlacklistForm extends ConfigFormBase {
       ->set('ids', $form_state->getValue('blacklist'))
       ->save();
   }
+
 }
