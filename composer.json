@@ -19,7 +19,7 @@
         "drupal/hdbt_admin": "1.6.11",
         "drupal/helfi_api_base": "2.3.2",
         "drupal/helfi_hauki": "^1.0",
-        "drupal/helfi_platform_config": "dev-UHF-6960_fix_for_non_helfi_project",
+        "drupal/helfi_platform_config": "2.13.6",
         "drupal/helfi_tpr": "^2.0.5",
         "drupal/helfi_tunnistamo": "^2.0",
         "drupal/json_field": "^1.0@RC",
