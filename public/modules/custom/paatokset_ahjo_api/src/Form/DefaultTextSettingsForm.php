@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Settings form for the AHJO API Open ID connector.
+ * Settings form for Päätökset default settings.
  *
  * @package Drupal\paatokset_ahjo_api\Form
  */
