@@ -694,6 +694,14 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+
+    // Check if ID is blacklisted.
+    $disallowed_ids = $ahjo_proxy->getBlacklistedIds();
+    if (in_array($data['item_id'], $disallowed_ids)) {
+      $context['results']['failed'][] = $data['item'];
+      return;
+    }
+
     $full_data = $ahjo_proxy->getFullContentForItem($data['item']);
 
     if (!empty($full_data)) {
@@ -702,8 +710,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       // Add failed items to callback queue so they can be retried later.
       if (!empty($data['endpoint']) && !empty($data['item_id'])) {
-        /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-        $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
         $ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
       }
 
