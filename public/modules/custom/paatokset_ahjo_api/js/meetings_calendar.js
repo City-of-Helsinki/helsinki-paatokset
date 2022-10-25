@@ -91,9 +91,11 @@
       `
 
       /* URL to get all meetings */
-      const startDate = dayjs().subtract(1, "year").format("YYYY-MM-DD");
+      const startDate = dayjs().subtract(3, "month").format("YYYY-MM-DD");
+      const fullStartDate = dayjs().subtract(1, "year").format("YYYY-MM-DD");
       const origStartDate = dayjs().subtract(1, "year");
       const dataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + startDate;
+      const fullDataURL = window.location.origin + '/' + drupalSettings.path.pathPrefix + 'ahjo_api/meetings?from=' + fullStartDate;
 
       new Vue({
         el: '#meetings-calendar-vue',
@@ -123,6 +125,16 @@
               });
 
               self.daysWithMeetings = temp;
+              self.getFullJson();
+            })
+          },
+          getFullJson() {
+            const self = this;
+            $.getJSON(fullDataURL, function(data) {
+              self.meetings = data.data;
+            })
+            .done(function( json ) {
+              self.isReady = true;
             })
           },
           selectPrevious() {
