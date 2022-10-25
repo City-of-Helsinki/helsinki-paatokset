@@ -842,7 +842,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:rdr
    */
-  function resetDecisionRecords (array $options = [
+  public function resetDecisionRecords(array $options = [
     'start' => NULL,
     'end' => NULL,
     'limit' => NULL,
