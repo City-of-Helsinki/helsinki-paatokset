@@ -2380,7 +2380,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     if ($data = $this->dataCache->get($key)) {
-      return $data->data;
+      if (is_array($data->data)) {
+        return $data->data;
+      }
+      else {
+        return json_decode($data->data, TRUE);
+      }
     }
     return NULL;
   }
