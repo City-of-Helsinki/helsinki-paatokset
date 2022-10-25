@@ -1,10 +1,10 @@
 paatokset_ahjo_api.default_texts:
-  path: '/admin/tools/default-texts'
+  path: '/admin/config/system/default-texts'
   defaults:
     _form: \Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm
     _title: 'Default text element settings.'
   requirements:
-    _permission: 'administer nodes'
+    _permission: 'administer site configuration'
 
 paatokset_case.fi:
   path: 'asia/{case_id}'

@@ -671,6 +671,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Context for batch operation.
    */
   public static function processBatchItem($data, &$context) {
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
 
     if (isset($data['item_id'])) {
@@ -680,7 +681,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       $context['message'] = 'Importing item number ' . $data['count'];
     }
-
 
     if (!isset($context['results']['starttime'])) {
       $context['results']['starttime'] = microtime(TRUE);
@@ -707,8 +707,13 @@ class AhjoProxy implements ContainerInjectionInterface {
       $context['results']['dataset'] = $data['dataset'];
     }
 
-    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    // Check if ID is blacklisted.
+    $disallowed_ids = $ahjo_proxy->getBlacklistedIds();
+    if (in_array($data['item_id'], $disallowed_ids)) {
+      $context['results']['failed'][] = $data['item'];
+      return;
+    }
+
     $full_data = $ahjo_proxy->getFullContentForItem($data['item']);
 
     if (!empty($full_data)) {
@@ -717,8 +722,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       // Add failed items to callback queue so they can be retried later.
       if (!empty($data['endpoint']) && !empty($data['item_id'])) {
-        /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-        //$ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
+        $ahjo_proxy->addItemToAhjoQueue($data['endpoint'], $data['item_id']);
       }
 
       // Mark as failed.
