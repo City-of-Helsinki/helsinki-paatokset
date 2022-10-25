@@ -1,4 +1,3 @@
-uuid: 7ea6105d-ac32-4adb-91ad-fb342fa6a77c
 langcode: en
 status: true
 dependencies:
@@ -67,5 +66,4 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden:
-  search_api_excerpt: true
+hidden: {  }

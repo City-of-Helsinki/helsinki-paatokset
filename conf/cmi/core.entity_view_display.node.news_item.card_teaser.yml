@@ -1,4 +1,3 @@
-uuid: a3ef25f2-b919-47e5-b495-cb23612f0bde
 langcode: en
 status: true
 dependencies:
@@ -69,5 +68,4 @@ hidden:
   field_news_item_links_link: true
   field_news_item_tags: true
   langcode: true
-  search_api_excerpt: true
   toc_enabled: true
