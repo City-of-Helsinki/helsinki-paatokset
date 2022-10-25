@@ -130,6 +130,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The logger factory service.
    * @param \Drupal\file\FileRepositoryInterface $file_repository
    *   File repository.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
@@ -2117,6 +2119,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * Get blacklisted entity IDs from config.
    *
    * @return array
+   *   Empty array or values from config.
    */
   public function getBlacklistedIds(): array {
     $blacklist_config = $this->config->get('paatokset_ahjo_proxy.blacklist');
