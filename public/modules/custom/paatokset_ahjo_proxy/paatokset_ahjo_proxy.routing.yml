@@ -1,3 +1,19 @@
+paatokset_ahjo_proxy.blacklist:
+  path: '/admin/config/services/ahjo-blacklist'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxyBlacklistForm
+    _title: 'Ahjo API entity blacklist'
+  requirements:
+    _permission: 'administer site configuration'
+
+paatokset_ahjo_proxy.manual_cache:
+  path: '/admin/config/services/ahjo-manual-cache'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxyManualCacheForm
+    _title: 'Ahjo API manual cache'
+  requirements:
+    _permission: 'administer site configuration'
+
 paatokset_ahjo_proxy.meetings:
   path: '/ahjo-proxy/meetings'
   defaults:
