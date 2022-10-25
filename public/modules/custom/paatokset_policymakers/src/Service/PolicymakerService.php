@@ -679,6 +679,7 @@ class PolicymakerService {
       ->condition('type', 'decision')
       ->condition('field_policymaker_id', $this->policymakerId)
       ->condition('field_meeting_date', '', '<>')
+      ->condition('field_meeting_date', '2018-04-01', '>=')
       ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
@@ -1038,6 +1039,7 @@ class PolicymakerService {
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
       ->condition('field_meeting_documents', '', '<>')
+      ->condition('field_meeting_date', '2018-04-01', '>=')
       ->condition('field_meeting_status', 'peruttu', '<>')
       ->sort('field_meeting_date', 'DESC');
 
