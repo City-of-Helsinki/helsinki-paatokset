@@ -39,6 +39,9 @@
       width: 30px;
       cursor: pointer;
     }
+    .icon-container--disabled {
+      color: $gray-light;
+    }
   }
 
   .days-grid {
