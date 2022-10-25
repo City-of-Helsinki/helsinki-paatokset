@@ -95,7 +95,8 @@ class AhjoProxyManualCacheForm extends FormBase {
     $delete = $form_state->getValue('delete_urls');
 
     if (!empty($url) && !empty($content)) {
-      $this->dataCache->set($url, $content, $this->getCacheMaxAge(), []);
+      $set_key = $this->getCacheKey($url);
+      $this->dataCache->set($set_key, $content, $this->getCacheMaxAge(), []);
       $this->messenger()->addMessage(
         $this->t('Added %url to dataCache.', [
           '%url' => $url,
@@ -109,13 +110,29 @@ class AhjoProxyManualCacheForm extends FormBase {
     $delete_urls = explode(PHP_EOL, $delete);
     foreach ($delete_urls as $delete_url) {
       $delete_url = trim($delete_url);
-      $this->dataCache->delete($delete_url);
+      $delete_key = $set_key = $this->getCacheKey($delete_url);
+      $this->dataCache->delete($delete_key);
       $this->messenger()->addMessage(
         $this->t('Deleted %url from dataCache', [
           '%url' => $delete_url,
         ]),
       );
     }
+  }
+
+  /**
+   * Gets the cache key for given id.
+   *
+   * @param string $id
+   *   The id.
+   *
+   * @return string
+   *   The cache key.
+   */
+  protected function getCacheKey(string $id) : string {
+    $id = preg_replace('/[^a-z0-9_]+/s', '_', $id);
+
+    return sprintf('ahjo-proxy-%s', $id);
   }
 
 }
