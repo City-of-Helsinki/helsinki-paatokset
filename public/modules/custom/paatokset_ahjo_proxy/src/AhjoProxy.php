@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -80,6 +81,13 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected $fileRepository;
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
    * Ahjo Open ID service.
    *
    * @var \Drupal\paatokset_ahjo_openid\AhjoOpenId
@@ -122,13 +130,15 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The logger factory service.
    * @param \Drupal\file\FileRepositoryInterface $file_repository
    *   File repository.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, ConfigFactoryInterface $config_factory, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
@@ -136,6 +146,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $this->migrationManager = $migration_manager;
     $this->fileRepository = $file_repository;
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
+    $this->config = $config_factory;
   }
 
   /**
@@ -149,6 +160,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('plugin.manager.migration'),
       $container->get('logger.factory'),
       $container->get('file.repository'),
+      $container->get('config.factory'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -2087,6 +2099,25 @@ class AhjoProxy implements ContainerInjectionInterface {
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $status = $executable->import();
     return $status;
+  }
+
+  /**
+   * Get blacklisted entity IDs from config.
+   *
+   * @return array
+   *   Empty array or valus from config.
+   */
+  public function getBlacklistedIds(): array {
+    $blacklist_config = $this->config->get('paatokset_ahjo_proxy.blacklist');
+    $ids_text = $blacklist_config->get('ids');
+    if (empty($ids_text)) {
+      return [];
+    }
+    $ids = explode(PHP_EOL, $ids_text);
+    foreach ($ids as $key => $value) {
+      $ids[$key] = trim($value);
+    }
+    return $ids;
   }
 
   /**
