@@ -1,0 +1,9 @@
+paatokset_ahjo_proxy.blacklist:
+  title: 'Ahjo API entity blacklist'
+  parent: system.admin_config_services
+  route_name: paatokset_ahjo_proxy.blacklist
+
+paatokset_ahjo_proxy.manual_cache:
+  title: 'Ahjo API manual cache'
+  parent: system.admin_config_services
+  route_name: paatokset_ahjo_proxy.manual_cache
