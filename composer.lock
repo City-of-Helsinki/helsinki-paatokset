@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "191adc9727609fd924666f5b55893f4d",
+    "content-hash": "91fd05fda74df6ad58d962cc37ac864e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7613,7 +7613,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
+                "reference": "v5.29.1"
             },
             "type": "drupal-library"
         },
