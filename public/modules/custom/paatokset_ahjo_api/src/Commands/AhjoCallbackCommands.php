@@ -266,6 +266,8 @@ class AhjoCallbackCommands extends DrushCommands {
    *   Org ID to start from.
    * @param int $max_steps
    *   Maximum amount of steps.
+   * @param string $langcode
+   *   Language to get org data with.
    *
    * @command ahjo-callback:start-org-queue
    *
@@ -274,19 +276,21 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @aliases ac:sorg
    */
-  public function startOrgQueue(string $start_id, int $max_steps = 5) {
+  public function startOrgQueue(string $start_id, int $max_steps = 5, string $langcode = 'fi') {
     $data = [
       'id' => $start_id,
       'step' => 0,
       'max_steps' => $max_steps,
+      'langcode' => $langcode,
     ];
 
     $item_id = $this->orgQueue->createItem($data);
 
     if ($item_id) {
       $this->writeln(sprintf('Started org queue from %s with %d steps.', $start_id, $max_steps));
-      $this->logger->info('Added item to org chart queue: @id, @step out of @max_steps).', [
+      $this->logger->info('Added item to org chart queue: @id (@langcode), @step out of @max_steps).', [
         '@id' => $start_id,
+        '@langcode' => $langcode,
         '@step' => 0,
         '@max_steps' => $max_steps,
       ]);
@@ -306,7 +310,7 @@ class AhjoCallbackCommands extends DrushCommands {
   public function listOrgQueue(): void {
     $table = new Table($this->output());
     $table->setHeaders([
-      'OrgID', 'ID', 'Time', 'Step', 'Max steps',
+      'OrgID', 'ID', 'Lang', 'Time', 'Step', 'Max steps',
     ]);
 
     $count = 0;
