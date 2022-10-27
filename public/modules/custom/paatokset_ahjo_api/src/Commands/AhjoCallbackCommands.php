@@ -273,6 +273,8 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @usage ahjo-callback:start-org-queue 00001 3
    *   Get first three levels of organization data.
+   * @usage ahjo-callback:start-org-queue 00001 3 sv
+   *   Get Swedish translations of the first three levels.
    *
    * @aliases ac:sorg
    */
@@ -343,6 +345,7 @@ class AhjoCallbackCommands extends DrushCommands {
       $table->addRow([
         $item->data['id'],
         $item->item_id,
+        $item->data['langcode'],
         date('Y-m-d H:i:s', (int) $item->created),
         $step,
         $max_steps,
