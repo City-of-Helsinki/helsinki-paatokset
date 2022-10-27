@@ -89,7 +89,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     }
     else {
       $url = 'organization';
-      $query_string = 'orgid=' . (string) $id . '&apireqlang='. (string) $langcode;
+      $query_string = 'orgid=' . (string) $id . '&apireqlang=' . (string) $langcode;
     }
 
     $data = $this->ahjoProxy->getData($url, $query_string);

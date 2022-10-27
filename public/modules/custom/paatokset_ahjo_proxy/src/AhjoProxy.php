@@ -449,15 +449,16 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Organization ID to start from.
    * @param int $steps
    *   Maximum levels to include in chart.
+   * @param string $langcode
+   *   Langcode for organization chart.
    *
    * @return array|null
    *   Structured array with organizations, or NULL if first org is not found.
    */
-  public function getOrgChart(string $orgId, int $steps = 3): ?array {
+  public function getOrgChart(string $orgId, int $steps = 3, string $langcode = 'fi'): ?array {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->range(0, 1)
-      ->condition('langcode', 'fi')
       ->condition('field_policymaker_id', $orgId)
       ->condition('type', 'organization');
 
@@ -472,7 +473,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       return NULL;
     }
 
-    $data = $this->getOrgChartStructure($node, 0, $steps);
+    if ($node->hasTranslation($langcode)) {
+      $node = $node->getTranslation($langcode);
+    }
+
+    $data = $this->getOrgChartStructure($node, 0, $steps, $langcode);
     return [$data];
   }
 
@@ -485,14 +490,17 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Current level.
    * @param int $max_steps
    *   Maximum level.
+   * @param string $langcode
+   *   Langcode for organization chart.
    *
    * @return array
    *   Structured organization data.
    */
-  protected function getOrgChartStructure(NodeInterface $node, int $step = 0, int $max_steps = 3): array {
+  protected function getOrgChartStructure(NodeInterface $node, int $step = 0, int $max_steps = 3, string $langcode = 'fi'): array {
     $data = [
       'Name' => $node->title->value,
       'ID' => $node->field_policymaker_id->value,
+      'Language' => $node->langcode->value,
     ];
 
     if ($node->hasField('field_organization_data') && !$node->get('field_organization_data')->isEmpty()) {
@@ -522,7 +530,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       $query = \Drupal::entityQuery('node')
         ->condition('status', 1)
         ->range(0, 1)
-        ->condition('langcode', 'fi')
         ->condition('field_policymaker_id', $field->value)
         ->condition('type', 'organization');
 
@@ -534,7 +541,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       $id = reset($ids);
       $child_node = Node::load($id);
       if ($child_node instanceof NodeInterface) {
-        $orgs_below[] = $this->getOrgChartStructure($child_node, $step + 1, $max_steps);
+        if ($child_node->hasTranslation($langcode)) {
+          $child_node = $child_node->getTranslation($langcode);
+        }
+        $orgs_below[] = $this->getOrgChartStructure($child_node, $step + 1, $max_steps, $langcode);
       }
     }
 
