@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_proxy\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drupal\Core\Language\LanguageManager;
 use GuzzleHttp\Psr7\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +21,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AhjoProxyController extends ControllerBase {
 
   /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManager
+   */
+  protected $languageManager;
+
+  /**
    * Ahjo proxy service.
    *
    * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
@@ -29,8 +37,9 @@ class AhjoProxyController extends ControllerBase {
   /**
    * Constructor.
    */
-  public function __construct(AhjoProxy $ahjo_proxy) {
+  public function __construct(LanguageManager $language_manager, AhjoProxy $ahjo_proxy) {
     $this->ahjoProxy = $ahjo_proxy;
+    $this->languageManager = $language_manager;
   }
 
   /**
@@ -38,6 +47,7 @@ class AhjoProxyController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('language_manager'),
       $container->get('paatokset_ahjo_proxy')
     );
   }
@@ -243,7 +253,8 @@ class AhjoProxyController extends ControllerBase {
    *   JSON data containing organization chart.
    */
   public function getOrgChart(string $orgId, int $steps): JsonResponse {
-    $data = $this->ahjoProxy->getOrgChart($orgId, $steps);
+    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+    $data = $this->ahjoProxy->getOrgChart($orgId, $steps, $langcode);
     return new JsonResponse($data);
   }
 
