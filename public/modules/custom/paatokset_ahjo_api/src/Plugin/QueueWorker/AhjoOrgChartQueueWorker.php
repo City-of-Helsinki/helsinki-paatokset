@@ -63,8 +63,17 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     $id = (string) $item['id'];
     $step = (int) $item['step'];
     $max_steps = (int) $item['max_steps'];
-    $this->logger->info('Org: @id, step @step out of @max_steps.', [
+    $langcode = (string) $item['langcode'];
+
+    // Only allow finnish and swedish for now.
+    $allowed_langs = ['fi', 'sv'];
+    if (!in_array($langcode, $allowed_langs)) {
+      $langcode = 'fi';
+    }
+
+    $this->logger->info('Org: @id (@langcode), step @step out of @max_steps.', [
       '@id' => $id,
+      '@langcode' => $langcode,
       '@step' => $step,
       '@max_steps' => $max_steps,
     ]);
@@ -75,12 +84,12 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     }
 
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      $url = 'organization/single/' . (string) $id;
+      $url = 'organization/single/' . (string) $id . '&apireqlang=' . (string) $langcode;
       $query_string = NULL;
     }
     else {
       $url = 'organization';
-      $query_string = 'orgid=' . (string) $id . '&apireqlang=fi';
+      $query_string = 'orgid=' . (string) $id . '&apireqlang='. (string) $langcode;
     }
 
     $data = $this->ahjoProxy->getData($url, $query_string);
@@ -97,7 +106,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       return;
     }
 
-    $node = $this->findOrCreateOrg($id, $data['Name']);
+    $node = $this->findOrCreateOrg($id, $data['Name'], $langcode);
     $node->set('field_organization_data', json_encode($data));
 
     if (!empty($data['OrganizationLevelAbove']['organizations'])) {
@@ -110,8 +119,9 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
           '@existing_parent' => $node->get('field_org_level_above_id')->value,
         ]);
       }
-
-      $node->set('field_org_level_above_id', $above_org['ID']);
+      if ($node->isDefaultTranslation()) {
+        $node->set('field_org_level_above_id', $above_org['ID']);
+      }
     }
     $below_ids = [];
     foreach ($data['OrganizationLevelBelow']['organizations'] as $org_below) {
@@ -120,7 +130,11 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       }
       $below_ids[] = $org_below['ID'];
     }
-    $node->set('field_org_level_below_ids', $below_ids);
+
+    if ($node->isDefaultTranslation()) {
+      $node->set('field_org_level_below_ids', $below_ids);
+    }
+
     $node->save();
 
     if (empty($below_ids)) {
@@ -140,13 +154,15 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
         'id' => $child_id,
         'step' => $next_step,
         'max_steps' => $max_steps,
+        'langcode' => $langcode,
       ];
 
       $item_id = $this->queue->createItem($data);
 
       if ($item_id) {
-        $this->logger->info('Added item to org chart queue: @id, (@step out of @max_steps).', [
+        $this->logger->info('Added item to org chart queue: @id (@langcode), (@step out of @max_steps).', [
           '@id' => $child_id,
+          '@langcode' => $langcode,
           '@step' => $next_step,
           '@max_steps' => $max_steps,
         ]);
@@ -161,15 +177,16 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
    *   Organization ID.
    * @param string $title
    *   Organization's name.
+   * @param string $langcode
+   *   Language for org data.
    *
    * @return \Drupal\node\NodeInterface|null
    *   Loaded or created node, if found.
    */
-  private function findOrCreateOrg(string $id, string $title): ?NodeInterface {
+  private function findOrCreateOrg(string $id, string $title, string $langcode): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->range(0, 1)
-      ->condition('langcode', 'fi')
       ->condition('field_policymaker_id', $id)
       ->condition('type', 'organization');
 
@@ -182,10 +199,21 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     if (!$found_node instanceof NodeInterface) {
       $found_node = Node::create([
         'type' => 'organization',
-        'langcode' => 'fi',
+        'langcode' => $langcode,
         'field_policymaker_id' => $id,
         'title' => Unicode::truncate($title, '255', TRUE, TRUE),
       ]);
+    }
+    else {
+      if ($found_node->hasTranslation($langcode)) {
+        $found_node = $found_node->getTranslation($langcode);
+      }
+      else {
+        $found_node = $found_node->addTranslation($langcode, [
+          'type' => 'organization',
+          'title' => Unicode::truncate($title, '255', TRUE, TRUE),
+        ]);
+      }
     }
 
     return $found_node;
