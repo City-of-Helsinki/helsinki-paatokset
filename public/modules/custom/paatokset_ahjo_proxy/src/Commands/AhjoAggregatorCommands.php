@@ -1809,6 +1809,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
       else {
         $minutes_published = '✗';
+        $minutes_document = '-';
       }
 
       $date = date('d.m.Y', strtotime($node->get('field_meeting_date')->value));
