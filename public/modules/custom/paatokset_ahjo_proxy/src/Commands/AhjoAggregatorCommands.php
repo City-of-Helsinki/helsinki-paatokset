@@ -1588,6 +1588,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('status', 1)
       ->condition('field_decision_record', '', '<>')
       ->condition('field_is_decision', 0)
+      ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
     if ($limit) {
@@ -1694,6 +1695,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('status', 1)
       ->condition('field_meeting_minutes_published', 1)
       ->condition('field_meeting_agenda', '', '<>')
+      ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
     if ($limit) {
@@ -1781,6 +1783,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'decision')
       ->condition('status', 1)
+      ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
     if ($motions) {
@@ -2364,6 +2367,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'decision')
       ->condition('status', 1)
+      ->sort('field_meeting_date', 'DESC')
       ->condition('field_is_decision', 0)
       ->latestRevision();
 
@@ -2387,6 +2391,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $meeting_query = $this->nodeStorage->getQuery()
       ->condition('type', 'meeting')
       ->condition('status', 1)
+      ->sort('field_meeting_date', 'DESC')
       ->condition('field_meeting_id', array_keys($motions), 'IN')
       ->latestRevision();
     $meeting_ids = $meeting_query->execute();
