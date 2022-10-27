@@ -84,7 +84,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     }
 
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      $url = 'organization/single/' . (string) $id . '&apireqlang=' . (string) $langcode;
+      $url = 'organization/single/' . (string) $id . '?apireqlang=' . (string) $langcode;
       $query_string = NULL;
     }
     else {
@@ -196,12 +196,14 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       $found_node = Node::load(reset($ids));
     }
 
+    $title = Unicode::truncate($title, '255', TRUE, TRUE);
+
     if (!$found_node instanceof NodeInterface) {
       $found_node = Node::create([
         'type' => 'organization',
         'langcode' => $langcode,
         'field_policymaker_id' => $id,
-        'title' => Unicode::truncate($title, '255', TRUE, TRUE),
+        'title' => $title,
       ]);
     }
     else {
@@ -211,11 +213,12 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       else {
         $found_node = $found_node->addTranslation($langcode, [
           'type' => 'organization',
-          'title' => Unicode::truncate($title, '255', TRUE, TRUE),
+          'title' => $title,
         ]);
       }
     }
 
+    $found_node->set('title', $title);
     return $found_node;
   }
 
