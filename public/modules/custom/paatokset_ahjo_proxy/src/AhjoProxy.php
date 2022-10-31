@@ -718,7 +718,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $full_data = $ahjo_proxy->getFullContentForItem($data['item']);
 
     if (!empty($full_data)) {
-      $context['results']['items'][] = $full_data;
+      $context['results']['items'][] = $data['item'];
     }
     else {
       // Add failed items to callback queue so they can be retried later.
