@@ -98,8 +98,9 @@ class AhjoProxyManualCacheForm extends FormBase {
       $set_key = $this->getCacheKey($url);
       $this->dataCache->set($set_key, $content, $this->getCacheMaxAge(), []);
       $this->messenger()->addMessage(
-        $this->t('Added %url to dataCache.', [
+        $this->t('Added %url to dataCache with ID: %id.', [
           '%url' => $url,
+          '%id' => $set_key,
         ]),
       );
     }
