@@ -678,7 +678,12 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Context for batch operation.
    */
   public static function processBatchItem($data, &$context) {
-    $context['message'] = 'Importing item number ' . $data['count'];
+    if (!empty($data['item_id'])) {
+      $context['message'] = 'Importing item number ' . $data['count'] . 'with ID: ' . $data['item_id'];
+    }
+    else {
+      $context['message'] = 'Importing item number ' . $data['count'];
+    }
 
     if (!isset($context['results']['starttime'])) {
       $context['results']['starttime'] = microtime(TRUE);
@@ -718,7 +723,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $full_data = $ahjo_proxy->getFullContentForItem($data['item']);
 
     if (!empty($full_data)) {
-      $context['results']['items'][] = $data['item'];
+      $context['results']['items'][] = $full_data;
     }
     else {
       // Add failed items to callback queue so they can be retried later.
