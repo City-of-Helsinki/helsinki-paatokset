@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Symfony console data aggregator.
+ */
+
 declare(strict_types=1);
 
 use GuzzleHttp\Client;
