@@ -51,6 +51,7 @@ paatokset_ahjo_openid.token:
   requirements:
     _permission: 'administer site configuration'
   options:
+    _auth: ['cookie', 'key_auth']
     no_cache: 'TRUE'
 
 paatokset_ahjo_openid.debug:
