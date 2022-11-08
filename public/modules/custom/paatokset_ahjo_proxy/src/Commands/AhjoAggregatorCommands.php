@@ -2028,6 +2028,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $count = 0;
     $files = 0;
     $classes = [];
+    $reasons = [];
     foreach ($nodes as $node) {
       if (!$node->hasField('field_decision_attachments') || $node->get('field_decision_attachments')->isEmpty()) {
         continue;
@@ -2058,6 +2059,14 @@ class AhjoAggregatorCommands extends DrushCommands {
         if ($publicity_class !== 'Julkinen') {
           $non_public++;
         }
+
+        if (isset($data['SecurityReasons']) && !empty($data['SecurityReasons'])) {
+          foreach ($data['SecurityReasons'] as $reason) {
+            if (!in_array($reason, $reasons)) {
+              $reasons[] = $reason;
+            }
+          }
+        }
       }
 
       $table->addRow([
@@ -2070,7 +2079,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     $table->render();
     $this->logger->info($count . ' nodes with attachments and ' . $files . ' files total.');
-    $this->logger->info('Publicity classes: ' . implode(',', $classes));
+    $this->logger->info('Publicity classes: ' . implode(', ', $classes));
+    $this->logger->info('Security reasons: ' . implode(', ', $reasons));
   }
 
   /**
