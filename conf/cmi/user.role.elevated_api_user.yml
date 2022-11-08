@@ -1,0 +1,17 @@
+uuid: ca36b340-09f8-4ab4-92cb-6026d40167bb
+langcode: fi
+status: true
+dependencies:
+  module:
+    - key_auth
+    - paatokset_ahjo_openid
+    - paatokset_ahjo_proxy
+id: elevated_api_user
+label: 'Elevated API user'
+weight: 7
+is_admin: null
+permissions:
+  - 'access ahjo documents'
+  - 'access ahjo openid token'
+  - 'access ahjo proxy'
+  - 'use key authentication'
