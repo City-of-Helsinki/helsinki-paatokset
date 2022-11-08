@@ -186,6 +186,11 @@ field_settings:
     dependencies:
       module:
         - node
+  unique_issue_id:
+    label: 'Diary number or Unique ID'
+    datasource_id: 'entity:node'
+    property_path: unique_issue_id
+    type: string
 datasource_settings:
   'entity:node':
     bundles:
@@ -215,6 +220,7 @@ processor_settings:
   top_category_id: {  }
   trustee_name: {  }
   trustee_title: {  }
+  unique_issue_id: {  }
 tracker_settings:
   default:
     indexing_order: fifo
