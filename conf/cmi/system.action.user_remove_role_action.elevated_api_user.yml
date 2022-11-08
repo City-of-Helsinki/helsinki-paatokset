@@ -1,0 +1,14 @@
+uuid: 398715b9-afa1-4894-bcca-908da18bf1c7
+langcode: fi
+status: true
+dependencies:
+  config:
+    - user.role.elevated_api_user
+  module:
+    - user
+id: user_remove_role_action.elevated_api_user
+label: 'Poista rooli Elevated API user valituilta käyttäjiltä'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: elevated_api_user

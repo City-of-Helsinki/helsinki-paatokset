@@ -1,0 +1,14 @@
+uuid: 32166cb3-2b95-4da0-8d51-7b19dee578b4
+langcode: fi
+status: true
+dependencies:
+  config:
+    - user.role.elevated_api_user
+  module:
+    - user
+id: user_add_role_action.elevated_api_user
+label: 'Add the Elevated API user role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: elevated_api_user
