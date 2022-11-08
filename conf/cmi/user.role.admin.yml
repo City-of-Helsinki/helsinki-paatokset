@@ -41,6 +41,7 @@ dependencies:
     - menu_link_attributes
     - menu_link_content
     - node
+    - paatokset_ahjo_openid
     - paatokset_ahjo_proxy
     - paragraphs
     - paragraphs_library
@@ -65,6 +66,7 @@ is_admin: null
 permissions:
   - 'access administration pages'
   - 'access ahjo documents'
+  - 'access ahjo openid token'
   - 'access ahjo proxy'
   - 'access content'
   - 'access content overview'
@@ -76,6 +78,7 @@ permissions:
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
+  - 'administer ahjo openid'
   - 'administer blocks'
   - 'administer eu cookie compliance categories'
   - 'administer eu cookie compliance popup'
