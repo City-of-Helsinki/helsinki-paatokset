@@ -679,7 +679,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function processBatchItem($data, &$context) {
     if (!empty($data['item_id'])) {
-      $context['message'] = 'Importing item number ' . $data['count'] . 'with ID: ' . $data['item_id'];
+      $context['message'] = 'Importing item number ' . $data['count'] . ' with ID: ' . $data['item_id'];
     }
     else {
       $context['message'] = 'Importing item number ' . $data['count'];
