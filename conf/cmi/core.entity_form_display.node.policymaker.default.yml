@@ -161,11 +161,11 @@ content:
           link_title: 'Katso suurempi kartta'
           target: true
         imagecache_external_image:
+          imagecache_external_link: ''
           imagecache_external_style: ''
-          imagecache_external_link: ''
         imagecache_external_responsive_image:
-          imagecache_external_responsive_style: content_cards
           imagecache_external_link: ''
+          imagecache_external_responsive_style: content_cards
         meeting_video_embed:
           iframe_title: 'Meeting video'
           link_title: 'View all meeting recordings'

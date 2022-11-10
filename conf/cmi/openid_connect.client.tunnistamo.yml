@@ -12,6 +12,7 @@ plugin: tunnistamo
 settings:
   client_id: helfi-paatokset-dev
   client_secret: 06426526-4e68-41c2-81a3-fe22ec8c318b
+  iss_allowed_domains: ''
   is_production: 0
   auto_login: 0
   environment_url: 'https://tunnistamo.test.hel.ninja'

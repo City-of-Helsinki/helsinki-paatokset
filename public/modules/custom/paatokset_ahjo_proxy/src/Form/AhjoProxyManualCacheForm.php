@@ -111,7 +111,7 @@ class AhjoProxyManualCacheForm extends FormBase {
     $delete_urls = explode(PHP_EOL, $delete);
     foreach ($delete_urls as $delete_url) {
       $delete_url = trim($delete_url);
-      $delete_key = $set_key = $this->getCacheKey($delete_url);
+      $delete_key = $this->getCacheKey($delete_url);
       $this->dataCache->delete($delete_key);
       $this->messenger()->addMessage(
         $this->t('Deleted %url from dataCache', [
