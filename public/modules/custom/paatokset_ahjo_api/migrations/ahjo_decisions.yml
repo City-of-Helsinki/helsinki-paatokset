@@ -64,6 +64,14 @@ source:
       label: Motion
       selector: Motion
     -
+      name: decision_history
+      label: Decision history
+      selector: DecisionHistoryHTML
+    -
+      name: decision_history_pdf
+      label: Decision history PDF
+      selector: DecisionHistoryPDF
+    -
       name: organization
       label: Organization
       selector: Organization
@@ -181,6 +189,14 @@ process:
   field_decision_motion_parsed/format:
     plugin: default_value
     default_value: full_html
+  field_decision_history/value: decision_history
+  field_decision_history/format:
+    plugin: default_value
+    default_value: plain_text
+  field_decision_history_pdf:
+    plugin: callback
+    callable: json_encode
+    source: decision_history_pdf
   field_decision_attachments:
     plugin: callback
     callable: json_encode
