@@ -114,7 +114,7 @@ paatokset_ahjo_proxy.get_record:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::getRecord'
   requirements:
-    _permission: 'access ahjo documents'
+    _permission: 'access ahjo proxy'
   methods: [GET]
   options:
     _auth: ['cookie', 'key_auth']
