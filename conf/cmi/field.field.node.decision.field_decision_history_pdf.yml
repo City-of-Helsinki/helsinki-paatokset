@@ -1,0 +1,21 @@
+uuid: 4d59e412-7e96-4d09-b927-4190e4fa844c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_history_pdf
+    - node.type.decision
+  module:
+    - json_field
+id: node.decision.field_decision_history_pdf
+field_name: field_decision_history_pdf
+entity_type: node
+bundle: decision
+label: 'Decision history PDF'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
