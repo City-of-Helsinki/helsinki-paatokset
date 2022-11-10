@@ -1139,6 +1139,7 @@ class CaseService {
 
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
+    $history = $this->selectedDecision->get('field_decision_history')->value;
 
     $content_dom = new \DOMDocument();
     if (!empty($content)) {
@@ -1151,6 +1152,12 @@ class CaseService {
       @$motion_dom->loadHTML($motion);
     }
     $motion_xpath = new \DOMXPath($motion_dom);
+
+    $history_dom = new \DOMDocument();
+    if (!empty($history)) {
+      @$history_dom->loadHTML($history);
+    }
+    $history_xpath = new \DOMXPath($history_dom);
 
     // If content is not set, use motion html instead.
     // Keep $content variable NULL so we can use that for checking later.
@@ -1210,6 +1217,19 @@ class CaseService {
       $output['presenter_info'] = [
         'heading' => t('Presenter information'),
         'content' => ['#markup' => $presenter_content],
+      ];
+    }
+
+    // Decision history.
+    $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
+    $decision_history_content = NULL;
+    if ($decision_history) {
+      $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
+    }
+    if ($decision_history_content) {
+      $output['accordions'][] = [
+        'heading' => t('Decision history'),
+        'content' => ['#markup' => $decision_history_content],
       ];
     }
 
@@ -1355,6 +1375,44 @@ class CaseService {
       }
 
       $output .= $current_item->ownerDocument->saveHTML($current_item);
+    }
+
+    return $output;
+  }
+
+  /**
+   * Get HTML content for decision history.
+   *
+   * @param \DOMNodeList $list
+   *   Xpath query results.
+   *
+   * @return string|null
+   *   HTML content as string, or NULL if content is empty.
+   */
+  private function getDecisionHistoryHtmlContent(\DOMNodeList $list): ?string {
+    $output = NULL;
+
+    $list = $list->item(0)->childNodes;
+    if ($list->length < 1) {
+      return NULL;
+    }
+
+    foreach ($list as $item) {
+      if (!$item instanceof \DOMNode) {
+        continue;
+      }
+
+      // Skip over any empty elements.
+      if (empty($item->nodeValue)) {
+        continue;
+      }
+
+      // Skip over H1 elements.
+      if ($item->nodeName === 'h1') {
+        continue;
+      }
+
+      $output .= $item->ownerDocument->saveHTML($item);
     }
 
     return $output;
