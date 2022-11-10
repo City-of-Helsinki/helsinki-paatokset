@@ -706,6 +706,9 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_meeting_date');
         $query->notExists('field_meeting_id');
       }
+      elseif ($logic === 'history') {
+        $query->notExists('field_decision_history');
+      }
       elseif ($logic === 'uniqueid') {
         $query->notExists('field_unique_id');
       }
@@ -737,8 +740,15 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
 
       $endpoint = NULL;
+      $decision_endpoint = NULL;
       if (!$use_local_data) {
         $endpoint = 'records/' . $node->field_decision_native_id->value;
+        if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+          $decision_endpoint = 'decisions/single/' . $node->field_decision_native_id->value;
+        }
+        else {
+          $decision_endpoint = 'decisions/' . $node->field_decision_native_id->value;
+        }
       }
 
       $count++;
@@ -749,6 +759,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         'case_id' => $case_id,
         'meeting_id' => $meeting_id,
         'endpoint' => $endpoint,
+        'decision_endpoint' => $decision_endpoint,
       ];
 
       $operations[] = [

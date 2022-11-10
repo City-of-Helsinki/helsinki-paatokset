@@ -963,6 +963,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $record_content = $record_content['records'][0];
     }
 
+    // Update decision history if the field is empty.
+    if (!empty($data['decision_endpoint']) && $node->hasField('field_decision_history') && $node->get('field_decision_history')->isEmpty()) {
+      $ahjo_proxy->updateDecisionHistoryContent($node, $data['decision_endpoint']);
+    }
+
     if (!empty($record_content)) {
       $ahjo_proxy->updateDecisionRecordData($node, $record_content);
     }
@@ -999,6 +1004,42 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $node->save();
+  }
+
+  /**
+   * Update decision history from endpoint.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to update.
+   * @param string $endpoint
+   *   Endpoint to get data from.
+   */
+  protected function updateDecisionHistoryContent(NodeInterface &$node, string $endpoint): void {
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $content = $ahjo_proxy->getData($endpoint, NULL);
+
+    // Local data is formatted a bit differently.
+    if (isset($content['decisions'])) {
+      $content = $content['decisions'][0];
+    }
+
+    $updated = FALSE;
+    if (!empty($content['DecisionHistoryHTML'])) {
+      $node->set('field_decision_history', [
+        'value' => $content['DecisionHistoryHTML'],
+        'format' => 'plain_text',
+      ]);
+      $updated = TRUE;
+    }
+    if (!empty($content['DecisionHistoryPDF'])) {
+      $node->set('field_decision_history_pdf', json_encode($content['DecisionHistoryPDF']));
+      $updated = TRUE;
+    }
+
+    if ($updated) {
+      $node->save();
+    }
   }
 
   /**
