@@ -82,22 +82,17 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
    *   TRUE if values match a disallowed decision config entity.
    */
   protected function checkIfDisallowed(string $dm_id, string $date_str, string $section): bool {
+    $config = \Drupal::config('paatokset_ahjo_api.disallowed_prefixes');
+
     // Check if decision years match before proceeding.
-    $years = [
-      '2017',
-      '2018',
-      '2019',
-    ];
+    $years = explode(',', $config->get('years'));
     $year = date('Y', strtotime($date_str));
     if (!in_array($year, $years)) {
       return FALSE;
     }
 
     // Check ID prefix matches before loading disallowed decision entities.
-    $dm_ids = [
-      'U320200',
-      'U420300',
-    ];
+    $dm_ids = explode(',', $config->get('id_prefixes'));
     $id_match = FALSE;
     foreach ($dm_ids as $id_prefix) {
       if (strpos($dm_id, $id_prefix) !== FALSE) {
