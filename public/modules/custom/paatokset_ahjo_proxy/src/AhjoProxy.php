@@ -2420,10 +2420,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   ID for entity.
    */
   public function invalideCacheForProxy(string $endpoint, string $id): void {
-    $url = self::API_BASE_URL . $endpoint . '/' . strtoupper($id);
-    $this->dataCache->invalidate($url);
-    $this->logger->info('Invalidated cache for URL: @url', [
+    // Proxy URLs used for migrations have an empty query string.
+    $url = self::API_BASE_URL . $endpoint . '/' . strtoupper($id) . '?';
+    $delete_key = $this->getCacheKey($url);
+    $this->dataCache->invalidate($delete_key);
+    $this->logger->info('Invalidated cache for URL: @url with @key', [
       '@url' => $url,
+      '@key' => $delete_key,
     ]);
   }
 
