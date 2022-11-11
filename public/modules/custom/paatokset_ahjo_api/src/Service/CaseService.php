@@ -1392,7 +1392,6 @@ class CaseService {
   private function getDecisionHistoryHtmlContent(\DOMNodeList $list): ?string {
     $output = NULL;
 
-    $list = $list->item(0)->childNodes;
     if ($list->length < 1) {
       return NULL;
     }
@@ -1412,7 +1411,23 @@ class CaseService {
         continue;
       }
 
-      $output .= $item->ownerDocument->saveHTML($item);
+      // Skip over diary number field.
+      if ($item->getAttribute('class') === 'DnroTmuoto') {
+        continue;
+      }
+
+      if ($item->nodeName === 'h2') {
+        $output .= '<h4 class="decision-history-title">' .  $item->nodeValue . '</h4>';
+      }
+      elseif ($item->nodeName === 'h3') {
+        $output .= '<h5 class="decision-history-title">' .  $item->nodeValue . '</h5>';
+      }
+      elseif ($item->getAttribute('class') === 'SisaltoSektio' || $item->getAttribute('class') === 'paatoshistoria') {
+        $output .= $this->getDecisionHistoryHtmlContent($item->childNodes);
+      }
+      else {
+        $output .= $item->ownerDocument->saveHTML($item);
+      }
     }
 
     return $output;
