@@ -64,4 +64,5 @@ final class ImageDataUrlHandler extends FilterBase implements ContainerFactoryPl
     }
     return $result;
   }
+
 }
