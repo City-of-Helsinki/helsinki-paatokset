@@ -1426,10 +1426,10 @@ class CaseService {
       }
 
       if ($item->nodeName === 'h2') {
-        $output .= '<h4 class="decision-history-title">' .  $item->nodeValue . '</h4>';
+        $output .= '<h4 class="decision-history-title">' . $item->nodeValue . '</h4>';
       }
       elseif ($item->nodeName === 'h3') {
-        $output .= '<h5 class="decision-history-title">' .  $item->nodeValue . '</h5>';
+        $output .= '<h5 class="decision-history-title">' . $item->nodeValue . '</h5>';
       }
       elseif ($item->getAttribute('class') === 'SisaltoSektio' || $item->getAttribute('class') === 'paatoshistoria') {
         $output .= $this->getDecisionHistoryHtmlContent($item->childNodes);
