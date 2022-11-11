@@ -4,17 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\Filter;
 
-use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\Render\Markup;
-use Drupal\Core\Render\RenderContext;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
-use Drupal\helfi_api_base\Link\UrlHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,7 +34,6 @@ final class ImageDataUrlHandler extends FilterBase implements ContainerFactoryPl
     $plugin_definition
   ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->renderer = $container->get('renderer');
 
     return $instance;
   }
