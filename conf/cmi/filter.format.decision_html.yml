@@ -1,0 +1,40 @@
+uuid: 1f4f1d27-68c3-4f84-a397-58fe20d0a51d
+langcode: fi
+status: true
+dependencies:
+  module:
+    - helfi_api_base
+    - paatokset_ahjo_api
+    - token_filter
+name: 'Decision HTML'
+format: decision_html
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class> <footer class> <br> <div class> <span aria-hidden class> <img src alt data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style width height> <a href hreflang !href accesskey id rel target title data-design data-is-external data-link-text data-protocol data-selected-icon class> <pre> <iframe allowfullscreen mozallowfullscreen src webkitallowfullscreen id width height frameborder> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  helfi_link_converter:
+    id: helfi_link_converter
+    provider: helfi_api_base
+    status: true
+    weight: -10
+    settings: {  }
+  paatokset_image_data_url_handler:
+    id: paatokset_image_data_url_handler
+    provider: paatokset_ahjo_api
+    status: true
+    weight: -10
+    settings: {  }
+  token_filter:
+    id: token_filter
+    provider: token_filter
+    status: false
+    weight: 0
+    settings:
+      replace_empty: '0'

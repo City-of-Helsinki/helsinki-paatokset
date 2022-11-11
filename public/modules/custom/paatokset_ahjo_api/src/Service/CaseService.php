@@ -1178,7 +1178,7 @@ class CaseService {
     if ($main_content) {
       $output['main'] = [
         '#type' => 'processed_text',
-        '#format' => 'full_html',
+        '#format' => 'decision_html',
         '#text' => $main_content,
       ];
     }
@@ -1233,7 +1233,7 @@ class CaseService {
         'heading' => t('Decision history'),
         'content' => [
           '#type' => 'processed_text',
-          '#format' => 'full_html',
+          '#format' => 'decision_html',
           '#text' => $decision_history_content,
         ],
       ];
@@ -1259,7 +1259,7 @@ class CaseService {
         'heading' => t('Appeal process'),
         'content' => [
           '#type' => 'processed_text',
-          '#format' => 'full_html',
+          '#format' => 'decision_html',
           '#text' => $appeal_content,
         ],
       ];
