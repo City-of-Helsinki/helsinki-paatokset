@@ -1177,7 +1177,9 @@ class CaseService {
 
     if ($main_content) {
       $output['main'] = [
-        '#markup' => $main_content,
+        '#type' => 'processed_text',
+        '#format' => 'full_html',
+        '#text' => $main_content,
       ];
     }
 
@@ -1229,7 +1231,11 @@ class CaseService {
     if ($decision_history_content) {
       $output['accordions'][] = [
         'heading' => t('Decision history'),
-        'content' => ['#markup' => $decision_history_content],
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'full_html',
+          '#text' => $decision_history_content,
+        ],
       ];
     }
 
@@ -1251,7 +1257,11 @@ class CaseService {
     if ($appeal_content) {
       $output['accordions'][] = [
         'heading' => t('Appeal process'),
-        'content' => ['#markup' => $appeal_content],
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'full_html',
+          '#text' => $appeal_content,
+        ],
       ];
     }
 
@@ -1325,7 +1335,13 @@ class CaseService {
         continue;
       }
 
-      $section = ['content' => ['#markup' => NULL]];
+      $section = [
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'full_html',
+          '#text' => NULL,
+        ],
+      ];
       $heading_found = FALSE;
       foreach ($node->childNodes as $node) {
         if (!$heading_found && $node->nodeName === 'h3') {
@@ -1334,7 +1350,7 @@ class CaseService {
           continue;
         }
 
-        $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
+        $section['content']['#text'] .= $node->ownerDocument->saveHtml($node);
       }
 
       $output[] = $section;
