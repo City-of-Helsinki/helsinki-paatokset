@@ -14,6 +14,7 @@ do
   drush ahjo-proxy:update-decisions -v
   drush ahjo-proxy:update-decisions --logic=uniqueid --limit=100 -v
   drush ahjo-proxy:update-decisions --logic=outdated --limit=100 -v
+  drush ahjo-proxy:update-decisions --logic=history --limit=100 -v
   # Sleep for 5 minutes.
   sleep 300
 done

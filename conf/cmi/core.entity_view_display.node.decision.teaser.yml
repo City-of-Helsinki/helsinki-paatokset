@@ -14,6 +14,8 @@ dependencies:
     - field.field.node.decision.field_decision_content
     - field.field.node.decision.field_decision_content_parsed
     - field.field.node.decision.field_decision_date
+    - field.field.node.decision.field_decision_history
+    - field.field.node.decision.field_decision_history_pdf
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
     - field.field.node.decision.field_decision_motion_parsed
@@ -63,6 +65,8 @@ hidden:
   field_decision_content: true
   field_decision_content_parsed: true
   field_decision_date: true
+  field_decision_history: true
+  field_decision_history_pdf: true
   field_decision_meeting: true
   field_decision_motion: true
   field_decision_motion_parsed: true

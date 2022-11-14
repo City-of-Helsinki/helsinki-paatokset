@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.decision_html
     - filter.format.full_html
     - media.type.ahjo_document
     - media.type.declaration_of_affiliation
@@ -241,6 +242,7 @@ permissions:
   - 'update content translations'
   - 'update media'
   - 'use menu link attributes'
+  - 'use text format decision_html'
   - 'use text format full_html'
   - 'use text format minimal'
   - 'use views bulk edit'

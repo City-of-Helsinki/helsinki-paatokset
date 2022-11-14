@@ -13,6 +13,8 @@ dependencies:
     - field.field.node.decision.field_decision_content
     - field.field.node.decision.field_decision_content_parsed
     - field.field.node.decision.field_decision_date
+    - field.field.node.decision.field_decision_history
+    - field.field.node.decision.field_decision_history_pdf
     - field.field.node.decision.field_decision_meeting
     - field.field.node.decision.field_decision_motion
     - field.field.node.decision.field_decision_motion_parsed
@@ -131,6 +133,20 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_decision_history:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 36
+    region: content
+  field_decision_history_pdf:
+    type: json
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 35
     region: content
   field_decision_meeting:
     type: json

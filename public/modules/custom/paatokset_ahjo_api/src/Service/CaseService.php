@@ -1139,6 +1139,7 @@ class CaseService {
 
     $content = $this->selectedDecision->get('field_decision_content')->value;
     $motion = $this->selectedDecision->get('field_decision_motion')->value;
+    $history = $this->selectedDecision->get('field_decision_history')->value;
 
     $content_dom = new \DOMDocument();
     if (!empty($content)) {
@@ -1151,6 +1152,12 @@ class CaseService {
       @$motion_dom->loadHTML($motion);
     }
     $motion_xpath = new \DOMXPath($motion_dom);
+
+    $history_dom = new \DOMDocument();
+    if (!empty($history)) {
+      @$history_dom->loadHTML($history);
+    }
+    $history_xpath = new \DOMXPath($history_dom);
 
     // If content is not set, use motion html instead.
     // Keep $content variable NULL so we can use that for checking later.
@@ -1170,7 +1177,9 @@ class CaseService {
 
     if ($main_content) {
       $output['main'] = [
-        '#markup' => $main_content,
+        '#type' => 'processed_text',
+        '#format' => 'decision_html',
+        '#text' => $main_content,
       ];
     }
 
@@ -1213,6 +1222,23 @@ class CaseService {
       ];
     }
 
+    // Decision history.
+    $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
+    $decision_history_content = NULL;
+    if ($decision_history) {
+      $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
+    }
+    if ($decision_history_content) {
+      $output['accordions'][] = [
+        'heading' => t('Decision history'),
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'decision_html',
+          '#text' => $decision_history_content,
+        ],
+      ];
+    }
+
     // Add decision date to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
@@ -1231,7 +1257,11 @@ class CaseService {
     if ($appeal_content) {
       $output['accordions'][] = [
         'heading' => t('Appeal process'),
-        'content' => ['#markup' => $appeal_content],
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'decision_html',
+          '#text' => $appeal_content,
+        ],
       ];
     }
 
@@ -1305,7 +1335,13 @@ class CaseService {
         continue;
       }
 
-      $section = ['content' => ['#markup' => NULL]];
+      $section = [
+        'content' => [
+          '#type' => 'processed_text',
+          '#format' => 'full_html',
+          '#text' => NULL,
+        ],
+      ];
       $heading_found = FALSE;
       foreach ($node->childNodes as $node) {
         if (!$heading_found && $node->nodeName === 'h3') {
@@ -1314,7 +1350,7 @@ class CaseService {
           continue;
         }
 
-        $section['content']['#markup'] .= $node->ownerDocument->saveHtml($node);
+        $section['content']['#text'] .= $node->ownerDocument->saveHtml($node);
       }
 
       $output[] = $section;
@@ -1355,6 +1391,59 @@ class CaseService {
       }
 
       $output .= $current_item->ownerDocument->saveHTML($current_item);
+    }
+
+    return $output;
+  }
+
+  /**
+   * Get HTML content for decision history.
+   *
+   * @param \DOMNodeList $list
+   *   Xpath query results.
+   *
+   * @return string|null
+   *   HTML content as string, or NULL if content is empty.
+   */
+  private function getDecisionHistoryHtmlContent(\DOMNodeList $list): ?string {
+    $output = NULL;
+
+    if ($list->length < 1) {
+      return NULL;
+    }
+
+    foreach ($list as $item) {
+      if (!$item instanceof \DOMNode) {
+        continue;
+      }
+
+      // Skip over any empty elements.
+      if (empty($item->nodeValue)) {
+        continue;
+      }
+
+      // Skip over H1 elements.
+      if ($item->nodeName === 'h1') {
+        continue;
+      }
+
+      // Skip over diary number field.
+      if ($item->getAttribute('class') === 'DnroTmuoto') {
+        continue;
+      }
+
+      if ($item->nodeName === 'h2') {
+        $output .= '<h4 class="decision-history-title">' . $item->nodeValue . '</h4>';
+      }
+      elseif ($item->nodeName === 'h3') {
+        $output .= '<h5 class="decision-history-title">' . $item->nodeValue . '</h5>';
+      }
+      elseif ($item->getAttribute('class') === 'SisaltoSektio' || $item->getAttribute('class') === 'paatoshistoria') {
+        $output .= $this->getDecisionHistoryHtmlContent($item->childNodes);
+      }
+      else {
+        $output .= $item->ownerDocument->saveHTML($item);
+      }
     }
 
     return $output;
