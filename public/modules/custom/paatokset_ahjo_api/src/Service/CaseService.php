@@ -833,12 +833,12 @@ class CaseService {
       // Override title if attachment is not public.
       if ($publicity_class !== 'Julkinen') {
         if (!empty($data['SecurityReasons'])) {
-          $title = t('Non-public: @reasons', [
+          $title = t('Confidential: @reasons', [
             '@reasons' => implode(', ', $data['SecurityReasons']),
           ]);
         }
         else {
-          $title = t('Non-public');
+          $title = t('Confidential');
         }
       }
 
