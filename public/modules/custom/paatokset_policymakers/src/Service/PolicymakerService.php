@@ -1207,7 +1207,7 @@ class PolicymakerService {
     // Meeting metadata.
     $metadata = [];
     if ($meeting->hasField('field_meeting_date') && !$meeting->get('field_meeting_date')->isEmpty()) {
-      $metadata['date'] = date('d.m.Y k\l\o H:i', strtotime($meeting->get('field_meeting_date')->value));
+      $metadata['date'] = date('d.m.Y - H:i', $meeting->get('field_meeting_date')->date->getTimeStamp());
     }
     if ($meeting->hasField('field_meeting_location') && !$meeting->get('field_meeting_location')->isEmpty()) {
       $metadata['location'] = $meeting->get('field_meeting_location')->value;
@@ -1361,11 +1361,9 @@ class PolicymakerService {
         $meeting_timestamp = strtotime($nodes[$meeting_id]->get('field_meeting_date')->value);
         $meeting_year = date('Y', $meeting_timestamp);
         $dateLong = date('d.m.Y', $meeting_timestamp);
-        $dateShort = date('m - Y', $meeting_timestamp);
 
         $result = [
           'publish_date' => $dateLong,
-          'publish_date_short' => $dateShort,
           'title' => $entity->label() . ' (PDF)',
           'type' => 'minutes-of-discussion',
         ];
