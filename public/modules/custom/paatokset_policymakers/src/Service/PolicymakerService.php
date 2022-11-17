@@ -1334,8 +1334,7 @@ class PolicymakerService {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId)
-      ->sort('field_meeting_date', 'DESC');
+      ->condition('field_meeting_dm_id', $this->policymakerId);
 
     if ($limit) {
       $query->range('0', $limit);
@@ -1356,9 +1355,10 @@ class PolicymakerService {
     $nodes = Node::loadMultiple($meeting_ids);
 
     $transformedResults = [];
+
     foreach ($meeting_minutes as $meeting_id => $meeting) {
       foreach ($meeting as $entity) {
-        $meeting_timestamp = strtotime($nodes[$meeting_id]->get('field_meeting_date')->value);
+        $meeting_timestamp = $nodes[$meeting_id]->get('field_meeting_date')->date->getTimeStamp();
         $meeting_year = date('Y', $meeting_timestamp);
         $dateLong = date('d.m.Y', $meeting_timestamp);
 
@@ -1387,6 +1387,20 @@ class PolicymakerService {
           $transformedResults[] = $result;
         }
       }
+    }
+
+    // Sort list here because otherwise they are sorted by meeting NIDs.
+    if ($byYear) {
+      foreach ($transformedResults as $key => $year) {
+        usort($transformedResults[$key], function ($item1, $item2) {
+          return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
+        });
+      }
+    }
+    else {
+      usort($transformedResults, function ($item1, $item2) {
+        return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
+      });
     }
 
     return $transformedResults;
