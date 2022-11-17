@@ -5,3 +5,4 @@ ignored_config_entities:
   - paatokset_ahjo_api.default_texts
   - 'system.site:page.front'
   - paatokset_ahjo_proxy.blacklist
+  - paatokset_ahjo_api.disallowed_decisions.*
