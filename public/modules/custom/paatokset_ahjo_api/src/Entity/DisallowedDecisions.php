@@ -32,7 +32,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "label",
  *     "configuration",
  *   },
- *   admin_permission = "administer content",
+ *   admin_permission = "administer paatokset",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

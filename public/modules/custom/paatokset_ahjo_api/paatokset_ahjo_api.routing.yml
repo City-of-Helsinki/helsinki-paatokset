@@ -4,7 +4,7 @@ paatokset_ahjo_api.default_texts:
     _form: \Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm
     _title: 'Default text element settings.'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer paatokset'
 
 paatokset_ahjo_api.disallowed_prefixes:
   path: '/admin/config/system/disallowed-decision-prefices'
@@ -12,7 +12,7 @@ paatokset_ahjo_api.disallowed_prefixes:
     _form: \Drupal\paatokset_ahjo_api\Form\DisallowedDecisionsPrefixesForm
     _title: 'Disallowed Decision prefixes.'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer paatokset'
 
 paatokset_case.fi:
   path: 'asia/{case_id}'
@@ -83,7 +83,7 @@ paatokset_ahjo_api.queue_list:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::listQueue'
     id: all
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer paatokset'
 
 paatokset_ahjo_api.case_ajax:
   path: 'ahjo_api/case/{case_id}'
