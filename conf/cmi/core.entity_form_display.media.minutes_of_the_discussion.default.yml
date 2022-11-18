@@ -3,10 +3,12 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - entity_browser.browser.meeting_browser
     - field.field.media.minutes_of_the_discussion.field_document
     - field.field.media.minutes_of_the_discussion.field_meetings_reference
     - media.type.minutes_of_the_discussion
   module:
+    - entity_browser
     - file
     - path
 id: media.minutes_of_the_discussion.default
@@ -28,14 +30,19 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
   field_meetings_reference:
-    type: entity_reference_autocomplete
+    type: entity_browser_entity_reference
     weight: 8
     region: content
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      entity_browser: meeting_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: false
+      field_widget_remove: true
+      field_widget_replace: true
+      open: false
+      field_widget_display_settings:
+        view_mode: tiny_teaser
+      selection_mode: selection_append
     third_party_settings: {  }
   langcode:
     type: language_select
