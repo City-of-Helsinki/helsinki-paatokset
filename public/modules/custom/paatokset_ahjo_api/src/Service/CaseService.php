@@ -1625,7 +1625,7 @@ class CaseService {
    */
   public function decisionQuery(array $params, bool $load_nodes = TRUE): array {
     $params['type'] = self::DECISION_NODE_TYPE;
-    $params['sort_by'] = 'field_decision_date';
+    $params['sort_by'] = 'field_meeting_date';
     return $this->query($params, $load_nodes);
   }
 
