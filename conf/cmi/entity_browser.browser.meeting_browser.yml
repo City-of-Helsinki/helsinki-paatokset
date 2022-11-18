@@ -1,0 +1,31 @@
+uuid: caf7a314-0eda-40d3-bac1-27dead08dda6
+langcode: fi
+status: true
+dependencies:
+  config:
+    - views.view.meetings_browser
+  module:
+    - views
+name: meeting_browser
+label: 'Meeting browser'
+display: modal
+display_configuration:
+  width: '950'
+  height: '600'
+  link_text: 'Select entities'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  8d4f53f4-7c9b-42e9-b582-5e75857782f8:
+    id: view
+    uuid: 8d4f53f4-7c9b-42e9-b582-5e75857782f8
+    label: 'Select meeting'
+    weight: 1
+    settings:
+      submit_text: 'Select meeting'
+      auto_select: false
+      view: meetings_browser
+      view_display: entity_browser_1
