@@ -8,20 +8,20 @@ dependencies:
 id: article_pattern_fi
 label: 'Article pattern FI'
 type: 'canonical_entities:node'
-pattern: '/kuulutukset-ilmoitukset-ja-julkipanot/[node:title]'
+pattern: '/kuulutukset-ja-ilmoitukset/[node:title]'
 selection_criteria:
-  b63a5ee5-5965-4c7e-87b7-e1b6f41f581a:
+  94790714-c8ac-4d50-8f0e-b632a4123be6:
     id: 'entity_bundle:node'
     negate: false
-    uuid: b63a5ee5-5965-4c7e-87b7-e1b6f41f581a
+    uuid: 94790714-c8ac-4d50-8f0e-b632a4123be6
     context_mapping:
       node: node
     bundles:
       article: article
-  bcc41f37-b596-43fe-9f63-aa3fcaf352e3:
+  f58e0234-29fd-429a-b310-4ce188795937:
     id: language
     negate: false
-    uuid: bcc41f37-b596-43fe-9f63-aa3fcaf352e3
+    uuid: f58e0234-29fd-429a-b310-4ce188795937
     context_mapping:
       language: 'node:langcode:language'
     langcodes:
