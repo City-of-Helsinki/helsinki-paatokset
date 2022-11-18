@@ -741,10 +741,18 @@ class CaseService {
    */
   private function formatDecisionLabel(NodeInterface $node): string {
     $org_label = NULL;
+
+    // Get organization name directly from policymaker node.
     if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
+      $currentLanguage = $this->language;
       /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
       $policymakerService = \Drupal::service('paatokset_policymakers');
-      $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value);
+      $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value, $currentLanguage, FALSE);
+    }
+
+    // If policymaker node cannot be found, use value from decision node.
+    if (!$org_label && $node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
+      $org_label = $node->get('field_dm_org_name')->value;
     }
 
     $meeting_number = $node->field_meeting_sequence_number->value;
