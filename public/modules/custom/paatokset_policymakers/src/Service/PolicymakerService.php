@@ -15,7 +15,6 @@ use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -883,25 +882,38 @@ class PolicymakerService {
    * @param string $role
    *   Role to translate.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   Translated string or
+   * @return string
+   *   Translated string or original.
    */
-  public function getTranslationForRole(string $role): TranslatableMarkup {
+  public function getTranslationForRole(string $role): string {
+    $context = ['context' => 'Council group members list'];
     switch ($role) {
       case 'Jäsen':
-        $role = 'Councillor';
+        $translation = t('Councillor', [], $context);
         break;
+
       case 'Varajäsen':
-        $role = 'Deputy councillor';
+        $translation = t('Deputy councillor', [], $context);
         break;
+
       case 'Puheenjohtaja':
-        $role = 'Chairman';
+        $translation = t('Chairman', [], $context);
         break;
+
       case 'Varapuheenjohtaja':
-        $role = 'Vice chairman';
+        $translation = t('Vice chairman', [], $context);
+        break;
+
+      default:
+        $translation = NULL;
         break;
     }
-    return t($role, [], ['context' => 'Council group members list']);
+
+    if ($translation) {
+      return (string) $translation;
+    }
+
+    return $role;
   }
 
   /**
