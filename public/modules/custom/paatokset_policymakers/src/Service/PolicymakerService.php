@@ -15,6 +15,7 @@ use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -831,12 +832,14 @@ class PolicymakerService {
           $url = NULL;
         }
 
+        $role = $this->getTranslationForRole($composition[$name]['Role']);
+
         $results[] = [
           'first_name' => $node->get('field_first_name')->value,
           'last_name' => $node->get('field_last_name')->value,
           'image_url' => $image_url,
           'url' => $url,
-          'role' => $composition[$name]['Role'],
+          'role' => $role,
           'email' => $node->get('field_trustee_email')->value,
           'party' => $node->get('field_trustee_council_group')->value,
           'deputy_of' => $composition[$name]['DeputyOf'],
@@ -859,19 +862,46 @@ class PolicymakerService {
       $bits = explode(' ', $data['Name']);
       $last_name = array_pop($bits);
       $first_name = implode(' ', $bits);
-
+      $role = $this->getTranslationForRole($data['Role']);
       $results[] = [
         'first_name' => $first_name,
         'last_name' => $last_name,
         'image_url' => NULL,
         'url' => NULL,
-        'role' => $data['Role'],
+        'role' => $role,
         'email' => NULL,
         'party' => NULL,
         'deputy_of' => $data['DeputyOf'],
       ];
     }
     return $results;
+  }
+
+  /**
+   * Get translation for role string.
+   *
+   * @param string $role
+   *   Role to translate.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Translated string or
+   */
+  public function getTranslationForRole(string $role): TranslatableMarkup {
+    switch ($role) {
+      case 'Jäsen':
+        $role = 'Councillor';
+        break;
+      case 'Varajäsen':
+        $role = 'Deputy councillor';
+        break;
+      case 'Puheenjohtaja':
+        $role = 'Chairman';
+        break;
+      case 'Varapuheenjohtaja':
+        $role = 'Vice chairman';
+        break;
+    }
+    return t($role, [], ['context' => 'Council group members list']);
   }
 
   /**
