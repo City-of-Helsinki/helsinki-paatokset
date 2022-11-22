@@ -1030,8 +1030,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     $content = $ahjo_proxy->getData($endpoint, NULL);
 
     // Local data is formatted a bit differently.
-    if (isset($content['decisions'])) {
+    if (!empty($content['decisions'])) {
       $content = $content['decisions'][0];
+    }
+
+    if (empty($content)) {
+      return;
     }
 
     $updated = FALSE;
@@ -1153,6 +1157,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     // If case doesn't have a title, just reuse own title.
     if ($case->hasField('field_no_title_for_case') && $case->get('field_no_title_for_case')->value) {
       $node->set('field_decision_case_title', $node->field_full_title->value);
+    }
+    else {
+      $node->set('field_decision_case_title', $case->field_full_title->value);
     }
 
     if (!$set_record) {
