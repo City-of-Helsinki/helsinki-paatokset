@@ -520,29 +520,30 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_meeting_sequence_number_value:
+          id: field_meeting_sequence_number_value
+          table: node__field_meeting_sequence_number
+          field: field_meeting_sequence_number_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: string
-          operator: contains
-          value: ''
+          plugin_id: numeric
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: title_op
-            label: Title
+            operator_id: field_meeting_sequence_number_value_op
+            label: 'Meeting number'
             description: ''
             use_operator: false
-            operator: title_op
+            operator: field_meeting_sequence_number_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: title
+            identifier: field_meeting_sequence_number_value
             required: false
             remember: false
             multiple: false
@@ -555,6 +556,8 @@ display:
               admin: '0'
               api_user: '0'
               elevated_api_user: '0'
+            min_placeholder: ''
+            max_placeholder: ''
             placeholder: ''
           is_grouped: false
           group_info:
@@ -614,6 +617,57 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_meeting_dm_id_value:
+          id: field_meeting_dm_id_value
+          table: node__field_meeting_dm_id
+          field: field_meeting_dm_id_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_meeting_dm_id_value_op
+            label: 'Decision Maker ID (field_meeting_dm_id)'
+            description: null
+            use_operator: false
+            operator: field_meeting_dm_id_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_meeting_dm_id_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: 'City council meetings'
+            description: ''
+            identifier: field_meeting_dm_id_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: '1'
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Only city council meetings'
+                operator: '='
+                value: '02900'
+              2:
+                title: 'Other meetings'
+                operator: not
+                value: '02900'
+              3:
+                title: ''
+                operator: '='
+                value: ''
       filter_groups:
         operator: AND
         groups:
