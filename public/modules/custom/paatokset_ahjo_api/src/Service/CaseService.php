@@ -415,7 +415,7 @@ class CaseService {
         // Collate votes by council group and type.
         foreach ($json->{$type}->Voters as $voter) {
           if (empty($voter->CouncilGroup)) {
-            $voter->CouncilGroup = (string) t('No Council group');
+            $voter->CouncilGroup = (string) t('No council group');
           }
 
           if (!isset($grouped_by_party[$voter->CouncilGroup])) {
