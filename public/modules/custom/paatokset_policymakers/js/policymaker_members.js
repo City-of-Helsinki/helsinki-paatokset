@@ -128,7 +128,10 @@
             return string.replace(/\s/g, '-').toLowerCase()
           },
           memberAria(first_name, last_name) {
-            return window.Drupal.t('Siirry luottamushenkilön') + ' ' + first_name + ' ' + last_name + ' ' + window.Drupal.t('sivulle')
+            return window.Drupal.t('See profile for @first_name @last_name.', {
+              '@first_name': first_name,
+              '@last_name': last_name,
+            });
           }
         },
         computed: {
@@ -139,7 +142,7 @@
             })
 
             if(!this.active_checkboxes.includes('deputy_member')) {
-              temp_results = temp_results.filter(result => result.role !== 'Varajäsen');
+              temp_results = temp_results.filter(result => result.role !== 'Deputy councillor');
             }
 
             if(this.active_filters.party !== window.Drupal.t('All')) {
@@ -164,7 +167,7 @@
             return window.Drupal.t('Search for member');
           },
           hasDeputies() {
-            return this.members.filter(result => result.role === 'Varajäsen').length > 0;
+            return this.members.filter(result => result.role === 'Deputy councillor').length > 0;
           },
           deputyOf() {
             return window.Drupal.t('Personal deputy of')
