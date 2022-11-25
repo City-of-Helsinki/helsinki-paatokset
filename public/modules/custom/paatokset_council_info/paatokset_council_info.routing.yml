@@ -4,4 +4,4 @@ paatokset_council_info.import:
     _title: 'Councilmember info import'
     _form: '\Drupal\paatokset_council_info\Form\InfoImportForm'
   requirements:
-    _permission: 'administer content'
+    _permission: 'administer paatokset'
