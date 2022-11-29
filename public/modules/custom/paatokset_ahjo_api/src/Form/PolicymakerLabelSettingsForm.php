@@ -98,7 +98,13 @@ class PolicymakerLabelSettingsForm extends ConfigFormBase {
     $config->save();
   }
 
-  private function getPolicymakerLabels() {
+  /**
+   * Get all distinct policymaker label values from database.
+   *
+   * @return array
+   *   List of labels in key value format.
+   */
+  private function getPolicymakerLabels(): array {
     $query = $this->database->select('node__field_organization_type', 'n')
       ->fields('n', ['field_organization_type_value'])
       ->distinct();
@@ -118,6 +124,15 @@ class PolicymakerLabelSettingsForm extends ConfigFormBase {
     return $labels;
   }
 
+  /**
+   * Translate label to ID.
+   *
+   * @param string $label
+   *   Label to get ID for.
+   *
+   * @return string
+   *   Config ID.
+   */
   private function getIdFromLabel(string $label): string {
     return Html::cleanCssIdentifier(strtolower($label));
   }
