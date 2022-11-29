@@ -2,6 +2,10 @@ paatokset_ahjo_api.default_texts:
   title: 'Päätökset default texts'
   parent: system.admin_config_system
   route_name: paatokset_ahjo_api.default_texts
+paatokset_ahjo_api.policymaker_labels:
+  title: 'Translate policymaker labels'
+  parent: system.admin_config_system
+  route_name: paatokset_ahjo_api.policymaker_labels
 paatokset_ahjo_api.disallowed_prefixes:
   title: 'Disallowed Decision prefixes'
   parent: system.admin_config_system
