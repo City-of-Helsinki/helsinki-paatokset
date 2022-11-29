@@ -727,7 +727,7 @@ class CaseService {
 
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value);
+    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value, $this->language, FALSE);
     if (!$policymaker_name) {
       return $default_name;
     }
