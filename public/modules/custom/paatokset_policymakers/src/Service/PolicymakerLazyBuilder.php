@@ -93,11 +93,10 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $cache_tags[] = 'node:' . $node->id();
 
       $title = $node->get('title')->value;
-      $ahjo_title = $node->get('field_ahjo_title')->value;
 
       $cards[] = [
         'title' => $title,
-        'ahjo_title' => $ahjo_title,
+        'ahjo_title' => $this->policymakerService->getPolicymakerTypeFromNode($node),
         'link' => $this->policymakerService->getPolicymakerRoute($node, $this->currentLanguage),
         'image' => $node->get('field_policymaker_image')->view('default'),
         'organization_color' => $this->policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
