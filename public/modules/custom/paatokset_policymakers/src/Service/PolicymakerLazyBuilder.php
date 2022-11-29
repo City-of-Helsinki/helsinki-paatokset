@@ -324,9 +324,11 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
       if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
         $sector = $this->policymakerService->getSectorTranslation($node->get('field_sector_name')->value, $this->currentLanguage);
+        $sector_display = $node->get('field_sector_name')->value;
       }
       else {
         $sector = '';
+        $sector_display = '';
       }
 
       $filtered[] = [
@@ -339,6 +341,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_color' => $this->policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
         'is_city_council_division' => $node->get('field_city_council_division')->value,
         'sector' => $sector,
+        'sector_display' => $sector_display,
       ];
     }
 
