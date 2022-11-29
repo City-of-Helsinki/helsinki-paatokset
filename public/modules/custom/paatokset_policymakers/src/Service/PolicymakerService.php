@@ -1531,6 +1531,8 @@ class PolicymakerService {
    *   Overridden, default or NULL if node can't be found.
    */
   public function getPolicymakerTypeFromNode(?NodeInterface $node = NULL): ?string {
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
     if ($node === NULL) {
       $node = $this->getPolicyMaker();
     }
@@ -1545,7 +1547,7 @@ class PolicymakerService {
 
     // Check if node is a city council division.
     if ($node->hasField('field_city_council_division') && $node->get('field_city_council_division')->value) {
-      return 'Kaupunginhallituksen jaosto';
+      return $this->getPolicymakerType('Kaupunginhallituksen jaosto', $currentLanguage);
     }
 
     // Return NULL if organization type field is empty and no override is set.
@@ -1554,7 +1556,7 @@ class PolicymakerService {
     }
 
     // Check org type field.
-    return $this->getPolicymakerType($node->get('field_organization_type')->value);
+    return $this->getPolicymakerType($node->get('field_organization_type')->value, $currentLanguage);
   }
 
   /**
@@ -1564,32 +1566,15 @@ class PolicymakerService {
    *   Org type to check.
    *
    * @return string
-   *   Either the same type that was passed in or an altered version.
+   *   Translated version of type stored in config.
    */
-  public function getPolicymakerType(string $type): string {
-    $output = NULL;
-
-    switch (strtolower($type)) {
-      case 'viranhaltija':
-        $output = 'Viranhaltijat';
-        break;
-
-      case 'luottamushenkilö':
-        $output = 'Luottamushenkilöpäättäjät';
-        break;
-
-      case 'lautakunta':
-      case 'jaosto':
-      case 'toimi-/neuvottelukunta':
-        $output = 'Lautakunnat ja jaostot';
-        break;
-
-      default:
-        $output = $type;
-        break;
+  public function getPolicymakerType(string $type, string $langcode = 'fi'): string {
+    $config = \Drupal::config('paatokset_ahjo_api.policymaker_labels');
+    $key = Html::cleanCssIdentifier(strtolower($type)) . '_' . $langcode;
+    if ($value = $config->get($key)) {
+      return $value;
     }
-
-    return $output;
+    return $type;
   }
 
   /**
