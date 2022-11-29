@@ -1564,6 +1564,8 @@ class PolicymakerService {
    *
    * @param string $type
    *   Org type to check.
+   * @param string $langcode
+   *   Langcode to get org type for.
    *
    * @return string
    *   Translated version of type stored in config.
