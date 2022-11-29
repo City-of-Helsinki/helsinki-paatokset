@@ -40,7 +40,9 @@
                   {% else %}
                     {{ item.title|t }}
                   {% endif %}
-                  {% if item.organization_name is not empty %}
+                  {% if item.sector_display is not empty and item.sector_display != item.organization_name %}
+                    <div class="policymaker-row__sub-title" >{{ item.sector_display }} - {{ item.organization_name }}</div>
+                  {% elseif item.organization_name is not empty %}
                     <div class="policymaker-row__sub-title" >{{ item.organization_name }}</div>
                   {% endif %}
                   {% if item.trustee_type is not empty %}
