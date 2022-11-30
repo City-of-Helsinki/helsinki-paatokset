@@ -59,7 +59,6 @@ class AnnouncementsBlock extends BlockBase {
    * Set cache age to zero.
    */
   public function getCacheMaxAge() {
-    // If you need to redefine the Max Age for that block.
     return 0;
   }
 
@@ -74,7 +73,7 @@ class AnnouncementsBlock extends BlockBase {
    * Get cache tags.
    */
   public function getCacheTags() {
-    return ['meeting_video_list'];
+    return ['meeting_video_list', 'node_list:meeting'];
   }
 
   /**
@@ -90,8 +89,7 @@ class AnnouncementsBlock extends BlockBase {
     if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
       return TRUE;
     }
-
-    return strtotime('+1 day') > $time;
+    return strtotime('+1 day') > (int) $time;
   }
 
 }
