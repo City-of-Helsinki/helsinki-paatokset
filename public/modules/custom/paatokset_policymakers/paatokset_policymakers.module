@@ -87,8 +87,8 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   $variables['date'] = t('Date');
   $variables['time'] = t('Time');
   $variables['additional_info'] = t('Additional information');
-  $variables['open_motions'] = t('Open motions');
-  $variables['open_decisions'] = t('Open decisions');
+  $variables['open_motions'] = t('Open agenda');
+  $variables['open_decisions'] = t('Open decision announcement');
   $variables['open_minutes'] = t('Open minutes');
   $variables['meetings'] = $meetingService->query($params);
 
