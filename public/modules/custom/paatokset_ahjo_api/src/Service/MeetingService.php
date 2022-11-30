@@ -2,7 +2,6 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\media\MediaInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
@@ -18,11 +17,6 @@ class MeetingService {
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'meeting';
-
-  /**
-   * Machine name for meeting document media type.
-   */
-  const DOCUMENT_TYPE = 'ahjo_document';
 
   /**
    * Query Ahjo API meetings from database.
@@ -404,7 +398,7 @@ class MeetingService {
   /**
    * Get URL from AHJO document.
    *
-   * @param array
+   * @param array $document
    *   Ahjo Document to get URL for (array decoded from JSON).
    *
    * @return string|null
