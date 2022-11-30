@@ -687,8 +687,10 @@ class AhjoAggregatorCommands extends DrushCommands {
         $query->notExists('field_decision_record');
       }
       elseif ($logic === 'language') {
-        $query->notExists('field_record_language_checked');
-        $query->condition('field_record_language_checked', 0);
+        $or = $query->orConditionGroup();
+        $or->notExists('field_record_language_checked');
+        $or->condition('field_record_language_checked', 0);
+        $query->condition($or);
       }
       elseif ($logic === 'outdated') {
         $query->condition('field_is_decision', 1);

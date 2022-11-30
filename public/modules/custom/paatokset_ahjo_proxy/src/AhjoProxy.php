@@ -191,14 +191,14 @@ class AhjoProxy implements ContainerInjectionInterface {
     // Local adjustments for fetching records through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
-      $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
     }
 
     // Local adjustments for fetching cases or decisions through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
       if (strpos($url, 'cases') === 0 || strpos($url, 'decisions') === 0) {
         $base_url = getenv('AHJO_PROXY_BASE_URL');
-        $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+        $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
     }
 
@@ -206,7 +206,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
       if (strpos($url, 'organization') === 0) {
         $base_url = getenv('AHJO_PROXY_BASE_URL');
-        $api_url = $base_url . 'fi/ahjo-proxy/' . $url;
+        $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
     }
 
@@ -978,6 +978,15 @@ class AhjoProxy implements ContainerInjectionInterface {
       $ahjo_proxy->updateDecisionHistoryContent($node, $data['decision_endpoint']);
     }
 
+    // If language is set to outdated, refetch organization data
+    if ($node->hasField('field_record_language_checked') && !$node->get('field_record_language_checked')->value) {
+      $recheck_language = TRUE;
+    }
+    else {
+      $recheck_language = FALSE;
+    }
+
+    // Fetch record content and reset langcode.
     if (!empty($record_content)) {
       $ahjo_proxy->updateDecisionRecordData($node, $record_content);
     }
@@ -995,6 +1004,11 @@ class AhjoProxy implements ContainerInjectionInterface {
     // If record couldn't be fetched from endpoint, try to get it from case.
     if ($data['case_id']) {
       $ahjo_proxy->updateDecisionCaseData($node, $data['case_id'], $fetch_record_from_case);
+    }
+
+    // If language was set to outdated, refetch some translatable fields.
+    if ($recheck_language) {
+      $ahjo_proxy->updateDecisionTranslatedFields($node, $data['decision_endpoint']);
     }
 
     // If meeting date can't be set, use a default value.
@@ -1038,21 +1052,62 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $updated = FALSE;
     if (!empty($content['DecisionHistoryHTML'])) {
       $node->set('field_decision_history', [
         'value' => $content['DecisionHistoryHTML'],
         'format' => 'plain_text',
       ]);
-      $updated = TRUE;
     }
     if (!empty($content['DecisionHistoryPDF'])) {
       $node->set('field_decision_history_pdf', json_encode($content['DecisionHistoryPDF']));
-      $updated = TRUE;
+    }
+  }
+
+  /**
+   * Update various translated fields that require fetching with apireqlang.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Node to update.
+   * @param string $endpoint
+   *   Endpoint to get data from.
+   */
+  protected function updateDecisionTranslatedFields(NodeInterface &$node, string $endpoint): void {
+    $langcode = $node->get('langcode')->value;
+    if (!in_array($langcode, ['fi', 'sv'])) {
+      $langcode = 'fi';
+    }
+    $query_string = 'apireqlang=' . $langcode;
+
+    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
+    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
+    $content = $ahjo_proxy->getData($endpoint, $query_string);
+
+    // Local data is formatted a bit differently.
+    if (!empty($content['decisions'])) {
+      $content = $content['decisions'][0];
     }
 
-    if ($updated) {
-      $node->save();
+    if (empty($content)) {
+      return;
+    }
+
+    if (!empty($content['Organization'])) {
+      $node->set('field_decision_organization', json_encode($content['Organization']));
+    }
+    else {
+      return;
+    }
+
+    if (!empty($content['Organization']['Name'])) {
+      $node->set('field_dm_org_name', $content['Organization']['Name']);
+    }
+
+    if (empty($content['Organization']['OrganizationLevelAbove']) || empty($content['Organization']['OrganizationLevelAbove']['organizations'][0])) {
+      return;
+    }
+
+    if (!empty($content['Organization']['OrganizationLevelAbove']['organizations'][0]['Name'])) {
+      $node->set('field_dm_org_above_name', $content['Organization']['OrganizationLevelAbove']['organizations'][0]['Name']);
     }
   }
 
