@@ -25,11 +25,6 @@ class CaseService {
   const DECISION_NODE_TYPE = 'decision';
 
   /**
-   * Machine name for meeting document media type.
-   */
-  const DOCUMENT_TYPE = 'ahjo_document';
-
-  /**
    * Case node.
    *
    * @var \Drupal\node\Entity\Node
