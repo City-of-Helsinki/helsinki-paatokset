@@ -1768,16 +1768,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     $org_name = $data['meeting_data']['org_name'];
     $attachments = $data['attachments'];
 
-    // Get top category name.
-    if (isset($ids['classification_code'])) {
-      $classification_code = $ids['classification_code'];
-      $top_category = $case_service->getTopCategoryFromClassificationCode($classification_code);
-    }
-    else {
-      $classification_code = NULL;
-      $top_category = NULL;
-    }
-
     $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title, TRUE);
     if (!$node instanceof NodeInterface) {
       $context['results']['failed'][] = $data['title'];
@@ -1819,6 +1809,23 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       $context['results']['failed'][] = $data['title'];
       return;
+    }
+
+    if (isset($record_content['Language']) && in_array($record_content['Language'], ['fi', 'sv'])) {
+      $langcode = $record_content['Language'];
+    }
+    else {
+      $langcode = 'fi';
+    }
+
+    // Get top category name.
+    if (isset($ids['classification_code'])) {
+      $classification_code = $ids['classification_code'];
+      $top_category = $case_service->getTopCategoryFromClassificationCode($classification_code, $langcode);
+    }
+    else {
+      $classification_code = NULL;
+      $top_category = NULL;
     }
 
     $attachments_json = [];
