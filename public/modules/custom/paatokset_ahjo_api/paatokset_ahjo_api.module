@@ -811,7 +811,12 @@ function _paatokset_ahjo_api_get_top_category(array $values): ?string {
     return NULL;
   }
   $value = $values[0];
-  $langcode = $values[1];
+  if (!empty($values[1])) {
+    $langcode = $values[1];
+  }
+  else {
+    $langcode = 'fi';
+  }
 
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
   $caseService = \Drupal::service('paatokset_ahjo_cases');
