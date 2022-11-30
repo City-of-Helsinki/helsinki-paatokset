@@ -1466,73 +1466,136 @@ class CaseService {
    *
    * @param string $code
    *   Classification code.
+   * @param string $langcode
+   *   Language to get category name for.
    *
    * @return string|null
    *   Top category name, if found.
    */
-  public function getTopCategoryFromClassificationCode(string $code): ?string {
+  public function getTopCategoryFromClassificationCode(string $code, string $langcode = 'fi'): ?string {
     $bits = explode(' ', (string) $code);
     $code = array_shift($bits);
+    $key = $code . '-' . $langcode;
 
-    switch ($code) {
-      case "00":
+    switch ($key) {
+      case "00-fi":
         $name = "Hallintoasiat";
         break;
 
-      case "01":
+      case "00-sv":
+        $name = "Förvaltningsärenden";
+        break;
+
+      case "01-fi":
         $name = "Henkilöstöasiat";
         break;
 
-      case "02":
+      case "01-sv":
+        $name = "Personalärenden";
+        break;
+
+      case "02-fi":
         $name = "Talousasiat, verotus ja omaisuuden hallinta";
         break;
 
-      case "03":
+      case "02-sv":
+        $name = "Ekonomi, beskattning och egendomsförvaltning";
+        break;
+
+      case "03-fi":
         $name = "Lainsäädäntö ja lainsäädännön soveltaminen";
         break;
 
-      case "04":
+      case "03-sv":
+        $name = "Lagstiftning och dess tillämpning";
+        break;
+
+      case "04-fi":
         $name = "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
         break;
 
-      case "05":
+      case "04-sv":
+        $name = "Internationell verksamhet och migrationspolitik";
+        break;
+
+      case "05-fi":
         $name = "Sosiaalitoimi";
         break;
 
-      case "06":
+      case "05-sv":
+        $name = "Socialvård";
+        break;
+
+      case "06-fi":
         $name = "Terveydenhuolto";
         break;
 
-      case "07":
+      case "06-sv":
+        $name = "Hälsovård";
+        break;
+
+      case "07-fi":
         $name = "Tiedon hallinta";
         break;
 
-      case "08":
+      case "07-sv":
+        $name = "Informationshantering";
+        break;
+
+      case "08-fi":
         $name = "Liikenne";
         break;
 
-      case "09":
+      case "08-sv":
+        $name = "Trafik";
+        break;
+
+      case "09-fi":
         $name = "Turvallisuus ja yleinen järjestys";
         break;
 
-      case "10":
+      case "09-sv":
+        $name = "Säkerhet och allmän ordning";
+        break;
+
+      case "10-fi":
         $name = "Maankäyttö, rakentaminen ja asuminen";
         break;
 
-      case "11":
+      case "10-sv":
+        $name = "Markanvändning, byggande och boende";
+        break;
+
+      case "11-fi":
         $name = "Ympäristöasia";
         break;
 
-      case "12":
+      case "11-sv":
+        $name = "Miljöärenden";
+        break;
+
+      case "12-fi":
         $name = "Opetus- ja sivistystoimi";
         break;
 
-      case "13":
+      case "12-sv":
+        $name = "Undervisnings- och bildningsväsende";
+        break;
+
+      case "13-fi":
         $name = "Tutkimus- ja kehittämistoiminta";
         break;
 
-      case "14":
+      case "13-sv":
+        $name = "Forskning och utveckling";
+        break;
+
+      case "14-fi":
         $name = "Elinkeino- ja työvoimapalvelut";
+        break;
+
+      case "14-sv":
+        $name = "Näringslivs- och arbetskraftstjänster";
         break;
 
       default:
