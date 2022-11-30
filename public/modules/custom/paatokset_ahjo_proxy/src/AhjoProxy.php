@@ -978,7 +978,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $ahjo_proxy->updateDecisionHistoryContent($node, $data['decision_endpoint']);
     }
 
-    // If language is set to outdated, refetch organization data
+    // If language is set to outdated, refetch organization data.
     if ($node->hasField('field_record_language_checked') && !$node->get('field_record_language_checked')->value) {
       $recheck_language = TRUE;
     }
@@ -1866,7 +1866,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    if (isset($record_content['Language']) && in_array($record_content['Language'], ['fi', 'sv'])) {
+    if (isset($record_content['Language'])
+      && in_array($record_content['Language'], ['fi', 'sv'])) {
       $langcode = $record_content['Language'];
     }
     else {
