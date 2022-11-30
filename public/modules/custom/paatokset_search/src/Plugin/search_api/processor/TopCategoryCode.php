@@ -9,7 +9,7 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
- * Extracts sector info from source JSON.
+ * Gets top category code from fields.
  *
  * @SearchApiProcessor(
  *   id = "top_category_id",

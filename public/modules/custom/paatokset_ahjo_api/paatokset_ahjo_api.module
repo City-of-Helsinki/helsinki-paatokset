@@ -806,13 +806,16 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
  * @return string|null
  *   Top category name based on the first part of the code, if found.
  */
-function _paatokset_ahjo_api_get_top_category($value): ?string {
-  if (!is_string($value)) {
-    NULL;
+function _paatokset_ahjo_api_get_top_category(array $values): ?string {
+  if (!is_array($values)) {
+    return NULL;
   }
+  $value = $values[0];
+  $langcode = $values[1];
+
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
   $caseService = \Drupal::service('paatokset_ahjo_cases');
-  return $caseService->getTopCategoryFromClassificationCode($value);
+  return $caseService->getTopCategoryFromClassificationCode($value, $langcode);
 }
 
 /**
