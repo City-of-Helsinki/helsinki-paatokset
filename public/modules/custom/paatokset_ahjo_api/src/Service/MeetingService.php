@@ -3,7 +3,6 @@
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\media\MediaInterface;
-use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
@@ -356,7 +355,7 @@ class MeetingService {
   public function getDocumentUrlFromEntity(NodeInterface $entity, string $document_type): ?string {
     $document = $this->getDocumentFromEntity($entity, $document_type);
 
-    if (!$document instanceof MediaInterface) {
+    if (!$document) {
       return NULL;
     }
 
@@ -378,15 +377,15 @@ class MeetingService {
    * @param string|null $langcode
    *   Document language.
    *
-   * @return \Drupal\media\MediaInterface|null
-   *   Meeting minutes media entity, if one exists for the meeting.
+   * @return array|null
+   *   Meeting minutes JSON, if one exists for the meeting.
    */
-  public function getDocumentFromEntity(NodeInterface $entity, string $document_type, ?string $langcode = NULL): ?MediaInterface {
+  public function getDocumentFromEntity(NodeInterface $entity, string $document_type, ?string $langcode = NULL): ?array {
     if (!$entity->hasField('field_meeting_documents') || $entity->get('field_meeting_documents')->isEmpty()) {
       return NULL;
     }
 
-    $minutes_id = NULL;
+    $document = NULL;
     foreach ($entity->get('field_meeting_documents') as $field) {
       $json = json_decode($field->value, TRUE);
       if ($langcode && isset($json['Language']) && strpos($json['Language'], $langcode) === FALSE) {
@@ -394,29 +393,9 @@ class MeetingService {
       }
 
       if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === $document_type) {
-        $minutes_id = $json['NativeId'];
+        $document = $json;
         break;
       }
-    }
-
-    if (!$minutes_id) {
-      return NULL;
-    }
-
-    $query = \Drupal::entityQuery('media')
-      ->condition('status', 1)
-      ->condition('bundle', self::DOCUMENT_TYPE)
-      ->condition('field_document_native_id', $minutes_id);
-
-    $mids = $query->execute();
-
-    if (empty($mids)) {
-      return NULL;
-    }
-
-    $document = Media::load(reset($mids));
-    if (!$document instanceof MediaInterface) {
-      return NULL;
     }
 
     return $document;
@@ -425,22 +404,15 @@ class MeetingService {
   /**
    * Get URL from AHJO document.
    *
-   * @param Drupal\media\MediaInterface $entity
-   *   Ahjo Document to get URL for.
+   * @param array
+   *   Ahjo Document to get URL for (array decoded from JSON).
    *
    * @return string|null
    *   URL for document, if possible to get.
    */
-  public function getUrlFromAhjoDocument(MediaInterface $entity): ?string {
-    $uri_field = $entity->get('field_document_orig_uri')->first();
-    if (!$uri_field) {
-      return NULL;
-    }
-
-    $url = $uri_field->getUrl();
-
-    if ($url) {
-      return $url->toString();
+  public function getUrlFromAhjoDocument(array $document): ?string {
+    if (!empty($document['FileURI'])) {
+      return $document['FileURI'];
     }
 
     return NULL;
