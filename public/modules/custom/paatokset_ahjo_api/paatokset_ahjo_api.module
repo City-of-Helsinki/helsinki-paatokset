@@ -99,8 +99,8 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
     $meetings_with_color[] = $meeting;
   }
 
-  $variables['open_motions'] = t('Open motions');
-  $variables['open_decisions'] = t('Open decisions');
+  $variables['open_motions'] = t('Open agenda');
+  $variables['open_decisions'] = t('Open decision announcement');
   $variables['open_minutes'] = t('Open minutes');
   if ($currentLanguage === 'fi') {
     $variables['calendar_link'] = '/fi/kokouskalenteri';
@@ -154,7 +154,7 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
     $all_meetings = array_slice($all_meetings, 0, 8);
   }
 
-  $variables['open_motions'] = t('Open motions');
+  $variables['open_motions'] = t('Open agenda');
   $variables['open_minutes'] = t('Open minutes');
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $all_meetings;
