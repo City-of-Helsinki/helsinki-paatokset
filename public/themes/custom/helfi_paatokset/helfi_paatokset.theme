@@ -485,9 +485,5 @@ function helfi_paatokset_preprocess_page(&$variables) {
  */
 function helfi_paatokset_preprocess_node__article(&$variables) {
   $node = $variables['node'];
-  if ($node->hasField('published_at') && $node->get('published_at')->isEmpty()) {
-    $variables['published_at'] = $node->get('published_at')->value;
-  } else {
-    $variables['published_at'] = $node->get('created')->value;
-  }
+  $variables['published_at'] = $node->get('created')->value;
 }

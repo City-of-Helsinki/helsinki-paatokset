@@ -6,6 +6,14 @@ paatokset_ahjo_api.default_texts:
   requirements:
     _permission: 'administer paatokset'
 
+paatokset_ahjo_api.policymaker_labels:
+  path: '/admin/config/system/policymaker-labels'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_api\Form\PolicymakerLabelSettingsForm
+    _title: 'Translate policymaker labels.'
+  requirements:
+    _permission: 'administer paatokset'
+
 paatokset_ahjo_api.disallowed_prefixes:
   path: '/admin/config/system/disallowed-decision-prefices'
   defaults:

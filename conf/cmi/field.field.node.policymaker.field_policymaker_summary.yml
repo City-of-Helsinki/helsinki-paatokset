@@ -6,13 +6,19 @@ dependencies:
     - field.storage.node.field_policymaker_summary
     - node.type.policymaker
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - full_html
+      - plain_text
 id: node.policymaker.field_policymaker_summary
 field_name: field_policymaker_summary
 entity_type: node
 bundle: policymaker
 label: Summary
-description: 'Summary from Open Ahjo'
+description: ''
 required: false
 translatable: true
 default_value: {  }
