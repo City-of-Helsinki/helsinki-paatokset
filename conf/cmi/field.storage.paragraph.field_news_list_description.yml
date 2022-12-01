@@ -1,0 +1,21 @@
+uuid: b0b3cdd2-13a8-4fd8-952f-73b16e1eae1b
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+_core:
+  default_config_hash: V_erLPi4c9bT-uhAlgcpJJX8LbR02Btsi8yzMVAIpo4
+id: paragraph.field_news_list_description
+field_name: field_news_list_description
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

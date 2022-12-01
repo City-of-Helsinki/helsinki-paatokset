@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.custom_content_links
+    - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
@@ -18,7 +19,11 @@ dependencies:
     - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_liftups
+    - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.popular_services
     - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.target_group_links
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
@@ -28,7 +33,7 @@ id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: Content
+label: Sisältöalue
 description: ''
 required: false
 translatable: true
@@ -57,6 +62,7 @@ settings:
       popular_services: popular_services
       target_group_links: target_group_links
       event_list: event_list
+      news_list: news_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -111,6 +117,9 @@ settings:
         weight: 29
         enabled: true
       news_liftups:
+        weight: 30
+        enabled: true
+      news_list:
         weight: 30
         enabled: true
       phasing:
