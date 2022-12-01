@@ -1,0 +1,28 @@
+uuid: 787ec514-71ee-4b14-b38f-8fdbff36df75
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_helfi_news_tags
+    - paragraphs.paragraphs_type.news_list
+_core:
+  default_config_hash: imhJdbO9eLYZPslj0VosAANrRZBizg4wyPgIYQ3SOXc
+id: paragraph.news_list.field_helfi_news_tags
+field_name: field_helfi_news_tags
+entity_type: paragraph
+bundle: news_list
+label: 'Helfi tags'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:helfi_news_tags'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference
