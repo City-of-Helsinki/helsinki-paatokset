@@ -11,7 +11,6 @@ use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -1202,11 +1201,11 @@ class PolicymakerService {
     /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
     $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
-    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', $currentLanguage)) {
+    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'fi')) {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
-    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', $currentLanguage)) {
+    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', 'fi')) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
@@ -1215,9 +1214,9 @@ class PolicymakerService {
       $documentTitle = NULL;
     }
 
-    if ($document instanceof MediaInterface) {
-      if ($document->hasField('field_document_issued') && !$document->get('field_document_issued')->isEmpty()) {
-        $document_timestamp = strtotime($document->get('field_document_issued')->value);
+    if (!empty($document)) {
+      if (!empty($document['Issued'])) {
+        $document_timestamp = strtotime($document['Issued']);
         $publishDate = date('d.m.Y', $document_timestamp);
       }
       else {

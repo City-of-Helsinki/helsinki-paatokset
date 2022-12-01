@@ -56,7 +56,7 @@ class PaatoksetSearchForm extends FormBase {
         'class' => ['hds-text-input__input'],
       ],
       '#title' => t('Search from content'),
-      '#placeholder' => t('Write a search phrase, eg. park'),
+      '#placeholder' => t('Search with a Finnish keyword, eg. Viikki'),
     ];
 
     $form['container']['search-wrapper']['hds-text-input']['hds-text-input__input-wrapper']['submit'] = [

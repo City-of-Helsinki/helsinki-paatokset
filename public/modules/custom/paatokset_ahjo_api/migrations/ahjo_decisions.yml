@@ -255,7 +255,9 @@ process:
   field_top_category_name:
     callable: _paatokset_ahjo_api_get_top_category
     plugin: callback
-    source: classification_code
+    source:
+      - classification_code
+      - language
   field_dm_org_name: organization_name
   field_policymaker_id: organization_id
   field_organization_type: organization_type

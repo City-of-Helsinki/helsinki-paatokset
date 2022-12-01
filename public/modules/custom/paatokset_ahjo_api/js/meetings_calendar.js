@@ -254,13 +254,13 @@
             return dayjs(this.selectedDate).daysInMonth();
           },
           openMotions(){
-            return window.Drupal.t('Open motions');
+            return window.Drupal.t('Open agenda');
           },
           openMinutes() {
             return window.Drupal.t('Open minutes');
           },
           openDecisions() {
-            return window.Drupal.t('Open decisions');
+            return window.Drupal.t('Open decision announcement');
           },
           noMeetings() {
             return window.Drupal.t('No meetings');
@@ -272,10 +272,10 @@
             return window.Drupal.t('meeting moved', {}, {context: 'Meetings calendar'});
           },
           nextMonth() {
-            return window.Drupal.t('Seuraava kuukausi');
+            return window.Drupal.t('Next month');
           },
           previousMonth() {
-            return window.Drupal.t('Edellinen kuukausi');
+            return window.Drupal.t('Previous month');
           },
           days() {
             let allDays = [];
