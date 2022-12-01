@@ -11,7 +11,8 @@ dependencies:
 third_party_settings:
   allowed_formats:
     allowed_formats:
-      - minimal
+      - full_html
+      - plain_text
 _core:
   default_config_hash: EIpWpSFct6BBIBWOTpd87zJbnbSe0QLPeFLW9-LP1-o
 id: paragraph.news_list.field_news_list_description
