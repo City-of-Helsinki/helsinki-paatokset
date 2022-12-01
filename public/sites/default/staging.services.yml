@@ -1,5 +1,6 @@
 # Test services and overrides.
 parameters:
+  helfi_api_base.logger_enabled: false
   helfi_api_base.internal_domains:
     - 'hel.fi'
     - 'www.hel.fi'
