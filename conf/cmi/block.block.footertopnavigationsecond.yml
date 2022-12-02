@@ -1,22 +1,21 @@
-uuid: c04d3f7e-a372-458c-aa3e-bfad4d394de8
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.footer-top-navigation
+    - system.menu.footer-top-navigation-2
   module:
     - menu_block_current_language
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_footertopnavigation
-theme: helfi_paatokset
+    - hdbt
+id: footertopnavigationsecond
+theme: hdbt
 region: footer_top
-weight: -4
+weight: 0
 provider: null
-plugin: 'menu_block_current_language:footer-top-navigation'
+plugin: 'menu_block_current_language:footer-top-navigation-2'
 settings:
-  id: 'menu_block_current_language:footer-top-navigation'
-  label: 'City of Helsinki'
+  id: 'menu_block_current_language:footer-top-navigation-2'
+  label: Connect
   label_display: visible
   provider: menu_block_current_language
   level: 1

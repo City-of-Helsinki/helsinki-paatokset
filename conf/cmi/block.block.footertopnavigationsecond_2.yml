@@ -1,27 +1,27 @@
-uuid: c04d3f7e-a372-458c-aa3e-bfad4d394de8
-langcode: en
+uuid: 97e3685d-9d81-43a5-9551-19b6defef4d0
+langcode: fi
 status: true
 dependencies:
   config:
-    - system.menu.footer-top-navigation
+    - system.menu.footer-top-navigation-2
   module:
     - menu_block_current_language
   theme:
     - helfi_paatokset
-id: helfi_paatokset_footertopnavigation
+id: footertopnavigationsecond_2
 theme: helfi_paatokset
 region: footer_top
-weight: -4
+weight: 0
 provider: null
-plugin: 'menu_block_current_language:footer-top-navigation'
+plugin: 'menu_block_current_language:footer-top-navigation-2'
 settings:
-  id: 'menu_block_current_language:footer-top-navigation'
-  label: 'City of Helsinki'
+  id: 'menu_block_current_language:footer-top-navigation-2'
+  label: 'Ota yhteyttä'
   label_display: visible
   provider: menu_block_current_language
   level: 1
   expand_all_items: false
-  depth: 1
+  depth: 0
   translation_providers:
     views: views
     menu_link_content: menu_link_content
