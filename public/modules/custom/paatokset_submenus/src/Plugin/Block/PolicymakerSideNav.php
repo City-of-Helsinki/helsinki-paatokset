@@ -124,7 +124,7 @@ class PolicymakerSideNav extends BlockBase {
     // Apply HDBT attributes to navigation items.
     if (function_exists('_hdbt_menu_item_apply_attributes')) {
       foreach ($items as &$item) {
-        _hdbt_menu_item_apply_attributes($item);
+        _hdbt_menu_item_apply_attributes($item, TRUE);
       }
     }
 
