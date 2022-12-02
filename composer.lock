@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fb264339df1ff6f938ca213b63d3535",
+    "content-hash": "a97b321564e41f72339e934b89ea3e9d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8563,10 +8563,10 @@
         },
         {
             "name": "paatokset/paatokset_search",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.14/paatokset_search.zip"
+                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.15/paatokset_search.zip"
             },
             "type": "library"
         },
