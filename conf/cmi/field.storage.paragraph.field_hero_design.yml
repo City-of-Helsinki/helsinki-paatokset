@@ -15,31 +15,28 @@ settings:
   allowed_values:
     -
       value: without-image-left
-      label: 'Without image, align left'
+      label: 'Ilman kuvaa, tasattu vasemmalle'
     -
       value: without-image-center
-      label: 'Without image, align center'
+      label: 'Ilman kuvaa, tasattu keskelle'
     -
       value: with-image-right
-      label: 'Image on the right'
+      label: 'Kuva oikealla'
     -
       value: with-image-left
-      label: 'Image on the left'
+      label: 'Kuva vasemmalla'
     -
       value: with-image-bottom
-      label: 'Image on the bottom'
+      label: 'Kuva alhaalla'
     -
       value: background-image
-      label: 'Background image'
+      label: Taustakuva
     -
       value: diagonal
-      label: Diagonal
+      label: Diagonaalinen
     -
       value: paatokset-search-bar
       label: 'Search bar'
-    -
-      value: advanced-search-form
-      label: 'Advanced search form'
   allowed_values_function: ''
 module: options
 locked: false
