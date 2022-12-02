@@ -18,7 +18,19 @@ class SearchBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    return \Drupal::formBuilder()->getForm('Drupal\paatokset_search_form\Form\PaatoksetSearchForm');
+    $build = [
+      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="frontpage" data-url="' . getenv('REACT_APP_ELASTIC_URL') . '"></div></div>',
+      '#attributes' => [
+        'class' => ['paatokset-search--frontpage'],
+      ],
+      '#attached' => [
+        'library' => [
+          'paatokset_search/paatokset-search',
+        ],
+      ],
+    ];
+
+    return $build;
   }
 
 }

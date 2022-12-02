@@ -2,4 +2,5 @@ name: Päätökset search form
 type: module
 package: Custom
 core_version_requirement: ^9
-
+dependencies:
+  - paatokset_search

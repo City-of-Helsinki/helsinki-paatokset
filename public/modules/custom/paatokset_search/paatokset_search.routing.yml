@@ -15,7 +15,7 @@ paatokset_search.decisions.sv:
     _access: 'TRUE'
 
 paatokset_search.decisions.en:
-  path: 'decision'
+  path: 'case'
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchController::decisions'
     _title: 'Search decisions'

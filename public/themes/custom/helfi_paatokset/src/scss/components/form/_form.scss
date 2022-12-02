@@ -299,7 +299,9 @@
 }
 
 /* Quick search form fixes */
-.paatokset-search--decisions, .paatokset-search-wrapper {
+.paatokset-search--decisions,
+.paatokset-search-wrapper,
+.paatokset-search--frontpage {
   h1, label {
     color: #000;
   }
@@ -346,5 +348,14 @@
     font-size: 16px;
     padding: 0.75rem 1rem;
     cursor: pointer;
+  }
+}
+
+.paatokset-search--frontpage {
+  div[class*='SearchBarWrapper_SearchBarWrapper'] {
+    max-width: 100%;
+  }
+  button[class*='SubmitButton_SubmitButton__desktop'] {
+    margin-left: 24px;
   }
 }
