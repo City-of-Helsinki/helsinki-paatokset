@@ -4,8 +4,20 @@ display:
       title: 'Uusimmat uutiset'
     display_title: 'Uusimmat uutiset'
   default:
+    display_title: Oletus
     display_options:
+      exposed_form:
+        options:
+          submit_button: Käytä
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       fields:
+        published_at:
+          separator: ', '
+        field_main_image:
+          separator: ', '
         view_node:
           text: näkymä
       title: 'Uusimmat uutiset'
@@ -13,3 +25,4 @@ display:
         nid:
           exception:
             title: Kaikki
+label: 'Platform News'
