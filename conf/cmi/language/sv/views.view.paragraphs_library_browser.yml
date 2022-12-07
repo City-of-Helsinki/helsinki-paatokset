@@ -1,0 +1,44 @@
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+          tags:
+            previous: ‹‹
+            next: ››
+      fields:
+        entity_browser_select:
+          label: Select
+        label:
+          label: Label
+          separator: ', '
+        type:
+          label: Typ
+          separator: ', '
+        paragraphs__target_id:
+          label: Paragraphs
+          separator: ', '
+        changed:
+          label: Changed
+          separator: ', '
+      filters:
+        label:
+          expose:
+            label: Label
+          group_info:
+            label: Label
+        type:
+          expose:
+            label: Typ
