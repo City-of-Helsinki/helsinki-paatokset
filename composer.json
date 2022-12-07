@@ -20,6 +20,7 @@
         "drupal/gin": "3.0.0-beta5",
         "drupal/hdbt": "4.3.4",
         "drupal/hdbt_admin": "1.8.4",
+        "drupal/health_check": "^2.0",
         "drupal/helfi_api_base": "2.3.6",
         "drupal/helfi_hauki": "^1.0",
         "drupal/helfi_platform_config": "2.15.4",
