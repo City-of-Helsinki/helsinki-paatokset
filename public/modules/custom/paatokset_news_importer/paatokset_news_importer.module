@@ -23,7 +23,7 @@ function paatokset_news_importer_theme($exitsting, $type, $theme, $path) {
  */
 function paatokset_news_importer_preprocess_page(array &$variables) {
   if(isset($variables['node']) && $variables['node']->getType() === 'imported_article') {
-    $variables['page_has_sidebar'] = true;
+    $variables['has_sidebar_first'] = TRUE;
     $variables['move_before_content'] = true;
   }
 }
