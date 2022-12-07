@@ -11,8 +11,8 @@ dependencies:
     - helfi_paatokset
 id: views_block__latest_articles_block_1
 theme: helfi_paatokset
-region: sidebar_first
-weight: 0
+region: sidebar_second
+weight: -20
 provider: null
 plugin: 'views_block:latest_articles-block_1'
 settings:
