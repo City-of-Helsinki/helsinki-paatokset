@@ -9,8 +9,8 @@ dependencies:
     - helfi_paatokset
 id: paatoksetallinitiatives
 theme: helfi_paatokset
-region: content
-weight: -13
+region: content_lower
+weight: -15
 provider: null
 plugin: all_initiatives
 settings:

@@ -10,7 +10,7 @@ dependencies:
 id: paatoksetmeetingscalendar
 theme: helfi_paatokset
 region: after_content
-weight: -16
+weight: -18
 provider: null
 plugin: meetings_calendar
 settings:

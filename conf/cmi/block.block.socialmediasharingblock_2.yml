@@ -9,8 +9,8 @@ dependencies:
     - helfi_paatokset
 id: socialmediasharingblock_2
 theme: helfi_paatokset
-region: content
-weight: -9
+region: content_lower
+weight: -11
 provider: null
 plugin: hdbt_content_social_sharing_block
 settings:
