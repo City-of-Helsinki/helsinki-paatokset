@@ -426,13 +426,13 @@ function helfi_paatokset_preprocess_page(&$variables) {
   }
 
   if ($route_name === 'entity.taxonomy_term.canonical') {
-    $variables['page_has_sidebar'] = true;
+    $variables['has_sidebar_second'] = true;
     $variables['move_before_content'] = true;
   }
 
 
   if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
-    $variables['page_has_sidebar'] = true;
+    $variables['has_sidebar_second'] = true;
     $variables['move_before_content'] = true;
   }
 
@@ -472,9 +472,9 @@ function helfi_paatokset_preprocess_page(&$variables) {
     }
 
     if ($display_sidebar_nav) {
-      $variables['page_has_sidebar'] = TRUE;
+      $variables['has_sidebar_first'] = TRUE;
       $variables['move_before_content'] = TRUE;
-      $variables['has_navigation'] = TRUE;
+      $variables['has_section_nav'] = TRUE;
     }
   }
 }

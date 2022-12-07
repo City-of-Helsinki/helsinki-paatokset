@@ -381,17 +381,17 @@ function paatokset_policymakers_preprocess_page(&$variables) {
 
   // Add template variables on dm pages
   if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
-    $variables['page_has_sidebar'] = TRUE;
+    $variables['has_sidebar_first'] = TRUE;
     $variables['move_before_content'] = TRUE;
-    $variables['has_navigation'] = TRUE;
+    $variables['has_section_nav'] = TRUE;
 
     // Unset main navigation.
     unset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2']);
   }
   elseif (_paatokset_policymakers_page_is_pm_custom_link($variables)) {
-    $variables['page_has_sidebar'] = TRUE;
+    $variables['has_sidebar_first'] = TRUE;
     $variables['move_before_content'] = TRUE;
-    $variables['has_navigation'] = TRUE;
+    $variables['has_section_nav'] = TRUE;
 
     // Force pm sidebar and mobile navi to be visible.
     $variables['policymaker_navigation'] = TRUE;

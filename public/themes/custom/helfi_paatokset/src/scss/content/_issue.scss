@@ -510,6 +510,14 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .page-type--case, .page-type--decision {
+  .layout-content {
+    max-width: 1328px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
   .component.component--banner {
     margin-top: $spacing-triple;
 
