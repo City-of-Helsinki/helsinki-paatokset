@@ -9,8 +9,8 @@ dependencies:
     - helfi_paatokset
 id: paatoksetpolicymakerdocuments
 theme: helfi_paatokset
-region: content
-weight: -15
+region: content_lower
+weight: -17
 provider: null
 plugin: agendas_submenu_documents
 settings:

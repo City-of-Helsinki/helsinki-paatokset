@@ -10,8 +10,8 @@ dependencies:
     - helfi_paatokset
 id: paatoksetpolicymakersearch
 theme: helfi_paatokset
-region: content
-weight: -18
+region: content_lower
+weight: -20
 provider: null
 plugin: policymaker_search_block
 settings:

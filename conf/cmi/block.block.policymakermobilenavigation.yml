@@ -10,7 +10,7 @@ dependencies:
 id: policymakermobilenavigation
 theme: helfi_paatokset
 region: before_content
-weight: -17
+weight: -20
 provider: null
 plugin: policymaker_side_nav_mobile
 settings:
