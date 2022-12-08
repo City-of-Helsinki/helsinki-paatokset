@@ -360,12 +360,12 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
     $filter = 'Jäsen';
     $members = array_filter($nodes, function ($var) use ($filter) {
-      return (str_contains($var['role'], $filter));
+      return (str_contains($var['role_orig'], $filter));
     });
 
     $filter = 'Varajäsen';
     $deputies = array_filter($nodes, function ($var) use ($filter) {
-      return (str_contains($var['role'], $filter));
+      return (str_contains($var['role_orig'], $filter));
     });
 
     usort($members, function ($a, $b) {
@@ -381,7 +381,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'title' => $node['first_name'] . ' ' . $node['last_name'],
         'link' => $node['url'],
         'organization_type' => 'trustee',
-        'trustee_type' => t('Councillor'),
+        'trustee_type' => $node['role'],
       ];
     };
     foreach ($deputies as $node) {
@@ -389,7 +389,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'title' => $node['first_name'] . ' ' . $node['last_name'],
         'link' => $node['url'],
         'organization_type' => 'trustee',
-        'trustee_type' => t('Deputy councillor'),
+        'trustee_type' => $node['role'],
       ];
     };
 
