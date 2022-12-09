@@ -1813,7 +1813,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           if ($data['Type'] !== 'pöytäkirja') {
             continue;
           }
-          if (strpos($data['FileURI'], 'https://ahjo.hel.fi') !== FALSE) {
+          if (strpos($data['FileURI'], 'https://ahjo.') !== FALSE) {
             $minutes_document = '⚠';
           }
           else {

@@ -1,0 +1,2 @@
+api_base_url: 'https://ahjo.hel.fi:9802/ahjorest/v1/'
+api_file_url: 'https://ahjo.hel.fi:9802/ahjorest/v1/content/'
