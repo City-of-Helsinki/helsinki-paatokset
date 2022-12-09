@@ -2537,6 +2537,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     ]);
   }
 
+  /**
+   * Get API Base URL.
+   *
+   * @return string
+   *   API Base URL from config or default (prod).
+   */
   public function getApiBaseUrl(): string {
     $config = $this->config->get('paatokset_ahjo_proxy.settings');
 
@@ -2547,6 +2553,12 @@ class AhjoProxy implements ContainerInjectionInterface {
     return 'https://ahjo.hel.fi:9802/ahjorest/v1/';
   }
 
+  /**
+   * Get API File URL.
+   *
+   * @return string
+   *   API File URL from config or default (prod).
+   */
   public function getApiFileUrl(): string {
     $config = $this->config->get('paatokset_ahjo_proxy.settings');
 
