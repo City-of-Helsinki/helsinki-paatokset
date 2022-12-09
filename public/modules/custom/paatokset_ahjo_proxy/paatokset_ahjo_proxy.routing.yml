@@ -1,3 +1,11 @@
+paatokset_ahjo_proxy.settings:
+  path: '/admin/config/services/ahjo-settings'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxySettingsForm
+    _title: 'Ahjo Proxy settings'
+  requirements:
+    _permission: 'administer site configuration'
+
 paatokset_ahjo_proxy.blacklist:
   path: '/admin/config/services/ahjo-blacklist'
   defaults:

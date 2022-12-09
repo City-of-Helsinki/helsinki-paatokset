@@ -32,20 +32,6 @@ use Drupal\migrate\MigrateExecutable;
 class AhjoProxy implements ContainerInjectionInterface {
 
   /**
-   * Base URL for API.
-   *
-   * @var string
-   */
-  protected const API_BASE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
-
-  /**
-   * Base URL for files.
-   *
-   * @var string
-   */
-  protected const API_FILE_URL = 'https://ahjo.hel.fi:9802/ahjorest/v1/content/';
-
-  /**
    * HTTP Client.
    *
    * @var GuzzleHttp\ClientInterface
@@ -186,7 +172,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $url = 'agents/decisionmakers';
     }
 
-    $api_url = self::API_BASE_URL . $url . '/?' . urldecode($query_string);
+    $api_url = $this->getApiBaseUrl() . $url . '/?' . urldecode($query_string);
 
     // Local adjustments for fetching records through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
@@ -257,7 +243,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $query_string = '';
     }
 
-    $meetings_url = self::API_BASE_URL . 'meetings/?' . urldecode($query_string);
+    $meetings_url = $this->getApiBaseUrl() . 'meetings/?' . urldecode($query_string);
     $meetings = $this->getContent($meetings_url);
 
     return $meetings;
@@ -277,7 +263,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $query_string = '';
     }
 
-    $cases_url = self::API_BASE_URL . 'cases/?' . urldecode($query_string);
+    $cases_url = $this->getApiBaseUrl() . 'cases/?' . urldecode($query_string);
     $cases = $this->getContent($cases_url);
 
     return $cases;
@@ -297,7 +283,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $query_string = '';
     }
 
-    $decisions_url = self::API_BASE_URL . 'decisions/?' . urldecode($query_string);
+    $decisions_url = $this->getApiBaseUrl() . 'decisions/?' . urldecode($query_string);
     $decisions = $this->getContent($decisions_url);
 
     return $decisions;
@@ -320,7 +306,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $meeting_url = self::API_BASE_URL . 'meetings/' . strtoupper($id) . '?' . urldecode($query_string);
+    $meeting_url = $this->getApiBaseUrl() . 'meetings/' . strtoupper($id) . '?' . urldecode($query_string);
     $meeting = $this->getContent($meeting_url, $bypass_cache);
     return ['meetings' => [$meeting]];
   }
@@ -342,7 +328,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $cases_url = self::API_BASE_URL . 'cases/' . strtoupper($id) . '?' . urldecode($query_string);
+    $cases_url = $this->getApiBaseUrl() . 'cases/' . strtoupper($id) . '?' . urldecode($query_string);
     $case = $this->getContent($cases_url, $bypass_cache);
     return ['cases' => [$case]];
   }
@@ -364,7 +350,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $decisions_url = self::API_BASE_URL . 'decisions/' . strtoupper($id) . '?' . urldecode($query_string);
+    $decisions_url = $this->getApiBaseUrl() . 'decisions/' . strtoupper($id) . '?' . urldecode($query_string);
     $decision = $this->getContent($decisions_url, $bypass_cache);
 
     // Single decisions are already inside an array.
@@ -388,7 +374,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $records_url = self::API_BASE_URL . 'records/' . strtoupper($id) . '?' . urldecode($query_string);
+    $records_url = $this->getApiBaseUrl() . 'records/' . strtoupper($id) . '?' . urldecode($query_string);
     $record = $this->getContent($records_url, $bypass_cache);
 
     return ['records' => [$record]];
@@ -411,7 +397,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = self::API_BASE_URL . 'agents/positionoftrust/' . strtoupper($id) . '?' . urldecode($query_string);
+    $agent_url = $this->getApiBaseUrl() . 'agents/positionoftrust/' . strtoupper($id) . '?' . urldecode($query_string);
     $agent = $this->getContent($agent_url, $bypass_cache);
     return ['trustees' => [$agent]];
   }
@@ -433,7 +419,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = self::API_BASE_URL . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
+    $agent_url = $this->getApiBaseUrl() . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
     $org = $this->getContent($agent_url, $bypass_cache);
     return [
       'decisionMakers' => [
@@ -2321,7 +2307,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Response from the API.
    */
   public function getFile(string $nativeId): ?Response {
-    $url = self::API_FILE_URL . $nativeId;
+    $url = $this->getApiFileUrl() . $nativeId;
 
     try {
       $response = $this->httpClient->request('GET', $url,
@@ -2542,13 +2528,33 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public function invalideCacheForProxy(string $endpoint, string $id): void {
     // Proxy URLs used for migrations have an empty query string.
-    $url = self::API_BASE_URL . $endpoint . '/' . strtoupper($id) . '?';
+    $url = $this->getApiBaseUrl() . $endpoint . '/' . strtoupper($id) . '?';
     $delete_key = $this->getCacheKey($url);
     $this->dataCache->invalidate($delete_key);
     $this->logger->info('Invalidated cache for URL: @url with @key', [
       '@url' => $url,
       '@key' => $delete_key,
     ]);
+  }
+
+  public function getApiBaseUrl(): string {
+    $config = $this->config->get('paatokset_ahjo_proxy.settings');
+
+    if ($url = $config->get('api_base_url')) {
+      return $url;
+    }
+
+    return 'https://ahjo.hel.fi:9802/ahjorest/v1/';
+  }
+
+  public function getApiFileUrl(): string {
+    $config = $this->config->get('paatokset_ahjo_proxy.settings');
+
+    if ($url = $config->get('api_file_url')) {
+      return $url;
+    }
+
+    return 'https://ahjo.hel.fi:9802/ahjorest/v1/content/';
   }
 
 }
