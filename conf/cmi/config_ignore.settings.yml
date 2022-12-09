@@ -6,5 +6,5 @@ ignored_config_entities:
   - 'system.site:page.front'
   - paatokset_ahjo_proxy.blacklist
   - 'paatokset_ahjo_api.disallowed_decisions.*'
-  - 'paatokset_ahjo_openid.settings.*'
-  - 'paatokset_ahjo_proxy.settings.*'
+  - paatokset_ahjo_openid.settings
+  - paatokset_ahjo_proxy.settings
