@@ -1,0 +1,12 @@
+# Schema for the proxy setting configuration files.
+
+paatokset_ahjo_proxy.settings:
+  type: config_object
+  label: 'Default proxy settings'
+  mapping:
+    api_base_url:
+      type: string
+      label: 'API Base URL'
+    api_file_url:
+      type: string
+      label: 'API File URL'
