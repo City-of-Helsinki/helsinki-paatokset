@@ -8,9 +8,10 @@ id: global
 label: Global
 tags:
   canonical_url: '[current-page:url]'
-  title: '[current-page:title] | [site:name] | [site:page-title-suffix]'
+  og_image: '[site:default-og-image]'
   og_site_name: '[site:page-title-suffix]'
+  robots: 'noindex, nofollow, noarchive, nosnippet, noodp, noydir, noimageindex, notranslate'
+  title: '[current-page:title] | [site:name] | [site:page-title-suffix]'
   twitter_cards_page_url: '[current-page:url]'
   twitter_cards_title: '[current-page:title] | [site:page-title-suffix]'
   twitter_cards_type: summary_large_image
-  og_image: '[site:default-og-image]'
