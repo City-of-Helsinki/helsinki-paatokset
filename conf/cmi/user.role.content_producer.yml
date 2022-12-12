@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.full_html
+    - filter.format.minimal
     - media.type.ahjo_document
     - media.type.declaration_of_affiliation
     - media.type.file
