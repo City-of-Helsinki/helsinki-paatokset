@@ -8,8 +8,8 @@ dependencies:
     - helfi_paatokset
 id: sidebarcontentblock
 theme: helfi_paatokset
-region: sidebar_first
-weight: -13
+region: sidebar_second
+weight: -17
 provider: null
 plugin: sidebar_content_block
 settings:
