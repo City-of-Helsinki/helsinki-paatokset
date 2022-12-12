@@ -414,6 +414,11 @@ function helfi_paatokset_preprocess_block(&$variables) {
 function helfi_paatokset_preprocess_page(&$variables) {
   $route_name = \Drupal::routeMatch()->getRouteName();
 
+  // Page class for alternate decision and case routes.
+  if (strpos($route_name, 'paatokset_case') !== FALSE || strpos($route_name, 'paatokset_decision') !== FALSE) {
+    $variables['is_decision'] = TRUE;
+  }
+
   // Remove title block on 404 and 403 pages.
   if($route_name === 'system.404'|| $route_name === 'system.403') {
     unset($variables['page']['before_content']['helfi_paatokset_page_title']);
