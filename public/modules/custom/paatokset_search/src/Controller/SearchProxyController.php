@@ -8,7 +8,6 @@ use Drupal\Core\Controller\ControllerBase;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -47,6 +46,10 @@ class SearchProxyController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   HTTP request.
+   * @param string $index
+   *   Index to search from (paatokset_decisions or paatokset_policymakers).
+   * @param string $url
+   *   URL to search from.
    *
    * @return GuzzleHttp\Psr7\Response
    *   Response from Elastic proxy.
@@ -88,4 +91,5 @@ class SearchProxyController extends ControllerBase {
 
     return $response;
   }
+
 }
