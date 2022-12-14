@@ -36,5 +36,6 @@ paatokset_search.proxy:
   path: '/search-proxy/{index}/{url}'
   requirements:
     _permission: 'access content'
+  methods: [GET, OPTIONS, POST]
   defaults:
     _controller: '\Drupal\paatokset_search\Controller\SearchProxyController::searchRequest'
