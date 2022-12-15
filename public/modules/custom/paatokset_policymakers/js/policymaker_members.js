@@ -167,7 +167,8 @@
             return window.Drupal.t('Search for member');
           },
           hasDeputies() {
-            return this.members.filter(result => result.role === 'Deputy councillor').length > 0;
+            const deputyLabels = ['Varajäsen', 'Deputy councillor', 'Ersättare'];
+            return this.members.filter(result => deputyLabels.includes(result.role)).length > 0;
           },
           deputyOf() {
             return window.Drupal.t('Personal deputy of')
