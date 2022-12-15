@@ -379,6 +379,12 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['move_before_content'] = TRUE;
   }
 
+  if (!empty($variables['node']) && $variables['node']->hasField('field_contacts') && !$variables['node']->get('field_contacts')->isEmpty()) {
+    $variables['has_sidebar_second'] = TRUE;
+  }
+
+
+
   // Add template variables on dm pages
   if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['has_sidebar_first'] = TRUE;

@@ -1,20 +1,18 @@
-.policymaker-side-menu {
-  &.policymaker-side-menu--desktop {
-    display: none;
-    width: 100%;
+.policymaker-side-menu--desktop {
+  display: none;
 
-    @include breakpoint($breakpoint-l) {
-      display: block;
-    }
+  @include breakpoint($breakpoint-l) {
+    display: block;
   }
-
+}
+.policymaker-side-menu {
   &.policymaker-side-menu--mobile {
     max-width: 1328px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 16px;
     padding-right: 16px;
-    margin-bottom: $spacing-double;
+    margin-bottom: -70px;
 
     @include breakpoint($breakpoint-m) {
       padding-left: 32px;
