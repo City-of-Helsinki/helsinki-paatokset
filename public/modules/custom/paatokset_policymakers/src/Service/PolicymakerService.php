@@ -1207,7 +1207,15 @@ class PolicymakerService {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
+    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'sv')) {
+      $pageTitle = t('Minutes');
+      $documentTitle = t('Minutes publication date');
+    }
     elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', 'fi')) {
+      $pageTitle = t('Agenda');
+      $documentTitle = t('Agenda publication date');
+    }
+    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', 'sv')) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
