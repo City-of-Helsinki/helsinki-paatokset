@@ -1903,18 +1903,36 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Limit processing to certain amount of nodes.
    * @option queue
    *   Queue decisions to be imported automatically.
+   * @option start
+   *   Meeting date to start queryi.
+   * @option limit
+   *   Meeting date to end query.
    *
    * @aliases ap:cdp
    */
   public function checkMeetingsDecisionProcessing(array $options = [
     'queue' => FALSE,
     'limit' => NULL,
+    'start' => NULL,
+    'end' => NULL,
   ]): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
     else {
       $limit = 0;
+    }
+    if (!empty($options['start'])) {
+      $start = $options['start'];
+    }
+    else {
+      $start = NULL;
+    }
+    if (!empty($options['end'])) {
+      $end = $options['end'];
+    }
+    else {
+      $end = NULL;
     }
     if (!empty($options['queue'])) {
       $queue = TRUE;
@@ -1933,6 +1951,12 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if ($limit) {
       $query->range(0, $limit);
+    }
+    if ($start) {
+      $query->condition('field_meeting_date', $start, '>');
+    }
+    if ($end) {
+      $query->condition('field_meeting_date', $end, '<');
     }
 
     $or = $query->orConditionGroup();
