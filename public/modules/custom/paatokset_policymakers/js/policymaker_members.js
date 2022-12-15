@@ -136,13 +136,15 @@
         },
         computed: {
           filteredMembers() {
+
             let temp_results = this.members;
             temp_results = temp_results.filter(result => {
               return result.first_name.toLowerCase().includes(this.search.toLowerCase()) || result.last_name.toLowerCase().includes(this.search.toLowerCase())
             })
 
             if(!this.active_checkboxes.includes('deputy_member')) {
-              temp_results = temp_results.filter(result => result.role !== 'Deputy councillor');
+              const deputyLabels = ['Varajäsen', 'Deputy councillor', 'Ersättare'];
+              temp_results = temp_results.filter(result => !deputyLabels.includes(result.role));
             }
 
             if(this.active_filters.party !== window.Drupal.t('All')) {
