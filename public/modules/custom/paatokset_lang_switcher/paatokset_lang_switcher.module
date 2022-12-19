@@ -133,7 +133,7 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
     return $url;
   }
 
-  $localized_route = str_replace($currentLanguage, $langCode, $route_name);
+  $localized_route = str_replace('.' . $currentLanguage, '.' . $langCode, $route_name);
 
   // Quit early if route doesn't exist.
   if (!$policymakerService->routeExists($localized_route)) {
