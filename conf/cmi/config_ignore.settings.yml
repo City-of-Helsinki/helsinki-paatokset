@@ -8,3 +8,4 @@ ignored_config_entities:
   - 'paatokset_ahjo_api.disallowed_decisions.*'
   - paatokset_ahjo_openid.settings
   - paatokset_ahjo_proxy.settings
+  - paatokset_ahjo_api.policymaker_labels
