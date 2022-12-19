@@ -4,7 +4,7 @@ paatokset_ahjo_proxy.settings:
     _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxySettingsForm
     _title: 'Ahjo Proxy settings'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer ahjo proxy'
 
 paatokset_ahjo_proxy.blacklist:
   path: '/admin/config/services/ahjo-blacklist'
@@ -12,7 +12,7 @@ paatokset_ahjo_proxy.blacklist:
     _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxyBlacklistForm
     _title: 'Ahjo API entity blacklist'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer ahjo proxy'
 
 paatokset_ahjo_proxy.manual_cache:
   path: '/admin/config/services/ahjo-manual-cache'
@@ -20,7 +20,7 @@ paatokset_ahjo_proxy.manual_cache:
     _form: \Drupal\paatokset_ahjo_proxy\Form\AhjoProxyManualCacheForm
     _title: 'Ahjo API manual cache'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer ahjo proxy'
 
 paatokset_ahjo_proxy.meetings:
   path: '/ahjo-proxy/meetings'

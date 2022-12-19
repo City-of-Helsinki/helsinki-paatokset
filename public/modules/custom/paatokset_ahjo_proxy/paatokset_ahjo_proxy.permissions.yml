@@ -2,3 +2,5 @@ access ahjo documents:
   title: 'Access external documents from Ahjo API'
 access ahjo proxy:
   title: 'Access Ahjo Proxy endpoints'
+administer ahjo proxy:
+  title: 'Administer Ahjo Proxy settings'

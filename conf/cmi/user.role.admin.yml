@@ -85,6 +85,7 @@ permissions:
   - 'access toolbar'
   - 'access user profiles'
   - 'administer ahjo openid'
+  - 'administer ahjo proxy'
   - 'administer blocks'
   - 'administer eu cookie compliance categories'
   - 'administer eu cookie compliance popup'
