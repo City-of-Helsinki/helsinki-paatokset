@@ -88,6 +88,7 @@ permissions:
   - 'create terms in keywords'
   - 'create terms in pdf_categories'
   - 'create url aliases'
+  - 'delete any article content'
   - 'delete any file media'
   - 'delete any hel_map media'
   - 'delete any helfi_chart media'
