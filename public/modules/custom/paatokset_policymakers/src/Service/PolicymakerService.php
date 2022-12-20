@@ -679,7 +679,8 @@ class PolicymakerService {
       ->condition('field_policymaker_id', $this->policymakerId)
       ->condition('field_meeting_date', '', '<>')
       ->condition('field_meeting_date', '2018-04-01', '>=')
-      ->sort('field_meeting_date', 'DESC');
+      ->sort('field_meeting_date', 'DESC')
+      ->sort('field_decision_section', 'DESC');
 
     if ($limit) {
       $query->range('0', $limit);
