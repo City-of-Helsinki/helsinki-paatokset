@@ -26,4 +26,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/tietoa-paatoksenteosta/sidonnaisuusilmoitukset\r\n/information-om-beslutsfattande/redogorelse-for-bindningar"
+    pages: "/tietoa-paatoksenteosta/sidonnaisuusilmoitukset\r\n/tietoa-paatoksenteosta/lakisaateiset-sidonnaisuusilmoitukset\r\n/information-om-beslutsfattande/redogorelse-for-bindningar"
