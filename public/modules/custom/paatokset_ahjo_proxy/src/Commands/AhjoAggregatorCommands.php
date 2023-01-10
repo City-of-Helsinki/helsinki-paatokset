@@ -842,6 +842,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $or->notExists('field_security_reasons');
       $or->condition('field_security_reasons', '');
       $query->condition($or);
+      $query->conditition('field_publicity_class', 'Julkinen', '<>');
     }
     elseif ($logic === 'title') {
       $query->condition('title', 'NO TITLE');
