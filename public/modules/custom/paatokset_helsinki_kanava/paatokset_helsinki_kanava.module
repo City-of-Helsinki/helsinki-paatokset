@@ -64,13 +64,13 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   }
 
   $query = \Drupal::entityQuery('meeting_video')
-    ->range(0, 1)
+    ->range(0, 10)
     ->condition('start_time', strtotime('now'), '<')
+    ->condition('asset_id', '', '<>')
     ->sort('start_time', 'DESC');
 
   $ids = $query->execute();
 
-  $video = NULL;
   if (!empty($ids)) {
     $video = MeetingVideo::load(reset($ids));
   }
