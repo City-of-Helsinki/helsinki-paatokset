@@ -5,8 +5,8 @@ dependencies: {  }
 id: default
 name: varnish
 invalidationtype: tag
-hostname: localhost
-port: 6081
+hostname: varnish
+port: 8090
 path: /
 request_method: BAN
 scheme: http
