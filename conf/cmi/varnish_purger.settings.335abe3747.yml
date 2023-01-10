@@ -1,0 +1,28 @@
+uuid: fd788f84-8e55-4671-b62a-b61abdca1754
+langcode: fi
+status: true
+dependencies: {  }
+id: 335abe3747
+name: varnish-url
+invalidationtype: url
+hostname: varnish
+port: 8090
+path: /
+request_method: PURGE
+scheme: http
+verify: '1'
+headers:
+  -
+    field: Cache-Tags
+    value: '[invalidation:expression]'
+  -
+    field: X-Cache-Tags
+    value: '[invalidation:expression]'
+body: null
+body_content_type: null
+runtime_measurement: true
+timeout: !!float 1
+connect_timeout: !!float 1
+cooldown_time: !!float 0
+max_requests: 100
+http_errors: true
