@@ -259,6 +259,7 @@ class PolicymakerSideNav extends BlockBase {
     // Use manipulators to get correct item order.
     $subtree = $dmMenuLink->subtree;
     $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
     $subtree = $menu_tree->transform($subtree, $manipulators);
