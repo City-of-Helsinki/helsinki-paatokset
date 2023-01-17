@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/paattajat/*/keskustelupöytäkirjat\r\n/beslutsfattare/*/diskussionsprotokoll\r\n/decisionmakers/*/discussion-minutes"
+    pages: "/paattajat/*/keskustelupöytäkirjat\r\n/paattajat/*/keskustelupoytakirjat\r\n/beslutsfattare/*/diskussionsprotokoll\r\n/decisionmakers/*/discussion-minutes"
