@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "*/aloitteet\r\n*/motioner\r\n*/motions"
+    pages: "*/aloitteet\r\n*/motioner\r\n*/motions\r\n*/initiatives"

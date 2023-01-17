@@ -80,7 +80,7 @@ policymaker.decisions.en:
     _access: 'TRUE'
 
 policymaker.discussion_minutes.fi:
-  path: 'paattajat/{organization}/keskustelupöytäkirjat'
+  path: 'paattajat/{organization}/keskustelupoytakirjat'
   defaults:
     _controller: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::discussionMinutes'
     _title_callback: '\Drupal\paatokset_policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
