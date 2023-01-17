@@ -891,11 +891,11 @@ class PolicymakerService {
     $context = ['context' => 'Council group members list'];
     switch ($role) {
       case 'Jäsen':
-        $translation = t('Councillor', [], $context);
+        $translation = t('Member', [], $context);
         break;
 
       case 'Varajäsen':
-        $translation = t('Deputy councillor', [], $context);
+        $translation = t('Deputy member', [], $context);
         break;
 
       case 'Puheenjohtaja':
