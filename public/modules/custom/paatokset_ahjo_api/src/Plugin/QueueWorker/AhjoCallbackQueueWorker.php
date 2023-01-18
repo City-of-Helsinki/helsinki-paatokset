@@ -97,6 +97,11 @@ class AhjoCallbackQueueWorker extends QueueWorkerBase implements ContainerFactor
       ));
     }
 
+    // Mark meeting motions to be regenerated after updates.
+    if ($item['id'] === 'meetings' && $operation === 'Updated') {
+      $this->ahjoProxy->markMeetingMotionsAsUnprocessed($entity);
+    }
+
     $this->logger->info('Migrated @id from @queue as @operation.', [
       '@queue' => $item['id'],
       '@operation' => $operation,
