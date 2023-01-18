@@ -1763,6 +1763,14 @@ class PolicymakerService {
         ];
         break;
 
+      case 'Sosiaali-, terveys- ja pelastustoimiala':
+        $values = [
+          'en' => 'Social Services, Health Care and Rescue Services Division',
+          'fi' => 'Sosiaali-, terveys- ja pelastustoimiala',
+          'sv' => 'Tjänsteinnehavare: Social-, hälsovårds- och räddningssektorn',
+        ];
+        break;
+
       default:
         $values = [];
         break;
