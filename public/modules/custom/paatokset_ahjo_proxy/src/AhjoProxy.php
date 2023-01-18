@@ -2214,6 +2214,37 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Mark meetings with specific meeting ID to be reprocessed.
+   *
+   * @param string $meeting_id
+   *   Meeting ID.
+   */
+  public function markMeetingMotionsAsUnprocessed(string $meeting_id): void {
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_agenda_published', 1)
+      ->condition('field_meeting_minutes_published', 0)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->condition('field_agenda_items_processed', 1)
+      ->condition('field_meeting_id', $meeting_id)
+      ->latestRevision();
+
+    $ids = $query->execute();
+    if (empty($ids)) {
+      return;
+    }
+
+    $nodes = Node::loadMultiple($ids);
+    foreach ($nodes as $node) {
+      if ($node instanceof NodeInterface) {
+        $node->set('field_agenda_items_processed', 0);
+        $node->save();
+      }
+    }
+  }
+
+  /**
    * Get blacklisted entity IDs from config.
    *
    * @return array
