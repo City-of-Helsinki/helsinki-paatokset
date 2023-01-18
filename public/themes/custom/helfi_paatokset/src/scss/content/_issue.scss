@@ -514,8 +514,13 @@ h4.decision-history-title + h5.decision-history-title {
     max-width: 1328px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @include breakpoint($breakpoint-m) {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
   }
 
   .component.component--banner {
