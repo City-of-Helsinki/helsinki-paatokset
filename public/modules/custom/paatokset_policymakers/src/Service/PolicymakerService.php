@@ -1767,7 +1767,7 @@ class PolicymakerService {
         $values = [
           'en' => 'Social Services, Health Care and Rescue Services Division',
           'fi' => 'Sosiaali-, terveys- ja pelastustoimiala',
-          'sv' => 'Tjänsteinnehavare: Social-, hälsovårds- och räddningssektorn',
+          'sv' => 'Social-, hälsovårds- och räddningssektorn',
         ];
         break;
 
