@@ -1821,12 +1821,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    // If node is not new and we're not updating everything, skip item.
-    if (!$data['update_all'] && !$node->isNew()) {
-      $context['results']['skipped'][] = $data['title'];
-      return;
-    }
-
     // Get record from endpoint, unless we're only using local data.
     $record_content = [];
     if ($data['endpoint']) {
