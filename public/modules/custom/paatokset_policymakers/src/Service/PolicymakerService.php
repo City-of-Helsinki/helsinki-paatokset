@@ -1386,7 +1386,8 @@ class PolicymakerService {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId);
+      ->condition('field_meeting_dm_id', $this->policymakerId)
+      ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
       $query->range('0', $limit);
@@ -1418,6 +1419,7 @@ class PolicymakerService {
           'publish_date' => $dateLong,
           'title' => $entity->label() . ' (PDF)',
           'type' => 'minutes-of-discussion',
+          'year' => $meeting_year,
         ];
 
         $download_link = NULL;
@@ -1432,27 +1434,21 @@ class PolicymakerService {
 
         $result['link'] = $download_link;
 
-        if ($byYear) {
-          $transformedResults[$meeting_year][] = $result;
-        }
-        else {
-          $transformedResults[] = $result;
-        }
+        $transformedResults[] = $result;
       }
     }
 
-    // Sort list here because otherwise they are sorted by meeting NIDs.
+    usort($transformedResults, function ($item1, $item2) {
+      return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
+    });
+
     if ($byYear) {
-      foreach ($transformedResults as $key => $year) {
-        usort($transformedResults[$key], function ($item1, $item2) {
-          return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
-        });
+      $sorted_by_year = [];
+      foreach ($transformedResults as $result) {
+        $sorted_by_year[$result['year']][] = $result;
       }
-    }
-    else {
-      usort($transformedResults, function ($item1, $item2) {
-        return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
-      });
+
+      $transformedResults = $sorted_by_year;
     }
 
     return $transformedResults;
