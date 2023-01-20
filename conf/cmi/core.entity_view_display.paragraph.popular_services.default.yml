@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.popular_services.field_popular_services_title
     - field.field.paragraph.popular_services.field_service_items
     - paragraphs.paragraphs_type.popular_services
   module:
@@ -21,7 +22,16 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 1
+    region: content
+  field_popular_services_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  field_popular_services_title: true
   search_api_excerpt: true
