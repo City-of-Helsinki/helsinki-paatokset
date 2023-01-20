@@ -196,7 +196,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
     // Sort by titles.
     usort($accordion_contents['viranhaltijat']['items'], function ($a, $b) {
-      return strnatcmp($a['title'], $b['title']);
+      return strnatcmp($a['sort_title'], $b['sort_title']);
     });
     usort($accordion_contents['trustee']['items'], function ($a, $b) {
       return strnatcmp($a['title'], $b['title']);
@@ -333,6 +333,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
       $filtered[] = [
         'title' => $node->get('title')->value,
+        'sort_title' => $node->get('field_dm_org_name')->value . ' ' . $node->get('title')->value,
         'ahjo_title' => $node->get('field_ahjo_title')->value,
         'link' => $this->policymakerService->getPolicymakerRoute($node, $this->currentLanguage),
         'organization_type' => $node->get('field_organization_type')->value,
