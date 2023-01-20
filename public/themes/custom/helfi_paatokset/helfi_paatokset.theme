@@ -491,4 +491,7 @@ function helfi_paatokset_preprocess_page(&$variables) {
 function helfi_paatokset_preprocess_node__article(&$variables) {
   $node = $variables['node'];
   $variables['published_at'] = $node->get('created')->value;
+  if ($node->hasField('unpublish_on') && !$node->get('unpublish_on')->isEmpty()) {
+    $variables['scheduled_unpublish_date'] = $node->get('unpublish_on')->value;
+  }
 }
