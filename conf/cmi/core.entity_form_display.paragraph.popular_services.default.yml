@@ -15,6 +15,14 @@ targetEntityType: paragraph
 bundle: popular_services
 mode: default
 content:
+  field_popular_services_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_service_items:
     type: paragraphs
     weight: 1
@@ -32,14 +40,6 @@ content:
       features:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: {  }
-  field_popular_services_title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true
