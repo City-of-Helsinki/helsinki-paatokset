@@ -2300,27 +2300,28 @@ class AhjoAggregatorCommands extends DrushCommands {
 
         $item['PDF']['AgendaPoint'] = $item['AgendaPoint'];
 
-        if (!empty($item['Attachments'])) {
-          $attachments = $item['Attachments'];
-        }
-        else {
-          $attachments = [];
-        }
-
         $endpoint = NULL;
         if (!$use_local_data) {
           $endpoint = 'records/' . $native_id;
         }
+
+        if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+          $agenda_endpoint = 'agenda-item/' . $meeting_data['meeting_id'] . '/' . $native_id;
+        }
+        else {
+          $agenda_endpoint = 'meetings/' . $meeting_data['meeting_id'] . '/agendaitems' . '/' . $native_id;
+        }
+
         $count++;
         $data = [
           'endpoint' => $endpoint,
+          'agenda_endpoint' => $agenda_endpoint,
           'update_all' => $update_all,
           'count' => $count,
           'title' => $item['AgendaItem'],
           'native_id' => $native_id,
           'pdf' => $item['PDF'],
           'html' => $item['HTML'],
-          'attachments' => $attachments,
           'meeting_data' => $meeting_data,
         ];
 

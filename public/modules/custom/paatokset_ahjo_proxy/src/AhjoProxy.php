@@ -182,7 +182,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // Local adjustments for fetching cases or decisions through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      if (strpos($url, 'cases') === 0 || strpos($url, 'decisions') === 0) {
+      if (strpos($url, 'cases') === 0 || strpos($url, 'decisions') === 0 || strpos($url, 'agenda-item') === 0) {
         $base_url = getenv('AHJO_PROXY_BASE_URL');
         $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
@@ -1831,7 +1831,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     $meeting_number = $data['meeting_data']['meeting_number'];
     $org_id = $data['meeting_data']['org_id'];
     $org_name = $data['meeting_data']['org_name'];
-    $attachments = $data['attachments'];
 
     $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title, TRUE);
     if (!$node instanceof NodeInterface) {
@@ -1888,9 +1887,14 @@ class AhjoProxy implements ContainerInjectionInterface {
       $top_category = NULL;
     }
 
+    // Get attachments from agenda item endpoint.
     $attachments_json = [];
-    if (!empty($attachments)) {
-      foreach ($attachments as $attachment) {
+    $agenda_content = [];
+    if ($data['agenda_endpoint']) {
+      $agenda_content = $ahjo_proxy->getData($data['agenda_endpoint'], NULL);
+    }
+    if (!empty($agenda_content['agenda_item']) && !empty($agenda_content['agenda_item']['Attachments'])) {
+      foreach ($agenda_content['agenda_item']['Attachments'] as $attachment) {
         $attachments_json[] = json_encode($attachment);
       }
     }
