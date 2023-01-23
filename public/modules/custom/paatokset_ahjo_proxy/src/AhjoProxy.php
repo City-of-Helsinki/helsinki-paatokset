@@ -332,7 +332,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
     $agenda_item_url = $this->getApiBaseUrl() . 'meetings/' . strtoupper($meeting_id) . '/agendaitems' . '/' . $id . '?' . urldecode($query_string);
     $agenda_item = $this->getContent($agenda_item_url, $bypass_cache);
-    return ['agenda_item' => [$agenda_item]];
+    return ['agenda_item' => $agenda_item];
   }
 
   /**
@@ -1893,8 +1893,14 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($data['agenda_endpoint']) {
       $agenda_content = $ahjo_proxy->getData($data['agenda_endpoint'], NULL);
     }
-    if (!empty($agenda_content['agenda_item']) && !empty($agenda_content['agenda_item']['Attachments'])) {
-      foreach ($agenda_content['agenda_item']['Attachments'] as $attachment) {
+
+    // Local data through proxy is formatted differently.
+    if (!empty($agenda_content['agenda_item']) {
+      $agenda_content = $agenda_content['agenda_item'];
+    }
+
+    if (!empty($agenda_content) && !empty($agenda_content['Attachments'])) {
+      foreach ($agenda_content['Attachments'] as $attachment) {
         $attachments_json[] = json_encode($attachment);
       }
     }
