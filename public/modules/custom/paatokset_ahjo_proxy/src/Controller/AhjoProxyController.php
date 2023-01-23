@@ -124,6 +124,25 @@ class AhjoProxyController extends ControllerBase {
   }
 
   /**
+   * Get data for a agenda item on a meeting.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $meeting_id
+   *   Meeting ID.
+   * @param string $id
+   *   Agenda item document ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for agenda item.
+   */
+  public function agendaItem(Request $request, string $meeting_id, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getAgendaItem($meeting_id, $id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
    * Get data for a single decision.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request

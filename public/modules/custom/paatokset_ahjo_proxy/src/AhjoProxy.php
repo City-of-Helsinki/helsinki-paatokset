@@ -312,6 +312,30 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get single agenda item from Ahjo API.
+   *
+   * @param string $meeting_id
+   *   Meeting ID.
+   * @param string $id
+   *   Agenda item document ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Agenad item data.
+   */
+  public function getAgendaItem(string $meeting_id, string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $agenda_item_url = $this->getApiBaseUrl() . 'meetings/' . strtoupper($meeting_id) . '/agendaitems' . '/' . $id . '?' . urldecode($query_string);
+    $agenda_item = $this->getContent($agenda_item_url, $bypass_cache);
+    return ['agenda_item' => [$agenda_item]];
+  }
+
+  /**
    * Get single case from Ahjo API.
    *
    * @param string $id

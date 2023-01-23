@@ -63,6 +63,18 @@ paatokset_ahjo_proxy.meetings_single:
   options:
     _auth: ['cookie', 'key_auth']
 
+paatokset_ahjo_proxy.agenda_item:
+  path: '/ahjo-proxy/agenda-item/{meeting_id}/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::agendaItem'
+    id: placeholder
+    meeting_id: placeholder
+  requirements:
+    _permission: 'access ahjo proxy'
+  methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
+
 paatokset_ahjo_proxy.cases_single:
   path: '/ahjo-proxy/cases/single/{id}'
   defaults:
