@@ -544,7 +544,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
       else {
         $endpoint = 'organization';
-        $endpoint_query_string = 'orgid=' .$org_id;
+        $endpoint_query_string = 'orgid=' . $org_id;
       }
 
       $count++;
