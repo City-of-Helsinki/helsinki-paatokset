@@ -1066,8 +1066,6 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-
-
     if (!empty($content['DecisionHistoryHTML'])) {
       $node->set('field_decision_history', [
         'value' => $content['DecisionHistoryHTML'],
