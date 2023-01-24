@@ -1057,10 +1057,16 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty($content['decisions'])) {
       $content = $content['decisions'][0];
     }
+    // Single decisions from endpoint still come as an array.
+    else {
+      $content = reset($content);
+    }
 
     if (empty($content)) {
       return;
     }
+
+
 
     if (!empty($content['DecisionHistoryHTML'])) {
       $node->set('field_decision_history', [
@@ -1095,6 +1101,10 @@ class AhjoProxy implements ContainerInjectionInterface {
     // Local data is formatted a bit differently.
     if (!empty($content['decisions'])) {
       $content = $content['decisions'][0];
+    }
+    // Single decisions from endpoint still come as an array.
+    else {
+      $content = reset($content);
     }
 
     if (empty($content)) {
@@ -1473,15 +1483,22 @@ class AhjoProxy implements ContainerInjectionInterface {
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $node = Node::load($data['nid']);
 
-    // Fetch decision content from endpoint.
-    $content = NULL;
-    if ($data['endpoint']) {
-      $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    if (empty($data['endpoint'])) {
+      $messenger->addMessage('Could not fetch attachments for for nid: ' . $node->id());
+      $context['results']['failed'][] = $node->id();
+      return;
     }
+
+    // Fetch decision content from endpoint.
+    $content = $ahjo_proxy->getData($data['endpoint'], NULL);
 
     // Local data is formatted a bit differently.
     if (isset($content['decisions'])) {
       $content = $content['decisions'][0];
+    }
+    // Single decisions from endpoint still come as an array.
+    else {
+      $content = reset($content);
     }
 
     if (!empty($content)) {
