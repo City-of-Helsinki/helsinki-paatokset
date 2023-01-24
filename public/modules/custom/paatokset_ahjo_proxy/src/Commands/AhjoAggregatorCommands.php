@@ -540,9 +540,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       // Local adjustments for fetching cases through proxy.
       if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
         $endpoint = 'organization/single/' . $org_id;
+        $endpoint_query_string = NULL;
       }
       else {
-        $endpoint = 'organization?orgid=' . $org_id;
+        $endpoint = 'organization';
+        $endpoint_query_string = 'orgid=' .$org_id;
       }
 
       $count++;
@@ -551,6 +553,7 @@ class AhjoAggregatorCommands extends DrushCommands {
         'count' => $count,
         'org_id' => $org_id,
         'endpoint' => $endpoint,
+        'endpoint_query_string' => $endpoint_query_string,
       ];
 
       $operations[] = [

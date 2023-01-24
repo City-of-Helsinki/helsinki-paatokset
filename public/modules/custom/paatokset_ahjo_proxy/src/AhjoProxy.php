@@ -1527,7 +1527,6 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function processDmStatusCheck($data, &$context) {
     $messenger = \Drupal::messenger();
-    $context['message'] = 'Importing item number ' . $data['count'];
 
     if (!isset($context['results']['items'])) {
       $context['results']['items'] = [];
@@ -1547,8 +1546,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
+    $context['message'] = 'Checking decisionmaker with ID: ' . $node->field_policymaker_id->value . ', operation: ' . $data['count'];
+
     // Fetch updated content from endpoint.
-    $content = $ahjo_proxy->getData($data['endpoint'], NULL);
+    $content = $ahjo_proxy->getData($data['endpoint'], $data['endpoint_query_string']);
 
     // Local and proxy data is formatted a bit differently than API data.
     if (isset($content['decisionMakers'][0]['Organization'])) {
