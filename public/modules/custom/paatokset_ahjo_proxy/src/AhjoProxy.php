@@ -1895,7 +1895,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     // Local data through proxy is formatted differently.
-    if (!empty($agenda_content['agenda_item']) {
+    if (!empty($agenda_content['agenda_item'])) {
       $agenda_content = $agenda_content['agenda_item'];
     }
 
