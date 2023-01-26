@@ -1903,7 +1903,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $top_category = NULL;
     }
 
-    // Get attachments from agenda item endpoint.
+    // Get data from agenda item endpoint.
     $attachments_json = [];
     $agenda_content = [];
     if ($data['agenda_endpoint']) {
@@ -1915,9 +1915,20 @@ class AhjoProxy implements ContainerInjectionInterface {
       $agenda_content = $agenda_content['agenda_item'];
     }
 
-    if (!empty($agenda_content) && !empty($agenda_content['Attachments'])) {
-      foreach ($agenda_content['Attachments'] as $attachment) {
-        $attachments_json[] = json_encode($attachment);
+    if (!empty($agenda_content)) {
+      if (!empty($agenda_content['Attachments'])) {
+        foreach ($agenda_content['Attachments'] as $attachment) {
+          $attachments_json[] = json_encode($attachment);
+        }
+      }
+      if (!empty($agenda_content['DecisionHistoryHTML'])) {
+        $node->set('field_decision_history', [
+          'value' => $agenda_content['DecisionHistoryHTML'],
+          'format' => 'plain_text',
+        ]);
+      }
+      if (!empty($agenda_content['DecisionHistoryPDF'])) {
+        $node->set('field_decision_history_pdf', json_encode($agenda_content['DecisionHistoryPDF']));
       }
     }
 
