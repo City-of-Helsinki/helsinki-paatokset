@@ -1,0 +1,38 @@
+uuid: cc647751-df31-4306-98f0-af12a1107523
+langcode: fi
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.pdf_minutes_of_discussion.field_document
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_category
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_date
+    - media.type.pdf_minutes_of_discussion
+id: media.pdf_minutes_of_discussion.media_library
+targetEntityType: media
+bundle: pdf_minutes_of_discussion
+mode: media_library
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_document: true
+  field_pdf_category: true
+  field_pdf_date: true
+  langcode: true
+  path: true
+  replace_file: true
+  status: true
+  uid: true

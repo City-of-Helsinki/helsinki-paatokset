@@ -1,0 +1,16 @@
+uuid: bcc70323-8935-4f53-bf9c-ac9d6e959d11
+langcode: fi
+status: true
+dependencies:
+  config:
+    - media.type.pdf_minutes_of_discussion
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: media.pdf_minutes_of_discussion
+target_entity_type_id: media
+target_bundle: pdf_minutes_of_discussion
+default_langcode: current_interface
+language_alterable: true

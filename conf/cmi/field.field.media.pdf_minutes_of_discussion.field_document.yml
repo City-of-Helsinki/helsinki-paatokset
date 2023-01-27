@@ -1,0 +1,27 @@
+uuid: 931d93c0-efd8-4396-b3a7-7d0a67fc3914
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_document
+    - media.type.pdf_minutes_of_discussion
+  module:
+    - file
+id: media.pdf_minutes_of_discussion.field_document
+field_name: field_document
+entity_type: media
+bundle: pdf_minutes_of_discussion
+label: Tiedosto
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: pdf-minutes
+  file_extensions: pdf
+  max_filesize: ''
+  description_field: false
+field_type: file

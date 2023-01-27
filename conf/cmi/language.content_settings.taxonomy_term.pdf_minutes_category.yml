@@ -1,0 +1,16 @@
+uuid: 09251383-da6e-4e3f-97e7-b6c7fdb033a3
+langcode: fi
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.pdf_minutes_category
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.pdf_minutes_category
+target_entity_type_id: taxonomy_term
+target_bundle: pdf_minutes_category
+default_langcode: fi
+language_alterable: false

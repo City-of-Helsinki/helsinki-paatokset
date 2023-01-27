@@ -1,10 +1,15 @@
 uuid: 4514dfa4-055e-4e0b-8b4e-5f926f2f6790
 langcode: fi
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - crop
+third_party_settings:
+  crop:
+    image_field: _none
 id: minutes_of_the_discussion
 label: 'Minutes of the discussion'
-description: ''
+description: 'Minutes of discussion for City council meetings'
 source: file
 queue_thumbnail_downloads: false
 new_revision: true

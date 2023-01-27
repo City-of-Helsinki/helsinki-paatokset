@@ -1,0 +1,20 @@
+uuid: b05b9d49-2104-44fd-8506-ae7316ea6e90
+langcode: fi
+status: true
+dependencies:
+  module:
+    - datetime
+    - media
+id: media.field_pdf_date
+field_name: field_pdf_date
+entity_type: media
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,29 @@
+uuid: 74d3951c-62db-4504-bba0-609fe6e08fa7
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_pdf_category
+    - media.type.pdf_minutes_of_discussion
+    - taxonomy.vocabulary.pdf_minutes_category
+id: media.pdf_minutes_of_discussion.field_pdf_category
+field_name: field_pdf_category
+entity_type: media
+bundle: pdf_minutes_of_discussion
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      pdf_minutes_category: pdf_minutes_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,13 @@
+uuid: 11232e2a-496b-4a57-a5ff-e5db1ce74388
+langcode: fi
+status: true
+dependencies: {  }
+id: pdf_minutes_of_discussion
+label: 'PDF Minutes of Discussion'
+description: 'Minutes of discussion document stored outside of Ahjo'
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_document
+field_map: {  }
