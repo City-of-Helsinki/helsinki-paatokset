@@ -1,0 +1,93 @@
+uuid: 44551ef4-f0ed-44f1-9f4d-a333667f0d38
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.media.pdf_minutes_of_discussion.field_document
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_category
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_date
+    - media.type.pdf_minutes_of_discussion
+  module:
+    - datetime
+    - file
+    - path
+    - select2
+id: media.pdf_minutes_of_discussion.default
+targetEntityType: media
+bundle: pdf_minutes_of_discussion
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_document:
+    type: file_generic
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_pdf_category:
+    type: select2_entity_reference
+    weight: 2
+    region: content
+    settings:
+      width: 100%
+      autocomplete: true
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_pdf_date:
+    type: datetime_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  replace_file: true

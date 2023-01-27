@@ -1,0 +1,49 @@
+uuid: 587f2011-b748-4ded-a3aa-a5d5da0391b9
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.media.pdf_minutes_of_discussion.field_document
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_category
+    - field.field.media.pdf_minutes_of_discussion.field_pdf_date
+    - media.type.pdf_minutes_of_discussion
+  module:
+    - datetime
+    - file
+id: media.pdf_minutes_of_discussion.default
+targetEntityType: media
+bundle: pdf_minutes_of_discussion
+mode: default
+content:
+  field_document:
+    type: file_default
+    label: visually_hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_pdf_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_pdf_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

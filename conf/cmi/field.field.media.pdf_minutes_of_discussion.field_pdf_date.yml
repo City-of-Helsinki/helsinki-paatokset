@@ -1,0 +1,21 @@
+uuid: 7d113152-b565-4797-a54d-ab8d14a9d4f1
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_pdf_date
+    - media.type.pdf_minutes_of_discussion
+  module:
+    - datetime
+id: media.pdf_minutes_of_discussion.field_pdf_date
+field_name: field_pdf_date
+entity_type: media
+bundle: pdf_minutes_of_discussion
+label: Date
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

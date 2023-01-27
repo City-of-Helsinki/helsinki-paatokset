@@ -2,7 +2,7 @@ uuid: 7f7c132d-2e7d-4b50-b9de-ee8695404056
 langcode: fi
 status: true
 dependencies: {  }
-name: 'Pdf kategoriat'
+name: 'Interest statement category'
 vid: pdf_categories
 description: ''
 weight: 0
