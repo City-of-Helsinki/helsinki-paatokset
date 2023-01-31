@@ -1,0 +1,4 @@
+name: Paatokset PDF listing component
+type: module
+package: custom
+core_version_requirement: ^9

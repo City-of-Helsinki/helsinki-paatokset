@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for PDF listing module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_pdf_listing_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__pdf_listing' => [
+      'variables' => [
+        'years' => [],
+        'documents' => [],
+      ],
+      'render element' => 'elements',
+      'template' => 'paragraph--pdf-listing',
+      'path' => $path . '/templates/paragraph',
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_pdf_listing_preprocess_paragraph__pdf_listing(&$variables) {
+  if (empty($variables['paragraph']) || !$variables['paragraph'] instanceof Paragraph) {
+    return;
+  }
+  $paragraph = $variables['paragraph'];
+
+  if (!$paragraph->hasField('field_pdf_category')) {
+    return;
+  }
+
+  $tids = [];
+  foreach ($paragraph->get('field_pdf_category') as $field) {
+    $tids[] = $field->target_id;
+  }
+
+  $query = \Drupal::entityQuery('media')
+    ->condition('bundle', 'pdf_minutes_of_discussion')
+    ->condition('status', 1)
+    ->sort('field_pdf_date', 'DESC')
+    ->sort('name', 'ASC')
+    ->latestRevision();
+
+  if (!empty($tids)) {
+    $query->condition('field_pdf_category', $tids, 'IN');
+  }
+
+  $ids = $query->execute();
+
+  $entities = Media::loadMultiple($ids);
+  $documents = [];
+  foreach ($entities as $entity) {
+    if (!$entity->hasField('field_pdf_date') || $entity->get('field_pdf_date')->isEmpty()) {
+      continue;
+    }
+
+    $timestamp = $entity->get('field_pdf_date')->date->getTimeStamp();
+    $year = date('Y', $timestamp);
+    $title = $entity->label();
+    $date = date('d.m.Y', $timestamp);
+    $download_link = NULL;
+    if ($entity->get('field_document')->target_id) {
+      $file_id = $entity->get('field_document')->target_id;
+      $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
+    }
+
+    if (!$download_link) {
+      continue;
+    }
+
+    $documents[$year][] = [
+      'title' => $title,
+      'date' => $date,
+      'year' => $year,
+      'link' => $download_link,
+    ];
+  }
+
+  $variables['elements']['#cache']['tags'][] = 'media_list:pdf_minutes_of_discussion';
+  $variables['years'] = array_keys($documents);
+  $variables['documents'] = $documents;
+}
