@@ -1,0 +1,15 @@
+uuid: f2ec5e8b-c1d4-4162-a2f3-757924648024
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pdf_listing.field_pdf_category
+    - paragraphs.paragraphs_type.pdf_listing
+id: paragraph.pdf_listing.default
+targetEntityType: paragraph
+bundle: pdf_listing
+mode: default
+content: {  }
+hidden:
+  field_pdf_category: true
+  search_api_excerpt: true

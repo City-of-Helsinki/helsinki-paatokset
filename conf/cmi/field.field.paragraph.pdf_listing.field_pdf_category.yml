@@ -1,0 +1,29 @@
+uuid: a0535615-85a8-4541-bfbb-e9b6c17f7284
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_pdf_category
+    - paragraphs.paragraphs_type.pdf_listing
+    - taxonomy.vocabulary.pdf_minutes_category
+id: paragraph.pdf_listing.field_pdf_category
+field_name: field_pdf_category
+entity_type: paragraph
+bundle: pdf_listing
+label: 'PDF Minutes of Discussion'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      pdf_minutes_category: pdf_minutes_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,27 @@
+uuid: 1e3cdfc9-646a-4850-9a63-be36c91df8e2
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pdf_listing.field_pdf_category
+    - paragraphs.paragraphs_type.pdf_listing
+  module:
+    - select2
+id: paragraph.pdf_listing.default
+targetEntityType: paragraph
+bundle: pdf_listing
+mode: default
+content:
+  field_pdf_category:
+    type: select2_entity_reference
+    weight: 0
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
