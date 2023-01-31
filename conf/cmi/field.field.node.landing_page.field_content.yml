@@ -20,6 +20,7 @@ dependencies:
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.popular_services
     - paragraphs.paragraphs_type.remote_video
@@ -54,15 +55,16 @@ settings:
       image: image
       text: text
       custom_content_links: custom_content_links
+      target_group_links: target_group_links
       chart: chart
       meetings_calendar: meetings_calendar
-      news_liftups: news_liftups
-      remote_video: remote_video
-      phasing: phasing
-      popular_services: popular_services
-      target_group_links: target_group_links
       event_list: event_list
+      news_liftups: news_liftups
       news_list: news_list
+      remote_video: remote_video
+      popular_services: popular_services
+      phasing: phasing
+      pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -80,9 +82,18 @@ settings:
       columns:
         weight: -27
         enabled: true
+      contact_card:
+        weight: 39
+        enabled: false
+      contact_card_listing:
+        weight: 40
+        enabled: false
       content_cards:
         weight: -23
         enabled: true
+      content_liftup:
+        weight: 42
+        enabled: false
       custom_content_links:
         weight: 21
         enabled: true
@@ -122,11 +133,17 @@ settings:
       news_list:
         weight: 30
         enabled: true
+      pdf_listing:
+        weight: 56
+        enabled: true
       phasing:
         weight: 50
         enabled: true
       phasing_item:
         weight: 30
+        enabled: false
+      popular_service_item:
+        weight: 60
         enabled: false
       popular_services:
         weight: 42
@@ -134,6 +151,12 @@ settings:
       remote_video:
         weight: 37
         enabled: true
+      sidebar_text:
+        weight: 62
+        enabled: false
+      social_media_link:
+        weight: 63
+        enabled: false
       target_group_link_item:
         weight: 45
         enabled: false

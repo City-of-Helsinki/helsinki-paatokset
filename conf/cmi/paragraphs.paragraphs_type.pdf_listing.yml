@@ -1,0 +1,10 @@
+uuid: d33efc3e-fc29-4b9a-820c-a0bf313f083a
+langcode: fi
+status: true
+dependencies: {  }
+id: pdf_listing
+label: 'PDF listing'
+icon_uuid: null
+icon_default: null
+description: 'List PDF minutes of discussion based on category.'
+behavior_plugins: {  }

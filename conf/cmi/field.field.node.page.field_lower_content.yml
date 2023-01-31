@@ -21,6 +21,7 @@ dependencies:
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
@@ -51,14 +52,15 @@ settings:
       liftup_with_image: liftup_with_image
       chart: chart
       custom_content_links: custom_content_links
+      event_list: event_list
+      news_list: news_list
+      contact_card_listing: contact_card_listing
       remote_video: remote_video
       map: map
       meetings_calendar: meetings_calendar
       news_liftups: news_liftups
-      contact_card_listing: contact_card_listing
       phasing: phasing
-      event_list: event_list
-      news_list: news_list
+      pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -127,11 +129,20 @@ settings:
       news_list:
         weight: 30
         enabled: true
+      pdf_listing:
+        weight: 56
+        enabled: true
       phasing:
         weight: 50
         enabled: true
       phasing_item:
         weight: 30
+        enabled: false
+      popular_service_item:
+        weight: 60
+        enabled: false
+      popular_services:
+        weight: 59
         enabled: false
       remote_video:
         weight: 32
@@ -141,6 +152,12 @@ settings:
         enabled: false
       social_media_link:
         weight: 46
+        enabled: false
+      target_group_link_item:
+        weight: 65
+        enabled: false
+      target_group_links:
+        weight: 64
         enabled: false
       text:
         weight: -29
