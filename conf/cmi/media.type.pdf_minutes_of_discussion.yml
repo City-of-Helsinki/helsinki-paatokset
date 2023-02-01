@@ -1,10 +1,15 @@
 uuid: 11232e2a-496b-4a57-a5ff-e5db1ce74388
 langcode: fi
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - crop
+third_party_settings:
+  crop:
+    image_field: _none
 id: pdf_minutes_of_discussion
-label: 'PDF Minutes of Discussion'
-description: 'Minutes of discussion document stored outside of Ahjo'
+label: 'PDF Minutes'
+description: 'PDF minute document stored outside of Ahjo.'
 source: file
 queue_thumbnail_downloads: false
 new_revision: false

@@ -8,7 +8,7 @@ third_party_settings:
   crop:
     image_field: _none
 id: minutes_of_the_discussion
-label: 'Minutes of the discussion'
+label: 'Council discussion minutes'
 description: 'Minutes of discussion for City council meetings'
 source: file
 queue_thumbnail_downloads: false
