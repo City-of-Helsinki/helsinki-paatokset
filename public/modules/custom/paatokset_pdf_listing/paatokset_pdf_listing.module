@@ -69,7 +69,7 @@ function paatokset_pdf_listing_preprocess_paragraph__pdf_listing(&$variables) {
 
     $timestamp = $entity->get('field_pdf_date')->date->getTimeStamp();
     $year = date('Y', $timestamp);
-    $title = $entity->label();
+    $title = $entity->label() . ' (PDF)';
     $date = date('d.m.Y', $timestamp);
     $download_link = NULL;
     if ($entity->get('field_document')->target_id) {
