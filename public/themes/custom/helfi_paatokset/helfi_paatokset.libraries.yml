@@ -31,3 +31,8 @@ cookie_compliance_block:
   version: 1.x
   js:
     src/js/cookie_compliance_block.js: {}
+
+matomo:
+  version: 1.x
+  js:
+    src/js/matomo.js: {}

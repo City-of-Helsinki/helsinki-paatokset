@@ -12,6 +12,7 @@ libraries:
 
 libraries-override:
   hdbt/hyphenopoly: false
+  hdbt/matomo: helfi_paatokset/matomo
   eu_cookie_compliance/eu_cookie_compliance_cookie_values: helfi_paatokset/cookie_compliance_block
 
 # Regions
