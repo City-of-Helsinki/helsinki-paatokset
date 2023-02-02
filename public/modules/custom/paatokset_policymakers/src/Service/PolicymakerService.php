@@ -678,9 +678,7 @@ class PolicymakerService {
       ->condition('type', 'decision')
       ->condition('field_policymaker_id', $this->policymakerId)
       ->condition('field_meeting_date', '', '<>')
-      ->condition('field_meeting_date', '2018-04-01', '>=')
-      ->sort('field_meeting_date', 'DESC')
-      ->sort('field_decision_section', 'DESC');
+      ->condition('field_meeting_date', '2018-04-01', '>=');
 
     if ($limit) {
       $query->range('0', $limit);
@@ -696,26 +694,45 @@ class PolicymakerService {
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
     $transformedResults = [];
+    $results = [];
     foreach ($nodes as $node) {
       $timestamp = strtotime($node->get('field_meeting_date')->value);
       $year = date('Y', $timestamp);
 
       if ($node->hasField('field_decision_section') && !$node->get('field_decision_section')->isEmpty()) {
         $decision_label = '§ ' . $node->field_decision_section->value . ' ' . $node->field_full_title->value;
+        $section = $node->field_decision_section->value;
       }
       else {
         $decision_label = $node->field_full_title->value;
+        $section = '';
       }
 
       $result = [
+        'year' => $year,
         'date_desktop' => date('d.m.Y', $timestamp),
         'date_mobile' => date('m - Y', $timestamp),
+        'timestamp' => $timestamp,
         'subject' => $decision_label,
+        'section' => $section,
         'link' => $caseService->getDecisionUrlFromNode($node),
       ];
 
+      $results[] = $result;
+    }
+
+    // Sort decisions by timestamp and then again by section numbering.
+    // Has to be done here because query sees sections as text, not numbers.
+    usort($results, function ($item1, $item2) {
+      return strtotime($item2['timestamp']) - strtotime($item1['timestamp']);
+    });
+    usort($results, function ($item1, $item2) {
+      return (int) $item2['section'] - (int) $item1['section'];
+    });
+
+    foreach ($results as $result) {
       if ($byYear) {
-        $transformedResults[$year][] = $result;
+        $transformedResults[$result['year']][] = $result;
       }
       else {
         $transformedResults[] = $result;
