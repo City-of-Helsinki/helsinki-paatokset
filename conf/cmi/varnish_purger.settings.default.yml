@@ -6,7 +6,7 @@ id: default
 name: varnish
 invalidationtype: tag
 hostname: varnish
-port: 8090
+port: 6081
 path: /
 request_method: BAN
 scheme: http

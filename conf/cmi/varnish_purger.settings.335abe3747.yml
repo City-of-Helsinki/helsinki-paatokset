@@ -6,7 +6,7 @@ id: 335abe3747
 name: varnish-url
 invalidationtype: url
 hostname: varnish
-port: 8090
+port: 6081
 path: /
 request_method: PURGE
 scheme: http
