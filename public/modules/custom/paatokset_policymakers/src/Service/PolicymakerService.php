@@ -673,12 +673,12 @@ class PolicymakerService {
       return [];
     }
 
+    // Entityquery. Sorting is handled later for meeting date and section.
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'decision')
       ->condition('field_policymaker_id', $this->policymakerId)
-      ->condition('field_meeting_date', '', '<>')
-      ->condition('field_meeting_date', '2018-04-01', '>=');
+      ->condition('field_meeting_date', '', '<>');
 
     if ($limit) {
       $query->range('0', $limit);
@@ -724,10 +724,10 @@ class PolicymakerService {
     // Sort decisions by timestamp and then again by section numbering.
     // Has to be done here because query sees sections as text, not numbers.
     usort($results, function ($item1, $item2) {
-      return strtotime($item2['timestamp']) - strtotime($item1['timestamp']);
-    });
-    usort($results, function ($item1, $item2) {
-      return (int) $item2['section'] - (int) $item1['section'];
+      if ($item1['date_desktop'] === $item2['date_desktop']) {
+        return (int) $item2['section'] - (int) $item1['section'];
+      }
+      return $item2['timestamp'] - $item1['timestamp'];
     });
 
     foreach ($results as $result) {
