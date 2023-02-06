@@ -914,6 +914,45 @@ class CaseService {
       }
     }
 
+    // Sort decisions by timestamp and then again by section numbering.
+    // Has to be done here because query sees sections as text, not numbers.
+    usort($results, function ($item1, $item2) {
+      if ($item1->get('field_meeting_date')->isEmpty()) {
+        $item1_timestamp = 0;
+        $item1_date = NULL;
+      }
+      else {
+        $item1_timestamp = strtotime($item1->get('field_meeting_date')->value);
+        $item1_date = date('d.m.Y', $item1_timestamp);
+      }
+      if ($item2->get('field_meeting_date')->isEmpty()) {
+        $item2_timestamp = 0;
+        $item2_date = NULL;
+      }
+      else {
+        $item2_timestamp = strtotime($item2->get('field_meeting_date')->value);
+        $item2_date = date('d.m.Y', $item2_timestamp);
+      }
+      if ($item1->get('field_decision_section')->isEmpty()) {
+        $item1_section = 0;
+      }
+      else {
+        $item1_section = (int) $item1->get('field_decision_section')->value;
+      }
+      if ($item2->get('field_decision_section')->isEmpty()) {
+        $item2_section = 0;
+      }
+      else {
+        $item2_section = (int) $item2->get('field_decision_section')->value;
+      }
+
+      if ($item1_date === $item2_date) {
+        return $item2_section - $item1_section;
+      }
+
+      return $item2_timestamp - $item1_timestamp;
+    });
+
     return $results;
   }
 
