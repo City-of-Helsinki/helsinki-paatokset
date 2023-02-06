@@ -6,7 +6,7 @@ id: varnish_purge_all
 name: 'Purge all'
 invalidationtype: everything
 hostname: varnish
-port: 8090
+port: 6081
 path: /
 request_method: BAN
 scheme: http
