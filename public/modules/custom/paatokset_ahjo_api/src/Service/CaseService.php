@@ -1288,8 +1288,8 @@ class CaseService {
     // Add decision date to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
-    if ($has_case_id && $content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
-      $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
+    if ($has_case_id && $content && $this->selectedDecision->hasField('field_meeting_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
+      $decision_timestamp = strtotime($this->selectedDecision->get('field_meeting_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
       $appeal_content = '<p class="issue__decision-date">' . t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
     }
