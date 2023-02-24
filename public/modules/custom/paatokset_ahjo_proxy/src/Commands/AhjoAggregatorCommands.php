@@ -717,6 +717,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       elseif ($logic === 'uniqueid') {
         $query->notExists('field_unique_id');
       }
+      elseif ($logic === 'seriesid') {
+        $query->condition('field_is_decision', 1);
+        $or = $query->orConditionGroup();
+        $or->notExists('field_decision_series_id');
+        $or->condition('field_decision_series_id', '');
+        $query->condition($or);
+      }
     }
 
     if ($limit) {
