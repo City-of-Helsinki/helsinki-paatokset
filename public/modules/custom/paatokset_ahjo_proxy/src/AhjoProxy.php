@@ -1145,6 +1145,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $node->set('field_outdated_document', 0);
     }
 
+    // Set record Series ID, if found.
+    if (!empty($record_content['VersionSeriesId'])) {
+      $node->set('field_decision_series_id', $record_content['VersionSeriesId']);
+    }
+
     if (isset($record_content['Issued'])) {
       $date = new \DateTime($record_content['Issued'], new \DateTimeZone('Europe/Helsinki'));
       $date->setTimezone(new \DateTimeZone('UTC'));
