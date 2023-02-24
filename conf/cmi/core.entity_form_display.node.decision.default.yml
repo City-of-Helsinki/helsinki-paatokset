@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.decision.field_decision_previous
     - field.field.node.decision.field_decision_record
     - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_decision_series_id
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_dm_org_above_name
@@ -57,6 +58,7 @@ third_party_settings:
       children:
         - field_full_title
         - field_decision_native_id
+        - field_decision_series_id
         - field_unique_id
         - field_decision_date
         - field_meeting_date
@@ -198,13 +200,13 @@ content:
     third_party_settings: {  }
   field_decision_date:
     type: datetime_default
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_decision_history:
     type: text_textarea
-    weight: 27
+    weight: 22
     region: content
     settings:
       rows: 5
@@ -215,7 +217,7 @@ content:
         hide_guidelines: '0'
   field_decision_history_pdf:
     type: json_textarea
-    weight: 26
+    weight: 21
     region: content
     settings:
       rows: 5
@@ -280,6 +282,14 @@ content:
   field_decision_section:
     type: string_textfield
     weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_decision_series_id:
+    type: string_textfield
+    weight: 5
     region: content
     settings:
       size: 60
@@ -400,7 +410,7 @@ content:
     third_party_settings: {  }
   field_unique_id:
     type: string_textfield
-    weight: 5
+    weight: 6
     region: content
     settings:
       size: 60
