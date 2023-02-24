@@ -515,34 +515,40 @@ function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?string {
  *   Existing nid, if found.
  */
 function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
-  // First attempt to find node with native ID.
   $native_id = $values[0];
   if (!empty($values[1])) {
-    $case_id = $values[1];
+    $series_id = $values[1];
+  }
+  else {
+    $series_id = NULL;
+  }
+
+  if (!empty($values[2])) {
+    $case_id = $values[2];
   }
   else {
     $case_id = NULL;
   }
-  if (!empty($values[2])) {
-    $meeting_id = $values[2];
+  if (!empty($values[3])) {
+    $meeting_id = $values[3];
   }
   else {
     $meeting_id = NULL;
   }
-  if (!empty($values[3])) {
-    $title = $values[3];
+  if (!empty($values[4])) {
+    $title = $values[4];
   }
   else {
     $title = NULL;
   }
-
-  if (!empty($values[4])) {
-    $language = $values[4];
+  if (!empty($values[5])) {
+    $language = $values[5];
   }
   else {
     $language = NULL;
   }
 
+  // First search for native ID (unique for document).
   $query = Drupal::entityQuery('node')
     ->condition('type', 'decision')
     ->condition('field_decision_native_id', $native_id)
@@ -554,6 +560,21 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
     return reset($ids);
   }
 
+  // If native ID is not found, search for series ID (shared by doc versions).
+  if ($series_id) {
+    $query = Drupal::entityQuery('node')
+      ->condition('type', 'decision')
+      ->condition('field_decision_series_id', $series_id)
+      ->range(0, 1)
+      ->latestRevision();
+
+    $ids = $query->execute();
+    if (!empty($ids)) {
+      return reset($ids);
+    }
+  }
+
+  // If nothing is found with series ID, try other IDs and fields.
   if (!$meeting_id) {
     return NULL;
   }
