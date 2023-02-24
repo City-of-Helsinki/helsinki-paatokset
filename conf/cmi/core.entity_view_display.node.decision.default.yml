@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.decision.field_decision_previous
     - field.field.node.decision.field_decision_record
     - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_decision_series_id
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_dm_org_above_name
@@ -205,6 +206,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_decision_series_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 37
     region: content
   field_diary_number:
     type: string

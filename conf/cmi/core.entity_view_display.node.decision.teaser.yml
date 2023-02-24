@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.decision.field_decision_previous
     - field.field.node.decision.field_decision_record
     - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_decision_series_id
     - field.field.node.decision.field_diary_number
     - field.field.node.decision.field_diary_number_label
     - field.field.node.decision.field_dm_org_above_name
@@ -75,6 +76,7 @@ hidden:
   field_decision_previous: true
   field_decision_record: true
   field_decision_section: true
+  field_decision_series_id: true
   field_diary_number: true
   field_diary_number_label: true
   field_dm_org_above_name: true
