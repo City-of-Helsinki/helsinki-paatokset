@@ -32,6 +32,10 @@ source:
       label: Native ID
       selector: NativeId
     -
+      name: series_id
+      label: Series ID
+      selector: PDF/VersionSeriesId
+    -
       name: language
       label: Language
       selector: PDF/Language
@@ -133,6 +137,11 @@ process:
       - organization_id
       - decision_date
       - section
+  _skip_if_series_id_is_empty:
+    plugin: skip_on_empty
+    method: row
+    source: series_id
+    message: 'Series ID missing for decision.'
   type:
     plugin: default_value
     default_value: decision
@@ -141,11 +150,13 @@ process:
     source: language
     default_value: fi
   field_decision_native_id: native_id
+  field_decision_series_id: series_id
   nid:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_decision_nid
     source:
       - native_id
+      - series_id
       - case_id
       - meeting_id
       - title
