@@ -39,6 +39,7 @@ dependencies:
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_record_language_checked
+    - field.field.node.decision.field_status_checked
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
@@ -91,6 +92,7 @@ hidden:
   field_outdated_document: true
   field_policymaker_id: true
   field_record_language_checked: true
+  field_status_checked: true
   field_top_category_name: true
   field_unique_id: true
   field_voting_results: true
