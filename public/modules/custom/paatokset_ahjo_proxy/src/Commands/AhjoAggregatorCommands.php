@@ -589,8 +589,6 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @option logic
    *   Logic on how to check which decisions to update. Irrelevant if
    *   update flag is set.
-   * @option localdata
-   *   Use only local and placeholder data, doesn't require VPN connection.
    * @option limit
    *   Limit processing to certain amount of nodes.
    * @option start
@@ -608,7 +606,6 @@ class AhjoAggregatorCommands extends DrushCommands {
   public function updateDecisions(array $options = [
     'update' => NULL,
     'logic' => 'record',
-    'localdata' => NULL,
     'limit' => NULL,
     'start' => NULL,
     'end' => NULL,
@@ -626,13 +623,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $logic = 'record';
-    }
-
-    if (!empty($options['localdata'])) {
-      $use_local_data = TRUE;
-    }
-    else {
-      $use_local_data = FALSE;
     }
 
     if (!empty($options['limit'])) {
@@ -661,13 +651,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $this->logger->info('Only updating nodes based on missing ' . $logic . ' data.');
-    }
-
-    if ($use_local_data) {
-      $this->logger->info('Using local data...');
-    }
-    else {
-      $this->logger->info('Fetching data from API...');
     }
 
     $this->logger->info('Limiting nodes to: ' . $limit);
@@ -751,22 +734,24 @@ class AhjoAggregatorCommands extends DrushCommands {
         $case_id = $node->field_diary_number->value;
       }
 
-      $endpoint = NULL;
-      $decision_endpoint = NULL;
-      if (!$use_local_data) {
-        $endpoint = 'records/' . $node->field_decision_native_id->value;
-        if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-          $decision_endpoint = 'decisions/single/' . $node->field_decision_native_id->value;
-        }
-        else {
-          $decision_endpoint = 'decisions/' . $node->field_decision_native_id->value;
-        }
+      $series_id = NULL;
+      if ($node->hasField('field_decision_series_id')) {
+        $series_id = $node->field_decision_series_id->value;
+      }
+
+      $endpoint = 'records/' . $node->field_decision_native_id->value;
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $decision_endpoint = 'decisions/single/' . $node->field_decision_native_id->value;
+      }
+      else {
+        $decision_endpoint = 'decisions/' . $node->field_decision_native_id->value;
       }
 
       $count++;
       $data = [
         'nid' => $node->id(),
         'native_id' => $node->field_decision_native_id->value,
+        'series_id' => $series_id,
         'count' => $count,
         'case_id' => $case_id,
         'meeting_id' => $meeting_id,
@@ -1264,6 +1249,95 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::updateDecisionDate',
+        [$data],
+      ];
+    }
+
+    if (empty($operations)) {
+      $this->logger->info('Nothing to import.');
+      return;
+    }
+
+    batch_set([
+      'title' => 'Updating attachments for decisions.',
+      'operations' => $operations,
+      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishDecisions',
+    ]);
+
+    drush_backend_batch_process();
+  }
+
+  /**
+   * Check decision PDF status for unpublished decisions.
+   *
+   * @param array $options
+   *   Additional options for the command.
+   *
+   * @command ahjo-proxy:check-decision-status
+   *
+   * @option limit
+   *   Limit processing to certain amount of nodes.
+   *
+   * @aliases ap:cds
+   */
+  public function checkDecisionStatus(array $options = [
+    'limit' => NULL,
+  ]): void {
+    if (!empty($options['limit'])) {
+      $limit = (int) $options['limit'];
+    }
+    else {
+      $limit = 0;
+    }
+
+    $this->logger->info('Fetching data from API...');
+    $this->logger->info('Limiting nodes to: ' . $limit);
+
+    $query = $this->nodeStorage->getQuery()
+      ->condition('type', 'decision')
+      ->condition('status', 1)
+      ->condition('field_is_decision', 1)
+      ->latestRevision();
+
+    $or = $query->orConditionGroup();
+    $or->notExists('field_status_checked');
+    $or->condition('field_status_checked', 0);
+    $query->condition($or);
+
+    if ($limit) {
+      $query->range('0', $limit);
+    }
+
+    $ids = $query->execute();
+    $this->logger->info('Total nodes: ' . count($ids));
+
+    $nodes = Node::loadMultiple($ids);
+    $operations = [];
+    $count = 0;
+    foreach ($nodes as $node) {
+      if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
+        continue;
+      }
+
+      $native_id = $node->field_decision_native_id->value;
+      // Local adjustments for fetching decisions through proxy.
+      if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+        $endpoint = 'decisions/single/' . $native_id;
+      }
+      else {
+        $endpoint = 'decisions/' . $native_id;
+      }
+
+      $count++;
+      $data = [
+        'nid' => $node->id(),
+        'native_id' => $node->field_decision_native_id->value,
+        'count' => $count,
+        'endpoint' => $endpoint,
+      ];
+
+      $operations[] = [
+        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::checkDecisionStatus',
         [$data],
       ];
     }
