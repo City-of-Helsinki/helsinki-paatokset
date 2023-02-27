@@ -38,6 +38,7 @@ dependencies:
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
     - field.field.node.decision.field_record_language_checked
+    - field.field.node.decision.field_status_checked
     - field.field.node.decision.field_top_category_name
     - field.field.node.decision.field_unique_id
     - field.field.node.decision.field_voting_results
@@ -394,6 +395,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_record_language_checked:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_status_checked:
     type: boolean_checkbox
     weight: 7
     region: content

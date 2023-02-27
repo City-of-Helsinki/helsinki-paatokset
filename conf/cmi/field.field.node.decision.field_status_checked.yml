@@ -1,0 +1,23 @@
+uuid: 3dfa4a8b-4aba-4a90-a67d-9c30c7ad90b0
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_status_checked
+    - node.type.decision
+id: node.decision.field_status_checked
+field_name: field_status_checked
+entity_type: node
+bundle: decision
+label: 'Status checked'
+description: 'Decision PDF publication status checked.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
