@@ -549,6 +549,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   }
 
   // First search for native ID (unique for document).
+  // Allow for unpublished nodes to prevent conflicts.
   $query = Drupal::entityQuery('node')
     ->condition('type', 'decision')
     ->condition('field_decision_native_id', $native_id)
@@ -561,10 +562,13 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   }
 
   // If native ID is not found, search for series ID (shared by doc versions).
+  // For this, do not allow unpublished nodes.
+  // If a previous version is unpublished, create a new one.
   if ($series_id) {
     $query = Drupal::entityQuery('node')
       ->condition('type', 'decision')
       ->condition('field_decision_series_id', $series_id)
+      ->condition('status', 1)
       ->range(0, 1)
       ->latestRevision();
 
