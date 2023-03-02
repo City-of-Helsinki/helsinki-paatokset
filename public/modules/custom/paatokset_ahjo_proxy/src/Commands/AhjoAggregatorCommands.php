@@ -1297,6 +1297,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_is_decision', 1)
+      ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
     $or = $query->orConditionGroup();
