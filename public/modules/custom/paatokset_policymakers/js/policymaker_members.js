@@ -143,7 +143,7 @@
             })
 
             if(!this.active_checkboxes.includes('deputy_member')) {
-              const deputyLabels = ['Varavaltuutettu', 'Deputy member', 'Ersättare'];
+              const deputyLabels = ['Varajäsen', 'Varavaltuutettu', 'Deputy member', 'Ersättare'];
               temp_results = temp_results.filter(result => !deputyLabels.includes(result.role));
             }
 
@@ -169,7 +169,7 @@
             return window.Drupal.t('Search for member');
           },
           hasDeputies() {
-            const deputyLabels = ['Varavaltuutettu', 'Deputy member', 'Ersättare'];
+            const deputyLabels = ['Varajäsen', 'Varavaltuutettu', 'Deputy member', 'Ersättare'];
             return this.members.filter(result => deputyLabels.includes(result.role)).length > 0;
           },
           deputyOf() {
