@@ -71,6 +71,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 
   $ids = $query->execute();
 
+  $video = NULL;
   if (!empty($ids)) {
     $video = MeetingVideo::load(reset($ids));
   }
