@@ -683,15 +683,21 @@ class PolicymakerService {
       return [];
     }
 
-    $nodes = Node::loadMultiple($ids);
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
     $transformedResults = [];
     $results = [];
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+
+      // Load nodes one by one because decisions can have large encoded images.
+      // This results in an out of memory error sometimes.
+      $node = Node::load($id);
+      if (!$node instanceof NodeInterface) {
+        continue;
+      }
+
       $timestamp = strtotime($node->get('field_meeting_date')->value);
       $year = date('Y', $timestamp);
-
       if ($node->hasField('field_decision_section') && !$node->get('field_decision_section')->isEmpty()) {
         $decision_label = '§ ' . $node->field_decision_section->value . ' ' . $node->field_full_title->value;
         $section = $node->field_decision_section->value;
