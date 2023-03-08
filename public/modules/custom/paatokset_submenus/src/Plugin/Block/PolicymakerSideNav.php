@@ -152,10 +152,6 @@ class PolicymakerSideNav extends BlockBase {
       'attributes' => new Attribute(),
     ];
 
-    if ($policymaker->hasField('field_policymaker_existing') && !$policymaker->get('field_policymaker_existing')->isEmpty() && !$policymaker->get('field_policymaker_existing')->value) {
-      return $items;
-    }
-
     $trustee_types = [
       'Viranhaltija',
       'Luottamushenkilö',
