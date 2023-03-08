@@ -20,6 +20,7 @@ do
   drush ahjo-proxy:update-decisions --logic=language --limit=100 -v
   drush ahjo-proxy:update-decision-attachments --limit=100 -v
   drush ahjo-proxy:update-decision-dates --limit=100 -v
+  drush ahjo-proxy:check-decision-status --limit=100 -v
   # Sleep for 10 minutes.
   sleep 600
 done
