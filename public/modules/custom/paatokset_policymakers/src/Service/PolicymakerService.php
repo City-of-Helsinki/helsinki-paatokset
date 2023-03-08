@@ -12,7 +12,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Database\Connection;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
