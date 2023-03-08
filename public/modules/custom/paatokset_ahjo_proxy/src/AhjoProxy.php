@@ -1474,7 +1474,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function checkDecisionStatus($data, &$context) {
     $messenger = \Drupal::messenger();
-    $context['message'] = 'Checking item number ' . $data['count'];
+    $context['message'] = 'Checking item number ' . $data['count'] . ' (nid:' . $data['nid'] . ')';
 
     if (!isset($context['results']['items'])) {
       $context['results']['items'] = [];
