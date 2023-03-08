@@ -360,10 +360,6 @@ class PolicymakerService {
       return NULL;
     }
 
-    if (!$this->policymakerIsActive()) {
-      return NULL;
-    }
-
     if (!in_array($this->policymaker->get('field_organization_type')->value, $trustee_types)) {
       return NULL;
     }
@@ -400,10 +396,6 @@ class PolicymakerService {
     }
 
     if (!$this->policymaker instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->policymakerIsActive()) {
       return NULL;
     }
 
