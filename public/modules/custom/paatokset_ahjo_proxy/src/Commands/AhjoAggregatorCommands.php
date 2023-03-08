@@ -713,10 +713,12 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $operations = [];
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      // Load nodes individually to avoid out of memory errors.
+      $node = Node::load($id);
+
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -963,8 +965,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       $node->set('field_outdated_document', 1);
       $node->save();
     }
@@ -1046,9 +1048,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if ($node->get('field_decision_section')->isEmpty() || $node->get('field_meeting_date')->isEmpty()) {
         continue;
       }
@@ -1130,10 +1132,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $operations = [];
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1219,10 +1221,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $operations = [];
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1309,10 +1311,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $operations = [];
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1745,8 +1747,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$this->ahjoProxy->checkDecisionRecord($node)) {
         $node->set('field_outdated_document', 1);
       }
@@ -1797,8 +1799,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       $record_content = json_decode($node->get('field_decision_record')->value, TRUE);
       if (empty($record_content) || !isset($record_content['Type'])) {
         $node->set('field_decision_record', NULL);
@@ -2141,7 +2143,6 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
     $table = new Table($this->output());
     $table->setHeaders([
       'NID', 'ID', 'Attachments', 'URLs missing', 'Confidential',
@@ -2151,7 +2152,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $files = 0;
     $classes = [];
     $reasons = [];
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$node->hasField('field_decision_attachments') || $node->get('field_decision_attachments')->isEmpty()) {
         continue;
       }
@@ -2476,7 +2478,6 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
-    $nodes = Node::loadMultiple($ids);
 
     $table = new Table($this->output());
     $table->setHeaders([
@@ -2484,7 +2485,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     ]);
 
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       $table->addRow([
         $node->field_decision_native_id->value,
         $node->id(),
@@ -2652,14 +2654,14 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $ids = $query->execute();
 
-    $nodes = Node::loadMultiple($ids);
     $table = new Table($this->output());
     $table->setHeaders([
       'ID', 'NID', 'Organization ID',
     ]);
 
     $count = 0;
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       $table->addRow([
         $node->field_decision_native_id->value,
         $node->id(),
@@ -2753,8 +2755,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
 
     $motions = [];
-    $nodes = Node::loadMultiple($ids);
-    foreach ($nodes as $node) {
+    foreach ($ids as $id) {
+      $node = Node::load($id);
       if (!$node->hasField('field_meeting_id') || $node->get('field_meeting_id')->isEmpty()) {
         continue;
       }
