@@ -2701,7 +2701,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if (!empty($years)) {
       foreach ($years as $year) {
-        $query_string = 'size=1000&decisionmaker_id=' .$id;
+        $query_string = 'size=1000&decisionmaker_id=' . $id;
         $next_year = (int) $year + 1;
         $query_string .= '&handledsince=' . $year . '-01-01T00:00:00';
         $query_string .= '&handledbefore=' . $next_year . '-01-01T00:00:00';
