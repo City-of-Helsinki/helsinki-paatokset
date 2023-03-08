@@ -2716,7 +2716,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     if ($db_count !== $count) {
-      $this->writeln('MISSING for ' . $id .'! In db: ' . $db_count . ' and in API:'. $count);
+      $this->writeln('MISSING for ' . $id . '! In db: ' . $db_count . ' and in API:' . $count);
     }
     else {
       $this->writeln('All decisions found for ' . $id);
