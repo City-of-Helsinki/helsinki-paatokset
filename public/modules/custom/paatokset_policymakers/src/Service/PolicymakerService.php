@@ -12,6 +12,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -685,25 +686,45 @@ class PolicymakerService {
 
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
+    /** @var \Drupal\Core\Database\Connection $database */
+    $database = \Drupal::service('database');
     $transformedResults = [];
     $results = [];
     foreach ($ids as $id) {
+      // Load data directly from db to reduce out of memory errors.
+      // Entity load breaks here because some decisions have embedded images.
+      $query = $database->select('node_field_data', 'n')
+        ->fields('n', ['nid'])
+        ->fields('t', ['field_full_title_value'])
+        ->fields('md', ['field_meeting_date_value'])
+        ->fields('ds', ['field_decision_section_value'])
+        ->fields('dn', ['field_diary_number_value'])
+        ->fields('id', ['field_decision_native_id_value'])
+        ->condition('n.nid', $id)
+        ->condition('n.type', 'decision')
+        ->condition('n.status', 1)
+        ->range(0, 1);
 
-      // Load nodes one by one because decisions can have large encoded images.
-      // This results in an out of memory error sometimes.
-      $node = Node::load($id);
-      if (!$node instanceof NodeInterface) {
+      $query->join('node__field_full_title', 't', 't.entity_id = n.nid');
+      $query->join('node__field_meeting_date', 'md', 'md.entity_id = n.nid');
+      $query->leftJoin('node__field_decision_section', 'ds', 'ds.entity_id = n.nid');
+      $query->leftJoin('node__field_diary_number', 'dn', 'dn.entity_id = n.nid');
+      $query->join('node__field_decision_native_id', 'id', 'id.entity_id = n.nid');
+
+      $data = $query->execute()->fetchObject();
+      if (!$data) {
         continue;
       }
 
-      $timestamp = strtotime($node->get('field_meeting_date')->value);
+      $timestamp = strtotime($data->field_meeting_date_value);
       $year = date('Y', $timestamp);
-      if ($node->hasField('field_decision_section') && !$node->get('field_decision_section')->isEmpty()) {
-        $decision_label = '§ ' . $node->field_decision_section->value . ' ' . $node->field_full_title->value;
-        $section = $node->field_decision_section->value;
+
+      if (!empty($data->field_decision_section_value)) {
+        $decision_label = '§ ' . $data->field_decision_section_value . ' ' . $data->field_full_title_value;
+        $section = $data->field_decision_section_value;
       }
       else {
-        $decision_label = $node->field_full_title->value;
+        $decision_label = $data->field_full_title_value;
         $section = '';
       }
 
@@ -714,7 +735,7 @@ class PolicymakerService {
         'timestamp' => $timestamp,
         'subject' => $decision_label,
         'section' => $section,
-        'link' => $caseService->getDecisionUrlFromNode($node),
+        'link' => $caseService->getDecisionUrlLight($id, $data->field_decision_native_id_value, $data->field_diary_number_value),
       ];
 
       $results[] = $result;
