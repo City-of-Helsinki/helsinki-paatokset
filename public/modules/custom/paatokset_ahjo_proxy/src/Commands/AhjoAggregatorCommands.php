@@ -2701,11 +2701,17 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if (!empty($years)) {
       foreach ($years as $year) {
-        $data = $this->ahjoProxy->getData('decisions', 'size=1000&decisionmaker_id=' . $id . 'handledsince=' . $year . '-01-01T00:00:00&handledbefore=' . $year . '-12-31T:00:00:00');
+        $query_string = 'size=1000&decisionmaker_id=' .$id;
+        $next_year = (int) $year + 1;
+        $query_string .= '&handledsince=' . $year . '-01-01T00:00:00';
+        $query_string .= '&handledbefore=' . $next_year . '-01-01T00:00:00';
+        $data = $this->ahjoProxy->getData('decisions', $query_string);
         if (empty($data['count'])) {
           continue;
         }
-        $count += $data['count'];
+        if ($data['count'] > 0) {
+          $count += $data['count'];
+        }
         $this->writeln('Total found for ' . $id . ' in ' . $year . ': ' . $data['count']);
       }
     }
