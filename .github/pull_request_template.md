@@ -1,0 +1,20 @@
+# [PP-000](https://helsinkisolutionoffice.atlassian.net/browse/PP-000)
+<!-- What problem does this solve? -->
+
+## What was done
+<!-- Describe what was done -->
+
+* This thing was fixed
+
+## How to install
+
+* Make sure your instance is up and running on correct branch.
+  * `git checkout PP-000-insert_correct_branch`
+  * `make fresh`
+* Run `make drush-cr`
+
+## How to test
+<!-- Describe steps how to test the features, add as many steps as you want to be tested -->
+
+* [ ] Check that this feature works
+* [ ] Check that code follows our standards
