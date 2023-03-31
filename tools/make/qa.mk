@@ -1,6 +1,7 @@
 TEST_TARGETS += test-phpunit
 FIX_TARGETS :=
 LINT_PHP_TARGETS :=
+CS_INSTALLED := $(shell test -f $(COMPOSER_JSON_PATH)/vendor/bin/phpcs && echo yes || echo no)
 
 PHONY += fix
 fix: ## Fix code style
@@ -12,7 +13,7 @@ PHONY += lint
 lint: lint-php lint-js ## Check code style
 
 PHONY += lint-js
-lint-js: DOCKER_NODE_IMG ?= node:8.16.0-alpine
+lint-js: DOCKER_NODE_IMG ?= node:$(NODE_VERSION)-alpine
 lint-js: WD := /app
 lint-js: ## Check code style for JS files
 	$(call step,Install linters...)
@@ -31,7 +32,7 @@ lint-php: ## Check code style for PHP files
 
 PHONY += test
 test: ## Run tests
-	$(call step,Run tests:\n- Following test targets will be run: $(TEST_TARGETS))
+	$(call group_step,Run test targets:${NO_COLOR} $(TEST_TARGETS)\n)
 	@$(MAKE) $(TEST_TARGETS)
 	$(call step,Tests completed.)
 
@@ -42,7 +43,7 @@ test-phpunit: ## Run PHPUnit tests
 ifeq ($(CI),true)
 	vendor/bin/phpunit -c phpunit.xml.dist --testsuite $(TESTSUITES)
 else
-	$(call docker_run_cmd,${DOCKER_PROJECT_ROOT}/vendor/bin/phpunit -c $(DOCKER_PROJECT_ROOT)/phpunit.xml.dist \
+	$(call docker,${DOCKER_PROJECT_ROOT}/vendor/bin/phpunit -c $(DOCKER_PROJECT_ROOT)/phpunit.xml.dist \
 		--testsuite $(TESTSUITES))
 endif
 	$(call test_result,test-phpunit,"[OK]")
@@ -56,3 +57,14 @@ test-phpunit-locally:
 define test_result
 	@echo "\n${YELLOW}${1}:${NO_COLOR} ${GREEN}${2}${NO_COLOR}"
 endef
+
+ifeq ($(CS_INSTALLED),yes)
+define cs
+$(call docker_compose_exec,vendor/bin/$(1) --config-set installed_paths $(CS_STANDARD_PATHS))
+$(call docker_compose_exec,vendor/bin/$(1) --standard=$(CS_STANDARDS) --extensions=$(CS_EXTS) --ignore=node_modules $(2))
+endef
+else
+define cs
+$(call warn,CodeSniffer is not installed!)
+endef
+endif

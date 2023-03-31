@@ -1,7 +1,6 @@
 version: '3.7'
 
 services:
-
   app:
     hostname: "${DRUPAL_HOSTNAME}"
     container_name: "${COMPOSE_PROJECT_NAME}-app"
@@ -17,6 +16,14 @@ services:
       XDEBUG_ENABLE: "true"
       SIMPLETEST_BASE_URL: "http://app:8080"
       SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
+      BROWSERTEST_OUTPUT_BASE_URL: "https://${DRUPAL_HOSTNAME}"
+      DRUPAL_VARNISH_HOST: "${COMPOSE_PROJECT_NAME}-varnish"
+      DRUPAL_VARNISH_PORT: 6081
+      REDIS_HOST: redis
+      PROJECT_NAME: "${PROJECT_NAME}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "${DRUPAL_HOSTNAME}:host-gateway"
     env_file:
       - .env
       - .env.local
@@ -30,17 +37,24 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080"
       - "traefik.docker.network=stonehenge-network"
-
+  redis:
+    container_name: "${COMPOSE_PROJECT_NAME}-redis"
+    image: redis:7-alpine
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save ''"]
+    networks:
+      - internal
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/db:mysql5.7-drupal
+    image: druidfi/mariadb:10.9-drupal
+    environment:
+      MARIADB_AUTO_UPGRADE: "1"
+      MARIADB_INITDB_SKIP_TZINFO: "1"
     volumes:
       - db_data:/var/lib/mysql
     ports:
       - 3306
     networks:
       - internal
-
   varnish:
     container_name: "${COMPOSE_PROJECT_NAME}-varnish"
     image: druidfi/varnish:6-drupal
@@ -58,7 +72,6 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-varnish.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=6081"
       - "traefik.docker.network=stonehenge-network"
-
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
     container_name: "${COMPOSE_PROJECT_NAME}-elastic"

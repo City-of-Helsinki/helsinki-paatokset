@@ -5,9 +5,12 @@ WP_DELETE_PLUGINS := akismet hello
 WP_DELETE_THEMES := twentynineteen twentyseventeen
 WP_SQL_READY := yes
 WP_POST_INSTALL_TARGETS := prepare
-DUMP_SQL_FILENAME := wordpress.sql
 DUMP_SQL_EXISTS := $(shell test -f $(DUMP_SQL_FILENAME) && echo yes || echo no)
 SYNC_TARGETS += wp-sync-db wp-sync-files
+
+ifeq ($(GH_DUMP_ARTIFACT),yes)
+	WP_FRESH_TARGETS := gh-download-dump $(WP_FRESH_TARGETS)
+endif
 
 PHONY += fresh
 fresh: ## Build fresh development environment
@@ -19,25 +22,25 @@ post-install: ## Run post-install actions
 
 PHONY += set-files
 set-files:
-	$(call step,Remove obsolete files)
+	$(call step,Remove obsolete files\n)
 	@rm -f $(WEBROOT)/*.{txt,html} $(WEBROOT)/composer.json && printf "Files deleted.\n"
-	$(call step,Copy $(WP_CONF_PATH)/wp-config.php to $(WEBROOT)...)
-	@cp -v $(WP_CONF_PATH)/wp-config.php $(WEBROOT)/wp-config.php
+	$(call step,Copy $(WP_CONF_PATH)/wp-config.php to $(WEBROOT)...\n)
+	$(call copy,$(WP_CONF_PATH)/wp-config.php,$(WEBROOT)/wp-config.php)
 
 PHONY += prepare
 prepare:
-	$(call step,Delete inactivated plugins)
+	$(call step,Delete inactivated plugins\n)
 	$(call wp,plugin delete $(WP_DELETE_PLUGINS))
-	$(call step,Delete inactivated themes)
+	$(call step,Delete inactivated themes\n)
 	$(call wp,theme delete $(WP_DELETE_THEMES))
-	$(call step,Replace $(WP_SYNC_SOURCE) domain with local domain)
+	$(call step,Replace $(WP_SYNC_SOURCE) domain with local domain\n)
 	$(call wp,search-replace $(WP_SYNC_SOURCE_DOMAIN) $(WP_HOSTNAME))
 	$(call step,Check your site: https://$(WP_HOSTNAME))
 
 PHONY += wp-sync-db
 wp-sync-db: ## Sync database
 ifeq ($(DUMP_SQL_EXISTS),yes)
-	$(call step,Import local SQL dump...)
+	$(call step,Import local SQL dump...\n)
 	$(call wp,db import $(DUMP_SQL_FILENAME))
 else
 	$(call step,Create database dump in $(WP_SYNC_SOURCE)...)
@@ -56,7 +59,7 @@ endif
 PHONY += wp-sync-files
 wp-sync-files: UPLOADS := wp-content/uploads
 wp-sync-files: ## Sync files
-	$(call step,Sync files from $(WP_SYNC_SOURCE)...)
+	$(call step,Sync files from $(WP_SYNC_SOURCE)...\n)
 	$(eval HOST := INSTANCE_$(WP_SYNC_SOURCE)_HOST)
 	$(eval USER := INSTANCE_$(WP_SYNC_SOURCE)_USER)
 	$(eval OPTS := INSTANCE_$(WP_SYNC_SOURCE)_OPTS)
@@ -83,7 +86,7 @@ wp-plugins: ## List plugins
 	$(call wp,plugin list)
 
 define wp
-	@${DOCKER_COMPOSE_EXEC} php ${CLI_SHELL} -c "wp --color --path=$(DOCKER_PROJECT_ROOT)/$(WEBROOT) $(1)"
+	$(call docker_compose_exec,wp --color --path=$(DOCKER_PROJECT_ROOT)/$(WEBROOT) $(1))
 endef
 
 ifeq ($(WP_SYNC_SOURCE),)
