@@ -5,8 +5,8 @@ display:
       exposed_form:
         options:
           submit_button: Käytä
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -54,9 +54,5 @@ display:
       header:
         result:
           content: 'Näytetään @start - @end / @total'
-      empty:
-        area:
-          content:
-            value: 'Ei tuloksia.'
   page_1:
     display_title: Sivu

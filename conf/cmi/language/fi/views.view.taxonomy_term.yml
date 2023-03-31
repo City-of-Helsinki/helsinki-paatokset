@@ -16,8 +16,8 @@ display:
       exposed_form:
         options:
           submit_button: Käytä
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           sort_asc_label: Asc
           sort_desc_label: Desc
       arguments:

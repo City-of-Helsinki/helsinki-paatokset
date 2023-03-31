@@ -1,0 +1,11 @@
+third_party_settings:
+  field_group:
+    group_news_item_links:
+      label: Ссылки
+    group_news_item_links_wrapper:
+      label: Ссылки
+content:
+  field_content:
+    settings:
+      title: Параграф
+      title_plural: Параграфы

@@ -4,11 +4,11 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
       pager:
         options:
           expose:
@@ -20,25 +20,25 @@ display:
             next: ››
       fields:
         entity_browser_select:
-          label: Select
+          label: Välj
         label:
-          label: Label
+          label: Etikett
           separator: ', '
         type:
           label: Typ
           separator: ', '
         paragraphs__target_id:
-          label: Paragraphs
+          label: Paragrafer
           separator: ', '
         changed:
-          label: Changed
+          label: Ändrad
           separator: ', '
       filters:
         label:
           expose:
-            label: Label
+            label: Etikett
           group_info:
-            label: Label
+            label: Etikett
         type:
           expose:
             label: Typ

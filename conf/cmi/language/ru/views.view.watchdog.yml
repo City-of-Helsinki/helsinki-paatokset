@@ -2,24 +2,9 @@ label: Журнал
 description: 'Последние записи журнала'
 display:
   default:
-    display_title: Основной
+    display_title: 'По умолчанию'
     display_options:
-      exposed_form:
-        options:
-          submit_button: Фильтр
-          reset_button_label: Сбросить
-          exposed_sorts_label: 'Сортировать по'
-          sort_asc_label: 'По возрастанию'
-          sort_desc_label: 'По убыванию'
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Элементов на страницу'
-            items_per_page_options_all_label: '- Все -'
-            offset_label: Пропустить
-          tags:
-            previous: ‹‹
-            next: ››
+      title: 'Последние записи журнала'
       fields:
         nothing:
           admin_label: Иконка
@@ -34,12 +19,33 @@ display:
         message:
           label: Сообщение
           alter:
+            path: 'admin/reports/dblog/event/{{ wid }}'
             alt: сообщение
         name:
           label: Пользователь
           separator: ', '
         link:
           label: Операции
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Элементов на страницу'
+            items_per_page_options_all_label: '- Все -'
+            offset_label: Пропустить
+      exposed_form:
+        options:
+          submit_button: Фильтр
+          reset_button_label: Сбросить
+          exposed_sorts_label: 'Сортировать по'
+          sort_asc_label: 'По возрастанию'
+          sort_desc_label: 'По убыванию'
+      empty:
+        area:
+          admin_label: 'В системном журнале нет сообщений.'
+          content: 'В системном журнале нет сообщений.'
       filters:
         type:
           expose:
@@ -47,10 +53,5 @@ display:
         severity:
           expose:
             label: Важность
-      title: 'Последние записи журнала'
-      empty:
-        area:
-          admin_label: 'В системном журнале нет сообщений.'
-          content: 'В системном журнале нет сообщений.'
   page:
     display_title: Страница

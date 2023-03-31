@@ -14,7 +14,6 @@ dependencies:
     - media.type.minutes_of_the_discussion
     - media.type.policymaker_images
     - media.type.remote_video
-    - media.type.soundcloud
     - node.type.article
     - node.type.imported_article
     - node.type.landing_page
@@ -85,7 +84,6 @@ permissions:
   - 'create policymaker_images media'
   - 'create remote entities'
   - 'create remote_video media'
-  - 'create soundcloud media'
   - 'create terms in keywords'
   - 'create terms in pdf_categories'
   - 'create terms in pdf_minutes_category'
@@ -101,7 +99,6 @@ permissions:
   - 'delete any page content'
   - 'delete any policymaker_images media'
   - 'delete any remote_video media'
-  - 'delete any soundcloud media'
   - 'delete article revisions'
   - 'delete content translations'
   - 'delete imported_article revisions'
@@ -123,7 +120,6 @@ permissions:
   - 'delete own policymaker content'
   - 'delete own policymaker_images media'
   - 'delete own remote_video media'
-  - 'delete own soundcloud media'
   - 'delete own trustee content'
   - 'delete page revisions'
   - 'delete remote entities'
@@ -144,7 +140,6 @@ permissions:
   - 'edit any policymaker content'
   - 'edit any policymaker_images media'
   - 'edit any remote_video media'
-  - 'edit any soundcloud media'
   - 'edit any trustee content'
   - 'edit own article content'
   - 'edit own declaration_of_affiliation media'
@@ -160,7 +155,6 @@ permissions:
   - 'edit own policymaker content'
   - 'edit own policymaker_images media'
   - 'edit own remote_video media'
-  - 'edit own soundcloud media'
   - 'edit own trustee content'
   - 'edit paragraph library item'
   - 'edit remote entities'
@@ -195,7 +189,6 @@ permissions:
   - 'translate pdf_minutes_category taxonomy_term'
   - 'translate policymaker node'
   - 'translate remote_video media'
-  - 'translate soundcloud media'
   - 'translate trustee node'
   - 'update any media'
   - 'update content translations'

@@ -22,7 +22,7 @@ display:
         access:
           label: 'Viimeksi paikalla'
           settings:
-            past_format: '@interval ago'
+            past_format: '@interval sitten'
         operations:
           label: Toimenpiteet
         mail:
@@ -40,9 +40,9 @@ display:
             offset_label: Offset
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           sort_asc_label: Asc
           sort_desc_label: Desc
       empty:
