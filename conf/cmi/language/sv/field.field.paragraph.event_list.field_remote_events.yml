@@ -1,0 +1,4 @@
+label: 'Evenemang på distans'
+settings:
+  on_label: Ja
+  off_label: Nej

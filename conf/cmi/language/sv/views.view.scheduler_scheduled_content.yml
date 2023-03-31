@@ -1,21 +1,22 @@
-label: 'Scheduled content'
+label: 'Schemalagt innehåll'
+description: 'Hitta och hantera schemalagt innehåll.'
 display:
   default:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
       pager:
         options:
           tags:
-            previous: '‹ previous'
-            next: 'next ›'
-            first: '« first'
-            last: 'last »'
+            previous: '‹ föregående'
+            next: 'nästa ›'
+            first: '« första'
+            last: 'sista »'
       fields:
         node_bulk_form:
           action_title: Åtgärd
@@ -62,7 +63,10 @@ display:
         langcode:
           expose:
             label: Språk
-      title: 'Scheduled Content'
+      title: 'Schemalagt innehåll'
+      empty:
+        area_text_custom:
+          content: 'Inget schemalagt innehåll.'
     display_title: Förvald
   overview:
     display_options:
@@ -70,7 +74,7 @@ display:
         title: Schemalagd
       tab_options:
         title: Innehåll
-    display_title: 'Content Overview'
+    display_title: Innehållsöversikt
   user_page:
     display_options:
       menu:

@@ -25,7 +25,7 @@ display:
         access:
           label: 'Senast åtkomst'
           settings:
-            past_format: '@interval ago'
+            past_format: '@interval sedan'
         operations:
           label: Funktioner
         mail:
@@ -43,11 +43,11 @@ display:
             offset_label: Kompensera
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
       empty:
         area_text_custom:
           content: 'Inga personer tillgängliga.'

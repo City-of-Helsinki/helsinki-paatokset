@@ -1,16 +1,12 @@
 display:
-  latest_news:
-    display_options:
-      title: 'Uusimmat uutiset'
-    display_title: 'Uusimmat uutiset'
   default:
     display_title: Oletus
     display_options:
       exposed_form:
         options:
           submit_button: Käytä
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           sort_asc_label: Asc
           sort_desc_label: Desc
       fields:
@@ -25,4 +21,5 @@ display:
         nid:
           exception:
             title: Kaikki
-label: 'Platform News'
+  latest_news:
+    display_title: 'Uusimmat uutiset'
