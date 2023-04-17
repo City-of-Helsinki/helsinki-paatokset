@@ -99,5 +99,14 @@
         </div>
       </div>
     {% endif %}
+
+    {% if decision_content.signature_info %}
+      <div class="issue__more-info">
+        <h2>{{ decision_content.signature_info.heading }}</h2>
+        <div class="issue__more-info__content">
+          {{ decision_content.signature_info.content }}
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>

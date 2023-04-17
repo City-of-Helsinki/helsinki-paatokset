@@ -1338,6 +1338,20 @@ class CaseService {
       ];
     }
 
+    // Signature information.
+    $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
+    $signature_info_content = NULL;
+    if ($signature_info) {
+      $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
+    }
+
+    if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && $this->selectedDecision->get('field_organization_type')->value === 'Viranhaltija') {
+      $output['signature_info'] = [
+        'heading' => t('Decisionmaker'),
+        'content' => ['#markup' => $signature_info_content],
+      ];
+    }
+
     // Presenter information.
     $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
     $presenter_content = NULL;
@@ -1512,6 +1526,10 @@ class CaseService {
 
       // H3 with a class is considered a breaking element.
       if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
+        break;
+      }
+      // More information section should stop before the signatures.
+      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
         break;
       }
 
