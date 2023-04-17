@@ -29,6 +29,7 @@
         "drupal/helfi_tunnistamo": "^2.0",
         "drupal/json_field": "^1.0@RC",
         "drupal/key_auth": "^2.0",
+        "drupal/linkit": "6.0.0-beta4",
         "drupal/menu_block_current_language": "^2.0",
         "drupal/migrate_plus": "^5.1",
         "drupal/purge": "^3.0",
