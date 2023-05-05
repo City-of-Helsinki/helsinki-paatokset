@@ -1,0 +1,35 @@
+name: HDBT - Subtheme
+description: Subtheme for Helsinki Drupal instances.
+type: theme
+base theme: hdbt
+tags: sub-theme
+core_version_requirement: ^9 || ^10
+screenshot: hdbt_subtheme.png
+'interface translation project': hdbt_subtheme
+'interface translation server pattern': themes/custom/hdbt_subtheme/translations/%language.po
+
+# Regions
+regions:
+  header_top: Header - Top
+  header_branding: Header - Branding
+  header_bottom: Header - Bottom
+  messages: Messages
+  breadcrumb: Breadcrumb
+  tools: Tools
+  before_content: Before content
+  sidebar_first: First sidebar
+  content: Content
+  sidebar_second: Second sidebar
+  after_content: After content
+  footer_top: Footer - Top
+  footer_bottom: Footer - Bottom
+  attachments: Attachments
+
+# Libraries
+libraries:
+  - hdbt_subtheme/global-styling
+  - hdbt_subtheme/global-scripting
+
+# Libraries override
+libraries-override:
+  eu_cookie_compliance/eu_cookie_compliance_cookie_values: helfi_paatokset/cookie_compliance_block

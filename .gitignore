@@ -18,11 +18,6 @@ public/sites/default/local.services.yml
 # Ignore the folder created by PhpStorm
 .idea/*
 
-# Ignore themes with own git repositories
-public/themes/custom/hdbt*
-# Ignore modules with own repositories
-public/modules/custom/helfi_*
-
 # Ignore test related files
 .phpunit.result.cache
 public/sites/simpletest

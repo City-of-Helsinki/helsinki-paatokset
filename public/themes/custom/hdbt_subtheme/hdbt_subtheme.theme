@@ -1,0 +1,477 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the HDBT Subtheme.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
+use Drupal\paatokset_ahjo_api\Service\TrusteeService;
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    // Retrieve the node object for revisions.
+    $node = (is_numeric($node) && !$node instanceof Node) ? Node::load($node) : $node;
+    $suggestions[] = 'page__' . $node->bundle();
+  }
+
+  if ($taxonomy_term = \Drupal::routeMatch()->getParameter('taxonomy_term')) {
+    $suggestions[] = 'page__taxonomy__term__' . $taxonomy_term->bundle();
+  }
+
+  $request = \Drupal::request();
+
+  if ($exception = $request->attributes->get('exception')) {
+    $status_code = $exception->getStatusCode();
+    if (in_array($status_code, [401, 403, 404])) {
+      $suggestions[] = 'page__' . $status_code;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_block(&$variables) {
+  if (isset($variables['elements']['#id'])) {
+    $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
+  }
+
+  if (
+    $variables['base_plugin_id'] === 'menu_block_current_language' &&
+    str_contains($variables['elements']['#id'], 'main_navigation_level_2')
+  ) {
+    $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables) {
+  // Load theme suggestions for blocks from parent theme.
+  foreach ($suggestions as &$suggestion) {
+    $suggestion = str_replace('hdbt_subtheme_', '', $suggestion);
+  }
+
+  $element = $variables['elements'];
+
+  if (isset($element['#configuration']['custom_suggestion'])) {
+    $suggestions[] = $element['#configuration']['custom_suggestion'];
+  }
+
+  if (
+    isset($element['#id']) &&
+    $element['#id'] === 'views_block__news_block_1'
+  ) {
+    $suggestions[] = 'block__views_block__news_latest_news';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
+  if (isset($variables['attributes']['block_id'])) {
+    $block_id = str_replace('hdbt_subtheme_', '', $variables['attributes']['block_id']);
+
+    $suggestions[] = match ($block_id) {
+      'mobile_navigation' => 'menu__mobile',
+      'mainnavigation' => 'menu__main__desktop',
+      'main_navigation_level_2' => 'menu__main__sidebar',
+      'brandingnavigation' => 'menu__main__branding',
+      default => 'menu__' . $variables['attributes']['block_id'],
+    };
+  }
+
+  if (
+    !empty($variables['menu_block_configuration']['custom_suggestion']) &&
+    $variables['menu_block_configuration']['custom_suggestion'] === 'block__menu_block__main__desktop'
+  ) {
+    $suggestions[] = 'menu__main__desktop';
+  }
+
+  // @TODO Is this needed?
+  if (
+    isset($variables['attributes']['block_id']) &&
+    $variables['attributes']['block_id'] === 'hdbt_subtheme_mobile_navigation'
+  ) {
+    $suggestions[] = 'menu__mobile';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * {@inheritdoc}
+ */
+function hdbt_subtheme_preprocess_links__language_block(&$variables) {
+  foreach ($variables['links'] as $langCode => &$link) {
+    switch ($langCode) {
+      case 'en':
+        $link['text'] = 'English';
+        break;
+
+      case 'sv':
+        $link['text'] = 'Svenska';
+        break;
+
+      case 'fi':
+        $link['text'] = 'Suomi';
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_region().
+ *
+ * {@inheritdoc}
+ */
+function hdbt_subtheme_preprocess_region(&$variables) {
+  $user = User::load(\Drupal::currentUser()->id());
+  $variables['username'] = $user->getAccountName();
+  $variables['logged_in'] = \Drupal::currentUser()->isAuthenticated();
+}
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  if($variables['view']->id() === 'news') {
+    $suggestions[] = 'views_view_unformatted__news__latest_news';
+  }
+}
+
+/**
+ * Implements hook_preprocess_container().
+ */
+function hdbt_subtheme_preprocess_container(&$variables) {
+  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])) {
+    $variables['tags'] = $variables['element']['#tags'];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_container_alter().
+ */
+function hdbt_subtheme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])) {
+    $suggestions[] = 'advanced_search__tags_container';
+  }
+  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-fields-container', $variables['element']['#attributes']['class'])) {
+    $suggestions[] = 'advanced_search__advanced_fields_container';
+  }
+  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search-link-container', $variables['element']['#attributes']['class'])) {
+    $suggestions[] = 'advanced_search_link_container';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hdbt_subtheme_theme($existing, $type, $theme, $path) {
+  return [
+    'advanced_search__advanced_fields_container' => [
+      'base hook' => 'container',
+      'template' => 'form/advanced-search--advanced-fields-container'
+    ],
+    'advanced_search__tags_container' => [
+      'base hook' => 'container',
+      'template' => 'form/advanced-search--tags-container'
+    ],
+    'advanced_search_link_container' => [
+      'base hook' => 'container',
+      'template' => 'form/advanced-search-link-container'
+    ]
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_node__trustee(&$variables) {
+  $node = $variables['node'];
+
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
+
+  $variables['#cache'] = [
+    'tags' => ['media_list:declaration_of_affiliation'],
+  ];
+
+  function datecmp ($a, $b) {
+    return strtotime($b['Date']) - strtotime($a['Date']);
+  }
+
+  if($node->get('field_trustee_initiatives')) {
+    $content_initiatives = [];
+    foreach($node->get('field_trustee_initiatives') as $json) {
+      $content_initiatives[] = json_decode($json->value, TRUE);
+    }
+
+    usort($content_initiatives, 'datecmp');
+
+    $variables['initiatives'] = [
+      'title' => t('Initiatives by the councillor'),
+      'content' => $content_initiatives,
+    ];
+  };
+
+  if($node->get('field_trustee_resolutions')) {
+    $content_resolutions = [];
+    foreach($node->get('field_trustee_resolutions') as $json) {
+      $content_resolutions[] = json_decode($json->value, TRUE);
+    };
+
+    usort($content_resolutions, 'datecmp');
+
+    $variables['resolutions'] = [
+      'title' => t('Resolutions by the councillor'),
+      'content' => $content_resolutions
+    ];
+  };
+
+  if ($speaking_turns = TrusteeService::getSpeakingTurns($node)) {
+    $variables['speaking_turns'] = [
+      'title' => t('Speaking turns by the councillor'),
+      'content' => $speaking_turns,
+    ];
+  }
+
+  if ($memberships = TrusteeService::getMemberships($node)) {
+    $variables['memberships'] = [
+      'title' => t('Memberships and roles'),
+      'content' => $memberships,
+    ];
+  }
+
+  $trustee_title = TrusteeService::getTrusteeTitle($node);
+  if ($trustee_title) {
+    $variables['content']['field_trustee_title'] = $trustee_title;
+  }
+
+  if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
+    $variables['content']['field_trustee_council_group'] = t($node->field_trustee_council_group->value, [], ['context' => 'Trustee listing']);
+  }
+
+  if(isset($node->field_policymaker_reference->entity)) {
+    $policymaker = $node->field_policymaker_reference->entity;
+    $pmLink = Link::fromTextAndUrl(
+      $policymaker->title->value,
+      $policymaker->toUrl()
+    )->toString();
+
+    $variables['policymaker_declaration'] = t(
+      '@trustee is @policymaker',
+      [
+        '@trustee' => TrusteeService::getTrusteeName($node),
+        '@policymaker' => $pmLink
+      ]
+    );
+  };
+
+  // Check if there are any DOAs for the trustee
+  $doaQuery = \Drupal::entityQuery('media')
+    ->condition('bundle', 'declaration_of_affiliation')
+    ->condition('field__policymaker_reference', $node->id())
+    ->execute();
+
+  if(!empty($doaQuery)) {
+    // Display only one DOA for the page - there should be only one of these per trustee.
+    $doa = Media::load(reset($doaQuery));
+    $doaEntity = $doa->field_document->entity;
+    if(isset($doaEntity) && isset($doaEntity->uri)) {
+      $doaUrl = $doaEntity->getFileUri();
+      $doaLinkText = Markup::create(
+        '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node). ' (pdf)'
+      );
+      $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
+      $variables['doa'] = $doaLink->toRenderable();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
+  $title = $variables['items'][0]['content']['#context']['value'];
+  $variables['items'][0]['content']['#context']['value'] = TrusteeService::transformTrusteeName($title);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
+  $main_article_id = null;
+  $main_article_query = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('type', 'imported_article')
+    ->condition('field_image_url', '', '!=')
+    ->sort('field_published', 'DESC')
+    ->range(0, 1);
+  $main_article_results = $main_article_query->execute();
+
+  if(!empty($main_article_results)) {
+    $main_article_id = reset($main_article_results);
+  }
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('type', 'imported_article')
+    ->sort('field_published', 'DESC')
+    ->range(0, 5);
+
+  if($main_article_id) {
+    $query->condition('nid', $main_article_id, '!=');
+  }
+
+  $article_ids = $query->execute();
+  $article_nodes = $main_article_id ?
+    Node::loadMultiple(array_merge([$main_article_id], $article_ids)) :
+    Node::loadMultiple($article_ids);
+  $articles = [];
+
+  if(!empty($article_nodes)) {
+    foreach($article_nodes as $article_node) {
+      if($article_node->id() === $main_article_id) {
+        $articles[] = [
+          'title' => $article_node->title->value,
+          'lead' => $article_node->body->view('teaser'),
+          'lead_image' => $article_node->field_image_url->uri,
+          'image_alt' => $article_node->field_image_alt->value,
+          'image_title' => $article_node->field_image_title->value,
+          'url' => $article_node->toUrl(),
+          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp())
+        ];
+      }
+      else {
+        $articles[] = [
+          'title' => $article_node->title->value,
+          'url' => $article_node->toUrl(),
+          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp())
+        ];
+      }
+    }
+  }
+
+  $variables['articles'] = $articles;
+}
+
+/**
+ * Implements hook_preprocess_html() for HTML document templates.
+ *
+ * {@inheritdoc}
+ */
+function hdbt_subtheme_preprocess_menu(&$variables) {
+  $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
+
+  if(isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
+    $variables['allow_collabsible'] = true;
+
+    if(isset($variables['attributes']['block_id']) && $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2') {
+      $variables['auto_open'] = true;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function hdbt_subtheme_preprocess_page(&$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  // Page class for alternate decision and case routes.
+  if (strpos($route_name, 'paatokset_case') !== FALSE || strpos($route_name, 'paatokset_decision') !== FALSE) {
+    $variables['is_decision'] = TRUE;
+  }
+
+  // Remove title block on 404 and 403 pages.
+  if($route_name === 'system.404'|| $route_name === 'system.403') {
+    unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
+  }
+
+  // Set a variable to always show sidebar in policymaker pages.
+  // Check by dictionary block appearing to handle unstranslated nodes on sv.
+  if (isset($variables['page']['content']) && array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])) {
+    $variables['main_container'] = TRUE;
+  }
+
+  if ($route_name === 'entity.taxonomy_term.canonical') {
+    $variables['has_sidebar_second'] = true;
+    $variables['move_before_content'] = true;
+  }
+
+
+  if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
+    $variables['has_sidebar_second'] = true;
+    $variables['move_before_content'] = true;
+  }
+
+  // Display navigation side under specific conditions.
+  // Only on node routes and if the second level navi block is present.
+  if ($route_name === 'entity.node.canonical' && isset($variables['node']) && isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2'])) {
+    $node_id = $variables['node']->id();
+    $display_sidebar_nav = FALSE;
+
+    // Check if there are links associated with this node.
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node_id]);
+    foreach ($links as $link) {
+      $definition = $link->getPluginDefinition();
+
+      // Must be in main menu.
+      if ($definition['menu_name'] !== 'main') {
+        continue;
+      }
+
+      // Show navi if current node has a parent link.
+      if (!empty($definition['parent'])) {
+        $display_sidebar_nav = TRUE;
+        break;
+      }
+
+      // Display navi if current node has children.
+      $menu_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+      $children = $menu_storage->loadByProperties([
+        'menu_name' => 'main',
+        'parent' => $link->getPluginId(),
+      ]);
+      if (!empty($children)) {
+        $display_sidebar_nav = TRUE;
+        break;
+      }
+    }
+
+    if ($display_sidebar_nav) {
+      $variables['has_sidebar_first'] = TRUE;
+      $variables['move_before_content'] = TRUE;
+      $variables['has_section_nav'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_node__article(&$variables) {
+  $node = $variables['node'];
+  $variables['published_at'] = $node->get('created')->value;
+  if ($node->hasField('unpublish_on') && !$node->get('unpublish_on')->isEmpty()) {
+    $variables['scheduled_unpublish_date'] = $node->get('unpublish_on')->value;
+  }
+}

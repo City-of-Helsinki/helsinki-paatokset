@@ -1,0 +1,26 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      dist/css/styles.min.css: {}
+
+# @TODO Check this!
+#accordion_inner:
+#  version: 1.x
+#  js:
+#    dist/js/accordion-inner-settings.min.js: {}
+
+cookie_compliance_block:
+  version: 1.x
+  js:
+    dist/js/cookie_compliance_block.js: {}
+
+matomo:
+  version: 1.x
+  js:
+    dist/js/matomo.js: {
+      attributes: {
+        defer: true,
+        preprocess: false
+      }
+    }
