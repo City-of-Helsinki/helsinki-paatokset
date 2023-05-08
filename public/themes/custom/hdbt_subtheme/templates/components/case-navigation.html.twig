@@ -12,7 +12,7 @@
     {% include '@hdbt/misc/status-messages.html.twig' with { status_headings: status_headings, message_list: message_list, size: 'large' } %}
   </div>
 
-  {% include '@helfi_paatokset/components/decisions-dropdown.html.twig' with { selected: selectedDecision, options: all_decisions, show_warning: next_decision, warning_label: 'More recent handlings'|trans } %}
+  {% include '@hdbt_subtheme/components/decisions-dropdown.html.twig' with { selected: selectedDecision, options: all_decisions, show_warning: next_decision, warning_label: 'More recent handlings'|trans } %}
 
   <div class="issue-dropdown__show-more" {% if all_decisions_link is empty and other_decisions_link is empty %}style="display:none;"{% endif %}>
     {% if all_decisions_link is not empty %}

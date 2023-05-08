@@ -44,7 +44,7 @@
     {% if favorites_enabled %}
     <div class="issue__favorite-button">
       {% set button_label = 'Save %s to favorites'|format('issue')|t %}
-      {% include 'helfi_paatokset/components/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
     </div>
     {% endif %}
   </div>

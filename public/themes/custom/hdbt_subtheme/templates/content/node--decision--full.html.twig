@@ -87,7 +87,7 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% include '@helfi_paatokset/components/case-header.html.twig' %}
+  {% include '@hdbt_subtheme/components/case-header.html.twig' %}
 
   <div class="issue__wrapper">
     <div class="ajax-progress-throbber"></div>
@@ -95,20 +95,20 @@
     <div class="issue__container issue__container--content">
       <div class="issue__left-column__container">
         <div class="issue__decision-navigation__wrapper">
-          {% include '@helfi_paatokset/components/decision-navigation.html.twig' %}
+          {% include '@hdbt_subtheme/components/decision-navigation.html.twig' %}
         </div>
 
-        {% include '@helfi_paatokset/components/case-navigation.html.twig' %}
+        {% include '@hdbt_subtheme/components/case-navigation.html.twig' %}
 
         <div class="issue__ajax-container">
-          {% include '@helfi_paatokset/components/decision-content.html.twig' with { selectedDecision } %}
+          {% include '@hdbt_subtheme/components/decision-content.html.twig' with { selectedDecision } %}
         </div>
       </div>
 
       <div class="issue-right-column__container">
-        {% include '@helfi_paatokset/components/decision-pdf.html.twig' %}
+        {% include '@hdbt_subtheme/components/decision-pdf.html.twig' %}
 
-        {% include '@helfi_paatokset/components/case-attachments.html.twig' %}
+        {% include '@hdbt_subtheme/components/case-attachments.html.twig' %}
       </div>
 
     </div>

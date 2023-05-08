@@ -32,9 +32,9 @@
       {% set disabled = false %}
     {% endif %}
     {% if selectedDecision %}
-      {% include '@helfi_paatokset/components/button.html.twig' with {type: 'secondary', disabled: disabled, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: disabled, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
     {% else %}
-      {% include '@helfi_paatokset/components/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
     {% endif %}
     <nav>
       <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" id='issue__meetings-select'>
