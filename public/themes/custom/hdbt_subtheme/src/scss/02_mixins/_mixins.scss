@@ -1,8 +1,3 @@
-// Function nounit strips any unit from variable.
-@function nounit($number) {
-  @return $number / ($number * 0 + 1);
-}
-
 // Calculate rem (root em) units from pixels for font-size and line-height.
 @mixin font-size($font-size, $line-height: "") {
   @if $font-size == 'inherit' {
@@ -10,14 +5,14 @@
   } @else if unit($font-size) == 'rem' {
     font-size: $font-size;
   } @else {
-    font-size: ($font-size / $base-font-size) * 1rem;
+    font-size: calc($font-size / $base-font-size) * 1rem;
   }
 
   // Handle the line-height.
   @if $line-height != "" {
     // Check if line-height is in px.
     @if unit($line-height) == 'px' {
-      line-height: ($line-height / $base-font-size) * 1rem;
+      line-height: calc($line-height / $base-font-size) * 1rem;
     }
     @else {
       // Check if line-height is in rem and handle the line-height.
@@ -34,33 +29,8 @@
           $font-size-px: nounit($font-size) * nounit($base-font-size);
         }
 
-        $conversion: $base-font-size-px * ($font-size-px / $base-font-size-px) * $line-height / $base-font-size-px;
+        $conversion:  calc($base-font-size-px * ($font-size-px / $base-font-size-px) * $line-height / $base-font-size-px);
         line-height: #{$conversion}rem;
-      }
-    }
-  }
-}
-
-/**
- * To give different styles depending on how many items a wrapper has you can use this mixing to assign the styles
- * to correct element. For example:
- *
- * If the wrapper has 1, 2 or 3 items make the items 30% wide, otherwise they should be 20% wide:
- * .wrapper .item {
- *   width: 20%;
- *
- *   @include content_count(1, 2, 3) {
- *     width: 30%;
- *   }
- * }
- */
-@mixin content_count($number_of_items...) {
-  @each $item in $number_of_items {
-    @if type-of($item) == number {
-      @for $i from 1 through $item {
-        &:nth-child(#{$i}):nth-last-child(#{$item - $i + 1}) {
-          @content;
-        }
       }
     }
   }
