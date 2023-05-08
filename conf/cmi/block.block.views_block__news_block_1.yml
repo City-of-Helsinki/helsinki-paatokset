@@ -8,9 +8,9 @@ dependencies:
     - node
     - views
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: views_block__news_block_1
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: sidebar_second
 weight: -18
 provider: null

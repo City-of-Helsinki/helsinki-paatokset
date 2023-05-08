@@ -6,9 +6,9 @@ dependencies:
     - hdbt_content
     - node
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: socialmediasharingblock_2
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: content_lower
 weight: -11
 provider: null

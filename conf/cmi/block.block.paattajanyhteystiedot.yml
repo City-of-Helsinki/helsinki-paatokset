@@ -6,9 +6,9 @@ dependencies:
     - node
     - paatokset_policymakers
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: paattajanyhteystiedot
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: sidebar_second
 weight: -16
 provider: null

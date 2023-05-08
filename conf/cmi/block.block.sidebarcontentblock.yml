@@ -5,9 +5,9 @@ dependencies:
   module:
     - hdbt_content
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: sidebarcontentblock
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: sidebar_second
 weight: -17
 provider: null
