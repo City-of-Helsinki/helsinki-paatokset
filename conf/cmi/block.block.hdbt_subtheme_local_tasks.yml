@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_local_tasks
-theme: helfi_paatokset
+    - hdbt_subtheme
+id: hdbt_subtheme_local_tasks
+theme: hdbt_subtheme
 region: tools
 weight: -4
 provider: null

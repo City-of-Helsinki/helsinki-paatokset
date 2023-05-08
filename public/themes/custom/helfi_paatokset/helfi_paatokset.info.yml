@@ -1,0 +1,8 @@
+name: City of Helsinki - Päätökset
+description: HDBT based subtheme for Päätökset service.
+type: theme
+core_version_requirement: ^8 || ^9
+screenshot: helfi_paatokset.png
+base theme: hdbt
+
+# @todo Remove this theme once the production site uses hdbt_subtheme.

@@ -7,9 +7,9 @@ dependencies:
   module:
     - menu_block_current_language
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_footertopnavigation
-theme: helfi_paatokset
+    - hdbt_subtheme
+id: hdbt_subtheme_footertopnavigation
+theme: hdbt_subtheme
 region: footer_top
 weight: -4
 provider: null

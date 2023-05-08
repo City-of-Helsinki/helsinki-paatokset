@@ -6,9 +6,9 @@ dependencies:
     - eu_cookie_compliance
     - system
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_eucookiecomplianceblock
-theme: helfi_paatokset
+    - hdbt_subtheme
+id: hdbt_subtheme_eucookiecomplianceblock
+theme: hdbt_subtheme
 region: after_content
 weight: -19
 provider: null

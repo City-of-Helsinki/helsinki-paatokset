@@ -6,9 +6,9 @@ dependencies:
     - hdbt_content
     - node
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_heroblock
-theme: helfi_paatokset
+    - hdbt_subtheme
+id: hdbt_subtheme_heroblock
+theme: hdbt_subtheme
 region: before_content
 weight: -19
 provider: null

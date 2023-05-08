@@ -5,9 +5,9 @@ dependencies:
   module:
     - language
   theme:
-    - helfi_paatokset
-id: helfi_paatokset_language_switcher
-theme: helfi_paatokset
+    - hdbt_subtheme
+id: hdbt_subtheme_language_switcher
+theme: hdbt_subtheme
 region: header_branding
 weight: 2
 provider: null
