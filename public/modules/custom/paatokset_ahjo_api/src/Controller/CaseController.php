@@ -70,7 +70,7 @@ class CaseController extends ControllerBase {
     }
 
     $content = twig_render_template(
-      drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-content.html.twig',
+      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-content.html.twig',
       [
         'selectedDecision' => $data['selectedDecision'],
         'policymaker_is_active' => $data['policymaker_is_active'],
@@ -83,14 +83,14 @@ class CaseController extends ControllerBase {
     );
 
     $attachments = twig_render_template(
-      drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/case-attachments.html.twig',
+      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/case-attachments.html.twig',
       [
         'attachments' => $data['attachments'],
       ]
     );
 
     $decision_navigation = twig_render_template(
-      drupal_get_path('theme', 'helfi_paatokset') . '/templates/components/decision-navigation.html.twig',
+      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-navigation.html.twig',
       [
         'next_decision' => $data['next_decision'],
         'previous_decision' => $data['previous_decision'],

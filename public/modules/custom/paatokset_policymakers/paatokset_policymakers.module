@@ -392,7 +392,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['has_section_nav'] = TRUE;
 
     // Unset main navigation.
-    unset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2']);
+    unset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']);
   }
   elseif (_paatokset_policymakers_page_is_pm_custom_link($variables)) {
     $variables['has_sidebar_first'] = TRUE;
@@ -403,7 +403,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['policymaker_navigation'] = TRUE;
 
     // Unset main navigation.
-    unset($variables['page']['sidebar_first']['helfi_paatokset_main_navigation_level_2']);
+    unset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']);
   }
   // Unset policymaker side navi.
   else {
@@ -420,8 +420,8 @@ function paatokset_policymakers_preprocess_html(&$variables) {
   }
 
   // Remove title block on minutes page.
-  if(preg_match('/policymaker\.minutes\./', \Drupal::routeMatch()->getRouteName()) && isset($variables['page']['before_content']['helfi_paatokset_page_title'])) {
-    unset($variables['page']['before_content']['helfi_paatokset_page_title']);
+  if(preg_match('/policymaker\.minutes\./', \Drupal::routeMatch()->getRouteName()) && isset($variables['page']['before_content']['hdbt_subtheme_page_title'])) {
+    unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
   }
 }
 
