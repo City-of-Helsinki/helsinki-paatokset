@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
@@ -102,7 +103,7 @@ function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
     $suggestions[] = 'menu__main__desktop';
   }
 
-  // @TODO Is this needed?
+  // @todo Is this needed?
   if (
     isset($variables['attributes']['block_id']) &&
     $variables['attributes']['block_id'] === 'hdbt_subtheme_mobile_navigation'
@@ -145,12 +146,11 @@ function hdbt_subtheme_preprocess_region(&$variables) {
   $variables['logged_in'] = \Drupal::currentUser()->isAuthenticated();
 }
 
-
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
-  if($variables['view']->id() === 'news') {
+  if ($variables['view']->id() === 'news') {
     $suggestions[] = 'views_view_unformatted__news__latest_news';
   }
 }
@@ -186,17 +186,37 @@ function hdbt_subtheme_theme($existing, $type, $theme, $path) {
   return [
     'advanced_search__advanced_fields_container' => [
       'base hook' => 'container',
-      'template' => 'form/advanced-search--advanced-fields-container'
+      'template' => 'form/advanced-search--advanced-fields-container',
     ],
     'advanced_search__tags_container' => [
       'base hook' => 'container',
-      'template' => 'form/advanced-search--tags-container'
+      'template' => 'form/advanced-search--tags-container',
     ],
     'advanced_search_link_container' => [
       'base hook' => 'container',
-      'template' => 'form/advanced-search-link-container'
-    ]
+      'template' => 'form/advanced-search-link-container',
+    ],
   ];
+}
+
+/**
+ * Get trustee content via field value.
+ *
+ * @param Drupal\Core\Field\FieldItemListInterface $references
+ *   JSON references.
+ *
+ * @return array
+ *   Returns sorted array of trustee content.
+ */
+function hdbt_subtheme_get_trustee_content(FieldItemListInterface $references): array {
+  $content = [];
+  foreach ($references as $json) {
+    $content[] = json_decode($json->value, TRUE);
+  }
+  usort($content, function ($a, $b) {
+    return strtotime($b['Date']) - strtotime($a['Date']);
+  });
+  return $content;
 }
 
 /**
@@ -213,35 +233,17 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
     'tags' => ['media_list:declaration_of_affiliation'],
   ];
 
-  function datecmp ($a, $b) {
-    return strtotime($b['Date']) - strtotime($a['Date']);
-  }
-
-  if($node->get('field_trustee_initiatives')) {
-    $content_initiatives = [];
-    foreach($node->get('field_trustee_initiatives') as $json) {
-      $content_initiatives[] = json_decode($json->value, TRUE);
-    }
-
-    usort($content_initiatives, 'datecmp');
-
+  if ($node->get('field_trustee_initiatives')) {
     $variables['initiatives'] = [
       'title' => t('Initiatives by the councillor'),
-      'content' => $content_initiatives,
+      'content' => hdbt_subtheme_get_trustee_content($node->get('field_trustee_initiatives')),
     ];
   };
 
-  if($node->get('field_trustee_resolutions')) {
-    $content_resolutions = [];
-    foreach($node->get('field_trustee_resolutions') as $json) {
-      $content_resolutions[] = json_decode($json->value, TRUE);
-    };
-
-    usort($content_resolutions, 'datecmp');
-
+  if ($node->get('field_trustee_resolutions')) {
     $variables['resolutions'] = [
       'title' => t('Resolutions by the councillor'),
-      'content' => $content_resolutions
+      'content' => hdbt_subtheme_get_trustee_content($node->get('field_trustee_resolutions')),
     ];
   };
 
@@ -268,7 +270,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
     $variables['content']['field_trustee_council_group'] = t($node->field_trustee_council_group->value, [], ['context' => 'Trustee listing']);
   }
 
-  if(isset($node->field_policymaker_reference->entity)) {
+  if (isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
     $pmLink = Link::fromTextAndUrl(
       $policymaker->title->value,
@@ -279,25 +281,26 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
       '@trustee is @policymaker',
       [
         '@trustee' => TrusteeService::getTrusteeName($node),
-        '@policymaker' => $pmLink
+        '@policymaker' => $pmLink,
       ]
     );
   };
 
-  // Check if there are any DOAs for the trustee
+  // Check if there are any DOAs for the trustee.
   $doaQuery = \Drupal::entityQuery('media')
     ->condition('bundle', 'declaration_of_affiliation')
     ->condition('field__policymaker_reference', $node->id())
     ->execute();
 
-  if(!empty($doaQuery)) {
-    // Display only one DOA for the page - there should be only one of these per trustee.
+  if (!empty($doaQuery)) {
+    // Display only one DOA for the page -
+    // there should be only one of these per trustee.
     $doa = Media::load(reset($doaQuery));
     $doaEntity = $doa->field_document->entity;
-    if(isset($doaEntity) && isset($doaEntity->uri)) {
+    if (isset($doaEntity) && isset($doaEntity->uri)) {
       $doaUrl = $doaEntity->getFileUri();
       $doaLinkText = Markup::create(
-        '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node). ' (pdf)'
+        '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node) . ' (pdf)'
       );
       $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
       $variables['doa'] = $doaLink->toRenderable();
@@ -317,7 +320,7 @@ function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
-  $main_article_id = null;
+  $main_article_id = NULL;
   $main_article_query = \Drupal::entityQuery('node')
     ->condition('status', 1)
     ->condition('type', 'imported_article')
@@ -326,7 +329,7 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
     ->range(0, 1);
   $main_article_results = $main_article_query->execute();
 
-  if(!empty($main_article_results)) {
+  if (!empty($main_article_results)) {
     $main_article_id = reset($main_article_results);
   }
 
@@ -336,7 +339,7 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
     ->sort('field_published', 'DESC')
     ->range(0, 5);
 
-  if($main_article_id) {
+  if ($main_article_id) {
     $query->condition('nid', $main_article_id, '!=');
   }
 
@@ -346,9 +349,9 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
     Node::loadMultiple($article_ids);
   $articles = [];
 
-  if(!empty($article_nodes)) {
-    foreach($article_nodes as $article_node) {
-      if($article_node->id() === $main_article_id) {
+  if (!empty($article_nodes)) {
+    foreach ($article_nodes as $article_node) {
+      if ($article_node->id() === $main_article_id) {
         $articles[] = [
           'title' => $article_node->title->value,
           'lead' => $article_node->body->view('teaser'),
@@ -356,14 +359,14 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
           'image_alt' => $article_node->field_image_alt->value,
           'image_title' => $article_node->field_image_title->value,
           'url' => $article_node->toUrl(),
-          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp())
+          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp()),
         ];
       }
       else {
         $articles[] = [
           'title' => $article_node->title->value,
           'url' => $article_node->toUrl(),
-          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp())
+          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp()),
         ];
       }
     }
@@ -380,11 +383,11 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
 function hdbt_subtheme_preprocess_menu(&$variables) {
   $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
 
-  if(isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
-    $variables['allow_collabsible'] = true;
+  if (isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
+    $variables['allow_collabsible'] = TRUE;
 
-    if(isset($variables['attributes']['block_id']) && $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2') {
-      $variables['auto_open'] = true;
+    if (isset($variables['attributes']['block_id']) && $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2') {
+      $variables['auto_open'] = TRUE;
     }
   }
 }
@@ -401,7 +404,7 @@ function hdbt_subtheme_preprocess_page(&$variables) {
   }
 
   // Remove title block on 404 and 403 pages.
-  if($route_name === 'system.404'|| $route_name === 'system.403') {
+  if ($route_name === 'system.404'|| $route_name === 'system.403') {
     unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
   }
 
@@ -412,14 +415,13 @@ function hdbt_subtheme_preprocess_page(&$variables) {
   }
 
   if ($route_name === 'entity.taxonomy_term.canonical') {
-    $variables['has_sidebar_second'] = true;
-    $variables['move_before_content'] = true;
+    $variables['has_sidebar_second'] = TRUE;
+    $variables['move_before_content'] = TRUE;
   }
 
-
-  if(isset($variables['node']) && $variables['node']->bundle() === 'article') {
-    $variables['has_sidebar_second'] = true;
-    $variables['move_before_content'] = true;
+  if (isset($variables['node']) && $variables['node']->bundle() === 'article') {
+    $variables['has_sidebar_second'] = TRUE;
+    $variables['move_before_content'] = TRUE;
   }
 
   // Display navigation side under specific conditions.

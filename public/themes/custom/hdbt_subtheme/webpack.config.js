@@ -133,7 +133,7 @@ module.exports = (env, argv) => {
   if (argv.mode === 'production') {
     const TerserPlugin = require('terser-webpack-plugin');
 
-    const full_config = merge(config, {
+    return merge(config, {
       mode: 'production',
       devtool: false,
       optimization: {
@@ -152,12 +152,10 @@ module.exports = (env, argv) => {
       },
     });
 
-    return full_config;
-
   } else if (argv.mode === 'development') {
     const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
-    const full_config = merge(config, {
+    return merge(config, {
       mode: 'development',
       devtool: 'eval-source-map',
       plugins: [
@@ -167,8 +165,6 @@ module.exports = (env, argv) => {
         })
       ]
     });
-
-    return full_config;
 
   }
 };

@@ -32,4 +32,4 @@ libraries:
 
 # Libraries override
 libraries-override:
-  eu_cookie_compliance/eu_cookie_compliance_cookie_values: helfi_paatokset/cookie_compliance_block
+  eu_cookie_compliance/eu_cookie_compliance_cookie_values: hdbt_subtheme/cookie_compliance_block
