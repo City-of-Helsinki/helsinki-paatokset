@@ -19,6 +19,7 @@ regions:
   before_content: Before content
   sidebar_first: First sidebar
   content: Content
+  content_lower: Content lower
   sidebar_second: Second sidebar
   after_content: After content
   footer_top: Footer - Top
