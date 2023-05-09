@@ -1,5 +1,7 @@
 {{ attach_library('hdbt/accordion') }}
+{{ attach_library('hdbt_subtheme/accordion_lazy') }}
 {{ attach_library('paatokset_ahjo_api/policymaker_listing') }}
+
 <div class="paatokset-accordion">
   {% for accordion in accordions if accordion is not empty %}
     <div class="accordion__wrapper handorgel-lazy">

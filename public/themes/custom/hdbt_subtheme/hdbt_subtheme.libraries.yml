@@ -4,21 +4,35 @@ global-styling:
     theme:
       dist/css/styles.min.css: {}
 
-# @TODO Check this!
-#accordion_inner:
-#  version: 1.x
-#  js:
-#    dist/js/accordion-inner-settings.min.js: {}
+accordion_inner:
+  version: 1.x
+  js:
+    dist/js/accordion_inner.min.js: {
+      attributes: {
+        defer: true
+      }
+    }
+  dependencies:
+    - hdbt/handorgel
+
+accordion_lazy:
+  version: 1.x
+  js:
+    dist/js/accordion_lazybuild.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - hdbt/handorgel
 
 cookie_compliance_block:
   version: 1.x
   js:
-    dist/js/cookie_compliance_block.js: {}
+    dist/js/cookie_compliance_block.min.js: {}
 
 matomo:
   version: 1.x
   js:
-    dist/js/matomo.js: {
+    dist/js/matomo.min.js: {
       attributes: {
         defer: true,
         preprocess: false
