@@ -102,14 +102,6 @@ function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
   ) {
     $suggestions[] = 'menu__main__desktop';
   }
-
-  // @todo Is this needed?
-  if (
-    isset($variables['attributes']['block_id']) &&
-    $variables['attributes']['block_id'] === 'hdbt_subtheme_mobile_navigation'
-  ) {
-    $suggestions[] = 'menu__mobile';
-  }
 }
 
 /**
