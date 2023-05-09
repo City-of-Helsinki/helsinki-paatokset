@@ -1,3 +1,9 @@
+/**
+ * @file
+ * accordion_lazybuild.js
+ *
+ * Allow accordions to be added to lazybuilder elements.
+ */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable func-names */
 /* eslint-disable object-shorthand */

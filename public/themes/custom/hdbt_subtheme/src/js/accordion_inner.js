@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const accordions = document.getElementsByClassName("handorgel-inner");
   window.handorgel_accordions = [];
 
-
   for (let singleAccordion of accordions) {
     /* global handorgel */
     const accordion = new handorgel(singleAccordion, {
