@@ -12,7 +12,8 @@
     margin-right: auto;
     padding-left: 16px;
     padding-right: 16px;
-    margin-bottom: -70px;
+    margin-bottom: -30px;
+    margin-top: 30px;
 
     @include breakpoint($breakpoint-m) {
       padding-left: 32px;
