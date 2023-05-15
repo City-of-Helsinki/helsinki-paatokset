@@ -13,14 +13,14 @@
 function paatokset_news_importer_theme($exitsting, $type, $theme, $path) {
   return [
     'node__imported_article' => [
-      'base hook' => 'node'
+      'base hook' => 'node',
     ],
     'node__imported_article__tiny_teaser' => [
-      'base hook' => 'node'
+      'base hook' => 'node',
     ],
     'views_view_unformatted__imported_articles' => [
-      'base hook' => 'view'
-    ]
+      'base hook' => 'view',
+    ],
   ];
 }
 
@@ -28,9 +28,9 @@ function paatokset_news_importer_theme($exitsting, $type, $theme, $path) {
  * Implements hook_preprocess_page().
  */
 function paatokset_news_importer_preprocess_page(array &$variables) {
-  if(isset($variables['node']) && $variables['node']->getType() === 'imported_article') {
+  if (isset($variables['node']) && $variables['node']->getType() === 'imported_article') {
     $variables['has_sidebar_first'] = TRUE;
-    $variables['move_before_content'] = true;
+    $variables['move_before_content'] = TRUE;
   }
 }
 

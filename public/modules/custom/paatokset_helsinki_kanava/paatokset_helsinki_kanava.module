@@ -20,13 +20,13 @@ function paatokset_helsinki_kanava_theme($existing, $type, $theme, $path): array
   return [
     'meeting_video' => [
       'render element' => 'elements',
-      'template' => 'meeting-video'
+      'template' => 'meeting-video',
     ],
     'block__paatokset_helsinki_kanava_announcements' => [
       'base hook' => 'block',
       'render element' => 'elements',
-      'template' => 'block--paatokset-helsinki-kanava-announcements'
-    ]
+      'template' => 'block--paatokset-helsinki-kanava-announcements',
+    ],
   ];
 }
 
@@ -77,15 +77,13 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   }
 
   if ($video instanceof MeetingVideo) {
-    $view_builder = \Drupal::entityTypeManager()
-      ->getViewBuilder($video
-      ->getEntityTypeId());
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder($video->getEntityTypeId());
 
     $variables['most_recent_meeting'] = $view_builder->view($video);
     $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
       'query' => [
-        'assetId' => $video->get('asset_id')->value
-      ]
+        'assetId' => $video->get('asset_id')->value,
+      ],
     ])->toString();
   }
 
@@ -104,9 +102,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
       $variables['next_meeting_time'] = date('j.n.Y G:i', (int) $liveStream->get('start_time')->value);
     }
     if (!$liveStream->get('start_time')->isEmpty() && _paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
-      $view_builder = \Drupal::entityTypeManager()
-        ->getViewBuilder($liveStream
-        ->getEntityTypeId());
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder($liveStream->getEntityTypeId());
 
       $variables['live_stream'] = $view_builder->view($liveStream);
     }
@@ -130,6 +126,9 @@ function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
   return strtotime('+1 hour') > $time;
 }
 
+/**
+ * Determine if upcoming meeting label should be shown.
+ */
 function _paatokset_helsinki_kanava_should_show_label(string $time): bool {
   if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
     return TRUE;
