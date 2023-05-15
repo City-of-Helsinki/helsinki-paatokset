@@ -19,8 +19,8 @@ echo "Starting cron: $(date)"
 exec "/crons/update-translations.sh" &
 exec "/crons/purge-queue.sh" &
 exec "/crons/run-helsinki-integrations.sh" &
-#exec "/crons/run-aggregated-ahjo-integrations.sh" &
-#exec "/crons/run-immediate-ahjo-integrations.sh" &
+exec "/crons/run-aggregated-ahjo-integrations.sh" &
+exec "/crons/run-immediate-ahjo-integrations.sh" &
 exec "/crons/search-index.sh" &
 
 while true
