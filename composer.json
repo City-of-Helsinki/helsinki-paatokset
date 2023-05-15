@@ -24,7 +24,7 @@
         "drupal/helfi_api_base": "2.4.0",
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_hauki": "^1.0",
-        "drupal/helfi_platform_config": "2.18.5",
+        "drupal/helfi_platform_config": "2.18.6",
         "drupal/helfi_tpr": "^2.0.5",
         "drupal/helfi_tunnistamo": "^2.0",
         "drupal/json_field": "^1.0@RC",
