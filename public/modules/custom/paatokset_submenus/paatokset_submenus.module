@@ -30,7 +30,7 @@ function paatokset_submenus_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'template' => '/block--agendas-submenu',
       'path' => $path . '/templates',
-    ]
+    ],
   ];
 }
 
@@ -58,15 +58,15 @@ function paatokset_submenus_preprocess_block(&$variables) {
     }
 
     if (in_array($variables['plugin_id'], [
-        'agendas_submenu_documents',
-        'paatokset_minutes_of_discussion',
-      ])) {
+      'agendas_submenu_documents',
+      'paatokset_minutes_of_discussion',
+    ])) {
       $variables['type'] = 'documents';
     }
   }
 
   if ($variables['plugin_id'] === 'policymaker_side_nav') {
-    if(isset($variables['elements']['content']['#items'])) {
+    if (isset($variables['elements']['content']['#items'])) {
       $variables['items'] = $variables['elements']['content']['#items'];
       $variables['menu_attributes'] = new Attribute(['class' => 'menu']);
       $variables['attributes'] = new Attribute(['class' => ['sidebar-navigation']]);
@@ -121,9 +121,9 @@ function paatokset_submenus_preprocess_block(&$variables) {
 function paatokset_submenus_theme_suggestions_block_alter(&$suggestions, $variables) {
   if (isset($variables['elements']['#plugin_id'])) {
     if (in_array($variables['elements']['#plugin_id'], [
-        'agendas_submenu_documents',
-        'paatokset_minutes_of_discussion',
-      ])) {
+      'agendas_submenu_documents',
+      'paatokset_minutes_of_discussion',
+    ])) {
       $suggestions[] = 'block__agendas_submenu';
     }
     if ($variables['elements']['#plugin_id'] === 'policymaker_side_nav') {

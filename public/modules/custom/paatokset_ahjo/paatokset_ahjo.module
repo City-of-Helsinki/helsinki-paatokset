@@ -6,9 +6,7 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo\Service\IssueService;
 
 /**
