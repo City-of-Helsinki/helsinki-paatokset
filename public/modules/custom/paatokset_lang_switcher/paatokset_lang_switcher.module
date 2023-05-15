@@ -12,7 +12,7 @@ use Drupal\node\NodeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_language_switch_links_alter.
+ * Implements hook_language_switch_links_alter().
  */
 function paatokset_lang_switcher_language_switch_links_alter(array &$links, $type, Url $url): void {
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
