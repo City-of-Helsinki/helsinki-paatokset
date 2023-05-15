@@ -1,5 +1,6 @@
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-m;
+  --line-height:1.5555555556;
 
   @include breakpoint($breakpoint-m) {
     margin-bottom: $spacing-double + 8px;
