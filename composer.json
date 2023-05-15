@@ -149,6 +149,12 @@
         "post-update-cmd": [
             "rm -rf public/modules/custom/paatokset_search/assets && rsync -a vendor/paatokset/paatokset_search/ public/modules/custom/paatokset_search/assets || true",
             "@copy-commit-message-script"
-        ]
+        ],
+        "test": [
+            "@lint-php",
+            "@test-php"
+        ],
+        "test-php": "vendor/bin/phpunit -c $PWD/phpunit.xml.dist",
+        "lint-php": "vendor/bin/phpcs --standard=Drupal"
     }
 }
