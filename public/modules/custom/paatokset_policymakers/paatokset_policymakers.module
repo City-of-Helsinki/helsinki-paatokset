@@ -125,7 +125,6 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $cache_tags = [];
 
-
   $orgType = $policymaker->get('field_organization_type')->value;
   $variables['is_organization'] = FALSE;
   $variables['is_active'] = TRUE;
@@ -235,7 +234,7 @@ function paatokset_policymakers_preprocess_field__node__title(&$variables) {
   $first_name = '';
   $last_name = '';
 
-  if($node->getType() === 'policymaker') {
+  if ($node->getType() === 'policymaker') {
     if ($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
       $first_name = $node->get('field_first_name')->value;
     }
@@ -460,7 +459,7 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
  * @param array $variables
  *   Node variables.
  *
- * @return boolean
+ * @return bool
  *   Returns TRUE if node is in a pm menu as a custom link.
  */
 function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool {
