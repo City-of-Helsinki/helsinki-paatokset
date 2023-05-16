@@ -10,7 +10,6 @@ tags:
   canonical_url: '[current-page:url]'
   og_image: '[site:default-og-image]'
   og_site_name: '[site:page-title-suffix]'
-  robots: 'noindex, nofollow, noarchive, nosnippet, noodp, noydir, noimageindex, notranslate'
   title: '[current-page:title] | [site:name] | [site:page-title-suffix]'
   twitter_cards_page_url: '[current-page:url]'
   twitter_cards_title: '[current-page:title] | [site:page-title-suffix]'

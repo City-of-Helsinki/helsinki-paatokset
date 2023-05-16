@@ -52,8 +52,8 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
     ],
     'block__dictionary_banner' => [
       'base hook' => 'entity',
-      'template' => 'block/block--dictionary-banner'
-    ]
+      'template' => 'block/block--dictionary-banner',
+    ],
   ];
 }
 
@@ -94,7 +94,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
 
   $meetings_with_color = [];
-  foreach($all_meetings as $meeting) {
+  foreach ($all_meetings as $meeting) {
     $meeting['organization_color'] = $policymakerService->getPolicymakerClassById($meeting['policymaker']);
     $meetings_with_color[] = $meeting;
   }
@@ -194,6 +194,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
  *
  * @param string $sector
  *   Sector name.
+ *
  * @return string
  *   English translation of sector, or original value.
  */
@@ -202,18 +203,23 @@ function _paatokset_ahjo_api_get_sector_english_translation(string $sector): str
     case 'Kasvatuksen ja koulutuksen toimiala':
       $value = 'Education Division';
       break;
+
     case 'Kaupunkiympäristön toimiala':
       $value = 'Urban Environment Division';
       break;
+
     case 'Keskushallinto':
       $value = 'Central Administration';
       break;
+
     case 'Kulttuurin ja vapaa-ajan toimiala':
       $value = 'Culture and Leisure Division';
       break;
+
     case 'Sosiaali- ja terveystoimiala':
       $value = 'Social Services and Health Care Division';
       break;
+
     default:
       $value = $sector;
       break;
@@ -229,24 +235,23 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
   $initiatives = $policymakerService->getAllInitiatives();
-  $years = array();
 
+  $years = [];
   usort($initiatives, function ($item1, $item2) {
     return strtotime($item2['Date']) - strtotime($item1['Date']);
   });
 
-  foreach ($initiatives as $initiative ) {
-    $date = date_format(date_create($initiative['Date']),"Y");
+  foreach ($initiatives as $initiative) {
+    $date = date_format(date_create($initiative['Date']), "Y");
     if (!in_array($date, $years)) {
       $years[] = $date;
     }
   }
 
-  $by_year = array();
-
-  foreach($years as $year) {
+  $by_year = [];
+  foreach ($years as $year) {
     $filtered = array_filter($initiatives, function ($var) use ($year) {
-        return (str_contains(date_format(date_create($var['Date']),"Y"), $year));
+      return (str_contains(date_format(date_create($var['Date']), "Y"), $year));
     });
     $by_year[$year] = $filtered;
   };
@@ -254,10 +259,11 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
   $variables['initiatives'] = $by_year;
   $variables['years'] = $years;
 
-   // Helpful $content variable for templates.
-   foreach (Element::children($variables['elements']) as $key) {
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
+
   if (isset($variables['elements']['#block__all_initiatives'])) {
     $variables['entity'] = $variables['elements']['#block__all_initiatives'];
   }
@@ -334,7 +340,6 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
     $office_holders_url = '/fi/paattajat';
   }
 
-
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
@@ -371,7 +376,7 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
     ],
     '4' => [
       'title' => t('Implementation'),
-      ]
+    ],
   ];
 
   $variables['decisionmaker_process'] = [
@@ -384,7 +389,7 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
     ],
     '2' => [
       'title' => t('Implementation'),
-    ]
+    ],
   ];
 
   $variables['info_1'] = t('Standard decision-making process');
@@ -762,7 +767,6 @@ function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   return FALSE;
 }
 
-
 /**
  * Get first name.
  *
@@ -825,8 +829,8 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
 /**
  * Get top category name from classifiction code.
  *
- * @param mixed $value
- *   The value to work with.
+ * @param mixed $values
+ *   The values to work with.
  *
  * @return string|null
  *   Top category name based on the first part of the code, if found.
@@ -852,7 +856,10 @@ function _paatokset_ahjo_api_get_top_category(array $values): ?string {
  * Parse decision content from raw HTML.
  *
  * @param mixed $value
+ *   Raw HTML.
+ *
  * @return string|null
+ *   Content sections from HTML, if found.
  */
 function _paatokset_ahjo_api_parse_decision_content($value): string|null {
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
@@ -864,8 +871,10 @@ function _paatokset_ahjo_api_parse_decision_content($value): string|null {
  * Parse decision motion from raw HTML.
  *
  * @param mixed $value
+ *   Raw HTML.
  *
  * @return string|null
+ *   Contect sections from HTML, if found.
  */
 function _paatokset_ahjo_api_parse_decision_motion($value): string|null {
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
@@ -886,7 +895,6 @@ function paatokset_ahjo_api_entity_extra_field_info(): array {
 
   return $extra;
 }
-
 
 /**
  * Implements hook_ENTITY_TYPE_view().

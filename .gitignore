@@ -1,5 +1,6 @@
 # Ignore project files that should not be in version control
 drush/sites/
+drush/Commands/*
 node_modules
 public/public:/
 public/core
@@ -19,11 +20,12 @@ public/sites/default/local.services.yml
 .idea/*
 
 # Ignore test related files
-.phpunit.result.cache
-public/sites/simpletest
+.phpunit.*
+helfi-test-automation-python/
+public/sites/simpletest/
 
 # Ignore local database dumps
-dump.sql
+*.sql
 
 # Ignore OSX generated files
 ._*

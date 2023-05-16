@@ -6,18 +6,18 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
         options:
           tags:
-            previous: '‹ previous'
-            next: 'next ›'
-            first: '« first'
-            last: 'last »'
+            previous: '‹ edellinen'
+            next: 'seuraava ›'
+            first: '« ensimmäinen'
+            last: 'viimeinen »'
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'

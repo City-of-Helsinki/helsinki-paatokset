@@ -259,7 +259,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
   }
 
   if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
-    $variables['content']['field_trustee_council_group'] = t($node->field_trustee_council_group->value, [], ['context' => 'Trustee listing']);
+    $variables['content']['field_trustee_council_group'] = $node->field_trustee_council_group->value;
   }
 
   if (isset($node->field_policymaker_reference->entity)) {
@@ -285,8 +285,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
     ->execute();
 
   if (!empty($doaQuery)) {
-    // Display only one DOA for the page -
-    // there should be only one of these per trustee.
+    // Display only one DOA per trustee.
     $doa = Media::load(reset($doaQuery));
     $doaEntity = $doa->field_document->entity;
     if (isset($doaEntity) && isset($doaEntity->uri)) {
@@ -378,7 +377,10 @@ function hdbt_subtheme_preprocess_menu(&$variables) {
   if (isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
     $variables['allow_collabsible'] = TRUE;
 
-    if (isset($variables['attributes']['block_id']) && $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2') {
+    if (
+      isset($variables['attributes']['block_id']) &&
+      $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2'
+    ) {
       $variables['auto_open'] = TRUE;
     }
   }
@@ -391,12 +393,15 @@ function hdbt_subtheme_preprocess_page(&$variables) {
   $route_name = \Drupal::routeMatch()->getRouteName();
 
   // Page class for alternate decision and case routes.
-  if (strpos($route_name, 'paatokset_case') !== FALSE || strpos($route_name, 'paatokset_decision') !== FALSE) {
+  if (
+    str_contains($route_name, 'paatokset_case') ||
+    str_contains($route_name, 'paatokset_decision')
+  ) {
     $variables['is_decision'] = TRUE;
   }
 
   // Remove title block on 404 and 403 pages.
-  if ($route_name === 'system.404'|| $route_name === 'system.403') {
+  if ($route_name === 'system.404' || $route_name === 'system.403') {
     unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
   }
 

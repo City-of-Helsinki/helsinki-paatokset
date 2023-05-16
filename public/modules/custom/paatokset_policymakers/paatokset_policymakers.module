@@ -41,7 +41,7 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
     ],
     'policymaker_minutes' => [
       'render element' => 'elements',
-      'template' => 'content/minutes'
+      'template' => 'content/minutes',
     ],
     'block__policymaker_members' => [
       'base hook' => 'entity',
@@ -49,8 +49,8 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path) {
     ],
     'tpr_unit__contact_card' => [
       'base hook' => 'entity',
-      'template' => 'content/tpr-unit--contact-card'
-    ]
+      'template' => 'content/tpr-unit--contact-card',
+    ],
   ];
 }
 
@@ -125,7 +125,6 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $cache_tags = [];
 
-
   $orgType = $policymaker->get('field_organization_type')->value;
   $variables['is_organization'] = FALSE;
   $variables['is_active'] = TRUE;
@@ -144,7 +143,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       $variables['is_organization'] = TRUE;
 
       $members = $policymakerService->getComposition();
-      if($members) {
+      if ($members) {
         $variables['has_members'] = TRUE;
         $no_content = FALSE;
       }
@@ -235,16 +234,16 @@ function paatokset_policymakers_preprocess_field__node__title(&$variables) {
   $first_name = '';
   $last_name = '';
 
-  if($node->getType() === 'policymaker') {
-    if($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
+  if ($node->getType() === 'policymaker') {
+    if ($node->hasField('field_first_name') && !$node->get('field_first_name')->isEmpty()) {
       $first_name = $node->get('field_first_name')->value;
     }
 
-    if($node->hasField('field_last_name') && !$node->get('field_last_name')->isEmpty()) {
+    if ($node->hasField('field_last_name') && !$node->get('field_last_name')->isEmpty()) {
       $last_name = $node->get('field_last_name')->value;
     }
 
-    if(!empty($first_name) || !empty($last_name)) {
+    if (!empty($first_name) || !empty($last_name)) {
       $variables['items'][0]['content']['#context']['value'] = $title . ' ' . $first_name . ' ' . $last_name;
     }
   }
@@ -362,7 +361,6 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
     $prefix = 'paattajat';
   }
 
-
   // If org name exists, add it to the path.
   if (!$node->get('field_dm_org_name')->isEmpty()) {
     $pattern->setPattern($prefix . '/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
@@ -374,8 +372,8 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
  * Implements hook_preprocess_page().
  */
 function paatokset_policymakers_preprocess_page(&$variables) {
-  // DM search page is landing page, fix title alignment
-  if(isset($variables['page']['content']) && array_key_exists('paatoksetpolicymakersearch', $variables['page']['content'])) {
+  // DM search page is landing page, fix title alignment.
+  if (isset($variables['page']['content']) && array_key_exists('paatoksetpolicymakersearch', $variables['page']['content'])) {
     $variables['move_before_content'] = TRUE;
   }
 
@@ -383,10 +381,8 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['has_sidebar_second'] = TRUE;
   }
 
-
-
-  // Add template variables on dm pages
-  if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
+  // Add template variables on dm pages.
+  if (_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['has_sidebar_first'] = TRUE;
     $variables['move_before_content'] = TRUE;
     $variables['has_section_nav'] = TRUE;
@@ -415,24 +411,24 @@ function paatokset_policymakers_preprocess_page(&$variables) {
  * Implements hook_preprocess_html().
  */
 function paatokset_policymakers_preprocess_html(&$variables) {
-  if(_paatokset_policymakers_page_is_pm_subpage($variables)) {
+  if (_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['attributes']['class'][] = 'has-policymaker-nav';
   }
 
   // Remove title block on minutes page.
-  if(preg_match('/policymaker\.minutes\./', \Drupal::routeMatch()->getRouteName()) && isset($variables['page']['before_content']['hdbt_subtheme_page_title'])) {
+  if (preg_match('/policymaker\.minutes\./', \Drupal::routeMatch()->getRouteName()) && isset($variables['page']['before_content']['hdbt_subtheme_page_title'])) {
     unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
   }
 }
 
 /**
- * Helper function to decipher if page is policymaker subpage
+ * Helper function to decipher if page is policymaker subpage.
  *
  * @param array $variables
- *    Drupal-provided variables arary
+ *   Drupal-provided variables array.
  *
  * @return bool
- *    Return result of conditional check
+ *   Return result of conditional check.
  */
 function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
   if (isset($variables['node']) && $variables['node']) {
@@ -457,6 +453,15 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
   return isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first']);
 }
 
+/**
+ * Check if node is in a policymaker menu as a custom link.
+ *
+ * @param array $variables
+ *   Node variables.
+ *
+ * @return bool
+ *   Returns TRUE if node is in a pm menu as a custom link.
+ */
 function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool {
   if (!isset($variables['node'])) {
     return FALSE;
