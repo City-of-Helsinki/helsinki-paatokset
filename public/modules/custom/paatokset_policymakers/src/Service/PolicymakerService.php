@@ -1371,11 +1371,17 @@ class PolicymakerService {
       }
 
       $agenda_link = NULL;
-      if (!empty($data['Section']) && !empty($data['AgendaItem'])) {
+      // First, try with series ID.
+      if (!empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
+        $agenda_link = $caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);
+      }
+
+      // If a decision can't be found with series ID, try with title.
+      if (!$agenda_link && !empty($data['Section']) && !empty($data['AgendaItem'])) {
         $section_clean = (string) intval($data['Section']);
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
       }
-      else {
+      else if (!$agenda_link) {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
