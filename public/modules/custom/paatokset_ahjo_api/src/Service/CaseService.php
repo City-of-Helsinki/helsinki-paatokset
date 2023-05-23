@@ -338,7 +338,10 @@ class CaseService {
    * Get decision URL by version series ID.
    *
    * @param string $id
-   * @return Url|null
+   *   Version Series ID for decision or motion.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL for decision or motion, or NULL if not found.
    */
   public function getDecisionUrlByVersionSeriesId(string $id): ?Url {
     $params = [
