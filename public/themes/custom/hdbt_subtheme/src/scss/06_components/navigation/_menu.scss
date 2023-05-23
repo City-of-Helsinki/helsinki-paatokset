@@ -67,7 +67,9 @@
     }
   }
 }
-
+[data-js] ~ * .cssmenu-toggle-button[aria-expanded=true]::before {
+  mask-image: var(--hel-icon--cross);
+}
 // Backporting megamenu back link to mobile menu.
 .header-branding .cssmenu-menu {
   grid-template-areas: 'lang' 'back' 'nav' 'footer';
