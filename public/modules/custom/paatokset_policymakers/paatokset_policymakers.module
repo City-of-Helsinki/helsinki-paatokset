@@ -190,7 +190,6 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     $cache_tags[] = 'meeting_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
   else {
-    // Custom cache tag for
     $cache_tags[] = 'decision_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
 
