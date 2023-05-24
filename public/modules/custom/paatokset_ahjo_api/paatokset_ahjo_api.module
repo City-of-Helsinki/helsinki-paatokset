@@ -11,6 +11,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Link;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -55,6 +56,56 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'template' => 'block/block--dictionary-banner',
     ],
   ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function paatokset_ahjo_api_node_insert(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function paatokset_ahjo_api_node_update(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+}
+
+/**
+ * Invalidates custom cache tags for decisions.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ */
+function _paatokset_ahjo_api_invalidate_decision_cache_tags(FieldableEntityInterface $entity): void {
+  $meeting_id = NULL;
+  if ($entity->hasField('field_meeting_id') && !$entity->get('field_meeting_id')->isEmpty()) {
+    $meeting_id = $entity->get('field_meeting_id')->value;
+  }
+
+  $tags = [];
+  if ($meeting_id) {
+    $tags[] = 'meeting:' . $meeting_id;
+  }
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
 }
 
 /**
