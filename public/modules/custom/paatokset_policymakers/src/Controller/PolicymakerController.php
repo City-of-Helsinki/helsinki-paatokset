@@ -146,7 +146,7 @@ class PolicymakerController extends ControllerBase {
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
 
-      // Add cache context for meeting ID
+      // Add cache context for meeting ID.
       $build['#cache']['tags'][] = 'meeting:' . $id;
     }
 
@@ -194,10 +194,9 @@ class PolicymakerController extends ControllerBase {
    *   Minutes title.
    */
   public function getMinutesTitle($id) {
-    $meetingData = $this->policymakerService->getMeetingAgenda($id);
-
-    if (isset($meetingData['meeting']) && isset($meetingData['meeting']['title'])) {
-      return $meetingData['meeting']['title'];
+    $meeting = $this->policymakerService->getMeetingNode($id);
+    if ($meeting instanceof NodeInterface) {
+      return $this->policymakerService->getMeetingTitle($meeting);
     }
 
     return t('Minutes');

@@ -1183,19 +1183,15 @@ class PolicymakerService {
   }
 
   /**
-   * Return all agenda items for a meeting. Only works on policymaker subpages.
+   * Get meeting node for this policymaker.
    *
    * @param string $meetingId
-   *   Meeting ID to get Agenda Items for.
+   *   Meeting ID to load.
    *
-   * @return array|null
-   *   Agenda items for meeting.
+   * @return \Drupal\node\NodeInterface|null
+   *   Meeting node or NULL if one can't be loaded.
    */
-  public function getMeetingAgenda(string $meetingId): ?array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
+  public function getMeetingNode(string $meetingId): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
@@ -1210,10 +1206,44 @@ class PolicymakerService {
     $ids = $query->execute();
 
     if (empty($ids)) {
-      throw new NotFoundHttpException();
+      return NULL;
     }
 
-    $meeting = Node::load(reset($ids));
+    return Node::load(reset($ids));
+  }
+
+  /**
+   * Get meeting title from node.
+   *
+   * @param \Drupal\node\NodeInterface $meeting
+   *   Meeting node.
+   *
+   * @return string
+   *   Formatted meeting title.
+   */
+  public function getMeetingTitle(NodeInterface $meeting): string {
+    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
+    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
+    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
+    $meetingYear = date('Y', $meeting_timestamp);
+    return $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear;
+  }
+
+  /**
+   * Return all agenda items for a meeting. Only works on policymaker subpages.
+   *
+   * @param string $meetingId
+   *   Meeting ID to get Agenda Items for.
+   *
+   * @return array|null
+   *   Agenda items for meeting.
+   */
+  public function getMeetingAgenda(string $meetingId): ?array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $meeting = $this->getMeetingNode($meetingId);
     if (!$meeting instanceof NodeInterface) {
       throw new NotFoundHttpException();
     }

@@ -588,7 +588,7 @@ class CaseService {
       'case_id' => $decision->get('field_diary_number')->value,
       'limit' => 1,
     ]);
-    $case = array_shift($case);
+    $case = reset($case);
 
     // If a case exists, use case route with query parameter.
     if ($case instanceof NodeInterface) {
