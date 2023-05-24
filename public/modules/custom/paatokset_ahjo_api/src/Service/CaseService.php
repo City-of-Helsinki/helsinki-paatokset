@@ -335,6 +335,34 @@ class CaseService {
   }
 
   /**
+   * Get decision URL by version series ID.
+   *
+   * @param string $id
+   *   Version Series ID for decision or motion.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL for decision or motion, or NULL if not found.
+   */
+  public function getDecisionUrlByVersionSeriesId(string $id): ?Url {
+    $params = [
+      'version_id' => $id,
+      'limit' => 1,
+    ];
+
+    $nodes = $this->decisionQuery($params);
+    if (empty($nodes)) {
+      return NULL;
+    }
+
+    $node = array_shift($nodes);
+    if ($node instanceof NodeInterface) {
+      return $this->getDecisionUrlFromNode($node);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get decision URL by title and section.
    *
    * @param string $title
@@ -1900,6 +1928,19 @@ class CaseService {
       }
 
       $query->condition('field_decision_native_id', $decision_id);
+    }
+
+    if (isset($params['version_id'])) {
+      $version_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $params['version_id']);
+      if (!str_starts_with($version_id, '{')) {
+        $version_id = '{' . $version_id;
+      }
+
+      if (!str_ends_with($version_id, '}')) {
+        $version_id .= '}';
+      }
+
+      $query->condition('field_decision_series_id', $version_id);
     }
 
     if (isset($params['unique_id'])) {
