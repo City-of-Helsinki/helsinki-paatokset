@@ -674,7 +674,13 @@ class PolicymakerService {
       ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
-      $query->range('0', $limit);
+      // Increase limit to reduce change of sorting errors.
+      if ($limit < 10) {
+        $query->range('0', 10);
+      }
+      else {
+        $query->range('0', $limit);
+      }
     }
 
     $ids = $query->execute();
@@ -756,6 +762,11 @@ class PolicymakerService {
       else {
         $transformedResults[] = $result;
       }
+    }
+
+    // Reduce results to original limit.
+    if ($limit) {
+      return array_slice($transformedResults, 0, $limit);
     }
 
     return $transformedResults;
