@@ -19,13 +19,12 @@
 
 }
 
-.paatokset-search-wrapper {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+.paatokset-search--frontpage .paatokset-search-wrapper {
+  margin-left: $spacing * -1;
+
+  @include breakpoint($breakpoint-s) {
+    margin-left: $spacing * -2;
+  }
 }
 
 .paatokset-search--decisions {
