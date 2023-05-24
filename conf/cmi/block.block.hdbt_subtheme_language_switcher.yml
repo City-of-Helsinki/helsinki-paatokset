@@ -1,0 +1,20 @@
+uuid: 7b56b9c7-a2b4-42be-ba9f-c337113706c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_language_switcher
+theme: hdbt_subtheme
+region: header_branding
+weight: 2
+provider: null
+plugin: 'language_block:language_content'
+settings:
+  id: 'language_block:language_content'
+  label: 'Kielen vaihtaja'
+  label_display: '0'
+  provider: language
+visibility: {  }

@@ -8,9 +8,9 @@ dependencies:
     - taxonomy
     - views
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: views_block__related_terms_block_1
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: sidebar_second
 weight: -19
 provider: null

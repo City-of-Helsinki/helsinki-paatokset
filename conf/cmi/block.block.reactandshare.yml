@@ -6,9 +6,9 @@ dependencies:
     - helfi_platform_config
     - node
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: reactandshare
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: after_content
 weight: -16
 provider: null
