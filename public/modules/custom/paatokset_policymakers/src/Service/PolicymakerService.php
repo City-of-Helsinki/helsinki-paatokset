@@ -1381,7 +1381,7 @@ class PolicymakerService {
         $section_clean = (string) intval($data['Section']);
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
       }
-      else if (!$agenda_link) {
+      elseif (!$agenda_link) {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
