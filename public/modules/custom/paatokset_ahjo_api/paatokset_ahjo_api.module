@@ -65,6 +65,9 @@ function paatokset_ahjo_api_node_insert(EntityInterface $entity) {
   if ($entity->bundle() === 'decision') {
     _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
   }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
+  }
 }
 
 /**
@@ -74,6 +77,9 @@ function paatokset_ahjo_api_node_update(EntityInterface $entity) {
   if ($entity->bundle() === 'decision') {
     _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
   }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
+  }
 }
 
 /**
@@ -82,6 +88,9 @@ function paatokset_ahjo_api_node_update(EntityInterface $entity) {
 function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
   if ($entity->bundle() === 'decision') {
     _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
   }
 }
 
@@ -97,9 +106,41 @@ function _paatokset_ahjo_api_invalidate_decision_cache_tags(FieldableEntityInter
     $meeting_id = $entity->get('field_meeting_id')->value;
   }
 
+  $policymaker_id = NULL;
+  if ($entity->hasField('field_policymaker_id') && !$entity->get('field_policymaker_id')->isEmpty()) {
+    $policymaker_id = $entity->get('field_policymaker_id')->value;
+  }
+
   $tags = [];
   if ($meeting_id) {
     $tags[] = 'meeting:' . $meeting_id;
+  }
+  if ($policymaker_id) {
+    $tags[] = 'decision_pm:' . $policymaker_id;
+  }
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
+}
+
+/**
+ * Invalidates custom cache tags for meetings.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
+ */
+function _paatokset_ahjo_api_invalidate_meeting_cache_tags(FieldableEntityInterface $entity): void {
+  $policymaker_id = NULL;
+  if ($entity->hasField('field_meeting_dm_id') && !$entity->get('field_meeting_dm_id')->isEmpty()) {
+    $policymaker_id = $entity->get('field_meeting_dm_id')->value;
+  }
+
+  $tags = [];
+  if ($policymaker_id) {
+    $tags[] = 'meeting_pm:' . $policymaker_id;
   }
 
   if (!empty($tags)) {

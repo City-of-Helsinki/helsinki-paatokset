@@ -185,12 +185,13 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     $cache_tags[] = 'meeting_video_list';
   }
 
-  // Add cache tags for meetings or decisions based on org type.
+  // Add custom cache tags for meetings or decisions based on org type.
   if ($variables['is_organization']) {
-    $cache_tags[] = 'node_list:meeting';
+    $cache_tags[] = 'meeting_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
   else {
-    $cache_tags[] = 'node_list:decisions';
+    // Custom cache tag for
+    $cache_tags[] = 'decision_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
 
   if (!empty($cache_tags)) {
