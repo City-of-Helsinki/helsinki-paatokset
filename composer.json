@@ -10,8 +10,8 @@
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6.7",
         "drupal/big_pipe_sessionless": "^2.0",
-        "drupal/core-composer-scaffold": "^9.1",
         "drupal/core": "^9.5",
+        "drupal/core-composer-scaffold": "^9.1",
         "drupal/hdbt": "4.3.4",
         "drupal/hdbt_admin": "^1.8.6",
         "drupal/helfi_api_base": "2.3.10",
@@ -29,7 +29,7 @@
         "elasticsearch/elasticsearch": "^7.15",
         "josdejong/jsoneditor": "^5.29",
         "league/csv": "^9.8",
-        "paatokset/paatokset_search": "1.0.22"
+        "paatokset/paatokset_search": "1.0.23"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -122,9 +122,9 @@
             "type": "package",
             "package": {
                 "name": "paatokset/paatokset_search",
-                "version": "1.0.22",
+                "version": "1.0.23",
                 "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.22/paatokset_search.zip",
+                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.23/paatokset_search.zip",
                     "type": "zip"
                 }
             }
