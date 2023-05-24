@@ -6,9 +6,9 @@ dependencies:
     - node
     - paatokset_policymakers
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: paatoksetpolicymakermembers
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: after_content
 weight: -15
 provider: null

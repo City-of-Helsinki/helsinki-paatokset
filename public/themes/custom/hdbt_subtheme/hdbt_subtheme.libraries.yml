@@ -1,0 +1,40 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      dist/css/styles.min.css: {}
+
+accordion_inner:
+  version: 1.x
+  js:
+    dist/js/accordion_inner.min.js: {
+      attributes: {
+        defer: true
+      }
+    }
+  dependencies:
+    - hdbt/handorgel
+
+accordion_lazy:
+  version: 1.x
+  js:
+    dist/js/accordion_lazybuild.min.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - hdbt/handorgel
+
+cookie_compliance_block:
+  version: 1.x
+  js:
+    dist/js/cookie_compliance_block.min.js: {}
+
+matomo:
+  version: 1.x
+  js:
+    dist/js/matomo.min.js: {
+      attributes: {
+        defer: true,
+        preprocess: false
+      }
+    }

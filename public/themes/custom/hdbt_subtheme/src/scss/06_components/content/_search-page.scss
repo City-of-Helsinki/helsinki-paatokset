@@ -1,0 +1,32 @@
+.paatokset-search-page--decisions {
+  .layout-content {
+    margin: 0;
+  }
+
+  .main-content {
+    margin-top: 0;
+    background-color: #f7f7f8;
+    padding-bottom: calc(#{$footer-koro-height} + #{$spacing-triple}) auto 0;
+
+    @include breakpoint($breakpoint-l) {
+      padding-bottom: calc(#{$footer-koro-height} + #{$spacing-quadruple});
+    }
+  }
+
+  .footer {
+    margin-top: 0;
+  }
+
+}
+
+.paatokset-search--frontpage .paatokset-search-wrapper {
+  margin-left: $spacing * -1;
+
+  @include breakpoint($breakpoint-s) {
+    margin-left: $spacing * -2;
+  }
+}
+
+.paatokset-search--decisions {
+  margin-bottom: $spacing-double;
+}

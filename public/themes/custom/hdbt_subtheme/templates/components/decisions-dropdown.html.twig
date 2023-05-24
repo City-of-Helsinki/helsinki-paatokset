@@ -1,0 +1,85 @@
+{#
+  Values that should be passed:
+    - Options: array containing title, value and class for an option
+    - Selected: currently selected option
+#}
+
+
+{% if options %}
+<div class="issue__meetings-container">
+  <div class="issue__meetings-labels">
+    <label>{{ 'Process history'|trans }}</label>
+    <div class="new-handlings-warning__wrapper">
+      {%
+        set warning_classes = [
+          'warning-label',
+          'issue__new-handlings-warning',
+          show_warning ? 'visible'
+        ]
+      %}
+      <div{{ attributes.addClass(warning_classes) }}>
+        <div class="warning-label__container new-handlings-warning__container">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'More recent handlings'|t } %}
+          <span>{{ warning_label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="issue__meetings-dropdown">
+    {% if options|length == 1 and selectedDecision.id == options[0].id %}
+      {% set disabled = true %}
+    {% else %}
+      {% set disabled = false %}
+    {% endif %}
+    {% if selectedDecision %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: disabled, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
+    {% else %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
+    {% endif %}
+    <nav>
+      <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" id='issue__meetings-select'>
+        {% for option in options %}
+          {% if selectedDecision.id == option.id %}
+            <li
+              data-styleclass="{{ option.class }}"
+              data-link="{{ option.native_id }}"
+              aria-selected="true"
+              tabindex="0"
+              class="option selected {{ option.class }}"
+              title="{{ option.label }}"
+            >
+              <a class="paatokset__link-plain" href="?decision={{option.native_id|url_encode}}">{{ option.label }}</a>
+            </li>
+          {% else %}
+            <li
+              data-styleclass="{{ option.class }}"
+              data-link="{{ option.native_id }}"
+              aria-selected="false"
+              tabindex="0"
+              class="option {{ option.class }}"
+              title="{{ option.label }}"
+            >
+              <a class="paatokset__link-plain" href="?decision={{ option.native_id|url_encode }}">{{ option.label }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    <nav>
+  </div>
+  <noscript>
+    <style>
+      .issue__meetings-select {
+        display: block;
+      }
+
+      .issue__meetings-dropdown button.hds-button {
+        display: none;
+      }
+
+      .issue__meetings-container .option.selected {
+        display: none;
+      }
+    </style>
+  </noscript>
+</div>
+{% endif %}

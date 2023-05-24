@@ -38,12 +38,12 @@ class IssueController extends ControllerBase {
     $data['diarynumber'] = $this->issueService->getDiaryNumber();
 
     $content = twig_render_template(
-          drupal_get_path('theme', 'helfi_paatokset') . '/templates/content/paatokset-issue--content.html.twig',
+          drupal_get_path('theme', 'hdbt_subtheme') . '/templates/content/paatokset-issue--content.html.twig',
           $data
       );
 
     $attachments = twig_render_template(
-          drupal_get_path('theme', 'helfi_paatokset') . '/templates/content/paatokset-issue--attachments.html.twig',
+          drupal_get_path('theme', 'hdbt_subtheme') . '/templates/content/paatokset-issue--attachments.html.twig',
           [
             'attachments' => $data['attachments'],
             'confidentiality_reasons' => $data['confidentiality_reasons'],
@@ -51,7 +51,7 @@ class IssueController extends ControllerBase {
       );
 
     $decision_navigation = twig_render_template(
-          drupal_get_path('theme', 'helfi_paatokset') . '/templates/content/paatokset-issue--decision-navigation.html.twig',
+          drupal_get_path('theme', 'hdbt_subtheme') . '/templates/content/paatokset-issue--decision-navigation.html.twig',
           [
             'previous_handling' => $data['previous_handling'],
             'next_handling' => $data['next_handling'],
