@@ -801,7 +801,7 @@ class PolicymakerService {
       ->condition('field_meeting_dm_id', $policymaker_id)
       ->condition('field_meeting_composition', '', '<>')
       ->range(0, 1)
-      ->sort('field_meeting_date', 'DESC');
+      ->sort('changed', 'DESC');
 
     $ids = $query->execute();
 
