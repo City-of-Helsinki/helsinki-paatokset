@@ -89,6 +89,7 @@ function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
  * Invalidates custom cache tags for decisions.
  *
  * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
  */
 function _paatokset_ahjo_api_invalidate_decision_cache_tags(FieldableEntityInterface $entity): void {
   $meeting_id = NULL;
