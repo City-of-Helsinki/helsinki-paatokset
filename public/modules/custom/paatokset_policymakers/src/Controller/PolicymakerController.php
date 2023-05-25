@@ -13,6 +13,13 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 class PolicymakerController extends ControllerBase {
 
   /**
+   * Policymaker service.
+   *
+   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   */
+  private $policymakerService;
+
+  /**
    * Controller for policymaker subpages.
    */
   public function __construct() {
@@ -138,6 +145,9 @@ class PolicymakerController extends ControllerBase {
 
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
+
+      // Add cache context for meeting ID.
+      $build['#cache']['tags'][] = 'meeting:' . $id;
     }
 
     // Add cache context for minutes of the discussion for the link to show up.
@@ -184,10 +194,9 @@ class PolicymakerController extends ControllerBase {
    *   Minutes title.
    */
   public function getMinutesTitle($id) {
-    $meetingData = $this->policymakerService->getMeetingAgenda($id);
-
-    if (isset($meetingData['meeting']) && isset($meetingData['meeting']['title'])) {
-      return $meetingData['meeting']['title'];
+    $meeting = $this->policymakerService->getMeetingNode($id);
+    if ($meeting instanceof NodeInterface) {
+      return $this->policymakerService->getMeetingTitle($meeting);
     }
 
     return t('Minutes');

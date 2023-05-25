@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\node\NodeInterface;
 
 /**
  * Provides Agendas Submenu Block.
@@ -48,7 +49,12 @@ class AgendasSubmenuBlock extends BlockBase {
    * Get cache tags.
    */
   public function getCacheTags() {
-    return ['node_list:decision'];
+    $policymaker = $this->policymakerService->getPolicyMaker();
+    if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
+      $policymaker_id = $policymaker->get('field_policymaker_id')->value;
+      return ['decision_pm:' . $policymaker_id];
+    }
+    return [];
   }
 
   /**
