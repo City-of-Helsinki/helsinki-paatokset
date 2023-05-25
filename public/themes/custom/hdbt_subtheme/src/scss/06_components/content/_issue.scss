@@ -292,6 +292,13 @@
     }
   }
 
+  del {
+    text-decoration: line-through;
+  }
+  ins {
+    text-decoration: none;
+  }
+
   .SisaltoSektio, .accordion-item__content__inner {
     ul, ol {
       padding-top: 0;
