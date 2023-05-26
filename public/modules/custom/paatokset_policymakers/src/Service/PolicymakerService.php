@@ -1411,13 +1411,19 @@ class PolicymakerService {
         $index = '';
       }
 
+      // First, try getting decision URL without loading nodes.
+      // This is based on diary number and native ID.
       $agenda_link = NULL;
-      // First, try with series ID.
-      if (!empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
+      if (!empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
+        $agenda_link = $caseService->getDecisionUrlWithoutNode($data['PDF']['NativeId'], $data['CaseIDLabel'], $langcode);
+      }
+
+      // Next, try with version series ID.
+      if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
         $agenda_link = $caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);
       }
 
-      // If a decision can't be found with series ID, try with title.
+      // If a decision can't be found with ID or series ID, try with title.
       if (!$agenda_link && !empty($data['Section']) && !empty($data['AgendaItem'])) {
         $section_clean = (string) intval($data['Section']);
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);

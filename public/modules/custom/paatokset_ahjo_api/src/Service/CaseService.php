@@ -363,6 +363,89 @@ class CaseService {
   }
 
   /**
+   * Get decision URL by native ID and case ID without node or node ID.
+   *
+   * @param string $id
+   *   Decision native ID.
+   * @param string|null $case_id
+   *   Decision case ID.
+   * @param string|null $langcode
+   *   Language to get URL for.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL if one can be generated without loading node.
+   */
+  public function getDecisionUrlWithoutNode(string $id, ?string $case_id = NULL, ?string $langcode = NULL): ?Url {
+    if ($langcode === NULL) {
+      $langcode === $this->language;
+    }
+
+    // Langcode is used for checking if aliases (and nodes) exists.
+    // Decision nodes only exist in finnish and swedish.
+    if ($langcode === 'sv') {
+      $prefix = 'arende';
+    }
+    else {
+      $prefix = 'asia';
+    }
+
+    // Always prefer localized routes here.
+    $localizedCaseRoute = 'paatokset_case.' . $this->language;
+    $localizedDecisionRoute = 'paatokset_decision.' . $this->language;
+
+    $path = '/' . $prefix;
+    $case_path = NULL;
+
+    if ($case_id) {
+      $case_id = strtolower(str_replace(' ', '-', $case_id));
+      $path .= '/' . $case_id;
+
+      // Case nodes only exists in finnish.
+      $case_path = '/asia/' . $case_id;
+    }
+
+    $id = $this->normalizeNativeId($id);
+    $path .= '/' . $id;
+
+    $path_alias_repository = \Drupal::service('path_alias.repository');
+
+    $decision_alias = $path_alias_repository->lookUpByAlias($path, $langcode);
+    // Correct decision can't be found with this method if alias is null.
+    if (!$decision_alias) {
+      return NULL;
+    }
+
+    $case_alias = NULL;
+    if ($case_path) {
+      $case_alias = $path_alias_repository->lookUpByAlias($case_path, 'fi');
+    }
+
+    // Case alias exists, so build URL with query parameter.
+    if ($case_alias && $this->routeExists($localizedCaseRoute)) {
+      $case_url = Url::fromRoute($localizedCaseRoute, ['case_id' => $case_id]);
+      $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $id]);
+      return $case_url;
+    }
+
+    // No diary number, so return URL with just decision native ID.
+    if (!$case_id && $this->routeExists($localizedCaseRoute)) {
+      return Url::fromRoute($localizedCaseRoute, [
+        'case_id' => $id,
+      ]);
+    }
+
+    // Case ID exists, but case alias or node is not found.
+    if ($this->routeExists($localizedDecisionRoute)) {
+      return Url::fromRoute($localizedDecisionRoute, [
+        'case_id' => $case_id,
+        'decision_id' => $id,
+      ]);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get decision URL by title and section.
    *
    * @param string $title
