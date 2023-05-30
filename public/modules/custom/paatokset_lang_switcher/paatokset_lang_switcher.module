@@ -145,7 +145,10 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   foreach ($route->getParameters() as $key => $value) {
     // Special case for translating policymaker organization parameter.
     if ($key === 'organization') {
+      // Policymaker gets lost when returning page from cache, so set it again.
+      $policymakerService->setPolicyMakerByPath();
       $organization = $policymakerService->getPolicymakerOrganizationFromUrl(NULL, $langCode);
+
       if ($organization) {
         $parameters[$key] = $organization;
       }
