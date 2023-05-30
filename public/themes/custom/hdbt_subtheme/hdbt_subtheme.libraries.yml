@@ -4,6 +4,15 @@ global-styling:
     theme:
       dist/css/styles.min.css: {}
 
+global-scripting:
+  version: 1.x
+  js:
+    dist/js/paatokset_submenus.min.js: {}
+    dist/js/paatoksetDropdown.min.js: {}
+  dependencies:
+    - core/drupal
+
+
 accordion_inner:
   version: 1.x
   js:
@@ -23,6 +32,11 @@ accordion_lazy:
     - core/drupal
     - core/jquery
     - hdbt/handorgel
+
+paatokset_submenu:
+  version: 1.x
+  js:
+    dist/js/paatokset_submenus.min.js: {}
 
 cookie_compliance_block:
   version: 1.x
