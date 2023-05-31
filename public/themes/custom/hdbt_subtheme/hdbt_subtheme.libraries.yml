@@ -22,6 +22,8 @@ accordion_inner:
       }
     }
   dependencies:
+    - core/drupal
+    - core/jquery
     - hdbt/handorgel
 
 accordion_lazy:
