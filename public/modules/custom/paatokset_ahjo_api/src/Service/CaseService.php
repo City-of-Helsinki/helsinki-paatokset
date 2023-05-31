@@ -1407,6 +1407,15 @@ class CaseService {
     }
 
     $output = [];
+    $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
+    if (!empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
+      $voting_link_paragraph = $content_dom->createElement('p');
+      $voting_link_a = $content_dom->createElement('a', t('See table with voting results'));
+      $voting_link_a->setAttribute('href', '#voting-results-accordion');
+      $voting_link_a->setAttribute('id', 'open-voting-results');
+      $voting_link_paragraph->appendChild($voting_link_a);
+      $voting_results[0]->appendChild($voting_link_paragraph);
+    }
 
     $main_content = NULL;
     // Main decision content sections.
