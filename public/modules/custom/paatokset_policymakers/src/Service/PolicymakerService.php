@@ -1472,7 +1472,6 @@ class PolicymakerService {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
-
       if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
         $last_count++;
         $id = 'x-' . $last_count . '-' . $data['Section'];
