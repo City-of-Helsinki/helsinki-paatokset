@@ -494,11 +494,15 @@ class PolicymakerService {
    *
    * @param Drupal\node\NodeInterface $meeting
    *   Meeting to get announcement from.
+   * @param string $langcode
+   *   Langcode used for motion link checking.
+   * @param array|null $agendaItems
+   *   Agenda items for meetings, used to speed up link fetching.
    *
    * @return array|null
    *   Render array with parsed HTML content, if found.
    */
-  public function getDecisionAnnouncement(NodeInterface $meeting): ?array {
+  public function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
     // If meeting minutes are published, do not display announcement.
     if ($meeting->hasField('field_meeting_minutes_published') && $meeting->get('field_meeting_minutes_published')->value) {
       return NULL;
@@ -547,9 +551,13 @@ class PolicymakerService {
 
     $accordions = [];
     $main_sections = $xpath->query("//*[@class='Tiedote']");
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
     if ($main_sections) {
       foreach ($main_sections as $node) {
         $accordion = [];
+        $motion_id = NULL;
         foreach ($node->childNodes as $child_node) {
           if ($child_node->nodeName === 'h3') {
             $accordion['heading'] = $child_node->nodeValue;
@@ -557,6 +565,36 @@ class PolicymakerService {
           }
           if ($child_node->getAttribute('class') === 'TiedoteTeksti') {
             $accordion['content']['#markup'] = $child_node->ownerDocument->saveHTML($child_node);
+          }
+
+          if ($child_node->getAttribute('class') === 'esitysPdfVersioId') {
+            $motion_id = trim($child_node->nodeValue);
+          }
+        }
+
+        // Get link to motion based on native ID.
+        if ($motion_id) {
+          $motion_url = NULL;
+          // First check agenda because URLs were already generated there.
+          foreach ($agendaItems as $item) {
+            if ($item['native_id'] === $motion_id) {
+              $motion_url = $item['link'];
+              break;
+            }
+          }
+
+          // Next try to get URL without loading nodes.
+          if (!$motion_url instanceof Url) {
+            $motion_url = $caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+          }
+
+          // Last try to get URL based on native ID.
+          if (!$motion_url instanceof Url) {
+            $motion_url = $caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+          }
+
+          if ($motion_url instanceof Url) {
+            $accordion['link'] = $motion_url;
           }
         }
 
@@ -1343,7 +1381,7 @@ class PolicymakerService {
     }
 
     // Decision announcement.
-    $decisionAnnouncement = $this->getDecisionAnnouncement($meeting);
+    $decisionAnnouncement = $this->getDecisionAnnouncement($meeting, $currentLanguage, $agendaItems);
 
     return [
       'meeting' => [
@@ -1414,8 +1452,10 @@ class PolicymakerService {
       // First, try getting decision URL without loading nodes.
       // This is based on diary number and native ID.
       $agenda_link = NULL;
+      $native_id = NULL;
       if (!empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
-        $agenda_link = $caseService->getDecisionUrlWithoutNode($data['PDF']['NativeId'], $data['CaseIDLabel'], $langcode);
+        $native_id = $data['PDF']['NativeId'];
+        $agenda_link = $caseService->getDecisionUrlWithoutNode($native_id, $data['CaseIDLabel'], $langcode);
       }
 
       // Next, try with version series ID.
@@ -1432,6 +1472,7 @@ class PolicymakerService {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
+
       if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
         $last_count++;
         $id = 'x-' . $last_count . '-' . $data['Section'];
@@ -1439,6 +1480,7 @@ class PolicymakerService {
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
+          'native_id' => $native_id,
         ];
       }
       else {
@@ -1447,6 +1489,7 @@ class PolicymakerService {
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
+          'native_id' => $native_id,
         ];
       }
     }

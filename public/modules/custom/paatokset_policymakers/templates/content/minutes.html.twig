@@ -98,6 +98,13 @@
             <div class="accordion-item__content handorgel__content">
               <div class="accordion-item__content__inner handorgel__content__inner">
                 {{ accordion.content }}
+                {% if accordion.link %}
+                  <p>
+                    <a href="{{ accordion.link }}" target="_blank">
+                      {{ "Read motion (Opens in a new tab)"|t }}
+                    </a>
+                  </p>
+                {% endif %}
                 <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
                   {{ 'Close'|t }}
                 </span>

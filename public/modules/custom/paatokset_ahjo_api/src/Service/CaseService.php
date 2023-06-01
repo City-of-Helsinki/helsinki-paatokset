@@ -335,6 +335,34 @@ class CaseService {
   }
 
   /**
+   * Get decision URL by native ID.
+   *
+   * @param string $id
+   *   Native ID for decision or motion.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL for decision or motion, or NULL if not found.
+   */
+  public function getDecisionUrlByNativeId(string $id): ?Url {
+    $params = [
+      'decision_id' => $id,
+      'limit' => 1,
+    ];
+
+    $nodes = $this->decisionQuery($params);
+    if (empty($nodes)) {
+      return NULL;
+    }
+
+    $node = array_shift($nodes);
+    if ($node instanceof NodeInterface) {
+      return $this->getDecisionUrlFromNode($node);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get decision URL by version series ID.
    *
    * @param string $id
