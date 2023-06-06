@@ -50,7 +50,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
-    $instance->logger = $container->get('logger.factory')->get('ahjo_api_subscriber_queue');
+    $instance->logger = $container->get('logger.factory')->get('ahjo_api_org_queue');
     $queue_factory = $container->get('queue');
     $instance->queue = $queue_factory->get('ahjo_api_org_queue');
     return $instance;

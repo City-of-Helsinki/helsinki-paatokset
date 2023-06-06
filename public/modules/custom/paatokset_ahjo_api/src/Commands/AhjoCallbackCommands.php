@@ -8,6 +8,7 @@ use Drush\Commands\DrushCommands;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Queue\QueueInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\Console\Helper\Table;
 
@@ -19,6 +20,8 @@ use Symfony\Component\Console\Helper\Table;
 class AhjoCallbackCommands extends DrushCommands {
 
   private const QUEUE_NAME = 'ahjo_api_subscriber_queue';
+  private const AGGREGATION_QUEUE_NAME = 'ahjo_api_aggregation_queue';
+  private const RETRY_QUEUE_NAME = 'ahjo_api_retry_queue';
   private const ORG_QUEUE_NAME = 'ahjo_api_org_queue';
 
   /**
@@ -27,6 +30,20 @@ class AhjoCallbackCommands extends DrushCommands {
    * @var \Drupal\Core\Queue\QueueInterface
    */
   protected $queue;
+
+  /**
+   * Ahjo retry queue.
+   *
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected $retryQueue;
+
+  /**
+   * Ahjo aggregation queue.
+   *
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected $aggregationQueue;
 
   /**
    * Ahjo organization chart queue.
@@ -78,6 +95,8 @@ class AhjoCallbackCommands extends DrushCommands {
   public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory, Connection $database, AhjoProxy $ahjo_proxy) {
     $this->queueFactory = $queue_factory;
     $this->queue = $this->queueFactory->get(self::QUEUE_NAME);
+    $this->retryQueue = $this->queueFactory->get(self::RETRY_QUEUE_NAME);
+    $this->aggregationQueue = $this->queueFactory->get(self::AGGREGATION_QUEUE_NAME);
     $this->orgQueue = $this->queueFactory->get(self::ORG_QUEUE_NAME);
     $this->logger = $logger_factory->get('ahjo_api_subscriber');
     $this->database = $database;
@@ -85,19 +104,14 @@ class AhjoCallbackCommands extends DrushCommands {
   }
 
   /**
-   * List queue contents.
+   * List Ahjo queue items.
    *
+   * @param \Drupal\Core\Queue\QueueInterface $queue
+   *   Queue to list items for.
    * @param string|null $name
-   *   Queue name. NULL for all.
-   *
-   * @command ahjo-callback:list-queue
-   *
-   * @usage ahjo-callback:list-queue meetings
-   *   Lists queue contents for "meetings" endpoint.
-   *
-   * @aliases ac:l
+   *   Sub-queue name (ahjo entity).
    */
-  public function listCallbackQueue(?string $name = NULL): void {
+  protected function listQueueItems(QueueInterface $queue, string $queue_name, ?string $name = NULL): void {
     $table = new Table($this->output());
     $table->setHeaders([
       'Queue', 'ID', 'Time', 'Operation', 'Entity',
@@ -107,7 +121,7 @@ class AhjoCallbackCommands extends DrushCommands {
     $items = [];
     $ids = [];
     $operations = [];
-    while ($item = $this->queue->claimItem()) {
+    while ($item = $queue->claimItem()) {
       $items[] = $item;
 
       if ($name !== NULL && $item->data['id'] !== $name) {
@@ -153,7 +167,7 @@ class AhjoCallbackCommands extends DrushCommands {
 
     // Release claimed items.
     foreach ($items as $item) {
-      $this->queue->releaseItem(($item));
+      $queue->releaseItem(($item));
     }
 
     $table->render();
@@ -163,7 +177,97 @@ class AhjoCallbackCommands extends DrushCommands {
     }
     $this->writeln('Total: ' . $count);
     $this->writeln('Operations: ' . implode(', ', $operations) . '.');
-    $this->writeln('Run with: drush queue:run ' . self::QUEUE_NAME);
+    $this->writeln('Run with: drush queue:run ' . $queue_name);
+  }
+
+  /**
+   * Clear Ahjo queue items.
+   *
+   * @param \Drupal\Core\Queue\QueueInterface $queue
+   *   Queue to clear items for.
+   * @param string|null $name
+   *   Sub-queue name (ahjo entity).
+   */
+  protected function clearQueueItems(QueueInterface $queue, ?string $name = NULL): void {
+    if ($name) {
+      $this->output()->writeln('Clearing queue: ' . $name);
+    }
+    else {
+      $this->output()->writeln('Clearing all queues.');
+    }
+
+    if (!$this->io()->confirm('Are you sure?')) {
+      return;
+    }
+
+    $count = 0;
+    $items = [];
+    while ($item = $queue->claimItem()) {
+      if ($name !== NULL && $item->data['id'] !== $name) {
+        $items[] = $item;
+        continue;
+      }
+
+      $queue->deleteItem($item);
+      $count++;
+    }
+
+    // Release claimed items that weren't deleted.
+    foreach ($items as $item) {
+      $queue->releaseItem(($item));
+    }
+    $this->output()->writeln('Deleted ' . $count . ' items.');
+  }
+
+  /**
+   * List callback queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:list-callback-queue
+   *
+   * @usage ahjo-callback:list-callback-queue meetings
+   *   Lists queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:l
+   */
+  public function listCallbackQueue(?string $name = NULL): void {
+    $this->listQueueItems($this->queue, self::QUEUE_NAME, $name);
+  }
+
+  /**
+   * List retry queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:list-retry-queue
+   *
+   * @usage ahjo-callback:list-retry-queue meetings
+   *   Lists queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:lr
+   */
+  public function listRetryQueue(?string $name = NULL): void {
+    $this->listQueueItems($this->retryQueue, self::RETRY_QUEUE_NAME, $name);
+  }
+
+  /**
+   * List aggregation queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:list-aggregation-queue
+   *
+   * @usage ahjo-callback:list-aggregation-queue meetings
+   *   Lists queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:la
+   */
+  public function listAggregationQueue(?string $name = NULL): void {
+    $this->listQueueItems($this->aggregationQueue, self::AGGREGATION_QUEUE_NAME, $name);
   }
 
   /**
@@ -179,15 +283,71 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @aliases ac:di
    */
-  public function deleteItem(string $id): void {
-    if (!$item = $this->loadItem($id)) {
+  public function deleteCallbackItem(string $id): void {
+    if (!$item = $this->loadItem(self::QUEUE_NAME, $id)) {
       $this->logger()->error('Unable to load item with id: ' . $id);
       return;
     }
 
     try {
       $this->queue->deleteItem($item);
-      $this->logger()->success('Removed item ' . $id . ' from the queue.');
+      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+    }
+    catch (\Exception $e) {
+      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Deletes single item from queue.
+   *
+   * @param string $id
+   *   Item ID.
+   *
+   * @command ahjo-callback:delete-retry-item
+   *
+   * @usage ahjo-callback:delete-retry-item 1234
+   *   Delete item with ID 1234.
+   *
+   * @aliases ac:di-retry
+   */
+  public function deleteRetryItem(string $id): void {
+    if (!$item = $this->loadItem(self::RETRY_QUEUE_NAME, $id)) {
+      $this->logger()->error('Unable to load item with id: ' . $id);
+      return;
+    }
+
+    try {
+      $this->retryQueue->deleteItem($item);
+      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+    }
+    catch (\Exception $e) {
+      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Deletes single item from queue.
+   *
+   * @param string $id
+   *   Item ID.
+   *
+   * @command ahjo-callback:delete-aggregation-item
+   *
+   * @usage ahjo-callback:delete-aggregation-item 1234
+   *   Delete item with ID 1234.
+   *
+   * @aliases ac:di-agg
+   */
+  public function deleteAggregationItem(string $id): void {
+    if (!$item = $this->loadItem(self::AGGREGATION_QUEUE_NAME, $id)) {
+      $this->logger()->error('Unable to load item with id: ' . $id);
+      return;
+    }
+
+    try {
+      $this->aggregationQueue->deleteItem($item);
+      $this->logger()->info('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
       $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
@@ -207,52 +367,61 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @aliases ac:clear
    */
-  public function clearQueue(?string $name = NULL): void {
-    if ($name) {
-      $this->output()->writeln('Clearing queue: ' . $name);
-    }
-    else {
-      $this->output()->writeln('Clearing all queues.');
-    }
+  public function clearCallbackQueue(?string $name = NULL): void {
+    $this->clearQueueItems($this->queue, $name);
+  }
 
-    if (!$this->io()->confirm('Are you sure?')) {
-      return;
-    }
+  /**
+   * Clear queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:clear-retry-queue
+   *
+   * @usage ahjo-callback:clear-retry-queue meetings
+   *   Clear queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:clear-retry
+   */
+  public function clearRetryQueue(?string $name = NULL): void {
+    $this->clearQueueItems($this->retryQueue, $name);
+  }
 
-    $count = 0;
-    $items = [];
-    while ($item = $this->queue->claimItem()) {
-      if ($name !== NULL && $item->data['id'] !== $name) {
-        $items[] = $item;
-        continue;
-      }
-
-      $this->queue->deleteItem($item);
-      $count++;
-    }
-
-    // Release claimed items that weren't deleted.
-    foreach ($items as $item) {
-      $this->queue->releaseItem(($item));
-    }
-    $this->output()->writeln('Deleted ' . $count . ' items.');
+  /**
+   * Clear queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:clear-aggregation-queue
+   *
+   * @usage ahjo-callback:clear-aggregation-queue meetings
+   *   Clear queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:clear-agg
+   */
+  public function clearAggregationQueue(?string $name = NULL): void {
+    $this->clearQueueItems($this->aggregationQueue, $name);
   }
 
   /**
    * Load a specified Ahjo API queue item from the database.
    *
+   * @param string $queue_name
+   *   Queue name.
    * @param string $item_id
    *   The item id to load.
    *
    * @return mixed
    *   Result of the database query loading the queue item.
    */
-  private function loadItem(string $item_id) {
+  private function loadItem(string $queue_name, string $item_id) {
     // Load the specified queue item from the queue table.
     $query = $this->database->select('queue', 'q')
       ->fields('q', ['item_id', 'name', 'data', 'expire', 'created'])
       ->condition('q.item_id', $item_id)
-      ->condition('q.name', self::QUEUE_NAME)
+      ->condition('q.name', $queue_name)
       // Item id should be unique.
       ->range(0, 1);
 

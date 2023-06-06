@@ -1653,7 +1653,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Case diary number, meeting or decision ID.
    */
   public function addItemToAhjoQueue(string $endpoint, string $id): void {
-    $queue = \Drupal::service('queue')->get('ahjo_api_subscriber_queue');
+    $queue = \Drupal::service('queue')->get('ahjo_api_retry_queue');
     $queue->createItem([
       'id' => $endpoint,
       'content' => (object) [
