@@ -108,6 +108,8 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @param \Drupal\Core\Queue\QueueInterface $queue
    *   Queue to list items for.
+   * @param string $queue_name
+   *   Queue name, used for printing command after items.
    * @param string|null $name
    *   Sub-queue name (ahjo entity).
    */

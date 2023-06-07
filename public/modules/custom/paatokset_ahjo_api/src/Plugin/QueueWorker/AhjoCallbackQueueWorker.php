@@ -44,4 +44,5 @@ class AhjoCallbackQueueWorker extends AhjoQueueWorkerBase implements ContainerFa
     $instance->logger = $container->get('logger.factory')->get('ahjo_api_subscriber_queue');
     return $instance;
   }
+
 }

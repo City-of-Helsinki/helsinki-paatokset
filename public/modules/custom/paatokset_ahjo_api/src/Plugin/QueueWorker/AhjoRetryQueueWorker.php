@@ -44,4 +44,5 @@ class AhjoRetryQueueWorker extends AhjoQueueWorkerBase implements ContainerFacto
     $instance->logger = $container->get('logger.factory')->get('ahjo_api_retry_queue');
     return $instance;
   }
+
 }

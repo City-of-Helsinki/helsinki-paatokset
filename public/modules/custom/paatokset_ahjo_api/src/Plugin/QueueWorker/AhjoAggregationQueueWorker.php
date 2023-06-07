@@ -44,4 +44,5 @@ class AhjoAggregationQueueWorker extends AhjoQueueWorkerBase implements Containe
     $instance->logger = $container->get('logger.factory')->get('ahjo_api_aggregation_queue');
     return $instance;
   }
+
 }
