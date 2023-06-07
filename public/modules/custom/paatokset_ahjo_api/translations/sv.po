@@ -1,0 +1,10 @@
+# Swedish translations for Päätökset Ahjo content.
+#
+msgid ""
+msgstr ""
+
+msgid "See table with voting results"
+msgstr "Se röstningsresultatet i tabellform"
+
+msgid "Read motion (Opens in a new tab)"
+msgstr "Läs motionen (Öppnas i en ny flik)"

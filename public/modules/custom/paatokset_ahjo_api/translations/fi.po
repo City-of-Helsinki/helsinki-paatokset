@@ -1,0 +1,10 @@
+# Finnish translations for Päätökset Ahjo content.
+#
+msgid ""
+msgstr ""
+
+msgid "See table with voting results"
+msgstr "Katso äänestystulos taulukkona"
+
+msgid "Read motion (Opens in a new tab)"
+msgstr "Lue esitys (Avautuu uuteen välilehteen)"
