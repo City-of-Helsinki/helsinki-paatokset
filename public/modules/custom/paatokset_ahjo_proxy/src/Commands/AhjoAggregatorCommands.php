@@ -98,6 +98,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   File to append to. Useful when retrying.
    * @option filename
    *   Filename to use instead of default. Can be used to split/batch results.
+   * @option cancelledonly
+   *   Adds a parameter to only fetch cancelled meetings.
+   * @option decisionmaker_id
+   *   Filter results by specific decision ID.
+   * @option queue
+   *   Add items to aggregation queue to be processed later via cron.
    *
    * @usage ahjo-proxy:aggregate meetings --dataset=latest
    *   Stores latest meetings into meetings_latest.json
@@ -115,6 +121,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'retry' => NULL,
     'filename' => NULL,
     'append' => NULL,
+    'queue' => NULL,
   ]): void {
 
     $allowed_datasets = [
@@ -128,6 +135,13 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $dataset = 'latest';
+    }
+
+    if (!empty($options['queue'])) {
+      $add_to_queue = TRUE;
+    }
+    else {
+      $add_to_queue = FALSE;
     }
 
     $options = $this->setDefaultOptions($endpoint, $dataset, $options);
@@ -198,6 +212,16 @@ class AhjoAggregatorCommands extends DrushCommands {
         $data['append'] = $append_results[$list_key];
       }
 
+      if ($add_to_queue) {
+        $queue_item_id = $this->ahjoProxy->addItemToAhjoQueue($endpoint, $item[$id_key], 'ahjo_api_aggregation_queue', 'Aggregated');
+        if ($queue_item_id) {
+          $this->logger->info('Added ' . $item[$id_key] . ' to ' . $endpoint . ' queue with ID: ' . $queue_item_id);
+        }
+        else {
+          $this->logger->error('Could not add ' . $item[$id_key] . ' to ' . $endpoint . ' queue.');
+        }
+      }
+
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',
         [$data],
@@ -209,13 +233,16 @@ class AhjoAggregatorCommands extends DrushCommands {
       return;
     }
 
-    batch_set([
-      'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
-      'operations' => $operations,
-      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
-    ]);
+    // Start process only if not adding items to queue.
+    if (!$add_to_queue) {
+      batch_set([
+        'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
+        'operations' => $operations,
+        'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
+      ]);
 
-    drush_backend_batch_process();
+      drush_backend_batch_process();
+    }
   }
 
   /**
