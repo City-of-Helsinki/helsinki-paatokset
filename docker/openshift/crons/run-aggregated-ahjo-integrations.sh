@@ -6,14 +6,14 @@ do
   sleep 3600
   if [ ${APP_ENV} = 'production' ]; then
     echo "Aggregating data for meetings: $(date)"
-    drush ahjo-proxy:aggregate meetings --dataset=latest -v
+    drush ahjo-proxy:aggregate meetings --dataset=latest --queue -v
     echo "Aggregating data for cancelled meetings: $(date)"
-    drush ahjo-proxy:aggregate meetings --dataset=cancelled --cancelledonly -v
+    drush ahjo-proxy:aggregate meetings --dataset=cancelled --cancelledonly --queue -v
+    echo "Aggregating data for decisions: $(date)"
+    drush ahjo-proxy:aggregate decisions --dataset=latest --queue -v
+    echo "Aggregating data for cases: $(date)"
+    drush ahjo-proxy:aggregate cases --dataset=latest --queue -v
   fi
-  echo "Aggregating data for cases: $(date)"
-  drush ahjo-proxy:aggregate cases --dataset=latest -v
-  echo "Aggregating data for decisions: $(date)"
-  drush ahjo-proxy:aggregate decisions --dataset=latest -v
   echo "Aggregating council org data: $(date)"
   drush ahjo-proxy:get-council-positionsoftrust -v
   echo "Aggregating data for council members: $(date)"
@@ -22,19 +22,9 @@ do
   drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
   drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
   if [ ${APP_ENV} = 'production' ]; then
-    echo "Migrating data for meetings: $(date)"
-    drush migrate-reset-status ahjo_meetings:latest
-    drush migrate-import ahjo_meetings:latest --update
-    echo "Migrating data for cancelled meetings: $(date)"
-    drush migrate-reset-status ahjo_meetings:cancelled
-    drush migrate-import ahjo_meetings:cancelled --update
+    drush queue:run ahjo_api_aggregation_queue --time-limit=1800 -v
+    drush queue:run ahjo_api_retry_queue --time-limit=1800 -v
   fi
-  echo "Migrating data for cases: $(date)"
-  drush migrate-reset-status ahjo_cases:latest
-  drush migrate-import ahjo_cases:latest --update
-  echo "Migrating data for decisions: $(date)"
-  drush migrate-reset-status ahjo_decisions:latest
-  drush migrate-import ahjo_decisions:latest --update
   echo "Migrating data for council members: $(date)"
   drush migrate-reset-status ahjo_trustees:council
   drush migrate-import ahjo_trustees:council --update
