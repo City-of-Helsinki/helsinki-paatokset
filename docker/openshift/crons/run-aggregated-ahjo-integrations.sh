@@ -4,6 +4,12 @@ while true
 do
   # Sleep for 1 hour.
   sleep 3600
+  # Don't run aggregations between 01:00 and 07:00 UTC+3.
+  # Ahjo might be offline for maintenance during the night.
+  currenttime=$(date +%H:%M)
+  if [[ "$currenttime" > "22:00" ]] || [[ "$currenttime" < "04:00" ]]; then
+    sleep 3600
+  fi
   if [ ${APP_ENV} = 'production' ]; then
     echo "Aggregating data for meetings: $(date)"
     drush ahjo-proxy:aggregate meetings --dataset=latest --queue -v
