@@ -152,6 +152,9 @@
 .new-handlings-warning__wrapper {
   .warning-label {
     visibility: hidden;
+    &.visible {
+      visibility: visible;
+    }
   }
 
   @include breakpoint($breakpoint-l) {
