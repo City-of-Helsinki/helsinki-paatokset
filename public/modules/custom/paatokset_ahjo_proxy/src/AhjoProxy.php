@@ -2627,8 +2627,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The cache key.
    */
   protected function getCacheKey(string $id) : string {
-    $id = preg_replace('/[^a-z0-9_]+/s', '_', $id);
-
+    $id = preg_replace('/[^a-zA-Z0-9_]+/s', '_', $id);
     return sprintf('ahjo-proxy-%s', $id);
   }
 
