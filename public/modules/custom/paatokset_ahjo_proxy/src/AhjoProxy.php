@@ -1682,7 +1682,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($this->checkIfItemIsAlreadyInQueue($endpoint, $id, $queue_name)) {
       return NULL;
     }
-
+    $created = (int) (new \DateTime('NOW'))->format('U');
     $queue = \Drupal::service('queue')->get($queue_name);
     $item_id = $queue->createItem([
       'id' => $endpoint,
@@ -1690,6 +1690,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         'updatetype' => $update_type,
         'id' => $id,
       ],
+      'created' => $created,
       'request' => [],
     ]);
 

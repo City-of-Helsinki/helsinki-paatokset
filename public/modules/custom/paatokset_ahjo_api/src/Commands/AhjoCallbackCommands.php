@@ -163,6 +163,13 @@ class AhjoCallbackCommands extends DrushCommands {
         $entity = NULL;
       }
 
+      if (isset($item->data['created'])) {
+        $created = date('Y-m-d H:i:s', (int) $item->data['created']);
+      }
+      else {
+        $created = date('Y-m-d H:i:s', (int) $item->created) . ' (no timestamp)';
+      }
+
       if ($entity && !in_array($entity, $ids[$item->data['id']])) {
         $ids[$item->data['id']][] = $entity;
       }
@@ -170,7 +177,7 @@ class AhjoCallbackCommands extends DrushCommands {
       $table->addRow([
         $item->data['id'],
         $item->item_id,
-        date('Y-m-d H:i:s', (int) $item->created),
+        $created,
         $operation,
         $entity,
       ]);
