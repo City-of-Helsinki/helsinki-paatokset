@@ -105,7 +105,7 @@ class AhjoCallbackCommands extends DrushCommands {
     $this->queue = $this->queueFactory->get(self::QUEUE_NAME);
     $this->retryQueue = $this->queueFactory->get(self::RETRY_QUEUE_NAME);
     $this->aggregationQueue = $this->queueFactory->get(self::AGGREGATION_QUEUE_NAME);
-    $this->errorQueue = $this->queueFactory->get(SELF::ERROR_QUEUE_NAME);
+    $this->errorQueue = $this->queueFactory->get(self::ERROR_QUEUE_NAME);
     $this->orgQueue = $this->queueFactory->get(self::ORG_QUEUE_NAME);
     $this->logger = $logger_factory->get('ahjo_api_subscriber');
     $this->database = $database;

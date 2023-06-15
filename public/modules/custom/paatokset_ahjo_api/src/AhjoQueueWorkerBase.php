@@ -29,7 +29,14 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
    */
   protected $ahjoProxy;
 
-  private const VERBOSE_LOGGING = FALSE;
+  /**
+   * Queue name.
+   *
+   * @var string
+   */
+  protected string $queueName;
+
+  protected const VERBOSE_LOGGING = TRUE;
 
   /**
    * {@inheritdoc}
@@ -38,6 +45,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
     $instance->logger = $container->get('logger.factory')->get('ahjo_api_subscriber_queue');
+    $instance->queueName = 'ahjo_api_default_queue';
     return $instance;
   }
 
@@ -76,20 +84,26 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     $status = $this->ahjoProxy->migrateSingleEntity($item['id'], $entity);
 
     if ($status !== 1) {
-      if (self::VERBOSE_LOGGING) {
-        $this->logger->warning('Could not process entity @id from @queue, migration returned with status: @status.', [
+      // Check if item should be moved to retry or error queue.
+      if ($this->moveToErrorQueue($item)) {
+        $this->logger->warning('Could not process @id from @queue, migration returned with status: @status. Moved to another queue.', [
           '@id' => $entity,
           '@queue' => $item['id'],
           '@status' => $status,
         ]);
-      }
 
-      throw new \Exception(sprintf(
-        'Could not process entity %s from %s, migration returned with status: %s.',
-        $entity,
-        $item['id'],
-        $status,
-      ));
+        // Return normally so item is marked as processed from this queue.
+        return;
+      }
+      else {
+        // If item could not or should not be moved, throw error to return it.
+        throw new \Exception(sprintf(
+          'Could not process entity %s from %s, migration returned with status: %s.',
+          $entity,
+          $item['id'],
+          $status,
+        ));
+      }
     }
 
     // Mark meeting motions to be regenerated after updates.
@@ -102,6 +116,62 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       '@operation' => $operation,
       '@id' => $entity,
     ]);
+  }
+
+  /**
+   * Move item to retry or error queue if enough time has elapsed.
+   *
+   * @param mixed $item
+   *   Item data to move to another queue.
+   *
+   * @return bool
+   *   TRUE if item was moved, FALSE if not necessary or moving failed.
+   */
+  protected function moveToErrorQueue(mixed $item): bool {
+    // Don't move anything from error queue.
+    if ($this->queueName === 'ahjo_api_error_queue') {
+      return FALSE;
+    }
+
+    // Move items to retry queue and from there to error queue.
+    if ($this->queueName === 'ahjo_api_retry_queue') {
+      $move_to = 'ahjo_api_error_queue';
+    }
+    else {
+      $move_to = 'ahjo_api_retry_queue';
+    }
+
+    // Allow 3 hours or retries for callbacks, 3 days for other queues.
+    if ($this->queueName === 'ahjo_api_callback_queue') {
+      $max_time = (int) (new \DateTime('NOW - 3 HOURS'))->format('U');
+    }
+    else {
+      $max_time = (int) (new \DateTime('NOW - 3 DAYS'))->format('U');
+    }
+
+    // Move all old items without timestamps.
+    if (!isset($item['created'])) {
+      $item['created'] = 0;
+    }
+    if ($item['created'] > $max_time) {
+      return FALSE;
+    }
+
+    // Add old queue to update type label.
+    if (isset($item['content']->updatetype)) {
+      $operation = $item['content']->updatetype;
+    }
+    else {
+      $operation = 'Moved';
+    }
+    $operation .= ' - ' . $this->queueName;
+
+    $item_id = $this->ahjoProxy->addItemToAhjoQueue($item['id'], $item['content']->id, $move_to, $operation);
+    if ($item_id) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
 }
