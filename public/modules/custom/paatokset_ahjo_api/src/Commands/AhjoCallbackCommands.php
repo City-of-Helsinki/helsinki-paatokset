@@ -22,6 +22,7 @@ class AhjoCallbackCommands extends DrushCommands {
   private const QUEUE_NAME = 'ahjo_api_subscriber_queue';
   private const AGGREGATION_QUEUE_NAME = 'ahjo_api_aggregation_queue';
   private const RETRY_QUEUE_NAME = 'ahjo_api_retry_queue';
+  private const ERROR_QUEUE_NAME = 'ahjo_api_error_queue';
   private const ORG_QUEUE_NAME = 'ahjo_api_org_queue';
 
   /**
@@ -44,6 +45,13 @@ class AhjoCallbackCommands extends DrushCommands {
    * @var \Drupal\Core\Queue\QueueInterface
    */
   protected $aggregationQueue;
+
+  /**
+   * Ahjo error queue.
+   *
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected $errorQueue;
 
   /**
    * Ahjo organization chart queue.
@@ -97,6 +105,7 @@ class AhjoCallbackCommands extends DrushCommands {
     $this->queue = $this->queueFactory->get(self::QUEUE_NAME);
     $this->retryQueue = $this->queueFactory->get(self::RETRY_QUEUE_NAME);
     $this->aggregationQueue = $this->queueFactory->get(self::AGGREGATION_QUEUE_NAME);
+    $this->errorQueue = $this->queueFactory->get(SELF::ERROR_QUEUE_NAME);
     $this->orgQueue = $this->queueFactory->get(self::ORG_QUEUE_NAME);
     $this->logger = $logger_factory->get('ahjo_api_subscriber');
     $this->database = $database;
@@ -273,6 +282,23 @@ class AhjoCallbackCommands extends DrushCommands {
   }
 
   /**
+   * List error queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:list-error-queue
+   *
+   * @usage ahjo-callback:list-error-queue meetings
+   *   Lists queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:le
+   */
+  public function listErrorQueue(?string $name = NULL): void {
+    $this->listQueueItems($this->errorQueue, self::ERROR_QUEUE_NAME, $name);
+  }
+
+  /**
    * Deletes single item from queue.
    *
    * @param string $id
@@ -357,6 +383,34 @@ class AhjoCallbackCommands extends DrushCommands {
   }
 
   /**
+   * Deletes single item from queue.
+   *
+   * @param string $id
+   *   Item ID.
+   *
+   * @command ahjo-callback:delete-error-item
+   *
+   * @usage ahjo-callback:delete-error-item 1234
+   *   Delete item with ID 1234.
+   *
+   * @aliases ac:di-err
+   */
+  public function deleteErrorItem(string $id): void {
+    if (!$item = $this->loadItem(self::ERROR_QUEUE_NAME, $id)) {
+      $this->logger()->error('Unable to load item with id: ' . $id);
+      return;
+    }
+
+    try {
+      $this->aggregationQueue->deleteItem($item);
+      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+    }
+    catch (\Exception $e) {
+      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+    }
+  }
+
+  /**
    * Clear queue contents.
    *
    * @param string|null $name
@@ -404,6 +458,23 @@ class AhjoCallbackCommands extends DrushCommands {
    * @aliases ac:clear-agg
    */
   public function clearAggregationQueue(?string $name = NULL): void {
+    $this->clearQueueItems($this->aggregationQueue, $name);
+  }
+
+  /**
+   * Clear queue contents.
+   *
+   * @param string|null $name
+   *   Queue name. NULL for all.
+   *
+   * @command ahjo-callback:clear-error-queue
+   *
+   * @usage ahjo-callback:clear-error-queue meetings
+   *   Clear queue contents for "meetings" endpoint.
+   *
+   * @aliases ac:clear-err
+   */
+  public function clearErrorQueue(?string $name = NULL): void {
     $this->clearQueueItems($this->aggregationQueue, $name);
   }
 
