@@ -7,8 +7,11 @@ do
 
   # Don't run aggregations between 01:00 and 07:00 UTC+3.
   # Ahjo might be offline for maintenance during the night.
+  # This process should take around 24 hours but the actual time varies.
+  # This causes the start time to eventually drift into the maintenance window.
   currenttime=$(date +%H:%M)
   if [[ "$currenttime" > "22:00" ]] || [[ "$currenttime" < "04:00" ]]; then
+    # Sleep for an hour until we're out of the maintenance window.
     sleep 3600
   else
 
@@ -30,7 +33,7 @@ do
     drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
     drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
     if [ ${APP_ENV} = 'production' ]; then
-      drush queue:run ahjo_api_aggregation_queue --time-limit=1800 -v
+      drush queue:run ahjo_api_aggregation_queue --time-limit=3600 -v
       drush queue:run ahjo_api_retry_queue --time-limit=1800 -v
     fi
     echo "Migrating data for council members: $(date)"
@@ -43,8 +46,9 @@ do
     drush migrate-import ahjo_decisionmakers:latest_sv --update
     echo "Checking for inactive decisionmakers: $(date)"
     drush ahjo-proxy:check-dm-status -v
-    # Sleep for 23 hours.
-    sleep 82800
+
+    # Sleep for 22 hours. Whole process should take approximately 24 hours.
+    sleep 79200
 
   fi
 done
