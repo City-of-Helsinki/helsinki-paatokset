@@ -157,6 +157,12 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       return FALSE;
     }
 
+    // Check if item is already in next queue.
+    // If it is, return TRUE here so the duplicate can be removed here too.
+    if ($this->ahjoProxy->checkIfItemIsAlreadyInQueue($item['id'], $item['content']->id, $move_to)) {
+      return TRUE;
+    }
+
     // Add old queue to update type label.
     if (isset($item['content']->updatetype)) {
       $operation = $item['content']->updatetype;
