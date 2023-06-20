@@ -141,7 +141,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       $move_to = 'ahjo_api_retry_queue';
     }
 
-    // Allow 3 hours or retries for callbacks, 3 days for other queues.
+    // Allow 3 hours of retries for callbacks, 3 days for other queues.
     if ($this->queueName === 'ahjo_api_callback_queue') {
       $max_time = (int) (new \DateTime('NOW - 3 HOURS'))->format('U');
     }
