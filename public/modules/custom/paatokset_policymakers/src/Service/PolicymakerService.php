@@ -1458,6 +1458,11 @@ class PolicymakerService {
         $agenda_link = $caseService->getDecisionUrlWithoutNode($native_id, $data['CaseIDLabel'], $langcode);
       }
 
+      // Next, try with native ID.
+      if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
+        $agenda_link = $caseService->getDecisionUrlByNativeId($data['PDF']['NativeId']);
+      }
+
       // Next, try with version series ID.
       if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
         $agenda_link = $caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);

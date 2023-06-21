@@ -77,10 +77,12 @@ class AhjoSubscriberController extends ControllerBase {
     $queue = $this->queueFactory->get(self::QUEUE_NAME);
 
     $content = json_decode($request->getContent());
+    $created = (int) (new \DateTime('NOW'))->format('U');
 
     $data = [
       'id' => $id,
       'content' => $content,
+      'created' => $created,
       'request' => $request->request->all(),
     ];
 
@@ -101,10 +103,11 @@ class AhjoSubscriberController extends ControllerBase {
     }
 
     if ($item_id) {
-      $this->logger->info('Added item to @id queue: @entity_id (@update_type).', [
+      $this->logger->info('Added item to @id queue: @entity_id (@update_type) on @created.', [
         '@id' => $id,
         '@entity_id' => $entity_id,
         '@update_type' => $update_type,
+        '@created' => $created,
       ]);
     }
 

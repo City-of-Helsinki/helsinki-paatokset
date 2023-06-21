@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Database\Connection;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
@@ -88,6 +89,13 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected CacheBackendInterface $dataCache;
 
   /**
+   * The database.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * {@inheritdoc}
    */
   public function getCacheMaxAge() : int {
@@ -118,13 +126,15 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   File repository.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, ConfigFactoryInterface $config_factory, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, ConfigFactoryInterface $config_factory, Connection $database, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
@@ -133,6 +143,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $this->fileRepository = $file_repository;
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
     $this->config = $config_factory;
+    $this->database = $database;
   }
 
   /**
@@ -147,6 +158,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('logger.factory'),
       $container->get('file.repository'),
       $container->get('config.factory'),
+      $container->get('database'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -176,6 +188,12 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // Local adjustments for fetching records through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
+    }
+
+    // Local adjustments for fetching meetings through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'meetings') === 0) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
       $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
     }
@@ -1651,17 +1669,61 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Endpoint to use (cases, meetings, decisions).
    * @param string $id
    *   Case diary number, meeting or decision ID.
+   * @param string $queue_name
+   *   Queue to add entity to. Defaults to 'ahjo_api_retry_queue'.
+   * @param string $update_type
+   *   Update type (for debugging purposes). Defaults to 'AddedFromDrush'.
+   *
+   * @return string|null
+   *   Item ID if it was successfully added to queue, otherwise NULL.
    */
-  public function addItemToAhjoQueue(string $endpoint, string $id): void {
-    $queue = \Drupal::service('queue')->get('ahjo_api_subscriber_queue');
-    $queue->createItem([
+  public function addItemToAhjoQueue(string $endpoint, string $id, string $queue_name = 'ahjo_api_retry_queue', $update_type = 'AddedFromDrush'): ?string {
+    // Attempt to reduce duplicates.
+    if ($this->checkIfItemIsAlreadyInQueue($endpoint, $id, $queue_name)) {
+      return NULL;
+    }
+    $created = (int) (new \DateTime('NOW'))->format('U');
+    $queue = \Drupal::service('queue')->get($queue_name);
+    $item_id = $queue->createItem([
       'id' => $endpoint,
       'content' => (object) [
-        'updatetype' => 'AddedFromDrush',
+        'updatetype' => $update_type,
         'id' => $id,
       ],
+      'created' => $created,
       'request' => [],
     ]);
+
+    return $item_id;
+  }
+
+  /**
+   * Check if item has already been added to queue. Used to reduce duplicates.
+   *
+   * @param string $endpoint
+   *   Entity type / endpoint for item.
+   * @param string $id
+   *   Item's ID in Ahjo API.
+   * @param string $queue_name
+   *   Queue name to check.
+   *
+   * @return bool
+   *   Returns TRUE if item is found in queue.
+   */
+  public function checkIfItemIsAlreadyInQueue(string $endpoint, string $id, string $queue_name): bool {
+    // Load the specified queue item from the queue table.
+    $query = $this->database->select('queue', 'q')
+      ->fields('q', ['item_id'])
+      ->condition('q.name', $queue_name)
+      ->condition('q.data', '%' . $this->database->escapeLike($id) . '%', 'LIKE')
+      ->condition('q.data', '%' . $this->database->escapeLike($endpoint) . '%', 'LIKE')
+      // Item id should be unique.
+      ->range(0, 1);
+
+    if ($query->execute()->fetchObject()) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**

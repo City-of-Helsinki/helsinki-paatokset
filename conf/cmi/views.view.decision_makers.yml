@@ -3,10 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_dm_org_name
     - field.storage.node.field_is_decisionmaker
     - field.storage.node.field_organization_type
     - field.storage.node.field_policymaker_existing
     - field.storage.node.field_policymaker_id
+    - field.storage.node.field_sector_name
     - node.type.policymaker
   module:
     - node
@@ -83,6 +85,132 @@ display:
           admin_label: ''
           plugin_id: field
           label: ID
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_sector_name:
+          id: field_sector_name
+          table: node__field_sector_name
+          field: field_sector_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Sector name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_dm_org_name:
+          id: field_dm_org_name
+          table: node__field_dm_org_name
+          field: field_dm_org_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Organization name'
           exclude: false
           alter:
             alter_text: false
@@ -341,7 +469,7 @@ display:
           admin_label: ''
           plugin_id: field
           label: Decisionmaker
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -712,6 +840,52 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_dm_org_name_value:
+          id: field_dm_org_name_value
+          table: node__field_dm_org_name
+          field: field_dm_org_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_dm_org_name_value_op
+            label: 'Organization name'
+            description: ''
+            use_operator: false
+            operator: field_dm_org_name_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_dm_org_name_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+              api_user: '0'
+              elevated_api_user: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         field_organization_type_value:
           id: field_organization_type_value
           table: node__field_organization_type
@@ -801,6 +975,96 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_policymaker_existing_value:
+          id: field_policymaker_existing_value
+          table: node__field_policymaker_existing
+          field: field_policymaker_existing_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Active
+            description: ''
+            use_operator: false
+            operator: field_policymaker_existing_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_policymaker_existing_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+              api_user: '0'
+              elevated_api_user: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_is_decisionmaker_value:
+          id: field_is_decisionmaker_value
+          table: node__field_is_decisionmaker
+          field: field_is_decisionmaker_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Decisionmaker
+            description: ''
+            use_operator: false
+            operator: field_is_decisionmaker_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_is_decisionmaker_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+              api_user: '0'
+              elevated_api_user: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -815,6 +1079,8 @@ display:
             title: title
             field_policymaker_id: field_policymaker_id
             field_organization_type: field_organization_type
+            field_sector_name: field_sector_name
+            field_dm_org_name: field_dm_org_name
             changed: changed
             field_policymaker_existing: field_policymaker_existing
             field_is_decisionmaker: field_is_decisionmaker
@@ -837,6 +1103,20 @@ display:
               empty_column: false
               responsive: ''
             field_organization_type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_sector_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_dm_org_name:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -906,10 +1186,12 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_dm_org_name'
         - 'config:field.storage.node.field_is_decisionmaker'
         - 'config:field.storage.node.field_organization_type'
         - 'config:field.storage.node.field_policymaker_existing'
         - 'config:field.storage.node.field_policymaker_id'
+        - 'config:field.storage.node.field_sector_name'
   page_1:
     id: page_1
     display_title: Page
@@ -940,7 +1222,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_dm_org_name'
         - 'config:field.storage.node.field_is_decisionmaker'
         - 'config:field.storage.node.field_organization_type'
         - 'config:field.storage.node.field_policymaker_existing'
         - 'config:field.storage.node.field_policymaker_id'
+        - 'config:field.storage.node.field_sector_name'
