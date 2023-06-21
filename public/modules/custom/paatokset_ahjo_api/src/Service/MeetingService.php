@@ -116,7 +116,9 @@ class MeetingService {
         $additional_info = t('Meeting cancelled');
       }
       elseif ($orig_timestamp && $orig_timestamp !== $timestamp) {
-        $additional_info = t('Meeting moved');
+        $additional_info = t('Meeting moved, original time: @orig_time', [
+          '@orig_time' => date('d.m. H:i', $orig_timestamp),
+        ]);
         $meeting_moved = TRUE;
       }
 
@@ -129,6 +131,7 @@ class MeetingService {
         'policymaker_name' => $this->getPolicymakerName($node->get('field_meeting_dm_id')->value, $node->get('field_meeting_dm')->value, $langcode),
         'policymaker' => $node->get('field_meeting_dm_id')->value,
         'start_time' => date('H:i', $timestamp),
+        'orig_time' => date('d.m. H:i', $orig_timestamp),
         'status' => $node->get('field_meeting_status')->value,
         'additional_info' => $additional_info,
       ];
