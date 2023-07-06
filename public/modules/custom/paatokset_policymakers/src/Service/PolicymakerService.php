@@ -833,15 +833,30 @@ class PolicymakerService {
 
     $policymaker_id = $policymaker->get('field_policymaker_id')->value;
 
+    // Get the latest held meeting.
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $policymaker_id)
       ->condition('field_meeting_composition', '', '<>')
+      ->condition('field_meeting_status', 'pidetty')
       ->range(0, 1)
-      ->sort('changed', 'DESC');
+      ->sort('field_meeting_date', 'DESC');
 
     $ids = $query->execute();
+
+    // If no meetings have been held, get the most recently updated one.
+    if (empty($ids)) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', 'meeting')
+        ->condition('field_meeting_dm_id', $policymaker_id)
+        ->condition('field_meeting_composition', '', '<>')
+        ->range(0, 1)
+        ->sort('changed', 'DESC');
+
+      $ids = $query->execute();
+    }
 
     if (empty($ids)) {
       return [];
