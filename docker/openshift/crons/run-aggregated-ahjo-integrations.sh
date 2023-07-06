@@ -33,8 +33,14 @@ do
     drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
     drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
     if [ ${APP_ENV} = 'production' ]; then
+      echo "Running aggregation and retry queues: $(date)"
       drush queue:run ahjo_api_aggregation_queue --time-limit=3600 -v
       drush queue:run ahjo_api_retry_queue --time-limit=1800 -v
+      echo "Updating decision data: $(date)"
+      drush ahjo-proxy:update-decisions --logic=record --limit=100 -v
+      drush ahjo-proxy:update-decisions --logic=case --limit=100 -v
+      drush ahjo-proxy:update-decisions --logic=language --limit=100 -v
+      drush ahjo-proxy:update-decision-attachments --limit=100 -v
     fi
     echo "Migrating data for council members: $(date)"
     drush migrate-reset-status ahjo_trustees:council
