@@ -54,7 +54,7 @@
                   <h4 class="meeting-title">
                     {{ meeting.policymaker_name }}
                     <span v-if="meeting.meeting_moved">
-                      ({{ meetingMoved }})
+                      ({{ meetingMoved(meeting.orig_time) }})
                     </span>
                     <span v-else-if="meeting.meeting_cancelled">
                       ({{ meetingCancelled }})
@@ -216,6 +216,11 @@
           getWeekday(date) {
             return dayjs(date).weekday();
           },
+          meetingMoved(orig_time) {
+            return window.Drupal.t('meeting moved, original time: @orig_time', {
+              '@orig_time': orig_time
+            }, {context: 'Meetings calendar'});
+          },
         },
         computed: {
           selectedMonth() {
@@ -267,9 +272,6 @@
           },
           meetingCancelled() {
             return window.Drupal.t('meeting cancelled', {}, {context: 'Meetings calendar'});
-          },
-          meetingMoved() {
-            return window.Drupal.t('meeting moved', {}, {context: 'Meetings calendar'});
           },
           nextMonth() {
             return window.Drupal.t('Next month');

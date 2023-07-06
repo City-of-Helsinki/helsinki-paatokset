@@ -694,7 +694,23 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if (!$update_all) {
       if ($logic === 'record') {
-        $query->notExists('field_decision_record');
+        // Don't act on motions since we can't fetch them from the record EP.
+        $query->condition('field_is_decision', 1);
+        $or = $query->orConditionGroup();
+
+        // Default case, fetch record if field is empty.
+        $or->notExists('field_decision_record');
+
+        // Fix decision that have documents stuck in motion mode.
+        $and = $query->andConditionGroup();
+        $and->condition('field_outdated_document', 0);
+        $and->condition('field_decision_record', '"Type": "esitys"', 'CONTAINS');
+        $or->condition($and);
+        $and2 = $query->andConditionGroup();
+        $and2->condition('field_outdated_document', 0);
+        $and2->condition('field_decision_record', '"Type":"esitys"', 'CONTAINS');
+        $or->condition($and2);
+        $query->condition($or);
       }
       elseif ($logic === 'language') {
         $or = $query->orConditionGroup();

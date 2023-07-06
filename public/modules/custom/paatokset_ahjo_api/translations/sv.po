@@ -8,3 +8,11 @@ msgstr "Se röstningsresultatet i tabellform"
 
 msgid "Read motion (Opens in a new tab)"
 msgstr "Läs motionen (Öppnas i en ny flik)"
+
+msgid "Meeting moved, original time: @orig_time"
+msgstr "Möte flyttade, gammal tid: @orig_time"
+
+msgctxt "Meetings calendar"
+msgid "meeting moved, original time: @orig_time"
+msgstr "möte flyttade, gammal tid: @orig_time"
+

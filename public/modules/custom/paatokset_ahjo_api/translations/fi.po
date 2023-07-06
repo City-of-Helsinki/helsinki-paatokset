@@ -8,3 +8,10 @@ msgstr "Katso äänestystulos taulukkona"
 
 msgid "Read motion (Opens in a new tab)"
 msgstr "Lue esitys (Avautuu uuteen välilehteen)"
+
+msgid "Meeting moved, original time: @orig_time"
+msgstr "Kokousta siirretty, alkuperäinen ajankohta: @orig_time"
+
+msgctxt "Meetings calendar"
+msgid "meeting moved, original time: @orig_time"
+msgstr "kokousta siirretty, alkuperäinen ajankohta: @orig_time"
