@@ -25,6 +25,7 @@ display:
         access:
           label: 'Senast åtkomst'
           settings:
+            future_format: '@interval därav'
             past_format: '@interval sedan'
         operations:
           label: Funktioner
