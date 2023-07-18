@@ -4,26 +4,26 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Database\Connection;
-use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Url;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
+use Drupal\migrate\MigrateExecutable;
+use Drupal\migrate\MigrateMessage;
+use Drupal\migrate\Plugin\MigrationPluginManager;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
-use Drupal\Component\Utility\Unicode;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Psr7\Response;
-use Drupal\node\Entity\Node;
-use Drupal\migrate\Plugin\MigrationPluginManager;
-use Drupal\migrate\MigrateMessage;
-use Drupal\migrate\MigrateExecutable;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Handler for AHJO API Proxy.

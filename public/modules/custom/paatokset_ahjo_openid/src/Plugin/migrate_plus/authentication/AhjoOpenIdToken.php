@@ -6,8 +6,8 @@ namespace Drupal\paatokset_ahjo_openid\Plugin\migrate_plus\authentication;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate_plus\AuthenticationPluginBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a key query parameter for authentication.

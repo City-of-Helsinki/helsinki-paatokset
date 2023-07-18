@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Commands;
 
-use Drush\Commands\DrushCommands;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
 /**

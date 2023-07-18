@@ -2,10 +2,10 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Service class for retrieving meeting-related data.

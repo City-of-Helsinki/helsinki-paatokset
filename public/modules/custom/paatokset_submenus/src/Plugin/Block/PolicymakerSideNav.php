@@ -2,8 +2,8 @@
 
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
-use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;

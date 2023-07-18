@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_policymakers\Service;
 
-use Drupal\Core\Url;
-use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
-use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

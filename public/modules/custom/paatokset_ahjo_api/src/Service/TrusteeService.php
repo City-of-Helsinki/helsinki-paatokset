@@ -2,8 +2,8 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Service class for retrieving trustee-related data.

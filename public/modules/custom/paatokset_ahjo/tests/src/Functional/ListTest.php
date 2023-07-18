@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\paatokset_ahjo\Functional;
 
-use Drupal\Tests\paatokset_ahjo\Traits\MigrateTrait;
 use Drupal\Tests\helfi_api_base\Functional\MigrationTestBase;
+use Drupal\Tests\paatokset_ahjo\Traits\MigrateTrait;
 
 /**
  * Tests entity list functionality.

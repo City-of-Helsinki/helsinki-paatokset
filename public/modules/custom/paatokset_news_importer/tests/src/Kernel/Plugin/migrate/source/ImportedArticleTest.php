@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\Tests\paatokset_news_importer\Kernel\Plugin\migrate\source;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\migrate\Plugin\MigrateSourcePluginManager;
-use Drupal\paatokset_news_importer\Plugin\migrate\source\ImportedArticle;
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\Tests\paatokset_news_importer\Traits\ImportedArticleTestTrait;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drupal\paatokset_news_importer\Plugin\migrate\source\ImportedArticle;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\paatokset_news_importer\Traits\ImportedArticleTestTrait;
 use GuzzleHttp\Psr7\Response;
 
 /**

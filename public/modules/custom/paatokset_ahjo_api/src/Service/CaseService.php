@@ -2,11 +2,11 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Url;
-use Drupal\Component\Utility\Unicode;
 
 /**
  * Service class for retrieving case and decision-related data.

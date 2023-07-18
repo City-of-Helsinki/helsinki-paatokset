@@ -6,8 +6,8 @@ namespace Drupal\paatokset_ahjo_openid;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\State\StateInterface;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

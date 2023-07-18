@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_policymakers\Service;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Cache\Cache;
 
 /**
  * Lazy building functions for policymaker data.

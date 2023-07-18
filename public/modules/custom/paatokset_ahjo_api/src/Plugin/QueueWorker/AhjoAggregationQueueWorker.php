@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_ahjo_api\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Processes cron queue.

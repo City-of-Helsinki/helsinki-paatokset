@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_helsinki_kanava\Entity;
 
+use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Entity\ContentEntityBase;
 
 /**
  * Defines meeting_video entity class.
