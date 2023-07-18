@@ -478,6 +478,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $filename
    *   Filename to get initial data from.
+   * @param string $langcode
+   *   Langcode to get data for.
    *
    * @command ahjo-proxy:get-trustees
    *
@@ -486,7 +488,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:trust
    */
-  public function trustees(string $filename = 'positionsoftrust.json'): void {
+  public function trustees(string $filename = 'positionsoftrust.json', string $langcode = 'fi'): void {
     $this->logger->info('Fetching trustees organizations...');
     $data = $this->ahjoProxy->getStatic($filename);
     $operations = [];
@@ -504,9 +506,10 @@ class AhjoAggregatorCommands extends DrushCommands {
           $data = [
             'endpoint' => 'agents/positionoftrust/' . $item['ID'],
             'count' => $count,
+            'langcode' => $langcode,
           ];
           if ($filename === 'positionsoftrust_council.json') {
-            $data['filename'] = 'trustees_council.json';
+            $data['filename'] = 'trustees_council_' . $langcode . '.json';
           }
           $operations[] = [
             '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processTrusteeItem',

@@ -211,6 +211,23 @@ class AhjoProxyController extends ControllerBase {
   }
 
   /**
+   * Get organization positions of trust.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Organization ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for organizations.
+   */
+  public function organizationPositions(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getOrganizationPositions($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
    * Returns aggregated data.
    *
    * @param string $dataset
