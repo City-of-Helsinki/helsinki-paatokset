@@ -989,7 +989,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
     }
-    else if (!empty($results['langcode'])) {
+    elseif (!empty($results['langcode'])) {
       $filename = 'trustees_' . $results['langcode'] . '.json';
     }
     else {
