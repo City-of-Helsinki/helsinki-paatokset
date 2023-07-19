@@ -2,10 +2,10 @@
 
 namespace Drupal\paatokset_policymakers\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\node\NodeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\NodeInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller class for policymaker custom routes.

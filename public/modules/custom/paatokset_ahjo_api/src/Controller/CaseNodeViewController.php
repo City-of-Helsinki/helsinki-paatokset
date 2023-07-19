@@ -2,13 +2,13 @@
 
 namespace Drupal\paatokset_ahjo_api\Controller;
 
-use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Controller\NodeViewController;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

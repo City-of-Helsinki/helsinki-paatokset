@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_language_switch_links_alter().

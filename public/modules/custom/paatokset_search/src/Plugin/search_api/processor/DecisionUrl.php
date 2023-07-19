@@ -2,11 +2,11 @@
 
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
+use Drupal\Core\Url;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\Core\Url;
 
 /**
  * Computes the decision URL for the indexed decision.

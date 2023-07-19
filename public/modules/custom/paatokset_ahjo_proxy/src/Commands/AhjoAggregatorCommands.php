@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
-use Drush\Commands\DrushCommands;
-use Drupal\file\FileRepositoryInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\node\NodeStorageInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeStorageInterface;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
 /**

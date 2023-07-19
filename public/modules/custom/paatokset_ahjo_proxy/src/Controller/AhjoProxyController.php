@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_ahjo_proxy\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use GuzzleHttp\Psr7\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

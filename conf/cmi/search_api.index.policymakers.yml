@@ -3,12 +3,12 @@ langcode: fi
 status: true
 dependencies:
   config:
-    - field.storage.node.field_dm_org_name
     - field.storage.node.field_first_name
     - field.storage.node.field_last_name
+    - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
-    - field.storage.node.field_sector_name
     - field.storage.node.field_ahjo_title
+    - field.storage.node.field_sector_name
     - search_api.server.elasticsearch
   module:
     - node
@@ -24,6 +24,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: color_class
     type: string
+  decisionmaker_combined_title:
+    label: 'Decisionmaker combined title'
+    datasource_id: 'entity:node'
+    property_path: decisionmaker_combined_title
+    type: text
   field_dm_org_name:
     label: 'Organization name'
     datasource_id: 'entity:node'
@@ -82,7 +87,7 @@ field_settings:
     property_path: sector
     type: string
   status:
-    label: null
+    label: status
     datasource_id: 'entity:node'
     property_path: status
     type: boolean
@@ -110,7 +115,7 @@ field_settings:
     property_path: trustee_title
     type: string
   uid:
-    label: null
+    label: uid
     datasource_id: 'entity:node'
     property_path: uid
     type: integer
@@ -143,16 +148,20 @@ processor_settings:
     weights:
       preprocess_query: -30
   decision_url: {  }
+  decisionmaker_combined_title: {  }
   entity_status: {  }
   entity_type: {  }
   has_translation: {  }
   inactive_decisionmakers: {  }
   language_with_fallback: {  }
   rendered_item: {  }
+  sector_id: {  }
   sector_json: {  }
   special_status: {  }
+  top_category_id: {  }
   trustee_name: {  }
   trustee_title: {  }
+  unique_issue_id: {  }
 tracker_settings:
   default:
     indexing_order: fifo

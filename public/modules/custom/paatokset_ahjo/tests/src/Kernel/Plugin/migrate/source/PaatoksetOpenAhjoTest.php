@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\paatokset_ahjo\Kernel\Plugin\migrate\source;
 
-use Drupal\paatokset_ahjo\Plugin\migrate\source\PaatoksetOpenAhjo;
 use Drupal\migrate\Plugin\MigrateSourcePluginManager;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drupal\paatokset_ahjo\Plugin\migrate\source\PaatoksetOpenAhjo;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use GuzzleHttp\Psr7\Response;
 

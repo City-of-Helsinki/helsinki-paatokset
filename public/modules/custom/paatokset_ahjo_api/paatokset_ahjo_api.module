@@ -7,12 +7,12 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 

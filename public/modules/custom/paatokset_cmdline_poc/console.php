@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Client;
 use App\Commands\ListFetchCommand;
+use GuzzleHttp\Client;
 use Symfony\Component\Console\Application;
 
 require_once '../../../autoload.php';

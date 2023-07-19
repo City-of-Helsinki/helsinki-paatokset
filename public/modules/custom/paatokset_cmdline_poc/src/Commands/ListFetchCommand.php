@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\TransferStats;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
-use GuzzleHttp\Psr7\Response;
 
 /**
  * Command for aggregating data outside of Drupal.
