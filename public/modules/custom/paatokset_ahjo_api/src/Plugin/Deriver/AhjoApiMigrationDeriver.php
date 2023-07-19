@@ -49,7 +49,14 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
     }
 
     if ($base_plugin_definition['id'] === 'ahjo_trustees') {
-      $derivatives = ['all', 'council', 'single'];
+      $derivatives = [
+        'all',
+        'all_sv',
+        'council',
+        'council_sv',
+        'single',
+        'single_sv',
+      ];
     }
 
     foreach ($derivatives as $key) {
