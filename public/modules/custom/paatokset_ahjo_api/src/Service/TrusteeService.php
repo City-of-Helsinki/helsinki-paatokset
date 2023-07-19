@@ -62,11 +62,11 @@ class TrusteeService {
 
     if ($title = $trustee->get('field_trustee_title')->value) {
 
-      if ($title === 'Jäsen') {
+      if ($title === 'Jäsen' || $title === 'Medlem') {
         return t('Councillor');
       }
 
-      if ($title === 'Varajäsen') {
+      if ($title === 'Varajäsen' || $title === 'Ersättare') {
         return t('Deputy councillor');
       }
 
