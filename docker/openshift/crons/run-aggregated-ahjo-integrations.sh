@@ -28,7 +28,8 @@ do
     echo "Aggregating council org data: $(date)"
     drush ahjo-proxy:get-council-positionsoftrust -v
     echo "Aggregating data for council members: $(date)"
-    drush ahjo-proxy:get-trustees positionsoftrust_council.json -v
+    drush ahjo-proxy:get-trustees positionsoftrust_council.json fi -v
+    drush ahjo-proxy:get-trustees positionsoftrust_council.json sv -v
     echo "Aggregating latest decisionmaker changes: $(date)"
     drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
     drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
@@ -45,6 +46,8 @@ do
     echo "Migrating data for council members: $(date)"
     drush migrate-reset-status ahjo_trustees:council
     drush migrate-import ahjo_trustees:council --update
+    #drush migrate-reset-status ahjo_trustees:council_sv
+    #drush migrate-import ahjo_trustees:council_sv --update
     echo "Migrating data for decisionmakers: $(date)"
     drush migrate-reset-status ahjo_decisionmakers:latest
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
