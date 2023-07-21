@@ -471,6 +471,28 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get organization positions of trust from Ahjo API.
+   *
+   * @param string $id
+   *   Organization ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Positions of trust data.
+   */
+  public function getOrganizationPositions(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $positions_url = $this->getApiBaseUrl() . 'agents/positionoftrust?org=' . strtoupper($id) . '&' . urldecode($query_string);
+    $data = $this->getContent($positions_url, $bypass_cache);
+    return $data;
+  }
+
+  /**
    * Return organization chart structure.
    *
    * @param string $orgId
@@ -647,8 +669,24 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'trustees.json';
         break;
 
+      case 'trustees_fi':
+        $filename = 'trustees_fi.json';
+        break;
+
+      case 'trustees_sv':
+        $filename = 'trustees_sv.json';
+        break;
+
       case 'trustees_council':
         $filename = 'trustees_council.json';
+        break;
+
+      case 'trustees_council_fi':
+        $filename = 'trustees_council_fi.json';
+        break;
+
+      case 'trustees_council_sv':
+        $filename = 'trustees_council_sv.json';
         break;
 
       case 'decisionmakers':
@@ -909,10 +947,17 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
+    if (!isset($context['results']['langcode']) && isset($data['langcode'])) {
+      $context['results']['langcode'] = $data['langcode'];
+    }
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $full_data = $ahjo_proxy->getData($data['endpoint'], NULL);
+    $query_string = NULL;
+    if (!empty($data['langcode'])) {
+      $query_string = 'apireqlang=' . $data['langcode'];
+    }
+    $full_data = $ahjo_proxy->getData($data['endpoint'], $query_string);
 
     if (!empty($full_data)) {
       $context['results']['items'][] = $full_data;
@@ -943,6 +988,9 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
+    }
+    elseif (!empty($results['langcode'])) {
+      $filename = 'trustees_' . $results['langcode'] . '.json';
     }
     else {
       $filename = 'trustees.json';
@@ -2334,6 +2382,11 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       case 'trustees':
         $migration_id = 'ahjo_trustees:single';
+        $migration_url = '/ahjo-proxy/trustees/single/';
+        break;
+
+      case 'trustees_sv':
+        $migration_id = 'ahjo_trustees:single_sv';
         $migration_url = '/ahjo-proxy/trustees/single/';
         break;
 
