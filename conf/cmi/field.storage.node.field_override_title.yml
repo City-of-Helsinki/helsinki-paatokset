@@ -1,0 +1,18 @@
+uuid: 610c92b2-f812-4fda-bbfa-78525b29c0ee
+langcode: fi
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_override_title
+field_name: field_override_title
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
