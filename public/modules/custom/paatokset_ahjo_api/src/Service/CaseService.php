@@ -7,7 +7,6 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\redirect\Entity\Redirect;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -228,7 +227,6 @@ class CaseService {
     return array_shift($decision_nodes);
   }
 
-
   /**
    * Get decision node from redirect data.
    *
@@ -237,7 +235,7 @@ class CaseService {
    * @param string $decision_id
    *   ID for decision.
    *
-   * @return NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node, if one can be found based on a redirect.
    */
   private function getDecisionFromRedirect(string $case_id, string $decision_id): ?NodeInterface {
@@ -263,7 +261,7 @@ class CaseService {
    * @param string $source_path
    *   Source path to check.
    *
-   * @return NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Node, if a redirect is found and it points directly to entity.
    */
   private function getNodeFromRedirectSource(string $source_path): ?NodeInterface {
