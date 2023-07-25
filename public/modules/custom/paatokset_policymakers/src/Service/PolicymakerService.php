@@ -771,6 +771,12 @@ class PolicymakerService {
         $section = '';
       }
 
+      // Try to get link without node data first with fi langcode and then sv.
+      $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'fi');
+      if (!$link) {
+        $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'sv');
+      }
+
       $result = [
         'year' => $year,
         'date_desktop' => date('d.m.Y', $timestamp),
@@ -778,7 +784,7 @@ class PolicymakerService {
         'timestamp' => $timestamp,
         'subject' => $decision_label,
         'section' => $section,
-        'link' => $caseService->getDecisionUrlLight($id, $data->field_decision_native_id_value, $data->field_diary_number_value),
+        'link' => $link,
       ];
 
       $results[] = $result;
