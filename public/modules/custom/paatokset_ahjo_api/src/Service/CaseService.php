@@ -7,6 +7,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -130,6 +131,11 @@ class CaseService {
     else {
       $this->selectedDecision = $this->getDecision($decision_id);
     }
+
+    // Attempt to fetch decision from redirect data if one could not be loaded.
+    if ($this->caseId && $decision_id && !$this->selectedDecision instanceof NodeInterface) {
+      $this->selectedDecision = $this->getDecisionFromRedirect($this->caseId, $decision_id);
+    }
   }
 
   /**
@@ -218,7 +224,74 @@ class CaseService {
       'decision_id' => $decision_id,
       'limit' => 1,
     ]);
+
     return array_shift($decision_nodes);
+  }
+
+
+  /**
+   * Get decision node from redirect data.
+   *
+   * @param string $case_id
+   *   Diary number for decision.
+   * @param string $decision_id
+   *   ID for decision.
+   *
+   * @return NodeInterface|null
+   *   Decision node, if one can be found based on a redirect.
+   */
+  private function getDecisionFromRedirect(string $case_id, string $decision_id): ?NodeInterface {
+    $source_fi = 'asia/' . $case_id . '/' . $decision_id;
+    $source_sv = 'arende/' . $case_id . '/' . $decision_id;
+
+    $node_fi = $this->getNodeFromRedirectSource($source_fi);
+    if ($node_fi instanceof NodeInterface) {
+      return $node_fi;
+    }
+
+    $node_sv = $this->getNodeFromRedirectSource($source_sv);
+    if ($node_sv instanceof NodeInterface) {
+      return $node_sv;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get node by redirect source path.
+   *
+   * @param string $source_path
+   *   Source path to check.
+   *
+   * @return NodeInterface|null
+   *   Node, if a redirect is found and it points directly to entity.
+   */
+  private function getNodeFromRedirectSource(string $source_path): ?NodeInterface {
+    /** @var \Drupal\redirect\RedirectRepository $redirectRepository */
+    $redirectRepository = \Drupal::service('redirect.repository');
+    $redirect_entity = $redirectRepository->findBySourcePath($source_path);
+
+    if (empty($redirect_entity)) {
+      return NULL;
+    }
+
+    $redirect_entity = reset($redirect_entity);
+    $redirect = $redirect_entity->getRedirect();
+    if (!isset($redirect['uri'])) {
+      return NULL;
+    }
+
+    $uri = Url::fromUri($redirect['uri']);
+    if (!$uri) {
+      return NULL;
+    }
+
+    $parameters = $uri->getRouteParameters();
+    if (!isset($parameters['node'])) {
+      return NULL;
+    }
+
+    return Node::load($parameters['node']);
   }
 
   /**
