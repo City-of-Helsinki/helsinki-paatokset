@@ -863,7 +863,7 @@ class CaseService {
       // Try to get localized route if one exists for current language.
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($native_id)]);
+        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($case_id)]);
       }
       // If langcode is set, we don't want an URL without a localized route.
       elseif ($strict_lang) {
