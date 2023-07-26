@@ -168,7 +168,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     }
     else {
       // Get the two most recent decisions.
-      $recentDecisions = $policymakerService->getAgendasList(2, FALSE);
+      $recentDecisions = $policymakerService->getAgendasListFromElasticSearch(2, FALSE);
       if (!empty($recentDecisions)) {
         $variables['recent_decisions'] = $recentDecisions;
         $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
