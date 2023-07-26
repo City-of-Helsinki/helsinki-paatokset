@@ -13,6 +13,7 @@ use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\search_api\Entity\Index;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -805,6 +806,109 @@ class PolicymakerService {
     // Reduce results to original limit.
     if ($limit) {
       return array_slice($transformedResults, 0, $limit);
+    }
+
+    return $transformedResults;
+  }
+
+  /**
+   * Get decision list for officials from ElasticSearch Index.
+   *
+   * @param int|null $limit
+   *   Limit results. Defaults to 10000 (maximum amount of results from index).
+   * @param bool $byYear
+   *   Group decision by year.
+   *
+   * @return array
+   *   List of decisions.
+   */
+  public function getAgendasListFromElasticSearch(?int $limit = 10000, bool $byYear = TRUE): array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    if (!$limit) {
+      $limit = 10000;
+    }
+
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    $index = Index::load('decisions');
+    $query = $index->query();
+    $query->range(0, $limit);
+    $query->addCondition('field_policymaker_id', $this->policymakerId)
+      ->addCondition('field_is_decision', TRUE);
+
+    // Sort by date and section number.
+    $query->sort('meeting_date', 'DESC');
+    $query->sort('field_decision_section', 'DESC');
+
+    $results = $query->execute();
+    $data = [];
+    foreach ($results as $result) {
+      $subject = $result->getField('subject')->getValues()[0];
+      $timestamp = $result->getField('meeting_date')->getValues()[0];
+      $section = $result->getField('field_decision_section')->getValues()[0];
+      $link = $result->getField('decision_url')->getValues()[0];
+      $year = date('Y', $timestamp);
+
+      if (!empty($section)) {
+        $decision_label = '§ ' . $section . ' ' . $subject;
+      }
+      else {
+        $decision_label = $subject;
+      }
+
+      // URL is based on node language, so replace parts of the URL here.
+      $search_strings = [
+        'fi' => [
+          '/fi/',
+          'asia',
+          'paatos',
+        ],
+        'sv' => [
+          '/sv/',
+          'arende',
+          'beslut',
+        ],
+        'en' => [
+          '/en/',
+          'case',
+          'decision',
+        ],
+      ];
+
+      $localized_link = $link;
+      if (str_starts_with($link, '/fi/')) {
+        $localized_link = str_replace($search_strings['fi'], $search_strings[$langcode], $link);
+      }
+      elseif (str_starts_with($link, '/sv/')) {
+        $localized_link = str_replace($search_strings['sv'], $search_strings[$langcode], $link);
+      }
+      elseif (str_starts_with($link, '/en/')) {
+        $localized_link = str_replace($search_strings['en'], $search_strings[$langcode], $link);
+      }
+
+      $item = [
+        'year' => $year,
+        'date_desktop' => date('d.m.Y', $timestamp),
+        'date_mobile' => date('m - Y', $timestamp),
+        'timestamp' => $timestamp,
+        'subject' => $decision_label,
+        'section' => $section,
+        'link' => $localized_link,
+      ];
+
+      $data[] = $item;
+    }
+
+    foreach ($data as $item) {
+      if ($byYear) {
+        $transformedResults[$item['year']][] = $item;
+      }
+      else {
+        $transformedResults[] = $item;
+      }
     }
 
     return $transformedResults;
