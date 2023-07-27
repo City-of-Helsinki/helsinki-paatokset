@@ -130,6 +130,11 @@ class CaseService {
     else {
       $this->selectedDecision = $this->getDecision($decision_id);
     }
+
+    // Attempt to fetch decision from redirect data if one could not be loaded.
+    if ($this->caseId && $decision_id && !$this->selectedDecision instanceof NodeInterface) {
+      $this->selectedDecision = $this->getDecisionFromRedirect($this->caseId, $decision_id);
+    }
   }
 
   /**
@@ -218,7 +223,73 @@ class CaseService {
       'decision_id' => $decision_id,
       'limit' => 1,
     ]);
+
     return array_shift($decision_nodes);
+  }
+
+  /**
+   * Get decision node from redirect data.
+   *
+   * @param string $case_id
+   *   Diary number for decision.
+   * @param string $decision_id
+   *   ID for decision.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Decision node, if one can be found based on a redirect.
+   */
+  private function getDecisionFromRedirect(string $case_id, string $decision_id): ?NodeInterface {
+    $source_fi = 'asia/' . $case_id . '/' . $decision_id;
+    $source_sv = 'arende/' . $case_id . '/' . $decision_id;
+
+    $node_fi = $this->getNodeFromRedirectSource($source_fi);
+    if ($node_fi instanceof NodeInterface) {
+      return $node_fi;
+    }
+
+    $node_sv = $this->getNodeFromRedirectSource($source_sv);
+    if ($node_sv instanceof NodeInterface) {
+      return $node_sv;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get node by redirect source path.
+   *
+   * @param string $source_path
+   *   Source path to check.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Node, if a redirect is found and it points directly to entity.
+   */
+  private function getNodeFromRedirectSource(string $source_path): ?NodeInterface {
+    /** @var \Drupal\redirect\RedirectRepository $redirectRepository */
+    $redirectRepository = \Drupal::service('redirect.repository');
+    $redirect_entity = $redirectRepository->findBySourcePath($source_path);
+
+    if (empty($redirect_entity)) {
+      return NULL;
+    }
+
+    $redirect_entity = reset($redirect_entity);
+    $redirect = $redirect_entity->getRedirect();
+    if (!isset($redirect['uri'])) {
+      return NULL;
+    }
+
+    $uri = Url::fromUri($redirect['uri']);
+    if (!$uri) {
+      return NULL;
+    }
+
+    $parameters = $uri->getRouteParameters();
+    if (!isset($parameters['node'])) {
+      return NULL;
+    }
+
+    return Node::load($parameters['node']);
   }
 
   /**
@@ -408,8 +479,9 @@ class CaseService {
       $langcode === $this->language;
     }
 
-    // Langcode is used for checking if aliases (and nodes) exists.
-    // Decision nodes only exist in finnish and swedish.
+    // Langcode is only used for checking if aliases (and nodes) exists,
+    // because decision nodes only exist in finnish and swedish.
+    // Actual URL is generated with current language with the localized route.
     if ($langcode === 'sv') {
       $prefix = 'arende';
     }
@@ -790,7 +862,7 @@ class CaseService {
       // Try to get localized route if one exists for current language.
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($native_id)]);
+        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($case_id)]);
       }
       // If langcode is set, we don't want an URL without a localized route.
       elseif ($strict_lang) {
