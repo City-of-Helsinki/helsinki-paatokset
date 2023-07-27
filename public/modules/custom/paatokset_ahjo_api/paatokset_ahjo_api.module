@@ -920,6 +920,40 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
 }
 
 /**
+ * Get existing value, if node already exists and title field is overridden.
+ */
+function _paatokset_ahjo_api_get_existing_value_with_override(array $values) {
+  $nid = $values[0];
+  $field = $values[1];
+  $override_field = $values[2];
+  $default = $values[3];
+  $langcode = $values[4];
+
+  if (!$nid) {
+    return $default;
+  }
+
+  $node = Node::load($nid);
+  if ($node->hasTranslation($langcode)) {
+    $node = $node->getTranslation($langcode);
+  }
+  else {
+    return $default;
+  }
+
+  if (!$node instanceof NodeInterface) {
+    return $default;
+  }
+
+  // Return existing value if override field is value is not empty.
+  if ($node->hasField($override_field) && $node->get($override_field)->value && $node->hasField($field) && !$node->get($field)->isEmpty()) {
+    return $node->get($field)->value;
+  }
+
+  return $default;
+}
+
+/**
  * Get top category name from classifiction code.
  *
  * @param mixed $values

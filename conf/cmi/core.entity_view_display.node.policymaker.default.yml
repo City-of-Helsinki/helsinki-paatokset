@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.policymaker.field_organization_color_code
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
+    - field.field.node.policymaker.field_override_title
     - field.field.node.policymaker.field_policymaker_dissolved
     - field.field.node.policymaker.field_policymaker_existing
     - field.field.node.policymaker.field_policymaker_formed
@@ -117,6 +118,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_override_title:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 14
     region: content
   field_policymaker_image:
     type: entity_reference_entity_view
