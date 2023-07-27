@@ -479,8 +479,9 @@ class CaseService {
       $langcode === $this->language;
     }
 
-    // Langcode is used for checking if aliases (and nodes) exists.
-    // Decision nodes only exist in finnish and swedish.
+    // Langcode is only used for checking if aliases (and nodes) exists,
+    // because decision nodes only exist in finnish and swedish.
+    // Actual URL is generated with current language with the localized route.
     if ($langcode === 'sv') {
       $prefix = 'arende';
     }
