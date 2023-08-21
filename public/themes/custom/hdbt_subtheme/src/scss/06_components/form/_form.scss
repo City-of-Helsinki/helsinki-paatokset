@@ -302,7 +302,7 @@
 .paatokset-search--decisions,
 .paatokset-search-wrapper,
 .paatokset-search--frontpage {
-  h1, label {
+  h1, label, .container > p {
     color: #000;
   }
   button + ul li {
