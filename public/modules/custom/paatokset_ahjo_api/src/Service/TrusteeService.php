@@ -2,8 +2,10 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use Drupal\paatokset_datapumppu\Entity\Statement;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_datapumppu\Service\StatementService;
 
 /**
  * Service class for retrieving trustee-related data.
@@ -86,9 +88,13 @@ class TrusteeService {
    *   Trustee's speaking turns from the API, if found.
    */
   public static function getSpeakingTurns(NodeInterface $trustee): ?array {
-    if (!$trustee->hasField('field_trustee_datapumppu_id') || $trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
-      return NULL;
-    }
+    // If (!$trustee->hasField('field_trustee_datapumppu_id') || $trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
+    //  return NULL;
+    // }.
+
+    /** @var \Drupal\paatokset_datapumppu\Service\StatementService $statementService */
+    $statementService = \Drupal::service(StatementService::class);
+    $statements = $statementService->getStatementsOfTrustee($trustee);
 
     // Placeholder content for layout before API integration is implemented.
     $content = [
@@ -97,7 +103,11 @@ class TrusteeService {
       'link' => '/',
     ];
 
-    return [$content];
+    return array_map(static fn (Statement $statement) => [
+      'meeting' => $statement->get('meeting_id')->value,
+      'speaking_turn' => $statement->get('title')->value,
+      'link' => $statement->get('video_url')->value,
+    ], $statements);
   }
 
   /**
