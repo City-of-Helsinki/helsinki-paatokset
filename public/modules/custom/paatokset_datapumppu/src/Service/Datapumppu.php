@@ -61,6 +61,8 @@ class Datapumppu {
    *   The trustee node.
    * @param string $year
    *   Year to get statements from.
+   * @param string $lang
+   *   Get statements with this language.
    *
    * @return int
    *   The possible values are the RESULT_* constants defined in

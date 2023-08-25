@@ -103,7 +103,7 @@ class DatapumppuCommands extends DrushCommands {
       $year = $currentYear;
     }
 
-    // Allow maximum of 20 years to prevent hitting the API too much.
+    // Limit maximum years to prevent accidentally hitting the API too much.
     if ($currentYear - $year < 0 || $currentYear - $year > 10) {
       $this->logger->warning("Trying to import too many years");
       return self::EXIT_FAILURE;

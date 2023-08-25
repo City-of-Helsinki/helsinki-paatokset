@@ -68,7 +68,7 @@ final class StatementService {
    * @param \Drupal\paatokset_datapumppu\Entity\Statement $statement
    *   The statement entity.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup Formatted title.
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   Formatted title.
    */
   public function formatStatementTitle(Statement $statement): TranslatableMarkup {
