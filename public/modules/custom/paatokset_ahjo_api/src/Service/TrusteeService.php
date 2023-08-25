@@ -2,7 +2,7 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\paatokset_datapumppu\Entity\Statement;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_datapumppu\Service\StatementService;
@@ -88,26 +88,29 @@ class TrusteeService {
    *   Trustee's speaking turns from the API, if found.
    */
   public static function getSpeakingTurns(NodeInterface $trustee): ?array {
-    // If (!$trustee->hasField('field_trustee_datapumppu_id') || $trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
-    //  return NULL;
-    // }.
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     /** @var \Drupal\paatokset_datapumppu\Service\StatementService $statementService */
     $statementService = \Drupal::service(StatementService::class);
-    $statements = $statementService->getStatementsOfTrustee($trustee);
 
-    // Placeholder content for layout before API integration is implemented.
-    $content = [
-      'meeting' => 'Kaupunginvaltuuston kokous 2021/26',
-      'speaking_turn' => '13. Kansanäänestysaloite Malmin lentokentän säilyttämisestä ilmailukäytössä (2:13)',
-      'link' => '/',
-    ];
+    $statements = $statementService->getStatementsByTrustee($trustee);
+    $content = [];
 
-    return array_map(static fn (Statement $statement) => [
-      'meeting' => $statement->get('meeting_id')->value,
-      'speaking_turn' => $statement->get('title')->value,
-      'link' => $statement->get('video_url')->value,
-    ], $statements);
+    foreach ($statements as $statement) {
+      if ($statement->hasTranslation($currentLanguage)) {
+        $statement = $statement->getTranslation($currentLanguage);
+      }
+
+      $content[] = [
+        // @todo what does meeting id mean?
+        // 'meeting' => $statement->get('meeting_id')->getString(),
+        'meeting' => new TranslatableMarkup('City Council'),
+        'speaking_turn' => $statementService->formatStatementTitle($statement),
+        'link' => $statement->get('video_url')->getString(),
+      ];
+    }
+
+    return $content;
   }
 
   /**

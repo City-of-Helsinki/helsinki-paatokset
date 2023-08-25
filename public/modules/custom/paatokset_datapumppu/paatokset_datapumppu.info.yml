@@ -7,3 +7,5 @@ dependencies:
   - helfi_api_base
   - migrate
   - migrate_plus
+'interface translation project': paatokset_datapumppu
+'interface translation server pattern': modules/custom/paatokset_datapumppu/translations/%language.po

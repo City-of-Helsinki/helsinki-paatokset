@@ -1,0 +1,7 @@
+# Finnish translations for Päätökset Datapumppu content.
+#
+msgid ""
+msgstr ""
+
+msgid "@date, case @case: @title - Floor (@duration)"
+msgstr "@date, asia @case: @title - Puheenvuoro (@duration)"

@@ -1,0 +1,7 @@
+# Swedish translations for Päätökset Datapumppu content.
+#
+msgid ""
+msgstr ""
+
+msgid "@date, case @case: @title - Floor (@duration)"
+msgstr "@date, ärende @case: @title - Inlägg (@duration)"

@@ -8,4 +8,4 @@ services:
 
   Drupal\paatokset_datapumppu\Service\StatementService:
     class: Drupal\paatokset_datapumppu\Service\StatementService
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@date.formatter']
