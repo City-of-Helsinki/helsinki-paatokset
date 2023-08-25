@@ -3,5 +3,5 @@
 msgid ""
 msgstr ""
 
-msgid "@date, case @case: @title - Floor (@duration)"
-msgstr "@date, asia @case: @title - Puheenvuoro (@duration)"
+msgid "City Council @date, case @case: @title - Floor (@duration)"
+msgstr "Kaupunginvaltuusto @date, asia @case: @title - Puheenvuoro (@duration)"

@@ -2,7 +2,6 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_datapumppu\Service\StatementService;
@@ -102,9 +101,6 @@ class TrusteeService {
       }
 
       $content[] = [
-        // @todo what does meeting id mean?
-        // 'meeting' => $statement->get('meeting_id')->getString(),
-        'meeting' => new TranslatableMarkup('City Council'),
         'speaking_turn' => $statementService->formatStatementTitle($statement),
         'link' => $statement->get('video_url')->getString(),
       ];

@@ -81,7 +81,7 @@ final class StatementService {
     $case = $statement->get('case_number')->getString();
     $title = $statement->get('title')->getString();
 
-    return new TranslatableMarkup("@date, case @case: @title - Floor (@duration)", [
+    return new TranslatableMarkup("City Council @date, case @case: @title - Floor (@duration)", [
       '@date' => $startDate,
       '@case' => $case,
       '@title' => $title,
