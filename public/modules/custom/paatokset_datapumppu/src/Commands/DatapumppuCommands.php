@@ -94,17 +94,17 @@ class DatapumppuCommands extends DrushCommands {
     'since' => NULL,
   ]): int {
     $since = !empty($options['since']);
-    $currentYear = date("Y");
+    $currentYear = (int) date("Y");
 
     if (is_numeric($options['year'])) {
-      $year = $options['year'];
+      $startYear = (int) $options['year'];
     }
     else {
-      $year = $currentYear;
+      $startYear = $currentYear;
     }
 
     // Limit maximum years to prevent accidentally hitting the API too much.
-    if ($currentYear - $year < 0 || $currentYear - $year > 10) {
+    if ($currentYear - $startYear < 0 || $currentYear - $startYear > 10) {
       $this->logger->warning("Trying to import too many years");
       return self::EXIT_FAILURE;
     }
@@ -112,6 +112,7 @@ class DatapumppuCommands extends DrushCommands {
     $nids = $this->nodeStorage
       ->getQuery()
       ->condition('type', 'trustee')
+      ->condition('status', 1)
       ->execute();
 
     $langcodes = ['fi', 'sv'];
@@ -121,11 +122,12 @@ class DatapumppuCommands extends DrushCommands {
       /** @var \Drupal\node\NodeInterface $trustee */
       $trustee = $this->nodeStorage->load($nid);
 
-      // Iterate all years (or at least the current year).
+      // Iterate years from $startYear up to $currentYear.
+      $year = $startYear;
       do {
         // Iterate all langcodes.
         foreach ($langcodes as $lang) {
-          $result = $this->datapumppu->aggregateStatements($trustee, $year, $lang);
+          $result = $this->datapumppu->aggregateStatements($trustee, (string) $year, $lang);
 
           if ($result !== MigrationInterface::RESULT_COMPLETED) {
             return self::EXIT_FAILURE;
