@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_datapumppu\Commands;
 
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\node\NodeInterface;
-use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_datapumppu\Service\Datapumppu;
 use Drush\Commands\DrushCommands;
 
@@ -28,9 +30,16 @@ class DatapumppuCommands extends DrushCommands {
   /**
    * Node storage service.
    *
-   * @var \Drupal\node\NodeStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected NodeStorageInterface $nodeStorage;
+  protected EntityStorageInterface $nodeStorage;
+
+  /**
+   * Entity memory cache.
+   *
+   * @var \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface
+   */
+  protected MemoryCacheInterface $memoryCache;
 
   /**
    * Datapumppu service.
@@ -46,12 +55,15 @@ class DatapumppuCommands extends DrushCommands {
    *   Logger service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface $memory_cache
+   *   Entity memory cache.
    * @param \Drupal\paatokset_datapumppu\Service\Datapumppu $datapumppu
    *   Datapumppu service.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, Datapumppu $datapumppu) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, MemoryCacheInterface $memory_cache, Datapumppu $datapumppu) {
     $this->logger = $logger_factory->get('paatokset_datapumppu');
     $this->nodeStorage = $entity_type_manager->getStorage('node');
+    $this->memoryCache = $memory_cache;
     $this->datapumppu = $datapumppu;
   }
 
@@ -65,23 +77,64 @@ class DatapumppuCommands extends DrushCommands {
    *
    * @option year
    *   Get statements from specific year (default is current year).
+   * @option since
+   *   Get all statements starting from specified year.
    *
-   * @usage datapumppu:get-trustee-statements
+   * @usage datapumppu:all-trustee-statements
    *   Retrieves trustee statements from current year.
-   * @usage datapumppu:get-trustee-statements --year=2020
+   * @usage datapumppu:all-trustee-statements --year=2020
    *   Retries trustee statements from a specific year.
+   * @usage datapumppu:all-trustee-statements --year=2020 --since
+   *    Retries trustee statements starting from year 2020
    *
    * @aliases dp:all-statements
    */
   public function getAllTrusteeStatements(array $options = [
     'year' => NULL,
+    'since' => NULL,
   ]): int {
+    $since = !empty($options['since']);
+    $currentYear = date("Y");
 
     if (is_numeric($options['year'])) {
       $year = $options['year'];
     }
     else {
-      $year = date("Y");
+      $year = $currentYear;
+    }
+
+    // Allow maximum of 20 years to prevent hitting the API too much.
+    if ($currentYear - $year < 0 || $currentYear - $year > 10) {
+      $this->logger->warning("Trying to import too many years");
+      return self::EXIT_FAILURE;
+    }
+
+    $nids = $this->nodeStorage
+      ->getQuery()
+      ->condition('type', 'trustee')
+      ->execute();
+
+    $langcodes = ['fi', 'sv'];
+
+    // Iterate all trustee nodes.
+    foreach ($nids as $nid) {
+      /** @var \Drupal\node\NodeInterface $trustee */
+      $trustee = $this->nodeStorage->load($nid);
+
+      // Iterate all years (or at least the current year).
+      do {
+        // Iterate all langcodes.
+        foreach ($langcodes as $lang) {
+          $result = $this->datapumppu->aggregateStatements($trustee, $year, $lang);
+
+          if ($result !== MigrationInterface::RESULT_COMPLETED) {
+            return self::EXIT_FAILURE;
+          }
+        }
+      } while ($since && ++$year <= $currentYear);
+
+      // Avoid hitting memory limits.
+      $this->memoryCache->deleteAll();
     }
 
     return self::EXIT_SUCCESS;
@@ -92,6 +145,8 @@ class DatapumppuCommands extends DrushCommands {
    *
    * @param string $trusteeId
    *   Get results by specific trustee ID.
+   * @param string $lang
+   *   Get titles translated in specific language (fi, sv).
    * @param array $options
    *   Additional options for the command.
    *
@@ -100,14 +155,14 @@ class DatapumppuCommands extends DrushCommands {
    * @option year
    *   Get statements from specific year (default is current year).
    *
-   * @usage datapumppu:get-trustee-statements akuankka
+   * @usage datapumppu:get-trustee-statements akuankka fi
    *   Retrieves trustee statements from current year.
-   * @usage datapumppu:get-trustee-statements akuankka --year=2020
+   * @usage datapumppu:get-trustee-statements akuankka sv --year=2020
    *   Retries trustee statements from a specific year.
    *
    * @aliases dp:statements
    */
-  public function getTrusteeStatements(string $trusteeId, array $options = [
+  public function getTrusteeStatements(string $trusteeId, string $lang, array $options = [
     'year' => NULL,
   ]): int {
 
@@ -124,9 +179,12 @@ class DatapumppuCommands extends DrushCommands {
       return self::EXIT_FAILURE;
     }
 
-    $this->datapumppu->aggregateStatements($trustee, $year);
+    $result = $this->datapumppu->aggregateStatements($trustee, $year, $lang);
+    if ($result === MigrationInterface::RESULT_COMPLETED) {
+      return self::EXIT_SUCCESS;
+    }
 
-    return self::EXIT_SUCCESS;
+    return self::EXIT_FAILURE;
   }
 
   /**

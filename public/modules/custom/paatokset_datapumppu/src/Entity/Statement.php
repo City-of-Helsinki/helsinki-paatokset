@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 
 /**
  * Defines the paatokset_statement entity class.
@@ -102,8 +101,6 @@ final class Statement extends ContentEntityBase {
 
     $fields['video_url'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Video link'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setSettings([
@@ -114,24 +111,18 @@ final class Statement extends ContentEntityBase {
     $fields['start_time'] = BaseFieldDefinition::create('datetime')
       ->setLabel(new TranslatableMarkup('Start time'))
       ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayConfigurable('form', TRUE)
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ]);
+      ->setDisplayConfigurable('form', TRUE);
 
     $fields['duration'] = BaseFieldDefinition::create('integer')
       ->setLabel(new TranslatableMarkup('Duration (seconds)'))
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
-    // @todo reference to something?
     $fields['case_number'] = BaseFieldDefinition::create('integer')
       ->setLabel(new TranslatableMarkup('Case number'))
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
-    // @todo reference to meeting node.
     $fields['meeting_id'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Meeting ID'))
       ->setDisplayConfigurable('view', TRUE)

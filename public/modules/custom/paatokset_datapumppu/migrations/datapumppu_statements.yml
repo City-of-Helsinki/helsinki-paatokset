@@ -13,12 +13,11 @@ migration_tags:
   - datapumppu_api_statements
 migration_group: datapumppu_api
 label: 'Datapumppu API - Trustees'
-#deriver: Drupal\paatokset_datapumppu\Plugin\Deriver\DatapumppuMigrationDeriver
 source:
   plugin: url
-  track_changes: true
   data_fetcher_plugin: http
   data_parser_plugin: json
+  track_changes: true
   fields:
     -
       name: person
@@ -73,21 +72,28 @@ source:
       label: Meeting ID
       selector: meetingId
   ids:
-    # todo start_time might not be enough to uniquely identify all statements.
+    # Assume that start_time and meeting_id combination is globally unique.
     start_time:
       type: string
+    meeting_id:
+      type: string
 process:
-  langcode:
-    plugin: default_value
-    default_value: fi
+  langcode: constants/LANGCODE
   title: title
-  speaker/target_id: constants/trustee_nid
+  speaker/target_id: constants/TRUSTEE_NID
   speech_type: speech_type
-  start_time: start_time
+  start_time:
+    plugin: format_date
+    source: start_time
+    from_format: 'Y-m-d\TH:i:s'
+    to_format: 'Y-m-d\TH:i:s' # DateTimeItemInterface::DATETIME_STORAGE_FORMAT
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC # DateTimeItemInterface::STORAGE_TIMEZONE
   duration: duration_seconds
   video_url: video_link
   case_number: case_number
   meeting_id: meeting_id
 destination:
   plugin: entity:paatokset_statement
+  translations: true
 migration_dependencies: {  }

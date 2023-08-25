@@ -5,6 +5,7 @@ namespace Drupal\paatokset_datapumppu\Service;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
@@ -13,6 +14,8 @@ use Psr\Log\LoggerInterface;
  * Datapumppu API service.
  */
 class Datapumppu {
+
+  private const STATEMENTS_MIGRATION_ID = 'datapumppu_statements';
 
   /**
    * The logger service.
@@ -52,7 +55,7 @@ class Datapumppu {
   }
 
   /**
-   * Aggregate statements for trustee.
+   * Aggregate statements made by trustee.
    *
    * @param \Drupal\node\NodeInterface $trustee
    *   The trustee node.
@@ -60,38 +63,61 @@ class Datapumppu {
    *   Year to get statements from.
    *
    * @return int
-   *   0 on success.
+   *   The possible values are the RESULT_* constants defined in
+   *   MigrationInterface.
+   *
+   * @see \Drupal\migrate\Plugin\MigrationInterface
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  public function aggregateStatements(NodeInterface $trustee, string $year): int {
-    $migration_id = 'datapumppu_statements';
-    $query = http_build_query([
-      'name' => static::getTrusteeName($trustee),
-      'year' => $year,
-      'lang' => 'fi',
-    ]);
-    $endpoint = "{$this->baseUrl}/api/statements?$query";
+  public function aggregateStatements(NodeInterface $trustee, string $year, string $lang): int {
+    $endpoint = $this->getStatementsEndpoint($trustee, $year, $lang);
+    $configuration = [
+      'source' => [
+        'urls' => [$endpoint],
+        'constants' => [
+          'TRUSTEE_NID' => $trustee->id(),
+          'LANGCODE' => $lang,
+        ],
+      ],
+    ];
 
     $this->logger->info("Fetching from $endpoint");
 
-    $migration = $this->migrationManager->createInstance($migration_id, [
-      'source' => [
-        'constants' => [
-          'trustee_nid' => $trustee->id(),
-        ],
-        'urls' => [
-          $endpoint,
-        ],
-      ],
-    ]);
-
+    $migration = $this->migrationManager->createInstance(static::STATEMENTS_MIGRATION_ID, $configuration);
     if ($migration === FALSE) {
-      return 6;
+      return MigrationInterface::RESULT_DISABLED;
     }
 
-    // Execute migration.
+    // Execute the migration.
     $executable = new MigrateExecutable($migration, new MigrateMessage());
-    $status = $executable->import();
-    return $status;
+
+    // Datapumppu API returns status code 200 event if a trustee with the given
+    // name does not exist.
+    return $executable->import();
+  }
+
+  /**
+   * Get Datapummpu endpoint.
+   *
+   * @param \Drupal\node\NodeInterface $trustee
+   *   The trustee node.
+   * @param string $year
+   *   Year to get statements from.
+   * @param string $lang
+   *   Langcode.
+   *
+   * @return string
+   *   Endpoint url with correct URL parameters.
+   */
+  public function getStatementsEndpoint(NodeInterface $trustee, string $year, string $lang): string {
+    $query = http_build_query([
+      'name' => self::formatTrusteeName($trustee),
+      'year' => $year,
+      'lang' => $lang,
+    ]);
+
+    return "{$this->baseUrl}/api/statements?$query";
   }
 
   /**
@@ -105,15 +131,17 @@ class Datapumppu {
    * @return string
    *   The title transformed into name string
    */
-  private static function getTrusteeName(NodeInterface $trustee): string {
-    $title = $trustee->getTitle();
-    $nameParts = explode(',', $title);
-    if (isset($nameParts[1])) {
-      return trim($nameParts[0]) . ' ' . trim($nameParts[1]);
+  private static function formatTrusteeName(NodeInterface $trustee): string {
+    // It is not feasible to build trustee names that the Datapumppu API expects
+    // from Ahjo data alone. If the field_datapumppu_id is set, use it so
+    // the name guessing can be overwritten manually until a better solution is
+    // found.
+    // @todo link-to-ticket.
+    if (!$trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
+      return $trustee->get('field_trustee_datapumppu_id')->getString();
     }
-    else {
-      return $nameParts[0];
-    }
+
+    return str_replace(',', '', $trustee->getTitle());
   }
 
 }
