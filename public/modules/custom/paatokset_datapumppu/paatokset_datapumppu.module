@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Datapumppu API module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function paatokset_datapumppu_paatokset_statement_insert(EntityInterface $entity): void {
+  _paatokset_datapumppu_invalidate_statement_cache_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function paatokset_datapumppu_paatokset_statement_update(EntityInterface $entity): void {
+  _paatokset_datapumppu_invalidate_statement_cache_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function paatokset_datapumppu_paatokset_statement_delete(EntityInterface $entity): void {
+  _paatokset_datapumppu_invalidate_statement_cache_tags($entity);
+}
+
+/**
+ * Invalidates custom cache tags for statement.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
+ */
+function _paatokset_datapumppu_invalidate_statement_cache_tags(EntityInterface $entity): void {
+  $trustee_id = NULL;
+  if ($entity->hasField('speaker') && !$entity->get('speaker')->isEmpty()) {
+    $trustee_id = $entity->get('speaker')->getString();
+  }
+
+  $tags = [];
+  if ($trustee_id) {
+    $tags[] = "trustee_statements:$trustee_id";
+  }
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
+}
