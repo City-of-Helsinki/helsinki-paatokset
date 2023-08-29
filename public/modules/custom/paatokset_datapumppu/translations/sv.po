@@ -1,0 +1,7 @@
+# Swedish translations for Päätökset Datapumppu content.
+#
+msgid ""
+msgstr ""
+
+msgid "City Council @date, case @case: @title - Floor (@duration)"
+msgstr "Stadsfullmäktige @date, ärende @case: @title - Inlägg (@duration)"

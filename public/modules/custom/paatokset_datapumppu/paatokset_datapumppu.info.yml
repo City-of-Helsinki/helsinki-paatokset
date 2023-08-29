@@ -1,0 +1,11 @@
+name: Päätökset Datapumppu API migrations
+type: module
+description: Migrating content from Datapumppu API.
+package: Custom
+core_version_requirement: ^9
+dependencies:
+  - helfi_api_base
+  - migrate
+  - migrate_plus
+'interface translation project': paatokset_datapumppu
+'interface translation server pattern': modules/custom/paatokset_datapumppu/translations/%language.po

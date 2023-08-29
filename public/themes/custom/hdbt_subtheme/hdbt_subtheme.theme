@@ -222,7 +222,10 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
   }
 
   $variables['#cache'] = [
-    'tags' => ['media_list:declaration_of_affiliation'],
+    'tags' => [
+      'media_list:declaration_of_affiliation',
+      'trustee_statements:' . $node->id(),
+    ],
   ];
 
   if ($node->get('field_trustee_initiatives')) {

@@ -9,8 +9,8 @@ id: node.trustee.field_trustee_datapumppu_id
 field_name: field_trustee_datapumppu_id
 entity_type: node
 bundle: trustee
-label: 'Datapumppu ID'
-description: ''
+label: 'Nimitieto Datapumppua varten'
+description: 'Valmiiksi formatoitu nimitieto Datapumpun rajapintaa varten, jos ei vastaa AHJOsta saatavia nimiä.'
 required: false
 translatable: false
 default_value: {  }

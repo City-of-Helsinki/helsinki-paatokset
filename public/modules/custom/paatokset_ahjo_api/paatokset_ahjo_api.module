@@ -83,7 +83,7 @@ function paatokset_ahjo_api_node_update(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_update().
+ * Implements hook_ENTITY_TYPE_delete().
  */
 function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
   if ($entity->bundle() === 'decision') {
