@@ -15,4 +15,3 @@ msgstr "Möte flyttade, gammal tid: @orig_time"
 msgctxt "Meetings calendar"
 msgid "meeting moved, original time: @orig_time"
 msgstr "möte flyttade, gammal tid: @orig_time"
-
