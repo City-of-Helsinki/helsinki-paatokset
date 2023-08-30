@@ -78,8 +78,6 @@ class TrusteeService {
   /**
    * Get trustee speaking turns from Datapumppu integration.
    *
-   * Note: Not implemented yet!
-   *
    * @param Drupal\node\NodeInterface $trustee
    *   Trustee node.
    *
@@ -100,11 +98,15 @@ class TrusteeService {
         $statement = $statement->getTranslation($currentLanguage);
       }
 
-      $content[] = [
+      $statementYear = $statement->get('start_time')->date->format('Y');
+
+      $content[$statementYear][] = [
         'speaking_turn' => $statementService->formatStatementTitle($statement),
         'link' => $statement->get('video_url')->getString(),
       ];
     }
+
+    krsort($content);
 
     return $content;
   }
