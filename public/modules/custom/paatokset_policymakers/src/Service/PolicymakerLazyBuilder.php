@@ -80,7 +80,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
    *   The render array.
    */
   public function policymakersCards(): array {
-    $council = $this->policymakerService->getPolicyMaker('02900');
+    $council = $this->policymakerService->getPolicyMaker(PolicymakerService::CITY_COUNCIL_DM_ID);
     $board = $this->policymakerService->getPolicyMaker('00400');
 
     $cache_tags = [];
@@ -357,7 +357,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
    */
   protected function getCouncilMembersAccordion(): ?array {
     // City council nodes.
-    $nodes = $this->policymakerService->getComposition('02900');
+    $nodes = $this->policymakerService->getComposition(PolicymakerService::CITY_COUNCIL_DM_ID);
 
     $filter = 'Jäsen';
     $members = array_filter($nodes, function ($var) use ($filter) {
