@@ -11,6 +11,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_datapumppu\Service\Datapumppu;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -42,6 +43,13 @@ class DatapumppuCommands extends DrushCommands {
   protected MemoryCacheInterface $memoryCache;
 
   /**
+   * Meeting service.
+   *
+   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   */
+  protected PolicymakerService $policymakerService;
+
+  /**
    * Datapumppu service.
    *
    * @var \Drupal\paatokset_datapumppu\Service\Datapumppu
@@ -57,13 +65,16 @@ class DatapumppuCommands extends DrushCommands {
    *   The entity type manager.
    * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface $memory_cache
    *   Entity memory cache.
+   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymaker_service
+   *   Meeting service.
    * @param \Drupal\paatokset_datapumppu\Service\Datapumppu $datapumppu
    *   Datapumppu service.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, MemoryCacheInterface $memory_cache, Datapumppu $datapumppu) {
+  public function __construct(LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, MemoryCacheInterface $memory_cache, PolicymakerService $policymaker_service, Datapumppu $datapumppu) {
     $this->logger = $logger_factory->get('paatokset_datapumppu');
     $this->nodeStorage = $entity_type_manager->getStorage('node');
     $this->memoryCache = $memory_cache;
+    $this->policymakerService = $policymaker_service;
     $this->datapumppu = $datapumppu;
   }
 
@@ -137,6 +148,40 @@ class DatapumppuCommands extends DrushCommands {
 
       // Avoid hitting memory limits.
       $this->memoryCache->deleteAll();
+    }
+
+    return self::EXIT_SUCCESS;
+  }
+
+  /**
+   * Get statements from latest city council meeting.
+   *
+   * This command is intended to be run automatically after each city council
+   * meeting. The command fetches the composition of the latest city council
+   * meeting and aggregates statements only from those trustees. This should
+   * reduce the amount of queries to datapumppu API.
+   *
+   * @command datapumppu:latest-statements
+   *
+   * @usage datapumppu:latest-statements
+   *   Retrieves trustee statements from current year.
+   *
+   * @aliases dp:latest-statements
+   */
+  public function getLatestTrusteeStatements(): int {
+    $langcodes = ['fi', 'sv'];
+    $currentYear = date("Y");
+
+    $trustees = $this->policymakerService->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID);
+
+    foreach ($trustees as $trustee) {
+      foreach ($langcodes as $lang) {
+        $result = $this->datapumppu->aggregateStatements($trustee, $currentYear, $lang);
+
+        if ($result !== MigrationInterface::RESULT_COMPLETED) {
+          return self::EXIT_FAILURE;
+        }
+      }
     }
 
     return self::EXIT_SUCCESS;

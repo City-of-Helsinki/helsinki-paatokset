@@ -86,9 +86,14 @@ class Datapumppu {
 
     $this->logger->info("Fetching from $endpoint");
 
+    /** @var \Drupal\migrate\Plugin\MigrationInterface|false $migration */
     $migration = $this->migrationManager->createInstance(static::STATEMENTS_MIGRATION_ID, $configuration);
     if ($migration === FALSE) {
       return MigrationInterface::RESULT_DISABLED;
+    }
+
+    if ($migration->getStatus() !== MigrationInterface::STATUS_IDLE) {
+      $this->logger->warning("Migration is running. If the problem persists, consider: drush migrate-reset-status " . static::STATEMENTS_MIGRATION_ID);
     }
 
     // Execute the migration.
