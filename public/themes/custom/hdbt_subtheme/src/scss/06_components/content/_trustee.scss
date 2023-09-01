@@ -141,6 +141,16 @@
     margin-bottom: $spacing-s;
   }
 
+  .speaking-turn__group__title {
+    font-size: 1.5rem;
+    margin-bottom: $spacing-s;
+    margin-top: 0;
+
+    &:not(:first-of-type) {
+      margin-top: $spacing-xl;
+    }
+  }
+
   .speaking-turn__link-container {
     display: flex;
     align-items: center;

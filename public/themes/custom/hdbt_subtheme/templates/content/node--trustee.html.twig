@@ -150,12 +150,15 @@
     </h2>
     <div class="accordion-item__content handorgel__content">
       <div class="accordion-item__content__inner handorgel__content__inner">
-        {% for row in speaking_turns.content %}
-        <div>
-          <div class="speaking-turn__link-container">
-            <a class="speaking-turn__link" href="{{row.link}}">{{ row.speaking_turn }}</a>
-          </div>
-        </div>
+        {% for year, statements in speaking_turns.content %}
+          <h3 class="speaking-turn__group__title">{{ year }}</h3>
+          {% for row in statements %}
+            <div>
+              <div class="speaking-turn__link-container">
+                <a class="speaking-turn__link" href="{{ row.link }}">{{ row.speaking_turn }}</a>
+              </div>
+            </div>
+          {% endfor %}
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
