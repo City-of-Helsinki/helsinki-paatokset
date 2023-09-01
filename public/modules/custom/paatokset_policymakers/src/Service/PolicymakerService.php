@@ -28,6 +28,11 @@ class PolicymakerService {
   const NODE_TYPE = 'policymaker';
 
   /**
+   * City council id in Ahjo.
+   */
+  public const CITY_COUNCIL_DM_ID = '02900';
+
+  /**
    * Policymaker node.
    *
    * @var \Drupal\node\Entity\Node
@@ -921,22 +926,18 @@ class PolicymakerService {
   }
 
   /**
-   * Get policymaker composition based on latest meeting.
+   * Get normalized field_meeting_composition data from latest meeting.
    *
-   * @param string|null $id
-   *   Policymaker ID, leave NULL to use currently set.
+   * If no meetings have been held, returns data from the most recently updated
+   * meeting.
+   *
+   * @param \Drupal\node\NodeInterface|null $policymaker
+   *   Policymaker node.
    *
    * @return array
-   *   Policymaker composition, if found.
+   *   Meeting composition keyed by alternative spellings of trustee names.
    */
-  public function getComposition(?string $id = NULL): ?array {
-    if ($id === NULL) {
-      $policymaker = $this->policymaker;
-    }
-    else {
-      $policymaker = $this->getPolicyMaker($id);
-    }
-
+  private function getCompositionDataFromLatestMeeting(?NodeInterface $policymaker): array {
     if (!$policymaker instanceof NodeInterface || $policymaker->get('field_policymaker_id')->isEmpty()) {
       return [];
     }
@@ -985,7 +986,6 @@ class PolicymakerService {
       'Varapuheenjohtaja',
     ];
 
-    $names = [];
     foreach ($meeting->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value, TRUE);
       if (!isset($data['Role']) || !in_array($data['Role'], $allowed_roles)) {
@@ -993,7 +993,6 @@ class PolicymakerService {
       }
       if (!empty($data)) {
         $formatted_name = $this->formatTrusteeName($data['Name']);
-        $names[] = $formatted_name;
 
         // Normalize unknown deputyof fields.
         if ($data['DeputyOf'] === 'null null' || $data['DeputyOf'] === 'null') {
@@ -1005,7 +1004,6 @@ class PolicymakerService {
         // Special handling for combined last names or middle names.
         $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
         if ($formatted_name !== $alt_formatted_name) {
-          $names[] = $alt_formatted_name;
           $data['orig_name'] = $formatted_name;
           $data['alt_name'] = TRUE;
           $composition[$alt_formatted_name] = $data;
@@ -1013,6 +1011,47 @@ class PolicymakerService {
       }
     }
 
+    return $composition;
+  }
+
+  /**
+   * Get composition based on latest meeting.
+   *
+   * @param string|null $id
+   *   Policymaker ID, leave NULL to use currently set.
+   *
+   * @return \Drupal\node\NodeInterface[]
+   *   Policymaker composition trustee nodes, if found.
+   */
+  public function getTrustees(?string $id = NULL): array {
+    $policymaker = $this->getPolicyMaker($id);
+    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    if (empty($composition)) {
+      return [];
+    }
+
+    $names = array_keys($composition);
+
+    return $this->getTrusteeNodesByName($names);
+  }
+
+  /**
+   * Get policymaker composition based on latest meeting.
+   *
+   * @param string|null $id
+   *   Policymaker ID, leave NULL to use currently set.
+   *
+   * @return array
+   *   Policymaker composition, if found.
+   */
+  public function getComposition(?string $id = NULL): ?array {
+    $policymaker = $this->getPolicyMaker($id);
+    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    if (empty($composition)) {
+      return [];
+    }
+
+    $names = array_keys($composition);
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
