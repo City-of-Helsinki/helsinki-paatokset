@@ -2,15 +2,22 @@
 
 namespace Drupal\paatokset_policymakers\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\node\NodeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\NodeInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller class for policymaker custom routes.
  */
 class PolicymakerController extends ControllerBase {
+
+  /**
+   * Policymaker service.
+   *
+   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   */
+  private $policymakerService;
 
   /**
    * Controller for policymaker subpages.
@@ -139,8 +146,8 @@ class PolicymakerController extends ControllerBase {
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
 
-      // Add cache tags for decisions list so links can be updated.
-      // $build['#cache']['tags'][] = 'node_list:decision';
+      // Add cache context for meeting ID.
+      $build['#cache']['tags'][] = 'meeting:' . $id;
     }
 
     // Add cache context for minutes of the discussion for the link to show up.
@@ -187,10 +194,9 @@ class PolicymakerController extends ControllerBase {
    *   Minutes title.
    */
   public function getMinutesTitle($id) {
-    $meetingData = $this->policymakerService->getMeetingAgenda($id);
-
-    if (isset($meetingData['meeting']) && isset($meetingData['meeting']['title'])) {
-      return $meetingData['meeting']['title'];
+    $meeting = $this->policymakerService->getMeetingNode($id);
+    if ($meeting instanceof NodeInterface) {
+      return $this->policymakerService->getMeetingTitle($meeting);
     }
 
     return t('Minutes');

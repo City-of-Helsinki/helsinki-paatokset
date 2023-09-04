@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_theme().

@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.policymaker.field_organization_color_code
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
+    - field.field.node.policymaker.field_override_title
     - field.field.node.policymaker.field_policymaker_dissolved
     - field.field.node.policymaker.field_policymaker_existing
     - field.field.node.policymaker.field_policymaker_formed
@@ -40,6 +41,7 @@ dependencies:
     - media_library
     - paragraphs
     - path
+    - publication_date
     - readonly_field_widget
     - scheduler
     - text
@@ -64,7 +66,7 @@ third_party_settings:
       label: 'Integration data'
       region: content
       parent_name: ''
-      weight: 1
+      weight: 3
       format_type: details
       format_settings:
         classes: ''
@@ -83,7 +85,7 @@ third_party_settings:
       label: 'Basic information'
       region: content
       parent_name: ''
-      weight: 2
+      weight: 4
       format_type: details
       format_settings:
         classes: ''
@@ -101,7 +103,7 @@ third_party_settings:
       label: 'Section descriptions'
       region: content
       parent_name: ''
-      weight: 3
+      weight: 5
       format_type: details
       format_settings:
         classes: ''
@@ -112,13 +114,13 @@ third_party_settings:
         required_fields: false
     group_organization_label:
       children:
-        - field_custom_organization_type
         - field_city_council_division
+        - field_custom_organization_type
         - field_organization_color_code
       label: 'Organization label'
       region: content
       parent_name: ''
-      weight: 0
+      weight: 2
       format_type: details
       format_settings:
         classes: ''
@@ -134,7 +136,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 11
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -183,7 +185,7 @@ content:
     third_party_settings: {  }
   field_contacts:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -193,7 +195,7 @@ content:
     third_party_settings: {  }
   field_custom_menu_links:
     type: entity_reference_paragraphs
-    weight: 4
+    weight: 6
     region: content
     settings:
       title: Paragraph
@@ -312,6 +314,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_override_title:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_policymaker_dissolved:
     type: datetime_default
     weight: 12
@@ -381,30 +390,30 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 8
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 10
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 10
+    weight: 12
     region: content
     settings:
       display_label: true
@@ -419,7 +428,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 12
+    weight: 16
     region: content
     settings:
       match_operator: CONTAINS
@@ -429,12 +438,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 9
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

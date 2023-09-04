@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_openid\Controller;
 
-use Drupal\Core\Url;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * AHJO Open ID page controller.

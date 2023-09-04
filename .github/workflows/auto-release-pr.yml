@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - develop
+name: Automatic release PR
+jobs:
+  release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: Create pull request
+        run: |
+          gh pr create \
+            --base main \
+            --head develop \
+            --title "Develop to main" \
+            --body "Develop to main" || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\Row;
 use Drupal\migrate\MigrateSkipRowException;
+use Drupal\migrate\ProcessPluginBase;
+use Drupal\migrate\Row;
 
 /**
  * Skips processing the current row if the decision is flagged for mass removal.

@@ -7,11 +7,12 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
@@ -55,6 +56,98 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'template' => 'block/block--dictionary-banner',
     ],
   ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function paatokset_ahjo_api_node_insert(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function paatokset_ahjo_api_node_update(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
+  if ($entity->bundle() === 'decision') {
+    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
+  }
+  elseif ($entity->bundle() === 'meeting') {
+    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
+  }
+}
+
+/**
+ * Invalidates custom cache tags for decisions.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
+ */
+function _paatokset_ahjo_api_invalidate_decision_cache_tags(FieldableEntityInterface $entity): void {
+  $meeting_id = NULL;
+  if ($entity->hasField('field_meeting_id') && !$entity->get('field_meeting_id')->isEmpty()) {
+    $meeting_id = $entity->get('field_meeting_id')->value;
+  }
+
+  $policymaker_id = NULL;
+  if ($entity->hasField('field_policymaker_id') && !$entity->get('field_policymaker_id')->isEmpty()) {
+    $policymaker_id = $entity->get('field_policymaker_id')->value;
+  }
+
+  $tags = [];
+  if ($meeting_id) {
+    $tags[] = 'meeting:' . $meeting_id;
+  }
+  if ($policymaker_id) {
+    $tags[] = 'decision_pm:' . $policymaker_id;
+  }
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
+}
+
+/**
+ * Invalidates custom cache tags for meetings.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
+ */
+function _paatokset_ahjo_api_invalidate_meeting_cache_tags(FieldableEntityInterface $entity): void {
+  $policymaker_id = NULL;
+  if ($entity->hasField('field_meeting_dm_id') && !$entity->get('field_meeting_dm_id')->isEmpty()) {
+    $policymaker_id = $entity->get('field_meeting_dm_id')->value;
+  }
+
+  $tags = [];
+  if ($policymaker_id) {
+    $tags[] = 'meeting_pm:' . $policymaker_id;
+  }
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
 }
 
 /**
@@ -820,6 +913,40 @@ function _paatokset_ahjo_api_get_existing_value(array $values) {
     return $default;
   }
   if ($node instanceof NodeInterface && $node->hasField($field) && !$node->get($field)->isEmpty()) {
+    return $node->get($field)->value;
+  }
+
+  return $default;
+}
+
+/**
+ * Get existing value, if node already exists and title field is overridden.
+ */
+function _paatokset_ahjo_api_get_existing_value_with_override(array $values) {
+  $nid = $values[0];
+  $field = $values[1];
+  $override_field = $values[2];
+  $default = $values[3];
+  $langcode = $values[4];
+
+  if (!$nid) {
+    return $default;
+  }
+
+  $node = Node::load($nid);
+  if ($node->hasTranslation($langcode)) {
+    $node = $node->getTranslation($langcode);
+  }
+  else {
+    return $default;
+  }
+
+  if (!$node instanceof NodeInterface) {
+    return $default;
+  }
+
+  // Return existing value if override field is value is not empty.
+  if ($node->hasField($override_field) && $node->get($override_field)->value && $node->hasField($field) && !$node->get($field)->isEmpty()) {
     return $node->get($field)->value;
   }
 

@@ -1,0 +1,52 @@
+# Swedish translations for policymaker content.
+#
+msgid ""
+msgstr ""
+
+msgid "Initiatives by the councillor"
+msgstr "Ledamötens initiativ"
+
+msgid "Resolutions by the councillor"
+msgstr "Ledamötens hemställningsklämmar"
+
+msgid "Memberships and roles"
+msgstr "Medlemskap och roller (på finska)"
+
+msgid "Member"
+msgstr "Ledamot"
+
+msgid "Deputy member"
+msgstr "Ersättare"
+
+msgid "Chairman"
+msgstr "Ordförande"
+
+msgid "Vice chairman"
+msgstr "Vice ordförande"
+
+msgid "Councillor"
+msgstr "Ledamot"
+
+msgid "Deputy Councillor"
+msgstr "Ersättare"
+
+msgid "Browse policymakers"
+msgstr "Blädra bland beslutsfattare"
+
+msgid "City Board sub-committees"
+msgstr "Stadsstyrelsens sektioner"
+
+msgid "Committees and Boards"
+msgstr "Nämnder och direktioner"
+
+msgid "Office holders"
+msgstr "Tjänsteinnehavare"
+
+msgid "Office holders: @sector_title"
+msgstr "Tjänsteinnehavare: @sector_title"
+
+msgid "Elected official decisionmakers"
+msgstr "Förtroendevalda tjänsteinnehavare"
+
+msgid "City Council members"
+msgstr "Stadsfullmäktiges ledamöter"

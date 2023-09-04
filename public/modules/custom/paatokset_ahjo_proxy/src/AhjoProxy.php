@@ -4,25 +4,26 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Url;
-use Drupal\file\FileRepositoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Url;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
+use Drupal\migrate\MigrateExecutable;
+use Drupal\migrate\MigrateMessage;
+use Drupal\migrate\Plugin\MigrationPluginManager;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
-use Drupal\Component\Utility\Unicode;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Psr7\Response;
-use Drupal\node\Entity\Node;
-use Drupal\migrate\Plugin\MigrationPluginManager;
-use Drupal\migrate\MigrateMessage;
-use Drupal\migrate\MigrateExecutable;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Handler for AHJO API Proxy.
@@ -88,6 +89,13 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected CacheBackendInterface $dataCache;
 
   /**
+   * The database.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * {@inheritdoc}
    */
   public function getCacheMaxAge() : int {
@@ -118,13 +126,15 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   File repository.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjo_open_id
    *   Ahjo Open ID service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, ConfigFactoryInterface $config_factory, AhjoOpenId $ahjo_open_id) {
+  public function __construct(ClientInterface $http_client, CacheBackendInterface $data_cache, EntityTypeManagerInterface $entity_type_manager, MigrationPluginManager $migration_manager, LoggerChannelFactoryInterface $logger_factory, FileRepositoryInterface $file_repository, ConfigFactoryInterface $config_factory, Connection $database, AhjoOpenId $ahjo_open_id) {
     $this->httpClient = $http_client;
     $this->dataCache = $data_cache;
     $this->ahjoOpenId = $ahjo_open_id;
@@ -133,6 +143,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $this->fileRepository = $file_repository;
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
     $this->config = $config_factory;
+    $this->database = $database;
   }
 
   /**
@@ -147,6 +158,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('logger.factory'),
       $container->get('file.repository'),
       $container->get('config.factory'),
+      $container->get('database'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -176,6 +188,12 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // Local adjustments for fetching records through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
+    }
+
+    // Local adjustments for fetching meetings through proxy.
+    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'meetings') === 0) {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
       $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
     }
@@ -453,6 +471,28 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Get organization positions of trust from Ahjo API.
+   *
+   * @param string $id
+   *   Organization ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Positions of trust data.
+   */
+  public function getOrganizationPositions(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $positions_url = $this->getApiBaseUrl() . 'agents/positionoftrust?org=' . strtoupper($id) . '&' . urldecode($query_string);
+    $data = $this->getContent($positions_url, $bypass_cache);
+    return $data;
+  }
+
+  /**
    * Return organization chart structure.
    *
    * @param string $orgId
@@ -629,8 +669,24 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'trustees.json';
         break;
 
+      case 'trustees_fi':
+        $filename = 'trustees_fi.json';
+        break;
+
+      case 'trustees_sv':
+        $filename = 'trustees_sv.json';
+        break;
+
       case 'trustees_council':
         $filename = 'trustees_council.json';
+        break;
+
+      case 'trustees_council_fi':
+        $filename = 'trustees_council_fi.json';
+        break;
+
+      case 'trustees_council_sv':
+        $filename = 'trustees_council_sv.json';
         break;
 
       case 'decisionmakers':
@@ -891,10 +947,17 @@ class AhjoProxy implements ContainerInjectionInterface {
     if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
+    if (!isset($context['results']['langcode']) && isset($data['langcode'])) {
+      $context['results']['langcode'] = $data['langcode'];
+    }
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $full_data = $ahjo_proxy->getData($data['endpoint'], NULL);
+    $query_string = NULL;
+    if (!empty($data['langcode'])) {
+      $query_string = 'apireqlang=' . $data['langcode'];
+    }
+    $full_data = $ahjo_proxy->getData($data['endpoint'], $query_string);
 
     if (!empty($full_data)) {
       $context['results']['items'][] = $full_data;
@@ -925,6 +988,9 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
+    }
+    elseif (!empty($results['langcode'])) {
+      $filename = 'trustees_' . $results['langcode'] . '.json';
     }
     else {
       $filename = 'trustees.json';
@@ -1651,17 +1717,61 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Endpoint to use (cases, meetings, decisions).
    * @param string $id
    *   Case diary number, meeting or decision ID.
+   * @param string $queue_name
+   *   Queue to add entity to. Defaults to 'ahjo_api_retry_queue'.
+   * @param string $update_type
+   *   Update type (for debugging purposes). Defaults to 'AddedFromDrush'.
+   *
+   * @return string|null
+   *   Item ID if it was successfully added to queue, otherwise NULL.
    */
-  public function addItemToAhjoQueue(string $endpoint, string $id): void {
-    $queue = \Drupal::service('queue')->get('ahjo_api_subscriber_queue');
-    $queue->createItem([
+  public function addItemToAhjoQueue(string $endpoint, string $id, string $queue_name = 'ahjo_api_retry_queue', $update_type = 'AddedFromDrush'): ?string {
+    // Attempt to reduce duplicates.
+    if ($this->checkIfItemIsAlreadyInQueue($endpoint, $id, $queue_name)) {
+      return NULL;
+    }
+    $created = (int) (new \DateTime('NOW'))->format('U');
+    $queue = \Drupal::service('queue')->get($queue_name);
+    $item_id = $queue->createItem([
       'id' => $endpoint,
       'content' => (object) [
-        'updatetype' => 'AddedFromDrush',
+        'updatetype' => $update_type,
         'id' => $id,
       ],
+      'created' => $created,
       'request' => [],
     ]);
+
+    return $item_id;
+  }
+
+  /**
+   * Check if item has already been added to queue. Used to reduce duplicates.
+   *
+   * @param string $endpoint
+   *   Entity type / endpoint for item.
+   * @param string $id
+   *   Item's ID in Ahjo API.
+   * @param string $queue_name
+   *   Queue name to check.
+   *
+   * @return bool
+   *   Returns TRUE if item is found in queue.
+   */
+  public function checkIfItemIsAlreadyInQueue(string $endpoint, string $id, string $queue_name): bool {
+    // Load the specified queue item from the queue table.
+    $query = $this->database->select('queue', 'q')
+      ->fields('q', ['item_id'])
+      ->condition('q.name', $queue_name)
+      ->condition('q.data', '%' . $this->database->escapeLike($id) . '%', 'LIKE')
+      ->condition('q.data', '%' . $this->database->escapeLike($endpoint) . '%', 'LIKE')
+      // Item id should be unique.
+      ->range(0, 1);
+
+    if ($query->execute()->fetchObject()) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
@@ -2275,6 +2385,11 @@ class AhjoProxy implements ContainerInjectionInterface {
         $migration_url = '/ahjo-proxy/trustees/single/';
         break;
 
+      case 'trustees_sv':
+        $migration_id = 'ahjo_trustees:single_sv';
+        $migration_url = '/ahjo-proxy/trustees/single/';
+        break;
+
       case 'organization':
         $migration_id = 'ahjo_decisionmakers:single';
         $migration_url = '/ahjo-proxy/organization/single/';
@@ -2627,8 +2742,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   The cache key.
    */
   protected function getCacheKey(string $id) : string {
-    $id = preg_replace('/[^a-z0-9_]+/s', '_', $id);
-
+    $id = preg_replace('/[^a-zA-Z0-9_]+/s', '_', $id);
     return sprintf('ahjo-proxy-%s', $id);
   }
 

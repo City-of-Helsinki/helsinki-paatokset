@@ -1,0 +1,52 @@
+# Finnish translations for policymaker content.
+#
+msgid ""
+msgstr ""
+
+msgid "Initiatives by the councillor"
+msgstr "Luottamushenkilön tekemät aloitteet"
+
+msgid "Resolutions by the councillor"
+msgstr "Luottamushenkilön hyväksytyt ponnet"
+
+msgid "Memberships and roles"
+msgstr "Luottamushenkilön roolit ja jäsenyydet"
+
+msgid "Member"
+msgstr "Jäsen"
+
+msgid "Deputy member"
+msgstr "Varajäsen"
+
+msgid "Chairman"
+msgstr "Puheenjohtaja"
+
+msgid "Vice chairman"
+msgstr "Varapuheenjohtaja"
+
+msgid "Councillor"
+msgstr "Valtuutettu"
+
+msgid "Deputy Councillor"
+msgstr "Varavaltuutettu"
+
+msgid "Browse policymakers"
+msgstr "Selaa päättäjiä"
+
+msgid "City Board sub-committees"
+msgstr "Kaupunginhallituksen jaostot"
+
+msgid "Committees and Boards"
+msgstr "Lautakunnat ja johtokunnat"
+
+msgid "Office holders"
+msgstr "Viranhaltijat"
+
+msgid "Office holders: @sector_title"
+msgstr "Viranhaltijat: @sector_title"
+
+msgid "Elected official decisionmakers"
+msgstr "Luottamushenkilöpäättäjät"
+
+msgid "City Council members"
+msgstr "Kaupunginvaltuuston jäsenet"

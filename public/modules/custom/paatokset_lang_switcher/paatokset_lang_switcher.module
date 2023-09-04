@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_language_switch_links_alter().
@@ -145,7 +145,10 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   foreach ($route->getParameters() as $key => $value) {
     // Special case for translating policymaker organization parameter.
     if ($key === 'organization') {
+      // Policymaker gets lost when returning page from cache, so set it again.
+      $policymakerService->setPolicyMakerByPath();
       $organization = $policymakerService->getPolicymakerOrganizationFromUrl(NULL, $langCode);
+
       if ($organization) {
         $parameters[$key] = $organization;
       }

@@ -8,13 +8,17 @@ services:
     volumes:
       - .:/app:delegated
       - ssh:/tmp/druid_ssh-agent:ro
+    depends_on:
+      - db
     environment:
       APP_ENV: "${APP_ENV:-local}"
-      PROJECT_NAME: "${PROJECT_NAME}"
-      DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME}"
+      DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME},http://${COMPOSE_PROJECT_NAME}-varnish"
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
-      XDEBUG_ENABLE: "true"
-      SIMPLETEST_BASE_URL: "http://app:8080"
+      # To enable xdebug, run `export XDEBUG_ENABLE=true` before (re)starting your project.
+      # Optionally, you can add this to your default environments variables to enable or disable
+      # xdebug by default (like /etc/environments, ~/.bashrc, or ~/.zshrc).
+      XDEBUG_ENABLE: "${XDEBUG_ENABLE:-false}"
+      SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
       SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
       BROWSERTEST_OUTPUT_BASE_URL: "https://${DRUPAL_HOSTNAME}"
       DRUPAL_VARNISH_HOST: "${COMPOSE_PROJECT_NAME}-varnish"
@@ -45,7 +49,7 @@ services:
       - internal
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/mariadb:10.9-drupal
+    image: druidfi/mariadb:10.11-drupal
     environment:
       MARIADB_AUTO_UPGRADE: "1"
       MARIADB_INITDB_SKIP_TZINFO: "1"

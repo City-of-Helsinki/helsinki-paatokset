@@ -2,8 +2,9 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\paatokset_datapumppu\Service\StatementService;
 
 /**
  * Service class for retrieving trustee-related data.
@@ -62,11 +63,11 @@ class TrusteeService {
 
     if ($title = $trustee->get('field_trustee_title')->value) {
 
-      if ($title === 'Jäsen') {
+      if ($title === 'Jäsen' || $title === 'Medlem') {
         return t('Councillor');
       }
 
-      if ($title === 'Varajäsen') {
+      if ($title === 'Varajäsen' || $title === 'Ersättare') {
         return t('Deputy councillor');
       }
 
@@ -77,8 +78,6 @@ class TrusteeService {
   /**
    * Get trustee speaking turns from Datapumppu integration.
    *
-   * Note: Not implemented yet!
-   *
    * @param Drupal\node\NodeInterface $trustee
    *   Trustee node.
    *
@@ -86,18 +85,30 @@ class TrusteeService {
    *   Trustee's speaking turns from the API, if found.
    */
   public static function getSpeakingTurns(NodeInterface $trustee): ?array {
-    if (!$trustee->hasField('field_trustee_datapumppu_id') || $trustee->get('field_trustee_datapumppu_id')->isEmpty()) {
-      return NULL;
+    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    /** @var \Drupal\paatokset_datapumppu\Service\StatementService $statementService */
+    $statementService = \Drupal::service(StatementService::class);
+
+    $statements = $statementService->getStatementsByTrustee($trustee);
+    $content = [];
+
+    foreach ($statements as $statement) {
+      if ($statement->hasTranslation($currentLanguage)) {
+        $statement = $statement->getTranslation($currentLanguage);
+      }
+
+      $statementYear = $statement->get('start_time')->date->format('Y');
+
+      $content[$statementYear][] = [
+        'speaking_turn' => $statementService->formatStatementTitle($statement),
+        'link' => $statement->get('video_url')->getString(),
+      ];
     }
 
-    // Placeholder content for layout before API integration is implemented.
-    $content = [
-      'meeting' => 'Kaupunginvaltuuston kokous 2021/26',
-      'speaking_turn' => '13. Kansanäänestysaloite Malmin lentokentän säilyttämisestä ilmailukäytössä (2:13)',
-      'link' => '/',
-    ];
+    krsort($content);
 
-    return [$content];
+    return $content;
   }
 
   /**

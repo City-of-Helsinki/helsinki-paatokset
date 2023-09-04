@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_ahjo_proxy\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use GuzzleHttp\Psr7\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -207,6 +207,23 @@ class AhjoProxyController extends ControllerBase {
   public function organizationSingle(Request $request, string $id): JsonResponse {
     $query_string = $request->getQueryString();
     $data = $this->ahjoProxy->getSingleOrganization($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Get organization positions of trust.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Organization ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for organizations.
+   */
+  public function organizationPositions(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getOrganizationPositions($id, $query_string);
     return new JsonResponse($data);
   }
 

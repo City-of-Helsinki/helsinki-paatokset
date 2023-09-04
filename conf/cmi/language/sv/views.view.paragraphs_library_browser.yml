@@ -42,3 +42,5 @@ display:
         type:
           expose:
             label: Typ
+  entity_browser:
+    display_title: Objektläsare

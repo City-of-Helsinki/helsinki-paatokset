@@ -4,15 +4,16 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_policymakers\Service;
 
-use Drupal\Core\Url;
-use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
-use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\search_api\Entity\Index;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -25,6 +26,11 @@ class PolicymakerService {
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'policymaker';
+
+  /**
+   * City council id in Ahjo.
+   */
+  public const CITY_COUNCIL_DM_ID = '02900';
 
   /**
    * Policymaker node.
@@ -494,11 +500,15 @@ class PolicymakerService {
    *
    * @param Drupal\node\NodeInterface $meeting
    *   Meeting to get announcement from.
+   * @param string $langcode
+   *   Langcode used for motion link checking.
+   * @param array|null $agendaItems
+   *   Agenda items for meetings, used to speed up link fetching.
    *
    * @return array|null
    *   Render array with parsed HTML content, if found.
    */
-  public function getDecisionAnnouncement(NodeInterface $meeting): ?array {
+  public function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
     // If meeting minutes are published, do not display announcement.
     if ($meeting->hasField('field_meeting_minutes_published') && $meeting->get('field_meeting_minutes_published')->value) {
       return NULL;
@@ -547,9 +557,13 @@ class PolicymakerService {
 
     $accordions = [];
     $main_sections = $xpath->query("//*[@class='Tiedote']");
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
     if ($main_sections) {
       foreach ($main_sections as $node) {
         $accordion = [];
+        $motion_id = NULL;
         foreach ($node->childNodes as $child_node) {
           if ($child_node->nodeName === 'h3') {
             $accordion['heading'] = $child_node->nodeValue;
@@ -557,6 +571,36 @@ class PolicymakerService {
           }
           if ($child_node->getAttribute('class') === 'TiedoteTeksti') {
             $accordion['content']['#markup'] = $child_node->ownerDocument->saveHTML($child_node);
+          }
+
+          if ($child_node->getAttribute('class') === 'esitysPdfVersioId') {
+            $motion_id = trim($child_node->nodeValue);
+          }
+        }
+
+        // Get link to motion based on native ID.
+        if ($motion_id) {
+          $motion_url = NULL;
+          // First check agenda because URLs were already generated there.
+          foreach ($agendaItems as $item) {
+            if ($item['native_id'] === $motion_id) {
+              $motion_url = $item['link'];
+              break;
+            }
+          }
+
+          // Next try to get URL without loading nodes.
+          if (!$motion_url instanceof Url) {
+            $motion_url = $caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+          }
+
+          // Last try to get URL based on native ID.
+          if (!$motion_url instanceof Url) {
+            $motion_url = $caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+          }
+
+          if ($motion_url instanceof Url) {
+            $accordion['link'] = $motion_url;
           }
         }
 
@@ -674,7 +718,13 @@ class PolicymakerService {
       ->sort('field_meeting_date', 'DESC');
 
     if ($limit) {
-      $query->range('0', $limit);
+      // Increase limit to reduce change of sorting errors.
+      if ($limit < 10) {
+        $query->range('0', 10);
+      }
+      else {
+        $query->range('0', $limit);
+      }
     }
 
     $ids = $query->execute();
@@ -727,6 +777,12 @@ class PolicymakerService {
         $section = '';
       }
 
+      // Try to get link without node data first with fi langcode and then sv.
+      $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'fi');
+      if (!$link) {
+        $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'sv');
+      }
+
       $result = [
         'year' => $year,
         'date_desktop' => date('d.m.Y', $timestamp),
@@ -734,7 +790,7 @@ class PolicymakerService {
         'timestamp' => $timestamp,
         'subject' => $decision_label,
         'section' => $section,
-        'link' => $caseService->getDecisionUrlLight($id, $data->field_decision_native_id_value, $data->field_diary_number_value),
+        'link' => $link,
       ];
 
       $results[] = $result;
@@ -758,41 +814,161 @@ class PolicymakerService {
       }
     }
 
+    // Reduce results to original limit.
+    if ($limit) {
+      return array_slice($transformedResults, 0, $limit);
+    }
+
     return $transformedResults;
   }
 
   /**
-   * Get policymaker composition based on latest meeting.
+   * Get decision list for officials from ElasticSearch Index.
    *
-   * @param string|null $id
-   *   Policymaker ID, leave NULL to use currently set.
+   * @param int|null $limit
+   *   Limit results. Defaults to 10000 (maximum amount of results from index).
+   * @param bool $byYear
+   *   Group decision by year.
    *
    * @return array
-   *   Policymaker composition, if found.
+   *   List of decisions.
    */
-  public function getComposition(?string $id = NULL): ?array {
-    if ($id === NULL) {
-      $policymaker = $this->policymaker;
-    }
-    else {
-      $policymaker = $this->getPolicyMaker($id);
+  public function getAgendasListFromElasticSearch(?int $limit = 10000, bool $byYear = TRUE): array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
     }
 
+    if (!$limit) {
+      $limit = 10000;
+    }
+
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    $index = Index::load('decisions');
+    $query = $index->query();
+    $query->range(0, $limit);
+    $query->addCondition('field_policymaker_id', $this->policymakerId)
+      ->addCondition('field_is_decision', TRUE);
+
+    // Sort by date and section number.
+    $query->sort('meeting_date', 'DESC');
+    $query->sort('field_decision_section', 'DESC');
+
+    $results = $query->execute();
+    $data = [];
+    foreach ($results as $result) {
+      $subject = $result->getField('subject')->getValues()[0];
+      $timestamp = $result->getField('meeting_date')->getValues()[0];
+      $section = $result->getField('field_decision_section')->getValues()[0];
+      $link = $result->getField('decision_url')->getValues()[0];
+      $year = date('Y', $timestamp);
+
+      if (!empty($section)) {
+        $decision_label = '§ ' . $section . ' ' . $subject;
+      }
+      else {
+        $decision_label = $subject;
+      }
+
+      // URL is based on node language, so replace parts of the URL here.
+      $search_strings = [
+        'fi' => [
+          '/fi/',
+          'asia',
+          'paatos',
+        ],
+        'sv' => [
+          '/sv/',
+          'arende',
+          'beslut',
+        ],
+        'en' => [
+          '/en/',
+          'case',
+          'decision',
+        ],
+      ];
+
+      $localized_link = $link;
+      if (str_starts_with($link, '/fi/')) {
+        $localized_link = str_replace($search_strings['fi'], $search_strings[$langcode], $link);
+      }
+      elseif (str_starts_with($link, '/sv/')) {
+        $localized_link = str_replace($search_strings['sv'], $search_strings[$langcode], $link);
+      }
+      elseif (str_starts_with($link, '/en/')) {
+        $localized_link = str_replace($search_strings['en'], $search_strings[$langcode], $link);
+      }
+
+      $item = [
+        'year' => $year,
+        'date_desktop' => date('d.m.Y', $timestamp),
+        'date_mobile' => date('m - Y', $timestamp),
+        'timestamp' => $timestamp,
+        'subject' => $decision_label,
+        'section' => $section,
+        'link' => $localized_link,
+      ];
+
+      $data[] = $item;
+    }
+
+    $transformedResults = [];
+    foreach ($data as $item) {
+      if ($byYear) {
+        $transformedResults[$item['year']][] = $item;
+      }
+      else {
+        $transformedResults[] = $item;
+      }
+    }
+
+    return $transformedResults;
+  }
+
+  /**
+   * Get normalized field_meeting_composition data from latest meeting.
+   *
+   * If no meetings have been held, returns data from the most recently updated
+   * meeting.
+   *
+   * @param \Drupal\node\NodeInterface|null $policymaker
+   *   Policymaker node.
+   *
+   * @return array
+   *   Meeting composition keyed by alternative spellings of trustee names.
+   */
+  private function getCompositionDataFromLatestMeeting(?NodeInterface $policymaker): array {
     if (!$policymaker instanceof NodeInterface || $policymaker->get('field_policymaker_id')->isEmpty()) {
       return [];
     }
 
     $policymaker_id = $policymaker->get('field_policymaker_id')->value;
 
+    // Get the latest held meeting.
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $policymaker_id)
       ->condition('field_meeting_composition', '', '<>')
+      ->condition('field_meeting_status', 'pidetty')
       ->range(0, 1)
       ->sort('field_meeting_date', 'DESC');
 
     $ids = $query->execute();
+
+    // If no meetings have been held, get the most recently updated one.
+    if (empty($ids)) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', 'meeting')
+        ->condition('field_meeting_dm_id', $policymaker_id)
+        ->condition('field_meeting_composition', '', '<>')
+        ->range(0, 1)
+        ->sort('changed', 'DESC');
+
+      $ids = $query->execute();
+    }
 
     if (empty($ids)) {
       return [];
@@ -811,7 +987,6 @@ class PolicymakerService {
       'Varapuheenjohtaja',
     ];
 
-    $names = [];
     foreach ($meeting->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value, TRUE);
       if (!isset($data['Role']) || !in_array($data['Role'], $allowed_roles)) {
@@ -819,7 +994,6 @@ class PolicymakerService {
       }
       if (!empty($data)) {
         $formatted_name = $this->formatTrusteeName($data['Name']);
-        $names[] = $formatted_name;
 
         // Normalize unknown deputyof fields.
         if ($data['DeputyOf'] === 'null null' || $data['DeputyOf'] === 'null') {
@@ -831,7 +1005,6 @@ class PolicymakerService {
         // Special handling for combined last names or middle names.
         $alt_formatted_name = $this->formatTrusteeName($data['Name'], TRUE);
         if ($formatted_name !== $alt_formatted_name) {
-          $names[] = $alt_formatted_name;
           $data['orig_name'] = $formatted_name;
           $data['alt_name'] = TRUE;
           $composition[$alt_formatted_name] = $data;
@@ -839,6 +1012,47 @@ class PolicymakerService {
       }
     }
 
+    return $composition;
+  }
+
+  /**
+   * Get composition based on latest meeting.
+   *
+   * @param string|null $id
+   *   Policymaker ID, leave NULL to use currently set.
+   *
+   * @return \Drupal\node\NodeInterface[]
+   *   Policymaker composition trustee nodes, if found.
+   */
+  public function getTrustees(?string $id = NULL): array {
+    $policymaker = $this->getPolicyMaker($id);
+    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    if (empty($composition)) {
+      return [];
+    }
+
+    $names = array_keys($composition);
+
+    return $this->getTrusteeNodesByName($names);
+  }
+
+  /**
+   * Get policymaker composition based on latest meeting.
+   *
+   * @param string|null $id
+   *   Policymaker ID, leave NULL to use currently set.
+   *
+   * @return array
+   *   Policymaker composition, if found.
+   */
+  public function getComposition(?string $id = NULL): ?array {
+    $policymaker = $this->getPolicyMaker($id);
+    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    if (empty($composition)) {
+      return [];
+    }
+
+    $names = array_keys($composition);
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
     $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -1183,19 +1397,15 @@ class PolicymakerService {
   }
 
   /**
-   * Return all agenda items for a meeting. Only works on policymaker subpages.
+   * Get meeting node for this policymaker.
    *
    * @param string $meetingId
-   *   Meeting ID to get Agenda Items for.
+   *   Meeting ID to load.
    *
-   * @return array|null
-   *   Agenda items for meeting.
+   * @return \Drupal\node\NodeInterface|null
+   *   Meeting node or NULL if one can't be loaded.
    */
-  public function getMeetingAgenda(string $meetingId): ?array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
+  public function getMeetingNode(string $meetingId): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'meeting')
@@ -1210,10 +1420,44 @@ class PolicymakerService {
     $ids = $query->execute();
 
     if (empty($ids)) {
-      throw new NotFoundHttpException();
+      return NULL;
     }
 
-    $meeting = Node::load(reset($ids));
+    return Node::load(reset($ids));
+  }
+
+  /**
+   * Get meeting title from node.
+   *
+   * @param \Drupal\node\NodeInterface $meeting
+   *   Meeting node.
+   *
+   * @return string
+   *   Formatted meeting title.
+   */
+  public function getMeetingTitle(NodeInterface $meeting): string {
+    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
+    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
+    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
+    $meetingYear = date('Y', $meeting_timestamp);
+    return $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear;
+  }
+
+  /**
+   * Return all agenda items for a meeting. Only works on policymaker subpages.
+   *
+   * @param string $meetingId
+   *   Meeting ID to get Agenda Items for.
+   *
+   * @return array|null
+   *   Agenda items for meeting.
+   */
+  public function getMeetingAgenda(string $meetingId): ?array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $meeting = $this->getMeetingNode($meetingId);
     if (!$meeting instanceof NodeInterface) {
       throw new NotFoundHttpException();
     }
@@ -1302,7 +1546,7 @@ class PolicymakerService {
     }
 
     // Decision announcement.
-    $decisionAnnouncement = $this->getDecisionAnnouncement($meeting);
+    $decisionAnnouncement = $this->getDecisionAnnouncement($meeting, $currentLanguage, $agendaItems);
 
     return [
       'meeting' => [
@@ -1370,18 +1614,31 @@ class PolicymakerService {
         $index = '';
       }
 
+      // First, try getting decision URL without loading nodes.
+      // This is based on diary number and native ID.
       $agenda_link = NULL;
-      // First, try with series ID.
-      if (!empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
+      $native_id = NULL;
+      if (!empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
+        $native_id = $data['PDF']['NativeId'];
+        $agenda_link = $caseService->getDecisionUrlWithoutNode($native_id, $data['CaseIDLabel'], $langcode);
+      }
+
+      // Next, try with native ID.
+      if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
+        $agenda_link = $caseService->getDecisionUrlByNativeId($data['PDF']['NativeId']);
+      }
+
+      // Next, try with version series ID.
+      if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
         $agenda_link = $caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);
       }
 
-      // If a decision can't be found with series ID, try with title.
+      // If a decision can't be found with ID or series ID, try with title.
       if (!$agenda_link && !empty($data['Section']) && !empty($data['AgendaItem'])) {
         $section_clean = (string) intval($data['Section']);
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
       }
-      else if (!$agenda_link) {
+      elseif (!$agenda_link) {
         $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
@@ -1392,6 +1649,7 @@ class PolicymakerService {
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
+          'native_id' => $native_id,
         ];
       }
       else {
@@ -1400,6 +1658,7 @@ class PolicymakerService {
           'subject' => $data['AgendaItem'],
           'index' => $index,
           'link' => $agenda_link,
+          'native_id' => $native_id,
         ];
       }
     }

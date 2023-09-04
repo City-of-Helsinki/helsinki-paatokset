@@ -1,0 +1,20 @@
+uuid: 8f29a3dd-5f69-4dc3-bd5a-d1d2670906ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_messages
+theme: hdbt_subtheme
+region: messages
+weight: -14
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Tilaviestit
+  label_display: '0'
+  provider: system
+visibility: {  }

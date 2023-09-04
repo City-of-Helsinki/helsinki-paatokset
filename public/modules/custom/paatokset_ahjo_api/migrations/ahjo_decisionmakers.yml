@@ -72,6 +72,7 @@ source:
       type: string
   constants:
     title_field: title
+    title_override_field: field_override_title
 process:
   type:
     plugin: default_value
@@ -85,10 +86,11 @@ process:
     source: decisionmaker_id
   title:
     plugin: callback
-    callable: _paatokset_ahjo_api_get_existing_value
+    callable: _paatokset_ahjo_api_get_existing_value_with_override
     source:
       - '@nid'
       - 'constants/title_field'
+      - 'constants/title_override_field'
       - 'title'
       - '@langcode'
   field_ahjo_title:
@@ -104,14 +106,14 @@ process:
     source: existing
   field_policymaker_formed:
     plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.000'
+    from_format: 'Y-m-d\TH:i:s.v'
     to_format: 'Y-m-d\TH:i:s'
     from_timezone: Europe/Helsinki
     to_timezone: UTC
     source: formed
   field_policymaker_dissolved:
     plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.000'
+    from_format: 'Y-m-d\TH:i:s.v'
     to_format: 'Y-m-d\TH:i:s'
     from_timezone: Europe/Helsinki
     to_timezone: UTC

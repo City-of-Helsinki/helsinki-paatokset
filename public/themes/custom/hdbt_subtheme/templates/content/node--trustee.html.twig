@@ -1,0 +1,251 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ */
+#}
+
+{%
+  set classes = [
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  first_paragraph_grey ? 'has-first-gray-bg-block'
+]
+%}
+
+{{ attach_library('hdbt/accordion') }}
+
+<article{{ attributes.addClass(classes) }}>
+
+  {{ title_prefix }}
+  {% if label and view_mode != 'full' and not hide_label %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+
+  <div class="trustee-top-container">
+    <span>{{ content.field_trustee_title }}</span>
+    <span>{{ content.field_trustee_council_group }}</span>
+  </div>
+  <div class="trustee-image">
+      {{ content.field_trustee_image }}
+    </div>
+  {% if
+    content.field_trustee_profession|render or
+    content.field_trustee_home_district|render or
+    content.field_trustee_email|render or
+    content.field_trustee_homepage|render or
+    policymaker_declaration|render or
+    doa|render or
+    content.field_trustee_phone|render
+  %}
+    <div class="trustee-information">
+      {% if content.field_trustee_profession|render %}
+        <div class="information-row">{{ content.field_trustee_profession }}</div>
+      {% endif %}
+      {% if content.field_trustee_home_district|render %}
+        <div class="information-row">{{ content.field_trustee_home_district }}</div>
+      {% endif %}
+      {% if content.field_trustee_phone|render %}
+        <div class="information-row">{{ content.field_trustee_phone }}</div>
+      {% endif %}
+      {% if content.field_trustee_email|render %}
+        <div class="information-row">{{ content.field_trustee_email }}</div>
+      {% endif %}
+      {% if content.field_trustee_homepage|render %}
+        <div class="information-row">{{ content.field_trustee_homepage }}</div>
+      {% endif %}
+      {% if doa %}
+        <div class="information-row information-row--doa">
+          <div class="label">{{ 'Declaration of affiliation'|t }}:</div>
+          {{ doa }}
+        </div>
+      {% endif %}
+      {% if policymaker_declaration %}
+        <div class="information-row information-row--pm-declaration">{{ policymaker_declaration }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if speaking_turns.content is not empty %}
+  <div class="accordion__wrapper handorgel accordion_speaking-turn">
+    <h2 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ speaking_turns.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h2>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for year, statements in speaking_turns.content %}
+          <h3 class="speaking-turn__group__title">{{ year }}</h3>
+          {% for row in statements %}
+            <div>
+              <div class="speaking-turn__link-container">
+                <a class="speaking-turn__link" href="{{ row.link }}">{{ row.speaking_turn }}</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if initiatives.content is not empty %}
+  <div class="accordion__wrapper handorgel accordion_initiatives">
+    <h2 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ initiatives.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h2>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in initiatives.content %}
+        <div>
+          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if resolutions.content is not empty %}
+  <div class="accordion__wrapper handorgel accordion_resolutions">
+    <h2 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ resolutions.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h2>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in resolutions.content %}
+        <div>
+          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if memberships.content is not empty %}
+  <div class="accordion__wrapper handorgel accordion_speaking-turn">
+    <h2 class="accordion-item__header handorgel__header">
+      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
+        <span>{{ memberships.title }}</span>
+        <div class="accordion-item__icon">
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
+        </div>
+      </button>
+    </h2>
+    <div class="accordion-item__content handorgel__content">
+      <div class="accordion-item__content__inner handorgel__content__inner">
+        {% for row in memberships.content %}
+        <div>
+          {{ row }}
+        </div>
+        {% endfor %}
+        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+          {{ 'Close'|t }}
+          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</article>

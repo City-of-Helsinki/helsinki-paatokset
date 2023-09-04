@@ -8,3 +8,6 @@ dependencies:
   - drupal:paatokset_ahjo_proxy
   - drupal:paatokset_ahjo_openid
   - drupal:paatokset_policymakers
+  - drupal:paatokset_datapumppu
+'interface translation project': paatokset_ahjo_api
+'interface translation server pattern': modules/custom/paatokset_ahjo_api/translations/%language.po

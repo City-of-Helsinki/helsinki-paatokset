@@ -6,9 +6,9 @@ dependencies:
     - paatokset_ahjo_api
     - system
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: paatoksetpolicymakerlisting
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: after_content
 weight: -17
 provider: null

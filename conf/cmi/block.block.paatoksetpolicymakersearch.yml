@@ -7,9 +7,9 @@ dependencies:
     - paatokset_search
     - system
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: paatoksetpolicymakersearch
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: content_lower
 weight: -20
 provider: null

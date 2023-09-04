@@ -1,0 +1,29 @@
+uuid: f23362c5-af0c-484d-8fc8-09d83bf4d56f
+langcode: en
+status: true
+dependencies:
+  module:
+    - hdbt_content
+    - node
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_heroblock
+theme: hdbt_subtheme
+region: before_content
+weight: -19
+provider: null
+plugin: hero_block
+settings:
+  id: hero_block
+  label: 'Hero block'
+  label_display: '0'
+  provider: hdbt_content
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      landing_page: landing_page
+      page: page

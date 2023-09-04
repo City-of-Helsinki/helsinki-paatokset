@@ -6,9 +6,9 @@ dependencies:
     - paatokset_submenus
     - system
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: paatoksetpolicymakerdocuments
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: content_lower
 weight: -17
 provider: null

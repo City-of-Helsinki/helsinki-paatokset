@@ -41,6 +41,8 @@ display:
           label: 'Datum för ändring'
         count:
           label: 'Används i'
+          alter:
+            path: 'admin/content/files/usage/{{ fid }}'
       filters:
         filename:
           expose:

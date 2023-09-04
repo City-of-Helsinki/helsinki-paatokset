@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\ClientInterface;
-use Symfony\Component\HttpFoundation\Request;
+use GuzzleHttp\Psr7\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

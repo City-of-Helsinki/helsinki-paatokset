@@ -6,9 +6,9 @@ dependencies:
     - paatokset_helsinki_kanava
     - system
   theme:
-    - helfi_paatokset
+    - hdbt_subtheme
 id: helsinkikanavaannouncements
-theme: helfi_paatokset
+theme: hdbt_subtheme
 region: before_content
 weight: -18
 provider: null

@@ -1,0 +1,29 @@
+uuid: c04d3f7e-a372-458c-aa3e-bfad4d394de8
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.footer-top-navigation
+  module:
+    - menu_block_current_language
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_footertopnavigation
+theme: hdbt_subtheme
+region: footer_top
+weight: -4
+provider: null
+plugin: 'menu_block_current_language:footer-top-navigation'
+settings:
+  id: 'menu_block_current_language:footer-top-navigation'
+  label: 'Helsingin kaupunki'
+  label_display: visible
+  provider: menu_block_current_language
+  level: 1
+  expand_all_items: false
+  depth: 1
+  translation_providers:
+    views: views
+    menu_link_content: menu_link_content
+    default: '0'
+visibility: {  }

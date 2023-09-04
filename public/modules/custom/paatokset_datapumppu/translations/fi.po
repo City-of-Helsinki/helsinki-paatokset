@@ -1,0 +1,10 @@
+# Finnish translations for Päätökset Datapumppu content.
+#
+msgid ""
+msgstr ""
+
+msgid "City Council @date, case @case: @title - Floor (@duration)"
+msgstr "Kaupunginvaltuusto @date, asia @case: @title - Puheenvuoro (@duration)"
+
+msgid "Speaking turns by the councillor"
+msgstr "Luottamushenkilön puheenvuorot"

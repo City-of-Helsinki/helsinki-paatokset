@@ -4,8 +4,8 @@ namespace Drupal\paatokset_helsinki_kanava\Plugin\migrate\source;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;

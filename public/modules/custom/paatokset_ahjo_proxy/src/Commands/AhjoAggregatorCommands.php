@@ -4,14 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
-use Drush\Commands\DrushCommands;
-use Drupal\file\FileRepositoryInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\node\NodeStorageInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeStorageInterface;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drupal\search_api\Entity\Index;
+use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
 /**
@@ -98,6 +99,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   File to append to. Useful when retrying.
    * @option filename
    *   Filename to use instead of default. Can be used to split/batch results.
+   * @option cancelledonly
+   *   Adds a parameter to only fetch cancelled meetings.
+   * @option decisionmaker_id
+   *   Filter results by specific decision ID.
+   * @option queue
+   *   Add items to aggregation queue to be processed later via cron.
    *
    * @usage ahjo-proxy:aggregate meetings --dataset=latest
    *   Stores latest meetings into meetings_latest.json
@@ -115,6 +122,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'retry' => NULL,
     'filename' => NULL,
     'append' => NULL,
+    'queue' => NULL,
   ]): void {
 
     $allowed_datasets = [
@@ -128,6 +136,13 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
     else {
       $dataset = 'latest';
+    }
+
+    if (!empty($options['queue'])) {
+      $add_to_queue = TRUE;
+    }
+    else {
+      $add_to_queue = FALSE;
     }
 
     $options = $this->setDefaultOptions($endpoint, $dataset, $options);
@@ -198,6 +213,16 @@ class AhjoAggregatorCommands extends DrushCommands {
         $data['append'] = $append_results[$list_key];
       }
 
+      if ($add_to_queue) {
+        $queue_item_id = $this->ahjoProxy->addItemToAhjoQueue($endpoint, $item[$id_key], 'ahjo_api_aggregation_queue', 'Aggregated');
+        if ($queue_item_id) {
+          $this->logger->info('Added ' . $item[$id_key] . ' to ' . $endpoint . ' queue with ID: ' . $queue_item_id);
+        }
+        else {
+          $this->logger->error('Could not add ' . $item[$id_key] . ' to ' . $endpoint . ' queue.');
+        }
+      }
+
       $operations[] = [
         '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',
         [$data],
@@ -209,13 +234,16 @@ class AhjoAggregatorCommands extends DrushCommands {
       return;
     }
 
-    batch_set([
-      'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
-      'operations' => $operations,
-      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
-    ]);
+    // Start process only if not adding items to queue.
+    if (!$add_to_queue) {
+      batch_set([
+        'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
+        'operations' => $operations,
+        'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
+      ]);
 
-    drush_backend_batch_process();
+      drush_backend_batch_process();
+    }
   }
 
   /**
@@ -451,6 +479,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $filename
    *   Filename to get initial data from.
+   * @param string $langcode
+   *   Langcode to get data for.
    *
    * @command ahjo-proxy:get-trustees
    *
@@ -459,7 +489,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:trust
    */
-  public function trustees(string $filename = 'positionsoftrust.json'): void {
+  public function trustees(string $filename = 'positionsoftrust.json', string $langcode = 'fi'): void {
     $this->logger->info('Fetching trustees organizations...');
     $data = $this->ahjoProxy->getStatic($filename);
     $operations = [];
@@ -477,9 +507,10 @@ class AhjoAggregatorCommands extends DrushCommands {
           $data = [
             'endpoint' => 'agents/positionoftrust/' . $item['ID'],
             'count' => $count,
+            'langcode' => $langcode,
           ];
           if ($filename === 'positionsoftrust_council.json') {
-            $data['filename'] = 'trustees_council.json';
+            $data['filename'] = 'trustees_council_' . $langcode . '.json';
           }
           $operations[] = [
             '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processTrusteeItem',
@@ -667,7 +698,23 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     if (!$update_all) {
       if ($logic === 'record') {
-        $query->notExists('field_decision_record');
+        // Don't act on motions since we can't fetch them from the record EP.
+        $query->condition('field_is_decision', 1);
+        $or = $query->orConditionGroup();
+
+        // Default case, fetch record if field is empty.
+        $or->notExists('field_decision_record');
+
+        // Fix decision that have documents stuck in motion mode.
+        $and = $query->andConditionGroup();
+        $and->condition('field_outdated_document', 0);
+        $and->condition('field_decision_record', '"Type": "esitys"', 'CONTAINS');
+        $or->condition($and);
+        $and2 = $query->andConditionGroup();
+        $and2->condition('field_outdated_document', 0);
+        $and2->condition('field_decision_record', '"Type":"esitys"', 'CONTAINS');
+        $or->condition($and2);
+        $query->condition($or);
       }
       elseif ($logic === 'language') {
         $or = $query->orConditionGroup();
@@ -2694,8 +2741,18 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $ids = $query->execute();
     $db_count = count($ids);
-    $this->writeln('Total found for ' . $id . ': ' . $db_count);
-    $this->writeln('Checking API...');
+    $this->writeln('Total found for ' . $id . ' in db: ' . $db_count);
+
+    $index = Index::load('decisions');
+    $query = $index->query();
+    $query->range(0, 10000);
+    $query->addCondition('field_policymaker_id', strtoupper($id))
+      ->addCondition('field_is_decision', TRUE);
+
+    $results = $query->execute();
+    $es_count = $results->getResultCount();
+    $this->writeln('Total found for ' . $id . ' in index: ' . $es_count);
+
     $count = 0;
     if ($years) {
       $years = explode(',', $years);
@@ -2723,8 +2780,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->writeln('Total found for ' . $id . ': ' . $data['count']);
     }
 
-    if ($db_count !== $count) {
-      $this->writeln('MISSING for ' . $id . '! In db: ' . $db_count . ' and in API:' . $count);
+    if ($db_count !== $count || $es_count !== $db_count) {
+      $this->writeln('MISSING for ' . $id . '! DB: ' . $db_count . ', INDEX: ' . $es_count . ', API:' . $count);
     }
     else {
       $this->writeln('All decisions found for ' . $id);

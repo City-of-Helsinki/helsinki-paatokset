@@ -1,0 +1,99 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_datapumppu
+id: datapumppu_statements
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - datapumppu_api
+  - datapumppu_api_statements
+migration_group: datapumppu_api
+label: 'Datapumppu API - Trustees'
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  track_changes: true
+  fields:
+    -
+      name: person
+      label: Person
+      selector: person
+    -
+      name: start_time
+      label: Start Time
+      selector: startTime
+    -
+      name: end_time
+      label: End Time
+      selector: endTime
+    -
+      name: speech_type
+      label: Speech Type
+      selector: speechType
+    -
+      name: duration_seconds
+      label: Duration (seconds)
+      selector: durationSeconds
+    -
+      name: additional_info_FI
+      label: Additional Info (FI)
+      selector: additionalInfoFI
+    -
+      name: additional_info_SV
+      label: Additional Info (SV)
+      selector: additionalInfoSV
+    -
+      name: video_position
+      label: Video Position
+      selector: videoPosition
+    -
+      name: video_link
+      label: Video Link
+      selector: videoLink
+    -
+      name: case_number
+      label: Case Number
+      selector: caseNumber
+    -
+      name: item_number
+      label: Item Number
+      selector: itemNumber
+    -
+      name: title
+      label: Title
+      selector: title
+    -
+      name: meeting_id
+      label: Meeting ID
+      selector: meetingId
+  ids:
+    # Assume that start_time and meeting_id combination is globally unique.
+    start_time:
+      type: string
+    meeting_id:
+      type: string
+process:
+  langcode: constants/LANGCODE
+  title: title
+  speaker/target_id: constants/TRUSTEE_NID
+  speech_type: speech_type
+  start_time:
+    plugin: format_date
+    source: start_time
+    from_format: 'Y-m-d\TH:i:s'
+    to_format: 'Y-m-d\TH:i:s' # DateTimeItemInterface::DATETIME_STORAGE_FORMAT
+    from_timezone: Europe/Helsinki
+    to_timezone: UTC # DateTimeItemInterface::STORAGE_TIMEZONE
+  duration: duration_seconds
+  video_url: video_link
+  case_number: case_number
+  meeting_id: meeting_id
+destination:
+  plugin: entity:paatokset_statement
+  translations: true
+migration_dependencies: {  }

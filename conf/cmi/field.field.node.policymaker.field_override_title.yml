@@ -1,0 +1,23 @@
+uuid: b9bbbbe1-38de-4e22-925a-69fcfc19789b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_override_title
+    - node.type.policymaker
+id: node.policymaker.field_override_title
+field_name: field_override_title
+entity_type: node
+bundle: policymaker
+label: 'Override title'
+description: 'Customize organization title instead of using value from AHJO.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Käytössä
+  off_label: 'Pois päältä'
+field_type: boolean
