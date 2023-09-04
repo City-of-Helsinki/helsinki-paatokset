@@ -11,6 +11,7 @@ use Drupal\file\FileRepositoryInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drupal\search_api\Entity\Index;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
@@ -2740,8 +2741,18 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $ids = $query->execute();
     $db_count = count($ids);
-    $this->writeln('Total found for ' . $id . ': ' . $db_count);
-    $this->writeln('Checking API...');
+    $this->writeln('Total found for ' . $id . ' in db: ' . $db_count);
+
+    $index = Index::load('decisions');
+    $query = $index->query();
+    $query->range(0, 10000);
+    $query->addCondition('field_policymaker_id', strtoupper($id))
+      ->addCondition('field_is_decision', TRUE);
+
+    $results = $query->execute();
+    $es_count = $results->getResultCount();
+    $this->writeln('Total found for ' . $id . ' in index: ' . $es_count);
+
     $count = 0;
     if ($years) {
       $years = explode(',', $years);
@@ -2769,8 +2780,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->writeln('Total found for ' . $id . ': ' . $data['count']);
     }
 
-    if ($db_count !== $count) {
-      $this->writeln('MISSING for ' . $id . '! In db: ' . $db_count . ' and in API:' . $count);
+    if ($db_count !== $count || $es_count !== $db_count) {
+      $this->writeln('MISSING for ' . $id . '! DB: ' . $db_count . ', INDEX: ' . $es_count . ', API:' . $count);
     }
     else {
       $this->writeln('All decisions found for ' . $id);

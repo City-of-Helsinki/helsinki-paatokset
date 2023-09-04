@@ -913,6 +913,7 @@ class PolicymakerService {
       $data[] = $item;
     }
 
+    $transformedResults = [];
     foreach ($data as $item) {
       if ($byYear) {
         $transformedResults[$item['year']][] = $item;
