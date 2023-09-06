@@ -1,6 +1,6 @@
 (function ($, Drupal, once) {
   function handleListVisibility() {
-    const headerContainer = $('.paatokset__decision-tree-container .accordion__wrapper.handorgel');
+    const headerContainer = $('.paatokset__decision-tree-container .accordion__wrapper.tabbed-list');
     const containerWidth = headerContainer.width();
     const menu = headerContainer.find('ul.menu');
     const dropdown = $(headerContainer).find('.custom-select-wrapper');
@@ -50,7 +50,7 @@
   }
 
   function showSelected() {
-    const selectedValue = $('.handorgel__content__inner .selected').find('input[type="button"]').val();
+    const selectedValue = $('.tabbed-list__content__inner .selected').find('input[type="button"]').val();
 
     $('.policymakers-documents, .policymakers-decisions').removeClass('selected-year');
     $(`.policymakers-documents[value="${selectedValue}"], .policymakers-decisions[value="${selectedValue}"]`).addClass('selected-year');
@@ -70,12 +70,12 @@
 
     if(value) {
       // Remove all prior selected classes
-      $('.handorgel__content__inner ul.menu li').removeClass('selected');
+      $('.tabbed-list__content__inner ul.menu li').removeClass('selected');
       $('.custom-select-wrapper .custom-option').removeClass('selected');
       $('.custom-select-wrapper .custom-option input').attr('aria-pressed', false);
 
       // Add selected class to selected item
-      $(`.handorgel__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
+      $(`.tabbed-list__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
       $(`.custom-select-wrapper .custom-option input[value="${value}"]`).parent('.custom-option').addClass('selected');
       $(`.custom-select-wrapper .custom-option input[value="${value}"]`).attr('aria-pressed', 'true');
     }
@@ -89,7 +89,7 @@
         handleListVisibility();
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
-        $(context).find('.accordion-item__content__inner.handorgel__content__inner input').click(handleSelect);
+        $(context).find('.accordion-item__content__inner.tabbed-list__content__inner input').click(handleSelect);
       })
     }
   }
