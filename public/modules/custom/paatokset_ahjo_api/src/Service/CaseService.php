@@ -1639,17 +1639,19 @@ class CaseService {
    *   Decision node.
    * @param string $field_name
    *   Which field to get raw data from.
+   * @param bool $strip_tags
+   *   Only allow text related tags, strip images etc.
    *
    * @return string|null
    *   Parsed content HTML as string, if found.
    */
-  public function getDecisionContentFromHtml(NodeInterface $node, string $field_name): ?string {
+  public function getDecisionContentFromHtml(NodeInterface $node, string $field_name, bool $strip_tags = FALSE): ?string {
     if (!$node instanceof NodeInterface || !$node->hasField($field_name) || $node->get($field_name)->isEmpty()) {
       return NULL;
     }
 
     $html = $node->get($field_name)->value;
-    return $this->parseContentSectionsFromHtml($html);
+    return $this->parseContentSectionsFromHtml($html, $strip_tags);
   }
 
   /**
@@ -1657,11 +1659,13 @@ class CaseService {
    *
    * @param string $html
    *   Input HTML.
+   * @param bool $strip_tags
+   *   Only allow text related tags, strip images etc.
    *
    * @return string|null
    *   Content sections, if found.
    */
-  public function parseContentSectionsFromHtml(string $html): ?string {
+  public function parseContentSectionsFromHtml(string $html, bool $strip_tags = FALSE): ?string {
     $dom = new \DOMDocument();
     if (!empty($html)) {
       @$dom->loadHTML($html);
@@ -1674,6 +1678,11 @@ class CaseService {
 
     foreach ($sections as $section) {
       $content .= $section->ownerDocument->saveHTML($section);
+    }
+
+    if ($strip_tags) {
+      $allowed_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'p'];
+      return strip_tags($content, $allowed_tags);
     }
 
     return $content;
