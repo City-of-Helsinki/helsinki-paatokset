@@ -1676,6 +1676,11 @@ class CaseService {
     // Main decision content sections.
     $sections = $xpath->query("//*[contains(@class, 'SisaltoSektio')]");
 
+    // If content sections are empty (confidential data), use title instead.
+    if ($sections->length === 0) {
+      $sections = $xpath->query("//*[contains(@class, 'AsiaOtsikko')]");
+    }
+
     foreach ($sections as $section) {
       $content .= $section->ownerDocument->saveHTML($section);
     }
