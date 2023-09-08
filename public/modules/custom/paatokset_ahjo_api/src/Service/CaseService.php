@@ -1681,7 +1681,18 @@ class CaseService {
     }
 
     if ($strip_tags) {
-      $allowed_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'p'];
+      $allowed_tags = [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'ul',
+        'ol',
+        'li',
+        'p',
+      ];
       return strip_tags($content, $allowed_tags);
     }
 
