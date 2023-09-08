@@ -42,6 +42,7 @@
 {%
   set classes = [
     'pdf-listing',
+    'component',
   ]
 %}
 
@@ -55,9 +56,9 @@
       </div>
       {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
         {% block container_content %}
-          <div class="accordion__wrapper handorgel">
-            <div class="accordion-item__content handorgel__content">
-              <div class="accordion-item__content__inner handorgel__content__inner">
+          <div class="accordion__wrapper tabbed-list">
+            <div class="accordion-item__content tabbed-list__content">
+              <div class="accordion-item__content__inner tabbed-list__content__inner">
                 <ul class="menu">
                   {% for year in years %}
                     {% set item_attributes = create_attribute() %}

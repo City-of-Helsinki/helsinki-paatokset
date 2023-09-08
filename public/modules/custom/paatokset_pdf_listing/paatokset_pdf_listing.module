@@ -89,7 +89,7 @@ function paatokset_pdf_listing_preprocess_paragraph__pdf_listing(&$variables) {
     ];
   }
 
-  $variables['elements']['#cache']['tags'][] = 'media_list:pdf_minutes_of_discussion';
+  $variables['#cache']['tags'][] = 'media_list:pdf_minutes_of_discussion';
   $variables['years'] = array_keys($documents);
   $variables['documents'] = $documents;
 }
