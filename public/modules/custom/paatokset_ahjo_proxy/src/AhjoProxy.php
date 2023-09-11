@@ -1800,13 +1800,13 @@ class AhjoProxy implements ContainerInjectionInterface {
     $caseService = \Drupal::service('paatokset_ahjo_cases');
     $node = Node::load($data['nid']);
 
-    $decision_content = $caseService->getDecisionContentFromHtml($node, 'field_decision_content');
     if ($node->hasField('field_decision_content_parsed')) {
+      $decision_content = $caseService->getDecisionContentFromHtml($node, 'field_decision_content', TRUE);
       $node->set('field_decision_content_parsed', $decision_content);
     }
 
-    $decision_motion = $caseService->getDecisionContentFromHtml($node, 'field_decision_motion');
     if ($node->hasField('field_decision_motion_parsed')) {
+      $decision_motion = $caseService->getDecisionContentFromHtml($node, 'field_decision_motion', TRUE);
       $node->set('field_decision_motion_parsed', $decision_motion);
     }
 

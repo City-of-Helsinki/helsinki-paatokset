@@ -1440,11 +1440,17 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
 
     if (isset($options['logic']) && $options['logic'] === 'motion') {
-      $query->notExists('field_decision_motion_parsed');
+      $or = $query->orConditionGroup();
+      $or->notExists('field_decision_motion_parsed');
+      $or->condition('field_decision_motion_parsed', '');
+      $query->condition($or);
       $query->condition('field_decision_motion', '', '<>');
     }
     else {
-      $query->notExists('field_decision_content_parsed');
+      $or = $query->orConditionGroup();
+      $or->notExists('field_decision_content_parsed');
+      $or->condition('field_decision_content_parsed', '');
+      $query->condition($or);
       $query->condition('field_decision_content', '', '<>');
     }
 
