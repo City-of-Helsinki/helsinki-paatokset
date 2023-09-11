@@ -1546,7 +1546,7 @@ class CaseService {
     // More information.
     $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
     $more_info_content = NULL;
-    if ($more_info) {
+    if ($more_info->length > 0) {
       $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
       $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
     }
@@ -1561,7 +1561,7 @@ class CaseService {
     // Signature information.
     $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
     $signature_info_content = NULL;
-    if ($signature_info) {
+    if ($signature_info->length > 0) {
       $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
     }
 
@@ -1575,7 +1575,7 @@ class CaseService {
     // Presenter information.
     $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
     $presenter_content = NULL;
-    if ($presenter_info) {
+    if ($presenter_info->length > 0) {
       $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
     }
 
@@ -1589,7 +1589,7 @@ class CaseService {
     // Decision history.
     $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
     $decision_history_content = NULL;
-    if ($decision_history) {
+    if ($decision_history->length > 0) {
       $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
     }
     if ($decision_history_content) {
