@@ -14,7 +14,7 @@
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/hdbt": "4.3.4",
         "drupal/hdbt_admin": "^1.8.6",
-        "drupal/helfi_api_base": "2.3.10",
+        "drupal/helfi_api_base": "^2.5.3",
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_platform_config": "2.18.6",
         "drupal/helfi_tpr": "^2.0.5",
