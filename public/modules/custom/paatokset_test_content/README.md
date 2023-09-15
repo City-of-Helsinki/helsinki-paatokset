@@ -12,13 +12,7 @@ The content is imported when the module is enabled.
 The module can be enabled from admin UI (/admin/modules) or by running the following drush command.
 
 ```
-drush en -y paatokset_test_content
-```
-
-When the module is already enabled and the content should be re-imported, it can be done with following drush command.
-
-```
-drush dcim paatokset_test_content
+drush en paatokset_test_content -y
 ```
 
 Make sure not to export `core.extension.yml` config with this module enabled!
