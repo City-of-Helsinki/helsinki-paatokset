@@ -1,11 +1,4 @@
-parameters:
-  paatokset_datapumppu.base_url: 'https://hel-datapumppu.api.hel.fi'
-
 services:
-  paatokset_datapumppu:
-    class: Drupal\paatokset_datapumppu\Service\Datapumppu
-    arguments: ['@logger.factory', '@plugin.manager.migration', '%paatokset_datapumppu.base_url%']
-
   Drupal\paatokset_datapumppu\Service\StatementService:
     class: Drupal\paatokset_datapumppu\Service\StatementService
     arguments: ['@entity_type.manager', '@date.formatter']
