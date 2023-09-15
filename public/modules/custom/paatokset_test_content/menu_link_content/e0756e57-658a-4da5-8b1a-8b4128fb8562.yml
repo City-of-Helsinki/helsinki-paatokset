@@ -49,3 +49,58 @@ default:
   content_translation_created:
     -
       value: 1694769157
+translations:
+  sv:
+    title:
+      -
+        value: 'Sök beslut'
+    revision_translation_affected:
+      -
+        value: true
+    link_override:
+      -
+        uri: 'internal:/arende'
+        title: ''
+        options: {  }
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1694776722
+  en:
+    title:
+      -
+        value: 'Search decisions'
+    revision_translation_affected:
+      -
+        value: true
+    link_override:
+      -
+        uri: 'internal:/case'
+        title: ''
+        options: {  }
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 1
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1694776741

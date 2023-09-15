@@ -26,9 +26,6 @@ default:
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   hide_sidebar_navigation:
     -
       value: false
@@ -55,3 +52,91 @@ default:
   field_has_hero:
     -
       value: false
+translations:
+  sv:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Möteskalender
+    created:
+      -
+        value: 1694776874
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /moteskalender
+        langcode: sv
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694769048
+    field_has_hero:
+      -
+        value: false
+  en:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Meetings calendar'
+    created:
+      -
+        value: 1694776875
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /meetings-calendar
+        langcode: en
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694769048
+    field_has_hero:
+      -
+        value: false
