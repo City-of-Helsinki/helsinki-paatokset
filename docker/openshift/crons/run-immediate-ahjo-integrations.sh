@@ -10,6 +10,7 @@ do
   drush queue:run ahjo_api_subscriber_queue --time-limit=240 -v
   echo "Generating motions from meeting data: $(date)"
   drush ahjo-proxy:get-motions -v
+  drush ahjo-proxy:parse-decision-content --limit=100 -v
   if [ ${APP_ENV} = 'production' ]; then
     echo "Updating decision and motion data: $(date)"
     drush ahjo-proxy:update-decisions -v

@@ -1546,7 +1546,7 @@ class CaseService {
     // More information.
     $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
     $more_info_content = NULL;
-    if ($more_info) {
+    if ($more_info->length > 0) {
       $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
       $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
     }
@@ -1561,7 +1561,7 @@ class CaseService {
     // Signature information.
     $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
     $signature_info_content = NULL;
-    if ($signature_info) {
+    if ($signature_info->length > 0) {
       $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
     }
 
@@ -1575,7 +1575,7 @@ class CaseService {
     // Presenter information.
     $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
     $presenter_content = NULL;
-    if ($presenter_info) {
+    if ($presenter_info->length > 0) {
       $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
     }
 
@@ -1589,7 +1589,7 @@ class CaseService {
     // Decision history.
     $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
     $decision_history_content = NULL;
-    if ($decision_history) {
+    if ($decision_history->length > 0) {
       $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
     }
     if ($decision_history_content) {
@@ -1639,17 +1639,19 @@ class CaseService {
    *   Decision node.
    * @param string $field_name
    *   Which field to get raw data from.
+   * @param bool $strip_tags
+   *   Only allow text related tags, strip images etc.
    *
    * @return string|null
    *   Parsed content HTML as string, if found.
    */
-  public function getDecisionContentFromHtml(NodeInterface $node, string $field_name): ?string {
+  public function getDecisionContentFromHtml(NodeInterface $node, string $field_name, bool $strip_tags = FALSE): ?string {
     if (!$node instanceof NodeInterface || !$node->hasField($field_name) || $node->get($field_name)->isEmpty()) {
       return NULL;
     }
 
     $html = $node->get($field_name)->value;
-    return $this->parseContentSectionsFromHtml($html);
+    return $this->parseContentSectionsFromHtml($html, $strip_tags);
   }
 
   /**
@@ -1657,11 +1659,13 @@ class CaseService {
    *
    * @param string $html
    *   Input HTML.
+   * @param bool $strip_tags
+   *   Only allow text related tags, strip images etc.
    *
    * @return string|null
    *   Content sections, if found.
    */
-  public function parseContentSectionsFromHtml(string $html): ?string {
+  public function parseContentSectionsFromHtml(string $html, bool $strip_tags = FALSE): ?string {
     $dom = new \DOMDocument();
     if (!empty($html)) {
       @$dom->loadHTML($html);
@@ -1672,8 +1676,29 @@ class CaseService {
     // Main decision content sections.
     $sections = $xpath->query("//*[contains(@class, 'SisaltoSektio')]");
 
+    // If content sections are empty (confidential data), use title instead.
+    if ($sections->length === 0) {
+      $sections = $xpath->query("//*[contains(@class, 'AsiaOtsikko')]");
+    }
+
     foreach ($sections as $section) {
       $content .= $section->ownerDocument->saveHTML($section);
+    }
+
+    if ($strip_tags) {
+      $allowed_tags = [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'ul',
+        'ol',
+        'li',
+        'p',
+      ];
+      return strip_tags($content, $allowed_tags);
     }
 
     return $content;

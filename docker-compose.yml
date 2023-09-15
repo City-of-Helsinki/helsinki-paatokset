@@ -59,6 +59,7 @@ services:
       - 3306
     networks:
       - internal
+    command: --max_allowed_packet=128M
   varnish:
     container_name: "${COMPOSE_PROJECT_NAME}-varnish"
     image: druidfi/varnish:6-drupal

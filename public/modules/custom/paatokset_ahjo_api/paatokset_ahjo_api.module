@@ -991,7 +991,7 @@ function _paatokset_ahjo_api_get_top_category(array $values): ?string {
 function _paatokset_ahjo_api_parse_decision_content($value): string|null {
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
   $caseService = \Drupal::service('paatokset_ahjo_cases');
-  return $caseService->parseContentSectionsFromHtml((string) $value);
+  return $caseService->parseContentSectionsFromHtml((string) $value, TRUE);
 }
 
 /**
@@ -1006,7 +1006,7 @@ function _paatokset_ahjo_api_parse_decision_content($value): string|null {
 function _paatokset_ahjo_api_parse_decision_motion($value): string|null {
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
   $caseService = \Drupal::service('paatokset_ahjo_cases');
-  return $caseService->parseContentSectionsFromHtml((string) $value);
+  return $caseService->parseContentSectionsFromHtml((string) $value, TRUE);
 }
 
 /**
