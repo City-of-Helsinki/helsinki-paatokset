@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 1d033e6a-652c-412e-a830-a0e748706754
+  bundle: landing_page
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Päätöksenteko
+  created:
+    -
+      value: 1694759903
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  path:
+    -
+      alias: /paattajat
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1694759934
+  field_has_hero:
+    -
+      value: false

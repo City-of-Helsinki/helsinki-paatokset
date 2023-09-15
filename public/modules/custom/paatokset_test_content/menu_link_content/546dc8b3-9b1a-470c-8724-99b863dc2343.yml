@@ -1,0 +1,53 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 546dc8b3-9b1a-470c-8724-99b863dc2343
+  bundle: menu_link_content
+  default_langcode: fi
+  depends:
+    e42443be-f8d8-49d2-b857-bc3fc88ac686: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Kokouskalenteri
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: e42443be-f8d8-49d2-b857-bc3fc88ac686
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -48
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1694769048

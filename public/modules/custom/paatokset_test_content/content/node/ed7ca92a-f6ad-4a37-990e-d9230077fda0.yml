@@ -1,0 +1,113 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: ed7ca92a-f6ad-4a37-990e-d9230077fda0
+  bundle: landing_page
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Etusivu
+  created:
+    -
+      value: 1694759902
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  path:
+    -
+      alias: /etusivu
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1694759921
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7285beb9-bfd6-4dfd-ae9c-4362743ba98b
+          bundle: meetings_calendar
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1694769087
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: cec8b1b1-85d6-4cd1-a9eb-e640f9ec56bf
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1694769014
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_hero_bg_color:
+            -
+              value: silver
+          field_hero_design:
+            -
+              value: paatokset-search-bar
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'Kaupungin päätökset yhdessä paikassa'
