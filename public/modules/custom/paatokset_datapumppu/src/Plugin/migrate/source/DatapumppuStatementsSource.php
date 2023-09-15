@@ -131,8 +131,9 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
       'all' => $this->getAllTrusteesIterator(),
     };
 
-    if (empty($trustees)) {
+    if (!$trustees->valid()) {
       $this->logger->warning("No trustees found. Consider importing trustees and meeting data.");
+      return;
     }
 
     foreach ($trustees as $trustee) {
@@ -191,12 +192,12 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
   }
 
   /**
-   * Return list of all trustees.
+   * Return all trustees.
    *
-   * @return \Iterator|NodeInterface[]
+   * @return \Generator
    *   Iterator of trustee nodes.
    */
-  private function getAllTrusteesIterator(): \Iterator {
+  private function getAllTrusteesIterator(): \Generator {
     // Get all historical data.
     $nids = $this->nodeStorage
       ->getQuery()
@@ -214,13 +215,13 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
   }
 
   /**
-   * Return list of trustees based on latest council meeting.
+   * Return trustees based on latest council meeting.
    *
-   * @return \Iterator|NodeInterface[]
+   * @return \Generator
    *   Iterator of trustee nodes.
    */
-  private function getLatestTrusteesIterator(): array {
-    return $this->policymakerService->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID);
+  private function getLatestTrusteesIterator(): \Generator {
+    yield from $this->policymakerService->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID);
   }
 
   /**
