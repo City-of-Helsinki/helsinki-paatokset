@@ -131,6 +131,10 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
       'all' => $this->getAllTrusteesIterator(),
     };
 
+    if (empty($trustees)) {
+      $this->logger->warning("No trustees found. Consider importing trustees and meeting data.");
+    }
+
     foreach ($trustees as $trustee) {
       $foundResults = FALSE;
 
