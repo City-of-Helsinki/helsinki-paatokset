@@ -1117,6 +1117,11 @@ class CaseService {
     foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
       $data = json_decode($field->value, TRUE);
 
+      // If all relevant info is empty, do not display attachment.
+      if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
+        continue;
+      }
+
       $number = NULL;
       if (isset($data['AttachmentNumber'])) {
         $number = $data['AttachmentNumber'] . '. ';
