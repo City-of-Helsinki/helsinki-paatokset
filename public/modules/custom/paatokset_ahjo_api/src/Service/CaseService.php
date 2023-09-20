@@ -718,16 +718,20 @@ class CaseService {
    *
    * @return Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function getDecisionUrlFromNode(?NodeInterface $decision = NULL, ?string $langcode = NULL): ?Url {
-    // Which language to get URL for.
-    if ($langcode === NULL) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      $strict_lang = FALSE;
-    }
     // If langcode is set, we want that localized URL specifically or nothing.
+    $strict_lang = $langcode !== NULL;
+
+    // Langcode defaults to current language.
+    if ($langcode === NULL) {
+      $language = $this->languageManager->getCurrentLanguage();
+      $langcode = $language->getId();
+    }
     else {
-      $strict_lang = TRUE;
+      $language = $this->languageManager->getLanguage($langcode);
     }
 
     if ($decision === NULL) {
@@ -742,41 +746,50 @@ class CaseService {
       return $decision->toUrl();
     }
 
+    $decision_id = $decision->get('field_decision_native_id')->getString();
+    $decision_id = $this->normalizeNativeId($decision_id);
+
     try {
       $decision = $this->getDecisionTranslation($decision, $langcode);
     }
-    // Ignore the error if the translation does not exist.
-    // Use the langcode we currently have.
     catch (\InvalidArgumentException) {
+      // Ignore the error if the translation does not exist and use the decision
+      // we currently have (does not modify $decision). This ends up showing
+      // decisions in invalid languages if for example a Swedish translation is
+      // requested and the translation does not exist.
     }
 
     // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
-        $decision_id = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision_id]);
-        return $case_url;
+        return Url::fromRoute($localizedRoute, [
+          'case_id' => $decision_id,
+        ], [
+          'language' => $language,
+        ]);
       }
       return NULL;
     }
 
-    $decision_id = $decision->get('field_decision_native_id')->value;
-    $decision_id = $this->normalizeNativeId($decision_id);
-
-    $case = NULL;
+    // Fetch case:
     $case = $this->caseQuery([
       'case_id' => $decision->get('field_diary_number')->value,
       'limit' => 1,
     ]);
     $case = reset($case);
+    $case_id = strtolower($decision->get('field_diary_number')->getString());
 
     // If a case exists, use case route with query parameter.
     if ($case instanceof NodeInterface) {
       // Try to get localized route if one exists for current language.
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($decision->get('field_diary_number')->value)]);
+        $case_url = Url::fromRoute($localizedRoute, [
+          'case_id' => $case_id,
+        ], [
+          'language' => $language,
+        ]);
       }
       // If langcode is set, we don't want an URL without a localized route.
       elseif ($strict_lang) {
@@ -794,10 +807,11 @@ class CaseService {
     // If case node doesn't exist, try to get localized route for decision.
     $localizedRoute = 'paatokset_decision.' . $langcode;
     if ($this->routeExists($localizedRoute)) {
-      $native_id_url = \Drupal::service('pathauto.alias_cleaner')->cleanString($decision->get('field_decision_native_id')->value);
       return Url::fromRoute($localizedRoute, [
-        'case_id' => strtolower($decision->get('field_diary_number')->value),
-        'decision_id' => $native_id_url,
+        'case_id' => $case_id,
+        'decision_id' => $decision_id,
+      ], [
+        'language' => $language,
       ]);
     }
 
