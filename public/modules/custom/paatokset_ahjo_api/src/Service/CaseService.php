@@ -126,7 +126,7 @@ class CaseService {
    * @param string $decision_id
    *   Decision native ID.
    */
-  public function setEntitiesById(?string $case_id = NULL, string $decision_id): void {
+  public function setEntitiesById(?string $case_id, string $decision_id): void {
     if ($case_id !== NULL) {
       $case_nodes = $this->caseQuery([
         'case_id' => $case_id,
