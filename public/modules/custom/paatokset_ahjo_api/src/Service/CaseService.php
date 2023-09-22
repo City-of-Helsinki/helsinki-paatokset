@@ -687,7 +687,15 @@ class CaseService {
     // Get decision ID from selected decision.
     $decision_id = NULL;
     if ($this->selectedDecision instanceof NodeInterface) {
-      $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
+      try {
+        $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
+      }
+      catch (\InvalidArgumentException) {
+        // Decision for $langcode does not exist.
+        // Use the decision we have.
+        $decision = $this->selectedDecision;
+      }
+
       $decision_id = $decision->get('field_decision_native_id')->value;
     }
 
@@ -734,7 +742,13 @@ class CaseService {
       return $decision->toUrl();
     }
 
-    $decision = $this->getDecisionTranslation($decision, $langcode);
+    try {
+      $decision = $this->getDecisionTranslation($decision, $langcode);
+    }
+    // Ignore the error if the translation does not exist.
+    // Use the langcode we currently have.
+    catch (\InvalidArgumentException) {
+    }
 
     // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
@@ -942,7 +956,10 @@ class CaseService {
    *   Which language version to get. Defaults to current language.
    *
    * @return \Drupal\node\NodeInterface
-   *   Translated or original decision node.
+   *   Decision node in the specified language.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the translation with given language does not exist.
    */
   public function getDecisionTranslation(NodeInterface $decision, ?string $langcode = NULL): NodeInterface {
     if ($langcode === NULL) {
@@ -954,23 +971,21 @@ class CaseService {
       return $decision;
     }
 
-    // If we can't get unique ID field, return the original node.
-    if (!$decision->hasField('field_unique_id') || $decision->get('field_unique_id')->isEmpty()) {
-      return $decision;
+    // If we can't get unique ID field, throw.
+    if ($decision->hasField('field_unique_id') && !$decision->get('field_unique_id')->isEmpty()) {
+      // Attempt to get node with same unique ID but correct langcode.
+      $node = $this->decisionQuery([
+        'unique_id' => $decision->get('field_unique_id')->value,
+        'langcode' => $langcode,
+      ]);
+
+      // If language version can't be found, return NULL.
+      if (!empty($node)) {
+        return reset($node);
+      }
     }
 
-    // Attempt to get node with same unique ID but correct langcode.
-    $node = $this->decisionQuery([
-      'unique_id' => $decision->get('field_unique_id')->value,
-      'langcode' => $langcode,
-    ]);
-
-    // If language version can't be found, return original node.
-    if (empty($node)) {
-      return $decision;
-    }
-
-    return reset($node);
+    throw new \InvalidArgumentException("Translation to {$langcode} for node:{$decision->id()} does not exists");
   }
 
   /**
