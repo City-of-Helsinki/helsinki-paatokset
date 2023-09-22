@@ -4,6 +4,7 @@ namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -46,56 +47,35 @@ class CaseService {
   private $caseId;
 
   /**
-   * Language ID.
-   *
-   * @var string
-   */
-  private $language;
-
-  /**
-   * Decision query string key.
-   *
-   * @var string
-   */
-  private $decisionQueryKey;
-
-  /**
    * Creates a new CaseService.
+   *
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   The language manager.
    */
-  public function __construct() {
-    $this->language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    $this->decisionQueryKey = $this->getDecisionQueryKey($this->language);
+  public function __construct(
+    private LanguageManagerInterface $languageManager
+  ) {
   }
 
   /**
    * Get decision query key.
    *
    * @param string|null $langcode
-   *   Langcode to use. If NULL, use current language.
+   *   Langcode to use. If NULL, use the current language.
    *
    * @return string
    *   Decision query key.
    */
   public function getDecisionQueryKey(?string $langcode = NULL): string {
     if ($langcode === NULL) {
-      $langcode = $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
-    switch ($langcode) {
-      case 'sv':
-        $value = 'beslut';
-        break;
-
-      case 'en':
-        $value = 'decision';
-        break;
-
-      default:
-        $value = 'paatos';
-        break;
-    }
-
-    return $value;
+    return match ($langcode) {
+      'sv' => 'beslut',
+      'en' => 'decision',
+      'fi' => 'paatos',
+    };
   }
 
   /**
@@ -123,7 +103,8 @@ class CaseService {
 
     $this->caseId = $case->get('field_diary_number')->value;
 
-    $decision_id = \Drupal::request()->query->get($this->decisionQueryKey);
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $decision_id = \Drupal::request()->query->get($this->getDecisionQueryKey($langcode));
     if (!$decision_id) {
       $this->selectedDecision = $this->getDefaultDecision($this->caseId);
     }
@@ -183,10 +164,11 @@ class CaseService {
    *   Default (latest) decision entity, if found.
    */
   private function getDefaultDecision(string $case_id): ?NodeInterface {
+    $language = $this->languageManager->getCurrentLanguage()->getId();
     $nodes = $this->decisionQuery([
       'case_id' => $case_id,
       'limit' => 1,
-      'langcode' => $this->language,
+      'langcode' => $language,
     ]);
 
     // If there isn't a decision for current language, retry without language.
@@ -476,7 +458,7 @@ class CaseService {
    */
   public function getDecisionUrlWithoutNode(string $id, ?string $case_id = NULL, ?string $langcode = NULL): ?Url {
     if ($langcode === NULL) {
-      $langcode === $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
     // Langcode is only used for checking if aliases (and nodes) exists,
@@ -490,8 +472,12 @@ class CaseService {
     }
 
     // Always prefer localized routes here.
-    $localizedCaseRoute = 'paatokset_case.' . $this->language;
-    $localizedDecisionRoute = 'paatokset_decision.' . $this->language;
+    // Use current language so that we can query for a specific language
+    // decision / motion but get the URL pattern that matches the selected UI
+    // language.
+    $language = $this->languageManager->getCurrentLanguage()->getId();
+    $localizedCaseRoute = 'paatokset_case.' . $language;
+    $localizedDecisionRoute = 'paatokset_decision.' . $language;
 
     $path = '/' . $prefix;
     $case_path = NULL;
@@ -677,10 +663,10 @@ class CaseService {
     }
 
     if ($langcode === NULL) {
-      $langcode === $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $strict_lang = FALSE;
     }
-    // If langcode is set, we wan't that localized URL specifically or nothing.
+    // If langcode is set, we want that localized URL specifically or nothing.
     else {
       $strict_lang = TRUE;
     }
@@ -721,19 +707,17 @@ class CaseService {
    *   Decision node, or default.
    * @param string|null $langcode
    *   Langcode to get URL for. Defaults to current language.
-   * @param bool $get_translation
-   *   Get translated decision via unique ID field.
    *
    * @return Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
    */
-  public function getDecisionUrlFromNode(?NodeInterface $decision = NULL, ?string $langcode = NULL, bool $get_translation = FALSE): ?Url {
+  public function getDecisionUrlFromNode(?NodeInterface $decision = NULL, ?string $langcode = NULL): ?Url {
     // Which language to get URL for.
     if ($langcode === NULL) {
-      $langcode = $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $strict_lang = FALSE;
     }
-    // If langcode is set, we wan't that localized URL specifically or nothing.
+    // If langcode is set, we want that localized URL specifically or nothing.
     else {
       $strict_lang = TRUE;
     }
@@ -830,7 +814,7 @@ class CaseService {
   public function getDecisionUrlLight(string $nid, string $native_id, ?string $case_id = NULL, ?string $langcode = NULL): ?Url {
     // Which language to get URL for. If langcode is set, use strict checking.
     if ($langcode === NULL) {
-      $langcode = $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $strict_lang = FALSE;
     }
     else {
@@ -955,14 +939,14 @@ class CaseService {
    * @param \Drupal\node\NodeInterface $decision
    *   Decision node.
    * @param string|null $langcode
-   *   Which language version to get, or default.
+   *   Which language version to get. Defaults to current language.
    *
    * @return \Drupal\node\NodeInterface
    *   Translated or original decision node.
    */
   public function getDecisionTranslation(NodeInterface $decision, ?string $langcode = NULL): NodeInterface {
     if ($langcode === NULL) {
-      $langcode = $this->language;
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
     // If we already have the correct langcode, return the original node.
@@ -1014,7 +998,7 @@ class CaseService {
   }
 
   /**
-   * Get translated decision org name.
+   * Get decision org name translated to current language.
    *
    * @param string|null $decision_id
    *   Decision ID, or use default decision.
@@ -1045,9 +1029,11 @@ class CaseService {
       return $default_name;
     }
 
+    $language = $this->languageManager->getCurrentLanguage()->getId();
+
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value, $this->language, FALSE);
+    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value, $language, FALSE);
     if (!$policymaker_name) {
       return $default_name;
     }
@@ -1068,7 +1054,7 @@ class CaseService {
 
     // Get organization name directly from policymaker node.
     if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
-      $currentLanguage = $this->language;
+      $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
       /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
       $policymakerService = \Drupal::service('paatokset_policymakers');
       $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value, $currentLanguage, FALSE);
@@ -1221,7 +1207,7 @@ class CaseService {
       return [];
     }
 
-    $currentLanguage = $this->language;
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     $results = $this->decisionQuery([
       'case_id' => $case_id,
@@ -1299,7 +1285,7 @@ class CaseService {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
-    $currentLanguage = $this->language;
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     if (!$case_id) {
       $case_id = $this->caseId;
