@@ -920,6 +920,36 @@ class CaseService {
   }
 
   /**
+   * Check if given decision has any translations.
+   *
+   * @param \Drupal\node\NodeInterface $decision
+   *   Decision node.
+   *
+   * @return bool
+   *   True if decision has translation
+   */
+  public function decisionHasTranslations(NodeInterface $decision): bool {
+    // Translations are matched using field_unique_id.
+    if (!$decision->hasField('field_unique_id') || $decision->get('field_unique_id')->isEmpty()) {
+      return FALSE;
+    }
+
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', self::DECISION_NODE_TYPE)
+      ->condition('status', 1)
+      ->condition('field_unique_id', $decision->get('field_unique_id')->getString())
+      // Do not count this node. Also excludes cases that have failed to
+      // generate unique id from decision makers that don't create decisions in
+      // multiple languages (bug still requires further investigation).
+      ->condition('langcode', $decision->language()->getId(), '<>')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+
+    return $nids > 0;
+  }
+
+  /**
    * Get translated version of decision by unique ID.
    *
    * @param \Drupal\node\NodeInterface $decision
