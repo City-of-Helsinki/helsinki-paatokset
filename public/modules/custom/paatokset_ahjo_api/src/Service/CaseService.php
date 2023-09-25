@@ -746,9 +746,6 @@ class CaseService {
       return $decision->toUrl();
     }
 
-    $decision_id = $decision->get('field_decision_native_id')->getString();
-    $decision_id = $this->normalizeNativeId($decision_id);
-
     try {
       $decision = $this->getDecisionTranslation($decision, $langcode);
     }
@@ -758,6 +755,9 @@ class CaseService {
       // decisions in invalid languages if for example a Swedish translation is
       // requested and the translation does not exist.
     }
+
+    $decision_id = $decision->get('field_decision_native_id')->getString();
+    $decision_id = $this->normalizeNativeId($decision_id);
 
     // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
