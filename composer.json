@@ -90,6 +90,11 @@
             "drush/Commands/{$name}": [
                 "type:drupal-drush"
             ]
+        },
+        "patches": {
+            "drupal/default_content": {
+                "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
+            }
         }
     },
     "repositories": [
