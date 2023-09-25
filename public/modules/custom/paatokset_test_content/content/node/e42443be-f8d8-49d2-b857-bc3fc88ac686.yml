@@ -1,0 +1,142 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: e42443be-f8d8-49d2-b857-bc3fc88ac686
+  bundle: landing_page
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Kokouskalenteri
+  created:
+    -
+      value: 1694769000
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  path:
+    -
+      alias: /kokouskalenteri
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1694769048
+  field_has_hero:
+    -
+      value: false
+translations:
+  sv:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Möteskalender
+    created:
+      -
+        value: 1694776874
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /moteskalender
+        langcode: sv
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694769048
+    field_has_hero:
+      -
+        value: false
+  en:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Meetings calendar'
+    created:
+      -
+        value: 1694776875
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /meetings-calendar
+        langcode: en
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694769048
+    field_has_hero:
+      -
+        value: false

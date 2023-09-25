@@ -1,0 +1,298 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: ed7ca92a-f6ad-4a37-990e-d9230077fda0
+  bundle: landing_page
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Etusivu
+  created:
+    -
+      value: 1694759902
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  path:
+    -
+      alias: /etusivu
+      langcode: fi
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1694759921
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 7285beb9-bfd6-4dfd-ae9c-4362743ba98b
+          bundle: meetings_calendar
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1694769087
+          behavior_settings:
+            -
+              value: {  }
+  field_has_hero:
+    -
+      value: true
+  field_hero:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: cec8b1b1-85d6-4cd1-a9eb-e640f9ec56bf
+          bundle: hero
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1694769014
+          behavior_settings:
+            -
+              value: {  }
+          field_hero_bg_color:
+            -
+              value: silver
+          field_hero_design:
+            -
+              value: paatokset-search-bar
+          field_hero_link_design:
+            -
+              value: primary
+          field_hero_title:
+            -
+              value: 'Kaupungin päätökset yhdessä paikassa'
+translations:
+  sv:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Beslut
+    created:
+      -
+        value: 1694776441
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /etusivu
+        langcode: sv
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694759921
+    field_content:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 47edba2f-cabc-469b-a9ea-86735057a691
+            bundle: meetings_calendar
+            default_langcode: sv
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1694769087
+            behavior_settings:
+              -
+                value: {  }
+    field_has_hero:
+      -
+        value: true
+    field_hero:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: 332994c0-fed6-46dd-a2e0-79ce504382fb
+            bundle: hero
+            default_langcode: sv
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1694769014
+            behavior_settings:
+              -
+                value: {  }
+            field_hero_bg_color:
+              -
+                value: silver
+            field_hero_design:
+              -
+                value: paatokset-search-bar
+            field_hero_link_design:
+              -
+                value: primary
+            field_hero_title:
+              -
+                value: 'Stadens beslut på ett ställe'
+  en:
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Decisions
+    created:
+      -
+        value: 1694776512
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    toc_enabled:
+      -
+        value: false
+    toc_title:
+      -
+        value: Sisällysluettelo
+    path:
+      -
+        alias: /etusivu
+        langcode: en
+        pathauto: 0
+    content_translation_source:
+      -
+        value: fi
+    content_translation_outdated:
+      -
+        value: false
+    published_at:
+      -
+        value: 1694759921
+    field_content:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: baca525f-c315-48a5-81a5-25c825fa0b87
+            bundle: meetings_calendar
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1694769087
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+    field_has_hero:
+      -
+        value: true
+    field_hero:
+      -
+        entity:
+          _meta:
+            version: '1.0'
+            entity_type: paragraph
+            uuid: da4fdaa9-f8da-4e84-bf1d-f5ea7c2ce796
+            bundle: hero
+            default_langcode: en
+          default:
+            status:
+              -
+                value: true
+            created:
+              -
+                value: 1694769014
+            behavior_settings:
+              -
+                value: {  }
+            revision_translation_affected:
+              -
+                value: true
+            field_hero_bg_color:
+              -
+                value: silver
+            field_hero_design:
+              -
+                value: paatokset-search-bar
+            field_hero_link_design:
+              -
+                value: primary
+            field_hero_title:
+              -
+                value: 'The City''s decisions in one place'

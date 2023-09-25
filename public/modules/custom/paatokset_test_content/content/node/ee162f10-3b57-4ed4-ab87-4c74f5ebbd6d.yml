@@ -1,0 +1,85 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: ee162f10-3b57-4ed4-ab87-4c74f5ebbd6d
+  bundle: article
+  default_langcode: fi
+  depends:
+    b0be42ad-18fc-4e03-aedf-88dad7b5c15c: taxonomy_term
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Testikuulutus 3'
+  created:
+    -
+      value: 1694785647
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  path:
+    -
+      alias: /kuulutukset-ja-ilmoitukset/testikuulutus-3
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1694785731
+  field_content:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a4d24988-26d6-4fa7-8da0-54f8ef4b95c4
+          bundle: text
+          default_langcode: fi
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1694785731
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_text:
+            -
+              value: "<p>Testikuulutus</p>\r\n"
+              format: full_html
+  field_keywords:
+    -
+      entity: b0be42ad-18fc-4e03-aedf-88dad7b5c15c
