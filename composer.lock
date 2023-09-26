@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "911d6f9c6a79adf2e6327c2e29fe008e",
+    "content-hash": "81e47337d80091e69c4e9a71a9e6a18e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8018,7 +8018,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip"
+                "url": "https://github.com/josdejong/jsoneditor/archive/v5.29.1.zip",
+                "reference": "v5.29.1"
             },
             "type": "drupal-library"
         },
@@ -8993,10 +8994,10 @@
         },
         {
             "name": "paatokset/paatokset_search",
-            "version": "1.0.26",
+            "version": "1.0.27",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.26/paatokset_search.zip"
+                "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.0.27/paatokset_search.zip"
             },
             "type": "library"
         },
