@@ -3,10 +3,12 @@
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Checks if node has translations, with special cases for decisions.
@@ -23,6 +25,24 @@ use Drupal\search_api\Processor\ProcessorProperty;
  * )
  */
 class HasTranslation extends ProcessorPluginBase {
+
+  /**
+   * Case service.
+   *
+   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
+   */
+  private CaseService $caseService;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    /** @var static $processor */
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->caseService = $container->get('paatokset_ahjo_cases');
+
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -73,33 +93,17 @@ class HasTranslation extends ProcessorPluginBase {
    *   Node to check translations for.
    *
    * @return bool
-   *   If node has translations.
+   *   True if node has translations.
    */
   private function checkNodeTranslation(NodeInterface $node): bool {
-    // Not including default language.
     $translations = $node->getTranslationLanguages(FALSE);
     if (count($translations) >= 1) {
       return TRUE;
     }
 
-    // Special cases for decisions.
-    if ($node->getType() !== 'decision') {
-      return FALSE;
-    }
-
-    if (!$node->hasField('field_unique_id') || $node->get('field_unique_id')->isEmpty()) {
-      return FALSE;
-    }
-
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-    $nids = $caseService->decisionQuery([
-      'unique_id' => $node->get('field_unique_id')->value,
-    ], FALSE);
-
-    // If we get more than one result, we can assume the node has translations.
-    if (count($nids) >= 2) {
-      return TRUE;
+    // Decisions don't use built-in translations.
+    if ($node->getType() === 'decision') {
+      return $this->caseService->decisionHasTranslations($node);
     }
 
     return FALSE;
