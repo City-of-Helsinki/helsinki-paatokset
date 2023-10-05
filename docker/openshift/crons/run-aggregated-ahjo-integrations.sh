@@ -26,10 +26,10 @@ do
       drush ahjo-proxy:aggregate cases --dataset=latest --queue -v
     fi
     echo "Aggregating council org data: $(date)"
-    drush ahjo-proxy:get-council-positionsoftrust -v
+    drush ahjo-proxy:get-positionsoftrust -v
     echo "Aggregating data for council members: $(date)"
-    drush ahjo-proxy:get-trustees positionsoftrust_council.json fi -v
-    drush ahjo-proxy:get-trustees positionsoftrust_council.json sv -v
+    drush ahjo-proxy:get-trustees positionsoftrust.json fi -v
+    drush ahjo-proxy:get-trustees positionsoftrust.json sv -v
     echo "Aggregating latest decisionmaker changes: $(date)"
     drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
     drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
@@ -44,10 +44,10 @@ do
       drush ahjo-proxy:update-decision-attachments --limit=100 -v
     fi
     echo "Migrating data for council members: $(date)"
-    drush migrate-reset-status ahjo_trustees:council
-    drush migrate-import ahjo_trustees:council --update
-    drush migrate-reset-status ahjo_trustees:council_sv
-    drush migrate-import ahjo_trustees:council_sv --update
+    drush migrate-reset-status ahjo_trustees:all
+    drush migrate-import ahjo_trustees:all --update
+    drush migrate-reset-status ahjo_trustees:all_sv
+    drush migrate-import ahjo_trustees:all_sv --update
     echo "Migrating data for decisionmakers: $(date)"
     drush migrate-reset-status ahjo_decisionmakers:latest
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
