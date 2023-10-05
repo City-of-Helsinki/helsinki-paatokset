@@ -2813,7 +2813,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       $proxy_url = getenv('AHJO_PROXY_BASE_URL') . '/ahjo-proxy/';
       $urls[] = $proxy_url . $endpoint . '/' . strtoupper($id);
       $urls[] = $proxy_url . $endpoint . '/single/' . strtoupper($id);
-    } elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
+    }
+    elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
       $proxy_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS') . '/ahjo-proxy/';
       $urls[] = $proxy_url . $endpoint . '/' . strtoupper($id);
       $urls[] = $proxy_url . $endpoint . '/single/' . strtoupper($id);
@@ -2859,7 +2860,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     $proxy_base_url = '';
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
       $proxy_base_url = getenv('AHJO_PROXY_BASE_URL') . '/ahjo-proxy/';
-    } elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
+    }
+    elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
       $proxy_base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS') . '/ahjo-proxy/';
     }
 
