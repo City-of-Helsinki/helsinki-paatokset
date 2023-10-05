@@ -661,10 +661,6 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'positionsoftrust.json';
         break;
 
-      case 'positionsoftrust_council':
-        $filename = 'positionsoftrust_council.json';
-        break;
-
       case 'trustees':
         $filename = 'trustees.json';
         break;
@@ -675,18 +671,6 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       case 'trustees_sv':
         $filename = 'trustees_sv.json';
-        break;
-
-      case 'trustees_council':
-        $filename = 'trustees_council.json';
-        break;
-
-      case 'trustees_council_fi':
-        $filename = 'trustees_council_fi.json';
-        break;
-
-      case 'trustees_council_sv':
-        $filename = 'trustees_council_sv.json';
         break;
 
       case 'decisionmakers':
