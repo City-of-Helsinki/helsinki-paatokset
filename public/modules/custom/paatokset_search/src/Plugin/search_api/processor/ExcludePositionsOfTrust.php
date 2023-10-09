@@ -45,7 +45,7 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     /** @var static $processor */
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $processor->policymakerService = $container->get('paatokset_policymakers');
@@ -55,7 +55,7 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function supportsIndex(IndexInterface $index) {
+  public static function supportsIndex(IndexInterface $index): bool {
     foreach ($index->getDatasources() as $datasource) {
       $entity_type_id = $datasource->getEntityTypeId();
       if (!$entity_type_id) {
@@ -75,7 +75,7 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function alterIndexedItems(array &$items) {
+  public function alterIndexedItems(array &$items): void {
     /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($items as $item_id => $item) {
       $object = $item->getOriginalObject()->getValue();
