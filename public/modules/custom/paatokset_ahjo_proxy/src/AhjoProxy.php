@@ -2428,8 +2428,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $endpoint_url .= '?apireqlang=sv';
     }
 
-    // Attempt to fetch content first, because
-    // migration doesn't complain about empty results.
+    // Attempt to fetch content first, because migration
+    // doesn't complain about empty results.
+    // If the command is run with the verbose flag, this will print in the CLI.
+    // The following migrate command uses the same URL, but its logs will be in
+    // syslog or dblog.
     $data = $this->getContent($endpoint_url);
     if (empty(reset($data))) {
       return 0;
