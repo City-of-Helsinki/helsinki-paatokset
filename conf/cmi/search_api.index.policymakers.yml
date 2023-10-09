@@ -3,12 +3,12 @@ langcode: fi
 status: true
 dependencies:
   config:
+    - field.storage.node.field_dm_org_name
     - field.storage.node.field_first_name
     - field.storage.node.field_last_name
-    - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
-    - field.storage.node.field_ahjo_title
     - field.storage.node.field_sector_name
+    - field.storage.node.field_ahjo_title
     - search_api.server.elasticsearch
   module:
     - node
@@ -151,6 +151,7 @@ processor_settings:
   decisionmaker_combined_title: {  }
   entity_status: {  }
   entity_type: {  }
+  exclude_trustees: {  }
   has_translation: {  }
   inactive_decisionmakers: {  }
   language_with_fallback: {  }
