@@ -15,3 +15,6 @@ msgstr "Möte flyttade, gammal tid: @orig_time"
 msgctxt "Meetings calendar"
 msgid "meeting moved, original time: @orig_time"
 msgstr "möte flyttade, gammal tid: @orig_time"
+
+msgid "There's an error with this attachment. We are resolving the issue as soon as possible."
+msgstr "Det finns ett fel i den publicerade bilagan. Vi rättar till felet så fort som möjligt."

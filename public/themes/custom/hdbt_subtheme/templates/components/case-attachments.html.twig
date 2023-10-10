@@ -13,7 +13,9 @@
       {% for attachment in attachments.items %}
         {% if attachment.file_url and attachment.publicity_class == 'Julkinen' %}
           {% set icon_class = 'download' %}
-        {% elseif attachment.publicity_class != 'Julkinen'%}
+        {% elseif attachment.publicity_class == 'error' %}
+          {% set icon_class = 'error' %}
+        {% elseif attachment.publicity_class != 'Julkinen' %}
           {% set icon_class = 'eye-crossed' %}
           {% set non_public_attachments = true %}
         {% else %}

@@ -15,3 +15,12 @@ msgstr "Kokousta siirretty, alkuperäinen ajankohta: @orig_time"
 msgctxt "Meetings calendar"
 msgid "meeting moved, original time: @orig_time"
 msgstr "kokousta siirretty, alkuperäinen ajankohta: @orig_time"
+
+msgid "There's an error with this attachment. We are resolving the issue as soon as possible."
+msgstr "Liitteen julkaisussa on virhe. Korjaamme virheen mahdollisimman pian."
+
+msgid "Confidential"
+msgstr "Salassa pidettävä"
+
+msgid "Confidential: @reasons"
+msgstr "Salassa pidettävä: @reasons"
