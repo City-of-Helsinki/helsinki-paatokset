@@ -186,30 +186,16 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $api_url = $this->getApiBaseUrl() . $url . '/?' . urldecode($query_string);
 
-    // Local adjustments for fetching records through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
-      $base_url = getenv('AHJO_PROXY_BASE_URL');
-      $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-    }
-
-    // Local adjustments for fetching meetings through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'meetings') === 0) {
-      $base_url = getenv('AHJO_PROXY_BASE_URL');
-      $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-    }
-
-    // Local adjustments for fetching cases or decisions through proxy.
+    // Local adjustments for fetching data through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      if (strpos($url, 'cases') === 0 || strpos($url, 'decisions') === 0 || strpos($url, 'agenda-item') === 0) {
-        $base_url = getenv('AHJO_PROXY_BASE_URL');
-        $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-      }
-    }
-
-    // Local adjustments for fetching org data through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      if (strpos($url, 'organization') === 0) {
-        $base_url = getenv('AHJO_PROXY_BASE_URL');
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      if (
+          str_starts_with($url, 'records')
+          || str_starts_with($url, 'meetings')
+          || str_starts_with($url, 'decisions')
+          || str_starts_with($url, 'agenda-items')
+          || str_starts_with($url, 'organization')
+        ) {
         $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
     }
