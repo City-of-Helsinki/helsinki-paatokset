@@ -15,7 +15,7 @@ do
     sleep 3600
   else
 
-    if [ ${APP_ENV} = 'production' ]; then
+    if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
       echo "Aggregating data for meetings: $(date)"
       drush ahjo-proxy:aggregate meetings --dataset=latest --queue -v
       echo "Aggregating data for cancelled meetings: $(date)"
@@ -33,7 +33,7 @@ do
     echo "Aggregating latest decisionmaker changes: $(date)"
     drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
     drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
-    if [ ${APP_ENV} = 'production' ]; then
+    if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
       echo "Running aggregation and retry queues: $(date)"
       drush queue:run ahjo_api_aggregation_queue --time-limit=3600 -v
       drush queue:run ahjo_api_retry_queue --time-limit=1800 -v

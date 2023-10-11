@@ -11,7 +11,7 @@ do
   echo "Generating motions from meeting data: $(date)"
   drush ahjo-proxy:get-motions -v
   drush ahjo-proxy:parse-decision-content --limit=100 -v
-  if [ ${APP_ENV} = 'production' ]; then
+  if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
     echo "Updating decision and motion data: $(date)"
     drush ahjo-proxy:update-decisions -v
     drush ahjo-proxy:update-cases --logic=title --limit=100 -v
