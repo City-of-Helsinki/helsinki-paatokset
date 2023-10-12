@@ -15,7 +15,6 @@ dependencies:
     - media.type.policymaker_images
     - media.type.remote_video
     - node.type.article
-    - node.type.imported_article
     - node.type.landing_page
     - node.type.meeting
     - node.type.news_item
@@ -101,7 +100,6 @@ permissions:
   - 'delete any remote_video media'
   - 'delete article revisions'
   - 'delete content translations'
-  - 'delete imported_article revisions'
   - 'delete landing_page revisions'
   - 'delete media'
   - 'delete news_item revisions'
@@ -112,7 +110,6 @@ permissions:
   - 'delete own hel_map media'
   - 'delete own helfi_chart media'
   - 'delete own image media'
-  - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
   - 'delete own news_item content'
@@ -132,7 +129,6 @@ permissions:
   - 'edit any hel_map media'
   - 'edit any helfi_chart media'
   - 'edit any image media'
-  - 'edit any imported_article content'
   - 'edit any landing_page content'
   - 'edit any minutes_of_the_discussion media'
   - 'edit any news_item content'
@@ -147,7 +143,6 @@ permissions:
   - 'edit own hel_map media'
   - 'edit own helfi_chart media'
   - 'edit own image media'
-  - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own minutes_of_the_discussion media'
   - 'edit own news_item content'
@@ -162,7 +157,6 @@ permissions:
   - 'edit terms in pdf_categories'
   - 'edit terms in pdf_minutes_category'
   - 'revert article revisions'
-  - 'revert imported_article revisions'
   - 'revert landing_page revisions'
   - 'revert news_item revisions'
   - 'revert page revisions'
@@ -170,7 +164,6 @@ permissions:
   - 'revert trustee revisions'
   - 'schedule publishing of nodes'
   - 'set article published on date'
-  - 'set imported_article published on date'
   - 'set landing_page published on date'
   - 'set meeting published on date'
   - 'set news_item published on date'
@@ -201,7 +194,6 @@ permissions:
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view editoria11y checker'
-  - 'view imported_article revisions'
   - 'view landing_page revisions'
   - 'view meeting revisions'
   - 'view news_item revisions'

@@ -18,7 +18,6 @@ dependencies:
     - node.type.article
     - node.type.case
     - node.type.decision
-    - node.type.imported_article
     - node.type.landing_page
     - node.type.meeting
     - node.type.news_item
@@ -136,7 +135,6 @@ permissions:
   - 'delete any hel_map media'
   - 'delete any helfi_chart media'
   - 'delete any image media'
-  - 'delete any imported_article content'
   - 'delete any landing_page content'
   - 'delete any media'
   - 'delete any minutes_of_the_discussion media'
@@ -148,7 +146,6 @@ permissions:
   - 'delete any trustee content'
   - 'delete article revisions'
   - 'delete content translations'
-  - 'delete imported_article revisions'
   - 'delete landing_page revisions'
   - 'delete media'
   - 'delete news_item revisions'
@@ -159,7 +156,6 @@ permissions:
   - 'delete own hel_map media'
   - 'delete own helfi_chart media'
   - 'delete own image media'
-  - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
   - 'delete own news_item content'
@@ -183,7 +179,6 @@ permissions:
   - 'edit any hel_map media'
   - 'edit any helfi_chart media'
   - 'edit any image media'
-  - 'edit any imported_article content'
   - 'edit any landing_page content'
   - 'edit any meeting content'
   - 'edit any minutes_of_the_discussion media'
@@ -201,7 +196,6 @@ permissions:
   - 'edit own hel_map media'
   - 'edit own helfi_chart media'
   - 'edit own image media'
-  - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own meeting content'
   - 'edit own minutes_of_the_discussion media'
@@ -220,7 +214,6 @@ permissions:
   - 'revert article revisions'
   - 'revert case revisions'
   - 'revert decision revisions'
-  - 'revert imported_article revisions'
   - 'revert landing_page revisions'
   - 'revert meeting revisions'
   - 'revert news_item revisions'
@@ -230,7 +223,6 @@ permissions:
   - 'schedule publishing of nodes'
   - 'set any published on date'
   - 'set article published on date'
-  - 'set imported_article published on date'
   - 'set landing_page published on date'
   - 'set meeting published on date'
   - 'set news_item published on date'
@@ -268,7 +260,6 @@ permissions:
   - 'view case revisions'
   - 'view decision revisions'
   - 'view editoria11y checker'
-  - 'view imported_article revisions'
   - 'view landing_page revisions'
   - 'view media'
   - 'view meeting revisions'

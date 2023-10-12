@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_referenced_content
     - node.type.article
-    - node.type.imported_article
     - node.type.landing_page
     - node.type.page
     - node.type.policymaker
@@ -25,7 +24,6 @@ settings:
   handler_settings:
     target_bundles:
       article: article
-      imported_article: imported_article
       landing_page: landing_page
       page: page
       policymaker: policymaker

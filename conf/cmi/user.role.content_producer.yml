@@ -15,7 +15,6 @@ dependencies:
     - media.type.policymaker_images
     - media.type.remote_video
     - node.type.article
-    - node.type.imported_article
     - node.type.landing_page
     - node.type.news_item
     - node.type.page
@@ -81,7 +80,6 @@ permissions:
   - 'delete own hel_map media'
   - 'delete own helfi_chart media'
   - 'delete own image media'
-  - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
   - 'delete own news_item content'
@@ -105,7 +103,6 @@ permissions:
   - 'edit own hel_map media'
   - 'edit own helfi_chart media'
   - 'edit own image media'
-  - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own minutes_of_the_discussion media'
   - 'edit own news_item content'
@@ -118,7 +115,6 @@ permissions:
   - 'edit terms in keywords'
   - 'edit terms in pdf_categories'
   - 'revert article revisions'
-  - 'revert imported_article revisions'
   - 'revert landing_page revisions'
   - 'revert news_item revisions'
   - 'revert page revisions'
@@ -132,7 +128,6 @@ permissions:
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view editoria11y checker'
-  - 'view imported_article revisions'
   - 'view landing_page revisions'
   - 'view news_item revisions'
   - 'view own unpublished content'
