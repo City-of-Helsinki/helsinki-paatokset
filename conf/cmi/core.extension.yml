@@ -103,7 +103,6 @@ module:
   paatokset_datapumppu: 0
   paatokset_helsinki_kanava: 0
   paatokset_lang_switcher: 0
-  paatokset_news_importer: 0
   paatokset_pdf_listing: 0
   paatokset_policymakers: 0
   paatokset_search: 0
