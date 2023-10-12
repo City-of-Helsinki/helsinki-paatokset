@@ -5,10 +5,8 @@ dependencies:
   module:
     - helfi_tpr
     - user
-_core:
-  default_config_hash: 0wDqZhJn8tnNhEq6QJNITXspmRbtFffjYqD82wc3myE
 id: tpr_errand_service_list
-label: 'TPR Asiointipalvelut'
+label: 'TPR errand service list'
 module: views
 description: ''
 tag: ''
@@ -17,11 +15,11 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
-      title: 'TPR Asiointipalvelut'
+      title: 'TPR Errand Services'
       fields:
         tpr_errand_service_bulk_form:
           id: tpr_errand_service_bulk_form
@@ -32,7 +30,7 @@ display:
           admin_label: ''
           entity_type: tpr_errand_service
           plugin_id: bulk_form
-          label: Massapäivitys
+          label: 'Bulk update'
           exclude: false
           alter:
             alter_text: false
@@ -73,7 +71,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Toiminto
+          action_title: Action
           include_exclude: exclude
           selected_actions: {  }
         id:
@@ -151,7 +149,7 @@ display:
           entity_type: tpr_errand_service
           entity_field: name
           plugin_id: field
-          label: Nimi
+          label: Name
           exclude: false
           alter:
             alter_text: false
@@ -216,7 +214,7 @@ display:
           entity_type: tpr_errand_service
           entity_field: langcode
           plugin_id: field
-          label: Kieli
+          label: Language
           exclude: false
           alter:
             alter_text: false
@@ -282,7 +280,7 @@ display:
           entity_type: tpr_errand_service
           entity_field: content_translation_status
           plugin_id: field
-          label: Tila
+          label: Status
           exclude: false
           alter:
             alter_text: false
@@ -327,8 +325,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Julkaisematon
-            format_custom_true: Julkaistu
+            format_custom_false: Unpublished
+            format_custom_true: Published
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -349,7 +347,7 @@ display:
           entity_type: tpr_errand_service
           entity_field: content_translation_changed
           plugin_id: field
-          label: Päivitetty
+          label: Updated
           exclude: false
           alter:
             alter_text: false
@@ -415,7 +413,7 @@ display:
           admin_label: ''
           entity_type: tpr_errand_service
           plugin_id: entity_operations
-          label: Toimenpiteet
+          label: Operations
           exclude: false
           alter:
             alter_text: false
@@ -465,29 +463,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Käytä
+          submit_button: Apply
           reset_button: false
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: perm
         options:
@@ -506,7 +504,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: 'Asiointipalveluja ei löytynyt.'
+            value: 'No results found.'
             format: plain_text
           tokenize: false
       sorts:
@@ -542,7 +540,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: Etsi
+            label: Search
             description: ''
             use_operator: false
             operator: combine_op
@@ -588,12 +586,11 @@ display:
             fi: fi
             sv: sv
             en: en
-            ru: ru
           group: 1
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Kieli
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op
@@ -624,7 +621,7 @@ display:
       filter_groups:
         operator: AND
         groups:
-          1: AND
+          - AND
       style:
         type: table
         options:
@@ -707,7 +704,7 @@ display:
           admin_label: ''
           plugin_id: result
           empty: false
-          content: 'Näytetään @start - @end / @total'
+          content: 'Displaying @start - @end of @total'
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -721,7 +718,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Sivu
+    display_title: Page
     display_plugin: page
     position: 1
     display_options:

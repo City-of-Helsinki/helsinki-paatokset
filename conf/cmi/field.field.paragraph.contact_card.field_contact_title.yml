@@ -5,13 +5,11 @@ dependencies:
   config:
     - field.storage.paragraph.field_contact_title
     - paragraphs.paragraphs_type.contact_card
-_core:
-  default_config_hash: 3_-eiSIFayhR_hbFNjQDMu1oq8JCPYQ1v1lpVExyWOo
 id: paragraph.contact_card.field_contact_title
 field_name: field_contact_title
 entity_type: paragraph
 bundle: contact_card
-label: Title
+label: 'Job title'
 description: ''
 required: false
 translatable: false

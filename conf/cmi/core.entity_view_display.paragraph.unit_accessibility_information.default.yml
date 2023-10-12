@@ -1,0 +1,22 @@
+uuid: 65ad86b2-9f94-4e3a-9148-b248a4f9cb8a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.unit_accessibility_information.field_unit_accessibility_unit
+    - paragraphs.paragraphs_type.unit_accessibility_information
+id: paragraph.unit_accessibility_information.default
+targetEntityType: paragraph
+bundle: unit_accessibility_information
+mode: default
+content:
+  field_unit_accessibility_unit:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

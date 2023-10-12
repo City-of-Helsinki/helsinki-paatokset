@@ -12,8 +12,6 @@ dependencies:
     - node.type.landing_page
   module:
     - user
-_core:
-  default_config_hash: RFefjJBQl6poRfg0xzeEciZDr5a8b93mTvBPo_c5vt8
 id: node.landing_page.teaser
 targetEntityType: node
 bundle: landing_page

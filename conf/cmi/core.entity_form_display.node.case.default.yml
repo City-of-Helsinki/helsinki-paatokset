@@ -21,7 +21,7 @@ dependencies:
     - node.type.case
   module:
     - datetime
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - json_field
     - path
     - publication_date

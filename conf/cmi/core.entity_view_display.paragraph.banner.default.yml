@@ -13,10 +13,8 @@ dependencies:
   module:
     - link
     - options
-    - select2_icon
+    - hdbt_admin_tools
     - text
-_core:
-  default_config_hash: 6sXm0gwP7Lq-5wEAkZWbRYwhvZsBBQASOR_gKjINHMU
 id: paragraph.banner.default
 targetEntityType: paragraph
 bundle: banner
@@ -64,7 +62,7 @@ content:
     weight: 0
     region: content
   field_icon:
-    type: select2_icon_formatter
+    type: select_icon_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }

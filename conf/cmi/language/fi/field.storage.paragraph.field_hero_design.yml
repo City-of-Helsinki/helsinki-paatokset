@@ -1,16 +1,12 @@
 settings:
   allowed_values:
-    5:
-      label: Taustakuva
-    6:
-      label: Diagonaalinen
-    0:
+    -
       label: 'Ilman kuvaa, tasattu vasemmalle'
-    1:
-      label: 'Ilman kuvaa, tasattu keskelle'
-    2:
+    -
       label: 'Kuva oikealla'
-    3:
+    -
       label: 'Kuva vasemmalla'
-    4:
+    -
       label: 'Kuva alhaalla'
+    -
+      label: Diagonaalinen

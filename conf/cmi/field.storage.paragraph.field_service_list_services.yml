@@ -1,0 +1,20 @@
+uuid: 67a886f5-f573-45a6-8d8a-ca20532e20c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+    - paragraphs
+id: paragraph.field_service_list_services
+field_name: field_service_list_services
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: tpr_service
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

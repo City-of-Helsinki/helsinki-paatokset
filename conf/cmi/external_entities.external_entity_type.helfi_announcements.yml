@@ -1,0 +1,48 @@
+uuid: b1a9950b-6d36-485c-91a3-534c992790e1
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: znut8SNGQRsGO4_fUxjvl_SIZqbb0T7hsv98bRKxcM8
+id: helfi_announcements
+label: 'Helfi: Announcements'
+label_plural: 'Helfi: Announcements'
+description: ''
+generate_aliases: null
+read_only: true
+field_mapper_id: jsonpath
+field_mapper_config:
+  field_mappings:
+    id:
+      value: $.id
+    uuid:
+      value: $.id
+    title:
+      value: '$.attributes["title"]'
+    published_at:
+      value: '$.attributes["published_at"]'
+    unpublish_on:
+      value: '$.attributes["unpublish_on"]'
+    notification:
+      value: '$.attributes["notification"]'
+    langcode:
+      value: '$.attributes["langcode"]'
+    body:
+      value: '$.attributes["body"]["value"]'
+    status:
+      value: '$.attributes["status"]'
+    announcement_type:
+      value: '$.attributes["field_announcement_type"]'
+    announcement_link_text:
+      value: '$.attributes["field_announcement_link"]["title"]'
+    announcement_link_url:
+      value: '$.attributes["field_announcement_link"]["uri"]'
+    announcement_assistive_technology_close_button_title:
+      value: '$.attributes["field_announcement_title"]'
+storage_client_id: helfi_announcements
+storage_client_config: {  }
+persistent_cache_max_age: -1
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
+inherits_annotation_fields: false

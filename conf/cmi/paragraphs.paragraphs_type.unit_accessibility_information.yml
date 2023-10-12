@@ -1,0 +1,10 @@
+uuid: 111f41cb-ba3e-4ff5-acd8-5912176072d0
+langcode: en
+status: true
+dependencies: {  }
+id: unit_accessibility_information
+label: 'Unit accessibility information'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

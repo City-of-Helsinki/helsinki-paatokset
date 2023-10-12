@@ -7,8 +7,6 @@ dependencies:
     - paragraphs.paragraphs_type.popular_service_item
   module:
     - link
-_core:
-  default_config_hash: 0G-Glhrvi206BlPVkwo8kZOm66sXrS5aP2iKpn1zosg
 id: paragraph.popular_service_item.field_service_links
 field_name: field_service_links
 entity_type: paragraph

@@ -6,16 +6,7 @@ dependencies:
     - field.storage.paragraph.field_banner_desc
     - paragraphs.paragraphs_type.banner
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - full_html
-      - minimal
-      - plain_text
-_core:
-  default_config_hash: 26cesp__Ipvs9-qumv2FtKQx4YidhWZIP3DDyK6accQ
 id: paragraph.banner.field_banner_desc
 field_name: field_banner_desc
 entity_type: paragraph

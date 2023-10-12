@@ -15,6 +15,7 @@ dependencies:
     - media.type.minutes_of_the_discussion
     - media.type.policymaker_images
     - media.type.remote_video
+    - node.type.announcement
     - node.type.article
     - node.type.case
     - node.type.decision
@@ -34,10 +35,12 @@ dependencies:
     - content_translation
     - editoria11y
     - entity_browser
+    - entity_usage
     - eu_cookie_compliance
     - file
     - filter
     - helfi_api_base
+    - helfi_tpr
     - locale
     - media
     - menu_link_attributes
@@ -73,6 +76,7 @@ permissions:
   - 'access ahjo proxy'
   - 'access content'
   - 'access content overview'
+  - 'access entity usage statistics'
   - 'access files overview'
   - 'access media overview'
   - 'access meeting_browser entity browser pages'
@@ -82,6 +86,8 @@ permissions:
   - 'access site reports'
   - 'access taxonomy overview'
   - 'access toolbar'
+  - 'access tpr_service overview'
+  - 'access tpr_unit overview'
   - 'access user profiles'
   - 'administer ahjo openid'
   - 'administer ahjo proxy'
@@ -96,6 +102,8 @@ permissions:
   - 'administer pathauto'
   - 'administer redirects'
   - 'administer sitemap settings'
+  - 'administer tpr_service'
+  - 'administer tpr_unit'
   - 'administer url aliases'
   - 'administer users'
   - 'assign admin role'
@@ -107,6 +115,7 @@ permissions:
   - 'break content lock'
   - 'cancel account'
   - 'change own username'
+  - 'create announcement content'
   - 'create article content'
   - 'create content translations'
   - 'create declaration_of_affiliation media'
@@ -129,6 +138,8 @@ permissions:
   - 'create trustee content'
   - 'create url aliases'
   - 'delete all revisions'
+  - 'delete announcement revisions'
+  - 'delete any announcement content'
   - 'delete any article content'
   - 'delete any declaration_of_affiliation media'
   - 'delete any file media'
@@ -150,6 +161,7 @@ permissions:
   - 'delete media'
   - 'delete news_item revisions'
   - 'delete own ahjo_document media'
+  - 'delete own announcement content'
   - 'delete own article content'
   - 'delete own declaration_of_affiliation media'
   - 'delete own file media'
@@ -171,6 +183,7 @@ permissions:
   - 'delete terms in pdf_categories'
   - 'delete terms in pdf_minutes_category'
   - 'delete trustee revisions'
+  - 'edit any announcement content'
   - 'edit any article content'
   - 'edit any case content'
   - 'edit any decision content'
@@ -188,6 +201,7 @@ permissions:
   - 'edit any policymaker_images media'
   - 'edit any remote_video media'
   - 'edit any trustee content'
+  - 'edit own announcement content'
   - 'edit own article content'
   - 'edit own case content'
   - 'edit own decision content'
@@ -211,6 +225,9 @@ permissions:
   - 'edit terms in pdf_categories'
   - 'edit terms in pdf_minutes_category'
   - 'revert all revisions'
+  - 'revert all tpr_service revisions'
+  - 'revert all tpr_unit revisions'
+  - 'revert announcement revisions'
   - 'revert article revisions'
   - 'revert case revisions'
   - 'revert decision revisions'
@@ -221,6 +238,7 @@ permissions:
   - 'revert policymaker revisions'
   - 'revert trustee revisions'
   - 'schedule publishing of nodes'
+  - 'set announcement published on date'
   - 'set any published on date'
   - 'set article published on date'
   - 'set landing_page published on date'
@@ -229,6 +247,7 @@ permissions:
   - 'set page published on date'
   - 'set policymaker published on date'
   - 'set trustee published on date'
+  - 'translate announcement node'
   - 'translate any entity'
   - 'translate article node'
   - 'translate configuration'
@@ -244,10 +263,20 @@ permissions:
   - 'translate pdf_minutes_category taxonomy_term'
   - 'translate policymaker node'
   - 'translate remote_video media'
+  - 'translate tpr_errand_service'
+  - 'translate tpr_service'
+  - 'translate tpr_service_channel'
+  - 'translate tpr_unit'
   - 'translate trustee node'
   - 'update any media'
+  - 'update any tpr_service'
+  - 'update any tpr_unit'
   - 'update content translations'
   - 'update media'
+  - 'update own tpr_service'
+  - 'update own tpr_unit'
+  - 'update tpr_service'
+  - 'update tpr_unit'
   - 'use menu link attributes'
   - 'use text format decision_html'
   - 'use text format full_html'
@@ -255,6 +284,9 @@ permissions:
   - 'use views bulk edit'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view all tpr_service revisions'
+  - 'view all tpr_unit revisions'
+  - 'view announcement revisions'
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view case revisions'
@@ -273,3 +305,7 @@ permissions:
   - 'view the administration theme'
   - 'view trustee revisions'
   - 'view unpublished paragraphs'
+  - 'view unpublished tpr_errand_service'
+  - 'view unpublished tpr_service'
+  - 'view unpublished tpr_service_channel'
+  - 'view unpublished tpr_unit'

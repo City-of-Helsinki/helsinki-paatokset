@@ -1,0 +1,10 @@
+uuid: ae52e796-3d10-4b9c-87b0-fbce126ccaee
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.teaser_with_image
+label: 'Teaser with image'
+targetEntityType: tpr_unit
+cache: true

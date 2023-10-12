@@ -10,8 +10,6 @@ dependencies:
     - paragraphs.paragraphs_type.chart
   module:
     - text
-_core:
-  default_config_hash: z5HcA-kCryhCEDDUh3GMvbVm_xuff7CohDimxV11670
 id: paragraph.chart.default
 targetEntityType: paragraph
 bundle: chart

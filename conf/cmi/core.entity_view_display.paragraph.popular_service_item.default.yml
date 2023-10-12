@@ -8,8 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.popular_service_item
   module:
     - link
-_core:
-  default_config_hash: YxHYX90hf2fi4r4X4a0GttjwLRbpjSUsYZYx5H9-iG0
 id: paragraph.popular_service_item.default
 targetEntityType: paragraph
 bundle: popular_service_item

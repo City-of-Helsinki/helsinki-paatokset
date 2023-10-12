@@ -1,5 +1,5 @@
 uuid: ba008127-aeac-4608-bbc9-c0ff42bfb256
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -22,7 +22,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.trustee
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - image
     - json_field
     - link
@@ -197,6 +197,11 @@ content:
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
     weight: 10
     region: content
     settings: {  }

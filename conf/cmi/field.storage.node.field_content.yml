@@ -6,8 +6,9 @@ dependencies:
     - entity_reference_revisions
     - node
     - paragraphs
-_core:
-  default_config_hash: ZjYjCDUR48NZMcsPAqXk6xepIAOkz8lteHKiryw41Ak
+  enforced:
+    module:
+      - helfi_base_content
 id: node.field_content
 field_name: field_content
 entity_type: node

@@ -5,39 +5,13 @@ dependencies:
   module:
     - options
     - paragraphs
-_core:
-  default_config_hash: qGel2F-fciDzT6Jjy6u0MvZv_ZPV24Q6-q0d42YrxHU
 id: paragraph.field_hero_design
 field_name: field_hero_design
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: without-image-left
-      label: 'Ilman kuvaa, tasattu vasemmalle'
-    -
-      value: without-image-center
-      label: 'Ilman kuvaa, tasattu keskelle'
-    -
-      value: with-image-right
-      label: 'Kuva oikealla'
-    -
-      value: with-image-left
-      label: 'Kuva vasemmalla'
-    -
-      value: with-image-bottom
-      label: 'Kuva alhaalla'
-    -
-      value: background-image
-      label: Taustakuva
-    -
-      value: diagonal
-      label: Diagonaalinen
-    -
-      value: paatokset-search-bar
-      label: 'Search bar'
-  allowed_values_function: ''
+  allowed_values: {  }
+  allowed_values_function: helfi_paragraphs_hero_design_allowed_values
 module: options
 locked: false
 cardinality: 1

@@ -1,0 +1,20 @@
+uuid: cf1182e9-f24f-418c-b899-d873de9cf599
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_node_announcement
+  theme:
+    - hdbt_subtheme
+id: announcements
+theme: hdbt_subtheme
+region: before_content
+weight: 0
+provider: null
+plugin: announcements
+settings:
+  id: announcements
+  label: Announcements
+  label_display: '0'
+  provider: helfi_node_announcement
+visibility: {  }

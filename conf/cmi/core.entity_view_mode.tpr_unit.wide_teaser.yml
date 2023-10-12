@@ -1,0 +1,10 @@
+uuid: b248cafe-e792-4b6c-9217-fac0a367e50d
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+id: tpr_unit.wide_teaser
+label: 'Wide Teaser'
+targetEntityType: tpr_unit
+cache: true

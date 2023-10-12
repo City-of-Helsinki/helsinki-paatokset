@@ -1,0 +1,15 @@
+uuid: 0044d542-1b18-4483-ac37-04234978a43e
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: unit_search
+label: 'Unit search'
+icon_uuid: null
+icon_default: null
+description: 'With unit search paragraph content producer can create unit search forms for the end user.'
+behavior_plugins: {  }

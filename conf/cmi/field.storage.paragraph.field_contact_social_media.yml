@@ -5,8 +5,9 @@ dependencies:
   module:
     - entity_reference_revisions
     - paragraphs
-_core:
-  default_config_hash: 1H9u881LSxLCHsrduHm-5yTBSUFBF29lwiH_IjbeJBk
+  enforced:
+    config:
+      - paragraphs.paragraphs_type.contact_card
 id: paragraph.field_contact_social_media
 field_name: field_contact_social_media
 entity_type: paragraph
