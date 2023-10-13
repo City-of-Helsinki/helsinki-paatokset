@@ -125,14 +125,10 @@ process:
       callable: json_encode
   field_dm_organization:
     -
-      plugin: entity_lookup
-      entity_type: node
-      bundle: organization
-      bundle_key: type
-      value_key: field_policymaker_id
-      source: decisionmaker_id
-      access_check: false
-      ignore_case: true
+      plugin: migration_lookup
+      migration: ahjo_organizations
+      source:
+        - decisionmaker_id
   field_dm_org_name:
     -
       plugin: array_shift
@@ -143,4 +139,6 @@ process:
         - Name
 destination:
   plugin: 'entity:node'
-migration_dependencies: {  }
+migration_dependencies:
+  required:
+    - ahjo_organizations
