@@ -33,6 +33,11 @@ class PolicymakerService {
   public const CITY_COUNCIL_DM_ID = '02900';
 
   /**
+   * City board id in Ahjo.
+   */
+  public const CITY_BOARD_DM_ID = '00400';
+
+  /**
    * Policymaker node.
    *
    * @var \Drupal\node\Entity\Node

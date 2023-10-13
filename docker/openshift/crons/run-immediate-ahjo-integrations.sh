@@ -14,11 +14,12 @@ do
   if [ ${APP_ENV} = 'production' ]; then
     echo "Updating decision and motion data: $(date)"
     drush ahjo-proxy:update-decisions -v
+    drush ahjo-proxy:update-cases --logic=title --limit=100 -v
     drush ahjo-proxy:update-decisions --logic=seriesid --limit=100 -v
     drush ahjo-proxy:update-decisions --logic=uniqueid --limit=100 -v
     drush ahjo-proxy:update-decisions --logic=outdated --limit=100 -v
     drush ahjo-proxy:check-decision-status --limit=100 -v
   fi
-  # Sleep for 5 minutes.
-  sleep 300
+  # Sleep for 4 minutes.
+  sleep 240
 done

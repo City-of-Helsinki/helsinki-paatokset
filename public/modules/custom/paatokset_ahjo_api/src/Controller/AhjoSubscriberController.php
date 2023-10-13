@@ -111,7 +111,10 @@ class AhjoSubscriberController extends ControllerBase {
       ]);
     }
 
-    $this->ahjoProxy->invalideCacheForProxy($id, $entity_id);
+    $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
+    if ($id === 'meetings') {
+      $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
+    }
 
     return new JsonResponse($data);
   }

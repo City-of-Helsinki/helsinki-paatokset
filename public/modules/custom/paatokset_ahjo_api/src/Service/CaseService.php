@@ -1162,17 +1162,12 @@ class CaseService {
     foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
       $data = json_decode($field->value, TRUE);
 
-      // If all relevant info is empty, do not display attachment.
-      if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
-        continue;
-      }
-
       $number = NULL;
       if (isset($data['AttachmentNumber'])) {
         $number = $data['AttachmentNumber'] . '. ';
       }
 
-      $title = t('Attachment');
+      $title = NULL;
       if (isset($data['Title'])) {
         $title = $data['Title'];
       }
@@ -1182,8 +1177,18 @@ class CaseService {
         $publicity_class = $data['PublicityClass'];
       }
 
+      $file_url = NULL;
+      if (isset($data['FileURI'])) {
+        $file_url = $data['FileURI'];
+      }
+
+      // If all relevant info is empty, do not display attachment.
+      if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
+        $title = t("There's an error with this attachment. We are resolving the issue as soon as possible.");
+        $publicity_class = 'error';
+      }
       // Override title if attachment is not public.
-      if ($publicity_class !== 'Julkinen') {
+      elseif ($publicity_class !== 'Julkinen') {
         if (!empty($data['SecurityReasons'])) {
           $title = t('Confidential: @reasons', [
             '@reasons' => implode(', ', $data['SecurityReasons']),
@@ -1192,11 +1197,6 @@ class CaseService {
         else {
           $title = t('Confidential');
         }
-      }
-
-      $file_url = NULL;
-      if (isset($data['FileURI'])) {
-        $file_url = $data['FileURI'];
       }
 
       $attachments[] = [

@@ -186,31 +186,17 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $api_url = $this->getApiBaseUrl() . $url . '/?' . urldecode($query_string);
 
-    // Local adjustments for fetching records through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'records') === 0) {
-      $base_url = getenv('AHJO_PROXY_BASE_URL');
-      $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-    }
-
-    // Local adjustments for fetching meetings through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL')) && strpos($url, 'meetings') === 0) {
-      $base_url = getenv('AHJO_PROXY_BASE_URL');
-      $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-    }
-
-    // Local adjustments for fetching cases or decisions through proxy.
+    // Local adjustments for fetching data through proxy.
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      if (strpos($url, 'cases') === 0 || strpos($url, 'decisions') === 0 || strpos($url, 'agenda-item') === 0) {
-        $base_url = getenv('AHJO_PROXY_BASE_URL');
-        $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
-      }
-    }
-
-    // Local adjustments for fetching org data through proxy.
-    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      if (strpos($url, 'organization') === 0) {
-        $base_url = getenv('AHJO_PROXY_BASE_URL');
-        $api_url = $base_url . 'fi/ahjo-proxy/' . $url . '?' . urldecode($query_string);
+      $base_url = getenv('AHJO_PROXY_BASE_URL');
+      if (
+          str_starts_with($url, 'records')
+          || str_starts_with($url, 'meetings')
+          || str_starts_with($url, 'decisions')
+          || str_starts_with($url, 'agenda-items')
+          || str_starts_with($url, 'organization')
+        ) {
+        $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
     }
 
@@ -661,10 +647,6 @@ class AhjoProxy implements ContainerInjectionInterface {
         $filename = 'positionsoftrust.json';
         break;
 
-      case 'positionsoftrust_council':
-        $filename = 'positionsoftrust_council.json';
-        break;
-
       case 'trustees':
         $filename = 'trustees.json';
         break;
@@ -675,18 +657,6 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       case 'trustees_sv':
         $filename = 'trustees_sv.json';
-        break;
-
-      case 'trustees_council':
-        $filename = 'trustees_council.json';
-        break;
-
-      case 'trustees_council_fi':
-        $filename = 'trustees_council_fi.json';
-        break;
-
-      case 'trustees_council_sv':
-        $filename = 'trustees_council_sv.json';
         break;
 
       case 'decisionmakers':
@@ -2428,8 +2398,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $endpoint_url .= '?apireqlang=sv';
     }
 
-    // Attempt to fetch content first, because
-    // migration doesn't complain about empty results.
+    // Attempt to fetch content first, because migration
+    // doesn't complain about empty results.
+    // If the command is run with the verbose flag, this will print in the CLI.
+    // The following migrate command uses the same URL, but its logs will be in
+    // syslog or dblog.
     $data = $this->getContent($endpoint_url);
     if (empty(reset($data))) {
       return 0;
@@ -2773,6 +2746,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         return json_decode($data->data, TRUE);
       }
     }
+
     return NULL;
   }
 
@@ -2800,15 +2774,89 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param string $id
    *   ID for entity.
    */
-  public function invalideCacheForProxy(string $endpoint, string $id): void {
-    // Proxy URLs used for migrations have an empty query string.
-    $url = $this->getApiBaseUrl() . $endpoint . '/' . strtoupper($id) . '?';
-    $delete_key = $this->getCacheKey($url);
-    $this->dataCache->invalidate($delete_key);
-    $this->logger->info('Invalidated cache for URL: @url with @key', [
-      '@url' => $url,
-      '@key' => $delete_key,
-    ]);
+  public function invalidateCacheForProxy(string $endpoint, string $id): void {
+    $urls = [];
+
+    // Invalidate actual AHJO API call URLS.
+    $urls[] = $this->getApiBaseUrl() . $endpoint . '/' . strtoupper($id);
+    $urls[] = $this->getApiBaseUrl() . $endpoint . '/' . strtoupper($id) . '?';
+
+    // Invalidate local or openshift environment proxy URLs (for migrations).
+    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+      $proxy_url = getenv('AHJO_PROXY_BASE_URL') . '/ahjo-proxy/';
+      $urls[] = $proxy_url . $endpoint . '/' . strtoupper($id);
+      $urls[] = $proxy_url . $endpoint . '/single/' . strtoupper($id);
+    }
+    elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
+      $proxy_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS') . '/ahjo-proxy/';
+      $urls[] = $proxy_url . $endpoint . '/' . strtoupper($id);
+      $urls[] = $proxy_url . $endpoint . '/single/' . strtoupper($id);
+    }
+
+    foreach ($urls as $url) {
+      $delete_key = $this->getCacheKey($url);
+      $this->dataCache->invalidate($delete_key);
+    }
+  }
+
+  /**
+   * Invalidates agenda item cache for meeting.
+   *
+   * @param string $id
+   *   Meeting ID.
+   */
+  public function invalidateAgendaItemsCache(string $id): void {
+    // Only invalidate cached agenda item URLs if:
+    // - Agenda is published and not empty.
+    // - Minutes aren't published yet.
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', 'meeting')
+      ->condition('status', 1)
+      ->condition('field_meeting_id', $id)
+      ->condition('field_meeting_agenda_published', 1)
+      ->condition('field_meeting_minutes_published', 0)
+      ->condition('field_meeting_agenda', '', '<>')
+      ->range('0', 1)
+      ->latestRevision();
+    $nids = $query->execute();
+
+    if (empty($nids)) {
+      return;
+    }
+
+    $entity = Node::load(reset($nids));
+    if (!$entity instanceof NodeInterface) {
+      return;
+    }
+
+    $api_base_url = $this->getApiBaseUrl();
+    $proxy_base_url = '';
+    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+      $proxy_base_url = getenv('AHJO_PROXY_BASE_URL') . '/ahjo-proxy/';
+    }
+    elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
+      $proxy_base_url = 'https://' . getenv('DRUPAL_REVERSE_PROXY_ADDRESS') . '/ahjo-proxy/';
+    }
+
+    $urls = [];
+    foreach ($entity->get('field_meeting_agenda') as $field) {
+      $item = json_decode($field->value, TRUE);
+
+      if (!isset($item['PDF']) || !isset($item['PDF']['NativeId'])) {
+        continue;
+      }
+
+      $native_id = $item['PDF']['NativeId'];
+
+      // Clear both API and proxy URL caches.
+      $urls[] = $api_base_url . '/meetings/' . $id . '/agendaitems/' . $native_id;
+      $urls[] = $proxy_base_url . '/agenda-item/' . $id . '/' . $native_id;
+    }
+
+    foreach ($urls as $url) {
+      $delete_key = $this->getCacheKey($url);
+      $this->dataCache->invalidate($delete_key);
+    }
   }
 
   /**

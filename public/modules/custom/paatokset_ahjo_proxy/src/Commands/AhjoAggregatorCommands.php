@@ -429,52 +429,6 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
-   * Aggregates city council position of trust data from Ahjo API.
-   *
-   * @command ahjo-proxy:get-council-positionsoftrust
-   *
-   * @usage ahjo-proxy:get-council-positionsoftrust
-   *   Stores all positions of trust into a file.
-   *
-   * @aliases ap:cpt
-   */
-  public function councilPositionsOfTrust(): void {
-    $council_groups = [
-      '02900',
-      '00400',
-    ];
-
-    $count = 0;
-    foreach ($council_groups as $id) {
-      $count++;
-      $data = [
-        'endpoint' => 'agents/positionoftrust',
-        'count' => $count,
-        'filename' => 'positionsoftrust_council.json',
-        'query_string' => 'org=' . $id,
-      ];
-
-      $operations[] = [
-        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processGroupItem',
-        [$data],
-      ];
-    }
-
-    if (empty($operations)) {
-      $this->logger->info('Nothing to import.');
-      return;
-    }
-
-    batch_set([
-      'title' => 'Aggregating council groups and organizations.',
-      'operations' => $operations,
-      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishGroups',
-    ]);
-
-    drush_backend_batch_process();
-  }
-
-  /**
    * Aggregates trustees from Ahjo API. Requires positions to be aggregated.
    *
    * @param string $filename
@@ -509,9 +463,6 @@ class AhjoAggregatorCommands extends DrushCommands {
             'count' => $count,
             'langcode' => $langcode,
           ];
-          if ($filename === 'positionsoftrust_council.json') {
-            $data['filename'] = 'trustees_council_' . $langcode . '.json';
-          }
           $operations[] = [
             '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processTrusteeItem',
             [$data],
@@ -883,7 +834,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $or->notExists('field_security_reasons');
       $or->condition('field_security_reasons', '');
       $query->condition($or);
-      $query->conditition('field_publicity_class', 'Julkinen', '<>');
+      $query->condition('field_publicity_class', 'Julkinen', '<>');
     }
     elseif ($logic === 'title') {
       $query->condition('title', 'NO TITLE');
@@ -3039,9 +2990,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'decisionmakers_latest.json',
       'decisionmakers_latest_sv.json',
       'positionsoftrust.json',
-      'positionsoftrust_council.json',
       'trustees.json',
-      'trustees_council.json',
       'callback_test.json',
     ];
 

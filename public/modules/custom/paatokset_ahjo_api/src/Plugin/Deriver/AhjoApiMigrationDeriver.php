@@ -52,8 +52,6 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       $derivatives = [
         'all',
         'all_sv',
-        'council',
-        'council_sv',
         'single',
         'single_sv',
       ];
@@ -149,8 +147,6 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees_fi',
         'all_sv' => '/ahjo-proxy/aggregated/trustees_sv',
-        'council' => '/ahjo-proxy/aggregated/trustees_council_fi',
-        'council_sv' => '/ahjo-proxy/aggregated/trustees_council_sv',
         'single' => '/ahjo-proxy/trustees/single',
         'single_sv' => '/ahjo-proxy/trustees/single',
       ],
