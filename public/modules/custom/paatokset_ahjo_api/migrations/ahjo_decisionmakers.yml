@@ -63,10 +63,6 @@ source:
       name: organization_above
       label: Organization Level Above
       selector: Organization/OrganizationLevelAbove
-    -
-      name: organization_below
-      label: Organization Level Below
-      selector: Organization/OrganizationLevelBelow
   ids:
     decisionmaker_id:
       type: string
@@ -127,13 +123,16 @@ process:
     -
       plugin: callback
       callable: json_encode
-  field_dm_org_above:
+  field_dm_organization:
     -
-      plugin: single_value
-      source: organization_above
-    -
-      plugin: callback
-      callable: json_encode
+      plugin: entity_lookup
+      entity_type: node
+      bundle: organization
+      bundle_key: type
+      value_key: field_policymaker_id
+      source: decisionmaker_id
+      access_check: false
+      ignore_case: true
   field_dm_org_name:
     -
       plugin: array_shift
@@ -142,13 +141,6 @@ process:
       plugin: extract
       index:
         - Name
-  field_dm_org_below:
-    -
-      plugin: single_value
-      source: organization_below
-    -
-      plugin: callback
-      callable: json_encode
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

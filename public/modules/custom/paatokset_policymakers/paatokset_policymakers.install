@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for policymaker module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Utility\UpdateException;
+
+/**
+ * Fix policymaker links to organizations.
+ */
+function paatokset_policymakers_update_9001() {
+  /*
+   * Fix policymaker links to organizations.
+   *
+   * For some reason, the ahjo_decisionmakers:latest migration does not return
+   * all policymakers that exist in the production database.
+   *
+   * This hook ensures that all policymaker nodes have a reference to an
+   * organization, which was not possible with the migration alone.
+   */
+  $nodeStorage = \Drupal::entityTypeManager()
+    ->getStorage('node');
+
+  // Load policymakers that are missing field_dm_organization.
+  $nids = $nodeStorage
+    ->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('type', 'policymaker')
+    ->notExists('field_dm_organization')
+    ->execute();
+
+  foreach ($nids as $nid) {
+    if (is_null($policymaker = $nodeStorage->load($nid))) {
+      continue;
+    }
+
+    $policymaker_id = $policymaker->get('field_policymaker_id')->getString();
+    $organizations = $nodeStorage->loadByProperties([
+      'type' => 'organization',
+      'field_policymaker_id' => $policymaker_id
+    ]);
+
+    if ($organization = reset($organizations)) {
+      // Set organization reference to policymaker.
+      $policymaker->set('field_dm_organization', $organization);
+    } else {
+      // Organization not found. Try running org chart queue first.
+      throw new UpdateException("Organization with id $policymaker_id does not exists.");
+    }
+  }
+}
+
+
+
