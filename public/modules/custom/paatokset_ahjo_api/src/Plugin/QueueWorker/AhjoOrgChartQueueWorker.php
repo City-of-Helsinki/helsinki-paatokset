@@ -7,10 +7,12 @@ namespace Drupal\paatokset_ahjo_api\Plugin\QueueWorker;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,19 +37,19 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
    *
    * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
    */
-  protected $ahjoProxy;
+  protected AhjoProxy $ahjoProxy;
 
   /**
    * Ahjo organization chart queue.
    *
    * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $queue;
+  protected QueueInterface $queue;
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
     $instance->logger = $container->get('logger.factory')->get('ahjo_api_org_queue');
@@ -180,10 +182,10 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
    * @param string $langcode
    *   Language for org data.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface
    *   Loaded or created node, if found.
    */
-  private function findOrCreateOrg(string $id, string $title, string $langcode): ?NodeInterface {
+  private function findOrCreateOrg(string $id, string $title, string $langcode): NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->range(0, 1)
