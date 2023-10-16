@@ -61,11 +61,11 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function processItem($item) {
-    $id = (string) $item['id'];
-    $step = (int) $item['step'];
-    $max_steps = (int) $item['max_steps'];
-    $langcode = (string) $item['langcode'];
+  public function processItem($data): void {
+    $id = (string) $data['id'];
+    $step = (int) $data['step'];
+    $max_steps = (int) $data['max_steps'];
+    $langcode = $data['langcode'];
 
     // Only allow finnish and swedish for now.
     $allowed_langs = ['fi', 'sv'];
@@ -94,25 +94,25 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       $query_string = 'orgid=' . (string) $id . '&apireqlang=' . (string) $langcode;
     }
 
-    $data = $this->ahjoProxy->getData($url, $query_string);
+    $organization = $this->ahjoProxy->getData($url, $query_string);
 
-    // Local data is formatted a bit differently.
-    if (!empty($data['decisionMakers'][0]['Organization'])) {
-      $data = $data['decisionMakers'][0]['Organization'];
+    // Local organization is formatted a bit differently.
+    if (!empty($organization['decisionMakers'][0]['Organization'])) {
+      $organization = $organization['decisionMakers'][0]['Organization'];
     }
 
-    if (empty($data['ID'])) {
+    if (empty($organization['ID'])) {
       $this->logger->error('Data not found for @id', [
         '@id' => $id,
       ]);
       return;
     }
 
-    $node = $this->findOrCreateOrg($id, $data['Name'], $langcode);
-    $node->set('field_organization_data', json_encode($data));
+    $node = $this->findOrCreateOrg($id, $organization['Name'], $langcode);
+    $node->set('field_organization_data', json_encode($organization));
 
-    if (!empty($data['OrganizationLevelAbove']['organizations'])) {
-      $above_org = reset($data['OrganizationLevelAbove']['organizations']);
+    if (!empty($organization['OrganizationLevelAbove']['organizations'])) {
+      $above_org = reset($organization['OrganizationLevelAbove']['organizations']);
 
       if (!$node->get('field_org_level_above_id')->isEmpty() && $node->get('field_org_level_above_id')->value !== $above_org['ID']) {
         $this->logger->warning('Duplicate ID with different parent: @id, (@parent_id, expecting @existing_parent).', [
@@ -126,7 +126,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
       }
     }
     $below_ids = [];
-    foreach ($data['OrganizationLevelBelow']['organizations'] as $org_below) {
+    foreach ($organization['OrganizationLevelBelow']['organizations'] as $org_below) {
       if ($org_below['Existing'] !== 'true') {
         continue;
       }
