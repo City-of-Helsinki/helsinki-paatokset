@@ -26,6 +26,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
+   * Maximum allowed recursion depth.
+   *
+   * This will prevent infinite recursions in case the Ahjo API returns
+   * circular organization for any reason.
+   *
+   * As of october-2023, the maximum organization depth is 9.
+   */
+  private const MAX_RECURSION_DEPTH = 20;
+
+  /**
    * The logger.
    *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
@@ -64,7 +74,7 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
   public function processItem($data): void {
     $id = (string) $data['id'];
     $step = (int) $data['step'];
-    $max_steps = (int) $data['max_steps'];
+    $max_steps = (int) ($data['max_steps'] ?? self::MAX_RECURSION_DEPTH);
     $langcode = $data['langcode'];
 
     // Only allow finnish and swedish for now.

@@ -513,21 +513,22 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @param string $start_id
    *   Org ID to start from.
-   * @param int $max_steps
-   *   Maximum amount of steps.
+   * @param ?int $max_steps
+   *   Maximum amount of steps. Defaults to steps required to get the full
+   *   organization chart.
    * @param string $langcode
    *   Language to get org data with.
    *
    * @command ahjo-callback:start-org-queue
    *
-   * @usage ahjo-callback:start-org-queue 00001 3
-   *   Get first three levels of organization data.
+   * @usage ahjo-callback:start-org-queue 00001
+   *   Get full organization data.
    * @usage ahjo-callback:start-org-queue 00001 3 sv
-   *   Get Swedish translations of the first three levels.
+   *   Get first three levels of organization data only in swedish.
    *
    * @aliases ac:sorg
    */
-  public function startOrgQueue(string $start_id, int $max_steps = 5, string $langcode = 'fi') {
+  public function startOrgQueue(string $start_id, ?int $max_steps = NULL, string $langcode = 'fi') {
     $data = [
       'id' => $start_id,
       'step' => 0,
@@ -538,12 +539,10 @@ class AhjoCallbackCommands extends DrushCommands {
     $item_id = $this->orgQueue->createItem($data);
 
     if ($item_id) {
-      $this->writeln(sprintf('Started org queue from %s with %d steps.', $start_id, $max_steps));
-      $this->logger->info('Added item to org chart queue: @id (@langcode), @step out of @max_steps).', [
+      $this->writeln("Started org queue from $start_id.");
+      $this->logger->info('Added item to org chart queue: @id (@langcode).', [
         '@id' => $start_id,
         '@langcode' => $langcode,
-        '@step' => 0,
-        '@max_steps' => $max_steps,
       ]);
     }
     else {
