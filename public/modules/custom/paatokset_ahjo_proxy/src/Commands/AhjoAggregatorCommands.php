@@ -3129,4 +3129,68 @@ class AhjoAggregatorCommands extends DrushCommands {
     return $key;
   }
 
+  /**
+   * Fix policymaker node references to organizations.
+   *
+   * For some reason, the ahjo_decisionmakers:latest migration does not return
+   * all policymakers that exist in the production database.
+   *
+   * This command fixes the links and should be run on the production database
+   * once when UHF-8858 is deployed and the migration ahjo_organizations has
+   * been run.
+   *
+   * This should not be an issue once existing policymakers are treated, since
+   * new policymakers that are imported using the migration should get the
+   * reference automatically.
+   *
+   * @command ahjo-proxy:fix-decisionmaker-references
+   *
+   * @usage ahjo-proxy:store-static-files
+   *    Stores default static files into filesystem (for debugging migrations).
+   */
+  public function fixPolicymakerReferences(): void {
+    $nodeStorage = \Drupal::entityTypeManager()
+      ->getStorage('node');
+
+    // Load policymakers that are missing field_dm_organization.
+    $nids = $nodeStorage
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('type', 'policymaker')
+      ->notExists('field_dm_organization')
+      ->execute();
+
+    $count = 0;
+
+    foreach ($nids as $nid) {
+      if (is_null($policymaker = $nodeStorage->load($nid))) {
+        continue;
+      }
+
+      $policymaker_id = $policymaker->get('field_policymaker_id')->getString();
+      $organizations = $nodeStorage->loadByProperties([
+        'type' => 'organization',
+        'field_policymaker_id' => $policymaker_id,
+      ]);
+
+      if ($organization = reset($organizations)) {
+        // Set organization reference to policymaker.
+        $policymaker->set('field_dm_organization', $organization);
+        $policymaker->save();
+        $count += 1;
+      }
+      else {
+        \Drupal::logger('paatokset_ahjo_proxy')->warning("Decisionmaker @dm: organization @id does not exist", [
+          '@dm' => $policymaker->toUrl('edit-form')->toString(),
+          '@id' => $policymaker_id,
+        ]);
+      }
+    }
+
+    \Drupal::logger('paatokset_ahjo_proxy')->info("Fixed @fixed of detected @all policymaers", [
+      '@fixed' => $count,
+      '@all' => count($nids),
+    ]);
+  }
+
 }

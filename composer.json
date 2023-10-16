@@ -36,6 +36,7 @@
         "dmore/chrome-mink-driver": "^2.8",
         "drupal/coder": "^8.3",
         "drupal/core-dev": "^9.3",
+        "drupal/migrate_tools": "^5.2",
         "mglaman/phpstan-drupal": "^1.0",
         "phpspec/prophecy-phpunit": "^2",
         "phpstan/extension-installer": "^1.1",
