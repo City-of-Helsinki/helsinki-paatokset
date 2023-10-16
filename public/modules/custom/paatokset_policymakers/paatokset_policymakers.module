@@ -7,10 +7,26 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
+
+/**
+ * Implements hook_node_access().
+ */
+function paatokset_policymakers_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  // Disable access to organization nodes from anonymous users.
+  // The organization nodes do not contain anything useful for now.
+  if ($account->isAnonymous() && $node->gettype() == 'organization') {
+    return AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
+  }
+
+  // No opinion.
+  return AccessResult::neutral();
+}
 
 /**
  * Implements hook_theme().
