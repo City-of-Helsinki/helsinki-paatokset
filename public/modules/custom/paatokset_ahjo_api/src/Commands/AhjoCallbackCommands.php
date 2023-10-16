@@ -511,13 +511,15 @@ class AhjoCallbackCommands extends DrushCommands {
   /**
    * Initialize organization chart queue.
    *
+   * The root id of the whole organization is '00001'.
+   *
    * @param string $start_id
    *   Org ID to start from.
    * @param ?int $max_steps
    *   Maximum amount of steps. Defaults to steps required to get the full
    *   organization chart.
-   * @param string $langcode
-   *   Language to get org data with.
+   * @param ?string $langcode
+   *   Language to get org data with. Defaults to all languages.
    *
    * @command ahjo-callback:start-org-queue
    *
@@ -528,7 +530,7 @@ class AhjoCallbackCommands extends DrushCommands {
    *
    * @aliases ac:sorg
    */
-  public function startOrgQueue(string $start_id, ?int $max_steps = NULL, string $langcode = 'fi') {
+  public function startOrgQueue(string $start_id, ?int $max_steps = NULL, ?string $langcode = NULL) {
     $data = [
       'id' => $start_id,
       'step' => 0,
@@ -540,9 +542,8 @@ class AhjoCallbackCommands extends DrushCommands {
 
     if ($item_id) {
       $this->writeln("Started org queue from $start_id.");
-      $this->logger->info('Added item to org chart queue: @id (@langcode).', [
+      $this->logger->info('Added item to org chart queue: @id', [
         '@id' => $start_id,
-        '@langcode' => $langcode,
       ]);
     }
     else {

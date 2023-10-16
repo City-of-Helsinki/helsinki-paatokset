@@ -36,6 +36,11 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
   private const MAX_RECURSION_DEPTH = 20;
 
   /**
+   * Organization translations supported by Ahjo.
+   */
+  private const ALLOWED_LANGCODES = ['fi', 'sv'];
+
+  /**
    * The logger.
    *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
@@ -75,14 +80,43 @@ class AhjoOrgChartQueueWorker extends QueueWorkerBase implements ContainerFactor
     $id = (string) $data['id'];
     $step = (int) $data['step'];
     $max_steps = (int) ($data['max_steps'] ?? self::MAX_RECURSION_DEPTH);
-    $langcode = $data['langcode'];
+    $langcode = $data['langcode'] ?? NULL;
 
-    // Only allow finnish and swedish for now.
-    $allowed_langs = ['fi', 'sv'];
-    if (!in_array($langcode, $allowed_langs)) {
-      $langcode = 'fi';
+    // Process only one language.
+    if (!is_null($data['langcode'])) {
+      // Validate langcode.
+      if (!in_array($langcode, self::ALLOWED_LANGCODES)) {
+        $this->logger->error("Org: @id, refusing to process invalid language @langcode", [
+          '@langcode' => $langcode,
+        ]);
+
+        return;
+      }
+
+      $this->processOrganization($id, $langcode, $step, $max_steps);
     }
+    else {
+      // Process all languages. Recursive items are added with the langcode
+      // parameter so this path only applies to the first item.
+      foreach (self::ALLOWED_LANGCODES as $langcode) {
+        $this->processOrganization($id, $langcode, $step, $max_steps);
+      }
+    }
+  }
 
+  /**
+   * Processes queued organization in one language.
+   *
+   * @param string $id
+   *   Organization id.
+   * @param string $langcode
+   *   Language to process.
+   * @param int $step
+   *   Current recursion depth.
+   * @param int $max_steps
+   *   Maximum allowed recursion depth.
+   */
+  private function processOrganization(string $id, string $langcode, int $step, int $max_steps): void {
     $this->logger->info('Org: @id (@langcode), step @step out of @max_steps.', [
       '@id' => $id,
       '@langcode' => $langcode,
