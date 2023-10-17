@@ -133,7 +133,7 @@ module.exports = (env, argv) => {
   if (argv.mode === 'production') {
     const TerserPlugin = require('terser-webpack-plugin');
 
-    return merge(config, {
+    const full_config = merge(config, {
       mode: 'production',
       devtool: false,
       optimization: {
@@ -142,6 +142,12 @@ module.exports = (env, argv) => {
           new TerserPlugin({
             terserOptions: {
               ecma: 2015,
+              mangle: {
+                reserved:[
+                  'Drupal',
+                  'drupalSettings'
+                ]
+              },
               format: {
                 comments: false,
               },
@@ -152,10 +158,12 @@ module.exports = (env, argv) => {
       },
     });
 
+    return full_config;
+
   } else if (argv.mode === 'development') {
     const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
-    return merge(config, {
+    const full_config = merge(config, {
       mode: 'development',
       devtool: 'eval-source-map',
       plugins: [
@@ -165,6 +173,8 @@ module.exports = (env, argv) => {
         })
       ]
     });
+
+    return full_config;
 
   }
 };

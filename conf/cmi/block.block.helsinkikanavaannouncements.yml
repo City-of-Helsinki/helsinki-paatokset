@@ -10,7 +10,7 @@ dependencies:
 id: helsinkikanavaannouncements
 theme: hdbt_subtheme
 region: before_content
-weight: -18
+weight: -16
 provider: null
 plugin: paatokset_helsinki_kanava_announcements
 settings:

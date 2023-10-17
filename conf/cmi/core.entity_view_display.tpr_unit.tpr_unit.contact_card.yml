@@ -64,6 +64,10 @@ hidden:
   contacts: true
   created: true
   description: true
+  field_content: true
+  field_lower_content: true
+  field_metatags: true
+  field_unit_type: true
   hide_description: true
   highlights: true
   langcode: true
@@ -81,4 +85,5 @@ hidden:
   services: true
   show_www: true
   streetview_entrance_url: true
+  unit_picture_caption: true
   www: true

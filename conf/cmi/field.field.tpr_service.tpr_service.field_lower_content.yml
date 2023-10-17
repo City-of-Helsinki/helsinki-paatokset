@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.contact_card_listing
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.event_list
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
@@ -53,6 +54,7 @@ settings:
       map: map
       unit_accessibility_information: unit_accessibility_information
       unit_contact_card: unit_contact_card
+      from_library: from_library
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -71,6 +73,9 @@ settings:
         weight: 0
         enabled: true
       event_list:
+        weight: 0
+        enabled: true
+      from_library:
         weight: 0
         enabled: true
       image:

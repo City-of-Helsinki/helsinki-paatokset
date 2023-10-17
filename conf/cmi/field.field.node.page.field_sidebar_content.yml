@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_sidebar_content
     - node.type.page
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.sidebar_text
   module:
     - entity_reference_revisions
@@ -23,8 +24,12 @@ settings:
   handler_settings:
     target_bundles:
       sidebar_text: sidebar_text
+      from_library: from_library
     negate: 0
     target_bundles_drag_drop:
+      from_library:
+        weight: 0
+        enabled: true
       sidebar_text:
         weight: 0
         enabled: true

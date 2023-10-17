@@ -9,7 +9,7 @@ dependencies:
 id: announcements
 theme: hdbt_subtheme
 region: before_content
-weight: 0
+weight: -19
 provider: null
 plugin: announcements
 settings:

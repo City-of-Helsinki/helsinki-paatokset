@@ -10,7 +10,7 @@ dependencies:
 id: hdbt_subtheme_heroblock
 theme: hdbt_subtheme
 region: before_content
-weight: -19
+weight: -17
 provider: null
 plugin: hero_block
 settings:

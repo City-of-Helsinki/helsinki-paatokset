@@ -10,7 +10,7 @@ dependencies:
 id: policymakermobilenavigation
 theme: hdbt_subtheme
 region: before_content
-weight: -20
+weight: -18
 provider: null
 plugin: policymaker_side_nav_mobile
 settings:
