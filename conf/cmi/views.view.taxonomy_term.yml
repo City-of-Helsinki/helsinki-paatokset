@@ -23,15 +23,15 @@ display:
     position: 0
     display_options:
       fields:
-        created:
-          id: created
+        published_at:
+          id: published_at
           table: node_field_data
-          field: created
+          field: published_at
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: node
-          entity_field: created
+          entity_field: published_at
           plugin_id: field
           label: ''
           exclude: false
