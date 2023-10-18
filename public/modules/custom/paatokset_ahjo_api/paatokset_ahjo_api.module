@@ -368,9 +368,12 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
 function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): void {
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $nids = \Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'article')
     ->condition('langcode', $currentLanguage)
     ->condition('status', 1)
+    ->sort('sticky', 'DESC')
+    // Field defined by publication_date module.
     ->sort('published_at', 'DESC')
     ->execute();
 
