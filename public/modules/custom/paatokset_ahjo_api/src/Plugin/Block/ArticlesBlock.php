@@ -17,6 +17,8 @@ class ArticlesBlock extends BlockBase {
 
   /**
    * Build the attributes.
+   *
+   * @see \paatokset_ahjo_api_preprocess_block__all_articles
    */
   public function build() {
     return [

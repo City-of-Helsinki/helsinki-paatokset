@@ -6,6 +6,7 @@
 %}
 {% if articles %}
 <div {{ attributes.addClass(classes) }}>
+  {% set years = articles | keys %}
   {% if (years is not empty ) %}
     <div class="paatokset__decision-tree-container">
       <div class="decision-tree__title">

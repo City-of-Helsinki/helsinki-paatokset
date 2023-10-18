@@ -376,7 +376,6 @@ function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): v
 
   $nodes = Node::loadMultiple($nids);
 
-  $years = [];
   $by_year = [];
   foreach ($nodes as $node) {
     if ($node->hasTranslation($currentLanguage)) {
@@ -391,19 +390,13 @@ function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): v
     }
     $year = date('Y', $timestamp);
 
-    if (!in_array($year, $years)) {
-      $by_year[$year] = [];
-      $years[] = $year;
-    }
-
     $by_year[$year][] = [
       'url' => $node->toUrl(),
       'date' => $timestamp,
-      'title' => $node->title->value,
+      'title' => $node->getTitle(),
     ];
   }
 
-  $variables['years'] = $years;
   $variables['articles'] = $by_year;
 
   // Helpful $content variable for templates.
