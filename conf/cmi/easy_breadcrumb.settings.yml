@@ -5,13 +5,14 @@ replaced_titles: ''
 custom_paths: ''
 include_home_segment: true
 alternative_title_field: ''
-home_segment_title: ''
+home_segment_title: Home
 home_segment_keep: false
 include_title_segment: true
 title_from_page_when_available: true
 title_segment_as_link: false
 use_menu_title_as_fallback: false
 use_page_title_as_menu_title_fallback: false
+menu_title_preferred_menu: ''
 remove_repeated_segments: true
 language_path_prefix_as_segment: false
 absolute_paths: false
@@ -30,3 +31,5 @@ segment_display_limit: null
 truncator_mode: false
 truncator_length: 100
 truncator_dots: true
+remove_repeated_segments_text_only: 0
+home_segment_validation_skip: 0
