@@ -21,7 +21,6 @@ dependencies:
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.meetings_calendar
-    - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
     - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
@@ -38,7 +37,7 @@ id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: 'Content region'
+label: Sisältöalue
 description: ''
 required: false
 translatable: true
@@ -72,7 +71,6 @@ settings:
       gallery: gallery
       image: image
       meetings_calendar: meetings_calendar
-      news_liftups: news_liftups
       pdf_listing: pdf_listing
       text: text
     negate: 0

@@ -20,7 +20,6 @@ dependencies:
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.map
-    - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
     - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
@@ -34,7 +33,7 @@ id: node.page.field_lower_content
 field_name: field_lower_content
 entity_type: node
 bundle: page
-label: 'Lower content region'
+label: 'Alempi sisältöalue'
 description: ''
 required: false
 translatable: true
@@ -65,7 +64,6 @@ settings:
       custom_content_links: custom_content_links
       gallery: gallery
       liftup_with_image: liftup_with_image
-      news_liftups: news_liftups
       pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
