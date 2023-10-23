@@ -8,26 +8,14 @@
       padding: 32px 32px 32px 0;
       display: flex;
       justify-content: space-between;
-    }
 
-    .accordion-item__icon {
-      display: flex;
-      align-items: center;
-
-      span {
-        min-width: 30px;
-        min-height: 30px;
-        width: 30px;
-        height: 30px;
-        transition: all 0.1s ease-in-out;
+      &::after {
+        right: 32px;
       }
     }
   }
-
-  .handorgel__header--opened {
-    .accordion-item__icon span {
-      transform: rotate(180deg)
-    }
+  .accordion-item__header--novotes .handorgel__header__button::after {
+    display: none;
   }
 
   .handorgel__content {

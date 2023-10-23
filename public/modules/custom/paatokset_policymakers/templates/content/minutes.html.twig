@@ -3,7 +3,7 @@
  * Template for policymaker minutes
  */
 #}
-{{ attach_library('hdbt/accordion') }}
+{{ attach_library('hdbt_subtheme/accordion_legacy') }}
 <div class="minutes-container">
   {% if meeting is not empty %}
     <h1 class="minutes__header">
@@ -90,9 +90,6 @@
             <h3 class="accordion-item__header handorgel__header">
               <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
                 <span>{{ accordion.heading }}</span>
-                <div class="accordion-item__icon">
-                  {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
-                </div>
               </button>
             </h3>
             <div class="accordion-item__content handorgel__content">
