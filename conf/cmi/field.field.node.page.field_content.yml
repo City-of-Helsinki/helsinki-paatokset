@@ -15,9 +15,12 @@ dependencies:
     - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.map
+    - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.service_list_search
@@ -39,29 +42,35 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      text: text
-      columns: columns
-      image: image
       accordion: accordion
-      list_of_links: list_of_links
+      banner: banner
+      chart: chart
+      columns: columns
       contact_card_listing: contact_card_listing
       content_cards: content_cards
       content_liftup: content_liftup
-      banner: banner
       event_list: event_list
+      from_library: from_library
+      image: image
+      list_of_links: list_of_links
+      map: map
       news_list: news_list
       phasing: phasing
-      chart: chart
       remote_video: remote_video
-      map: map
-      unit_search: unit_search
       service_list_search: service_list_search
-      from_library: from_library
+      text: text
+      unit_search: unit_search
+      liftup_with_image: liftup_with_image
+      news_liftups: news_liftups
+      pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: 0
         enabled: true
+      accordion_item:
+        weight: 42
+        enabled: false
       banner:
         weight: 0
         enabled: true
@@ -71,6 +80,9 @@ settings:
       columns:
         weight: 0
         enabled: true
+      contact_card:
+        weight: 46
+        enabled: false
       contact_card_listing:
         weight: 0
         enabled: true
@@ -80,36 +92,96 @@ settings:
       content_liftup:
         weight: 0
         enabled: true
+      custom_content_links:
+        weight: 50
+        enabled: false
       event_list:
         weight: 0
         enabled: true
       from_library:
         weight: 0
         enabled: true
+      gallery:
+        weight: 53
+        enabled: false
+      gallery_slide:
+        weight: 54
+        enabled: false
+      hearings:
+        weight: 55
+        enabled: false
+      hero:
+        weight: 56
+        enabled: false
       image:
         weight: 0
+        enabled: true
+      liftup_with_image:
+        weight: 58
         enabled: true
       list_of_links:
         weight: 0
         enabled: true
+      list_of_links_item:
+        weight: 60
+        enabled: false
       map:
         weight: 0
+        enabled: true
+      meetings_calendar:
+        weight: 62
+        enabled: false
+      news_liftups:
+        weight: 63
         enabled: true
       news_list:
         weight: 0
         enabled: true
+      pdf_listing:
+        weight: 65
+        enabled: true
       phasing:
         weight: 0
         enabled: true
+      phasing_item:
+        weight: 67
+        enabled: false
+      popular_service_item:
+        weight: 69
+        enabled: false
+      popular_services:
+        weight: 68
+        enabled: false
       remote_video:
         weight: 0
         enabled: true
+      service_list:
+        weight: 71
+        enabled: false
       service_list_search:
         weight: 0
         enabled: true
+      sidebar_text:
+        weight: 73
+        enabled: false
+      social_media_link:
+        weight: 74
+        enabled: false
+      target_group_link_item:
+        weight: 76
+        enabled: false
+      target_group_links:
+        weight: 75
+        enabled: false
       text:
         weight: 0
         enabled: true
+      unit_accessibility_information:
+        weight: 78
+        enabled: false
+      unit_contact_card:
+        weight: 79
+        enabled: false
       unit_search:
         weight: 0
         enabled: true
