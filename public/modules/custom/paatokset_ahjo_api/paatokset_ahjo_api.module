@@ -368,15 +368,17 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
 function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): void {
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $nids = \Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'article')
     ->condition('langcode', $currentLanguage)
     ->condition('status', 1)
+    ->sort('sticky', 'DESC')
+    // Field defined by publication_date module.
     ->sort('published_at', 'DESC')
     ->execute();
 
   $nodes = Node::loadMultiple($nids);
 
-  $years = [];
   $by_year = [];
   foreach ($nodes as $node) {
     if ($node->hasTranslation($currentLanguage)) {
@@ -391,19 +393,13 @@ function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): v
     }
     $year = date('Y', $timestamp);
 
-    if (!in_array($year, $years)) {
-      $by_year[$year] = [];
-      $years[] = $year;
-    }
-
     $by_year[$year][] = [
       'url' => $node->toUrl(),
       'date' => $timestamp,
-      'title' => $node->title->value,
+      'title' => $node->getTitle(),
     ];
   }
 
-  $variables['years'] = $years;
   $variables['articles'] = $by_year;
 
   // Helpful $content variable for templates.
