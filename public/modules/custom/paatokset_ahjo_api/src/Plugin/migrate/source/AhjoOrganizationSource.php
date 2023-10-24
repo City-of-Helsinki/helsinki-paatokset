@@ -85,6 +85,9 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
         ]);
 
         $organization = $this->getOrganization($id, $langcode);
+        if ($organization === NULL) {
+          continue;
+        }
 
         $title = Unicode::truncate($organization['Name'], '255', TRUE, TRUE);
 
@@ -115,8 +118,11 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
 
   /**
    * Get organization info from Ahjo.
+   *
+   * @return ?array
+   *   NULL if received invalid data from Ahjo.
    */
-  private function getOrganization(string $id, string $langcode): array {
+  private function getOrganization(string $id, string $langcode): ?array {
     if (!$this->ahjoProxy->isOperational()) {
       $this->logger->error('Ahjo Proxy is not operational, exiting.');
       throw new MigrateException('Ahjo Proxy is not operational, exiting.');
@@ -142,7 +148,7 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
       $this->logger->error('Data not found for @id', [
         '@id' => $id,
       ]);
-      throw new MigrateException("Data not found for $id");
+      return NULL;
     }
 
     return $organization;
