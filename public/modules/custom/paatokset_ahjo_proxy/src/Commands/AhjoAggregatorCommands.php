@@ -3187,7 +3187,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
     }
 
-    \Drupal::logger('paatokset_ahjo_proxy')->info("Fixed @fixed of detected @all policymaers", [
+    \Drupal::logger('paatokset_ahjo_proxy')->info("Fixed @fixed of detected @all policymakers", [
       '@fixed' => $count,
       '@all' => count($nids),
     ]);
