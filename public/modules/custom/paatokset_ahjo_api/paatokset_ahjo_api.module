@@ -776,6 +776,29 @@ function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?
 }
 
 /**
+ * Lookup organization nodes by ID.
+ *
+ * @param string $decisionmaker_id
+ *   Policymaker ID.
+ *
+ * @return string|null
+ *   Existing nid, if found.
+ */
+function _paatokset_ahjo_api_lookup_organization_nid(string $decisionmaker_id): ?string {
+  $query = Drupal::entityQuery('node')
+    ->condition('type', 'organization')
+    ->condition('field_policymaker_id', $decisionmaker_id)
+    ->accessCheck(FALSE)
+    ->range(0, 1)
+    ->latestRevision();
+  $ids = $query->execute();
+  if (empty($ids)) {
+    return NULL;
+  }
+  return reset($ids);
+}
+
+/**
  * Truncate text value.
  *
  * @param string $value
