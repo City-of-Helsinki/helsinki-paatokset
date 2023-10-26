@@ -17,11 +17,13 @@ dependencies:
   module:
     - entity_reference_revisions
     - helfi_tpr
+_core:
+  default_config_hash: 7mu1uOGOAtNGBSsMGRGHZ7E2-6BYzH1Giv6pIn5tgHY
 id: tpr_unit.tpr_unit.field_content
 field_name: field_content
 entity_type: tpr_unit
 bundle: tpr_unit
-label: 'Ylempi sisältöalue'
+label: 'Upper content region'
 description: ''
 required: false
 translatable: true
@@ -38,9 +40,9 @@ settings:
       list_of_links: list_of_links
       content_cards: content_cards
       banner: banner
+      from_library: from_library
       contact_card_listing: contact_card_listing
       remote_video: remote_video
-      from_library: from_library
     negate: 0
     target_bundles_drag_drop:
       accordion:

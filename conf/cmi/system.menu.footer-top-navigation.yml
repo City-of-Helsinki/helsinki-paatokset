@@ -2,6 +2,8 @@ uuid: 73fe58ac-ed0b-419b-8687-d3af58987003
 langcode: und
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: Xvln0TgV8u6gzPJjMc-kWCWg2jfbkPgT_GvSaiwQ4_4
 id: footer-top-navigation
 label: 'Footer - Top navigation - First'
 description: 'Top navigation for footer block.'

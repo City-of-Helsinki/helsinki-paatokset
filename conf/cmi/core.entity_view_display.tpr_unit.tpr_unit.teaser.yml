@@ -13,6 +13,8 @@ dependencies:
     - address
     - helfi_tpr
     - imagecache_external
+_core:
+  default_config_hash: AoDOI9a3GINbOYGLRXgyPzlenlc4f7iHDdcaKsBT-HM
 id: tpr_unit.tpr_unit.teaser
 targetEntityType: tpr_unit
 bundle: tpr_unit

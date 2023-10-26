@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.landing_page
+_core:
+  default_config_hash: ewmZbuO4KgD36Ka7QA-8tJ9jktJH-jQbTNMrkHfuQRc
 id: node.landing_page.status
 field_name: status
 entity_type: node

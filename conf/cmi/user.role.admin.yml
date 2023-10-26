@@ -224,6 +224,7 @@ permissions:
   - 'edit terms in keywords'
   - 'edit terms in pdf_categories'
   - 'edit terms in pdf_minutes_category'
+  - 'mark as hidden in editoria11y'
   - 'revert all revisions'
   - 'revert all tpr_service revisions'
   - 'revert all tpr_unit revisions'

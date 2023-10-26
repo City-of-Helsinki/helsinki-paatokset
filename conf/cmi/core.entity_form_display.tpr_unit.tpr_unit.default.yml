@@ -15,7 +15,8 @@ dependencies:
     - paragraphs
     - path
     - readonly_field_widget
-    - select2
+_core:
+  default_config_hash: RcjlFBYhitNunsd4AVtO6f3l-efOfSCW_nlNFMznzhk
 id: tpr_unit.tpr_unit.default
 targetEntityType: tpr_unit
 bundle: tpr_unit
@@ -83,8 +84,8 @@ content:
     third_party_settings: {  }
   contacts:
     type: readonly_field_widget
-    weight: 36
     region: content
+    weight: 36
     settings:
       label: above
       formatter_type: null
@@ -175,8 +176,8 @@ content:
     third_party_settings: {  }
   highlights:
     type: readonly_field_widget
-    weight: 33
     region: content
+    weight: 33
     settings:
       label: above
       formatter_type: null
@@ -202,8 +203,8 @@ content:
     third_party_settings: {  }
   links:
     type: readonly_field_widget
-    weight: 31
     region: content
+    weight: 31
     settings:
       label: above
       formatter_type: null
@@ -240,8 +241,8 @@ content:
     third_party_settings: {  }
   opening_hours:
     type: readonly_field_widget
-    weight: 32
     region: content
+    weight: 32
     settings:
       label: above
       formatter_type: null
@@ -250,8 +251,8 @@ content:
     third_party_settings: {  }
   other_info:
     type: readonly_field_widget
-    weight: 34
     region: content
+    weight: 34
     settings:
       label: above
       formatter_type: null
@@ -293,8 +294,8 @@ content:
     third_party_settings: {  }
   price_info:
     type: readonly_field_widget
-    weight: 35
     region: content
+    weight: 35
     settings:
       label: above
       formatter_type: null

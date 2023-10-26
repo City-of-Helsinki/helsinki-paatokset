@@ -8,11 +8,13 @@ dependencies:
     - paragraphs.paragraphs_type.hero
   module:
     - entity_reference_revisions
+_core:
+  default_config_hash: _JO0VBpDGRU-ye4MgCyh72SJmF6G9ndACtwAfuQJZI8
 id: node.page.field_hero
 field_name: field_hero
 entity_type: node
 bundle: page
-label: Hero-lohko
+label: Hero
 description: ''
 required: false
 translatable: true

@@ -18,6 +18,8 @@ dependencies:
     - scheduler
     - select2
     - text
+_core:
+  default_config_hash: 0ewsu2ZhpNhAo4t7wkUgEa9ABQAkcsF7IXtR-kFeDUg
 id: node.announcement.default
 targetEntityType: node
 bundle: announcement

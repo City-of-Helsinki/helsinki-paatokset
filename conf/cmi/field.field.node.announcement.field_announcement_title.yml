@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.node.field_announcement_title
     - node.type.announcement
+_core:
+  default_config_hash: f0piVjyoLRnZfc5fbRP6BdQ6_iMw7az35Req0V6Z4mg
 id: node.announcement.field_announcement_title
 field_name: field_announcement_title
 entity_type: node

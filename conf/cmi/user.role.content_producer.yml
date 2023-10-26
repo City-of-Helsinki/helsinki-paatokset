@@ -126,6 +126,7 @@ permissions:
   - 'edit paragraph library item'
   - 'edit terms in keywords'
   - 'edit terms in pdf_categories'
+  - 'mark as hidden in editoria11y'
   - 'revert announcement revisions'
   - 'revert article revisions'
   - 'revert landing_page revisions'

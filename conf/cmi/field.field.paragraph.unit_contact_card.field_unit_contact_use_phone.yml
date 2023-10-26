@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.paragraph.field_unit_contact_use_phone
     - paragraphs.paragraphs_type.unit_contact_card
+_core:
+  default_config_hash: BnO5qnDTPxaMoFFoYvGvl8YDm-kg_8u6ftGQEcrS8PQ
 id: paragraph.unit_contact_card.field_unit_contact_use_phone
 field_name: field_unit_contact_use_phone
 entity_type: paragraph

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - node
+_core:
+  default_config_hash: LsD3UPsFoSxY8nFIcmW-sgkCUhOmDnLVDzg0BJI3ByU
 id: node.field_announcement_all_pages
 field_name: field_announcement_all_pages
 entity_type: node

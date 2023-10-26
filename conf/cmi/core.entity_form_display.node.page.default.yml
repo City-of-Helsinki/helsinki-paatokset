@@ -20,6 +20,8 @@ dependencies:
     - path
     - publication_date
     - scheduler
+_core:
+  default_config_hash: _RX52hwdyz48o4MBqyRPUVkop-Unt1rcPuPanpQ7ksk
 id: node.page.default
 targetEntityType: node
 bundle: page

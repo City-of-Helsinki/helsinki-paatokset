@@ -5,6 +5,8 @@ dependencies:
   module:
     - link
     - node
+_core:
+  default_config_hash: OR0XN-SZbrNKigZ4aGPUaCTuwjX0bur0rhx0ISjGG0Q
 id: node.field_announcement_link
 field_name: field_announcement_link
 entity_type: node

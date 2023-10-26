@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.paragraph.field_unit_contact_use_override
     - paragraphs.paragraphs_type.unit_contact_card
+_core:
+  default_config_hash: 8CkfaWELO_WKLOH9HtEAEjBJ4GXUTt-9nYYPvyOpT48
 id: paragraph.unit_contact_card.field_unit_contact_use_override
 field_name: field_unit_contact_use_override
 entity_type: paragraph

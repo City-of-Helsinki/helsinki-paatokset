@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.paragraph.field_unit_contact_use_postal
     - paragraphs.paragraphs_type.unit_contact_card
+_core:
+  default_config_hash: LK-JB_ukUxsmyTtykK_7GlgaMDQMmgDvZ9MIMtIKjiA
 id: paragraph.unit_contact_card.field_unit_contact_use_postal
 field_name: field_unit_contact_use_postal
 entity_type: paragraph

@@ -8,6 +8,8 @@ dependencies:
   module:
     - link
     - path
+_core:
+  default_config_hash: KoYrc83rhkQSoax9OsIA2u9cRG8e0ZLi1pMQc_S_3Ew
 id: media.hel_map.default
 targetEntityType: media
 bundle: hel_map

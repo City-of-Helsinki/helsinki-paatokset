@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - content_lock
+_core:
+  default_config_hash: FPF3naQi3AA7LYt8RgVUNUAKqSU0_jcKGEIBuVn8WSY
 id: tpr_service_break_lock_action
 label: 'Break lock tpr_service'
 type: tpr_service

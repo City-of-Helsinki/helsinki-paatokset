@@ -23,11 +23,13 @@ dependencies:
   enforced:
     module:
       - helfi_base_content
+_core:
+  default_config_hash: _Nbhr4JLQXcrcmDFzHXgntvTpv2ZLX_zza-h7gjrYws
 id: paragraphs_library_item.paragraphs_library_item.paragraphs
 field_name: paragraphs
 entity_type: paragraphs_library_item
 bundle: paragraphs_library_item
-label: Lohkot
+label: Paragraphs
 description: ''
 required: true
 translatable: true

@@ -19,11 +19,13 @@ dependencies:
   module:
     - entity_reference_revisions
     - helfi_tpr
+_core:
+  default_config_hash: LqUdG1L3Wvh90fVFHW34j32jhlAr4IEVX4tUGiqP5to
 id: tpr_unit.tpr_unit.field_lower_content
 field_name: field_lower_content
 entity_type: tpr_unit
 bundle: tpr_unit
-label: 'Alempi sisältöalue'
+label: 'Lower content region'
 description: ''
 required: false
 translatable: true
@@ -40,11 +42,11 @@ settings:
       content_cards: content_cards
       banner: banner
       liftup_with_image: liftup_with_image
+      from_library: from_library
       news_list: news_list
       contact_card_listing: contact_card_listing
       remote_video: remote_video
       event_list: event_list
-      from_library: from_library
     negate: 0
     target_bundles_drag_drop:
       accordion:

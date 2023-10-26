@@ -33,11 +33,13 @@ dependencies:
     - paragraphs.paragraphs_type.unit_search
   module:
     - entity_reference_revisions
+_core:
+  default_config_hash: zEXoDFJnyArUOiL2ZrtDuq4YDWKyn6ung9JndPk_Ntg
 id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: Sisältöalue
+label: 'Content region'
 description: ''
 required: false
 translatable: true
@@ -76,10 +78,10 @@ settings:
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: 41
+        weight: 40
         enabled: true
       accordion_item:
-        weight: 42
+        weight: 41
         enabled: false
       banner:
         weight: 0
@@ -91,10 +93,10 @@ settings:
         weight: 0
         enabled: true
       contact_card:
-        weight: 46
+        weight: 45
         enabled: false
       contact_card_listing:
-        weight: 47
+        weight: 46
         enabled: false
       content_cards:
         weight: 0
@@ -103,7 +105,7 @@ settings:
         weight: 0
         enabled: true
       custom_content_links:
-        weight: 50
+        weight: 49
         enabled: true
       event_list:
         weight: 0
@@ -112,19 +114,19 @@ settings:
         weight: 0
         enabled: true
       gallery:
-        weight: 53
+        weight: 52
         enabled: true
       gallery_slide:
-        weight: 54
+        weight: 53
         enabled: false
       hearings:
         weight: 0
         enabled: true
       hero:
-        weight: 56
+        weight: 55
         enabled: false
       image:
-        weight: 57
+        weight: 56
         enabled: true
       liftup_with_image:
         weight: 0
@@ -133,31 +135,28 @@ settings:
         weight: 0
         enabled: true
       list_of_links_item:
-        weight: 60
+        weight: 59
         enabled: false
       map:
         weight: 0
         enabled: true
       meetings_calendar:
-        weight: 62
-        enabled: true
-      news_liftups:
-        weight: 63
+        weight: 61
         enabled: true
       news_list:
         weight: 0
         enabled: true
       pdf_listing:
-        weight: 65
+        weight: 63
         enabled: true
       phasing:
         weight: 0
         enabled: true
       phasing_item:
-        weight: 67
+        weight: 65
         enabled: false
       popular_service_item:
-        weight: 69
+        weight: 67
         enabled: false
       popular_services:
         weight: 0
@@ -172,25 +171,25 @@ settings:
         weight: 0
         enabled: true
       sidebar_text:
-        weight: 73
+        weight: 71
         enabled: false
       social_media_link:
-        weight: 74
+        weight: 72
         enabled: false
       target_group_link_item:
-        weight: 76
+        weight: 74
         enabled: false
       target_group_links:
         weight: 0
         enabled: true
       text:
-        weight: 77
+        weight: 75
         enabled: true
       unit_accessibility_information:
-        weight: 78
+        weight: 76
         enabled: false
       unit_contact_card:
-        weight: 79
+        weight: 77
         enabled: false
       unit_search:
         weight: 0

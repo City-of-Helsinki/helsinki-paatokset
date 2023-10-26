@@ -13,6 +13,8 @@ dependencies:
     - entity_reference_revisions
     - metatag
     - user
+_core:
+  default_config_hash: k0yB8d9jdIQ1SPK3C2TVyKEfwT05muqbE9tTkdV9fdQ
 id: node.landing_page.default
 targetEntityType: node
 bundle: landing_page
