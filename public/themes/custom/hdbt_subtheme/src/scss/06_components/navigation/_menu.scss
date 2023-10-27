@@ -1,0 +1,108 @@
+// Backporting megamenu back link to mobile menu.
+.header-branding .cssmenu-menu {
+  grid-template-areas: 'lang' 'back' 'nav' 'footer';
+}
+.mmenu__back {
+  align-items: start;
+  background-color: $color-white;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  gap: $spacing-half;
+  grid-template-areas: 'icon label';
+  grid-template-columns: 40px auto;
+  grid-template-rows: auto;
+  justify-items: center;
+  padding: 5px 12px; // Top and bottom paddings are for handling focus ring 3px width + 2px offset
+  position: relative;
+  width: 100%;
+  text-decoration: none;
+
+  .icon-wrapper {
+    background: #f7f7f8;
+    content: '';
+    display: block;
+    grid-area: icon;
+    height: 40px;
+    width: 40px;
+  }
+
+  .hel-icon--angle-right {
+    width: 32px;
+    height: 32px;
+    transform: rotate(180deg);
+    margin-left: 3px;
+    margin-top: 3px;
+  }
+
+  &:hover,
+  &:active {
+    text-decoration: underline;
+
+    &.hel-icon {
+      transform: translateX(-4px);
+    }
+  }
+
+  &:focus,
+  &:active {
+    outline: 3px solid $color-black;
+    outline-offset: -3px;
+
+    &::before {
+      transform: translateX(-4px);
+    }
+  }
+}
+
+.paatokset-language-wrapper-menu {
+  display: flex!important;
+  height: auto;
+}
+
+.mmenu__back-wrapper {
+  color: $color-black;
+  grid-area: label;
+  justify-self: start;
+  margin-top: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  padding-left: 10px;
+}
+
+// Backporting footer menu.
+.cssmenu-menu__footer {
+  background: $color-black;
+  color: $color-white;
+  grid-area: footer;
+  padding-bottom: 80px;
+  padding-top: $spacing;
+
+  .menu {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu__item + .menu__item {
+    margin-left: 0;
+  }
+
+  .menu__link {
+    @include font('body');
+    color: $color-white;
+    display: block;
+    padding: $spacing-half $spacing;
+
+    &:focus,
+    &:active {
+      outline: 3px solid $color-white;
+      outline-offset: -5px;
+    }
+  }
+
+  & > .menu__link {
+    font-weight: bold; // Make the city link bolded like in design specs
+  }
+}
