@@ -9,3 +9,7 @@
     display: block;
   }
 }
+
+.page-title h1 {
+  @include font(h1);
+}

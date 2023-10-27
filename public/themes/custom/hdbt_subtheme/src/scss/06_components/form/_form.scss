@@ -2,6 +2,9 @@
 .paatokset-search--decisions,
 .paatokset-search-wrapper,
 .paatokset-search--frontpage {
+  h1 {
+    @include font('h1');
+  }
   h1, label, .container > p {
     color: #000;
   }

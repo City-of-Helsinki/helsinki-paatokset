@@ -178,7 +178,7 @@
     </div>
   {% endif %}
 
-  {% if content.field_policymaker_image %}
+  {% if content.field_policymaker_image|render %}
     <section class="policymaker-image">
       <figure>
         {{ content.field_policymaker_image }}

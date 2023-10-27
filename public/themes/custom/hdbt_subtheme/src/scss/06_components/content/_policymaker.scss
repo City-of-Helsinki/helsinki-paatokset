@@ -1,3 +1,10 @@
+.page-title + .node--type-policymaker,
+.page-title + .policymaker-text {
+  margin-top: $spacing-double;
+}
+.policymaker-no-content, .policymaker-text {
+  font-size: $fontsize-body-l;
+}
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-and-half;
   --line-height:1.5555555556;
