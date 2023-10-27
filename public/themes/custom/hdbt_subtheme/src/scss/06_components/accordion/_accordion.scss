@@ -8,6 +8,8 @@
       padding: 32px 32px 32px 0;
       display: flex;
       justify-content: space-between;
+      font-weight: normal;
+      font-size: inherit;
 
       &::after {
         right: 32px;
@@ -35,7 +37,7 @@
     }
   }
 
-  .accordion__wrapper.handorgel {
+  .accordion__wrapper {
     border: none;
   }
 
