@@ -53,13 +53,19 @@
 .policymaker-image {
   margin-bottom: $spacing-triple;
 
+  img {
+    margin-bottom: $spacing-half;
+  }
   figure {
     margin: 0;
   }
+}
 
+.policymaker-card__image,
+.policymaker-image {
   img {
+    display: block;
     object-fit: cover;
-    margin-bottom: $spacing-half;
     width: 100%;
   }
 }
