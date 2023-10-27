@@ -52,6 +52,11 @@
 
 .trustee-image {
   margin-bottom: $spacing-and-half;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .node--type-trustee {
