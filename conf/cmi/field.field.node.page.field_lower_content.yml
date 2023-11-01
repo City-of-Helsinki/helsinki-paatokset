@@ -15,7 +15,6 @@ dependencies:
     - paragraphs.paragraphs_type.custom_content_links
     - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.from_library
-    - paragraphs.paragraphs_type.gallery
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
@@ -45,26 +44,25 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      accordion: accordion
-      banner: banner
-      chart: chart
+      text: text
       columns: columns
+      image: image
+      accordion: accordion
+      list_of_links: list_of_links
       contact_card_listing: contact_card_listing
       content_cards: content_cards
       content_liftup: content_liftup
+      banner: banner
       event_list: event_list
-      from_library: from_library
-      image: image
-      list_of_links: list_of_links
-      map: map
       news_list: news_list
+      from_library: from_library
+      chart: chart
       phasing: phasing
       remote_video: remote_video
-      service_list_search: service_list_search
-      text: text
+      map: map
       unit_search: unit_search
+      service_list_search: service_list_search
       custom_content_links: custom_content_links
-      gallery: gallery
       liftup_with_image: liftup_with_image
       pdf_listing: pdf_listing
     negate: 0
@@ -72,9 +70,6 @@ settings:
       accordion:
         weight: 0
         enabled: true
-      accordion_item:
-        weight: 41
-        enabled: false
       banner:
         weight: 0
         enabled: true
@@ -84,9 +79,6 @@ settings:
       columns:
         weight: 0
         enabled: true
-      contact_card:
-        weight: 45
-        enabled: false
       contact_card_listing:
         weight: 0
         enabled: true
@@ -97,7 +89,7 @@ settings:
         weight: 0
         enabled: true
       custom_content_links:
-        weight: 49
+        weight: 0
         enabled: true
       event_list:
         weight: 0
@@ -105,84 +97,36 @@ settings:
       from_library:
         weight: 0
         enabled: true
-      gallery:
-        weight: 52
-        enabled: true
-      gallery_slide:
-        weight: 53
-        enabled: false
-      hearings:
-        weight: 54
-        enabled: false
-      hero:
-        weight: 55
-        enabled: false
       image:
         weight: 0
         enabled: true
       liftup_with_image:
-        weight: 57
+        weight: 0
         enabled: true
       list_of_links:
         weight: 0
         enabled: true
-      list_of_links_item:
-        weight: 59
-        enabled: false
       map:
         weight: 0
         enabled: true
-      meetings_calendar:
-        weight: 61
-        enabled: false
       news_list:
         weight: 0
         enabled: true
       pdf_listing:
-        weight: 63
+        weight: 0
         enabled: true
       phasing:
         weight: 0
         enabled: true
-      phasing_item:
-        weight: 65
-        enabled: false
-      popular_service_item:
-        weight: 67
-        enabled: false
-      popular_services:
-        weight: 66
-        enabled: false
       remote_video:
         weight: 0
         enabled: true
-      service_list:
-        weight: 69
-        enabled: false
       service_list_search:
         weight: 0
         enabled: true
-      sidebar_text:
-        weight: 71
-        enabled: false
-      social_media_link:
-        weight: 72
-        enabled: false
-      target_group_link_item:
-        weight: 74
-        enabled: false
-      target_group_links:
-        weight: 73
-        enabled: false
       text:
         weight: 0
         enabled: true
-      unit_accessibility_information:
-        weight: 76
-        enabled: false
-      unit_contact_card:
-        weight: 77
-        enabled: false
       unit_search:
         weight: 0
         enabled: true
