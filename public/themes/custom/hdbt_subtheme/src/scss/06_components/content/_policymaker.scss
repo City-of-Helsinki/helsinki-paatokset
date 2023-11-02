@@ -5,6 +5,9 @@
 .policymaker-no-content, .policymaker-text {
   font-size: $fontsize-body-l;
 }
+.policymaker-text .announcement {
+  padding-left: 0;
+}
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-and-half;
   --line-height:1.5555555556;
@@ -65,8 +68,8 @@
 .policymaker-image {
   img {
     display: block;
-    object-fit: cover;
-    width: 100%;
+    max-width: 100%;
+    height: auto;
   }
 }
 
