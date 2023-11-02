@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_proxy
+id: ahjo_organizations
+migration_tags:
+  - ahjo_api
+  - ahjo_api_organizations
+migration_group: ahjo_api
+label: 'Ahjo API - Organizations'
+source:
+  plugin: ahjo_api_organizations
+  root_org: '00001'
+  include_inactive: true
+  track_changes: true
+  languages:
+    - fi
+    - sv
+process:
+  langcode: langcode
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_organization_nid
+    source: response/ID
+  title: title
+  field_policymaker_id: response/ID
+  field_organization_data:
+    -
+      plugin: single_value
+      source: response
+    -
+      plugin: callback
+      callable: json_encode
+  field_org_level_above_id:
+    -
+      plugin: sub_process
+      source: response/OrganizationLevelAbove/organizations
+      process:
+        value: ID
+  field_org_level_below_ids: response/OrganizationLevelBelow/organizations/0/ID
+destination:
+  plugin: 'entity:node'
+  translations: true
+  default_bundle: organization
+migration_dependencies: {  }
