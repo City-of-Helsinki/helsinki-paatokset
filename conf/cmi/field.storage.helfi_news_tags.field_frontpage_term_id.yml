@@ -1,14 +1,14 @@
-uuid: 04299bb6-01ee-4651-98e1-49780a6d708f
+uuid: 636d25cf-d069-4660-bce2-10059bb6c5fe
 langcode: en
 status: true
 dependencies:
   module:
-    - paragraphs
+    - external_entities
 _core:
-  default_config_hash: xapLq-jZodnhyWktgf76RTu9dEBAgWBq-ay41DJpsXQ
-id: paragraph.field_news_list_title
-field_name: field_news_list_title
-entity_type: paragraph
+  default_config_hash: PkhrfcRaL2lqTDnoXDNoge-nlPEfXT6WGBZyKIFahqs
+id: helfi_news_tags.field_frontpage_term_id
+field_name: field_frontpage_term_id
+entity_type: helfi_news_tags
 type: string
 settings:
   max_length: 255
