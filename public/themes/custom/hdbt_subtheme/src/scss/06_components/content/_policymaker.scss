@@ -1,5 +1,15 @@
+.page-title + .node--type-policymaker,
+.page-title + .policymaker-text {
+  margin-top: $spacing-double;
+}
+.policymaker-no-content, .policymaker-text {
+  font-size: $fontsize-body-l;
+}
+.policymaker-text .announcement {
+  padding-left: 0;
+}
 .node--type-policymaker > section.policymaker-summary {
-  margin-bottom: $spacing-m;
+  margin-bottom: $spacing-and-half;
   --line-height:1.5555555556;
 
   @include breakpoint($breakpoint-m) {
@@ -46,14 +56,20 @@
 .policymaker-image {
   margin-bottom: $spacing-triple;
 
+  img {
+    margin-bottom: $spacing-half;
+  }
   figure {
     margin: 0;
   }
+}
 
+.policymaker-card__image,
+.policymaker-image {
   img {
-    object-fit: cover;
-    margin-bottom: $spacing-half;
-    width: 100%;
+    display: block;
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -65,11 +81,11 @@
 
 .node--type-policymaker .table-of-contents__container {
   position: relative;
-  margin-bottom: $spacing-4-xl;
+  margin-bottom: $spacing-quadruple;
 }
 
 .table-of-contents + .policymaker-image {
-  padding-top: $spacing-2-xl;
+  padding-top: $spacing-triple;
 }
 
 .content-menu__arrow {
@@ -132,7 +148,7 @@
 
   .list-item__date {
     font-size: $fontsize-body-m;
-    color: $color-black-light;
+    color: $color-black-50;
     margin-bottom: $spacing;
   }
 
@@ -167,7 +183,7 @@ h1.minutes__header {
 
   .minutes__header-suffix {
     font-size: $fontsize-body-m;
-    color: $color-black-light
+    color: $color-black-50;
   }
 
   @include breakpoint($breakpoint-l) {
@@ -183,7 +199,7 @@ h2.minutes-list__header {
 }
 
 .minutes-list__wrapper {
-  font-size: $font-size-body;
+  font-size: $fontsize-body-l;
   margin-bottom: $spacing-double;
 }
 
@@ -211,7 +227,7 @@ h2.minutes-list__header {
   }
 
   .publish-date__date {
-    font-size: $font-size-heading-4;
+    font-size: $fontsize-heading-s;
     font-weight: $font-weight-bold;
   }
 }
@@ -254,7 +270,7 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__container {
-  margin-top: $spacing-4-xl;
+  margin-top: $spacing-quadruple;
 
   .paatokset-accordion {
     margin-top: $spacing-double;
@@ -276,7 +292,7 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__meta {
-  font-size: $font-size-body;
+  font-size: $fontsize-body-l;
 
   .Kokousaika {
     font-weight: $font-weight-bold;
@@ -287,9 +303,9 @@ h2.minutes-list__header {
   margin-bottom: 32px;
   line-height: 1.1;
   font-weight: normal;
-  font-size: $font-size-heading-3;
+  font-size: $fontsize-heading-m;
 
   @include breakpoint($breakpoint-l) {
-    font-size: $font-size-heading-2;
+    font-size: $fontsize-heading-l;
   }
 }

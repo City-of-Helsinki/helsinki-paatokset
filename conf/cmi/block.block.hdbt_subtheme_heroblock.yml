@@ -3,21 +3,21 @@ langcode: en
 status: true
 dependencies:
   module:
-    - hdbt_content
+    - helfi_platform_config
     - node
   theme:
     - hdbt_subtheme
 id: hdbt_subtheme_heroblock
 theme: hdbt_subtheme
 region: before_content
-weight: -19
+weight: -17
 provider: null
 plugin: hero_block
 settings:
   id: hero_block
   label: 'Hero block'
   label_display: '0'
-  provider: hdbt_content
+  provider: hdbt_admin_tools
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'

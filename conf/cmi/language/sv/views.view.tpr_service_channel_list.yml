@@ -1,4 +1,3 @@
-label: 'TPR Palvelukanavat'
 display:
   default:
     display_title: Förvald
@@ -29,7 +28,7 @@ display:
           label: ID
           separator: ', '
         name:
-          label: Nimi
+          label: Namn
           separator: ', '
         langcode:
           label: Språk
@@ -48,17 +47,12 @@ display:
       filters:
         combine:
           expose:
-            label: Etsi
+            label: Sök
         langcode:
           expose:
             label: Språk
-      title: 'TPR Palvelukanavat'
       header:
         result:
-          content: 'Näytetään @start - @end / @total'
-      empty:
-        area:
-          content:
-            value: 'Asiointipalveluja ei löytynyt.'
+          content: 'Visar @start - @end av @total'
   page_1:
     display_title: Sida

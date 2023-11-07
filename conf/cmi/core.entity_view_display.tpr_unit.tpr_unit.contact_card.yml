@@ -1,5 +1,5 @@
 uuid: 7b37ff5f-a03f-4840-bf45-62fd5fd1a635
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -64,6 +64,10 @@ hidden:
   contacts: true
   created: true
   description: true
+  field_content: true
+  field_lower_content: true
+  field_metatags: true
+  field_unit_type: true
   hide_description: true
   highlights: true
   langcode: true
@@ -81,4 +85,7 @@ hidden:
   services: true
   show_www: true
   streetview_entrance_url: true
+  toc_enabled: true
+  topical: true
+  unit_picture_caption: true
   www: true

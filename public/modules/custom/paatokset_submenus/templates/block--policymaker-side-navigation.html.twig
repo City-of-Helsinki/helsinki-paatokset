@@ -39,11 +39,17 @@
   {% set link_url = 'internal:/' ~ path('<front>') %}
 {% endif %}
 
+{% set link_attributes = {
+  'class': [
+    'sidebar-navigation__title-link',
+  ],
+} %}
+
 {% set heading_id = attributes.id ~ '-menu'|clean_id %}
 <div class="policymaker-side-menu--desktop">
 <nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes|without('role', 'aria-labelledby') }} class="sidebar-navigation">
   <h2{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title">
-    {{ link(link_title, link_url) }}
+    {{ link(link_title, link_url, link_attributes) }}
   </h2>
   {% include '@hdbt/navigation/menu.html.twig' with { attributes: menu_attributes, allow_collabsible: true, auto_open: true } %}
 </nav>

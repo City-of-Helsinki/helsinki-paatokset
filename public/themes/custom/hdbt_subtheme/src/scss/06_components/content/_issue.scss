@@ -70,11 +70,12 @@
 }
 
 .issue__container {
+  display:none;
   h3 {
-    font-size: $font-size-heading-3;
+    font-size: $fontsize-heading-m;
 
     @include breakpoint($breakpoint-xl) {
-      font-size: $font-size-heading-2;
+      font-size: $fontsize-heading-l;
     }
   }
 
@@ -257,8 +258,8 @@
 }
 
 .issue__more-info {
-  margin-top: $spacing-4-xl;
-  margin-bottom: $spacing-4-xl;
+  margin-top: $spacing-quadruple;
+  margin-bottom: $spacing-quadruple;
 
   div {
     margin: $spacing 0;
@@ -285,10 +286,10 @@
 // Styling from Ahjo API HTML content.
 .issue-content__container {
   td, div {
-    @include font-size($fontsize-body-l);
+    font-size: $fontsize-body-l;
 
     @include breakpoint($breakpoint-l) {
-      @include font-size($fontsize-body-xl);
+      font-size: $fontsize-body-xl;
     }
   }
 
@@ -326,7 +327,7 @@
   .accordion-item__content__inner > h3 {
     font-size: 30px;
     line-height: 1.1;
-    margin-top: $spacing-2-xl;
+    margin-top: $spacing-triple;
 
     &:first-child {
       margin-top: 0;
@@ -341,20 +342,20 @@ h4.decision-history-title + h5.decision-history-title {
 
 .voting-results-accordion {
   .color-kupari {
-    background-color: #00D7A7 !important;
+    background-color: $color-copper !important;
   }
 
   .color-tiili {
-    background-color: #BD2719 !important;
+    background-color: $color-brick !important;
     color: $color-white;
   }
 
   .color-sumu {
-    background-color: #9FC9EB !important;
+    background-color: $color-fog !important;
   }
 
   .color-gray-light {
-    background-color: $gray-light !important;
+    background-color: $color-silver-medium-light !important;
   }
 
   .accordion-item__content__inner > h3 {
@@ -374,6 +375,10 @@ h4.decision-history-title + h5.decision-history-title {
       align-items: center;
       padding: 0;
 
+      &::after {
+        padding-right: 16px;
+      }
+
       .result-key,
       .result-color {
         margin: 0;
@@ -386,11 +391,6 @@ h4.decision-history-title + h5.decision-history-title {
         min-width: 54px;
         text-align: center;
       }
-
-      .accordion-item__icon {
-        margin: 0;
-        padding-right: 16px;
-      }
     }
 
     .result-type {
@@ -398,20 +398,20 @@ h4.decision-history-title + h5.decision-history-title {
       margin: 0;
 
       &.ayes .result-color {
-        background-color: #00D7A7;
+        background-color: $color-copper;
       }
 
       &.noes .result-color {
-        background-color: #BD2719;
+        background-color: $color-brick;
         color: $color-white;
       }
 
       &.blank .result-color {
-        background-color: #9FC9EB;
+        background-color: $color-fog;
       }
 
       &.absent .result-color {
-        background-color: $gray-light;
+        background-color: $color-silver-medium-light;
       }
     }
   }
@@ -440,7 +440,7 @@ h4.decision-history-title + h5.decision-history-title {
     }
 
     thead .results-table__row {
-      background-color: $gray-light;
+      background-color: $color-silver-medium-light;
 
       th {
         color: $color-black;
@@ -575,11 +575,11 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .info-label {
-  background-color: $blue-light-secondary;
+  background-color: $color-fog-light;
 }
 
 .warning-label {
-  background-color: $yellow-light;
+  background-color: $color-engel;
 }
 
 .info-label__container,

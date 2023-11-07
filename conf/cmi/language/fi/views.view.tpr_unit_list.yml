@@ -8,8 +8,8 @@ display:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
@@ -22,14 +22,23 @@ display:
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
       fields:
-        tpr_unit_bulk_form:
-          label: Massapäivitys
-          action_title: Toiminto
         id:
           label: ID
           separator: ', '
         name:
           label: Nimi
+          separator: ', '
+        langcode:
+          label: Kieli
+          separator: ', '
+        content_translation_status:
+          label: Tila
+          settings:
+            format_custom_true: Julkaistu
+            format_custom_false: Julkaisematon
+          separator: ', '
+        content_translation_changed:
+          label: Päivitetty
           separator: ', '
         operations:
           label: Toimenpiteet
@@ -41,5 +50,12 @@ display:
           expose:
             label: Kieli
       title: 'TPR Toimipisteet'
+      header:
+        result:
+          content: 'Näytetään @start - @end / @total'
+      empty:
+        area:
+          content:
+            value: 'Ei tuloksia.'
   page_1:
     display_title: Sivu

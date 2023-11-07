@@ -1,27 +1,27 @@
-documents_description:
-  format: 'rich_text'
-  value: '<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista. Pöytäkirja korvaa ilmestyessään esityslistan.</p><p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa.</p>'
-meetings_description:
-  format: 'rich_text'
-  value: '<p>Valtuuston kokoukset järjestetään yleensä joka toisena keskiviikkona. Kokoukset lähetetään suorina lähetyksinä verkossa Helsinki-kanavalla, missä ne ovat katsottavissa myöhemmin myös tallenteina. Kokouksia voi lisäksi seurata paikan päällä istuntosalin lehteriltä (Sofiankatu 3).</p><p>Valtuuston esityslista tulee luettavaksi kokousta edeltävänä torstaina. Päätöksistä kerrotaan jo kokouksen aikana Helsinki-kanavan lähetyksen välilehdillä ja heti kokouksen jälkeen päätöstiedotteessa kohdassa uusimmat asiakirjat.</p>'
-recording_description:
-  format: 'rich_text'
-  value: '<p>Voit katsoa valtuuston kokousvideon tässä. Siirtymällä Helsinki-kanavalle Kaikki videot -linkistä näet myös kokoukseen liittyvät päätökset ja voit selata kokousta puheenvuorojen perusteella.</p>'
-decisions_description:
-  format: 'rich_text'
-  value: '<p>Asiakirjat ovat sekä pdf- että html-muodossa. Html-versiossa sivun asettelut voivat poiketa alkuperäisestä. Asiakirjat on jaettu sisällysluettelon mukaan asiakohdiksi, mutta tarjolla on myös pdf-muotoinen tulostusversio koko asiakirjasta.</p>'
+calendar_notice_text: 'Agendas are usually published at least four days prior to the meeting.'
 hidden_decisions_text:
-  format: 'rich_text'
-  value: '<p>Päätös on piilotettu henkilötietosuojalain nojalla ja se on nähtävissä kaupungin kirjaamossa.</p>'
+  value: "<p>This decision is not shown on the internet because of data protection. You can see the decision at the <a class=\"link\" data-design=\"link\" data-link-text=\"City Registry Office\" data-protocol=\"https\" href=\"https://www.hel.fi/kirjaamo\" target=\"0\" title=\"\">City Registry Office</a>.</p>\r\n"
+  format: full_html
 non_public_attachments_text:
-  format: 'rich_text'
-  value: '<p>Päätösasiakirjoissa on mainittu liitteitä, joita ei julkaista internetissä. Pois jätetään liitteet, jotka sisältävät salassa pidettäviä tietoja, tai joissa olevien tietojen julkistaminen voi vaarantaa yksityisyyden suojan tai elinkeinonharjoittajan liike- tai ammattisalaisuuden, tai joita ei ole teknisistä syistä saatu sähköiseen muotoon. (Julkisuuslaki § 621/1999, Sähköisen viestinnän tietosuojalaki § 516/2004, Henkilötietolaki § 523/1999, Sosiaalihuollon asiakaslaki § 812/2000, Potilaslaki § 785/1992, Laki julkisista hankinnoista § 348/2007)</p>'
+  value: "<p>The decision documents refer to appendices that are not available online. The City of Helsinki does not publish any appendices that contain confidential information or information that could compromise the protection of privacy or a private trader's business or trade secret when published. The published documents also exclude appendices that cannot be made available in an electronic format due to technical reasons. (Act on the Openness of Government Activities 621/1999, Information Society Code 917/2014, Data Protection Act 1050/2018, Act on the Status and Rights of Social Welfare Clients 812/2000, Act on the Status and Rights of Patients 785/1992, Act on Public Procurement and Concession Contracts 1397/2016). You can also request decision documents from the <a class=\"link\" data-design=\"link\" data-link-text=\"City of Helsinki Registrar's Office\" data-protocol=\"https\" href=\"https://www.hel.fi/en/decision-making/contact-the-city-of-helsinki/registrars-office\">City of Helsinki Registrar's Office</a>.</p>\r\n"
+  format: full_html
+documents_description:
+  value: "<p>Minutes and agendas comprise of cases that are handled in a meeting.</p>\r\n\r\n<p>A decision announcement is published shortly after a meeting.&nbsp; The announcement contains only decisions made at the meeting, so it has to be read side-by-side with the agenda. The minutes will replace both the agenda and decision announcement when it's published.</p>\r\n"
+  format: full_html
+meetings_description:
+  value: "<p>The agenda is usually published at least four days prior to a meeting. A decision announcement is published on this page shortly after a meeting. The meetings are not open to the public.</p>\r\n"
+  format: full_html
+recording_description:
+  value: "<p>You can watch a recording of the latest Council meeting here. The All recordings-link will take you to the City's video service Helsinki-kanava.</p>\r\n"
+  format: full_html
+decisions_description:
+  value: "<div class=\"section-description\">\r\n<p>Office holders work for the municipality under a public-service employment relationship.</p>\r\n</div>\r\n"
+  format: full_html
 banner_text:
-  format: 'rich_text'
-  value: '<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>'
-banner_heading: 'Sanat hukassa?'
-banner_label: 'Siirry sanakirjaan'
-banner_url: '/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja'
-committees_boards_url: '/fi/paattajat'
-office_holders_url: '/fi/paattajat'
-calendar_notice_text: 'The agenda is usually published on the Thursday prior to a meeting.'
+  value: "<p>The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-link-text=\"To the Vocabulary\" href=\"/node/690\"><span class=\"hds-button__label\">To the Vocabulary</span></a></p>\r\n\r\n<p>If you didn't find the contact information you were looking for above, try the City's Contacts-service.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-is-external=\"true\" data-link-text=\"Helsinki City Contacts\" data-protocol=\"https\" href=\"https://numerot.hel.fi\"><span class=\"hds-button__label\">Helsinki City Contacts</span></a></p>\r\n"
+  format: full_html
+banner_heading: 'Missing a term or contact info?'
+banner_label: ''
+banner_url: ''
+committees_boards_url: '/en/decisionmakers#committees-and-boards'
+office_holders_url: '/en/decisionmakers#office-holders:-central-administration'

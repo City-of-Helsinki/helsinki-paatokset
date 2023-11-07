@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "webpack --progress --mode=development --config  webpack.config.js --watch",
     "build": "webpack --progress --mode=production --config webpack.config.js",
+    "preinstall": "npx browserslist@latest --update-db",
     "lint": "lint-staged",
     "lint:js": "eslint --fix src/"
   },
@@ -33,6 +34,7 @@
     "eslint-plugin-import": "^2.25.3",
     "expose-loader": "^4.0.0",
     "glob": "^8.0.0",
+    "handorgel": "^0.5.0",
     "hds-design-tokens": "^1.7.1",
     "html-loader": "^4.0.0",
     "html-webpack-plugin": "^5.3.2",

@@ -1,4 +1,4 @@
-{{ attach_library('hdbt/accordion') }}
+{{ attach_library('hdbt_subtheme/accordion_legacy') }}
 {{ attach_library('hdbt_subtheme/accordion_lazy') }}
 {{ attach_library('paatokset_ahjo_api/policymaker_listing') }}
 
@@ -8,9 +8,6 @@
       <h3 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ accordion.heading|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">
           <span>{{ accordion.heading }}</span>
-          <div class="accordion-item__icon">
-            {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
-          </div>
         </button>
       </h3>
 

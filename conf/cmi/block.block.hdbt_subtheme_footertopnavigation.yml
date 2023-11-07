@@ -16,7 +16,7 @@ provider: null
 plugin: 'menu_block_current_language:footer-top-navigation'
 settings:
   id: 'menu_block_current_language:footer-top-navigation'
-  label: 'Helsingin kaupunki'
+  label: 'City of Helsinki'
   label_display: visible
   provider: menu_block_current_language
   level: 1

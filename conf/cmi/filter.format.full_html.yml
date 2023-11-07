@@ -6,9 +6,6 @@ dependencies:
     - editor
     - helfi_api_base
     - linkit
-    - media
-_core:
-  default_config_hash: FwYOHigOrEWexVh7QFCenw0Hq_w6-dt72xYe2KUjYo4
 name: HTML
 format: full_html
 weight: 0
@@ -25,7 +22,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div class=""> <span aria-hidden class=""> <img src alt data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style width height> <a href hreflang !href accesskey id rel target title data-design data-is-external data-link-text data-protocol data-selected-icon class=""> <pre> <iframe allowfullscreen mozallowfullscreen src webkitallowfullscreen id width height frameborder> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite aria-* class=""> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p class=""> <footer class=""> <br> <div class=""> <img src alt data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style width height> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <pre> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th colspan rowspan> <td colspan rowspan> <tr> <hr> <span role lang dir aria-hidden class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -48,15 +45,6 @@ filters:
     weight: -48
     settings:
       title: true
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: -39
-    settings:
-      default_view_mode: default
-      allowed_view_modes: {  }
-      allowed_media_types: {  }
   editor_file_reference:
     id: editor_file_reference
     provider: editor

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - hdbt_content
+    - helfi_platform_config
   theme:
     - hdbt
 id: lowercontentblock
@@ -16,5 +16,5 @@ settings:
   id: lower_content_block
   label: 'Lower content block'
   label_display: '0'
-  provider: hdbt_content
+  provider: hdbt_admin_tools
 visibility: {  }

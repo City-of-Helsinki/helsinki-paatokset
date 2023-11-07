@@ -5,8 +5,6 @@ dependencies:
   module:
     - paragraphs
     - text
-_core:
-  default_config_hash: t9wSo978nLSjMUkraR81sqSLZQtn082jrTaSwX8haHk
 id: paragraph.field_chart_description
 field_name: field_chart_description
 entity_type: paragraph

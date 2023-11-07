@@ -82,7 +82,7 @@
 ]
 %}
 
-{{ attach_library('hdbt/accordion') }}
+{{ attach_library('hdbt_subtheme/accordion_legacy') }}
 
 <article{{ attributes.addClass(classes) }}>
 
@@ -143,9 +143,6 @@
     <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ speaking_turns.title }}</span>
-        <div class="accordion-item__icon">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
-        </div>
       </button>
     </h2>
     <div class="accordion-item__content handorgel__content">
@@ -174,9 +171,6 @@
     <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ initiatives.title }}</span>
-        <div class="accordion-item__icon">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
-        </div>
       </button>
     </h2>
     <div class="accordion-item__content handorgel__content">
@@ -201,9 +195,6 @@
     <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ resolutions.title }}</span>
-        <div class="accordion-item__icon">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
-        </div>
       </button>
     </h2>
     <div class="accordion-item__content handorgel__content">
@@ -228,9 +219,6 @@
     <h2 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ memberships.title }}</span>
-        <div class="accordion-item__icon">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down'} %}
-        </div>
       </button>
     </h2>
     <div class="accordion-item__content handorgel__content">

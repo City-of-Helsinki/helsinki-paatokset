@@ -1,0 +1,18 @@
+calendar_notice_text: 'Esityslista julkaistaan yleensä vähintään neljä päivää ennen kokousta.'
+hidden_decisions_text:
+  value: '<p>Päätös on piilotettu henkilötietosuojalain nojalla. Siihen voi tutustua <a href="https://www.hel.fi/kirjaamo" title="Siirryt kaupungin Kirjaamon sivuille">kaupungin kirjaamossa. </p>'
+non_public_attachments_text:
+  value: '<p>Päätösasiakirjoissa on mainittu liitteitä, joita ei julkaista internetissä. Pois jätetään liitteet, jotka sisältävät salassa pidettäviä tietoja, tai joissa olevien tietojen julkistaminen voi vaarantaa yksityisyyden suojan tai elinkeinonharjoittajan liike- tai ammattisalaisuuden, tai joita ei ole teknisistä syistä saatu sähköiseen muotoon. (Julkisuuslaki § 621/1999, Laki sähköisen viestinnän palveluista § 917/2014, Tietosuojalaki § 1050/2018, Laki sosiaalihuollon asiakkaan asemasta ja oikeuksista § 812/2000, Potilaslaki § 785/1992, Laki julkisista hankinnoista ja käyttöoikeussopimuksista § 1397/2016 ). Päätösasiakirjoja voi tiedustella myös <a href="https://www.hel.fi/kirjaamo">Helsingin kaupungin kirjaamosta</a>.</p>'
+documents_description:
+  value: "<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista.</p>\r\n\r\n<p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa. Pöytäkirja korvaa ilmestyessään esityslistan ja päätöstiedotteen. </p>"
+meetings_description:
+  value: '<p>Esityslista julkaistaan yleensä vähintään neljä päivää ennen kokousta. Päätöksistä kerrotaan pian kokouksen jälkeen päätöstiedotteessa tämän sivun kohdassa uusimmat asiakirjat. Kokoukset eivät ole yleisölle avoimia. </p>'
+recording_description:
+  value: '<p>Voit katsoa valtuuston edellisen kokouksen tallenteen tässä. Kaikki videot -linkistä löydät muut tallenteet Helsinki-kanavalla, jossa voit myös selata videota käsiteltävän aiheen mukaan. </p>'
+decisions_description:
+  value: "<div class=\"section-description\">\r\n<p>Viranhaltija on kaupungilla töissä virkasuhteessa. Kun työtehtävät sisältävät merkittävää julkisen vallan käyttöä, niitä hoidetaan virkasuhteessa.</p>\r\n</div>"
+banner_text:
+  value: "<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary hdbt-icon hdbt-icon--info\" href=\"/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja\"><span class=\"hds-button__label\">Siirry sanakirjaan</span></a></p>\r\n\r\n<p>Jos kaipaat yhteystietoa, mutta et löytänyt sitä yltä, kokeile yhteystietohakua.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary hdbt-icon hdbt-icon--mobile\" href=\"https://numerot.hel.fi\"><span class=\"hds-button__label\">Kaupungin yhteystietohaku</span></a> </p>"
+banner_heading: 'Sanat tai yhteystieto  hukassa?'
+committees_boards_url: '/fi/paattajat#viranhaltijat'
+office_holders_url: '/fi/paattajat#viranhaltijat'

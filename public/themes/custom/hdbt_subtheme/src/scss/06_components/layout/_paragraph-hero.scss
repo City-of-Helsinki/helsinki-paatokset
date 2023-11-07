@@ -1,3 +1,22 @@
 .hero__title + .hero__description {
-  margin-top: $spacing-3-xl;
+  margin-top: $spacing-triple;
+}
+
+// Hero section for search form
+.hero--paatokset-search-bar {
+  margin-bottom: $spacing-double;
+
+  h1 {
+    @include font('h1');
+    hyphens: none;
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    margin-bottom: $spacing-quadruple;
+  }
+
+  .hero__text-content {
+    padding-top: $spacing-double;
+    padding-bottom: $spacing-double;
+  }
 }

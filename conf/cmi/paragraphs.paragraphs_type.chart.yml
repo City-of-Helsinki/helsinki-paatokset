@@ -7,8 +7,6 @@ dependencies:
 third_party_settings:
   paragraphs_library:
     allow_library_conversion: true
-_core:
-  default_config_hash: Y3YB77frfRg61q6wyiwlydBQeAkhme2vM_Y-iRj8pug
 id: chart
 label: Chart
 icon_uuid: null

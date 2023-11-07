@@ -7,3 +7,4 @@ parameters:
     - 'paatokset.hel.fi'
     - 'avustukset.hel.fi'
     - 'nginx-paatokset-prod.apps.platta.hel.fi'
+    - 'helsinki-paatokset.docker.so'

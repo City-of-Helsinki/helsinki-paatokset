@@ -4,6 +4,7 @@ const glob = require('glob');
 const FriendlyErrorsWebpackPlugin = require('@nuxt/friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+const CopyPlugin = require('copy-webpack-plugin');
 const SvgToSprite = require('./webpack.svgToSprite');
 const { merge } = require('webpack-merge');
 
@@ -111,6 +112,19 @@ module.exports = (env, argv) => {
       //   'icons/hdbt-subtheme-sprite.svg',
       //   'icons.json'
       // ),
+      new CopyPlugin({
+        'patterns': [
+          {
+            'from': 'node_modules/handorgel/lib/js/umd/handorgel.min.js',
+            'to': path.resolve(__dirname, 'dist') + '/js/handorgel/',
+            'force': true,
+          }, {
+            'from': 'node_modules/handorgel/lib/css/handorgel.min.css',
+            'to': path.resolve(__dirname, 'dist') + '/css/handorgel/',
+            'force': true,
+          }
+        ]
+      }),
       new FriendlyErrorsWebpackPlugin(),
       new RemoveEmptyScriptsPlugin(),
       new MiniCssExtractPlugin({
@@ -133,7 +147,7 @@ module.exports = (env, argv) => {
   if (argv.mode === 'production') {
     const TerserPlugin = require('terser-webpack-plugin');
 
-    return merge(config, {
+    const full_config = merge(config, {
       mode: 'production',
       devtool: false,
       optimization: {
@@ -142,6 +156,12 @@ module.exports = (env, argv) => {
           new TerserPlugin({
             terserOptions: {
               ecma: 2015,
+              mangle: {
+                reserved:[
+                  'Drupal',
+                  'drupalSettings'
+                ]
+              },
               format: {
                 comments: false,
               },
@@ -152,10 +172,12 @@ module.exports = (env, argv) => {
       },
     });
 
+    return full_config;
+
   } else if (argv.mode === 'development') {
     const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
-    return merge(config, {
+    const full_config = merge(config, {
       mode: 'development',
       devtool: 'eval-source-map',
       plugins: [
@@ -165,6 +187,8 @@ module.exports = (env, argv) => {
         })
       ]
     });
+
+    return full_config;
 
   }
 };

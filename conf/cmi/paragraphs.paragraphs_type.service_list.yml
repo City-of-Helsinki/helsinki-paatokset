@@ -1,0 +1,17 @@
+uuid: 1b2878d6-644f-448c-b227-53f59e04a6b3
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+_core:
+  default_config_hash: ptQqDhmX4Hk3ed3DV1XE2T2JKOEt1uXA4vHlH-gHjWM
+id: service_list
+label: 'Service list'
+icon_uuid: null
+icon_default: null
+description: 'With service list paragraph content producer can create a list of selected and published services for the end user.'
+behavior_plugins: {  }

@@ -1,2 +1,18 @@
 hidden_decisions_text:
-  value: "<p>SVSVSVSVSV.</p>\r\n"
+  value: "<p>Beslutet är dolt på grund av dataskyddslagen och finns för påseende på <a class=\"link\" data-design=\"link\" data-link-text=\"Registratorskontor\" data-protocol=\"https\" href=\"https://www.hel.fi/sv/beslutsfattande-och-forvaltning/kontakta-helsingfors-stad/registratorskontor\" target=\"_self\">stadens registratorskontor</a>.</p>\r\n"
+calendar_notice_text: 'Föredragningslistan publiceras vanligtvis minst fyra dagar före sammanträdet.'
+non_public_attachments_text:
+  value: '<p>I beslutsdokumenten nämns bilagor som inte publiceras på nätet. Bort lämnas bilagor som innehåller sekretessbelagda uppgifter och bilagor som innehåller uppgifter som kan äventyra integritetsskyddet eller en näringsidkares affärs- eller yrkeshemligheter, eller sådana som man inte av tekniska orsaker kunnat överföra till elektroniskt format. (Offentlighetslagen § 621/1999, Lagen om tjänster inom elektronisk kommunikation § 917/2014, Dataskyddslagen § 1050/2018, Lagen om klientens ställning och rättigheter inom socialvården § 812/2000, Lagen om patientens ställning och rättigheter § 785/1992, Lagen om offentlig upphandling och koncession § 1397/2016). Upplysningar om stadsstyrelsens beslutshandlingar fås också från <a href="https://www.hel.fi/sv/beslutsfattande-och-forvaltning/kontakta-helsingfors-stad/registratorskontor" target="_self">Helsingfors stads registratorskontor</a>.</p>'
+documents_description:
+  value: "<p>Protokollen och föredragningslistorna består av ärenden som behandlas vid sammanträdet. </p>\r\n\r\n<p>Ett beslutsmeddelande publiceras genast efter sammanträdet. Beslutsmeddelandet innehåller endast de beslut som fattats vid sammanträdet, vilket betyder att det ska läsas tillsammans med föredragningslistan.</p>\r\n\r\n<p>Protokollet blir klart senare efter sammanträdet och när det utkommer ersätter föredragningslistan och beslutsmeddelandet .</p>"
+meetings_description:
+  value: "<p>Föredragningslistan publiceras vanligtvis minst fyra dagar före sammanträdet.\_Ett beslutsmeddelande publiceras genast efter sammanträdet på denna sidan.</p>"
+recording_description:
+  value: '<p>Du kan se en inspelning av fullmäktigesammanträdet här. När du går till Helsingforskanalen via Alla videor-länken ser du även beslut med anknytning till sammanträdet och kan bläddra bland inläggen i sammanträdet.</p>'
+decisions_description:
+  value: "<div class=\"section-description\">\r\n<p>En tjänsteinnehavare arbetar för kommunen i tjänsteförhållande. Tjänsteinnehavare fattar beslut med tjänsteansvar.</p>\r\n</div>"
+banner_text:
+  value: "<p>Ordboken för beslutsfattande öppnar upp centrala termer om beslutsfattande inom Helsingfors stad.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"f111778f-5566-4723-946f-233a2ee952af\" data-link-text=\"Till ordboken\" data-protocol=\"false\" href=\"/node/4589\"><span class=\"hds-button__label\">Till ordboken</span></a></p>\r\n\r\n<p>Ytterligare kontaktuppgifter finns på stadens kontaktuppgiftssökning.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"f111778f-5566-4723-946f-233a2ee952af\" data-link-text=\"kontaktuppgiftssökning\" data-protocol=\"false\" href=\"https://numerot.hel.fi/fi\"><span class=\"hds-button__label\">Kontaktuppgiftssökning</span></a></p>"
+banner_heading: 'Letar du efter en term eller kontaktinformation?'
+committees_boards_url: '/sv/beslutsfattare#tjansteinnehavare:-centralforvaltningen-'
+office_holders_url: '/sv/beslutsfattare#tjansteinnehavare:-centralforvaltningen-'

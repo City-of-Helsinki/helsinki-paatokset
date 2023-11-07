@@ -9,10 +9,8 @@ dependencies:
     - field.field.paragraph.columns.field_columns_title
     - paragraphs.paragraphs_type.columns
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - paragraphs
-_core:
-  default_config_hash: UdB9StYRd1ami-k28GJOyZFqzuZGdc6LZ7CHyx4rNYg
 id: paragraph.columns.default
 targetEntityType: paragraph
 bundle: columns
@@ -29,8 +27,8 @@ content:
     weight: 2
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: closed_expand_nested
       closed_mode: summary
       autocollapse: none
@@ -48,8 +46,8 @@ content:
     weight: 3
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: closed_expand_nested
       closed_mode: summary
       autocollapse: none

@@ -24,7 +24,7 @@
   }
 
   h2 {
-    padding: $spacing-layout-2-xl 0 0 0;
+    padding: $spacing-quadruple*2 0 0 0;
     margin-bottom: 36px;
 
     @include breakpoint($breakpoint-s) {
@@ -43,7 +43,7 @@
 .frontpage-calendar__link-container {
   display: flex;
   justify-content: right;
-  padding: 0 $spacing-s;
+  padding: 0 $spacing;
 
   @include breakpoint($breakpoint-s) {
     padding: 0;
@@ -78,7 +78,7 @@
 .frontpage-calendar__item {
   width: 100%;
   min-height: 282px;
-  padding: $spacing-2-xs 0;
+  padding: 8px 0;
   text-decoration: none;
 
   &:hover {
@@ -88,7 +88,7 @@
   }
 
   @include breakpoint($breakpoint-m) {
-    padding: $spacing-xs;
+    padding: 12px;
     width: 50%;
   }
 
@@ -110,7 +110,7 @@
     i {
       height: 18px;
       width: 18px;
-      margin-right: $spacing-xs;
+      margin-right: 12px;
     }
 
     span {
@@ -123,7 +123,7 @@
   }
 
   .content-container {
-    padding: $spacing-m;
+    padding: $spacing-and-half;
     display: flex;
     flex-direction: column;
     height: 100%;

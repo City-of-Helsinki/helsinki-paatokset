@@ -1,9 +1,9 @@
 uuid: d0065d26-7a30-4f19-b001-67b4c500eb84
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:
-    - hdbt_content
+    - helfi_platform_config
   theme:
     - hdbt_subtheme
 id: sidebarcontentblock
@@ -16,5 +16,5 @@ settings:
   id: sidebar_content_block
   label: 'Sidebar content block'
   label_display: '0'
-  provider: hdbt_content
+  provider: hdbt_admin_tools
 visibility: {  }

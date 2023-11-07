@@ -1,10 +1,12 @@
 uuid: 7dee6dbf-ad26-45bf-96b4-e70c51f67a76
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:
     - link
     - media
+_core:
+  default_config_hash: vbleWrj8_V2DjBoBU1oIT_J4TlbrChZzdZOC5glJ54U
 id: media.field_media_hel_map
 field_name: field_media_hel_map
 entity_type: media

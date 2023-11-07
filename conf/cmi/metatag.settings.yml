@@ -1,0 +1,16 @@
+entity_type_groups:
+  node:
+    page:
+      basic: basic
+      open_graph: open_graph
+      twitter_cards: twitter_cards
+  tpr_service:
+    tpr_service:
+      basic: basic
+      open_graph: open_graph
+      twitter_cards: twitter_cards
+  tpr_unit:
+    tpr_unit:
+      basic: basic
+      open_graph: open_graph
+      twitter_cards: twitter_cards

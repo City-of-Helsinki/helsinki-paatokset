@@ -1,5 +1,5 @@
 uuid: 97e3685d-9d81-43a5-9551-19b6defef4d0
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -16,7 +16,7 @@ provider: null
 plugin: 'menu_block_current_language:footer-top-navigation-2'
 settings:
   id: 'menu_block_current_language:footer-top-navigation-2'
-  label: 'Ota yhteyttä'
+  label: Connect
   label_display: visible
   provider: menu_block_current_language
   level: 1

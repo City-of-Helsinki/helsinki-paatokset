@@ -1,8 +1,22 @@
+label: Mediakirjasto
 description: 'Etsi ja ylläpidä mediatiedostoja.'
 display:
   default:
     display_title: Oletus
     display_options:
+      title: Media
+      fields:
+        media_bulk_form:
+          action_title: Toiminto
+      pager:
+        options:
+          tags:
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: 'Suodata tuloksia'
@@ -10,18 +24,19 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
-      pager:
-        options:
+      empty:
+        area_text_custom:
+          content: 'Ei mediatiedostoja saatavilla.'
+      sorts:
+        created:
           expose:
-            items_per_page_label: 'Merkintöjä sivua kohti'
-            items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
-          tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
-      fields:
-        media_bulk_form:
-          action_title: Toiminto
+            label: 'Uusin ensin'
+        name:
+          expose:
+            label: 'Nimi (A-Z)'
+        name_1:
+          expose:
+            label: 'Nimi (Z-A)'
       filters:
         status:
           expose:
@@ -31,8 +46,6 @@ display:
             group_items:
               1:
                 title: Julkaistu
-              2:
-                title: Julkaisematon
         name:
           expose:
             label: Nimi
@@ -44,20 +57,6 @@ display:
         langcode:
           expose:
             label: Kieli
-      sorts:
-        created:
-          expose:
-            label: 'Uusin ensin'
-        name:
-          expose:
-            label: 'Nimi (A-Z)'
-        name_1:
-          expose:
-            label: 'Nimi (Z-A)'
-      title: Media
-      empty:
-        area_text_custom:
-          content: 'Ei mediatiedostoja saatavilla.'
   page:
     display_title: Sivu
     display_options:
@@ -79,14 +78,14 @@ display:
   widget:
     display_title: Widgetti
     display_options:
-      filters:
-        name:
-          expose:
-            label: Nimi
       arguments:
         bundle:
           exception:
             title: Kaikki
+      filters:
+        name:
+          expose:
+            label: Nimi
       header:
         display_link_grid:
           label: Ruudukko
@@ -104,14 +103,14 @@ display:
           label: Kirjoittaja
         changed:
           label: Päivitetty
-      filters:
-        name:
-          expose:
-            label: Nimi
       arguments:
         bundle:
           exception:
             title: Kaikki
+      filters:
+        name:
+          expose:
+            label: Nimi
       header:
         display_link_grid:
           label: Ruudukko

@@ -12,28 +12,28 @@ dependencies:
     - paragraphs.paragraphs_type.contact_card_listing
     - paragraphs.paragraphs_type.content_cards
     - paragraphs.paragraphs_type.content_liftup
-    - paragraphs.paragraphs_type.custom_content_links
     - paragraphs.paragraphs_type.event_list
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
     - paragraphs.paragraphs_type.map
-    - paragraphs.paragraphs_type.meetings_calendar
-    - paragraphs.paragraphs_type.news_liftups
     - paragraphs.paragraphs_type.news_list
     - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.remote_video
+    - paragraphs.paragraphs_type.service_list_search
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.unit_search
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: OAszLBpmZFYzCk6m40IBOPGFaX9s5i1DcOQXojCVnZU
+  default_config_hash: G8uqVofIIeSPJSEW4FPnQrwefO2xMZGnwlbcHrbpZ48
 id: node.page.field_content
 field_name: field_content
 entity_type: node
 bundle: page
-label: 'Ylempi sisältöalue'
+label: 'Upper content region'
 description: ''
 required: false
 translatable: true
@@ -43,125 +43,143 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      text: text
-      columns: columns
       accordion: accordion
-      image: image
-      list_of_links: list_of_links
-      content_cards: content_cards
-      map: map
       banner: banner
-      liftup_with_image: liftup_with_image
       chart: chart
-      custom_content_links: custom_content_links
+      columns: columns
+      contact_card_listing: contact_card_listing
+      content_cards: content_cards
       content_liftup: content_liftup
       event_list: event_list
+      from_library: from_library
+      image: image
+      list_of_links: list_of_links
+      map: map
       news_list: news_list
-      contact_card_listing: contact_card_listing
-      meetings_calendar: meetings_calendar
-      news_liftups: news_liftups
-      remote_video: remote_video
       phasing: phasing
+      remote_video: remote_video
+      service_list_search: service_list_search
+      text: text
+      unit_search: unit_search
+      liftup_with_image: liftup_with_image
       pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -25
+        weight: 0
         enabled: true
       accordion_item:
-        weight: -20
-        enabled: false
-      banner:
-        weight: -16
-        enabled: true
-      chart:
-        weight: 25
-        enabled: true
-      columns:
-        weight: -26
-        enabled: true
-      contact_card:
-        weight: 30
-        enabled: false
-      contact_card_listing:
-        weight: 31
-        enabled: true
-      content_cards:
-        weight: -21
-        enabled: true
-      content_liftup:
-        weight: 28
-        enabled: true
-      custom_content_links:
-        weight: 26
-        enabled: true
-      event_list:
-        weight: 30
-        enabled: true
-      gallery:
-        weight: -23
-        enabled: false
-      gallery_slide:
-        weight: -19
-        enabled: false
-      hero:
-        weight: -18
-        enabled: false
-      image:
-        weight: -24
-        enabled: true
-      liftup_with_image:
-        weight: -15
-        enabled: true
-      list_of_links:
-        weight: -22
-        enabled: true
-      list_of_links_item:
-        weight: -17
-        enabled: false
-      map:
-        weight: -20
-        enabled: true
-      meetings_calendar:
-        weight: 35
-        enabled: true
-      news_liftups:
-        weight: 36
-        enabled: true
-      news_list:
-        weight: 30
-        enabled: true
-      pdf_listing:
-        weight: 56
-        enabled: true
-      phasing:
-        weight: 50
-        enabled: true
-      phasing_item:
-        weight: 30
-        enabled: false
-      popular_service_item:
-        weight: 60
-        enabled: false
-      popular_services:
-        weight: 59
-        enabled: false
-      remote_video:
-        weight: 37
-        enabled: true
-      sidebar_text:
         weight: 41
         enabled: false
-      social_media_link:
-        weight: 46
+      banner:
+        weight: 0
+        enabled: true
+      chart:
+        weight: 0
+        enabled: true
+      columns:
+        weight: 0
+        enabled: true
+      contact_card:
+        weight: 45
         enabled: false
-      target_group_link_item:
+      contact_card_listing:
+        weight: 0
+        enabled: true
+      content_cards:
+        weight: 0
+        enabled: true
+      content_liftup:
+        weight: 0
+        enabled: true
+      custom_content_links:
+        weight: 49
+        enabled: false
+      event_list:
+        weight: 0
+        enabled: true
+      from_library:
+        weight: 0
+        enabled: true
+      gallery:
+        weight: 52
+        enabled: false
+      gallery_slide:
+        weight: 53
+        enabled: false
+      hearings:
+        weight: 54
+        enabled: false
+      hero:
+        weight: 55
+        enabled: false
+      image:
+        weight: 0
+        enabled: true
+      liftup_with_image:
+        weight: 57
+        enabled: true
+      list_of_links:
+        weight: 0
+        enabled: true
+      list_of_links_item:
+        weight: 59
+        enabled: false
+      map:
+        weight: 0
+        enabled: true
+      meetings_calendar:
+        weight: 61
+        enabled: false
+      news_list:
+        weight: 0
+        enabled: true
+      pdf_listing:
+        weight: 63
+        enabled: true
+      phasing:
+        weight: 0
+        enabled: true
+      phasing_item:
         weight: 65
         enabled: false
+      popular_service_item:
+        weight: 67
+        enabled: false
+      popular_services:
+        weight: 66
+        enabled: false
+      remote_video:
+        weight: 0
+        enabled: true
+      service_list:
+        weight: 69
+        enabled: false
+      service_list_search:
+        weight: 0
+        enabled: true
+      sidebar_text:
+        weight: 71
+        enabled: false
+      social_media_link:
+        weight: 72
+        enabled: false
+      target_group_link_item:
+        weight: 74
+        enabled: false
       target_group_links:
-        weight: 64
+        weight: 73
         enabled: false
       text:
-        weight: -27
+        weight: 0
+        enabled: true
+      unit_accessibility_information:
+        weight: 76
+        enabled: false
+      unit_contact_card:
+        weight: 77
+        enabled: false
+      unit_search:
+        weight: 0
         enabled: true
 field_type: entity_reference_revisions

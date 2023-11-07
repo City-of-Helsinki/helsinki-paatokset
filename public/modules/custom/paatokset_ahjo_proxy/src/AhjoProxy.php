@@ -2661,11 +2661,11 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Returns TRUE if URL is internal to Drupal.
    */
   private function isLocalOrProxyUrl(string $url): bool {
-    if (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
-      $proxy_base = getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
-    }
-    elseif (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
+    if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
       $proxy_base = getenv('AHJO_PROXY_BASE_URL');
+    }
+    elseif (!empty(getenv('DRUPAL_REVERSE_PROXY_ADDRESS'))) {
+      $proxy_base = getenv('DRUPAL_REVERSE_PROXY_ADDRESS');
     }
     else {
       return FALSE;

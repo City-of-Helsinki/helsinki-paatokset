@@ -1,5 +1,5 @@
 uuid: eda61430-42d9-48ee-94bd-f227f03bc5eb
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:

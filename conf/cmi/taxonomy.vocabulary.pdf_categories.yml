@@ -1,5 +1,5 @@
 uuid: 7f7c132d-2e7d-4b50-b9de-ee8695404056
-langcode: fi
+langcode: en
 status: true
 dependencies: {  }
 name: 'Interest statement category'

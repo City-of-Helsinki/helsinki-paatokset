@@ -1,53 +1,293 @@
 uuid: 0f35531f-7387-4f5c-8b8e-8446104f59c2
-langcode: fi
+langcode: en
 status: true
 dependencies:
+  config:
+    - field.field.tpr_unit.tpr_unit.field_content
+    - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
+    - field.field.tpr_unit.tpr_unit.field_unit_type
+    - responsive_image.styles.image__3_2
   module:
+    - address
+    - entity_reference_revisions
     - helfi_tpr
+    - imagecache_external
+    - link
+    - metatag
+    - telephone
+    - text
+_core:
+  default_config_hash: tfkOTFeDgVhyd9NcyUP7yambOlzTfsjNcKwlLHPsbhw
 id: tpr_unit.tpr_unit.default
 targetEntityType: tpr_unit
 bundle: tpr_unit
 mode: default
 content:
+  accessibility_email:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  accessibility_phone:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  accessibility_sentences:
+    type: tpr_accessibility_sentence
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  accessibility_www:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  address:
+    type: address_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  address_postal:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  call_charge_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  contacts:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 26
+    region: content
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  email:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_lower_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_metatags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  highlights:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 23
+    region: content
+  latitude:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 24
+    region: content
+  links:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 25
+    region: content
+  longitude:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 23
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name_override:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  opening_hours:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  other_info:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  phone:
+    type: telephone_link
+    label: hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  picture_url:
+    type: imagecache_external_responsive_image
+    label: hidden
+    settings:
+      imagecache_external_link: ''
+      imagecache_external_responsive_style: image__3_2
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  picture_url_override:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: image
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  price_info:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  provided_languages:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 23
+    region: content
   service_map_embed:
     type: service_map_embed
     label: hidden
     settings:
-      iframe_title: 'Service map'
-      link_title: 'View larger map'
+      iframe_title: 'Location on map'
+      link_title: 'Open larger map'
       target: true
     third_party_settings: {  }
-    weight: 0
+    weight: 10
+    region: content
+  services:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  toc_enabled:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  topical:
+    type: tpr_connection
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 27
+    region: content
+  unit_picture_caption:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  www:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 12
     region: content
 hidden:
-  accessibility_email: true
-  accessibility_phone: true
-  accessibility_sentences: true
-  accessibility_www: true
-  address: true
-  address_postal: true
-  call_charge_info: true
-  contacts: true
   created: true
-  description: true
-  email: true
+  field_unit_type: true
   hide_description: true
-  highlights: true
   langcode: true
-  latitude: true
-  links: true
-  longitude: true
-  name: true
-  name_override: true
-  opening_hours: true
-  other_info: true
-  phone: true
-  picture_url: true
-  picture_url_override: true
-  price_info: true
-  provided_languages: true
   search_api_excerpt: true
-  services: true
   show_www: true
   streetview_entrance_url: true
-  www: true

@@ -43,7 +43,7 @@ class PolicymakerController extends ControllerBase {
     $documentsDescription = $policymaker->get('field_documents_description')->value;
     $build = [
       '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
-      '#markup' => '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
+      '#markup' => '<div class="policymaker-text">' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
     ];
 
     return $build;
@@ -83,7 +83,7 @@ class PolicymakerController extends ControllerBase {
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     $build = [
       '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      '#markup' => '<div>' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
+      '#markup' => '<div class="policymaker-text">' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
     ];
 
     return $build;

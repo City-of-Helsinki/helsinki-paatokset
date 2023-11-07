@@ -5,9 +5,6 @@
     <h3 class="accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ 'Voting results'|t }}</span>
-        <div class="accordion-item__icon">
-          {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
-        </div>
       </button>
     </h3>
     <div class="accordion-item__content handorgel__content">
@@ -20,17 +17,12 @@
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
               <div class="accordion__wrapper handorgel-inner">
-                <div class="accordion-item__header handorgel__header">
+                <div class="accordion-item__header handorgel__header {% if accordion.NumberOfVotes == 0 %} accordion-item__header--novotes {% endif %}">
                   <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" {% if accordion.NumberOfVotes == 0 %} disabled {% endif %}>
                     <div class="result-type {{ key|lower }}">
                       <span class="result-color">{{ accordion.NumberOfVotes }}</span>
                       <span class="result-key">{{ key|t }}</span>
                     </div>
-                    {% if accordion.NumberOfVotes != 0 %}
-                    <div class="accordion-item__icon">
-                      {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'angle-down'} %}
-                    </div>
-                    {% endif %}
                   </button>
                 </div>
                 <div class="accordion-item__content handorgel__content">

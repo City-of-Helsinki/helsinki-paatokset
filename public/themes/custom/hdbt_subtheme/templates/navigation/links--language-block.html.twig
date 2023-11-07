@@ -33,13 +33,13 @@
 #}
 
 {% if links %}
-  <div {{ attributes.addClass('language-switcher') }}>
+  <div {{ attributes.addClass('language-switcher', 'js-language-switcher') }}>
     <div class="language-links">
       {% for item in links %}
         {% set language_link = '' %}
         {% set lang = item.link['#options']['#abbreviation'] %}
         {% set untranslated = item.link['#options']['#untranslated'] %}
-        {% set alternative_language = item.link['#options']['#alternative_language'] %}
+        {% set alternative_language = not item.link['#options']['#primary_language'] %}
         {% set classes = ['language-link'] %}
         {% set ariaCurrent = null %}
         {% set title = null %}
@@ -60,7 +60,7 @@
         {% elseif lang == current_langcode %}
           {% set language_link = path('<current>', {}, {'language': item.link['#options']['language']}) %}
           {% set element = 'a' %}
-          {% set ariaCurrent = create_attribute({'aria-current': 'page'}) %}
+          {% set ariaCurrent = create_attribute({'aria-current': 'true'}) %}
         {% else %}
           {% set element = 'span' %}
           {% set classes = classes|merge(['is-disabled']) %}
@@ -76,7 +76,6 @@
         {% endif %}
 
         {# Construct the element based on variables. #}
-        {# TODO: Find out the best way to indicate inactive languages from accessibility point of view #}
         <{{ element }}
           {{ create_attribute({'class': classes}) }}
           {{ language_link ? create_attribute({'href': language_link}) }}

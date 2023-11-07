@@ -1,75 +1,3 @@
-.navigation {
-  &.contextual-region {
-    position: static;
-  }
-
-  &.navigation--main--desktop {
-    z-index: 100;
-
-    @include breakpoint(max-width $container-width-l) {
-      display: none;
-      visibility: hidden;
-    }
-  }
-}
-
-.menu {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  &.menu--main {
-    @include breakpoint($container-width-l) {
-      height: 100%;
-    }
-  }
-}
-
-.menu__item {
-  .menu--main & {
-    @include breakpoint($container-width-l) {
-      align-items: center;
-      display: inline-flex;
-      height: 100%;
-    }
-
-    &:not(:first-of-type) {
-      @include breakpoint($container-width-l) {
-        margin-left: $spacing-l;
-      }
-    }
-
-    &.is-active {
-      position: relative;
-
-      &:after {
-        background-color: $color-black;
-        bottom: -#{$spacing-s};
-        content: "";
-        height: 3px;
-        left: 0;
-        position: absolute;
-        right: 0;
-        width: 100%;
-      }
-    }
-  }
-}
-
-.menu__link {
-  display: inline-block;
-
-  .menu--main & {
-    @include breakpoint($container-width-l) {
-      @include font-size(16px);
-      text-decoration: none;
-    }
-  }
-}
-[data-js] ~ * .cssmenu-toggle-button[aria-expanded=true]::before {
-  mask-image: var(--hel-icon--cross);
-}
 // Backporting megamenu back link to mobile menu.
 .header-branding .cssmenu-menu {
   grid-template-areas: 'lang' 'back' 'nav' 'footer';
@@ -85,7 +13,6 @@
   grid-template-columns: 40px auto;
   grid-template-rows: auto;
   justify-items: center;
-  margin-top: -5px; // Counter the focus ring padding below
   padding: 5px 12px; // Top and bottom paddings are for handling focus ring 3px width + 2px offset
   position: relative;
   width: 100%;
@@ -128,6 +55,11 @@
   }
 }
 
+.paatokset-language-wrapper-menu {
+  display: flex!important;
+  height: auto;
+}
+
 .mmenu__back-wrapper {
   color: $color-black;
   grid-area: label;
@@ -136,4 +68,41 @@
   font-weight: 500;
   font-size: 1rem;
   padding-left: 10px;
+}
+
+// Backporting footer menu.
+.cssmenu-menu__footer {
+  background: $color-black;
+  color: $color-white;
+  grid-area: footer;
+  padding-bottom: 80px;
+  padding-top: $spacing;
+
+  .menu {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu__item + .menu__item {
+    margin-left: 0;
+  }
+
+  .menu__link {
+    @include font('body');
+    color: $color-white;
+    display: block;
+    padding: $spacing-half $spacing;
+
+    &:focus,
+    &:active {
+      outline: 3px solid $color-white;
+      outline-offset: -5px;
+    }
+  }
+
+  & > .menu__link {
+    font-weight: bold; // Make the city link bolded like in design specs
+  }
 }

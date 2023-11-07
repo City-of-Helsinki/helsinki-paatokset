@@ -1,0 +1,13 @@
+uuid: 4616868f-66be-473f-901b-5a7fa0ac7fab
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_lock
+_core:
+  default_config_hash: hOsiiB6BYwljAi2BavjIXwTaTNjDhDwcjEXnNK2obw8
+id: tpr_unit_break_lock_action
+label: 'Break lock tpr_unit'
+type: tpr_unit
+plugin: 'entity:break_lock:tpr_unit'
+configuration: {  }

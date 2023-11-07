@@ -15,7 +15,6 @@ module:
   config_ignore: 0
   config_rewrite: 0
   config_translation: 0
-  config_update: 0
   content_lock: 0
   content_lock_timeout: 0
   crop: 0
@@ -43,34 +42,56 @@ module:
   focal_point: 0
   gin_toolbar: 0
   hal: 0
-  hdbt_admin_editorial: 0
   hdbt_admin_tools: 0
-  hdbt_component_library: 0
-  hdbt_content: 0
-  hdbt_hyphenopoly: 0
   hds_web_components: 0
   health_check: 0
   helfi_api_base: 0
-  helfi_base_config: 0
-  helfi_charts: 0
-  helfi_contact_cards: 0
-  helfi_content: 0
-  helfi_gdpr_compliance: 0
-  helfi_languages: 0
+  helfi_base_content: 0
+  helfi_ckeditor: 0
+  helfi_eu_cookie_compliance: 0
+  helfi_global_announcement: 0
+  helfi_image_styles: 0
   helfi_media: 0
+  helfi_media_chart: 0
   helfi_media_map: 0
-  helfi_media_map_config: 0
-  helfi_news_feed: 0
-  helfi_news_item: 0
+  helfi_media_remote_video: 0
+  helfi_node_announcement: 0
+  helfi_node_landing_page: 0
+  helfi_node_page: 0
+  helfi_paragraphs_accordion: 0
+  helfi_paragraphs_banner: 0
+  helfi_paragraphs_chart: 0
+  helfi_paragraphs_columns: 0
+  helfi_paragraphs_contact_card_listing: 0
+  helfi_paragraphs_content_cards: 0
+  helfi_paragraphs_content_liftup: 0
+  helfi_paragraphs_hearings: 0
+  helfi_paragraphs_hero: 0
+  helfi_paragraphs_image: 0
+  helfi_paragraphs_liftup_with_image: 0
+  helfi_paragraphs_list_of_links: 0
+  helfi_paragraphs_map: 0
+  helfi_paragraphs_news_list: 0
+  helfi_paragraphs_phasing: 0
+  helfi_paragraphs_popular_services: 0
+  helfi_paragraphs_remote_video: 0
+  helfi_paragraphs_sidebar_text: 0
+  helfi_paragraphs_target_group_links: 0
+  helfi_paragraphs_text: 0
   helfi_platform_config: 0
+  helfi_platform_config_base: 0
   helfi_react_search: 0
   helfi_toc: 0
   helfi_tpr: 0
+  helfi_tpr_config: 0
   helfi_tunnistamo: 0
+  helfi_user_roles: 0
   image: 0
   image_style_quality: 0
   imagecache_external: 0
   imagemagick: 0
+  jquery_ui: 0
+  jquery_ui_draggable: 0
   json_field: 0
   json_field_widget: 0
   key_auth: 0
@@ -103,7 +124,6 @@ module:
   paatokset_datapumppu: 0
   paatokset_helsinki_kanava: 0
   paatokset_lang_switcher: 0
-  paatokset_news_importer: 0
   paatokset_pdf_listing: 0
   paatokset_policymakers: 0
   paatokset_search: 0
@@ -126,11 +146,11 @@ module:
   scheduler: 0
   search_api: 0
   select2: 0
-  select2_icon: 0
   serialization: 0
   simple_sitemap: 0
   social_media: 0
   sophron: 0
+  stomp: 0
   system: 0
   taxonomy: 0
   telephone: 0
@@ -140,7 +160,6 @@ module:
   translatable_menu_link_uri: 0
   twig_tweak: 0
   update: 0
-  update_helper: 0
   user: 0
   varnish_purge_tags: 0
   varnish_purger: 0
@@ -157,7 +176,6 @@ module:
   minimal: 1000
   eu_cookie_compliance: 1001
 theme:
-  stark: 0
   stable9: 0
   claro: 0
   hdbt: 0

@@ -8,15 +8,17 @@ dependencies:
     - field.field.paragraph.target_group_link_item.field_target_group_item_subtitle
     - paragraphs.paragraphs_type.target_group_link_item
   module:
+    - hdbt_admin_tools
     - link
-    - select2_icon
+_core:
+  default_config_hash: KD89aqMiKmJcWgPj05TsKprgmY9BzDTWPZG6_b5-V9g
 id: paragraph.target_group_link_item.default
 targetEntityType: paragraph
 bundle: target_group_link_item
 mode: default
 content:
   field_icon:
-    type: select2_icon_widget
+    type: select_icon_widget
     weight: 0
     region: content
     settings: {  }

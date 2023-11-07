@@ -4,9 +4,11 @@ status: true
 dependencies:
   module:
     - eu_cookie_compliance
+    - external_entities
     - helfi_api_base
     - helfi_tpr
     - media
+    - paragraphs
     - system
     - toolbar
 _core:
@@ -19,7 +21,13 @@ permissions:
   - 'access content'
   - 'access toolbar'
   - 'display eu cookie compliance popup'
+  - 'view helfi_announcements external entity'
+  - 'view helfi_news external entity'
+  - 'view helfi_news_groups external entity'
+  - 'view helfi_news_neighbourhoods external entity'
+  - 'view helfi_news_tags external entity'
   - 'view media'
   - 'view remote entities'
   - 'view tpr_service'
   - 'view tpr_unit'
+  - 'view unpublished paragraphs'

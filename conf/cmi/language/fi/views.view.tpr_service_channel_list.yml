@@ -1,3 +1,4 @@
+label: 'TPR Palvelukanavat'
 display:
   default:
     display_title: Oletus
@@ -7,8 +8,8 @@ display:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
@@ -51,8 +52,13 @@ display:
         langcode:
           expose:
             label: Kieli
+      title: 'TPR Palvelukanavat'
       header:
         result:
           content: 'Näytetään @start - @end / @total'
+      empty:
+        area:
+          content:
+            value: 'Ei tuloksia.'
   page_1:
     display_title: Sivu
