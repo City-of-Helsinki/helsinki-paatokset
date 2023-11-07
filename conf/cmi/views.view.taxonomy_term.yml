@@ -23,15 +23,15 @@ display:
     position: 0
     display_options:
       fields:
-        created:
-          id: created
+        published_at:
+          id: published_at
           table: node_field_data
-          field: created
+          field: published_at
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: node
-          entity_field: created
+          entity_field: published_at
           plugin_id: field
           label: ''
           exclude: false
@@ -156,7 +156,7 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: mini
+        type: full
         options:
           offset: 0
           items_per_page: 10
@@ -165,6 +165,8 @@ display:
           tags:
             next: 'Seuraava ›'
             previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
           expose:
             items_per_page: false
             items_per_page_label: 'Merkintöjä sivua kohti'
@@ -173,6 +175,7 @@ display:
             items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
+          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -192,31 +195,35 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        sticky:
-          id: sticky
-          table: taxonomy_index
+        sticky_2:
+          id: sticky_2
+          table: node_field_data
           field: sticky
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: sticky
           plugin_id: standard
           order: DESC
           expose:
             label: ''
-            field_identifier: sticky
+            field_identifier: ''
           exposed: false
-        created:
-          id: created
-          table: taxonomy_index
-          field: created
+        published_at:
+          id: published_at
+          table: node_field_data
+          field: published_at
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: published_at
           plugin_id: date
           order: DESC
           expose:
             label: ''
-            field_identifier: created
+            field_identifier: ''
           exposed: false
           granularity: second
       arguments:
@@ -311,6 +318,46 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        status_1:
+          id: status_1
+          table: node_field_data
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: status
           plugin_id: boolean
           operator: '='
           value: '1'

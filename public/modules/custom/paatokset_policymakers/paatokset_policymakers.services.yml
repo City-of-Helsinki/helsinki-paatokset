@@ -4,3 +4,6 @@ services:
   policymakers_lazy_builder:
     class: Drupal\paatokset_policymakers\Service\PolicymakerLazyBuilder
     arguments: ['@language_manager', '@entity_type.manager', '@paatokset_policymakers']
+  Drupal\paatokset_policymakers\Service\OrganizationService:
+    class: Drupal\paatokset_policymakers\Service\OrganizationService
+    arguments: ['@language_manager', '@entity_type.manager', '@logger.factory']

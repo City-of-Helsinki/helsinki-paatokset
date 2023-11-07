@@ -6,6 +6,7 @@
 %}
 {% if articles %}
 <div {{ attributes.addClass(classes) }}>
+  {% set years = articles | keys %}
   {% if (years is not empty ) %}
     <div class="paatokset__decision-tree-container">
       <div class="decision-tree__title">
@@ -53,7 +54,7 @@
             <a href="{{ document.url }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
               <div class="list-item__date">
                 {% if document.date %}
-                  <span>{{ document.date|date("d.m.Y") }}</span>
+                  <span>{{ document.date|format_date('publication_date_format') }}</span>
                 {% endif %}
               </div>
               <div class="list-item__subject">

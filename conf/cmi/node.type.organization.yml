@@ -24,7 +24,7 @@ third_party_settings:
     unpublish_revision: false
 name: Organization
 type: organization
-description: ''
+description: 'Organisation hierarchy from Ahjo API.'
 help: ''
 new_revision: false
 preview_mode: 1
