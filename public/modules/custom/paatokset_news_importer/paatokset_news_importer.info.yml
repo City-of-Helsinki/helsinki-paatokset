@@ -1,9 +1,0 @@
-name: Paatokset news importer
-type: module
-package: custom
-core: 8.x
-core_version_requirement: ^8 || ^9
-dependecies:
-  - helfi_api_base
-  - migrate
-  - node
