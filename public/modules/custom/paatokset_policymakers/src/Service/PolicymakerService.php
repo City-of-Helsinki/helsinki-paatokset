@@ -1507,38 +1507,19 @@ class PolicymakerService {
       throw new NotFoundHttpException();
     }
 
-    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
-
-    $dateLong = date('d.m.Y', $meeting_timestamp);
-    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
-    $meetingYear = date('Y', $meeting_timestamp);
-    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
-    $agendaItems = NULL;
     $publishDate = NULL;
     $fileUrl = NULL;
 
     // Use either current language or fallback language for agenda items.
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'fi') {
-      $fallbackLanguage = 'sv';
-    }
-    else {
-      $fallbackLanguage = 'fi';
-    }
 
-    if ($document = $this->meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'fi')) {
+    // Prefer pöytäkirja if it exists.
+    if ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'pöytäkirja', $currentLanguage)) {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
-    elseif ($document = $this->meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'sv')) {
-      $pageTitle = t('Minutes');
-      $documentTitle = t('Minutes publication date');
-    }
-    elseif ($document = $this->meetingService->getDocumentFromEntity($meeting, 'esityslista', 'fi')) {
-      $pageTitle = t('Agenda');
-      $documentTitle = t('Agenda publication date');
-    }
-    elseif ($document = $this->meetingService->getDocumentFromEntity($meeting, 'esityslista', 'sv')) {
+    // Fall back to esityslist.
+    elseif ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'esityslista', $currentLanguage)) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
@@ -1552,15 +1533,17 @@ class PolicymakerService {
         $document_timestamp = strtotime($document['Issued']);
         $publishDate = date('d.m.Y', $document_timestamp);
       }
-      else {
-        $publishDate = NULL;
-      }
 
       $fileUrl = $this->meetingService->getUrlFromAhjoDocument($document);
     }
 
     // Get items in both languages because all aren't translated.
     $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
+
+    $fallbackLanguage = match ($currentLanguage) {
+      'fi' => 'sv',
+      default => 'fi',
+    };
     $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
 
     // If the default language list is missing items, add them from fallback.
@@ -1572,7 +1555,7 @@ class PolicymakerService {
           $newList[$key] = $agendaItems[$key];
         }
         else {
-          $newList[$key] = $fallbackAgendaItems[$key];
+          $newList[$key] = $item;
         }
       }
       $agendaItems = $newList;
@@ -1590,12 +1573,14 @@ class PolicymakerService {
     // Decision announcement.
     $decisionAnnouncement = $this->getDecisionAnnouncement($meeting, $currentLanguage, $agendaItems);
 
+    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
+
     return [
       'meeting' => [
         'nid' => $meeting->id(),
         'page_title' => $pageTitle,
-        'date_long' => $dateLong,
-        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
+        'date_long' => date('d.m.Y', $meeting_timestamp),
+        'title' => $this->getMeetingTitle($meeting),
       ],
       'meeting_metadata' => $metadata,
       'decision_announcement' => $decisionAnnouncement,
@@ -1606,6 +1591,35 @@ class PolicymakerService {
         'publish_date' => $publishDate,
       ],
     ];
+  }
+
+  /**
+   * Find translated meeting document with language fallback.
+   *
+   * Algorithm:
+   * - Try to find the document in the current language.
+   * - Fallback to 'fi-sv' langcode.
+   * - Fallback to 'fi', if we didn't try it already, otherwise try 'sv'.
+   *
+   * @return null|array
+   *   Null if no document is found.
+   */
+  private function getMeetingDocumentWithLanguageFallback(NodeInterface $meeting, string $type, string $currentLanguage): ?array {
+    $documentLanguages = [$currentLanguage, 'fi-sv'];
+    $documentLanguages[] = match ($currentLanguage) {
+      'fi' => 'sv',
+      default => 'fi',
+    };
+
+    foreach ($documentLanguages as $documentLanguage) {
+      $document = $this->meetingService->getDocumentFromEntity($meeting, $type, $documentLanguage);
+
+      if (!is_null($document)) {
+        return $document;
+      }
+    }
+
+    return NULL;
   }
 
   /**
