@@ -17,7 +17,7 @@ pr:
   branches:
     include:
     - main
-    - develop
+    - dev
 
 # By default, use self-hosted agents
 pool: Default
