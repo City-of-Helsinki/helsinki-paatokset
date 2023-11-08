@@ -6,7 +6,7 @@ Drupal 9 Website for the Helsinki Päätökset project.
 
 Env | Branch | Drush alias | URL | Notes
 --- | ------ | ----------- | --- | -----
-development | * | - | http://helsinki-paatokset.docker.so/ | Local development environment
+dev | * | - | http://helsinki-paatokset.docker.so/ | Local development environment
 production | tag based | - | https://paatokset.hel.fi | Production environment
 
 ## Requirements
@@ -146,11 +146,11 @@ Additional information can be added in a multiline message, where the first line
 ### Gitflow workflow
 The Gitflow workflow is followed, with the following conventions:
 
-**Main branch**: `develop`. All feature branches are created from `develop` and merged back with pull requests. All new code must be added with pull requests, not committed directly.
+**Main branch**: `dev`. All feature branches are created from `dev` and merged back with pull requests. All new code must be added with pull requests, not committed directly.
 
-**Feature branches**: For example, `PP-123-add-search-functionality`, Always created from and merged back to `develop` with pull requests after code review and testing. Should contain the Jira ticket ID or `PP-0` if a ticket doesn't exist.
+**Feature branches**: For example, `PP-123-add-search-functionality`, Always created from and merged back to `dev` with pull requests after code review and testing. Should contain the Jira ticket ID or `PP-0` if a ticket doesn't exist.
 
-**Release tags**: Code for future releases. For example: `release/1.1.0`. These tags should be created as Github releases so we can get full release not. Deploying releases happens manually in Azure.
+**Release tags**: Code for future releases. For example: `2023-11-08.1`. These tags should be created as Github releases so we can get full release not. Deploying releases happens manually in Azure.
 
 ### Pull requests
 The pull request should contain:
