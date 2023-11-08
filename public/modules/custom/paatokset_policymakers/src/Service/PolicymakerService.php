@@ -1499,7 +1499,7 @@ class PolicymakerService {
    */
   public function getMeetingAgenda(string $meetingId): ?array {
     if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
+      throw new \InvalidArgumentException("Missing policymaker");
     }
 
     $meeting = $this->getMeetingNode($meetingId);
