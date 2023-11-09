@@ -5,6 +5,8 @@ namespace Drupal\paatokset_policymakers\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -13,18 +15,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PolicymakerController extends ControllerBase {
 
   /**
-   * Policymaker service.
+   * Controller for policymaker subpages.
    *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
+   *   Policymaker service.
    */
-  private $policymakerService;
+  public function __construct(
+    private PolicymakerService $policymakerService
+  ) {
+    $this->policymakerService->setPolicyMakerByPath();
+  }
 
   /**
-   * Controller for policymaker subpages.
+   * {@inheritdoc}
    */
-  public function __construct() {
-    $this->policymakerService = \Drupal::service('paatokset_policymakers');
-    $this->policymakerService->setPolicyMakerByPath();
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('paatokset_policymakers')
+    );
   }
 
   /**

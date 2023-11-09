@@ -1,6 +1,7 @@
 services:
   paatokset_policymakers:
     class: Drupal\paatokset_policymakers\Service\PolicymakerService
+    arguments: ['@language_manager', '@entity_type.manager', '@current_route_match', '@path_alias.manager']
   policymakers_lazy_builder:
     class: Drupal\paatokset_policymakers\Service\PolicymakerLazyBuilder
     arguments: ['@language_manager', '@entity_type.manager', '@paatokset_policymakers']
