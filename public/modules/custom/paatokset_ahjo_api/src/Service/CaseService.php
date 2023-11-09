@@ -2157,6 +2157,7 @@ class CaseService {
     }
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', $params['type'])
       ->sort($sort_by, $sort);

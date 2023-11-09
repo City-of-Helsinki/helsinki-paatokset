@@ -528,7 +528,9 @@ class PolicymakerService {
    *   TRUE if meeting has a decision announcement but no published minutes.
    */
   public function checkDecisionAnnouncementById(string $id): bool {
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_id', $id)
@@ -739,135 +741,6 @@ class PolicymakerService {
   }
 
   /**
-   * Get decision list for officials.
-   *
-   * @param int|null $limit
-   *   Limit results.
-   * @param bool $byYear
-   *   Group decision by year.
-   *
-   * @return array
-   *   List of decisions.
-   */
-  public function getAgendasList(?int $limit = 0, bool $byYear = TRUE): array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
-    // Entityquery. Sorting is handled later for meeting date and section.
-    $query = \Drupal::entityQuery('node')
-      ->condition('status', 1)
-      ->condition('type', 'decision')
-      ->condition('field_policymaker_id', $this->policymakerId)
-      ->condition('field_meeting_date', '', '<>')
-      ->sort('field_meeting_date', 'DESC');
-
-    if ($limit) {
-      // Increase limit to reduce change of sorting errors.
-      if ($limit < 10) {
-        $query->range('0', 10);
-      }
-      else {
-        $query->range('0', $limit);
-      }
-    }
-
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return [];
-    }
-
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-    /** @var \Drupal\Core\Database\Connection $database */
-    $database = \Drupal::service('database');
-    $transformedResults = [];
-    $results = [];
-    foreach ($ids as $id) {
-      // Load data directly from db to reduce out of memory errors.
-      // Entity load breaks here because some decisions have embedded images.
-      $query = $database->select('node_field_data', 'n')
-        ->fields('n', ['nid'])
-        ->fields('t', ['field_full_title_value'])
-        ->fields('md', ['field_meeting_date_value'])
-        ->fields('ds', ['field_decision_section_value'])
-        ->fields('dn', ['field_diary_number_value'])
-        ->fields('id', ['field_decision_native_id_value'])
-        ->condition('n.nid', $id)
-        ->condition('n.type', 'decision')
-        ->condition('n.status', 1)
-        ->range(0, 1);
-
-      $query->join('node__field_full_title', 't', 't.entity_id = n.nid');
-      $query->join('node__field_meeting_date', 'md', 'md.entity_id = n.nid');
-      $query->leftJoin('node__field_decision_section', 'ds', 'ds.entity_id = n.nid');
-      $query->leftJoin('node__field_diary_number', 'dn', 'dn.entity_id = n.nid');
-      $query->join('node__field_decision_native_id', 'id', 'id.entity_id = n.nid');
-
-      $data = $query->execute()->fetchObject();
-      if (!$data) {
-        continue;
-      }
-
-      $timestamp = strtotime($data->field_meeting_date_value);
-      $year = date('Y', $timestamp);
-
-      if (!empty($data->field_decision_section_value)) {
-        $decision_label = '§ ' . $data->field_decision_section_value . ' ' . $data->field_full_title_value;
-        $section = $data->field_decision_section_value;
-      }
-      else {
-        $decision_label = $data->field_full_title_value;
-        $section = '';
-      }
-
-      // Try to get link without node data first with fi langcode and then sv.
-      $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'fi');
-      if (!$link) {
-        $link = $caseService->getDecisionUrlWithoutNode($data->field_decision_native_id_value, $data->field_diary_number_value, 'sv');
-      }
-
-      $result = [
-        'year' => $year,
-        'date_desktop' => date('d.m.Y', $timestamp),
-        'date_mobile' => date('m - Y', $timestamp),
-        'timestamp' => $timestamp,
-        'subject' => $decision_label,
-        'section' => $section,
-        'link' => $link,
-      ];
-
-      $results[] = $result;
-    }
-
-    // Sort decisions by timestamp and then again by section numbering.
-    // Has to be done here because query sees sections as text, not numbers.
-    usort($results, function ($item1, $item2) {
-      if ($item1['date_desktop'] === $item2['date_desktop']) {
-        return (int) $item2['section'] - (int) $item1['section'];
-      }
-      return $item2['timestamp'] - $item1['timestamp'];
-    });
-
-    foreach ($results as $result) {
-      if ($byYear) {
-        $transformedResults[$result['year']][] = $result;
-      }
-      else {
-        $transformedResults[] = $result;
-      }
-    }
-
-    // Reduce results to original limit.
-    if ($limit) {
-      return array_slice($transformedResults, 0, $limit);
-    }
-
-    return $transformedResults;
-  }
-
-  /**
    * Get decision list for officials from ElasticSearch Index.
    *
    * @param int|null $limit
@@ -991,7 +864,9 @@ class PolicymakerService {
     $policymaker_id = $policymaker->get('field_policymaker_id')->value;
 
     // Get the latest held meeting.
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $policymaker_id)
@@ -1004,7 +879,9 @@ class PolicymakerService {
 
     // If no meetings have been held, get the most recently updated one.
     if (empty($ids)) {
-      $query = \Drupal::entityQuery('node')
+      $query = $this->nodeStorage
+        ->getQuery()
+        ->accessCheck(TRUE)
         ->condition('status', 1)
         ->condition('type', 'meeting')
         ->condition('field_meeting_dm_id', $policymaker_id)
@@ -1250,31 +1127,6 @@ class PolicymakerService {
   }
 
   /**
-   * Gets trustee node by agent ID.
-   *
-   * @param string $agent_id
-   *   Agent ID.
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   Trustee node, if found.
-   */
-  public function getTrusteeById(string $agent_id): ?NodeInterface {
-    $query = \Drupal::entityQuery('node')
-      ->condition('status', 1)
-      ->condition('type', 'trustee')
-      ->condition('field_trustee_id', $agent_id)
-      ->range('0', 1);
-
-    $ids = $query->execute();
-    $id = reset($ids);
-    if (empty($ids)) {
-      return NULL;
-    }
-
-    return Node::load($id);
-  }
-
-  /**
    * Get trustee node by path alias segment.
    *
    * @param string $agent_id
@@ -1318,7 +1170,9 @@ class PolicymakerService {
    *   Array of nodes.
    */
   private function getTrusteeNodesByName(array $names): ?array {
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'trustee')
       ->condition('title', $names, 'IN');
@@ -1373,7 +1227,9 @@ class PolicymakerService {
       return [];
     }
 
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
@@ -1739,7 +1595,9 @@ class PolicymakerService {
       return [];
     }
 
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
@@ -1818,6 +1676,7 @@ class PolicymakerService {
    */
   private function getDeclarationsOfAffilition() {
     $ids = \Drupal::entityQuery('media')
+      ->accessCheck(TRUE)
       ->condition('bundle', 'declaration_of_affiliation')
       ->condition('field__policymaker_reference', $this->policymaker->id())
       ->execute();
@@ -1837,6 +1696,7 @@ class PolicymakerService {
     }
 
     $ids = \Drupal::entityQuery('media')
+      ->accessCheck(TRUE)
       ->condition('bundle', 'minutes_of_the_discussion')
       ->condition('field_meetings_reference', $meetingids, 'IN')
       ->execute();
@@ -1858,7 +1718,9 @@ class PolicymakerService {
    *   List of initiatives.
    */
   public function getAllInitiatives(): array {
-    $nids = \Drupal::entityQuery('node')
+    $nids = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'trustee')
       ->condition('status', 1)
       ->condition('field_trustee_initiatives', '', '<>')

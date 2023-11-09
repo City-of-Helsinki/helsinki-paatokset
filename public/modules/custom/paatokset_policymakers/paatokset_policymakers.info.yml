@@ -2,8 +2,7 @@ name: Päätökset policymakers functionality
 type: module
 description: Functionality, templates and hooks for decisionmakers
 package: Custom
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 dependencies:
   - drupal:paatokset_ahjo_api
 'interface translation project': paatokset_policymakers
