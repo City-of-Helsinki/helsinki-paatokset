@@ -63,9 +63,9 @@
 
         {% if design == 'paatokset-search-bar' %}
           {{ drupal_block('search_form_block') }}
+        {% else %}
+          <span class="hero__arrow" aria-hidden="true"></span>
         {% endif %}
-
-        <span class="hero__arrow" aria-hidden="true"></span>
       {% endblock %}
     {% endembed %}
 
