@@ -171,6 +171,8 @@
 }
 
 h1.minutes__header {
+  @include font(h1);
+  line-height: 4rem;
   margin-top: 0;
   display: flex;
   flex-direction: column;
