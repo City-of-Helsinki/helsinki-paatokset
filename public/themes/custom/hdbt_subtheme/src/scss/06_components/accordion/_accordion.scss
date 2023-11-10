@@ -37,6 +37,10 @@
     }
   }
 
+  .handorgel__content--open .accordion-item__content__inner {
+    padding-bottom: 64px;
+  }
+
   .accordion__wrapper {
     border: none;
   }
@@ -47,5 +51,6 @@
     justify-content: right;
     padding: 24px;
     cursor: pointer;
+    margin-bottom: -16px;
   }
 }
