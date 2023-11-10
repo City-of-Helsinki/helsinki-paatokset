@@ -2,7 +2,10 @@
 .page-title + .policymaker-text {
   margin-top: $spacing-double;
 }
-.policymaker-no-content, .policymaker-text {
+.node--type-policymaker,
+.policymaker-no-content,
+.minutes-container,
+.policymaker-text {
   font-size: $fontsize-body-l;
 }
 .policymaker-text .announcement {
