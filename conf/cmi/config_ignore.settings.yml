@@ -1,11 +1,12 @@
+mode: simple
 ignored_config_entities:
-  - 'system.site:page.front'
-  - 'hdbt_admin_tools.site_settings:site_settings'
   - 'easy_breadcrumb.settings:home_segment_title'
   - hdbt_admin_tools.site_settings
+  - 'hdbt_admin_tools.site_settings:site_settings'
   - paatokset_ahjo_api.default_texts
-  - paatokset_ahjo_proxy.blacklist
   - 'paatokset_ahjo_api.disallowed_decisions.*'
-  - paatokset_ahjo_openid.settings
-  - paatokset_ahjo_proxy.settings
   - paatokset_ahjo_api.policymaker_labels
+  - paatokset_ahjo_openid.settings
+  - paatokset_ahjo_proxy.blacklist
+  - paatokset_ahjo_proxy.settings
+  - 'system.site:page.front'
