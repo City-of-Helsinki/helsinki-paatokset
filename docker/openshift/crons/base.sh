@@ -18,7 +18,7 @@ echo "Starting cron: $(date)"
 
 exec "/crons/update-translations.sh" &
 exec "/crons/purge-queue.sh" &
-exec "/content-scheduler.sh" &
+exec "/crons/content-scheduler.sh" &
 exec "/crons/run-helsinki-integrations.sh" &
 exec "/crons/run-aggregated-ahjo-integrations.sh" &
 exec "/crons/run-immediate-ahjo-integrations.sh" &
