@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
-    "hds-react": "^1.4.1",
+    "hds-react": "^1.15.0",
     "preact": "^10.5.14",
     "preact-compat": "^3.19.0",
     "prop-types": "^15.7.2",
