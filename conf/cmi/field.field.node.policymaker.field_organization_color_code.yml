@@ -12,7 +12,7 @@ field_name: field_organization_color_code
 entity_type: node
 bundle: policymaker
 label: 'Organization color code'
-description: 'Allows the organization''s default color coding (determined by organization type) to be overridden.'
+description: "Allows the organization's default color coding (determined by organization type) to be overridden."
 required: false
 translatable: false
 default_value: {  }
