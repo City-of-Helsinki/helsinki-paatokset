@@ -11,6 +11,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
@@ -20,6 +21,7 @@ use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\search_api\Entity\Index;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -28,6 +30,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @package Drupal\paatokset_ahjo_api\Serivces
  */
 class PolicymakerService {
+
   /**
    * Machine name for meeting node type.
    */
@@ -82,12 +85,15 @@ class PolicymakerService {
    *   Route match service.
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   Path alias manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   Logger channel.
    */
   public function __construct(
     private LanguageManagerInterface $languageManager,
     EntityTypeManagerInterface $entityTypeManager,
     private RouteMatchInterface $routeMatch,
     private AliasManagerInterface $pathAliasManager,
+    private LoggerInterface $logger,
   ) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
 
@@ -763,16 +769,23 @@ class PolicymakerService {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $index = Index::load('decisions');
-    $query = $index->query();
-    $query->range(0, $limit);
-    $query->addCondition('field_policymaker_id', $this->policymakerId)
-      ->addCondition('field_is_decision', TRUE);
+    $query = $index
+      ->query()
+      ->range(0, $limit)
+      ->addCondition('field_policymaker_id', $this->policymakerId)
+      ->addCondition('field_is_decision', TRUE)
+      // Sort by date and section number.
+      ->sort('meeting_date', 'DESC')
+      ->sort('field_decision_section', 'DESC');
 
-    // Sort by date and section number.
-    $query->sort('meeting_date', 'DESC');
-    $query->sort('field_decision_section', 'DESC');
+    try {
+      $results = $query->execute();
+    }
+    catch (\Throwable $exception) {
+      Error::logException($this->logger, $exception);
+      return [];
+    }
 
-    $results = $query->execute();
     $data = [];
     foreach ($results as $result) {
       $subject = $result->getField('subject')->getValues()[0];
