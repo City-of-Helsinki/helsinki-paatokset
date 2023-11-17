@@ -20,16 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Ahjo Open ID service.
-   *
-   * @var \Drupal\paatokset_ahjo_openid\AhjoOpenId
-   */
-  protected $ahjoOpenId;
-
-  /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
       $configuration,
       $plugin_id,
@@ -41,9 +34,8 @@ class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFacto
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AhjoOpenId $ahjo_open_id) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, private AhjoOpenId $ahjoOpenId) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->ahjoOpenId = $ahjo_open_id;
   }
 
   /**
@@ -51,30 +43,28 @@ class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFacto
    *
    * @inheritdoc
    */
-  public function getAuthenticationOptions() {
+  public function getAuthenticationOptions(): array {
     // Check if Ahjo Open ID connector is configured.
-    if (!$this->ahjoOpenId->isConfigured()) {
-      return [];
+    if ($this->ahjoOpenId->isConfigured()) {
+      // Check if access token is still valid (not expired).
+      if ($this->ahjoOpenId->getAuthToken()) {
+        $access_token = $this->ahjoOpenId->getAuthToken();
+      }
+      else {
+        // Refresh and return new access token.
+        $access_token = $this->ahjoOpenId->refreshAuthToken();
+      }
+
+      if ($access_token) {
+        return [
+          'headers' => [
+            'Authorization' => 'Bearer ' . $access_token,
+          ],
+        ];
+      }
     }
 
-    // Check if access token is still valid (not expired).
-    if ($this->ahjoOpenId->getAuthToken()) {
-      $access_token = $this->ahjoOpenId->getAuthToken();
-    }
-    else {
-      // Refresh and return new access token.
-      $access_token = $this->ahjoOpenId->refreshAuthToken();
-    }
-
-    if (!$access_token) {
-      return [];
-    }
-
-    return [
-      'headers' => [
-        'Authorization' => 'Bearer ' . $access_token,
-      ],
-    ];
+    throw new \InvalidArgumentException("Unable to fetch Ahjo openid token");
   }
 
 }
