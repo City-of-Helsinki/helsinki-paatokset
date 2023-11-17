@@ -62,12 +62,6 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    * {@inheritDoc}
    */
   public function build() {
-
-    $route = 'policymakers.' . $this->currentLang;
-    if (!$this->policymakerService->routeExists($route)) {
-      $route = 'policymakers.fi';
-    }
-
     return [
       '#items' => $this->items,
       '#currentPath' => \Drupal::service('path.current')->getPath(),
