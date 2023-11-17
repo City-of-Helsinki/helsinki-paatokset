@@ -1,6 +1,14 @@
 .page-type--trustee .page-title__container {
   max-width: unset;
 }
+.page-type--trustee .page-title {
+  @include breakpoint($breakpoint-m) {
+    margin-bottom: $spacing-and-half;
+  }
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: $spacing-triple;
+  }
+}
 
 .trustee-information {
   background-color: #e8f3fc;
