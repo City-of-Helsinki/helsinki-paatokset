@@ -48,7 +48,7 @@ class AhjoOpenIdTest extends UnitTestCase {
   /**
    * @covers ::isConfigured
    * @covers ::getAuthUrl
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * @covers ::__construct
    */
   public function testNoConfiguration() : void {
     $settings = new Settings(
@@ -67,7 +67,7 @@ class AhjoOpenIdTest extends UnitTestCase {
   /**
    * @covers ::isConfigured
    * @covers ::getAuthUrl
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * @covers ::__construct
    */
   public function testPartialConfiguration() : void {
     $settings = new Settings(
@@ -92,7 +92,7 @@ class AhjoOpenIdTest extends UnitTestCase {
   /**
    * @covers ::isConfigured
    * @covers ::getAuthUrl
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * @covers ::__construct
    */
   public function testFullConfiguration() : void {
     $settings = new Settings(
