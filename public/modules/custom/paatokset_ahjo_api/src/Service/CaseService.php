@@ -1315,6 +1315,9 @@ class CaseService {
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+    if ($currentLanguage === 'en') {
+      $currentLanguage = 'fi';
+    }
 
     if (!$case_id) {
       $case_id = $this->caseId;
@@ -1333,7 +1336,7 @@ class CaseService {
         $class = 'color-sumu';
       }
 
-      // Store all unique IDs for current langauge decisions.
+      // Store all unique IDs for current language decisions.
       if ($node->langcode->value === $currentLanguage) {
         $native_results[] = $node->field_unique_id->value;
       }
