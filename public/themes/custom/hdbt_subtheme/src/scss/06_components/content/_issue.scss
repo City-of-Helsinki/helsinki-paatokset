@@ -70,7 +70,6 @@
 }
 
 .issue__container {
-  display:none;
   h3 {
     font-size: $fontsize-heading-m;
 
@@ -423,41 +422,8 @@ h4.decision-history-title + h5.decision-history-title {
 
   .accordion-item__content__inner {
     margin: 0 !important;
-  }
-
-  .results-table {
-    margin: 0;
-    max-width: unset;
-
-    thead,
-    tbody {
-      width: 100%;
-
-      th,
-      td {
-        font-size: 16px;
-      }
-    }
-
-    thead .results-table__row {
-      background-color: $color-silver-medium-light;
-
-      th {
-        color: $color-black;
-      }
-    }
-
-    tbody .results-table__row {
-      background-color: $color-white;
-
-      td {
-        background-color: $color-white;
-        display: table-cell;
-      }
-    }
-
-    .results-table__row th {
-      width: 40%;
+    .handorgel__content--open & {
+      padding-bottom: $spacing-double;
     }
   }
 
@@ -466,16 +432,60 @@ h4.decision-history-title + h5.decision-history-title {
   }
 }
 
+.results-table {
+  margin: $spacing-double 0;
+  max-width: unset;
+  width: 100%;
+  border-spacing: 0;
+
+  thead,
+  tbody {
+    width: 100%;
+
+    th {
+      font-weight: 500;
+    }
+
+    th,
+    td {
+      text-align: left;
+      font-size: 16px;
+      padding: 16px;
+    }
+  }
+
+  thead .results-table__row {
+    background-color: $color-silver-medium-light;
+
+    th {
+      color: $color-black;
+    }
+  }
+
+  tbody .results-table__row {
+    background-color: $color-white;
+
+    td {
+      background-color: $color-white;
+      display: table-cell;
+    }
+  }
+
+  .results-table__row th {
+    width: 40%;
+  }
+}
+
 .results-by-party {
-  margin-top: 64px !important;
+  padding-top: $spacing-double;
 
   .results-table {
-    max-width: unset;
 
     thead .results-table__row {
       th {
+        background-color: #000;
+        color: #fff;
         min-width: unset;
-        font-size: 16px;
 
         &:first-of-type {
           width: 100%;
@@ -497,8 +507,6 @@ h4.decision-history-title + h5.decision-history-title {
       td {
         background-color: $color-white;
         min-width: unset;
-        font-size: 16px;
-        display: table-cell;
 
         &:not(:first-of-type) {
           min-width: 56px;
