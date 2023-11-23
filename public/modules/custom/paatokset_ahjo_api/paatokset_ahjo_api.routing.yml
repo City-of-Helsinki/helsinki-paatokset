@@ -118,8 +118,12 @@ paatokset_ahjo_api.queue_list:
     _permission: 'administer paatokset'
 
 paatokset_ahjo_api.case_ajax:
-  path: 'ahjo_api/case/{case_id}'
+  path: 'ahjo_api/case/{case_id}/{decision}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseController::loadDecision'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      decision:
+        type: decision

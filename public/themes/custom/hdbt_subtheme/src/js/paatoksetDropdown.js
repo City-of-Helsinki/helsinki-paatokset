@@ -147,17 +147,15 @@ jQuery(function($) {
   function loadDecision(id) {
     const caseId = $('#case-header').data('caseId')
     const { baseUrl, pathPrefix, currentPath } = window.drupalSettings.path;
-    const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}`;
+    const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}/${id}`;
 
 
     $.ajax({
-      url: `${path}?decision=${id}`,
+      url: path,
       beforeSend: function() {
         $('.issue__wrapper .ajax-progress-throbber').show();
       },
-      success: function(response) {
-        const data = JSON.parse(response);
-
+      success: function(data) {
         if (data.content) {
           $('.issue__ajax-container').html(data.content);
         }
