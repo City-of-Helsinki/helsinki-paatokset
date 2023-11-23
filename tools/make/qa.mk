@@ -2,6 +2,8 @@ TEST_TARGETS += test-phpunit
 FIX_TARGETS :=
 LINT_PHP_TARGETS :=
 CS_INSTALLED := $(shell test -f $(COMPOSER_JSON_PATH)/vendor/bin/phpcs && echo yes || echo no)
+CS_CONF_EXISTS := $(shell test -f phpcs.xml.dist && echo yes || echo no)
+TESTSUITES ?= unit,kernel,functional
 
 PHONY += fix
 fix: ## Fix code style
@@ -37,30 +39,31 @@ test: ## Run tests
 	$(call step,Tests completed.)
 
 PHONY += test-phpunit
-test-phpunit: TESTSUITES := unit,kernel,functional
 test-phpunit: ## Run PHPUnit tests
 	$(call step,Run PHPUnit tests...)
 ifeq ($(CI),true)
 	vendor/bin/phpunit -c phpunit.xml.dist --testsuite $(TESTSUITES)
 else
-	$(call docker,${DOCKER_PROJECT_ROOT}/vendor/bin/phpunit -c $(DOCKER_PROJECT_ROOT)/phpunit.xml.dist \
+	$(call docker_compose_exec,${DOCKER_PROJECT_ROOT}/vendor/bin/phpunit -c $(DOCKER_PROJECT_ROOT)/phpunit.xml.dist \
 		--testsuite $(TESTSUITES))
 endif
 	$(call test_result,test-phpunit,"[OK]")
 
 PHONY += test-phpunit-locally
-test-phpunit-locally: TESTSUITES := unit,kernel,functional
 test-phpunit-locally:
-	@SIMPLETEST_BASE_URL=http://$(DRUPAL_HOSTNAME) SIMPLETEST_DB=mysql://$(DB_URL) \
+	@SIMPLETEST_BASE_URL=https://$(DRUPAL_HOSTNAME) SIMPLETEST_DB=mysql://$(DB_URL) \
     		vendor/bin/phpunit -c $(CURDIR)/phpunit.xml.dist --testsuite $(TESTSUITES)
 
 define test_result
 	@echo "\n${YELLOW}${1}:${NO_COLOR} ${GREEN}${2}${NO_COLOR}"
 endef
 
-ifeq ($(CS_INSTALLED),yes)
+ifeq ($(CS_INSTALLED)-$(CS_CONF_EXISTS),yes-yes)
 define cs
-$(call docker_compose_exec,vendor/bin/$(1) --config-set installed_paths $(CS_STANDARD_PATHS))
+$(call docker_compose_exec,vendor/bin/$(1))
+endef
+else ifeq ($(CS_INSTALLED)-$(CS_CONF_EXISTS),yes-no)
+define cs
 $(call docker_compose_exec,vendor/bin/$(1) --standard=$(CS_STANDARDS) --extensions=$(CS_EXTS) --ignore=node_modules $(2))
 endef
 else

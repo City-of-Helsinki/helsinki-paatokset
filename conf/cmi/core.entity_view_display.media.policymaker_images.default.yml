@@ -1,9 +1,10 @@
 uuid: b1e52b27-9e76-47c8-a14d-9aa11e664b77
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
     - field.field.media.policymaker_images.field_media_image_1
+    - image.style.original_m
     - media.type.policymaker_images
   module:
     - image
@@ -17,7 +18,7 @@ content:
     label: visually_hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: original_m
       image_loading:
         attribute: lazy
     third_party_settings: {  }

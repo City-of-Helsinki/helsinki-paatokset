@@ -12,9 +12,14 @@
     font-size: 18px;
   }
 
+  .announcement__content {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
   .announcement__container {
     margin-left: 0;
-  
+
     @include breakpoint($breakpoint-m) {
       margin-left: 0;
       margin-right: 0;

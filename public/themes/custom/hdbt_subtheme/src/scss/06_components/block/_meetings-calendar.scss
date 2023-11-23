@@ -40,7 +40,7 @@
       cursor: pointer;
     }
     .icon-container--disabled {
-      color: $gray-light;
+      color: $color-silver-medium-light;
     }
   }
 
@@ -92,7 +92,7 @@
   }
 
   .meeting-row {
-    border-bottom: 1px dashed $color-black-light;
+    border-bottom: 1px dashed $color-black-60;
     padding: $spacing 0;
     font-size: 16px;
 
@@ -112,10 +112,11 @@
     margin-bottom: $spacing-half;
     margin-top: 0;
     font-size: 16px;
+    line-height: 1.5;
   }
 
   .meeting-start-time {
-    color: $color-black-light;
+    color: $color-black-60;
   }
 
   .meeting-row--cancelled {

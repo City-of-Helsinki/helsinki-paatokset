@@ -5,14 +5,20 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_policymakers\Service;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\search_api\Entity\Index;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -52,6 +58,45 @@ class PolicymakerService {
   private $policymakerId;
 
   /**
+   * Node storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  private EntityStorageInterface $nodeStorage;
+
+  /**
+   * Meeting service.
+   *
+   * @var \Drupal\paatokset_ahjo_api\Service\MeetingService
+   */
+  private MeetingService $meetingService;
+
+  /**
+   * Constructs policymaker service.
+   *
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   Language manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Entity type manager.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   Route match service.
+   * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
+   *   Path alias manager.
+   */
+  public function __construct(
+    private LanguageManagerInterface $languageManager,
+    EntityTypeManagerInterface $entityTypeManager,
+    private RouteMatchInterface $routeMatch,
+    private AliasManagerInterface $pathAliasManager,
+  ) {
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
+
+    // Using dependency injection here fails on `make new` due to cyclical
+    // dependency with paatokset_ahjo_api module.
+    $this->meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  }
+
+  /**
    * Query policymakers from database.
    *
    * @param array $params
@@ -73,7 +118,9 @@ class PolicymakerService {
       $sort = 'ASC';
     }
 
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
       ->sort('created', $sort);
@@ -92,7 +139,7 @@ class PolicymakerService {
       return [];
     }
 
-    return Node::loadMultiple($ids);
+    return $this->nodeStorage->loadMultiple($ids);
   }
 
   /**
@@ -122,7 +169,7 @@ class PolicymakerService {
     }
 
     if ($langcode === NULL) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
     if ($result->hasTranslation($langcode)) {
@@ -152,7 +199,7 @@ class PolicymakerService {
    *   Policy maker ID.
    */
   public function setPolicyMakerNode(NodeInterface $node): void {
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     if ($node->hasTranslation($currentLanguage)) {
       $node = $node->getTranslation($currentLanguage);
     }
@@ -167,41 +214,34 @@ class PolicymakerService {
   }
 
   /**
-   * Set policy maker by current path.
+   * Set policymaker from current path.
    *
    * @return bool
    *   TRUE if setting pm was succesful.
    */
   public function setPolicyMakerByPath(): bool {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $routeParams = \Drupal::routeMatch()->getParameters();
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $node = $this->routeMatch->getParameter('node');
+    $routeParams = $this->routeMatch->getParameters();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     // Determine policymaker in custom routes.
-    if (!$node instanceof NodeInterface && $routeParams->get('organization')) {
-      $fallback_prefix = '/paattajat';
-      $fallback_lang = 'fi';
-      if ($currentLanguage === 'sv') {
-        $path_prefix = '/beslutsfattare';
-      }
-      elseif ($currentLanguage === 'en') {
-        $path_prefix = '/decisionmakers';
-      }
-      else {
-        $path_prefix = '/paattajat';
-      }
+    if (!$node instanceof NodeInterface && $routeParams->has('organization')) {
+      $path_prefix = match ($currentLanguage) {
+        'sv' => '/beslutsfattare',
+        'en' => '/decisionmakers',
+        default => '/paattajat',
+      };
 
       // Attempt to load path either by current language path or fallback.
       $organization = $routeParams->get('organization');
 
-      $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $organization, $currentLanguage);
+      $path = $this->pathAliasManager->getPathByAlias($path_prefix . '/' . $organization, $currentLanguage);
       if (preg_match('/node\/(\d+)/', $path, $matches)) {
-        $node = Node::load($matches[1]);
+        $node = $this->nodeStorage->load($matches[1]);
       }
       elseif ($this->getPolicyMaker($organization) !== NULL) {
         $node = $this->getPolicyMaker($organization);
       }
-
     }
 
     // Determine policymaker on subpages.
@@ -213,9 +253,9 @@ class PolicymakerService {
         // Alias check fails with langcode - slice only the part we need
         // Ie. '/paattajat/kaupunginvaltuusto'.
         $alias_parts = array_slice($url_parts, 2, 2);
-        $path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . implode('/', $alias_parts));
+        $path = $this->pathAliasManager->getPathByAlias('/' . implode('/', $alias_parts));
         if (preg_match('/node\/(\d+)/', $path, $matches)) {
-          $node = Node::load($matches[1]);
+          $node = $this->nodeStorage->load($matches[1]);
         }
       }
     }
@@ -301,7 +341,7 @@ class PolicymakerService {
    */
   public function getPolicymakerRoute(?NodeInterface $policymaker = NULL, ?string $langcode = NULL): ?Url {
     if ($langcode === NULL) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
     if ($policymaker === NULL) {
       $policymaker = $this->getPolicyMaker();
@@ -336,7 +376,7 @@ class PolicymakerService {
 
     $routes = PolicymakerRoutes::getOrganizationRoutes();
     $baseRoute = $routes['documents'];
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
     $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker, $currentLanguage);
@@ -377,7 +417,7 @@ class PolicymakerService {
 
     $routes = PolicymakerRoutes::getTrusteeRoutes();
     $baseRoute = $routes['decisions'];
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
     $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker, $currentLanguage);
 
@@ -421,7 +461,7 @@ class PolicymakerService {
     }
 
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $localizedRoute = "$route.$currentLanguage";
     $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $currentLanguage);
 
@@ -632,7 +672,7 @@ class PolicymakerService {
    *   Element ID or URL fragment.
    */
   public function getDecisionAnnouncementAnchor(): string {
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     if ($currentLanguage === 'sv') {
       return 'beslutsmeddelanden';
     }
@@ -652,7 +692,7 @@ class PolicymakerService {
    */
   public function getLocalizedUrl(?string $id = NULL, ?string $langcode = NULL): ?Url {
     if ($langcode === NULL) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
     if ($id === NULL && $this->policymaker->get('langcode')->value === $langcode) {
@@ -847,7 +887,7 @@ class PolicymakerService {
       $limit = 10000;
     }
 
-    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $index = Index::load('decisions');
     $query = $index->query();
@@ -1060,7 +1100,7 @@ class PolicymakerService {
     $names = array_keys($composition);
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     foreach ($person_nodes as $node) {
       if ($node->hasTranslation($currentLanguage)) {
         $node = $node->getTranslation($currentLanguage);
@@ -1186,7 +1226,7 @@ class PolicymakerService {
    */
   public function getTrusteeUrl(NodeInterface $node, ?string $langcode = NULL): ?Url {
     if ($langcode === NULL) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
     if ($node->get('langcode')->value === $langcode) {
@@ -1244,7 +1284,7 @@ class PolicymakerService {
    *   Trustee node, if found.
    */
   public function getTrusteeByPath(string $agent_id): ?NodeInterface {
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $fallback_prefix = '/paattajat';
     $fallback_lang = 'fi';
     if ($currentLanguage === 'sv') {
@@ -1353,8 +1393,6 @@ class PolicymakerService {
     }
 
     $nodes = Node::loadMultiple($ids);
-    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
-    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
     $transformedResults = [];
     foreach ($nodes as $node) {
@@ -1363,10 +1401,10 @@ class PolicymakerService {
       $meeting_id = $node->get('field_meeting_id')->value;
       $decision_link = NULL;
 
-      if ($document = $meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
+      if ($document = $this->meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
         $document_title = t('Minutes');
       }
-      elseif ($document = $meetingService->getDocumentFromEntity($node, 'esityslista')) {
+      elseif ($document = $this->meetingService->getDocumentFromEntity($node, 'esityslista')) {
         $document_title = t('Agenda');
         if (!$node->get('field_meeting_decision')->isEmpty()) {
           $decision_link = $this->getMinutesRoute($meeting_id);
@@ -1381,7 +1419,7 @@ class PolicymakerService {
         'publish_date_short' => date('m - Y', $meeting_timestamp),
         'title' => $document_title,
         'meeting_number' => $node->get('field_meeting_sequence_number')->value . ' - ' . $meeting_year,
-        'origin_url' => $meetingService->getUrlFromAhjoDocument($document),
+        'origin_url' => $this->meetingService->getUrlFromAhjoDocument($document),
         'decision_link' => $decision_link,
       ];
 
@@ -1411,7 +1449,9 @@ class PolicymakerService {
    *   Meeting node or NULL if one can't be loaded.
    */
   public function getMeetingNode(string $meetingId): ?NodeInterface {
-    $query = \Drupal::entityQuery('node')
+    $query = $this->nodeStorage
+      ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
@@ -1459,7 +1499,7 @@ class PolicymakerService {
    */
   public function getMeetingAgenda(string $meetingId): ?array {
     if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
+      throw new \InvalidArgumentException("Missing policymaker");
     }
 
     $meeting = $this->getMeetingNode($meetingId);
@@ -1467,41 +1507,19 @@ class PolicymakerService {
       throw new NotFoundHttpException();
     }
 
-    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
-
-    $dateLong = date('d.m.Y', $meeting_timestamp);
-    $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
-    $meetingYear = date('Y', $meeting_timestamp);
-    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
-    $agendaItems = NULL;
     $publishDate = NULL;
     $fileUrl = NULL;
 
     // Use either current language or fallback language for agenda items.
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'fi') {
-      $fallbackLanguage = 'sv';
-    }
-    else {
-      $fallbackLanguage = 'fi';
-    }
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
-    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
-    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-
-    if ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'fi')) {
+    // Prefer pöytäkirja if it exists.
+    if ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'pöytäkirja', $currentLanguage)) {
       $pageTitle = t('Minutes');
       $documentTitle = t('Minutes publication date');
     }
-    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'pöytäkirja', 'sv')) {
-      $pageTitle = t('Minutes');
-      $documentTitle = t('Minutes publication date');
-    }
-    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', 'fi')) {
-      $pageTitle = t('Agenda');
-      $documentTitle = t('Agenda publication date');
-    }
-    elseif ($document = $meetingService->getDocumentFromEntity($meeting, 'esityslista', 'sv')) {
+    // Fall back to esityslist.
+    elseif ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'esityslista', $currentLanguage)) {
       $pageTitle = t('Agenda');
       $documentTitle = t('Agenda publication date');
     }
@@ -1515,19 +1533,20 @@ class PolicymakerService {
         $document_timestamp = strtotime($document['Issued']);
         $publishDate = date('d.m.Y', $document_timestamp);
       }
-      else {
-        $publishDate = NULL;
-      }
 
-      $fileUrl = $meetingService->getUrlFromAhjoDocument($document);
+      $fileUrl = $this->meetingService->getUrlFromAhjoDocument($document);
     }
 
     // Get items in both languages because all aren't translated.
     $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
-    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
 
+    $fallbackLanguage = match ($currentLanguage) {
+      'fi' => 'sv',
+      default => 'fi',
+    };
+    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
     // If the default language list is missing items, add them from fallback.
-    if (count($agendaItems) <= count($fallbackAgendaItems)) {
+    if (count($agendaItems) !== count($fallbackAgendaItems)) {
       // Initiate new list to keep correct ordering.
       $newList = [];
       foreach ($fallbackAgendaItems as $key => $item) {
@@ -1535,7 +1554,7 @@ class PolicymakerService {
           $newList[$key] = $agendaItems[$key];
         }
         else {
-          $newList[$key] = $fallbackAgendaItems[$key];
+          $newList[$key] = $item;
         }
       }
       $agendaItems = $newList;
@@ -1553,12 +1572,14 @@ class PolicymakerService {
     // Decision announcement.
     $decisionAnnouncement = $this->getDecisionAnnouncement($meeting, $currentLanguage, $agendaItems);
 
+    $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
+
     return [
       'meeting' => [
         'nid' => $meeting->id(),
         'page_title' => $pageTitle,
-        'date_long' => $dateLong,
-        'title' => $policymaker_title . ' ' . $meetingNumber . '/' . $meetingYear,
+        'date_long' => date('d.m.Y', $meeting_timestamp),
+        'title' => $this->getMeetingTitle($meeting),
       ],
       'meeting_metadata' => $metadata,
       'decision_announcement' => $decisionAnnouncement,
@@ -1569,6 +1590,35 @@ class PolicymakerService {
         'publish_date' => $publishDate,
       ],
     ];
+  }
+
+  /**
+   * Find translated meeting document with language fallback.
+   *
+   * Algorithm:
+   * - Try to find the document in the current language.
+   * - Fallback to 'fi-sv' langcode.
+   * - Fallback to 'fi', if we didn't try it already, otherwise try 'sv'.
+   *
+   * @return null|array
+   *   Null if no document is found.
+   */
+  private function getMeetingDocumentWithLanguageFallback(NodeInterface $meeting, string $type, string $currentLanguage): ?array {
+    $documentLanguages = [$currentLanguage, 'fi-sv'];
+    $documentLanguages[] = match ($currentLanguage) {
+      'fi' => 'sv',
+      default => 'fi',
+    };
+
+    foreach ($documentLanguages as $documentLanguage) {
+      $document = $this->meetingService->getDocumentFromEntity($meeting, $type, $documentLanguage);
+
+      if (!is_null($document)) {
+        return $document;
+      }
+    }
+
+    return NULL;
   }
 
   /**
@@ -1843,7 +1893,7 @@ class PolicymakerService {
    *   Overridden, default or NULL if node can't be found.
    */
   public function getPolicymakerTypeFromNode(?NodeInterface $node = NULL): ?string {
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     if ($node === NULL) {
       $node = $this->getPolicyMaker();

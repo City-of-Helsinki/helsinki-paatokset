@@ -15,9 +15,13 @@
     background-color: white;
   }
 
+  th {
+    text-align: left;
+  }
+
   th,
   td {
-    font-size: $font-size-body;
+    font-size: $fontsize-body-l;
     background-color: $color-white;
     color: $color-black;
     padding: $spacing-and-half 0;

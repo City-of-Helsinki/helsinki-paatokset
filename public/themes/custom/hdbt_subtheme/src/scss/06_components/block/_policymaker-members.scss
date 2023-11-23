@@ -15,7 +15,7 @@
     width: 100%;
     height: 56px;
     padding: 16px;
-    border: 2px solid $gray;
+    border: 2px solid $color-black-50;
   }
 
   select {
@@ -95,7 +95,7 @@
         height: 24px;
         max-width: 24px;
         max-height: 24px;
-        border: 2px solid $gray;
+        border: 2px solid $color-black-50;
       }
 
       &:checked::before {
@@ -151,6 +151,11 @@
     overflow: hidden;
     margin-left: 8px;
 
+    img {
+      width: 100%;
+      height: auto;
+    }
+
     @include breakpoint($breakpoint-s) {
       height: 120px;
       width: 120px;
@@ -173,7 +178,7 @@
 
   .member-role,
   .member-party {
-    color: $color-black-light;
+    color: $color-black-60;
     font-size: 16px;
     line-height: 24px;
 

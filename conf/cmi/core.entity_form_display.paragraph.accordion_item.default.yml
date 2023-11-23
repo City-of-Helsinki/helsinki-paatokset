@@ -8,10 +8,13 @@ dependencies:
     - field.field.paragraph.accordion_item.field_icon
     - paragraphs.paragraphs_type.accordion_item
   module:
+    - hdbt_admin_tools
     - paragraphs
-    - select2_icon
+  enforced:
+    config:
+      - paragraphs.paragraphs_type.accordion_item
 _core:
-  default_config_hash: xQxl3DJdyXGfIMoF68zkvPXCgW-oWKdsAFKm2mhn7PM
+  default_config_hash: 7N37krPnWHQwmRjb9_0yq6TseyB-RZ-qkVpklV7rR98
 id: paragraph.accordion_item.default
 targetEntityType: paragraph
 bundle: accordion_item
@@ -22,8 +25,8 @@ content:
     weight: 2
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: closed_expand_nested
       closed_mode: summary
       autocollapse: none
@@ -45,7 +48,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_icon:
-    type: select2_icon_widget
+    type: select_icon_widget
     weight: 1
     region: content
     settings: {  }

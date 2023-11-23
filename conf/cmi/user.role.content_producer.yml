@@ -14,8 +14,8 @@ dependencies:
     - media.type.minutes_of_the_discussion
     - media.type.policymaker_images
     - media.type.remote_video
+    - node.type.announcement
     - node.type.article
-    - node.type.imported_article
     - node.type.landing_page
     - node.type.news_item
     - node.type.page
@@ -26,14 +26,18 @@ dependencies:
   module:
     - content_translation
     - editoria11y
+    - entity_usage
     - file
     - filter
     - helfi_api_base
+    - helfi_tpr
     - media
+    - menu_link_content
     - node
     - paragraphs
     - paragraphs_library
     - path
+    - publication_date
     - scheduler
     - system
     - taxonomy
@@ -47,16 +51,20 @@ weight: 3
 is_admin: null
 permissions:
   - 'access content overview'
+  - 'access entity usage statistics'
   - 'access files overview'
   - 'access media overview'
   - 'access remote entities overview'
   - 'access taxonomy overview'
   - 'access toolbar'
+  - 'access tpr_service overview'
+  - 'access tpr_unit overview'
   - 'access user profiles'
   - 'administer nodes'
   - 'administer paragraphs library'
   - 'cancel account'
   - 'change own username'
+  - 'create announcement content'
   - 'create article content'
   - 'create declaration_of_affiliation media'
   - 'create file media'
@@ -75,19 +83,20 @@ permissions:
   - 'create url aliases'
   - 'delete media'
   - 'delete own ahjo_document media'
+  - 'delete own announcement content'
   - 'delete own article content'
   - 'delete own declaration_of_affiliation media'
   - 'delete own file media'
   - 'delete own hel_map media'
   - 'delete own helfi_chart media'
   - 'delete own image media'
-  - 'delete own imported_article content'
   - 'delete own landing_page content'
   - 'delete own minutes_of_the_discussion media'
   - 'delete own news_item content'
   - 'delete own page content'
   - 'delete own policymaker_images media'
   - 'delete own remote_video media'
+  - 'edit any announcement content'
   - 'edit any declaration_of_affiliation media'
   - 'edit any file media'
   - 'edit any hel_map media'
@@ -99,13 +108,14 @@ permissions:
   - 'edit any page content'
   - 'edit any policymaker_images media'
   - 'edit any remote_video media'
+  - 'edit any trustee content'
+  - 'edit own announcement content'
   - 'edit own article content'
   - 'edit own declaration_of_affiliation media'
   - 'edit own file media'
   - 'edit own hel_map media'
   - 'edit own helfi_chart media'
   - 'edit own image media'
-  - 'edit own imported_article content'
   - 'edit own landing_page content'
   - 'edit own minutes_of_the_discussion media'
   - 'edit own news_item content'
@@ -117,22 +127,44 @@ permissions:
   - 'edit paragraph library item'
   - 'edit terms in keywords'
   - 'edit terms in pdf_categories'
+  - 'mark as hidden in editoria11y'
+  - 'revert announcement revisions'
   - 'revert article revisions'
-  - 'revert imported_article revisions'
   - 'revert landing_page revisions'
   - 'revert news_item revisions'
   - 'revert page revisions'
   - 'schedule publishing of nodes'
+  - 'set announcement published on date'
+  - 'set landing_page published on date'
+  - 'set page published on date'
   - 'translate editable entities'
+  - 'translate file media'
+  - 'translate image media'
+  - 'translate landing_page node'
+  - 'translate menu_link_content'
+  - 'translate page node'
+  - 'translate tpr_errand_service'
+  - 'translate tpr_service'
+  - 'translate tpr_service_channel'
+  - 'translate tpr_unit'
+  - 'translate trustee node'
+  - 'update any tpr_service'
+  - 'update any tpr_unit'
   - 'update media'
+  - 'update own tpr_service'
+  - 'update own tpr_unit'
   - 'use text format full_html'
   - 'use text format minimal'
   - 'view all media revisions'
   - 'view all revisions'
+  - 'view all tpr_service revisions'
+  - 'view all tpr_unit revisions'
+  - 'view announcement revisions'
   - 'view any unpublished content'
+  - 'view any unpublished landing_page content'
+  - 'view any unpublished page content'
   - 'view article revisions'
   - 'view editoria11y checker'
-  - 'view imported_article revisions'
   - 'view landing_page revisions'
   - 'view news_item revisions'
   - 'view own unpublished content'
@@ -142,3 +174,7 @@ permissions:
   - 'view scheduled content'
   - 'view the administration theme'
   - 'view unpublished paragraphs'
+  - 'view unpublished tpr_errand_service'
+  - 'view unpublished tpr_service'
+  - 'view unpublished tpr_service_channel'
+  - 'view unpublished tpr_unit'

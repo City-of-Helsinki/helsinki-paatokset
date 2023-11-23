@@ -1,5 +1,5 @@
 uuid: 49abfe64-7854-42d3-a362-f6c89e5f0ccb
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.organization.field_policymaker_id
     - node.type.organization
   module:
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - json_field
     - path
     - publication_date

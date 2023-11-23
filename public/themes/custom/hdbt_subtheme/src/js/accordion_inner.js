@@ -49,7 +49,7 @@
 
     // Find all accordions.
     const accordions = document.getElementsByClassName("handorgel-inner");
-    window.handorgel_accordions = [];
+    window.handorgel_accordions_inner = [];
 
     for (let singleAccordion of accordions) {
       /* global handorgel */
@@ -91,7 +91,7 @@
       });
 
       // Add a global variable so that we can open accordions with anchor links where needed
-      window.handorgel_accordions.push(accordion);
+      window.handorgel_accordions_inner.push(accordion);
 
       // Get all the folds associated to the accordion.
       let folds = accordion.folds;

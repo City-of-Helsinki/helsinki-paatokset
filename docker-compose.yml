@@ -7,18 +7,26 @@ services:
     image: "${DRUPAL_IMAGE}"
     volumes:
       - .:/app:delegated
-      - ssh:/tmp/druid_ssh-agent:ro
     depends_on:
       - db
     environment:
+      STAGE_FILE_PROXY_ORIGIN: "${STAGE_FILE_PROXY_ORIGIN}"
+      STAGE_FILE_PROXY_ORIGIN_DIR: "${STAGE_FILE_PROXY_ORIGIN_DIR}"
       APP_ENV: "${APP_ENV:-local}"
-      DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME},http://${COMPOSE_PROJECT_NAME}-varnish"
+      ELASTIC_PROXY_URL: ${ELASTIC_PROXY_URL:-""}
+      DRUPAL_ROUTES: "https://varnish-${DRUPAL_HOSTNAME},https://helfi-proxy.docker.so,http://${COMPOSE_PROJECT_NAME}-varnish"
+      DRUPAL_REVERSE_PROXY_ADDRESS: helfi-proxy.docker.so
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
       # To enable xdebug, run `export XDEBUG_ENABLE=true` before (re)starting your project.
       # Optionally, you can add this to your default environments variables to enable or disable
       # xdebug by default (like /etc/environments, ~/.bashrc, or ~/.zshrc).
       XDEBUG_ENABLE: "${XDEBUG_ENABLE:-false}"
-      SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG:-}"
+      PHP_IDE_CONFIG: "${PHP_IDE_CONFIG:-serverName=${DRUPAL_HOSTNAME}}"
+      # DOCKERHOST: host.docker.internal
+      # Use drush server to run functional tests, so we don't have to care about
+      # permission or SSL issues.
+      SIMPLETEST_BASE_URL: "http://app:8888"
       SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
       BROWSERTEST_OUTPUT_BASE_URL: "https://${DRUPAL_HOSTNAME}"
       DRUPAL_VARNISH_HOST: "${COMPOSE_PROJECT_NAME}-varnish"
@@ -28,9 +36,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "${DRUPAL_HOSTNAME}:host-gateway"
-    env_file:
-      - .env
-      - .env.local
     networks:
       - internal
       - stonehenge-network
@@ -50,6 +55,10 @@ services:
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
     image: druidfi/mariadb:10.11-drupal
+    command:
+      - --max_allowed_packet=512M
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_swedish_ci
     environment:
       MARIADB_AUTO_UPGRADE: "1"
       MARIADB_INITDB_SKIP_TZINFO: "1"
@@ -59,7 +68,6 @@ services:
       - 3306
     networks:
       - internal
-    command: --max_allowed_packet=128M
   varnish:
     container_name: "${COMPOSE_PROJECT_NAME}-varnish"
     image: druidfi/varnish:6-drupal
@@ -78,7 +86,7 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-varnish.loadbalancer.server.port=6081"
       - "traefik.docker.network=stonehenge-network"
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.0
     container_name: "${COMPOSE_PROJECT_NAME}-elastic"
     environment:
       - node.name="${COMPOSE_PROJECT_NAME}-elastic"
@@ -87,18 +95,17 @@ services:
       - cluster.initial_master_nodes="${COMPOSE_PROJECT_NAME}-elastic"
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "http.cors.allow-origin=*"
+      - "http.cors.allow-origin=\"*\""
       - "http.cors.enabled=true"
       - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
       - "http.cors.allow-credentials=true"
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - data01:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - 9200-9220:9200
     networks:
       - internal
       - stonehenge-network
@@ -110,26 +117,27 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-elastic.loadbalancer.server.port=9200"
       - "traefik.docker.network=stonehenge-network"
       - "traefik.port=9200"
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.15.1
-    container_name: "${COMPOSE_PROJECT_NAME}-kibana"
+    profiles:
+      - search
+  artemis:
+    container_name: "${COMPOSE_PROJECT_NAME}-artemis"
+    image: quay.io/artemiscloud/activemq-artemis-broker
     environment:
-      ELASTICSEARCH_HOSTS: http://elastic:9200
-    ports:
-      - 5601:5601
+      AMQ_EXTRA_ARGS: "--user admin --password admin"
+    depends_on:
+      - app
     networks:
       - internal
-      - stonehenge-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.entrypoints=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.rule=Host(`kibana-${DRUPAL_HOSTNAME}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-kibana.tls=true"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-kibana.loadbalancer.server.port=5601"
-      - "traefik.docker.network=stonehenge-network"
-      - "traefik.port=5601"
-
+    profiles:
+      - queue
+  chromium:
+    # @todo Update this to newer version once minkphp supports Selenium 4.
+    # @see https://github.com/minkphp/MinkSelenium2Driver/pull/372
+    image: selenium/standalone-chrome:106.0
+    networks:
+      - internal
+    profiles:
+      - testing
 networks:
   internal:
     external: false
@@ -137,8 +145,6 @@ networks:
     external: true
 
 volumes:
-  data01:
-    driver: local
   db_data:
   ssh:
     name: stonehenge-ssh

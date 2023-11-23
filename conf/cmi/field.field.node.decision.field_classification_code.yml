@@ -1,5 +1,5 @@
 uuid: 328e54c5-d060-4856-a499-9bdb2cc8d276
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:

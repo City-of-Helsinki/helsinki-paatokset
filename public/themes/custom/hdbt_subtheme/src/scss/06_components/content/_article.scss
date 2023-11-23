@@ -1,3 +1,6 @@
+.page-title + .node--type-article {
+  margin-top: $spacing-double;
+}
 .node--type-article {
   .content-author {
     font-size: 1rem;
@@ -5,7 +8,7 @@
   }
 
   .keywords {
-    margin-bottom: $spacing-2-xs;
+    margin-bottom: 8px;
     display: flex;
 
     .hds-tag {
@@ -50,6 +53,7 @@
 
 .latest-articles__list {
   width: 100%;
+  font-size: $fontsize-body-l;
 
   .sidebar_block_heading {
     margin-top: 0;

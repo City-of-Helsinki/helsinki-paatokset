@@ -7,7 +7,7 @@ dependencies:
   module:
     - ckeditor
 _core:
-  default_config_hash: gbKl_x1IJKUaF94IUbOx7E4G4-5WM7C33s7ABH74Rz8
+  default_config_hash: mx77BnIuTY8Yrm6IkLsHnEOv6JJrHPMD_kKgjP0DVi4
 format: full_html
 editor: ckeditor
 settings:
@@ -50,18 +50,11 @@ settings:
             - Paste
             - PasteFromWord
             - SpecialChar
-            - Source
-            - language_selector
             - Table
+            - language_selector
+            - Source
   plugins:
     drupallink:
       linkit_enabled: true
       linkit_profile: helfi
-image_upload:
-  status: false
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null
+image_upload: {  }

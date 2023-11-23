@@ -10,7 +10,7 @@
 
     .views-field-published-at {
       font-size: $fontsize-body-m;
-      color: $color-black-light;
+      color: $color-black-50;
       margin-bottom: $spacing;
     }
 
@@ -31,7 +31,7 @@
   .feed-icon {
     display: flex;
     align-items: center;
-    margin-top: $spacing-4-xl;
+    margin-top: $spacing-quadruple;
     text-decoration: none;
 
     i {

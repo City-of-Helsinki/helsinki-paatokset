@@ -1,4 +1,4 @@
-# [PP-000](https://helsinkisolutionoffice.atlassian.net/browse/PP-000)
+# [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
 <!-- What problem does this solve? -->
 
 ## What was done
@@ -9,7 +9,7 @@
 ## How to install
 
 * Make sure your instance is up and running on correct branch.
-  * `git checkout PP-000-insert_correct_branch`
+  * `git checkout UHF-0000_insert_correct_branch`
   * `make fresh`
 * Run `make drush-cr`
 
@@ -18,3 +18,14 @@
 
 * [ ] Check that this feature works
 * [ ] Check that code follows our standards
+
+## Designers review
+<!-- One of the checkboxes below needs to be checked like this: `[x]` (or click when not in edit mode) -->
+
+* [ ] This PR does not need designers review
+* [ ] This PR has been visually reviewed by a designer (Name of the designer)
+
+## Other PRs
+<!-- For example an related PR in another repository -->
+
+* Link to other PR

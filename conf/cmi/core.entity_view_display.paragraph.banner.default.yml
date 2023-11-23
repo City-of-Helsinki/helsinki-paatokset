@@ -11,12 +11,12 @@ dependencies:
     - field.field.paragraph.banner.field_icon
     - paragraphs.paragraphs_type.banner
   module:
+    - hdbt_admin_tools
     - link
     - options
-    - select2_icon
     - text
 _core:
-  default_config_hash: 6sXm0gwP7Lq-5wEAkZWbRYwhvZsBBQASOR_gKjINHMU
+  default_config_hash: 81G-zzBxYIt-u9L4g2zVuH0NP_i72wAOboZ0Fy7mA70
 id: paragraph.banner.default
 targetEntityType: paragraph
 bundle: banner
@@ -64,7 +64,7 @@ content:
     weight: 0
     region: content
   field_icon:
-    type: select2_icon_formatter
+    type: select_icon_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }

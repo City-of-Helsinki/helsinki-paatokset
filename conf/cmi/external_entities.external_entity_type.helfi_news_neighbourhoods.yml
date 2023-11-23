@@ -1,9 +1,9 @@
-uuid: acbc5cc0-e880-4b7b-8ead-c2bc47db96e1
+uuid: eec15be8-8cc0-4508-8be9-a009938fbff0
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: h4y6pjlsSfKM9cgEi9tWGsJ57_zj1b4CelECji9A1Y0
+  default_config_hash: tM9Z1SfXjTcoCvjFIESPPl2sya7IyIQ9kZ-zQFFNppU
 id: helfi_news_neighbourhoods
 label: 'Helfi: News neighbourhoods'
 label_plural: 'Helfi: News neighbourhoods'
@@ -19,6 +19,8 @@ field_mapper_config:
       value: $.id
     title:
       value: '$.attributes["name"]'
+    field_frontpage_term_id:
+      value: '$.attributes["drupal_internal__tid"]'
 storage_client_id: helfi_news_neighbourhoods
 storage_client_config: {  }
 persistent_cache_max_age: 86400

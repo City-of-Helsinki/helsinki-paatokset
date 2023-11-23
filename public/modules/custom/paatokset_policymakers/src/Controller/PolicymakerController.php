@@ -5,6 +5,8 @@ namespace Drupal\paatokset_policymakers\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -13,18 +15,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PolicymakerController extends ControllerBase {
 
   /**
-   * Policymaker service.
+   * Controller for policymaker subpages.
    *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
+   *   Policymaker service.
    */
-  private $policymakerService;
+  public function __construct(
+    private PolicymakerService $policymakerService
+  ) {
+    $this->policymakerService->setPolicyMakerByPath();
+  }
 
   /**
-   * Controller for policymaker subpages.
+   * {@inheritdoc}
    */
-  public function __construct() {
-    $this->policymakerService = \Drupal::service('paatokset_policymakers');
-    $this->policymakerService->setPolicyMakerByPath();
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('paatokset_policymakers')
+    );
   }
 
   /**
@@ -43,7 +51,7 @@ class PolicymakerController extends ControllerBase {
     $documentsDescription = $policymaker->get('field_documents_description')->value;
     $build = [
       '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
-      '#markup' => '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
+      '#markup' => '<div class="policymaker-text">' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
     ];
 
     return $build;
@@ -83,7 +91,7 @@ class PolicymakerController extends ControllerBase {
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     $build = [
       '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      '#markup' => '<div>' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
+      '#markup' => '<div class="policymaker-text">' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
     ];
 
     return $build;

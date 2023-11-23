@@ -1,5 +1,5 @@
 uuid: 32f67714-3c12-45e4-b847-b7a592853e46
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:
@@ -10,7 +10,7 @@ dependencies:
 id: helsinkikanavaannouncements
 theme: hdbt_subtheme
 region: before_content
-weight: -18
+weight: -16
 provider: null
 plugin: paatokset_helsinki_kanava_announcements
 settings:

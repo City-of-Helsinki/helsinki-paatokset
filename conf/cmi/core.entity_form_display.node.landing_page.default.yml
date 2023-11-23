@@ -10,13 +10,15 @@ dependencies:
     - field.field.node.landing_page.field_metatags
     - node.type.landing_page
   module:
+    - hdbt_admin_tools
     - media_library
     - metatag
     - paragraphs
     - path
+    - publication_date
     - scheduler
 _core:
-  default_config_hash: EpKucMjH6qBboFur_x0R89tX9KYcPmS9ijWcfK2fQPA
+  default_config_hash: hhHaoVWPiqGGQ2qDbN-7sawAmvK_BCGWA2vwgIevwq4
 id: node.landing_page.default
 targetEntityType: node
 bundle: landing_page
@@ -30,11 +32,11 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 12
+    weight: 13
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: open
       closed_mode: summary
       autocollapse: none
@@ -59,8 +61,8 @@ content:
     weight: 3
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: closed_expand_nested
       closed_mode: summary
       autocollapse: none
@@ -75,14 +77,14 @@ content:
     third_party_settings: {  }
   field_liftup_image:
     type: media_library_widget
-    weight: 3
+    weight: 4
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_metatags:
     type: metatag_firehose
-    weight: 51
+    weight: 8
     region: content
     settings:
       sidebar: false
@@ -96,20 +98,20 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 8
+    weight: 9
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 30
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -120,20 +122,25 @@ content:
     settings: {  }
     third_party_settings: {  }
   scheduler_settings:
-    weight: 20
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 11
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
@@ -163,12 +170,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 30
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }

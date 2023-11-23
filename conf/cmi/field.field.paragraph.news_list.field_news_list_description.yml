@@ -1,4 +1,4 @@
-uuid: cca88301-1723-4e7b-85e1-dd21f7e8796a
+uuid: 068949ac-f659-4224-a48d-37d3e8b01e9f
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,7 @@ dependencies:
 third_party_settings:
   allowed_formats:
     allowed_formats:
-      - full_html
-      - plain_text
+      - minimal
 _core:
   default_config_hash: EIpWpSFct6BBIBWOTpd87zJbnbSe0QLPeFLW9-LP1-o
 id: paragraph.news_list.field_news_list_description

@@ -1,5 +1,5 @@
 uuid: 046d61ce-2a9c-4936-967b-3a24d4d96594
-langcode: fi
+langcode: en
 status: true
 dependencies: {  }
 id: node__decision

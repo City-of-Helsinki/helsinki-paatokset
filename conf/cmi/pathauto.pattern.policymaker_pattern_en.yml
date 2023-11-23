@@ -1,5 +1,5 @@
 uuid: db1ccc35-061b-4487-a097-8bb8c73225e3
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:

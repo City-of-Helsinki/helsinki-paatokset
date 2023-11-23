@@ -382,20 +382,18 @@ class MeetingService {
       return NULL;
     }
 
-    $document = NULL;
     foreach ($entity->get('field_meeting_documents') as $field) {
       $json = json_decode($field->value, TRUE);
-      if ($langcode && isset($json['Language']) && strpos($json['Language'], $langcode) === FALSE) {
+      if ($langcode && isset($json['Language']) && !str_contains($json['Language'], $langcode)) {
         continue;
       }
 
       if (isset($json['Type']) && isset($json['NativeId']) && $json['Type'] === $document_type) {
-        $document = $json;
-        break;
+        return $json;
       }
     }
 
-    return $document;
+    return NULL;
   }
 
   /**

@@ -2,30 +2,21 @@
 drush/sites/
 drush/Commands/*
 node_modules
-public/public:/
 public/core
 public/libraries
 public/modules/contrib
-public/modules/custom/paatokset_search/assets
 public/themes/contrib
 public/sites/default/files
 vendor
-
-# Ignore files that are only for the current local environment
-public/sites/default/local.settings.php
-public/sites/default/local.services.yml
-.env.local
-
-# Ignore the folder created by PhpStorm
-.idea/*
-
-# Ignore test related files
-.phpunit.*
 helfi-test-automation-python/
 public/sites/simpletest/
 
-# Ignore local database dumps
+# Ignore the folder created by PhpStorm
+.idea/*
+public/sites/default/local.settings.php
+
 *.sql
+*.env.local
 
 # Ignore OSX generated files
 ._*
@@ -33,3 +24,4 @@ public/sites/simpletest/
 
 !*.gitkeep
 !*.keepme
+.phpunit.*

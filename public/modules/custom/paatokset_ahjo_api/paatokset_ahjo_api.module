@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
+use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
@@ -55,6 +56,23 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--dictionary-banner',
     ],
+  ];
+}
+
+/**
+ * Implements hook_helfi_paragraph_types().
+ */
+function paatokset_ahjo_api_helfi_paragraph_types() : array {
+  return [
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'pdf_listing'),
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'meetings_calendar'),
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'accordion'),
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'custom_content_links'),
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'image'),
+    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'text'),
+    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'custom_content_links'),
+    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'liftup_with_image'),
+    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'pdf_listing'),
   ];
 }
 
@@ -572,8 +590,6 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
   $variables['banner_link'] = [
     'url' => $url,
     'label' => $label,
-    'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
-    'target_new' => TRUE,
   ];
 }
 
@@ -1108,4 +1124,14 @@ function paatokset_ahjo_api_update_9003() {
   $settings['max_length'] = 255;
   $config->set('settings', $settings);
   $config->save();
+}
+
+/**
+ * Alter the Hero design selection array.
+ *
+ * @param array $designs
+ *   The designs for the hero.
+ */
+function paatokset_ahjo_api_helfi_hero_design_alter(array &$designs) {
+  $designs['paatokset-search-bar'] = t('Paatokset decision search');
 }

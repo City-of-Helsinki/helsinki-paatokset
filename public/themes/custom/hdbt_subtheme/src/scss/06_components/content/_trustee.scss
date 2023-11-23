@@ -1,10 +1,18 @@
 .page-type--trustee .page-title__container {
   max-width: unset;
 }
+.page-type--trustee .page-title {
+  @include breakpoint($breakpoint-m) {
+    margin-bottom: $spacing-and-half;
+  }
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: $spacing-triple;
+  }
+}
 
 .trustee-information {
   background-color: #e8f3fc;
-  padding: $spacing-m;
+  padding: $spacing-and-half;
   margin-bottom: 48px;
 
   .information-row {
@@ -13,7 +21,7 @@
     font-size: 18px;
 
     &:not(:last-of-type) {
-      margin-bottom: $spacing-s;
+      margin-bottom: $spacing;
     }
 
     &.information-row--pm-declaration a {
@@ -27,13 +35,13 @@
   }
 
   .label {
-    margin-right: $spacing-2-xs;
+    margin-right: 8px;
     font-weight: $font-weight-medium;
   }
 }
 
 .trustee-top-container {
-  margin-bottom: $spacing-m;
+  margin-bottom: $spacing-and-half;
 
   @include breakpoint($breakpoint-l) {
     padding: 0;
@@ -41,17 +49,22 @@
 
   span {
     font-size: 18px;
-    color: $color-black-light;
+    color: $color-black-50;
 
     &:first-of-type::after {
       content: "•";
-      margin: 0 $spacing-s;
+      margin: 0 $spacing;
     }
   }
 }
 
 .trustee-image {
-  margin-bottom: $spacing-m;
+  margin-bottom: $spacing-and-half;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .node--type-trustee {
@@ -114,7 +127,7 @@
     cursor: pointer;
 
     .icon {
-      margin-left: $spacing-2-xs;
+      margin-left: 8px;
     }
   }
 }
@@ -122,13 +135,13 @@
 .accordion_initiatives,
 .accordion_resolutions {
   .accordion-item__content__inner > div {
-    margin-bottom: $spacing-s;
+    margin-bottom: $spacing;
   }
 
   .date {
     font-size: 16px;
-    color: $color-black-light;
-    margin-bottom: $spacing-2-xs;
+    color: $color-black-50;
+    margin-bottom: 8px;
   }
   .title {
     display: block;
@@ -138,16 +151,16 @@
 
 .accordion_speaking-turn {
   .accordion-item__content__inner > div {
-    margin-bottom: $spacing-s;
+    margin-bottom: $spacing;
   }
 
   .speaking-turn__group__title {
     font-size: 1.5rem;
-    margin-bottom: $spacing-s;
+    margin-bottom: $spacing;
     margin-top: 0;
 
     &:not(:first-of-type) {
-      margin-top: $spacing-xl;
+      margin-top: $spacing-double;
     }
   }
 
@@ -156,7 +169,7 @@
     align-items: center;
 
     .icon {
-      margin-right: $spacing-s;
+      margin-right: $spacing;
     }
   }
 }

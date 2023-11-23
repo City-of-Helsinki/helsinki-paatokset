@@ -6,37 +6,3 @@
 
 @import "~hds-design-tokens/lib/typography/all.scss";
 
-// Font sizes
-$rembase: 16;
-$base-font-size: 16px; // Leave at 16px for correct container width
-$base-font-size-rem: 1rem;
-$base-line-height: 27px; // For relative line-height (1.385), see http://cssleading.com/
-
-$font-size-heading-1: 52px;
-$font-size-heading-2: 36px;
-$font-size-heading-3: 32px;
-$font-size-heading-4: 20px;
-$font-size-heading-5: 18px;
-$font-size-heading-6: 16px;
-
-$font-size-ingress: 22px;
-$font-size-body: 18px;
-
-$fontsize-body-s: 14px;
-$fontsize-body-m: 16px;
-$fontsize-body-l: 18px;
-$fontsize-body-xl: 20px;
-
-$lineheight-s: 1;
-$lineheight-m: 1.2;
-$lineheight-l: 1.5;
-$lineheight-xl: 1.75;
-
-$default-font-family: $font-default;
-$heading-font-family: $font-default;
-
-// Font weight.
-$font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-bold: 700;
-$font-weight-black: 800;

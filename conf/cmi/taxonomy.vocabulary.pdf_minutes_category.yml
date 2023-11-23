@@ -1,5 +1,5 @@
 uuid: 9a3ece14-def5-4e5c-91ab-2af6b6bd03d6
-langcode: fi
+langcode: en
 status: true
 dependencies: {  }
 name: 'PDF minutes category'

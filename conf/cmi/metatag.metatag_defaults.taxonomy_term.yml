@@ -2,8 +2,6 @@ uuid: c23a026a-9573-4521-af7c-d3f1d6e560a2
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: 92bXZdyYJ5xqukdfmGRr_CYcwm1vfuS8b8aJ7X_G7E0
 id: taxonomy_term
 label: 'Taxonomy term'
 tags:

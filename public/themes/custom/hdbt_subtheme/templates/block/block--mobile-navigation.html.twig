@@ -32,62 +32,59 @@
  */
 #}
 
+{% set dropdown_id = 'cssmenu-dropdown' %}
+
 {# Do we want to render navigation with content from another instance "globally" #}
 {% if not use_global_navigation %}
-  {% set attributes = attributes.addClass('block--mobile-navigation').addClass('mobile-navigation') %}
 
+  {% embed "@hdbt/misc/nav-toggle-button.twig" with {
+    modifier_class: 'nav-toggle--cssmenu',
+    controls: dropdown_id,
+    anchor_target: '#cssmenu',
+    js_target: 'js-cssmenu-button',
 
-  {% set menu_open %}
-    <span aria-hidden="true">{{ 'Menu'|t }}</span>
-    <span class="visually-hidden">{{ 'Open navigation menu'|t({}, {'context': 'Mobile navigation menu open button text for screen readers'}) }}</span>
-  {% endset %}
+    open_label: 'Menu'|t(),
+    open_screenreader: 'Open navigation menu'|t({}, {'context': 'Mobile navigation menu open button text for screen readers'}),
 
-  {% set menu_close %}
-    <span aria-hidden="true">{{ 'Close'|t }}</span>
-    <span class="visually-hidden">{{ 'Close navigation menu'|t({}, {'context': 'Mobile navigation menu close button text for screen readers'}) }}</span>
-  {% endset %}
+    close_label: 'Close'|t(),
+    close_screenreader: 'Close navigation menu'|t({}, {'context': 'Mobile navigation menu close button text for screen readers'}),
+  } %}
+  {% endembed %}
 
-  <label for="cssmenu-toggle-checkbox" class="cssmenu-toggle" role="button" id="cssmenu-toggle">
-    <span class="cssmenu-toggle__close">{{ menu_close }}</span>
-    <span class="cssmenu-toggle__open">{{ menu_open }}</span></span>
-  </label>
-  <button class="cssmenu-toggle-button js-cssmenu-toggle-button" aria-expanded="false">
-    <span class="cssmenu-toggle__open">{{ menu_open }}</span>
-    <span class="cssmenu-toggle__close">{{ menu_close }}</span>
-  </button>
-
-  <nav class="cssmenu-menu" aria-label="{{ 'Navigation menu'|t({}, {'context': 'Mobile navigation menu description for screen readers'}) }}">
-
-    <div class="language-wrapper">
-      {{ drupal_entity('block', 'language_switcher')}}
-    </div>
-
-    {# Render "back" menu link. #}
-
-    {% spaceless %}
-      {% set menu_link_back_title %}
-        <div class="icon-wrapper">
-          <i class="hel-icon hel-icon--angle-right"></i>
-        </div>
-        <span class="mmenu__back-wrapper">{{ site_name }}</span>
-      {% endset %}
-      {% set link_attributes = {'class': [ 'mmenu__back mmenu__back--in-path' ]} %}
-      {{ link(menu_link_back_title, site_front_url , link_attributes) }}
-    {% endspaceless %}
-
+  {% embed "@hdbt/misc/nav-toggle-dropdown.twig" with {
+    id: dropdown_id,
+    modifier_class: 'nav-toggle-dropdown--cssmenu',
+    description: 'Navigation menu'|t({}, {'context': 'Mobile navigation menu description for screen readers'}),
+  } %}
     {% block content %}
-      {{ content }}
-    {% endblock %}
+      <div class="language-wrapper paatokset-language-wrapper-menu">
+        {{ drupal_entity('block', 'language_switcher')}}
+      </div>
 
-    <div class="cssmenu-menu__footer">
-      {% set link_attributes = {
-        'class': [
-          'menu__link',
-        ],
-      } %}
-      {{ link('City of Helsinki'|t, 'https://hel.fi', link_attributes) }}
-      {% set inside_cssmenu = true %}
-      {{ drupal_entity('block', 'headertopnavigation')}}
-    </div>
-  </nav>
+      {% spaceless %}
+        {% set menu_link_back_title %}
+          <div class="icon-wrapper">
+            <i class="hel-icon hel-icon--angle-right"></i>
+          </div>
+          <span class="mmenu__back-wrapper">{{ site_name }}</span>
+        {% endset %}
+        {% set link_attributes = {'class': [ 'mmenu__back mmenu__back--in-path' ]} %}
+        {{ link(menu_link_back_title, site_front_url , link_attributes) }}
+      {% endspaceless %}
+
+      {{ content }}
+
+      <div class="cssmenu-menu__footer">
+        {% set link_attributes = {
+          'class': [
+            'menu__link',
+          ],
+        } %}
+        {{ link('City of Helsinki'|t, 'https://hel.fi', link_attributes) }}
+        {% set inside_cssmenu = true %}
+        {{ drupal_entity('block', 'headertopnavigation')}}
+      </div>
+    {% endblock %}
+  {% endembed %}
+
 {% endif %}

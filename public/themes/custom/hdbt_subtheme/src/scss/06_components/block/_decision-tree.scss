@@ -17,7 +17,7 @@
     padding: 28px;
     font-size: 24px;
   }
-  
+
   &:not(&:last-of-type) {
     margin-bottom: 24px;
 
@@ -46,7 +46,7 @@
 
   .decision-tree__arrow {
     position: absolute;
-  } 
+  }
 
   .arrow-left {
     left: -54px;
@@ -64,17 +64,17 @@
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {
-    background-color: $committee-blue;
+    background-color: $color-fog;
   }
 
   .decision-tree__box:nth-of-type(3),
   .decision-tree__box:nth-of-type(3)::after {
-    background-color: $board-grey;
+    background-color: $color-silver;
   }
 
   .decision-tree__box:nth-of-type(4),
   .decision-tree__box:nth-of-type(4)::after {
-    background-color: $council-green;
+    background-color: $color-copper;
   }
 }
 
@@ -85,7 +85,7 @@
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {
-    background-color: $trustee-pink;
+    background-color: $color-suomenlinna;
   }
 }
 

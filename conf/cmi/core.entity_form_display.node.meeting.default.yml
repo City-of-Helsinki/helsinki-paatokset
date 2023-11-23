@@ -1,5 +1,5 @@
 uuid: 74cba6cf-9276-4949-be9f-e3e03aa192a3
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -30,7 +30,7 @@ dependencies:
   module:
     - datetime
     - field_group
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - json_field
     - media_library
     - path
@@ -403,6 +403,11 @@ content:
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
     weight: 10
     region: content
     settings: {  }

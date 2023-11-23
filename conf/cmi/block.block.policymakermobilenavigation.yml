@@ -1,5 +1,5 @@
 uuid: e1c0fc6e-3d39-460f-80e9-114f69428625
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:
@@ -10,7 +10,7 @@ dependencies:
 id: policymakermobilenavigation
 theme: hdbt_subtheme
 region: before_content
-weight: -20
+weight: -18
 provider: null
 plugin: policymaker_side_nav_mobile
 settings:

@@ -6,9 +6,8 @@ dependencies:
     - editor
     - helfi_api_base
     - linkit
-    - media
 _core:
-  default_config_hash: YlaoBcuAJpSVYNyFRvINta5VOMhxaLZFWICOnoCY7Lk
+  default_config_hash: 6AGo1h4zFCH6SC4pUy99nHKNsUsd7ZNLffnFw9RiSBA
 name: Minimal
 format: minimal
 weight: 0
@@ -43,7 +42,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'
+      allowed_html: '<em> <strong> <ul> <ol start> <li> <p class=""> <a href hreflang !href rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -78,15 +77,6 @@ filters:
     weight: -44
     settings:
       title: true
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: -39
-    settings:
-      default_view_mode: default
-      allowed_view_modes: {  }
-      allowed_media_types: {  }
   helfi_link_converter:
     id: helfi_link_converter
     provider: helfi_api_base

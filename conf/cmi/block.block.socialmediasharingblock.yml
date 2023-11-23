@@ -1,0 +1,31 @@
+uuid: 0b87991e-2d62-453c-9537-5098e2f1a82d
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_platform_config
+    - node
+  theme:
+    - hdbt_subtheme
+id: socialmediasharingblock
+theme: hdbt_subtheme
+region: content_lower
+weight: 0
+provider: null
+plugin: helfi_platform_config_social_sharing_block
+settings:
+  id: helfi_platform_config_social_sharing_block
+  label: 'Social Media Sharing block'
+  label_display: '0'
+  provider: helfi_platform_config
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      case: case
+      decision: decision
+      policymaker: policymaker
+      trustee: trustee

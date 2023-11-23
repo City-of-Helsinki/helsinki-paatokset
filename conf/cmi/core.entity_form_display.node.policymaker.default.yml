@@ -35,7 +35,7 @@ dependencies:
   module:
     - datetime
     - field_group
-    - hdbt_admin_editorial
+    - hdbt_admin_tools
     - json_field
     - media_library
     - paragraphs

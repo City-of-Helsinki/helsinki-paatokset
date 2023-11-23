@@ -1,5 +1,5 @@
 uuid: 1c1838aa-2c73-4728-b403-9ee5fad02ef0
-langcode: fi
+langcode: en
 status: true
 dependencies:
   config:
@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
     - field.field.node.trustee.field_trustee_title
+    - image.style.original_m
     - node.type.trustee
   module:
     - image
@@ -57,7 +58,8 @@ content:
   field_trustee_chairmanships:
     type: json
     label: above
-    settings: {  }
+    settings:
+      attach_library: true
     third_party_settings: {  }
     weight: 5
     region: content
@@ -109,7 +111,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: original_m
       image_loading:
         attribute: lazy
     third_party_settings: {  }
@@ -118,7 +120,8 @@ content:
   field_trustee_initiatives:
     type: json
     label: above
-    settings: {  }
+    settings:
+      attach_library: true
     third_party_settings: {  }
     weight: 3
     region: content
@@ -141,7 +144,8 @@ content:
   field_trustee_resolutions:
     type: json
     label: above
-    settings: {  }
+    settings:
+      attach_library: true
     third_party_settings: {  }
     weight: 4
     region: content

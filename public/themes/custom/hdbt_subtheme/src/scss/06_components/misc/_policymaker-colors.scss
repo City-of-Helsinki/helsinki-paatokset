@@ -1,13 +1,7 @@
-$color-sumu : #9fc9eb;
-$color-hopea: #dedfe1;
-$color-suomenlinna: #f5a3c7;
-$color-engel: #ffe977;
-$color-kupari: #00d7a7;
-
+// Use old variable names for search app compatibility.
 :root {
   --color-sumu: #9fc9eb;
   --color-hopea: #dedfe1;
-  --color-suomenlinna: #f5a3c7;
   --color-kupari: #00d7a7;
 }
 
@@ -16,11 +10,11 @@ $color-kupari: #00d7a7;
 .frontpage-calendar__item .color-line,
 .policymaker-card__color-title  {
   &.color-sumu {
-    background-color: $color-sumu;
+    background-color: $color-fog;
   }
 
   &.color-hopea {
-    background-color: $color-hopea;
+    background-color: $color-silver;
   }
 
   &.color-suomenlinna {
@@ -32,17 +26,17 @@ $color-kupari: #00d7a7;
   }
 
   &.color-kupari {
-    background-color: $color-kupari;
+    background-color: $color-copper;
   }
 }
 
 .issue__meetings-dropdown {
   .color-sumu::before {
-    border-left-color: $color-sumu;
+    border-left-color: $color-fog;
   }
 
   .color-hopea::before {
-    border-left-color: $color-hopea;
+    border-left-color: $color-silver;
   }
 
   .color-suomenlinna::before {
@@ -54,6 +48,6 @@ $color-kupari: #00d7a7;
   }
 
   .color-kupari::before {
-    border-left-color: $color-kupari;
+    border-left-color: $color-copper;
   }
 }

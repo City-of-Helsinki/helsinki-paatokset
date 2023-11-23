@@ -1,4 +1,0 @@
-services:
-  Drupal\paatokset_ahjo\Service\IssueService:
-    class: Drupal\paatokset_ahjo\Service\IssueService
-    arguments: ['@current_user']
