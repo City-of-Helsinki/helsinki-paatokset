@@ -12,8 +12,13 @@
 
         {% for results in vote_results %}
           <h4>{{ 'Äänestys'|t }} {{ loop.index }}</h4>
-          <p><b>{{ 'Ayes'|t }}:</b> {{results.accordions.Ayes.Content }}</p>
-          <p><b>{{ 'Noes'|t }}:</b> {{results.accordions.Noes.Content }}</p>
+          {% if results.accordions.Ayes.Content %}
+            <p><strong>{{ 'Ayes'|t }}:</strong> {{ results.accordions.Ayes.Content }}</p>
+          {% endif %}
+          {% if results.accordions.Noes.Content %}
+            <p><b>{{ 'Noes'|t }}:</b> {{ results.accordions.Noes.Content }}</p>
+          {% endif %}
+
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
               <div class="accordion__wrapper handorgel-inner">

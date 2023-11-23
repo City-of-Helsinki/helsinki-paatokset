@@ -590,8 +590,6 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
   $variables['banner_link'] = [
     'url' => $url,
     'label' => $label,
-    'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
-    'target_new' => TRUE,
   ];
 }
 

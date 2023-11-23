@@ -6,8 +6,8 @@
   {% set hide_decision_pdf = TRUE %}
 {% endif %}
 <div class="issue__pdf" {% if hide_decision_pdf %}style="display:none;"{% endif %}>
-  <a href="{{ decision_pdf }}" class="hds-button hds-button--primary hdbt-icon hdbt-icon--download">
-    <span class="hds-button__label">{{ 'Download decision (pdf)'|t }}</span>
+  <a href="{{ decision_pdf }}" data-hds-component="button" data-hds-icon-start="download">
+    {{ 'Download decision (pdf)'|t }}
   </a>
 </div>
 
