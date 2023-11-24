@@ -1546,7 +1546,7 @@ class PolicymakerService {
     };
     $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
     // If the default language list is missing items, add them from fallback.
-    if (count($agendaItems) !== count($fallbackAgendaItems)) {
+    if (count($agendaItems) < count($fallbackAgendaItems)) {
       // Initiate new list to keep correct ordering.
       $newList = [];
       foreach ($fallbackAgendaItems as $key => $item) {
