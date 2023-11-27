@@ -8,6 +8,7 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\Queue\SuspendQueueException;
+use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,63 +17,47 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The logger.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   * Name of the logger channel that is requested from logger factory.
    */
-  protected LoggerChannelInterface $logger;
+  protected const LOGGER_CHANNEL = 'ahjo_api_subscriber_queue';
 
   /**
-   * Ahjo proxy service.
-   *
-   * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
+   * {@inheritDoc}
    */
-  protected $ahjoProxy;
-
-  /**
-   * Queue name.
-   *
-   * @var string
-   */
-  protected string $queueName;
-
-  protected const VERBOSE_LOGGING = TRUE;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
-    $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
-    $instance->logger = $container->get('logger.factory')->get('ahjo_api_subscriber_queue');
-    $instance->queueName = 'ahjo_api_default_queue';
-    return $instance;
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected AhjoProxy $ahjoProxy,
+    protected LoggerChannelInterface $logger,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function processItem($item) {
-    if (isset($item['content']->updatetype)) {
-      $operation = $item['content']->updatetype;
-    }
-    else {
-      $operation = NULL;
-    }
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('paatokset_ahjo_proxy'),
+      $container->get('logger.factory')->get(static::LOGGER_CHANNEL),
+    );
+  }
 
-    if (isset($item['content']->id)) {
-      $entity = $item['content']->id;
-    }
-    else {
-      $entity = NULL;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function processItem(mixed $data): void {
+    $operation = $data['content']->updatetype ?? NULL;
+    $entity = $data['content']->id ?? NULL;
 
     if (!$entity || !$operation) {
-      if (self::VERBOSE_LOGGING) {
-        $this->logger->info('Empty callback from @queue queue, deleting.', [
-          '@queue' => $item['id'],
-        ]);
-      }
+      $this->logger->info('Empty callback from @queue queue, deleting.', [
+        '@queue' => $data['id'],
+      ]);
       return;
     }
 
@@ -81,14 +66,14 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       throw new SuspendQueueException('Ahjo Proxy is not operational, suspending.');
     }
 
-    $status = $this->ahjoProxy->migrateSingleEntity($item['id'], $entity);
+    $status = $this->ahjoProxy->migrateSingleEntity($data['id'], $entity);
 
     if ($status !== 1) {
       // Check if item should be moved to retry or error queue.
-      if ($this->moveToErrorQueue($item)) {
+      if ($this->moveToErrorQueue($data)) {
         $this->logger->warning('Could not process @id from @queue, migration returned with status: @status. Moved to another queue.', [
           '@id' => $entity,
-          '@queue' => $item['id'],
+          '@queue' => $data['id'],
           '@status' => $status,
         ]);
 
@@ -97,25 +82,48 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       }
       else {
         // If item could not or should not be moved, throw error to return it.
+        // moveToErrorQueue always returns false if processing has failed for
+        // items in error queue.
         throw new \Exception(sprintf(
           'Could not process entity %s from %s, migration returned with status: %s.',
           $entity,
-          $item['id'],
+          $data['id'],
           $status,
         ));
       }
     }
 
     // Mark meeting motions to be regenerated after updates.
-    if ($item['id'] === 'meetings' && $operation === 'Updated') {
+    if ($data['id'] === 'meetings' && $operation === 'Updated') {
       $this->ahjoProxy->markMeetingMotionsAsUnprocessed($entity);
     }
 
     $this->logger->info('Migrated @id from @queue as @operation.', [
-      '@queue' => $item['id'],
+      '@queue' => $data['id'],
       '@operation' => $operation,
       '@id' => $entity,
     ]);
+  }
+
+  /**
+   * Get ID of the queue where items are moved in case the processing fails.
+   *
+   * @return string|null
+   *   Queue id. NULL if this items should not be moved anymore.
+   */
+  protected function getFallbackQueueId(): ?string {
+    // Retry items by default.
+    return 'ahjo_api_retry_queue';
+  }
+
+  /**
+   * Get max retry time timestamp. 3 days by default.
+   *
+   * @return int
+   *   Timestamp after which items should now be retried.
+   */
+  public function getMaxRetryTime(): int {
+    return (int) (new \DateTime('NOW - 3 DAYS'))->format('U');
   }
 
   /**
@@ -128,32 +136,20 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
    *   TRUE if item was moved, FALSE if not necessary or moving failed.
    */
   protected function moveToErrorQueue(mixed $item): bool {
-    // Don't move anything from error queue.
-    if ($this->queueName === 'ahjo_api_error_queue') {
+    assert(isset($item['content']->updatetype));
+
+    $move_to = $this->getFallbackQueueId();
+
+    // getFallbackQueueId returns NULL if the item should not be moved.
+    if (empty($move_to)) {
       return FALSE;
-    }
-
-    // Move items to retry queue and from there to error queue.
-    if ($this->queueName === 'ahjo_api_retry_queue') {
-      $move_to = 'ahjo_api_error_queue';
-    }
-    else {
-      $move_to = 'ahjo_api_retry_queue';
-    }
-
-    // Allow 3 hours of retries for callbacks, 3 days for other queues.
-    if ($this->queueName === 'ahjo_api_callback_queue') {
-      $max_time = (int) (new \DateTime('NOW - 3 HOURS'))->format('U');
-    }
-    else {
-      $max_time = (int) (new \DateTime('NOW - 3 DAYS'))->format('U');
     }
 
     // Move all old items without timestamps.
     if (!isset($item['created'])) {
       $item['created'] = 0;
     }
-    if ($item['created'] > $max_time) {
+    elseif ($item['created'] > $this->getMaxRetryTime()) {
       return FALSE;
     }
 
@@ -163,14 +159,8 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       return TRUE;
     }
 
-    // Add old queue to update type label.
-    if (isset($item['content']->updatetype)) {
-      $operation = $item['content']->updatetype;
-    }
-    else {
-      $operation = 'Moved';
-    }
-    $operation .= ' - ' . $this->queueName;
+    // Add old queue to operation.
+    $operation = $item['content']->updatetype . ' - ' . $this->getPluginId();
 
     $item_id = $this->ahjoProxy->addItemToAhjoQueue($item['id'], $item['content']->id, $move_to, $operation);
     if ($item_id) {
