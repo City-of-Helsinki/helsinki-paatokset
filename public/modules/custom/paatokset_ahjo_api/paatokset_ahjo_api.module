@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -1141,4 +1142,32 @@ function paatokset_ahjo_api_update_9003() {
  */
 function paatokset_ahjo_api_helfi_hero_design_alter(array &$designs) {
   $designs['paatokset-search-bar'] = t('Paatokset decision search');
+}
+
+/**
+ * Implements hook_metatag_route_entity().
+ *
+ * @see \Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController
+ * @see \Drupal\paatokset_ahjo_api\Routing\DecisionConverter
+ */
+function paatokset_ahjo_api_metatag_route_entity(RouteMatchInterface $route_match): ?EntityInterface {
+  // Metatag module need a bit of help to determine the entity for custom
+  // routes. This hook ensure that there is an entity to render tags from in
+  // custom routes defined by paatokset_ahjo_api.
+  $currentRoute = $route_match->getRouteName();
+
+  if (str_starts_with($currentRoute, 'paatokset_decision.')) {
+    return $route_match->getParameter('decision');
+  }
+  elseif (str_starts_with($currentRoute, "paatokset_case.")) {
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $case = $route_match->getParameter('case');
+
+    // Untranslated case route displays attempts to display decision, so tags
+    // should not be generated from case node.
+    return $caseService->guessDecisionFromPath($case);
+  }
+
+  return NULL;
 }
