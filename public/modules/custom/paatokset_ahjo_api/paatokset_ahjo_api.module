@@ -1164,7 +1164,7 @@ function paatokset_ahjo_api_metatag_route_entity(RouteMatchInterface $route_matc
     $caseService = \Drupal::service('paatokset_ahjo_cases');
     $case = $route_match->getParameter('case');
 
-    // Untranslated case route displays attempts to display decision, so tags
+    // Untranslated case route displays decisions, so tags
     // should not be generated from case node.
     return $caseService->guessDecisionFromPath($case);
   }

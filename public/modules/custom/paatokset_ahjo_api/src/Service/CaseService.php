@@ -52,6 +52,8 @@ class CaseService {
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
   public function __construct(
     private readonly LanguageManagerInterface $languageManager,
@@ -68,7 +70,7 @@ class CaseService {
    * @return string
    *   Decision query key.
    */
-  public function getDecisionQueryKey(?string $langcode = NULL): string {
+  private function getDecisionQueryKey(?string $langcode = NULL): string {
     if ($langcode === NULL) {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
@@ -132,6 +134,7 @@ class CaseService {
       $this->case = $case;
     }
 
+    // This crashes if $case is NULL:
     $this->caseId = $case->get('field_diary_number')->value;
     $this->selectedDecision = $this->guessDecisionFromPath($case);
   }
@@ -186,7 +189,7 @@ class CaseService {
   /**
    * Get active case, if set.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Active case entity.
    */
   public function getSelectedCase(): ?NodeInterface {
@@ -199,7 +202,7 @@ class CaseService {
    * @param string $case_id
    *   Case diary number.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Default (latest) decision entity, if found.
    */
   private function getDefaultDecision(string $case_id): ?NodeInterface {
@@ -223,7 +226,7 @@ class CaseService {
   /**
    * Get active decision, if set.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Active decision entity.
    */
   public function getSelectedDecision(): ?NodeInterface {

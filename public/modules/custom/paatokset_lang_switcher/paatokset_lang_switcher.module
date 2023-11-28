@@ -167,9 +167,7 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
     }
   }
 
-  $url = Url::fromRoute($localized_route, $parameters);
-
-  return $url;
+  return Url::fromRoute($localized_route, $parameters);
 }
 
 /**
