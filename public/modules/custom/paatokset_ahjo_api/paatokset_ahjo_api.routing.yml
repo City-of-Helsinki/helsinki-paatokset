@@ -23,52 +23,76 @@ paatokset_ahjo_api.disallowed_prefixes:
     _permission: 'administer paatokset'
 
 paatokset_case.fi:
-  path: 'asia/{case_id}'
+  path: 'asia/{case}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::case'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::caseTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      case:
+        type: case_or_decision
 
 paatokset_case.sv:
-  path: 'arende/{case_id}'
+  path: 'arende/{case}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::case'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::caseTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      case:
+        type: case_or_decision
 
 paatokset_case.en:
-  path: 'case/{case_id}'
+  path: 'case/{case}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::case'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::caseTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      case:
+        type: case_or_decision
 
 paatokset_decision.fi:
-  path: 'asia/{case_id}/{decision_id}'
+  path: 'asia/{case_id}/{decision}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decision'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decisionTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      decision:
+        type: decision
 
 paatokset_decision.sv:
-  path: 'arende/{case_id}/{decision_id}'
+  path: 'arende/{case_id}/{decision}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decision'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decisionTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      decision:
+        type: decision
 
 paatokset_decision.en:
-  path: 'case/{case_id}/{decision_id}'
+  path: 'case/{case_id}/{decision}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decision'
     _title_callback: '\Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController::decisionTitle'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      decision:
+        type: decision
 
 ahjo_meeting_endpoint:
   path: 'ahjo_api/meetings'
