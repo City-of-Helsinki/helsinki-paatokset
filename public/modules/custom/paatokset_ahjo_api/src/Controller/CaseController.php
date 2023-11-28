@@ -51,17 +51,8 @@ final class CaseController extends ControllerBase {
   public function loadDecision(NodeInterface $decision): Response {
     $this->caseService->setEntitiesFromDecision($decision);
 
-    $data['decision_pdf'] = $this->caseService->getDecisionPdf();
-    $data['selectedDecision'] = $this->caseService->getSelectedDecision();
-    $data['policymaker_is_active'] = $this->caseService->decisionPmIsActive();
-    $data['decision_section'] = $this->caseService->getFormattedDecisionSection();
-    $data['decision_org_name'] = $this->caseService->getDecisionOrgName();
-    $data['selected_class'] = $this->caseService->getDecisionClass();
-    $data['attachments'] = $this->caseService->getAttachments();
-    $data['next_decision'] = $this->caseService->getNextDecision();
-    $data['previous_decision'] = $this->caseService->getPrevDecision();
-    $data['decision_content'] = $this->caseService->parseContent();
-    $data['vote_results'] = $this->caseService->getVotingResults();
+    $data = [];
+    _paatokset_ahjo_api_get_decision_variables($data, $this->caseService);
 
     $all_decisions_link = $this->caseService->getDecisionMeetingLink();
     if ($all_decisions_link instanceof Url) {

@@ -520,17 +520,8 @@ class CaseService {
    *   URL for decision or motion, or NULL if not found.
    */
   public function getDecisionUrlByNativeId(string $id): ?Url {
-    $params = [
-      'decision_id' => $id,
-      'limit' => 1,
-    ];
+    $node = $this->getDecision($id);
 
-    $nodes = $this->decisionQuery($params);
-    if (empty($nodes)) {
-      return NULL;
-    }
-
-    $node = array_shift($nodes);
     if ($node instanceof NodeInterface) {
       return $this->getDecisionUrlFromNode($node);
     }
