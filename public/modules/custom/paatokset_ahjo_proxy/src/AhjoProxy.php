@@ -719,6 +719,24 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
+   * Initialize common batch context.
+   *
+   * @param array &$context
+   *   Context for batch operation.
+   */
+  public static function initBatchContext(&$context): void {
+    if (!isset($context['results']['starttime'])) {
+      $context['results']['starttime'] = microtime(TRUE);
+    }
+    if (!isset($context['results']['items'])) {
+      $context['results']['items'] = [];
+    }
+    if (!isset($context['results']['failed'])) {
+      $context['results']['failed'] = [];
+    }
+  }
+
+  /**
    * Static callback for aggregating items in batch.
    *
    * @param mixed $data
@@ -734,17 +752,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       $context['message'] = 'Importing item number ' . $data['count'];
     }
 
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
+    static::initBatchContext($context);
+
     if (!empty($data['append'])) {
       $context['results']['items'] = $data['append'];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
     }
     if (!isset($context['results']['filename'])) {
       $context['results']['filename'] = $data['filename'];
@@ -795,15 +806,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param array $operations
    *   Operations with errors.
    */
-  public static function finishBatch($success, array $results, array $operations) {
-    $messenger = \Drupal::messenger();
-
-    $total = count($results['items']);
-
-    $end_time = microtime(TRUE);
-    $total_time = ($end_time - $results['starttime']);
-    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
-    $messenger->addMessage('Items failed: ' . count($results['failed']));
+  public static function finishBatch($success, array $results, array $operations): void {
+    self::printBatchStats($results);
 
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
@@ -812,6 +816,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       $filename = $results['endpoint'] . '_' . $results['dataset'] . '.json';
     }
 
+    $messenger = \Drupal::messenger();
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $ahjo_proxy->fileRepository->writeData(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
@@ -834,15 +839,8 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function processGroupItem($data, &$context) {
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
+    static::initBatchContext($context);
+
     if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
@@ -869,14 +867,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param array $operations
    *   Operations with errors.
    */
-  public static function finishGroups($success, array $results, array $operations) {
-    $messenger = \Drupal::messenger();
-    $total = count($results['items']);
-
-    $end_time = microtime(TRUE);
-    $total_time = ($end_time - $results['starttime']);
-    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
-    $messenger->addMessage('Items failed: ' . count($results['failed']));
+  public static function finishGroups($success, array $results, array $operations): void {
+    self::printBatchStats($results);
 
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
@@ -884,6 +876,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       $filename = 'positionsoftrust.json';
     }
+
+    $messenger = \Drupal::messenger();
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -908,15 +902,8 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function processTrusteeItem($data, &$context) {
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
+    static::initBatchContext($context);
+
     if (!isset($context['results']['filename']) && isset($data['filename'])) {
       $context['results']['filename'] = $data['filename'];
     }
@@ -950,14 +937,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param array $operations
    *   Operations with errors.
    */
-  public static function finishTrustees($success, array $results, array $operations) {
-    $messenger = \Drupal::messenger();
-    $total = count($results['items']);
-
-    $end_time = microtime(TRUE);
-    $total_time = ($end_time - $results['starttime']);
-    $messenger->addMessage('Processed ' . $total . ' items in ' . $total_time . ' seconds.');
-    $messenger->addMessage('Items failed: ' . count($results['failed']));
+  public static function finishTrustees($success, array $results, array $operations): void {
+    self::printBatchStats($results);
 
     if (!empty($results['filename'])) {
       $filename = $results['filename'];
@@ -968,6 +949,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     else {
       $filename = 'trustees.json';
     }
+
+    $messenger = \Drupal::messenger();
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -993,15 +976,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1353,15 +1328,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1443,15 +1410,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1517,15 +1476,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Checking item number ' . $data['count'] . ' (nid:' . $data['nid'] . ')';
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1582,15 +1533,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1643,15 +1586,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function processDmStatusCheck($data, &$context) {
     $messenger = \Drupal::messenger();
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
@@ -1761,15 +1696,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $messenger = \Drupal::messenger();
     $context['message'] = 'Parsing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
@@ -1807,15 +1734,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function setDecisionItemFlag($data, &$context) {
     $context['message'] = 'Parsing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     $node = Node::load($data['nid']);
     if ($node->hasField('field_is_decision')) {
@@ -1839,15 +1758,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function removePolicyMakerFieldsFromItem($data, &$context) {
     $context['message'] = 'Parsing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     $node = Node::load($data['nid']);
 
@@ -1886,37 +1797,40 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function removeUniqueIdFromItem($data, &$context) {
     $context['message'] = 'Parsing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
-    }
+    static::initBatchContext($context);
 
     $node = Node::load($data['nid']);
 
-    $reset_fields = [
-      'field_unique_id',
-    ];
+    try {
+      self::resetFields($node, [
+        'field_unique_id',
+      ]);
 
-    $success = FALSE;
-    foreach ($reset_fields as $field) {
-      if ($node->hasField($field)) {
-        $success = TRUE;
-        $node->set($field, NULL);
-      }
-    }
-
-    if ($success) {
       $context['results']['items'][] = $node->id();
       $node->save();
     }
-    else {
+    catch (\Throwable) {
       $context['results']['failed'][] = $node->id();
     }
+  }
+
+  /**
+   * Print batch stats.
+   *
+   * @param array $results
+   *   Batch results from batch context.
+   *
+   * @see AhjoProxy::initBatchContext
+   */
+  private static function printBatchStats(array $results): void {
+    $total = count($results['items']);
+    $failed = count($results['failed']);
+    // Skipped field is not used by all batches.
+    $skipped = isset($results['skipped']) ? count($results['skipped']) : 0;
+    $total_time = (microtime(TRUE) - $results['starttime']);
+
+    \Drupal::messenger()
+      ->addMessage("Processed $total items ($failed failed, $skipped skipped) in $total_time seconds.");
   }
 
   /**
@@ -1929,13 +1843,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param array $operations
    *   Operations with errors.
    */
-  public static function finishDecisions($success, array $results, array $operations) {
-    $messenger = \Drupal::messenger();
-    $total = count($results['items']);
-    $failed = count($results['failed']);
-    $end_time = microtime(TRUE);
-    $total_time = ($end_time - $results['starttime']);
-    $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed) in ' . $total_time . ' seconds.');
+  public static function finishDecisions($success, array $results, array $operations): void {
+    self::printBatchStats($results);
   }
 
   /**
@@ -1949,17 +1858,10 @@ class AhjoProxy implements ContainerInjectionInterface {
   public static function processMotionsItem($data, &$context) {
     $context['message'] = 'Importing item number ' . $data['count'];
 
-    if (!isset($context['results']['items'])) {
-      $context['results']['items'] = [];
-    }
+    static::initBatchContext($context);
+
     if (!isset($context['results']['skipped'])) {
       $context['results']['skipped'] = [];
-    }
-    if (!isset($context['results']['failed'])) {
-      $context['results']['failed'] = [];
-    }
-    if (!isset($context['results']['starttime'])) {
-      $context['results']['starttime'] = microtime(TRUE);
     }
     if (!isset($context['results']['update_all'])) {
       $context['results']['update_all'] = $data['update_all'];
@@ -2132,25 +2034,14 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param array $operations
    *   Operations with errors.
    */
-  public static function finishMotions($success, array $results, array $operations) {
-    $messenger = \Drupal::messenger();
-    $total = count($results['items']);
-    $failed = count($results['failed']);
-    if (isset($results['skipped'])) {
-      $skipped = count($results['skipped']);
-    }
-    else {
-      $skipped = 0;
-    }
-    $end_time = microtime(TRUE);
-    $total_time = ($end_time - $results['starttime']);
-    $messenger->addMessage('Processed ' . $total . ' items (' . $failed . ' failed, ' . $skipped . ' skipped) in ' . $total_time . ' seconds.');
+  public static function finishMotions($success, array $results, array $operations): void {
+    self::printBatchStats($results);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_motions.json', FileSystemInterface::EXISTS_REPLACE);
     if (!empty($results['failed'])) {
-      $messenger->addMessage('Data for failed items saved into public://failed_motions.json');
+      \Drupal::messenger()->addMessage('Data for failed items saved into public://failed_motions.json');
     }
   }
 
