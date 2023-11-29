@@ -8,7 +8,6 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
@@ -53,54 +52,25 @@ class AhjoCallbackCommands extends DrushCommands {
   protected $errorQueue;
 
   /**
-   * Ahjo proxy service.
-   *
-   * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
-   */
-  protected $ahjoProxy;
-
-  /**
-   * Queue Factory.
-   *
-   * @var \Drupal\Core\Queue\QueueFactory
-   */
-  protected $queueFactory;
-
-  /**
-   * The logger.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
-   */
-  protected $logger;
-
-  /**
-   * The database.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $database;
-
-  /**
    * Constructor for Ahjo Callback commands.
    *
-   * @param \Drupal\Core\Queue\QueueFactory $queue_factory
+   * @param \Drupal\Core\Queue\QueueFactory $queueFactory
    *   Queue service.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   Logger service.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
-   *   Ahjo Proxy service.
    */
-  public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory, Connection $database, AhjoProxy $ahjo_proxy) {
-    $this->queueFactory = $queue_factory;
-    $this->queue = $this->queueFactory->get(self::QUEUE_NAME);
-    $this->retryQueue = $this->queueFactory->get(self::RETRY_QUEUE_NAME);
-    $this->aggregationQueue = $this->queueFactory->get(self::AGGREGATION_QUEUE_NAME);
-    $this->errorQueue = $this->queueFactory->get(self::ERROR_QUEUE_NAME);
-    $this->logger = $logger_factory->get('ahjo_api_subscriber');
-    $this->database = $database;
-    $this->ahjoProxy = $ahjo_proxy;
+  public function __construct(
+    QueueFactory $queueFactory,
+    LoggerChannelFactoryInterface $logger_factory,
+    private Connection $database,
+  ) {
+    $this->queue = $queueFactory->get(self::QUEUE_NAME);
+    $this->retryQueue = $queueFactory->get(self::RETRY_QUEUE_NAME);
+    $this->aggregationQueue = $queueFactory->get(self::AGGREGATION_QUEUE_NAME);
+    $this->errorQueue = $queueFactory->get(self::ERROR_QUEUE_NAME);
+    $this->setLogger($logger_factory->get('ahjo_api_subscriber'));
   }
 
   /**

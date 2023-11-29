@@ -499,7 +499,10 @@ function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool 
   }
 
   // Query for a custom link that has this node as its target.
-  $paragraph_query = \Drupal::entityTypeManager()->getStorage('paragraph')->getQuery()
+  $paragraph_query = \Drupal::entityTypeManager()
+    ->getStorage('paragraph')
+    ->getQuery()
+    ->accessCheck(TRUE)
     ->condition('type', 'custom_content_links')
     ->condition('field_referenced_content.target_id', $node_id)
     ->latestRevision();

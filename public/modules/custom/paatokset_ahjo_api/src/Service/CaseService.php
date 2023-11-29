@@ -1719,10 +1719,14 @@ class CaseService {
    *   Content sections, if found.
    */
   public function parseContentSectionsFromHtml(string $html, bool $strip_tags = FALSE): ?string {
-    $dom = new \DOMDocument();
-    if (!empty($html)) {
-      @$dom->loadHTML($html);
+    if (empty($html)) {
+      // Fixme: Maybe this should return NULL or throw something. This matches
+      // the previous behaviour which I'm afraid to change right now.
+      return "";
     }
+
+    $dom = new \DOMDocument();
+    @$dom->loadHTML($html);
     $xpath = new \DOMXPath($dom);
 
     $content = NULL;
@@ -1739,6 +1743,12 @@ class CaseService {
     }
 
     if ($strip_tags) {
+      // Fixme: Maybe this should return NULL or throw something. This matches
+      // the previous behaviour which I'm afraid to change right now.
+      if (empty($content)) {
+        return "";
+      }
+
       $allowed_tags = [
         'h1',
         'h2',
@@ -2157,6 +2167,7 @@ class CaseService {
     }
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', $params['type'])
       ->sort($sort_by, $sort);

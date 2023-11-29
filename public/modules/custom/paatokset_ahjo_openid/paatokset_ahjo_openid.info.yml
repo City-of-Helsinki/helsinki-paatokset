@@ -2,5 +2,4 @@ name: Päätökset Ahjo OpenID connector
 type: module
 description: OpenID connect authentication for Ahjo API.
 package: Custom
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10

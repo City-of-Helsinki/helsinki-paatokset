@@ -56,8 +56,25 @@
 }
 
 .paatokset-language-wrapper-menu {
-  display: flex!important;
   height: auto;
+}
+
+@media (min-width: $breakpoint-m) {
+  .paatokset-language-wrapper-menu {
+    display: none !important;
+  }
+
+  // Do not hide .language-wrapper when nav-toggle is pressed.
+  // .language-wrapper uses breakpoints instead.
+  .language-wrapper:not(.paatokset-language-wrapper-menu) {
+    display: flex !important;
+  }
+}
+
+@media (max-width: $breakpoint-m) {
+  .paatokset-language-wrapper-menu {
+    display: flex !important;
+  }
 }
 
 .mmenu__back-wrapper {

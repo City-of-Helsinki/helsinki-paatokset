@@ -133,6 +133,7 @@ class TrusteeService {
     $date_limit = date('Y-m-d', strtotime('-1 year'));
     $name = self::getTrusteeName($node);
     $meeting_nids = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('field_meeting_composition', $name, 'CONTAINS')
       ->condition('field_meeting_date', $date_limit, '>=')

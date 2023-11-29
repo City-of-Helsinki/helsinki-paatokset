@@ -3,7 +3,7 @@
 {{ attach_library('paatokset_ahjo_api/policymaker_listing') }}
 
 <div class="paatokset-accordion">
-  {% for accordion in accordions if accordion is not empty %}
+  {% for accordion in accordions|filter(accordion => accordion is not empty) %}
     <div class="accordion__wrapper handorgel-lazy">
       <h3 class="accordion-item__header handorgel__header">
         <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" id="{{ accordion.heading|lower|replace({' ': '-', 'ä':'a', 'ö':'o'}) }}">

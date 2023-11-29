@@ -4,10 +4,13 @@ namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
@@ -18,43 +21,47 @@ use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class PolicymakerSideNav extends BlockBase {
+class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * PolicymakerService instance.
+   * Sidenav links.
    *
-   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
+   * @var ?array
    */
-  private $policymakerService;
+  protected ?array $items;
 
   /**
-   * Current language ID.
-   *
-   * @var string
+   * {@inheritDoc}
    */
-  private $currentLang;
-
-  /**
-   * Class constructor.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private PolicymakerService $policymakerService,
+    private string $currentLang
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('paatokset_policymakers');
     $this->policymakerService->setPolicyMakerByPath();
-    $this->currentLang = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $this->items = $this->getItems();
   }
 
   /**
-   * Build the attributes.
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('paatokset_policymakers'),
+      $container->get('language_manager')->getCurrentLanguage()->getId()
+    );
+  }
+
+  /**
+   * {@inheritDoc}
    */
   public function build() {
-
-    $route = 'policymakers.' . $this->currentLang;
-    if (!$this->policymakerService->routeExists($route)) {
-      $route = 'policymakers.fi';
-    }
-
     return [
       '#items' => $this->items,
       '#currentPath' => \Drupal::service('path.current')->getPath(),
@@ -62,7 +69,7 @@ class PolicymakerSideNav extends BlockBase {
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
   public function getCacheTags() {
     $cache_tags = [
@@ -79,7 +86,7 @@ class PolicymakerSideNav extends BlockBase {
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
   public function getCacheContexts() {
     return ['url.path', 'url.query_args'];
@@ -94,12 +101,9 @@ class PolicymakerSideNav extends BlockBase {
    *    - url: url of type \Drupal\core\Url
    *    - attributes: element attributes
    */
-  private function getItems() {
+  private function getItems(): ?array {
     $currentPath = Url::fromRoute('<current>')->toString();
     $items = [];
-    $dynamic_links = [];
-    $menu_links = [];
-    $custom_links = [];
 
     // Return empty result if policymaker can't be found.
     $policymaker = $this->policymakerService->getPolicymaker();

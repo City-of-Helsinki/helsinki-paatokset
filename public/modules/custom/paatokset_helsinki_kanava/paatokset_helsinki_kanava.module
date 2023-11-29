@@ -64,6 +64,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   }
 
   $query = \Drupal::entityQuery('meeting_video')
+    ->accessCheck(TRUE)
     ->range(0, 10)
     ->condition('start_time', strtotime('now'), '<')
     ->condition('asset_id', '', '<>')
@@ -87,10 +88,11 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     ])->toString();
   }
 
-  $liveStreamQuery = \Drupal::entityQuery('meeting_video');
-  $liveStreamQuery->range(0, 1);
-  $liveStreamQuery->condition('start_time', strtotime('now'), '>');
-  $upcomingIds = $liveStreamQuery->execute();
+  $upcomingIds = \Drupal::entityQuery('meeting_video')
+    ->accessCheck(TRUE)
+    ->range(0, 1)
+    ->condition('start_time', strtotime('now'), '>')
+    ->execute();
 
   $liveStream = NULL;
   if (!empty($upcomingIds)) {

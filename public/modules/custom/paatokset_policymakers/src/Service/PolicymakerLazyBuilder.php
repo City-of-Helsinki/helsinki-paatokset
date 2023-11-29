@@ -301,7 +301,10 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
    */
   protected function getActivePolicyMakers(): array {
     $storage = $this->entityTypeManager->getStorage('node');
-    $nids = $storage->getQuery()->condition('type', 'policymaker')
+    $nids = $storage
+      ->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'policymaker')
       ->condition('field_policymaker_existing', 1)
       ->condition('status', 1)
       ->execute();

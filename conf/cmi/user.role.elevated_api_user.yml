@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - key_auth
     - paatokset_ahjo_openid
     - paatokset_ahjo_proxy
@@ -14,4 +15,5 @@ permissions:
   - 'access ahjo documents'
   - 'access ahjo openid token'
   - 'access ahjo proxy'
+  - 'delete own files'
   - 'use key authentication'
