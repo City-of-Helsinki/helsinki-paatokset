@@ -101,7 +101,9 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 
   if ($liveStream instanceof MeetingVideo) {
     if (!$liveStream->get('start_time')->isEmpty() && _paatokset_helsinki_kanava_should_show_label($liveStream->get('start_time')->value)) {
-      $variables['next_meeting_time'] = date('j.n.Y G:i', (int) $liveStream->get('start_time')->value);
+      $meeting_datetime = new DateTime('now', new DateTimeZone('Europe/Helsinki'));
+      $meeting_datetime->setTimestamp((int) $liveStream->get('start_time')->value);
+      $variables['next_meeting_time'] = $meeting_datetime->format('j.n.y G:i');
     }
     if (!$liveStream->get('start_time')->isEmpty() && _paatokset_helsinki_kanava_should_show_stream($liveStream->get('start_time')->value)) {
       $view_builder = \Drupal::entityTypeManager()->getViewBuilder($liveStream->getEntityTypeId());
