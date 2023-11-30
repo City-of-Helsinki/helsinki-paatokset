@@ -3,8 +3,13 @@
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
@@ -15,20 +20,46 @@ use Drupal\Core\Url;
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class AnnouncementsBlock extends BlockBase {
+class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * {@inheritDoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private ConfigFactoryInterface $config,
+    private PolicymakerService $policymakerService,
+    private MeetingService $meetingService
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('config.factory'),
+      $container->get('paatokset_policymakers'),
+      $container->get('paatokset_ahjo_meetings')
+    );
+  }
 
   /**
    * Build the attributes.
    */
   public function build() {
-    $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $councilNode = $policymakerService->getPolicyMaker($council_id);
+    $council_id = $this->config->get('paatokset_helsinki_kanava.settings')->get('city_council_id');
+    $councilNode = $this->policymakerService->getPolicyMaker($council_id);
 
     $announcement = [];
     if ($councilNode) {
-      $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
-      $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
+      $nextMeetingDate = $this->meetingService->nextMeetingDate($council_id);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
 
@@ -86,7 +117,7 @@ class AnnouncementsBlock extends BlockBase {
    *   If alert should be displayed.
    */
   private function shouldShowAlert(string $time): bool {
-    if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+    if ($this->config->get('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
       return TRUE;
     }
     return strtotime('+1 day') > (int) $time;

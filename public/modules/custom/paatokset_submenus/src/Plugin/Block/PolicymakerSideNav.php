@@ -3,8 +3,10 @@
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
@@ -37,8 +39,11 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     array $configuration,
     $plugin_id,
     $plugin_definition,
+    private MenuLinkTreeInterface $menuTree,
+    private RouteProvider $routeProvider,
     private PolicymakerService $policymakerService,
-    private string $currentLang
+    private string $currentLang,
+    private string $currentPath
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService->setPolicyMakerByPath();
@@ -53,8 +58,11 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('menu.link_tree'),
+      $container->get('router.route_provider'),
       $container->get('paatokset_policymakers'),
-      $container->get('language_manager')->getCurrentLanguage()->getId()
+      $container->get('language_manager')->getCurrentLanguage()->getId(),
+      $container->get('path.current')->getPath()
     );
   }
 
@@ -64,7 +72,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   public function build() {
     return [
       '#items' => $this->items,
-      '#currentPath' => \Drupal::service('path.current')->getPath(),
+      '#currentPath' => $this->currentPath,
     ];
   }
 
@@ -148,8 +156,6 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     $items = [];
     $policymaker_org = $this->policymakerService->getPolicymakerOrganizationFromUrl($policymaker, $this->currentLang);
 
-    $routeProvider = \Drupal::service('router.route_provider');
-
     $items[] = [
       'title' => $policymaker->get('title')->value,
       'url' => $this->policymakerService->getLocalizedUrl(),
@@ -180,7 +186,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
         continue;
       }
 
-      $route = $routeProvider->getRouteByName($localizedRoute);
+      $route = $this->routeProvider->getRouteByName($localizedRoute);
 
       if ($key === 'documents') {
         $title = $this->t('Documents');
@@ -215,14 +221,13 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    *   Menu links under current policymaker.
    */
   protected function getMenuLinks(string $policymaker_url): array {
-    $menu_tree = \Drupal::menuTree();
     $localizedDmRoute = 'policymakers.' . $this->currentLang;
     if (!$this->policymakerService->routeExists($localizedDmRoute)) {
       return [];
     }
 
     $parameters = new MenuTreeParameters();
-    $main_menu_top_level = $menu_tree->load('main', $parameters);
+    $main_menu_top_level = $this->menuTree->load('main', $parameters);
     $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
 
     // Get decisionmakers menu link.
@@ -262,8 +267,8 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
-    $subtree = $menu_tree->transform($subtree, $manipulators);
-    $build = $menu_tree->build($subtree);
+    $subtree = $this->menuTree->transform($subtree, $manipulators);
+    $build = $this->menuTree->build($subtree);
 
     if (!isset($build['#items']) || empty($build['#items'])) {
       return [];
