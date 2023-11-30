@@ -27,7 +27,7 @@ class PaatoksetLocalKeyAuth extends AuthenticationPluginBase implements Containe
    *
    * @inheritdoc
    */
-  public function getAuthenticationOptions() {
+  public function getAuthenticationOptions(): array {
     if (!empty(getenv(self::ENV_API_KEY))) {
       return [
         'headers' => [
@@ -35,6 +35,8 @@ class PaatoksetLocalKeyAuth extends AuthenticationPluginBase implements Containe
         ],
       ];
     }
+
+    throw new \InvalidArgumentException("Missing proxy api key");
   }
 
 }

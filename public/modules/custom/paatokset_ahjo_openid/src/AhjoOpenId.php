@@ -4,86 +4,31 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_openid;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\State\StateInterface;
 use GuzzleHttp\ClientInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Handler for AHJO API Open ID connector.
  *
  * @package Drupal\paatokset_ahjo_openid
  */
-class AhjoOpenId implements ContainerInjectionInterface {
-
-  /**
-   * State API.
-   *
-   * @var \Drupal\Core\State\StateInterface
-   */
-  private $state;
-
-  /**
-   * The config for the integration.
-   *
-   * @var \Drupal\Core\Config\Config
-   */
-  protected $config;
-
-  /**
-   * HTTP Client.
-   *
-   * @var GuzzleHttp\ClientInterface
-   */
-  protected $httpClient;
-
-  /**
-   * Messenger interface.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
+class AhjoOpenId {
 
   /**
    * Constructs AhjoOpenId Controller.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration factory.
-   * @param \GuzzleHttp\ClientInterface $http_client
+   * @param \Drupal\paatokset_ahjo_openid\Settings $settings
+   *   Open id configuration.
+   * @param \GuzzleHttp\ClientInterface $httpClient
    *   HTTP Client.
    * @param \Drupal\Core\State\StateInterface $state
    *   State API.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   Messenger.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $http_client, StateInterface $state, MessengerInterface $messenger) {
-    $this->httpClient = $http_client;
-    $this->state = $state;
-    $this->messenger = $messenger;
-    $this->config = $config_factory->get('paatokset_ahjo_openid.settings');
-
-    $this->authUrl = $this->config->get('auth_url');
-    $this->tokenUrl = $this->config->get('token_url');
-    $this->callbackUrl = $this->config->get('callback_url');
-    $this->clientId = $this->config->get('client_id');
-    $this->openIdScope = $this->config->get('scope');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('http_client'),
-      $container->get('state'),
-      $container->get('messenger')
-    );
+  public function __construct(
+    private Settings $settings,
+    private ClientInterface $httpClient,
+    private StateInterface $state,
+  ) {
   }
 
   /**
@@ -94,7 +39,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
    */
   public function isConfigured(): bool {
     // Missing config options.
-    if (empty($this->authUrl) || empty($this->callbackUrl) || empty($this->clientId) || empty($this->openIdScope)) {
+    if (!$this->validateSettings()) {
       return FALSE;
     }
 
@@ -113,27 +58,54 @@ class AhjoOpenId implements ContainerInjectionInterface {
    *   Auth URL.
    */
   public function getAuthUrl(): ?string {
-    if (empty($this->authUrl) || empty($this->callbackUrl) || empty($this->clientId) || empty($this->openIdScope)) {
+    if (!$this->validateSettings()) {
       return NULL;
     }
-    return $this->authUrl . '?client_id=' . $this->clientId . '&scope=' . $this->openIdScope . '&response_type=code&redirect_uri=' . $this->callbackUrl;
+
+    return $this->settings->authUrl . '?client_id=' . $this->settings->clientId . '&scope=' . $this->settings->openIdScope . '&response_type=code&redirect_uri=' . $this->settings->callbackUrl;
+  }
+
+  /**
+   * Check if openid settings are configured.
+   *
+   * @return bool
+   *   FALSE if connector has missing configs.
+   */
+  private function validateSettings(): bool {
+    $vars = get_object_vars($this->settings);
+
+    foreach ($vars as $key => $value) {
+      if (empty($this->settings->{$key})) {
+        return FALSE;
+      }
+    }
+
+    return TRUE;
   }
 
   /**
    * Get Auth and refresh tokens.
+   *
+   * @return ?mixed
+   *   Decoded json response or NULL on failure.
    */
-  public function getAuthAndRefreshTokens(string $code = NULL) {
+  public function getAuthAndRefreshTokens(string $code = NULL): ?string {
+    // getHeaders throw an exception if settings are not valid.
+    if (!$this->validateSettings()) {
+      return NULL;
+    }
+
     $request = $this->httpClient->request(
       'POST',
-      $this->tokenUrl,
+      $this->settings->tokenUrl,
       [
         'http_errors' => FALSE,
         'headers' => $this->getHeaders(),
         'form_params' => [
-          'client_id' => $this->clientId,
+          'client_id' => $this->settings->clientId,
           'grant_type' => 'authorization_code',
           'code' => $code,
-          'redirect_uri' => $this->callbackUrl,
+          'redirect_uri' => $this->settings->callbackUrl,
         ],
       ]
     );
@@ -143,27 +115,34 @@ class AhjoOpenId implements ContainerInjectionInterface {
     if (isset($data->access_token) && isset($data->refresh_token)) {
       $this->setAuthToken($data->access_token, $data->expires_in);
       $this->state->set('ahjo_api_refresh_token', $data->refresh_token);
+
+      return $data;
     }
 
-    return $data;
+    return NULL;
   }
 
   /**
    * Refresh AUTH token.
    *
-   * @return string
-   *   Auth token.
+   * @return ?string
+   *   Auth token string or NULL on failure.
    */
   public function refreshAuthToken(): ?string {
+    // getHeaders throw an exception if settings are not valid.
+    if (!$this->validateSettings()) {
+      return NULL;
+    }
+
     $refresh_token = $this->state->get('ahjo_api_refresh_token');
     $request = $this->httpClient->request(
       'POST',
-      $this->tokenUrl,
+      $this->settings->tokenUrl,
       [
         'http_errors' => FALSE,
         'headers' => $this->getHeaders(),
         'form_params' => [
-          'client_id' => $this->clientId,
+          'client_id' => $this->settings->clientId,
           'grant_type' => 'refresh_token',
           'refresh_token' => $refresh_token,
         ],
@@ -184,14 +163,14 @@ class AhjoOpenId implements ContainerInjectionInterface {
    * Check if token is still valid.
    *
    * @return bool
-   *   Auth token.
+   *   TRUE if token has not expired.
    */
   public function checkAuthToken(): bool {
-    if (!$this->state->get('ahjo-api-auth-key')) {
+    if (!$this->getAuthToken()) {
       return FALSE;
     }
 
-    $auth_expiration = (int) $this->state->get('ahjo-api-auth-expiration');
+    $auth_expiration = $this->getAuthTokenExpiration();
     if (time() > $auth_expiration) {
       return FALSE;
     }
@@ -201,8 +180,8 @@ class AhjoOpenId implements ContainerInjectionInterface {
   /**
    * Gets the auth token state variable.
    *
-   * @return string
-   *   Auth token.
+   * @return ?string
+   *   Auth token. NULL if value does not exist.
    */
   public function getAuthToken(): ?string {
     return $this->state->get('ahjo-api-auth-key');
@@ -232,7 +211,7 @@ class AhjoOpenId implements ContainerInjectionInterface {
    * Get cookies for API requests. Workaround for local environment faults.
    *
    * @return string|null
-   *   Cookies to set.
+   *   Cookie. NULL if value does not exists.
    */
   public function getCookies(): ?string {
     return $this->state->get('ahjo_api_cookies');
@@ -241,16 +220,17 @@ class AhjoOpenId implements ContainerInjectionInterface {
   /**
    * Get headers for HTTP requests.
    *
-   * @return array|null
-   *   Headers for the request or NULL if config is missing.
+   * @return array
+   *   Headers for the request.
    */
-  private function getHeaders(): ?array {
-    $client_id = $this->clientId;
-    $client_secret = getenv('PAATOKSET_OPENID_SECRET');
+  private function getHeaders(): array {
+    $client_id = $this->settings->clientId;
+    $client_secret = $this->settings->clientSecret;
 
     if (empty($client_id) || empty($client_secret)) {
-      return NULL;
+      throw new \InvalidArgumentException('OpenID client is not configured');
     }
+
     return ['Authorization' => 'Basic ' . base64_encode($client_id . ':' . $client_secret)];
   }
 

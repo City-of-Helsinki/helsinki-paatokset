@@ -8,11 +8,14 @@
 .page-divider::after {
   display: none;
 }
-.has-sidebar .page-title::after {
-  background-color: $color-black;
-  content: '';
-  display: block;
-  height: 2px;
-  margin-top: $spacing-double;
-  width: $spacing-quadruple;
+.has-sidebar.page-type--page,
+.has-sidebar.page-type--landing-page {
+  .page-title::after {
+    background-color: $color-black;
+    content: '';
+    display: block;
+    height: 2px;
+    margin-top: $spacing-double;
+    width: $spacing-quadruple;
+  }
 }

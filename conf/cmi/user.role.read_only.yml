@@ -2,7 +2,19 @@ uuid: 1ca8c7d7-8c15-4632-b077-d42d694b4d1d
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.announcement
+    - node.type.article
+    - node.type.case
+    - node.type.decision
+    - node.type.landing_page
+    - node.type.meeting
+    - node.type.news_item
+    - node.type.page
+    - node.type.policymaker
+    - node.type.trustee
   module:
+    - file
     - helfi_tpr
     - node
     - paragraphs
@@ -14,11 +26,11 @@ weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
+  - 'delete own files'
   - 'view any unpublished announcement content'
   - 'view any unpublished article content'
   - 'view any unpublished case content'
   - 'view any unpublished decision content'
-  - 'view any unpublished imported_article content'
   - 'view any unpublished landing_page content'
   - 'view any unpublished meeting content'
   - 'view any unpublished news_item content'

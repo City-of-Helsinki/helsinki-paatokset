@@ -32,12 +32,16 @@
         {% if banner_desc %}
           <div class="banner__desc">{{ banner_desc|raw }}</div>
         {% endif %}
+
+        {% if banner_link.url %}
+          <p>
+            <a href="{{ banner_link.url }}" data-is-external="true" target="_blank" data-hds-component="button">
+              {{ banner_link.label }}
+            </a>
+          </p>
+        {% endif %}
       </div>
-      {% if banner_link.url %}
-        <a href="{{ banner_link.url }}" {% if banner_link.target_new %}target="_blank"{% endif %} class="{{ banner_link.classes }}">
-          <span class="hds-button__label">{{ banner_link.label }}</span>
-        </a>
-      {% endif %}
+
     </div>
 
   {% endblock component_content %}

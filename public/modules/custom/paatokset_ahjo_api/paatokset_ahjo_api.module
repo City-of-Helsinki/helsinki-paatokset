@@ -590,8 +590,6 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
   $variables['banner_link'] = [
     'url' => $url,
     'label' => $label,
-    'classes' => 'banner__button hds-button hds-button--primary hdbt-icon hdbt-icon--link-external',
-    'target_new' => TRUE,
   ];
 }
 
@@ -606,6 +604,7 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
  */
 function _paatokset_ahjo_api_lookup_case_nid(string $case_id): ?string {
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'case')
     ->condition('field_diary_number', $case_id)
     ->range(0, 1)
@@ -663,6 +662,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   // First search for native ID (unique for document).
   // Allow for unpublished nodes to prevent conflicts.
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'decision')
     ->condition('field_decision_native_id', $native_id)
     ->range(0, 1)
@@ -678,6 +678,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   // If a previous version is unpublished, create a new one.
   if ($series_id) {
     $query = Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('field_decision_series_id', $series_id)
       ->condition('status', 1)
@@ -700,6 +701,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   }
 
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'decision')
     ->condition('field_meeting_id', $meeting_id)
     ->condition('field_is_decision', 0)
@@ -738,6 +740,7 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
  */
 function _paatokset_ahjo_api_lookup_trustee_nid(string $agent_id): ?string {
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'trustee')
     ->condition('field_trustee_id', $agent_id)
     ->range(0, 1)
@@ -760,6 +763,7 @@ function _paatokset_ahjo_api_lookup_trustee_nid(string $agent_id): ?string {
  */
 function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?string {
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'meeting')
     ->condition('field_meeting_id', $meeting_id)
     ->range(0, 1)
@@ -782,6 +786,7 @@ function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?string {
  */
 function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?string {
   $query = Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('type', 'policymaker')
     ->condition('field_policymaker_id', $decisionmaker_id)
     ->range(0, 1)

@@ -23,6 +23,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -493,6 +494,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public function getOrgChart(string $orgId, int $steps = 3, string $langcode = 'fi'): ?array {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->range(0, 1)
       ->condition('field_policymaker_id', $orgId)
@@ -564,6 +566,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     foreach ($node->field_org_level_below_ids as $field) {
       $query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('status', 1)
         ->range(0, 1)
         ->condition('field_policymaker_id', $field->value)
@@ -709,7 +712,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $file_contents = file_get_contents($file->getFileUri());
 
     if ($file_contents) {
-      $data = \GuzzleHttp\json_decode($file_contents, TRUE);
+      $data = Utils::jsonDecode($file_contents, TRUE);
       return $data ?? [];
     }
     return [];
@@ -1248,6 +1251,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
     $messenger = \Drupal::messenger();
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'case')
       ->condition('status', 1)
       ->condition('field_diary_number', $case_id)
@@ -1312,6 +1316,7 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
     $messenger = \Drupal::messenger();
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_id', $meeting_id)
@@ -2438,6 +2443,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public function markMeetingMotionsAsUnprocessed(string $meeting_id): void {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_agenda_published', 1)
@@ -2534,7 +2540,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       }
 
       $content = (string) $response->getBody();
-      $content = \GuzzleHttp\json_decode($content, TRUE);
+      $content = Utils::jsonDecode($content, TRUE);
       $this->setCache($url, $content);
 
       return $content ?? [];
@@ -2810,6 +2816,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     // - Agenda is published and not empty.
     // - Minutes aren't published yet.
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_id', $id)

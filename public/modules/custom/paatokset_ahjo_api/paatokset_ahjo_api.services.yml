@@ -6,3 +6,7 @@ services:
     arguments: ['@language_manager']
   paatokset_ahjo_trustees:
     class: Drupal\paatokset_ahjo_api\Service\TrusteeService
+  paatokset_ahjo_api.term_route_subscriber:
+    class: Drupal\paatokset_ahjo_api\Routing\TermRouteSubscriber
+    tags:
+      - { name: event_subscriber }

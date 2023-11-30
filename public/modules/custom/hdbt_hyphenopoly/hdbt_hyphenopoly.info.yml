@@ -1,6 +1,0 @@
-name: HDBT Hyphenopoly (Placeholder)
-type: module
-description: Placeholder module for config import.
-package: Custom
-core: 8.x
-core_version_requirement: ^8 || ^9

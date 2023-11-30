@@ -3,7 +3,10 @@
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Extension\ThemeExtensionList;
 use Drupal\Core\Url;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -12,19 +15,29 @@ use Symfony\Component\HttpFoundation\Response;
 class CaseController extends ControllerBase {
 
   /**
-   * CaseService for getting case and decision data.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
-   */
-  private $caseService;
-
-  /**
    * Class constructor.
+   *
+   * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
+   *   CaseService for getting case and decision data.
+   * @param \Drupal\Core\Extension\ThemeExtensionList $extensionList
+   *   Theme extension list.
    */
-  public function __construct() {
+  public function __construct(
+    private CaseService $caseService,
+    private ThemeExtensionList $extensionList,
+  ) {
     // Include twig engine.
     include_once \Drupal::root() . '/core/themes/engines/twig/twig.engine';
-    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('paatokset_ahjo_cases'),
+      $container->get('extension.list.theme'),
+    );
   }
 
   /**
@@ -70,7 +83,7 @@ class CaseController extends ControllerBase {
     }
 
     $content = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-content.html.twig',
+      $this->extensionList->getPath('hdbt_subtheme') . '/templates/components/decision-content.html.twig',
       [
         'selectedDecision' => $data['selectedDecision'],
         'policymaker_is_active' => $data['policymaker_is_active'],
@@ -83,14 +96,14 @@ class CaseController extends ControllerBase {
     );
 
     $attachments = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/case-attachments.html.twig',
+      $this->extensionList->getPath('hdbt_subtheme') . '/templates/components/case-attachments.html.twig',
       [
         'attachments' => $data['attachments'],
       ]
     );
 
     $decision_navigation = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-navigation.html.twig',
+      $this->extensionList->getPath('hdbt_subtheme') . '/templates/components/decision-navigation.html.twig',
       [
         'next_decision' => $data['next_decision'],
         'previous_decision' => $data['previous_decision'],

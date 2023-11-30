@@ -283,6 +283,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
 
   // Check if there are any DOAs for the trustee.
   $doaQuery = \Drupal::entityQuery('media')
+    ->accessCheck(TRUE)
     ->condition('bundle', 'declaration_of_affiliation')
     ->condition('field__policymaker_reference', $node->id())
     ->execute();
@@ -292,11 +293,12 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
     $doa = Media::load(reset($doaQuery));
     $doaEntity = $doa->field_document->entity;
     if (isset($doaEntity) && isset($doaEntity->uri)) {
-      $doaUrl = $doaEntity->getFileUri();
+      $file_url_generator = \Drupal::service('file_url_generator');
+      $doaUrl = $file_url_generator->generateAbsoluteString($doaEntity->getFileUri());
       $doaLinkText = Markup::create(
         '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node) . ' (pdf)'
       );
-      $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri(file_create_url($doaUrl)));
+      $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri($doaUrl));
       $variables['doa'] = $doaLink->toRenderable();
     }
   }
@@ -316,6 +318,7 @@ function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
 function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
   $main_article_id = NULL;
   $main_article_query = \Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('status', 1)
     ->condition('type', 'imported_article')
     ->condition('field_image_url', '', '!=')
@@ -328,6 +331,7 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
   }
 
   $query = \Drupal::entityQuery('node')
+    ->accessCheck(TRUE)
     ->condition('status', 1)
     ->condition('type', 'imported_article')
     ->sort('field_published', 'DESC')

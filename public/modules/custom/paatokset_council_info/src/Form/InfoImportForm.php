@@ -199,6 +199,7 @@ class InfoImportForm extends FormBase {
     }
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'trustee')
       ->condition('field_first_name', trim($data['Etunimet']))
