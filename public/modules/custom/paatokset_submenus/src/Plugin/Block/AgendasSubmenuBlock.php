@@ -32,7 +32,7 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
     $this->policymakerService->setPolicyMakerByPath();
   }
 
- /**
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
@@ -43,7 +43,6 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
       $container->get('paatokset_policymakers')
     );
   }
-
 
   /**
    * Build the attributes.

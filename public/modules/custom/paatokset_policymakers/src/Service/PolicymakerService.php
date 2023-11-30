@@ -99,14 +99,12 @@ class PolicymakerService {
    *   Config service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   Route match service.
-   * @param Drupal\Core\Routing\RouteProviderInterface $routeProvider
-   *   Route provider interface.
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   Path alias manager.
    * @param \Drupal\pathauto\AliasCleanerInterface $pathAliasCleaner
-   *  Path alias cleaner.
+   *   Path alias cleaner.
    * @param \Drupal\Core\File\FileUrlGenerator $fileUrlGenerator
-   *  File URL generator.
+   *   File URL generator.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
    */

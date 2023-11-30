@@ -31,7 +31,7 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
     $this->policymakerService->setPolicyMakerByPath();
   }
 
- /**
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {

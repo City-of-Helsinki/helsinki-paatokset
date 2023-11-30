@@ -72,7 +72,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   Messenger service
+   *   Messenger service.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
    *   File repository.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config

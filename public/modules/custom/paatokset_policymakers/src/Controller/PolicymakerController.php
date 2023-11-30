@@ -21,6 +21,8 @@ class PolicymakerController extends ControllerBase {
   /**
    * Controller for policymaker subpages.
    *
+   * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
    */
