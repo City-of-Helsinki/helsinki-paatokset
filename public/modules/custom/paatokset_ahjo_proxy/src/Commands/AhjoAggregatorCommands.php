@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\search_api\Entity\Index;
@@ -40,12 +43,18 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Entity type manager.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
    *   File repository.
+   * @param \Drupal\Core\Database\Connection $database
+   *   Database connection.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
+   *   Module extension list.
    */
   public function __construct(
-    LoggerChannelFactoryInterface $logger_factory,
+    private LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
     private EntityTypeManagerInterface $entityTypeManager,
-    private FileRepositoryInterface $fileRepository
+    private FileRepositoryInterface $fileRepository,
+    private Connection $database,
+    private ModuleExtensionList $moduleExtensionList,
   ) {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->setLogger($logger_factory->get('paatokset_ahjo_proxy'));
@@ -2491,9 +2500,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:lmdm
    */
   public function listMissingDecisionMakers(): void {
-    $database = \Drupal::database();
-
-    $pm_query = $database->select('node__field_policymaker_id', 'field')
+    $pm_query = $this->database->select('node__field_policymaker_id', 'field')
       ->fields('field', ['field_policymaker_id_value'])
       ->condition('field.bundle', 'policymaker');
     $pm_results = $pm_query->distinct()->execute()->fetchAll();
@@ -2513,7 +2520,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'Organization ID',
     ]);
 
-    $decision_query = $database->select('node__field_policymaker_id', 'field')
+    $decision_query = $this->database->select('node__field_policymaker_id', 'field')
       ->fields('field', ['field_policymaker_id_value'])
       ->condition('field.bundle', 'decision');
     $decision_results = $decision_query->distinct()->execute()->fetchAll();
@@ -2994,7 +3001,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     foreach ($static_files as $file) {
-      $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
+      $file_path = $this->moduleExtensionList->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
       $file_contents = file_get_contents($file_path);
       if (!empty($file_contents)) {
         $this->fileRepository->writeData($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
@@ -3137,11 +3144,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *    Stores default static files into filesystem (for debugging migrations).
    */
   public function fixPolicymakerReferences(): void {
-    $nodeStorage = \Drupal::entityTypeManager()
-      ->getStorage('node');
-
     // Load policymakers that are missing field_dm_organization.
-    $nids = $nodeStorage
+    $nids = $this->nodeStorage
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('type', 'policymaker')
@@ -3151,12 +3155,14 @@ class AhjoAggregatorCommands extends DrushCommands {
     $count = 0;
 
     foreach ($nids as $nid) {
-      if (is_null($policymaker = $nodeStorage->load($nid))) {
+      $policymaker = $this->nodeStorage->load($nid);
+      if ($policymaker instanceof NodeInterface) {
         continue;
       }
 
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $policymaker */
       $policymaker_id = $policymaker->get('field_policymaker_id')->getString();
-      $organizations = $nodeStorage->loadByProperties([
+      $organizations = $this->nodeStorage->loadByProperties([
         'type' => 'organization',
         'field_policymaker_id' => $policymaker_id,
       ]);
