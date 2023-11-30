@@ -58,13 +58,13 @@ class AhjoProxyManualCacheForm extends FormBase {
 
     $form['add']['url'] = [
       '#type' => 'textfield',
-      '#title' => t('URL'),
+      '#title' => $this->t('URL'),
       '#default_value' => 'https://ahjo.hel.fi:9802/ahjorest/v1/',
     ];
 
     $form['add']['content'] = [
       '#type' => 'textarea',
-      '#title' => t('Content to cache'),
+      '#title' => $this->t('Content to cache'),
     ];
 
     $form['delete'] = [
@@ -75,12 +75,12 @@ class AhjoProxyManualCacheForm extends FormBase {
 
     $form['delete']['delete_urls'] = [
       '#type' => 'textarea',
-      '#title' => t('Cached URLs to delete, one for each line.'),
+      '#title' => $this->t('Cached URLs to delete, one for each line.'),
     ];
 
     $form['submit'] = [
       '#type' => 'submit',
-      '#default_value' => t('Submit'),
+      '#default_value' => $this->t('Submit'),
     ];
 
     return $form;

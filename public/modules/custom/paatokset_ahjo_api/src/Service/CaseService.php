@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @package Drupal\paatokset_ahjo_api\Services
  */
 class CaseService {
+
+  use StringTranslationTrait;
+
   /**
    * Machine name for case node type.
    */
@@ -721,7 +725,7 @@ class CaseService {
         // Collate votes by council group and type.
         foreach ($json->{$type}->Voters as $voter) {
           if (empty($voter->CouncilGroup)) {
-            $voter->CouncilGroup = (string) t('No council group');
+            $voter->CouncilGroup = (string) $this->t('No council group');
           }
 
           if (!isset($grouped_by_party[$voter->CouncilGroup])) {
@@ -1214,18 +1218,18 @@ class CaseService {
 
       // If all relevant info is empty, do not display attachment.
       if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
-        $title = t("There's an error with this attachment. We are resolving the issue as soon as possible.");
+        $title = $this->t("There's an error with this attachment. We are resolving the issue as soon as possible.");
         $publicity_class = 'error';
       }
       // Override title if attachment is not public.
       elseif ($publicity_class !== 'Julkinen') {
         if (!empty($data['SecurityReasons'])) {
-          $title = t('Confidential: @reasons', [
+          $title = $this->t('Confidential: @reasons', [
             '@reasons' => implode(', ', $data['SecurityReasons']),
           ]);
         }
         else {
-          $title = t('Confidential');
+          $title = $this->t('Confidential');
         }
       }
 
@@ -1500,7 +1504,7 @@ class CaseService {
 
     if (!empty($data) && isset($data['AgendaPoint'])) {
       $section = $section . ' §';
-      return t('Case @point. / @section', [
+      return $this->t('Case @point. / @section', [
         '@point' => $data['AgendaPoint'],
         '@section' => $section,
       ]);
@@ -1593,7 +1597,7 @@ class CaseService {
     $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
     if (!empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
       $voting_link_paragraph = $content_dom->createElement('p');
-      $voting_link_a = $content_dom->createElement('a', t('See table with voting results'));
+      $voting_link_a = $content_dom->createElement('a', $this->t('See table with voting results'));
       $voting_link_a->setAttribute('href', '#voting-results-accordion');
       $voting_link_a->setAttribute('id', 'open-voting-results');
       $voting_link_paragraph->appendChild($voting_link_a);
@@ -1636,7 +1640,7 @@ class CaseService {
 
     if ($more_info_content) {
       $output['more_info'] = [
-        'heading' => t('Ask for more info'),
+        'heading' => $this->t('Ask for more info'),
         'content' => ['#markup' => $more_info_content],
       ];
     }
@@ -1650,7 +1654,7 @@ class CaseService {
 
     if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && $this->selectedDecision->get('field_organization_type')->value === 'Viranhaltija') {
       $output['signature_info'] = [
-        'heading' => t('Decisionmaker'),
+        'heading' => $this->t('Decisionmaker'),
         'content' => ['#markup' => $signature_info_content],
       ];
     }
@@ -1664,7 +1668,7 @@ class CaseService {
 
     if ($presenter_content) {
       $output['presenter_info'] = [
-        'heading' => t('Presenter information'),
+        'heading' => $this->t('Presenter information'),
         'content' => ['#markup' => $presenter_content],
       ];
     }
@@ -1677,7 +1681,7 @@ class CaseService {
     }
     if ($decision_history_content) {
       $output['accordions'][] = [
-        'heading' => t('Decision history'),
+        'heading' => $this->t('Decision history'),
         'content' => [
           '#type' => 'processed_text',
           '#format' => 'decision_html',
@@ -1692,7 +1696,7 @@ class CaseService {
     if ($has_case_id && $content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
       $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
-      $appeal_content = '<p class="issue__decision-date">' . t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
+      $appeal_content = '<p class="issue__decision-date">' . $this->t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
     }
 
     // Appeal information. Only display for decisions (if content is available).
@@ -1703,7 +1707,7 @@ class CaseService {
 
     if ($appeal_content) {
       $output['accordions'][] = [
-        'heading' => t('Appeal process'),
+        'heading' => $this->t('Appeal process'),
         'content' => [
           '#type' => 'processed_text',
           '#format' => 'decision_html',

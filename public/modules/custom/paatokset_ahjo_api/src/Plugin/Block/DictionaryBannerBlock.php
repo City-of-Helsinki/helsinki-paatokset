@@ -21,7 +21,7 @@ class DictionaryBannerBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#label' => t('Decisions dictionary banner'),
+      '#label' => $this->t('Decisions dictionary banner'),
       '#attributes' => [
         'class' => ['decisions-dictionary'],
       ],

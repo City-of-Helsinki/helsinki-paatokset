@@ -152,11 +152,11 @@ class InfoImportForm extends FormBase {
     }
 
     $batch = [
-      'title' => t('Importing council member information.'),
+      'title' => $this->t('Importing council member information.'),
       'operations' => $operations,
-      'init_message'     => t('Starting batch'),
-      'progress_message' => t('Processed @current out of @total.'),
-      'error_message'    => t('An error occurred during processing'),
+      'init_message'     => $this->t('Starting batch'),
+      'progress_message' => $this->t('Processed @current out of @total.'),
+      'error_message'    => $this->t('An error occurred during processing'),
       'finished' => '\Drupal\paatokset_council_info\Form\InfoImportForm::finishedCallback',
     ];
 

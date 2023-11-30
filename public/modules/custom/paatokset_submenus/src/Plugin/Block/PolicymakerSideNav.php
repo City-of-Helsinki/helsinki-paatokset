@@ -183,13 +183,13 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       $route = $routeProvider->getRouteByName($localizedRoute);
 
       if ($key === 'documents') {
-        $title = t('Documents');
+        $title = $this->t('Documents');
       }
       elseif ($key === 'decisions') {
-        $title = t('Decisions');
+        $title = $this->t('Decisions');
       }
       elseif ($key === 'discussion_minutes') {
-        $title = t('Discussion minutes');
+        $title = $this->t('Discussion minutes');
       }
       else {
         $title = call_user_func($route->getDefault('_title_callback'))->render();

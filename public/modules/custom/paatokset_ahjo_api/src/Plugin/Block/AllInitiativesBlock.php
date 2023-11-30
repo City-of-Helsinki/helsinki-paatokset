@@ -21,7 +21,7 @@ class AllInitiativesBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      'label' => t('All initiatives'),
+      'label' => $this->t('All initiatives'),
       '#attributes' => [
         'class' => ['all-initiatives'],
       ],

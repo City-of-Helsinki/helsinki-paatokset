@@ -58,7 +58,7 @@ class ContactsBlock extends BlockBase {
           'url.query_args',
         ],
       ],
-      '#title' => t('Contact information'),
+      '#title' => $this->t('Contact information'),
       'contacts' => $this->getContacts(),
       '#attributes' => [
         'class' => ['policymaker-contacts'],

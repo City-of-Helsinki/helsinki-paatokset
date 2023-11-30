@@ -37,7 +37,7 @@ class DocumentsBlock extends BlockBase {
     $list = $this->policymakerService->getApiMinutes(NULL, TRUE);
 
     return [
-      '#title' => 'Viranhaltijapäätökset',
+      '#title' => $this->t('Office holder decisions'),
       '#years' => array_keys($list),
       '#list' => $list,
     ];

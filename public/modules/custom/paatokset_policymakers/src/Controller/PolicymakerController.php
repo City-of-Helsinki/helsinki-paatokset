@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_policymakers\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Controller class for policymaker custom routes.
  */
 class PolicymakerController extends ControllerBase {
+
+  use StringTranslationTrait;
 
   /**
    * Controller for policymaker subpages.
@@ -50,7 +53,7 @@ class PolicymakerController extends ControllerBase {
 
     $documentsDescription = $policymaker->get('field_documents_description')->value;
     $build = [
-      '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
+      '#title' => $this->t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
       '#markup' => '<div class="policymaker-text">' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
     ];
 
@@ -90,7 +93,7 @@ class PolicymakerController extends ControllerBase {
 
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     $build = [
-      '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+      '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
       '#markup' => '<div class="policymaker-text">' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
     ];
 
@@ -122,7 +125,7 @@ class PolicymakerController extends ControllerBase {
    *   Render array.
    */
   public function discussionMinutes(): array {
-    $build = ['#title' => t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
+    $build = ['#title' => $this->t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
 
@@ -207,7 +210,7 @@ class PolicymakerController extends ControllerBase {
       return $this->policymakerService->getMeetingTitle($meeting);
     }
 
-    return t('Minutes');
+    return $this->t('Minutes');
   }
 
   /**

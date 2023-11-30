@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\file\Entity\File;
@@ -30,6 +31,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @package Drupal\paatokset_ahjo_api\Serivces
  */
 class PolicymakerService {
+
+  use StringTranslationTrait;
 
   /**
    * Machine name for meeting node type.
@@ -580,7 +583,7 @@ class PolicymakerService {
     $main_title = $xpath->query("//*[contains(@class, 'Paattaja')]");
     if ($main_title) {
       foreach ($main_title as $node) {
-        $announcement_title = t('Decision announcement: @title', ['@title' => $node->nodeValue]);
+        $announcement_title = $this->t('Decision announcement: @title', ['@title' => $node->nodeValue]);
       }
     }
 
@@ -1076,19 +1079,19 @@ class PolicymakerService {
     $context = ['context' => 'Council group members list'];
     switch ($role) {
       case 'Jäsen':
-        $translation = t('Member', [], $context);
+        $translation = $this->t('Member', [], $context);
         break;
 
       case 'Varajäsen':
-        $translation = t('Deputy member', [], $context);
+        $translation = $this->t('Deputy member', [], $context);
         break;
 
       case 'Puheenjohtaja':
-        $translation = t('Chairman', [], $context);
+        $translation = $this->t('Chairman', [], $context);
         break;
 
       case 'Varapuheenjohtaja':
-        $translation = t('Vice chairman', [], $context);
+        $translation = $this->t('Vice chairman', [], $context);
         break;
 
       default:
@@ -1271,10 +1274,10 @@ class PolicymakerService {
       $decision_link = NULL;
 
       if ($document = $this->meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
-        $document_title = t('Minutes');
+        $document_title = $this->t('Minutes');
       }
       elseif ($document = $this->meetingService->getDocumentFromEntity($node, 'esityslista')) {
-        $document_title = t('Agenda');
+        $document_title = $this->t('Agenda');
         if (!$node->get('field_meeting_decision')->isEmpty()) {
           $decision_link = $this->getMinutesRoute($meeting_id);
         }
@@ -1384,16 +1387,16 @@ class PolicymakerService {
 
     // Prefer pöytäkirja if it exists.
     if ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'pöytäkirja', $currentLanguage)) {
-      $pageTitle = t('Minutes');
-      $documentTitle = t('Minutes publication date');
+      $pageTitle = $this->t('Minutes');
+      $documentTitle = $this->t('Minutes publication date');
     }
     // Fall back to esityslist.
     elseif ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'esityslista', $currentLanguage)) {
-      $pageTitle = t('Agenda');
-      $documentTitle = t('Agenda publication date');
+      $pageTitle = $this->t('Agenda');
+      $documentTitle = $this->t('Agenda publication date');
     }
     else {
-      $pageTitle = t('Meeting');
+      $pageTitle = $this->t('Meeting');
       $documentTitle = NULL;
     }
 
@@ -1523,7 +1526,7 @@ class PolicymakerService {
       }
 
       if (!empty($data['Section']) && !empty($data['AgendaPoint']) && $data['AgendaPoint'] !== 'null') {
-        $index = t('Case @point. / @section', [
+        $index = $this->t('Case @point. / @section', [
           '@point' => $data['AgendaPoint'],
           '@section' => $data['Section'],
         ]);

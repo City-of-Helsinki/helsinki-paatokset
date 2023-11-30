@@ -32,7 +32,7 @@ class AnnouncementsBlock extends BlockBase {
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
 
-        $announcement['text'] = t('Next council stream will start on @date at @time',
+        $announcement['text'] = $this->t('Next council stream will start on @date at @time',
           [
             '@date' => date('d.m', $nextMeetingDate),
             '@time' => date('H:i', $nextMeetingDate),
@@ -41,7 +41,7 @@ class AnnouncementsBlock extends BlockBase {
 
         $url = $councilNode->toUrl();
         if ($url) {
-          $linkText = t("You can see the stream on council's page, starting at @time", [
+          $linkText = $this->t("You can see the stream on council's page, starting at @time", [
             '@time' => date('H:i', $nextMeetingDate),
           ]);
           $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));

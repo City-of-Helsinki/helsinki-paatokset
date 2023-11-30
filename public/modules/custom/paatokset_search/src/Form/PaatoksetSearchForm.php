@@ -35,15 +35,15 @@ class PaatoksetSearchForm extends ConfigFormBase {
     $form['city_hall_id'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('city_hall_id'),
-      '#title' => t('City Hall ID'),
-      '#description' => 'Id for the city hall policymaker',
+      '#title' => $this->t('City Hall ID'),
+      '#description' => $this->t('Id for the city hall policymaker'),
     ];
 
     $form['trustee_organization_type_id'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('trustee_organization_type_id'),
-      '#title' => t('Trustee organization type id'),
-      '#description' => 'Id for the trustee type for policymakers',
+      '#title' => $this->t('Trustee organization type id'),
+      '#description' => $this->t('Id for the trustee type for policymakers'),
     ];
 
     return parent::buildForm($form, $form_state);
