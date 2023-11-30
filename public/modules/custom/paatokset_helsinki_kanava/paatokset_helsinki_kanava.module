@@ -79,7 +79,6 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
 
   if ($video instanceof MeetingVideo) {
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder($video->getEntityTypeId());
-
     $variables['most_recent_meeting'] = $view_builder->view($video);
     $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
       'query' => [
@@ -88,11 +87,23 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     ])->toString();
   }
 
-  $upcomingIds = \Drupal::entityQuery('meeting_video')
+  $upcomingQuery = \Drupal::entityQuery('meeting_video')
     ->accessCheck(TRUE)
     ->range(0, 1)
-    ->condition('start_time', strtotime('now'), '>')
-    ->execute();
+    ->sort('start_time', 'DESC');
+
+  // If debug mode is on, get next available livestream.
+  if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+    $upcomingQuery->notExists('asset_id');
+  }
+  else {
+    // Otherwise, limit db query to estimated start and end times.
+    $upcomingQuery
+      ->condition('start_time', strtotime('+1 hour'), '<=')
+      ->condition('start_time', strtotime('-8 hour'), '>=');
+  }
+
+  $upcomingIds = $upcomingQuery->execute();
 
   $liveStream = NULL;
   if (!empty($upcomingIds)) {
@@ -123,11 +134,23 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
  *   If livestream should be displayed.
  */
 function _paatokset_helsinki_kanava_should_show_stream(string $time): bool {
+  // Show next available livestream regardless of time if debug mode is on.
   if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
     return TRUE;
   }
 
-  return strtotime('+1 hour') > $time;
+  // Don't show stream if the starting time is in more than 1 hour.
+  if ((int) $time > strtotime('+1 hour')) {
+    return FALSE;
+  }
+
+  // Stop showing stream after 8 hours have passed.
+  // Meetings can last from 2 to 6 hours usually.
+  if ((int) $time < strtotime('-8 hour')) {
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 /**
@@ -138,7 +161,7 @@ function _paatokset_helsinki_kanava_should_show_label(string $time): bool {
     return TRUE;
   }
 
-  // Convert start time to date only.
+  // Show label only on days before stream. Convert start time to date only.
   $date = strtotime(date('j.n.Y', (int) $time));
   return strtotime('now') < $date;
 }
