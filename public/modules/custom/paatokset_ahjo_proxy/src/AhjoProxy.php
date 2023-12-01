@@ -454,7 +454,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Structured array with organizations, or NULL if first org is not found.
    */
   public function getOrgChart(string $orgId, int $steps = 3, string $langcode = 'fi'): ?array {
-    $ids = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $ids = $nodeStorage('node')->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->range(0, 1)
@@ -467,7 +468,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $id = reset($ids);
-    $node = Node::load($id);
+    $node = $nodeStorage->load($id);
     if (!$node instanceof NodeInterface) {
       return NULL;
     }
@@ -523,8 +524,9 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $orgs_below = [];
 
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
     foreach ($node->field_org_level_below_ids as $field) {
-      $ids = $this->entityTypeManager->getStorage('node')->getQuery()
+      $ids = $nodeStorage->getQuery()
         ->accessCheck(TRUE)
         ->condition('status', 1)
         ->range(0, 1)
@@ -537,7 +539,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       }
 
       $id = reset($ids);
-      $child_node = Node::load($id);
+      $child_node = $nodeStorage->load($id);
       if ($child_node instanceof NodeInterface) {
         if ($child_node->hasTranslation($langcode)) {
           $child_node = $child_node->getTranslation($langcode);
@@ -1179,7 +1181,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Set decision record and issued date from case node.
    */
   protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'case')
       ->condition('status', 1)
@@ -1195,7 +1198,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $nid = array_shift($nids);
-    $case = Node::load($nid);
+    $case = $nodeStorage->load($nid);
 
     if (!$case instanceof NodeInterface) {
       return;
@@ -1243,7 +1246,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Meeting ID.
    */
   protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -1259,7 +1263,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     $nid = array_shift($nids);
-    $meeting = Node::load($nid);
+    $meeting = $nodeStorage->load($nid);
 
     if (!$meeting instanceof NodeInterface) {
       return;
@@ -2283,7 +2287,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Meeting ID.
    */
   public function markMeetingMotionsAsUnprocessed(string $meeting_id): void {
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -2299,7 +2304,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $nodeStorage->loadMultiple($ids);
     foreach ($nodes as $node) {
       if ($node instanceof NodeInterface) {
         $node->set('field_agenda_items_processed', 0);
@@ -2652,7 +2657,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     // Only invalidate cached agenda item URLs if:
     // - Agenda is published and not empty.
     // - Minutes aren't published yet.
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -2668,7 +2674,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $entity = Node::load(reset($nids));
+    $entity = $nodeStorage->load(reset($nids));
     if (!$entity instanceof NodeInterface) {
       return;
     }
