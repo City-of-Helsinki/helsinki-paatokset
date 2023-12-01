@@ -15,9 +15,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
-use Drupal\file\Entity\File;
-use Drupal\image\Entity\ImageStyle;
-use Drupal\media\Entity\Media;
+use Drupal\file\FileInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
@@ -933,7 +931,9 @@ class PolicymakerService {
       return [];
     }
 
-    $meeting = Node::load(reset($ids));
+    $id = reset($ids);
+
+    $meeting = $this->nodeStorage->load($id);
     if (!$meeting instanceof NodeInterface) {
       return [];
     }
@@ -1015,6 +1015,7 @@ class PolicymakerService {
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+    $imageStyleStorage = $this->entityTypeManager->getStorage('image_style');
     foreach ($person_nodes as $node) {
       if ($node->hasTranslation($currentLanguage)) {
         $node = $node->getTranslation($currentLanguage);
@@ -1024,7 +1025,8 @@ class PolicymakerService {
 
       if ($node->hasField('field_trustee_image') && !$node->get('field_trustee_image')->isEmpty()) {
         $image_uri = $node->get('field_trustee_image')->first()->entity->getFileUri();
-        $image_style = ImageStyle::load('1_1_thumbnail_2x');
+        $image_style = $imageStyleStorage->load('1_1_thumbnail_2x');
+        /** @var \Drupal\image\Entity\ImageStyle $image_style */
         $image_url = $image_style->buildUrl($image_uri);
       }
       else {
@@ -1188,10 +1190,10 @@ class PolicymakerService {
 
     $node = NULL;
     if (preg_match('/node\/(\d+)/', $path, $matches)) {
-      $node = Node::load($matches[1]);
+      $node = $this->nodeStorage->load($matches[1]);
     }
     elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
-      $node = Node::load($matches[1]);
+      $node = $this->nodeStorage->load($matches[1]);
     }
 
     return $node;
@@ -1220,7 +1222,7 @@ class PolicymakerService {
       return [];
     }
 
-    return Node::loadMultiple($ids);
+    return $this->nodeStorage->loadMultiple($ids);
   }
 
   /**
@@ -1285,10 +1287,11 @@ class PolicymakerService {
       return [];
     }
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
 
     $transformedResults = [];
     foreach ($nodes as $node) {
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       $meeting_timestamp = strtotime($node->get('field_meeting_date')->value);
       $meeting_year = date('Y', $meeting_timestamp);
       $meeting_id = $node->get('field_meeting_id')->value;
@@ -1361,7 +1364,8 @@ class PolicymakerService {
       return NULL;
     }
 
-    return Node::load(reset($ids));
+    $id = reset($ids);
+    return $this->nodeStorage->load($id);
   }
 
   /**
@@ -1653,10 +1657,10 @@ class PolicymakerService {
 
     $meeting_minutes = $this->getMeetingMediaEntities($ids);
     $meeting_ids = array_keys($meeting_minutes);
-    $nodes = Node::loadMultiple($meeting_ids);
-
+    $nodes = $this->nodeStorage->loadMultiple($meeting_ids);
+    $fileStorage = $this->entityTypeManager->getStorage('file');
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     $transformedResults = [];
-
     foreach ($meeting_minutes as $meeting_id => $meeting) {
       foreach ($meeting as $entity) {
         $meeting_timestamp = $nodes[$meeting_id]->get('field_meeting_date')->date->getTimeStamp();
@@ -1671,9 +1675,14 @@ class PolicymakerService {
         ];
 
         $download_link = NULL;
+        $file = NULL;
         if ($entity->get('field_document')->target_id) {
           $file_id = $entity->get('field_document')->target_id;
-          $download_link = $this->fileUrlGenerator->generateAbsoluteString(File::load($file_id)->getFileUri());
+          $file = $fileStorage->load($file_id);
+        }
+
+        if ($file instanceof FileInterface) {
+          $download_link = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
         }
 
         if (!$download_link) {
@@ -1713,14 +1722,15 @@ class PolicymakerService {
       return [];
     }
 
-    $ids = $this->entityTypeManager->getStorage('media')->getQuery()
+    $mediaStorage = $this->entityTypeManager->getStorage('media');
+    $ids = $mediaStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('bundle', 'minutes_of_the_discussion')
       ->condition('field_meetings_reference', $meetingids, 'IN')
       ->execute();
 
-    $entities = Media::loadMultiple($ids);
-
+    $entities = $mediaStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $entities */
     $result = [];
     foreach ($entities as $entity) {
       $meeting_id = $entity->get('field_meetings_reference')->target_id;
@@ -1745,7 +1755,7 @@ class PolicymakerService {
       ->condition('field_trustee_initiatives', '', '<>')
       ->execute();
 
-    $nodes = Node::loadMultiple($nids);
+    $nodes = $this->nodeStorage->loadMultiple($nids);
     $initiatives = [];
     foreach ($nodes as $node) {
       if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
