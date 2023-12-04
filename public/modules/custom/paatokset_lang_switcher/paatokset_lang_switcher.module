@@ -121,11 +121,12 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
 
   $route_name = $route->getRouteName();
 
+  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+  $caseService = \Drupal::service('paatokset_ahjo_cases');
+
   // Special case for getting case URLs.
   // This is because we might want to get translated decision IDs.
-  if (strpos($route_name, 'paatokset_case') !== FALSE) {
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
+  if (str_starts_with($route_name, 'paatokset_case.')) {
     $url = $caseService->getCaseUrlFromNode(NULL, $langCode);
     if ($url === NULL) {
       $url = $caseService->getDecisionUrlFromNode(NULL, $langCode);
@@ -157,14 +158,16 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
         $parameters[$key] = $value;
       }
     }
+    if ($key === 'decision') {
+      $nativeId = $caseService->normalizeNativeId($value->get('field_decision_native_id')->getString());
+      $parameters[$key] = $nativeId;
+    }
     else {
       $parameters[$key] = $value;
     }
   }
 
-  $url = Url::fromRoute($localized_route, $parameters);
-
-  return $url;
+  return Url::fromRoute($localized_route, $parameters);
 }
 
 /**
@@ -182,11 +185,6 @@ function _paatokset_lang_switcher_route_is_allowed(string $route_name): bool {
     return TRUE;
   }
 
-  // Always disallow admin routes.
-  if (strpos($route_name, 'system.') !== FALSE) {
-    return FALSE;
-  }
-
   // Check custom route patterns.
   $partial_routes = [
     'policymakers.',
@@ -197,10 +195,11 @@ function _paatokset_lang_switcher_route_is_allowed(string $route_name): bool {
   ];
 
   foreach ($partial_routes as $allowed_route) {
-    if (strpos($route_name, $allowed_route) !== FALSE) {
+    if (str_starts_with($route_name, $allowed_route)) {
       return TRUE;
     }
   }
 
+  // Disallow all other routes.
   return FALSE;
 }

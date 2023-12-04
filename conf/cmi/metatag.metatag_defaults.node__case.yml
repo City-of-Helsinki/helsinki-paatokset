@@ -4,5 +4,4 @@ status: true
 dependencies: {  }
 id: node__case
 label: 'Sisältö: Case'
-tags:
-  canonical_url: '[current-page:url]?paatos=[current-page:query:paatos]'
+tags: {  }

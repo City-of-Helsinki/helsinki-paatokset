@@ -8,6 +8,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Service class for retrieving case and decision-related data.
@@ -51,9 +52,12 @@ class CaseService {
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
   public function __construct(
-    private LanguageManagerInterface $languageManager
+    private readonly LanguageManagerInterface $languageManager,
+    private readonly RequestStack $requestStack,
   ) {
   }
 
@@ -66,7 +70,7 @@ class CaseService {
    * @return string
    *   Decision query key.
    */
-  public function getDecisionQueryKey(?string $langcode = NULL): string {
+  private function getDecisionQueryKey(?string $langcode = NULL): string {
     if ($langcode === NULL) {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
@@ -76,6 +80,47 @@ class CaseService {
       'en' => 'decision',
       'fi' => 'paatos',
     };
+  }
+
+  /**
+   * Return decision query value.
+   *
+   * @return string|false
+   *   Decision query value, FALSE if decision id is not set.
+   */
+  private function getDecisionQuery(): string|FALSE {
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $decisionId = $this->requestStack
+      ->getCurrentRequest()
+      ->query
+      ->get($this->getDecisionQueryKey($langcode));
+
+    return $decisionId ?: FALSE;
+  }
+
+  /**
+   * Guess decision node from path. Only work on case paths.
+   *
+   * @param \Drupal\node\NodeInterface $case
+   *   Case node to help with guessing.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Decision node or NULL if unable to guess.
+   */
+  public function guessDecisionFromPath(NodeInterface $case): ?NodeInterface {
+    $caseId = $case->get('field_diary_number')->getString();
+
+    // Search for default decisions if query parameter is not set.
+    if (!$this->getDecisionQuery()) {
+      return $this->getDefaultDecision($caseId);
+    }
+
+    /** @var \Drupal\node\NodeInterface $decision */
+    if (!empty($decision = $this->getDecisionFromQuery($case))) {
+      return $decision;
+    }
+
+    return $this->getDecisionFromRedirect($caseId);
   }
 
   /**
@@ -101,20 +146,29 @@ class CaseService {
       $this->case = $case;
     }
 
+    // This crashes if $case is NULL:
     $this->caseId = $case->get('field_diary_number')->value;
+    $this->selectedDecision = $this->guessDecisionFromPath($case);
+  }
 
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $decision_id = \Drupal::request()->query->get($this->getDecisionQueryKey($langcode));
-    if (!$decision_id) {
-      $this->selectedDecision = $this->getDefaultDecision($this->caseId);
-    }
-    else {
-      $this->selectedDecision = $this->getDecision($decision_id);
-    }
+  /**
+   * Set entities from decision.
+   *
+   * @param \Drupal\node\NodeInterface $decision
+   *   Decision node.
+   */
+  public function setEntitiesFromDecision(NodeInterface $decision): void {
+    $case_id = $decision->get('field_diary_number')->getString();
 
-    // Attempt to fetch decision from redirect data if one could not be loaded.
-    if ($this->caseId && $decision_id && !$this->selectedDecision instanceof NodeInterface) {
-      $this->selectedDecision = $this->getDecisionFromRedirect($this->caseId, $decision_id);
+    $cases = $this->caseQuery([
+      'case_id' => $case_id,
+      'limit' => 1,
+    ]);
+
+    if (!empty($cases)) {
+      $this->case = reset($cases);
+      $this->caseId = $case_id;
+      $this->selectedDecision = $decision;
     }
   }
 
@@ -147,7 +201,7 @@ class CaseService {
   /**
    * Get active case, if set.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Active case entity.
    */
   public function getSelectedCase(): ?NodeInterface {
@@ -160,7 +214,7 @@ class CaseService {
    * @param string $case_id
    *   Case diary number.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Default (latest) decision entity, if found.
    */
   private function getDefaultDecision(string $case_id): ?NodeInterface {
@@ -184,7 +238,7 @@ class CaseService {
   /**
    * Get active decision, if set.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Active decision entity.
    */
   public function getSelectedDecision(): ?NodeInterface {
@@ -196,17 +250,82 @@ class CaseService {
    *
    * @param string $decision_id
    *   Decision's native ID.
+   * @param ?string $case_id
+   *   Optional case id for stricter query, maybe pointless?
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision entity, if found.
    */
-  public function getDecision(string $decision_id): ?NodeInterface {
-    $decision_nodes = $this->decisionQuery([
+  public function getDecision(string $decision_id, string $case_id = NULL): ?NodeInterface {
+    $query = [
       'decision_id' => $decision_id,
+      'limit' => 1,
+    ];
+
+    if (!is_null($case_id)) {
+      $query['case_id'] = $case_id;
+    }
+
+    $nodes = $this->decisionQuery($query);
+
+    if (empty($nodes)) {
+      return NULL;
+    }
+
+    $decision = reset($nodes);
+
+    return $decision;
+  }
+
+  /**
+   * Get decision from query parameters.
+   *
+   * @param \Drupal\node\Entity\NodeInterface $case
+   *   Current case node.
+   *
+   * @return \Drupal\node\Entity\NodeInterface|null
+   *   Decision node or NULL if no decision is found from the query.
+   */
+  public function getDecisionFromQuery(NodeInterface $case): ?NodeInterface {
+    $decisionId = $this->getDecisionQuery();
+
+    if (!empty($decisionId)) {
+      $caseId = $case->get('field_diary_number')->getString();
+      return $this->getDecision($decisionId, $caseId);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get case or decision node by given ID.
+   *
+   * @param string $id
+   *   Case diary number or decision native ID.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   Case or decision node, if found.
+   */
+  public function getCaseOrDecision(string $id): ?NodeInterface {
+    $node = $this->caseQuery([
+      'case_id' => $id,
       'limit' => 1,
     ]);
 
-    return array_shift($decision_nodes);
+    // If we don't get a case node, try to get a decision instead.
+    if (empty($node)) {
+      $decision_id = '{' . strtoupper($id) . '}';
+      $node = $this->decisionQuery([
+        'decision_id' => $decision_id,
+        'limit' => 1,
+      ]);
+    }
+
+    if (empty($node)) {
+      return NULL;
+    }
+
+    return reset($node);
   }
 
   /**
@@ -214,13 +333,17 @@ class CaseService {
    *
    * @param string $case_id
    *   Diary number for decision.
-   * @param string $decision_id
-   *   ID for decision.
    *
    * @return \Drupal\node\NodeInterface|null
    *   Decision node, if one can be found based on a redirect.
    */
-  private function getDecisionFromRedirect(string $case_id, string $decision_id): ?NodeInterface {
+  private function getDecisionFromRedirect(string $case_id): ?NodeInterface {
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $decision_id = $this->requestStack
+      ->getCurrentRequest()
+      ->query
+      ->get($this->getDecisionQueryKey($langcode));
+
     $source_fi = 'asia/' . $case_id . '/' . $decision_id;
     $source_sv = 'arende/' . $case_id . '/' . $decision_id;
 
@@ -508,7 +631,7 @@ class CaseService {
 
     // Case alias exists, so build URL with query parameter.
     if ($case_alias && $this->routeExists($localizedCaseRoute)) {
-      $case_url = Url::fromRoute($localizedCaseRoute, ['case_id' => $case_id]);
+      $case_url = Url::fromRoute($localizedCaseRoute, ['case' => $case_id]);
       $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $id]);
       return $case_url;
     }
@@ -516,7 +639,7 @@ class CaseService {
     // No diary number, so return URL with just decision native ID.
     if (!$case_id && $this->routeExists($localizedCaseRoute)) {
       return Url::fromRoute($localizedCaseRoute, [
-        'case_id' => $id,
+        'case' => $id,
       ]);
     }
 
@@ -524,7 +647,7 @@ class CaseService {
     if ($this->routeExists($localizedDecisionRoute)) {
       return Url::fromRoute($localizedDecisionRoute, [
         'case_id' => $case_id,
-        'decision_id' => $id,
+        'decision' => $id,
       ]);
     }
 
@@ -673,7 +796,7 @@ class CaseService {
 
     $localizedRoute = 'paatokset_case.' . $langcode;
     if ($this->routeExists($localizedRoute)) {
-      $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($case->get('field_diary_number')->value)]);
+      $case_url = Url::fromRoute($localizedRoute, ['case' => strtolower($case->get('field_diary_number')->value)]);
     }
     // If langcode is set, we don't want an URL without a localized route.
     elseif ($strict_lang) {
@@ -764,7 +887,7 @@ class CaseService {
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
         return Url::fromRoute($localizedRoute, [
-          'case_id' => $decision_id,
+          'case' => $decision_id,
         ], [
           'language' => $language,
         ]);
@@ -786,7 +909,7 @@ class CaseService {
       $localizedRoute = 'paatokset_case.' . $langcode;
       if ($this->routeExists($localizedRoute)) {
         $case_url = Url::fromRoute($localizedRoute, [
-          'case_id' => $case_id,
+          'case' => $case_id,
         ], [
           'language' => $language,
         ]);
@@ -809,7 +932,7 @@ class CaseService {
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, [
         'case_id' => $case_id,
-        'decision_id' => $decision_id,
+        'decision' => $decision_id,
       ], [
         'language' => $language,
       ]);

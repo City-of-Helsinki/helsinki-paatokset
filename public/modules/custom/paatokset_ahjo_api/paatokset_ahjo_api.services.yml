@@ -3,10 +3,22 @@ services:
     class: Drupal\paatokset_ahjo_api\Service\MeetingService
   paatokset_ahjo_cases:
     class: Drupal\paatokset_ahjo_api\Service\CaseService
-    arguments: ['@language_manager']
+    arguments: ['@language_manager', '@request_stack']
   paatokset_ahjo_trustees:
     class: Drupal\paatokset_ahjo_api\Service\TrusteeService
   paatokset_ahjo_api.term_route_subscriber:
     class: Drupal\paatokset_ahjo_api\Routing\TermRouteSubscriber
     tags:
       - { name: event_subscriber }
+
+  paatokset_ahjo_api.case_or_decision:
+    class: Drupal\paatokset_ahjo_api\Routing\CaseOrDecisionConverter
+    tags:
+      - { name: paramconverter }
+    arguments: [ "@paatokset_ahjo_cases" ]
+
+  paatokset_ahjo_api.decision:
+    class: Drupal\paatokset_ahjo_api\Routing\DecisionConverter
+    tags:
+      - { name: paramconverter }
+    arguments: [ "@paatokset_ahjo_cases" ]
