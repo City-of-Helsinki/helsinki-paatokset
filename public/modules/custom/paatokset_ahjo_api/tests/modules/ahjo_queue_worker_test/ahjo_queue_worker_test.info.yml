@@ -1,0 +1,6 @@
+type: module
+name: Ahjo queue worker test
+package: Custom
+core_version_requirement: ^9 || ^10
+dependencies:
+  - paatokset_ahjo_api

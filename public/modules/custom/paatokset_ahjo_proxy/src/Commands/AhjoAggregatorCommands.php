@@ -565,12 +565,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'end' => NULL,
   ]): void {
 
-    if (!empty($options['update'])) {
-      $update_all = TRUE;
-    }
-    else {
-      $update_all = FALSE;
-    }
+    $update_all = !empty($options['update']);
 
     if (!empty($options['logic'])) {
       $logic = $options['logic'];
@@ -2286,19 +2281,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     'limit' => NULL,
     'offset' => NULL,
   ]): void {
-    if (!empty($options['update'])) {
-      $update_all = TRUE;
-    }
-    else {
-      $update_all = FALSE;
-    }
-
-    if (!empty($options['localdata'])) {
-      $use_local_data = TRUE;
-    }
-    else {
-      $use_local_data = FALSE;
-    }
+    $update_all = !empty($options['update']);
+    $use_local_data = !empty($options['localdata']);
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];

@@ -520,17 +520,8 @@ class CaseService {
    *   URL for decision or motion, or NULL if not found.
    */
   public function getDecisionUrlByNativeId(string $id): ?Url {
-    $params = [
-      'decision_id' => $id,
-      'limit' => 1,
-    ];
+    $node = $this->getDecision($id);
 
-    $nodes = $this->decisionQuery($params);
-    if (empty($nodes)) {
-      return NULL;
-    }
-
-    $node = array_shift($nodes);
     if ($node instanceof NodeInterface) {
       return $this->getDecisionUrlFromNode($node);
     }
@@ -945,90 +936,6 @@ class CaseService {
 
     // If route isn't localized for current language return decision's URL.
     return $decision->toUrl();
-  }
-
-  /**
-   * Get localized decision URL in cases where node can't be loaded.
-   *
-   * @param string $nid
-   *   Node ID.
-   * @param string $native_id
-   *   Native document ID for decision.
-   * @param string|null $case_id
-   *   Casee diary number, if present.
-   * @param string|null $langcode
-   *   Langcode for URL, uses current language if left blank.
-   *
-   * @return Drupal\Core\Url|null
-   *   URL for case node with decision ID as parameter, or decision URL.
-   */
-  public function getDecisionUrlLight(string $nid, string $native_id, ?string $case_id = NULL, ?string $langcode = NULL): ?Url {
-    // Which language to get URL for. If langcode is set, use strict checking.
-    if ($langcode === NULL) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      $strict_lang = FALSE;
-    }
-    else {
-      $strict_lang = TRUE;
-    }
-
-    // Return with unique ID as first URL parameter if diary number is missing.
-    if (!$case_id) {
-      $localizedRoute = 'paatokset_case.' . $langcode;
-      if ($this->routeExists($localizedRoute)) {
-        $decision_id = \Drupal::service('pathauto.alias_cleaner')->cleanString($native_id);
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => $decision_id]);
-        return $case_url;
-      }
-      return NULL;
-    }
-
-    $native_id = $this->normalizeNativeId($native_id);
-
-    $case = NULL;
-    $case = $this->caseQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-    ]);
-    $case = array_shift($case);
-
-    // If a case exists, use case route with query parameter.
-    if ($case instanceof NodeInterface) {
-      // Try to get localized route if one exists for current language.
-      $localizedRoute = 'paatokset_case.' . $langcode;
-      if ($this->routeExists($localizedRoute)) {
-        $case_url = Url::fromRoute($localizedRoute, ['case_id' => strtolower($case_id)]);
-      }
-      // If langcode is set, we don't want an URL without a localized route.
-      elseif ($strict_lang) {
-        return NULL;
-      }
-      // If route doesn't exist, just use case URL.
-      else {
-        $case_url = $case->toUrl();
-      }
-
-      $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $native_id]);
-      return $case_url;
-    }
-
-    // If case node doesn't exist, try to get localized route for decision.
-    $localizedRoute = 'paatokset_decision.' . $langcode;
-    if ($this->routeExists($localizedRoute)) {
-      $native_id_url = \Drupal::service('pathauto.alias_cleaner')->cleanString($native_id);
-      return Url::fromRoute($localizedRoute, [
-        'case_id' => strtolower($case_id),
-        'decision_id' => $native_id_url,
-      ]);
-    }
-
-    // If langcode is set, we don't want an URL without a localized route.
-    if ($strict_lang) {
-      return NULL;
-    }
-
-    // If route isn't localized for current language return decision's URL.
-    return Url::fromRoute('entity.node.canonical', ['node' => $nid]);
   }
 
   /**
