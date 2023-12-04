@@ -83,6 +83,22 @@ class CaseService {
   }
 
   /**
+   * Return decision query value.
+   *
+   * @return string|false
+   *   Decision query value, FALSE if decision id is not set.
+   */
+  private function getDecisionQuery(): string|FALSE {
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $decisionId = $this->requestStack
+      ->getCurrentRequest()
+      ->query
+      ->get($this->getDecisionQueryKey($langcode));
+
+    return $decisionId ?: FALSE;
+  }
+
+  /**
    * Guess decision node from path. Only work on case paths.
    *
    * @param \Drupal\node\NodeInterface $case
@@ -92,19 +108,15 @@ class CaseService {
    *   Decision node or NULL if unable to guess.
    */
   public function guessDecisionFromPath(NodeInterface $case): ?NodeInterface {
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
     $caseId = $case->get('field_diary_number')->getString();
-    $decisionId = $this->requestStack
-      ->getCurrentRequest()
-      ->query
-      ->get($this->getDecisionQueryKey($langcode));
 
-    if (empty($decisionId)) {
+    // Search for default decisions if query parameter is not set.
+    if (!$this->getDecisionQuery()) {
       return $this->getDefaultDecision($caseId);
     }
 
     /** @var \Drupal\node\NodeInterface $decision */
-    if (!empty($decision = $this->getDecision($decisionId))) {
+    if (!empty($decision = $this->getDecisionFromQuery($case))) {
       return $decision;
     }
 
@@ -261,9 +273,28 @@ class CaseService {
     }
 
     $decision = reset($nodes);
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     return $decision;
+  }
+
+  /**
+   * Get decision from query parameters.
+   *
+   * @param \Drupal\node\Entity\NodeInterface $case
+   *   Current case node.
+   *
+   * @return \Drupal\node\Entity\NodeInterface|null
+   *   Decision node or NULL if no decision is found from the query.
+   */
+  public function getDecisionFromQuery(NodeInterface $case): ?NodeInterface {
+    $decisionId = $this->getDecisionQuery();
+
+    if (!empty($decisionId)) {
+      $caseId = $case->get('field_diary_number')->getString();
+      return $this->getDecision($decisionId, $caseId);
+    }
+
+    return NULL;
   }
 
   /**

@@ -17,6 +17,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
 
 /**
  * Implements hook_theme().
@@ -1170,4 +1171,42 @@ function paatokset_ahjo_api_metatag_route_entity(RouteMatchInterface $route_matc
   }
 
   return NULL;
+}
+
+/**
+ * Implements hook_metatags_attachments_alter().
+ *
+ * @see \paatokset_ahjo_api_metatag_route_entity()
+ */
+function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachments): void {
+  $route_match = \Drupal::routeMatch();
+  $currentRoute = $route_match->getRouteName();
+
+  // In addition to fixing the metatags for custom routes in the hook above, we
+  // also need to fix the case urls for `entity.node.canonical` route with a
+  // decision query parameter.
+  if (str_starts_with($currentRoute, 'entity.node.canonical')) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+
+    if ($node->bundle() !== CaseService::CASE_NODE_TYPE) {
+      return;
+    }
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $decision = $caseService->getDecisionFromQuery($node);
+
+    // Alter if decision was found from query parameters.
+    if (!empty($decision)) {
+      $canonical_url = $decision
+        ->toUrl('canonical', ['absolute' => TRUE])
+        ->toString();
+
+      foreach ($metatag_attachments['#attached']['html_head'] as $id => $attachment) {
+        if ($attachment[1] == 'canonical_url') {
+          $metatag_attachments['#attached']['html_head'][$id][0]['#attributes']['href'] = $canonical_url;
+        }
+      }
+    }
+  }
 }
