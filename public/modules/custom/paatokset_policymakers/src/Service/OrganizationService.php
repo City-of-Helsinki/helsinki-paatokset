@@ -78,7 +78,7 @@ final class OrganizationService {
     }
 
     $entity = $field->entity;
-
+  
     /** @var \Drupal\node\NodeInterface $entity */
     Assert::isInstanceOf($entity, NodeInterface::class);
 
@@ -97,7 +97,7 @@ final class OrganizationService {
    * @param ?\Drupal\Core\Language\LanguageInterface $language
    *   Language for organization hierarchy. Defaults to current language.
    *
-   * @returns NodeInterface[]
+   * @returns \Drupal\node\NodeInterface[]
    *   Organizations above the given organization and the given organization.
    *   Root organization is the first element.
    */

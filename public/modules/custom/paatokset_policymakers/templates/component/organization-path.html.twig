@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Policymaker hierarchy
+ *
+ * Available variables:
+ * - organizations: Organization hierarchy items.
+ */
+#}
+{% if organizations %}
+    <div class="organizations">
+        {% for item in organizations %}
+            {% if not loop.first %}
+                {% include '@hdbt/misc/icon.twig' with {icon: 'angle-right'} %}
+            {% endif %}
+            <span class="breadcrumb__current">{{ item.title|striptags }}</span>
+        {% endfor %}
+    </div>
+{% endif %}
