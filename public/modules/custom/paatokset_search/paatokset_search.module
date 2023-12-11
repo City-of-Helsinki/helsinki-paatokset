@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * Implements hook_preprocess_html().
  */
 function paatokset_search_preprocess_html(array &$variables) {
-  if (strpos(\Drupal::routeMatch()->getRouteName(), 'paatokset_search.decisions') !== FALSE) {
+  if (str_contains(\Drupal::routeMatch()->getRouteName(), 'paatokset_search.decisions')) {
     $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
   }
 }
