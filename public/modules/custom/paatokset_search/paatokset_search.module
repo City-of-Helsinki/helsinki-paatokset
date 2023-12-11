@@ -27,10 +27,3 @@ function paatokset_search_elasticsearch_connector_load_library_options_alter(&$o
   $options['curl'][CURLOPT_SSL_VERIFYPEER] = FALSE;
   $options['curl'][CURLOPT_SSL_VERIFYHOST] = FALSE;
 }
-
-/**
- * Implements hook_preprocess__HOOK().
- */
-function paatokset_search_preprocess_block__policymaker_search_block(array &$variables) {
-  $variables['elastic_url'] = getenv('REACT_APP_ELASTIC_URL');
-}
