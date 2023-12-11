@@ -3,5 +3,5 @@ type: module
 package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
-  - elasticsearch_connector
-  - search_api
+  - elasticsearch_connector:elasticsearch_connector
+  - search_api:search_api

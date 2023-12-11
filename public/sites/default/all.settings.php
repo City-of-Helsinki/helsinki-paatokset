@@ -12,10 +12,16 @@ ini_set('default_socket_timeout', 240);
 if (getenv('ELASTIC_CONNECTOR_URL')) {
   $config['elasticsearch_connector.cluster.paatokset']['url'] = getenv('ELASTIC_CONNECTOR_URL');
 
-  if(getenv('ELASTIC_INTERNAL_USER') && getenv('ELASTIC_INTERNAL_PWD')) {
+  if (getenv('ELASTIC_INTERNAL_USER') && getenv('ELASTIC_INTERNAL_PWD')) {
     $config['elasticsearch_connector.cluster.paatokset']['options']['use_authentication'] = '1';
     $config['elasticsearch_connector.cluster.paatokset']['options']['authentication_type'] = 'Basic';
     $config['elasticsearch_connector.cluster.paatokset']['options']['username'] = getenv('ELASTIC_INTERNAL_USER');
     $config['elasticsearch_connector.cluster.paatokset']['options']['password'] = getenv('ELASTIC_INTERNAL_PWD');
   }
 }
+
+// Elastic proxy URL.
+$config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_APP_PROXY_URL', 'REACT_APP_ELASTIC_URL']);
+
+// Sentry DSN for React.
+$config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
