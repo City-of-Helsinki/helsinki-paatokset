@@ -16,18 +16,14 @@ use Drupal\Core\Block\BlockBase;
 class PolicymakerSearchBlock extends BlockBase {
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
-    if (getenv('REACT_APP_PROXY_URL')) {
-      $proxy_url = getenv('REACT_APP_PROXY_URL');
-    }
-    else {
-      $proxy_url = getenv('REACT_APP_ELASTIC_URL');
-    }
+  public function build(): array {
+    $config = \Drupal::config('elastic_proxy.settings');
+    $proxyUrl = $config->get('elastic_proxy_url') ?: '';
 
     $build = [
-      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="policymakers" data-url="' . $proxy_url . '"></div></div>',
+      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="policymakers" data-url="' . $proxyUrl . '"></div></div>',
       '#attributes' => [
         'class' => ['policymaker-search'],
       ],
@@ -37,6 +33,11 @@ class PolicymakerSearchBlock extends BlockBase {
         ],
       ],
     ];
+
+    $react_search_config = \Drupal::config('paatokset_search.settings');
+    if ($sentry_dsn_react = $react_search_config->get('sentry_dsn_react')) {
+      $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react'] = $sentry_dsn_react;
+    }
 
     return $build;
   }
