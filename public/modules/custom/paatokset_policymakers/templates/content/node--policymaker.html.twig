@@ -91,13 +91,13 @@
         </div>
       </div>
     {% else %}
-      <div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
-        {{  organization_hierarchy }}
-      </div>
       <div role="region" aria-label="{{ 'Page tags'|t }}" class="policymaker-summary__label">
         <div class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color }}">
           {{ organization_type }}
         </div>
+      </div>
+      <div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
+        {{  organization_hierarchy }}
       </div>
     {% endif %}
     {% if not is_active %}
