@@ -90,7 +90,9 @@
           let folds = accordion.folds;
 
           // Go through each fold.
-          folds.forEach(closeFold);
+          if (folds) {
+            folds.forEach(closeFold);
+          }
         }
       });
     },
