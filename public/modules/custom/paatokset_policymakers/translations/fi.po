@@ -50,3 +50,23 @@ msgstr "Luottamushenkilöpäättäjät"
 
 msgid "City Council members"
 msgstr "Kaupunginvaltuuston jäsenet"
+
+msgctxt "Trustee labels"
+msgid "Profession"
+msgstr "Ammatti"
+
+msgctxt "Trustee labels"
+msgid "Home district"
+msgstr "Kotikaupunginosa"
+
+msgctxt "Trustee labels"
+msgid "Phone number"
+msgstr "Puhelinnumero"
+
+msgctxt "Trustee labels"
+msgid "Email"
+msgstr "Sähköposti"
+
+msgctxt "Trustee labels"
+msgid "Homepage"
+msgstr "Kotisivut"
