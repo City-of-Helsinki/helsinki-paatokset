@@ -569,7 +569,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
     'tags' => [
       'node_list:decision',
       'node_list:case',
-    ]
+    ],
   ];
 }
 
