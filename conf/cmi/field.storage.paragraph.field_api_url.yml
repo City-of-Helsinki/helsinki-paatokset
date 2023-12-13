@@ -5,6 +5,8 @@ dependencies:
   module:
     - link
     - paragraphs
+_core:
+  default_config_hash: 15a2QmfffR33UXmxDvkHEN7LpCrI4xTdCDyDJ-pna5I
 id: paragraph.field_api_url
 field_name: field_api_url
 entity_type: paragraph
