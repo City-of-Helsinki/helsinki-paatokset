@@ -72,6 +72,7 @@ function paatokset_ahjo_api_helfi_paragraph_types() : array {
     new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'custom_content_links'),
     new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'image'),
     new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'text'),
+    new ParagraphTypeCollection('node', 'page', 'field_content', 'pdf_listing'),
     new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'custom_content_links'),
     new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'liftup_with_image'),
     new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'pdf_listing'),
@@ -539,7 +540,13 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
 
   $variables['#cache'] = [
     'tags' => ['node_list:decision'],
+    'contexts' => [
+      'url.query_args:decision',
+      'url.query_args:paatos',
+      'url.query_args:beslut',
+    ],
   ];
+
 }
 
 /**

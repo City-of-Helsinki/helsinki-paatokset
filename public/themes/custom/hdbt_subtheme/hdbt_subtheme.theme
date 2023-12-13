@@ -9,9 +9,6 @@ declare(strict_types = 1);
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Markup;
-use Drupal\Core\Url;
-use Drupal\media\Entity\Media;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
@@ -280,28 +277,6 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
       ]
     );
   };
-
-  // Check if there are any DOAs for the trustee.
-  $doaQuery = \Drupal::entityQuery('media')
-    ->accessCheck(TRUE)
-    ->condition('bundle', 'declaration_of_affiliation')
-    ->condition('field__policymaker_reference', $node->id())
-    ->execute();
-
-  if (!empty($doaQuery)) {
-    // Display only one DOA per trustee.
-    $doa = Media::load(reset($doaQuery));
-    $doaEntity = $doa->field_document->entity;
-    if (isset($doaEntity) && isset($doaEntity->uri)) {
-      $file_url_generator = \Drupal::service('file_url_generator');
-      $doaUrl = $file_url_generator->generateAbsoluteString($doaEntity->getFileUri());
-      $doaLinkText = Markup::create(
-        '<i class="hel-icon hel-icon--document"></i>' . TrusteeService::getTrusteeName($node) . ' (pdf)'
-      );
-      $doaLink = Link::fromTextAndUrl($doaLinkText, Url::fromUri($doaUrl));
-      $variables['doa'] = $doaLink->toRenderable();
-    }
-  }
 }
 
 /**

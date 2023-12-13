@@ -50,3 +50,23 @@ msgstr "Förtroendevalda tjänsteinnehavare"
 
 msgid "City Council members"
 msgstr "Stadsfullmäktiges ledamöter"
+
+msgctxt "Trustee labels"
+msgid "Profession"
+msgstr "Yrke"
+
+msgctxt "Trustee labels"
+msgid "Home district"
+msgstr "Hemstadsdel"
+
+msgctxt "Trustee labels"
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+msgctxt "Trustee labels"
+msgid "Email"
+msgstr "E-post"
+
+msgctxt "Trustee labels"
+msgid "Homepage"
+msgstr "Hemsida"

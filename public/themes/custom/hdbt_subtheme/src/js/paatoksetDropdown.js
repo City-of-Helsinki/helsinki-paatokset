@@ -214,6 +214,10 @@ jQuery(function($) {
     if (window.drupalSettings.path.currentLanguage === 'sv') {
       queryKey = 'beslut';
     }
+    else if (window.drupalSettings.path.currentLanguage === 'en') {
+      queryKey = 'decision';
+    }
+
     var queryparams = window.location.search;
     if (queryparams === "") {
       var queryparams = '?' + queryKey + '=';

@@ -81,14 +81,14 @@ content:
     region: content
   field_trustee_email:
     type: basic_string
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 15
     region: content
   field_trustee_home_district:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -96,7 +96,7 @@ content:
     region: content
   field_trustee_homepage:
     type: link
-    label: above
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -127,7 +127,7 @@ content:
     region: content
   field_trustee_phone:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -135,7 +135,7 @@ content:
     region: content
   field_trustee_profession:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
