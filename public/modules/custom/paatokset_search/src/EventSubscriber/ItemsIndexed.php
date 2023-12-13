@@ -2,7 +2,7 @@
 
 namespace Drupal\paatokset_search\EventSubscriber;
 
-use Drupal\Core\Cache\CacheTagsInvalidator;
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,7 +19,7 @@ class ItemsIndexed implements EventSubscriberInterface {
    *   Cache invalidator.
    */
   public function __construct(
-    protected CacheTagsInvalidator $cacheInvalidator,
+    protected CacheTagsInvalidatorInterface $cacheInvalidator,
   ) {
   }
 
