@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - media
+_core:
+  default_config_hash: XhAv2_bHVk7jzaAbzP4SHkvVHDG0Xsy5ItNLgSXkHcE
 id: media.field_photographer
 field_name: field_photographer
 entity_type: media

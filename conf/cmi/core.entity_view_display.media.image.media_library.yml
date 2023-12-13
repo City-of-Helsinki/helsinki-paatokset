@@ -4,12 +4,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.media_library
+    - field.field.media.image.field_caption
     - field.field.media.image.field_media_image
     - field.field.media.image.field_photographer
     - image.style.medium
     - media.type.image
   module:
     - image
+_core:
+  default_config_hash: 1TB-RghsNkJMtH5f31w2WE6YuMXWk9jvDipHKDfv4Jk
 id: media.image.media_library
 targetEntityType: media
 bundle: image
