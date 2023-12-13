@@ -540,7 +540,13 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
 
   $variables['#cache'] = [
     'tags' => ['node_list:decision'],
+    'contexts' => [
+      'url.query_args:decision',
+      'url.query_args:paatos',
+      'url.query_args:beslut',
+    ],
   ];
+
 }
 
 /**
@@ -563,7 +569,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
     'tags' => [
       'node_list:decision',
       'node_list:case',
-    ],
+    ]
   ];
 }
 
