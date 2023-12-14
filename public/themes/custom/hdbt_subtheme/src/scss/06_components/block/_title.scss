@@ -5,8 +5,10 @@
     }
   }
 }
-.page-divider::after {
-  display: none;
+
+// Unify page divider logic for Päätökset site.
+.page-divider {
+  display: none!important;
 }
 .has-sidebar.page-type--page,
 .has-sidebar.page-type--landing-page {
