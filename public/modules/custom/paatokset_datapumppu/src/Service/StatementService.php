@@ -55,6 +55,7 @@ final class StatementService {
   public function getStatementsByTrustee(NodeInterface $trustee): array {
     $statements = $this->statementStorage
       ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('speaker', $trustee->id())
       ->sort('start_time', 'DESC')
       ->execute();

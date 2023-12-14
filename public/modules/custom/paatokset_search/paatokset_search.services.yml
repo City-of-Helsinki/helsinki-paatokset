@@ -2,3 +2,7 @@ services:
   Drupal\paatokset_search\EventSubscriber\PrepareIndex:
     tags:
       - { name: 'event_subscriber' }
+  Drupal\paatokset_search\EventSubscriber\ItemsIndexed:
+    arguments: ['@cache_tags.invalidator']
+    tags:
+      - { name: 'event_subscriber' }

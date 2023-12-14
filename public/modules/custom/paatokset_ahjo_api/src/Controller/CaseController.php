@@ -3,28 +3,43 @@
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Extension\ThemeExtensionList;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller for Case ajax events.
  */
-class CaseController extends ControllerBase {
-
-  /**
-   * CaseService for getting case and decision data.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
-   */
-  private $caseService;
+final class CaseController extends ControllerBase {
 
   /**
    * Class constructor.
+   *
+   * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
+   *   CaseService for getting case and decision data.
+   * @param \Drupal\Core\Extension\ThemeExtensionList $extensionList
+   *   Theme extension list.
    */
-  public function __construct() {
+  public function __construct(
+    private readonly CaseService $caseService,
+    private readonly ThemeExtensionList $extensionList,
+  ) {
     // Include twig engine.
     include_once \Drupal::root() . '/core/themes/engines/twig/twig.engine';
-    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('paatokset_ahjo_cases'),
+      $container->get('extension.list.theme'),
+    );
   }
 
   /**
@@ -33,33 +48,23 @@ class CaseController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   JSON object containing data
    */
-  public function loadDecision(string $case_id) : Response {
-    $decision_id = \Drupal::request()->query->get('decision');
-    $this->caseService->setEntitiesById($case_id, $decision_id);
+  public function loadDecision(NodeInterface $decision): Response {
+    $this->caseService->setEntitiesFromDecision($decision);
 
-    $data['decision_pdf'] = $this->caseService->getDecisionPdf();
-    $data['selectedDecision'] = $this->caseService->getSelectedDecision();
-    $data['policymaker_is_active'] = $this->caseService->decisionPmIsActive();
-    $data['decision_section'] = $this->caseService->getFormattedDecisionSection();
-    $data['decision_org_name'] = $this->caseService->getDecisionOrgName();
-    $data['selected_class'] = $this->caseService->getDecisionClass();
-    $data['attachments'] = $this->caseService->getAttachments();
-    $data['next_decision'] = $this->caseService->getNextDecision();
-    $data['previous_decision'] = $this->caseService->getPrevDecision();
-    $data['decision_content'] = $this->caseService->parseContent();
-    $data['vote_results'] = $this->caseService->getVotingResults();
+    $data = [];
+    _paatokset_ahjo_api_get_decision_variables($data, $this->caseService);
+
     $all_decisions_link = $this->caseService->getDecisionMeetingLink();
-    $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
-
     if ($all_decisions_link instanceof Url) {
       $all_decisions_link = $all_decisions_link->toString();
     }
 
+    $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
     if ($other_decisions_link instanceof Url) {
       $other_decisions_link = $other_decisions_link->toString();
     }
 
-    $languages = \Drupal::languageManager()->getLanguages();
+    $languages = $this->languageManager()->getLanguages();
     $language_urls = [];
     foreach ($languages as $langcode => $language) {
       $lang_url = $this->caseService->getCaseUrlFromNode(NULL, $langcode);
@@ -69,35 +74,26 @@ class CaseController extends ControllerBase {
       }
     }
 
-    $content = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-content.html.twig',
-      [
-        'selectedDecision' => $data['selectedDecision'],
-        'policymaker_is_active' => $data['policymaker_is_active'],
-        'selected_class' => $data['selected_class'],
-        'decision_org_name' => $data['decision_org_name'],
-        'decision_content' => $data['decision_content'],
-        'decision_section' => $data['decision_section'],
-        'vote_results' => $data['vote_results'],
-      ]
-    );
+    $content = $this->renderTemplate('/templates/components/decision-content.html.twig', [
+      'selectedDecision' => $data['selectedDecision'],
+      'policymaker_is_active' => $data['policymaker_is_active'],
+      'selected_class' => $data['selected_class'],
+      'decision_org_name' => $data['decision_org_name'],
+      'decision_content' => $data['decision_content'],
+      'decision_section' => $data['decision_section'],
+      'vote_results' => $data['vote_results'],
+    ]);
 
-    $attachments = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/case-attachments.html.twig',
-      [
-        'attachments' => $data['attachments'],
-      ]
-    );
+    $attachments = $this->renderTemplate('/templates/components/case-attachments.html.twig', [
+      'attachments' => $data['attachments'],
+    ]);
 
-    $decision_navigation = twig_render_template(
-      drupal_get_path('theme', 'hdbt_subtheme') . '/templates/components/decision-navigation.html.twig',
-      [
-        'next_decision' => $data['next_decision'],
-        'previous_decision' => $data['previous_decision'],
-      ]
-    );
+    $decision_navigation = $this->renderTemplate('/templates/components/decision-navigation.html.twig', [
+      'next_decision' => $data['next_decision'],
+      'previous_decision' => $data['previous_decision'],
+    ]);
 
-    return new Response(json_encode([
+    return new JsonResponse([
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,
@@ -106,7 +102,16 @@ class CaseController extends ControllerBase {
       'decision_pdf' => $data['decision_pdf'],
       'all_decisions_link' => $all_decisions_link,
       'other_decisions_link' => $other_decisions_link,
-    ]));
+    ]);
+  }
+
+  /**
+   * Render twig template in hdbt_subtheme folder.
+   */
+  private function renderTemplate(string $path, array $variables): string {
+    $template_file = $this->extensionList->getPath('hdbt_subtheme') . $path;
+
+    return twig_render_template($template_file, $variables);
   }
 
 }

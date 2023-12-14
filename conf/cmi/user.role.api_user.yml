@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - key_auth
     - paatokset_ahjo_proxy
 id: api_user
@@ -11,4 +12,5 @@ weight: 6
 is_admin: null
 permissions:
   - 'access ahjo proxy'
+  - 'delete own files'
   - 'use key authentication'

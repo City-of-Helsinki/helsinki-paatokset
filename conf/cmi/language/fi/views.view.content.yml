@@ -4,12 +4,10 @@ display:
       fields:
         langcode:
           label: Kieli
-          separator: ', '
         title:
           label: Otsikko
         type:
           label: Sisältötyyppi
-          separator: ', '
         name:
           label: Kirjoittaja
         status:
@@ -34,8 +32,8 @@ display:
           submit_button: Suodata
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       empty:
         area_text_custom:
           content: 'Ei sisältöä.'
@@ -54,8 +52,6 @@ display:
             group_items:
               1:
                 title: Julkaistu
-              2:
-                title: Julkaisematon
         langcode:
           expose:
             label: Kieli

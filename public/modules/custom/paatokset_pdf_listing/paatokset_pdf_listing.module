@@ -48,6 +48,7 @@ function paatokset_pdf_listing_preprocess_paragraph__pdf_listing(&$variables) {
   }
 
   $query = \Drupal::entityQuery('media')
+    ->accessCheck(TRUE)
     ->condition('bundle', 'pdf_minutes_of_discussion')
     ->condition('status', 1)
     ->sort('field_pdf_date', 'DESC')

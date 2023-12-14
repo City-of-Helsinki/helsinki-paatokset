@@ -23,34 +23,6 @@ use Symfony\Component\Console\Helper\Table;
 class AhjoAggregatorCommands extends DrushCommands {
 
   /**
-   * Ahjo proxy service.
-   *
-   * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
-   */
-  protected $ahjoProxy;
-
-  /**
-   * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
-   * Entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * File repository service.
-   *
-   * @var \Drupal\file\FileRepositoryInterface
-   */
-  protected $fileRepository;
-
-  /**
    * Node storage service.
    *
    * @var \Drupal\node\NodeStorageInterface
@@ -62,19 +34,21 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   Logger service.
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy
+   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   Ahjo Proxy service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
-   * @param \Drupal\file\FileRepositoryInterface $file_repository
+   * @param \Drupal\file\FileRepositoryInterface $fileRepository
    *   File repository.
    */
-  public function __construct(LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy, EntityTypeManagerInterface $entity_type_manager, FileRepositoryInterface $file_repository) {
-    $this->ahjoProxy = $ahjo_proxy;
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(
+    LoggerChannelFactoryInterface $logger_factory,
+    private AhjoProxy $ahjoProxy,
+    private EntityTypeManagerInterface $entityTypeManager,
+    private FileRepositoryInterface $fileRepository
+  ) {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
-    $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
-    $this->fileRepository = $file_repository;
+    $this->setLogger($logger_factory->get('paatokset_ahjo_proxy'));
   }
 
   /**
@@ -498,6 +472,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Checking organization and office holder status.');
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'policymaker')
       ->condition('status', 1)
       ->condition('field_policymaker_existing', 1)
@@ -590,12 +565,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     'end' => NULL,
   ]): void {
 
-    if (!empty($options['update'])) {
-      $update_all = TRUE;
-    }
-    else {
-      $update_all = FALSE;
-    }
+    $update_all = !empty($options['update']);
 
     if (!empty($options['logic'])) {
       $logic = $options['logic'];
@@ -635,6 +605,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->sort('field_meeting_date', 'DESC')
@@ -819,6 +790,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'case')
       ->condition('status', 1)
       ->latestRevision();
@@ -942,6 +914,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_meeting_date', '', '<>')
@@ -1020,6 +993,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->latestRevision();
@@ -1112,6 +1086,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_is_decision', 1)
@@ -1202,6 +1177,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_is_decision', 1)
@@ -1291,6 +1267,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_is_decision', 1)
@@ -1386,6 +1363,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->latestRevision();
@@ -1470,6 +1448,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->notExists('field_is_decision')
@@ -1540,6 +1519,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'policymaker')
       ->condition('status', 1)
       ->latestRevision();
@@ -1615,6 +1595,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_unique_id', '', '<>')
@@ -1665,6 +1646,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function resetMeetingsMotionProcessing(): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_agenda_published', 1)
@@ -1694,6 +1676,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function resetSingleMeetingsMotionProcessing(string $id): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_id', $id)
@@ -1738,6 +1721,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_decision_record', '', '<>')
@@ -1789,6 +1773,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_decision_record', '', '<>')
@@ -1859,6 +1844,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_date', '', '<>')
@@ -1955,6 +1941,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_agenda_published', 1)
@@ -2031,6 +2018,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_minutes_published', 1)
@@ -2127,6 +2115,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->sort('field_meeting_date', 'DESC')
@@ -2235,6 +2224,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->notExists('field_meeting_date_original')
@@ -2291,19 +2281,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     'limit' => NULL,
     'offset' => NULL,
   ]): void {
-    if (!empty($options['update'])) {
-      $update_all = TRUE;
-    }
-    else {
-      $update_all = FALSE;
-    }
-
-    if (!empty($options['localdata'])) {
-      $use_local_data = TRUE;
-    }
-    else {
-      $use_local_data = FALSE;
-    }
+    $update_all = !empty($options['update']);
+    $use_local_data = !empty($options['localdata']);
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
@@ -2331,6 +2310,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->condition('field_meeting_agenda_published', 1)
@@ -2470,6 +2450,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function listDecisionsWithoutRecord(): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->latestRevision();
@@ -2598,6 +2579,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     foreach ($ids as $id) {
       $query = $this->nodeStorage->getQuery()
+        ->accessCheck(TRUE)
         ->condition('type', 'policymaker')
         ->condition('status', 1)
         ->condition('field_policymaker_id', $id)
@@ -2651,6 +2633,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function listDecisionsByPolicymakerId(string $id): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_policymaker_id', $id)
@@ -2691,6 +2674,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function checkMissingDecisionsByOrgId(string $id, ?string $years = NULL): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->condition('field_policymaker_id', $id)
@@ -2760,6 +2744,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function handleOrphanedMotions(string $action = 'list'): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->sort('field_meeting_date', 'DESC')
@@ -2784,6 +2769,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $meeting_query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->sort('field_meeting_date', 'DESC')
@@ -2860,6 +2846,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function listMeetingAgenda(string $meeting_id): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck()
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->range(0, 1)
@@ -2923,6 +2910,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function importMeetingDecisions(string $meeting_id): void {
     $query = $this->nodeStorage->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
       ->range(0, 1)
@@ -3180,16 +3168,16 @@ class AhjoAggregatorCommands extends DrushCommands {
         $count += 1;
       }
       else {
-        \Drupal::logger('paatokset_ahjo_proxy')->warning("Decisionmaker @dm: organization @id does not exist", [
-          '@dm' => $policymaker->toUrl('edit-form')->toString(),
-          '@id' => $policymaker_id,
+        $this->logger()->warning("Decisionmaker {dm} organization {id} does not exist", [
+          'dm' => $policymaker->toUrl('edit-form')->toString(),
+          'id' => $policymaker_id,
         ]);
       }
     }
 
-    \Drupal::logger('paatokset_ahjo_proxy')->info("Fixed @fixed of detected @all policymakers", [
-      '@fixed' => $count,
-      '@all' => count($nids),
+    $this->logger()->info("Fixed {fixed} of detected {all} policymakers", [
+      'fixed' => $count,
+      'all' => count($nids),
     ]);
   }
 

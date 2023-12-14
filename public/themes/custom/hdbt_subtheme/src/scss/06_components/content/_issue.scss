@@ -299,6 +299,10 @@
     text-decoration: none;
   }
 
+  img {
+    width: 100%;
+  }
+
   .SisaltoSektio, .accordion-item__content__inner {
     ul, ol {
       padding-top: 0;
@@ -545,6 +549,7 @@ h4.decision-history-title + h5.decision-history-title {
 
     @include breakpoint($breakpoint-xl) {
       width: 65%;
+      padding-right: 125px;
     }
   }
 }

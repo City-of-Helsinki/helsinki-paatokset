@@ -45,6 +45,7 @@ class MeetingService {
     }
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
       ->sort('field_meeting_date', $sort);
@@ -320,6 +321,7 @@ class MeetingService {
    */
   public function getMeetingsDocumentUrl(string $id, string $document_type): ?string {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
       ->condition('field_meeting_id', $id);

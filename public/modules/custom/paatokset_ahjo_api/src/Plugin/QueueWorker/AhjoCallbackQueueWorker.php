@@ -4,9 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\QueueWorker;
 
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Processes cron queue.
@@ -16,17 +14,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = @Translation("Ahjo Callback Queue Worker"),
  * )
  */
-class AhjoCallbackQueueWorker extends AhjoQueueWorkerBase implements ContainerFactoryPluginInterface {
+class AhjoCallbackQueueWorker extends AhjoQueueWorkerBase {
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
-    $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
-    $instance->logger = $container->get('logger.factory')->get('ahjo_api_subscriber_queue');
-    $instance->queueName = 'ahjo_api_subscriber_queue';
-    return $instance;
+  public function getMaxRetryTime(): int {
+    // Use shorter retry time for callback queue.
+    return (int) (new \DateTime('NOW - 3 HOURS'))->format('U');
   }
 
 }
