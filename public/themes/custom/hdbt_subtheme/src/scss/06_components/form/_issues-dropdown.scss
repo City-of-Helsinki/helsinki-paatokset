@@ -20,20 +20,18 @@
     justify-content: flex-start;
     overflow: hidden;
 
-    &:focus, &:hover {
-      background-color: transparent;
-    }
-
-    &:focus:hover {
+    &:focus, &:hover, &[disabled] {
       color: $color-black;
+      background-color: transparent;
     }
 
     &[disabled] .hel-icon.hel-icon--angle-down {
       display: none;
     }
 
-    .hel-icon.hel-icon--angle-down {
-      margin-left: auto;
+    .hel-icon.hel-icon--angle-down,
+    .hel-icon:last-of-type:not(:first-of-type) {
+      margin: 0 8px 0 auto;
     }
 
     .hds-button__label {
