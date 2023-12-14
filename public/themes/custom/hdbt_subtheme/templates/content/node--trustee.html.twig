@@ -78,7 +78,8 @@
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  first_paragraph_grey ? 'has-first-gray-bg-block'
+  first_paragraph_grey ? 'has-first-gray-bg-block',
+  'trustee-content',
 ]
 %}
 
@@ -99,8 +100,8 @@
     <span>{{ content.field_trustee_council_group }}</span>
   </div>
   <div class="trustee-image">
-      {{ content.field_trustee_image }}
-    </div>
+    {{ content.field_trustee_image }}
+  </div>
   {% if
     content.field_trustee_profession|render or
     content.field_trustee_home_district|render or

@@ -83,7 +83,7 @@
 %}
 
 <article{{ attributes.addClass(classes) }}>
-  <section class="policymaker-summary">
+  <section class="policymaker-summary policymaker-content">
     {% if is_organization %}
       <div class="policymaker-summary__label">
         <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color}}">
@@ -137,7 +137,7 @@
   </section>
 
   {% if live_stream %}
-    <section class="policymaker-live-sream" id="policymaker-live-stream">
+    <section class="policymaker-live-sream policymaker-content" id="policymaker-live-stream">
       {% if live_stream %}
         {{ live_stream }}
       {% endif %}
@@ -179,7 +179,7 @@
   {% endif %}
 
   {% if content.field_policymaker_image|render %}
-    <section class="policymaker-image">
+    <section class="policymaker-image policymaker-content">
       <figure>
         {{ content.field_policymaker_image }}
         {% if node.field_policymaker_image.title %}
@@ -193,7 +193,7 @@
 
   {% if not is_organization %}
     {% if recent_decisions %}
-      <section class="recent-decisions" id="recent-decisions">
+      <section class="recent-decisions policymaker-content" id="recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
         <div class="section-description">
           {{ decisions_description|raw }}
@@ -215,7 +215,7 @@
 
   {% if is_organization %}
     {% if recent_documents %}
-      <section class="recent-documents policymaker-documents" id="recent-documents">
+      <section class="recent-documents policymaker-documents policymaker-content" id="recent-documents">
         <h2>{{ 'Recent documents'|trans }}</h2>
         <div class="section-description">
           {{ documents_description|raw }}
@@ -235,7 +235,7 @@
     {% endif %}
 
     {% if most_recent_meeting|render is not empty %}
-      <section class="policymaker-meetings" id="recent-meetings">
+      <section class="policymaker-meetings policymaker-content" id="recent-meetings">
         <h2>{{ 'Recent meeting recording'|trans }}</h2>
         {% if next_meeting_time %}
         <div class="warning-label">
@@ -262,21 +262,21 @@
   {% endif %}
 
   {% if meeting_calendar %}
-    <section class="policymaker-calendar" id="meeting-calendar">
+    <section class="policymaker-calendar policymaker-content" id="meeting-calendar">
       {{ drupal_block('policymaker_calendar') }}
     </section>
   {% endif %}
 
   {% if is_organization %}
     {% if has_members %}
-      <section id="members-list">
+      <section id="members-list" class="policymaker-content">
         {{ drupal_block('policymaker_members') }}
       </section>
     {% endif %}
   {% endif %}
 
   {% if no_content %}
-    <div>
+    <div class="policymaker-content">
       <span>{{ 'This decisionmaker has no decisions'|t }}</span>
     </div>
   {% endif %}
