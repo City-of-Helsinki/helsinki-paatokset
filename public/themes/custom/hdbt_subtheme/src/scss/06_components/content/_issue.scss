@@ -303,14 +303,14 @@
     width: 100%;
   }
 
-  .SisaltoSektio, .accordion-item__content__inner {
+  .paatokset-accordion-item__content__inner {
+    padding: $spacing-and-half 0 0 $spacing-half;
+  }
+
+  .SisaltoSektio, .paatokset-accordion-item__content__inner {
     ul, ol {
       padding-top: 0;
       padding-left: 1rem;
-    }
-
-    div {
-      margin: $spacing 0;
     }
 
     table td {
@@ -368,11 +368,13 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .voting-results-accordion__inner {
+  margin-top: $spacing;
+
   &:first-of-type {
-    margin-top: 24px !important;
+    margin-top: $spacing-and-half;
   }
 
-  .accordion-item__header {
+  .accordion-inner-item__header {
     .accordion-item__button {
       border: 1px solid $color-black;
       align-items: center;
@@ -419,13 +421,19 @@ h4.decision-history-title + h5.decision-history-title {
     }
   }
 
-  .accordion-item__content {
-    border: 1px solid black;
-    margin-top: -1px !important;
+  .accordion-inner-item__content {
+    margin-top: $spacing;
+    border: 1px solid $color-black;
   }
 
-  .accordion-item__content__inner {
-    margin: 0 !important;
+  .accordion-inner-item__content__inner {
+    margin-top: 0;
+    padding: 0;
+
+    .results-table {
+      margin-top: 0;
+    }
+
     .handorgel__content--open & {
       padding-bottom: $spacing-double;
     }
@@ -539,6 +547,11 @@ h4.decision-history-title + h5.decision-history-title {
       max-width: 1328px;
       padding-left: 32px;
       padding-right: 32px;
+    }
+
+    .content-lower {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 

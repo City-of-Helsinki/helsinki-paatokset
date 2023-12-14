@@ -1,12 +1,12 @@
 <div class="paatokset-accordion voting-results-accordion" id="voting-results-accordion">
-  <div class="accordion__wrapper handorgel">
-    <h3 class="accordion-item__header handorgel__header">
+  <div class="paatokset-accordion__wrapper handorgel">
+    <h3 class="paatokset-accordion-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ 'Voting results'|t }}</span>
       </button>
     </h3>
-    <div class="accordion-item__content handorgel__content">
-      <div class="accordion-item__content__inner handorgel__content__inner">
+    <div class="paatokset-accordion-item__content handorgel__content">
+      <div class="paatokset-accordion-item__content__inner handorgel__content__inner">
 
         {% for results in vote_results %}
           <h4>{{ 'Äänestys'|t }} {{ loop.index }}</h4>
@@ -19,8 +19,8 @@
 
           {% for key, accordion in results.accordions %}
             <div class="voting-results-accordion__inner">
-              <div class="accordion__wrapper handorgel-inner">
-                <div class="accordion-item__header handorgel__header {% if accordion.NumberOfVotes == 0 %} accordion-item__header--novotes {% endif %}">
+              <div class="accordion-inner__wrapper handorgel-inner">
+                <div class="accordion-inner-item__header handorgel__header {% if accordion.NumberOfVotes == 0 %} accordion-item__header--novotes {% endif %}">
                   <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" {% if accordion.NumberOfVotes == 0 %} disabled {% endif %}>
                     <div class="result-type {{ key|lower }}">
                       <span class="result-color">{{ accordion.NumberOfVotes }}</span>
@@ -28,8 +28,8 @@
                     </div>
                   </button>
                 </div>
-                <div class="accordion-item__content handorgel__content">
-                  <div class="accordion-item__content__inner handorgel__content__inner">
+                <div class="accordion-inner-item__content handorgel__content">
+                  <div class="accordion-inner-item__content__inner handorgel__content__inner">
                     <table class="results-table">
                       <thead>
                         <tr class="results-table__row">
