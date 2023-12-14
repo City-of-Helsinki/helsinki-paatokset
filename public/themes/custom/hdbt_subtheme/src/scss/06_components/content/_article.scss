@@ -7,6 +7,10 @@
     color: #666;
   }
 
+  .warning-label {
+    margin-bottom: $spacing-double;
+  }
+
   .keywords {
     margin-bottom: 8px;
     display: flex;
@@ -66,9 +70,4 @@
       text-decoration: underline;
     }
   }
-}
-
-:not(.has-sidebar) .all-articles {
-  padding-left: 32px;
-  padding-right: 32px;
 }

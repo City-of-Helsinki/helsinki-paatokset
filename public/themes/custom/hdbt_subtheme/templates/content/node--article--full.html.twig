@@ -1,38 +1,38 @@
-{% embed '@hdbt/content/node.html.twig' with {'node_class': 'components components--news'} %}
+{% embed '@hdbt/content/node.html.twig' with {'node_class': 'components--news'} %}
   {% block main_content %}
 
     {# Lead text #}
     {% if content.field_lead|render or content.field_keywords|render %}
-      <section class="preamble">
+      <section class="preamble news-content">
         {{ content.field_lead }}
         {{ content.field_keywords }}
       </section>
     {% endif %}
 
-
     {# Article author #}
-    {% if content.field_author|render %}
-      <div class="content-author">
-        {{ content.field_author }}
-      </div>
-    {% endif %}
+    <div class="news-content content-author">
+      {{ content.field_author }}
+    </div>
 
     {# Created date and modified date #}
     {% if published_at %}
-      <div class="content-date">
+      <div class="news-content content-date">
         <time datetime="{{ html_published_at }}" class="content-date__datetime content-date__datetime--published">
           <span class="visually-hidden">{{ 'Published'|t({}, {'context': 'The helper text before the node published timestamp'}) }}</span>
           {{ published_at|format_date('publication_date_format') }}
         </time>
       </div>
     {% endif %}
+
     {% if scheduled_unpublish_date %}
+    <div class="news-content">
       <div class="warning-label">
         <div class="warning-label__container">
           {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': scheduled_unpublish_date|format_date('publication_date_format')}) } %}
           <span>{{ 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': scheduled_unpublish_date|format_date('publication_date_format') }) }}</span>
         </div>
       </div>
+    </div>
     {% endif %}
 
     {# Content region #}
@@ -40,9 +40,10 @@
       {{ content|without(['field_lead', 'field_author', 'field_keywords']) }}
     </section>
 
-    {# Social media share links #}
-    {{ drupal_block('helfi_platform_config_social_sharing_block') }}
-
+    <div class="news-content">
+      {# Social media share links #}
+      {{ drupal_block('helfi_platform_config_social_sharing_block') }}
+    </div>
   {% endblock main_content %}
 
 {% endembed %}
