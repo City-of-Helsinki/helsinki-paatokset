@@ -2,7 +2,7 @@
   background: transparent;
 }
 
-.has-section-nav .layout-sidebar-first {
+.has-section-nav .main-content .layout-sidebar-first {
   display: none;
 
   @include breakpoint($breakpoint-l) {
