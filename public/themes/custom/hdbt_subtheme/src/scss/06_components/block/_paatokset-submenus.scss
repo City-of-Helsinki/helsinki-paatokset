@@ -21,6 +21,7 @@
   .custom-select-wrapper {
     position: absolute;
     right: 0;
+    bottom: $spacing-half;
   }
 
   .arrow i {
@@ -57,7 +58,7 @@
   .decistion-tree__item.open div {
     padding-left: 14px;
   }
-  button.accordion-item__button.accordion-item__button--toggle.tabbed-list__header__button {
+  button.tabbed-list__header__button {
     width: 289px;
     height: 24px;
     color: rgb(26, 26, 26);
@@ -66,7 +67,7 @@
     line-height: 24px;
   }
 
-  .accordion-item__content__inner{
+  .tabbed-list__content__inner {
     position: relative;
     border-bottom: 1px solid black;
     display: flex;
@@ -74,7 +75,7 @@
     width: 100%;
     justify-content: space-between;
   }
-  .accordion-item__content__inner.tabbed-list__content__inner input {
+  .tabbed-list__content__inner input {
     color: rgb(6, 6, 6);
     font-size: 20px;
     font-weight: normal;
@@ -101,6 +102,8 @@
       letter-spacing: 0.29px;
       text-decoration: none;
       margin-right: 22px;
+      border-bottom: 6px solid transparent;
+      padding-bottom: 19px;
 
       &.hidden {
         display: none;
@@ -112,7 +115,7 @@
     }
   }
 
-  .container.accordion__container {
+  .container.tabbed-content__container {
     padding:0;
   }
 }

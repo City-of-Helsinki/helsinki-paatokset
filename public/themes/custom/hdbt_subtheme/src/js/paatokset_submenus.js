@@ -1,12 +1,12 @@
 (function ($, Drupal, once) {
   function handleListVisibility() {
-    const headerContainer = $('.paatokset__decision-tree-container .accordion__wrapper.tabbed-list');
+    const headerContainer = $('.paatokset__decision-tree-container .tabbed-list');
     const containerWidth = headerContainer.width();
     const menu = headerContainer.find('ul.menu');
     const dropdown = $(headerContainer).find('.custom-select-wrapper');
 
     $(dropdown).removeClass('hidden');
-    const allowedWidth = containerWidth - dropdown.width() - 50;
+    const allowedWidth = containerWidth - dropdown.width() - 100;
 
     const items = $(menu).find('li').toArray();
     let itemsWidth = 0;
@@ -89,7 +89,7 @@
         handleListVisibility();
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
-        $(context).find('.accordion-item__content__inner.tabbed-list__content__inner input').click(handleSelect);
+        $(context).find('.tabbed-list__content__inner input').click(handleSelect);
       })
     }
   }
