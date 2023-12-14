@@ -78,7 +78,7 @@ final class OrganizationService {
     }
 
     $entity = $field->entity;
-  
+
     /** @var \Drupal\node\NodeInterface $entity */
     Assert::isInstanceOf($entity, NodeInterface::class);
 
