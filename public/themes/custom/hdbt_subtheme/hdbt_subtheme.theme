@@ -259,7 +259,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
   }
 
   if ($node->hasField('field_trustee_council_group') && !$node->get('field_trustee_council_group')->isEmpty()) {
-    $variables['content']['field_trustee_council_group'] = $node->field_trustee_council_group->value;
+    $variables['content']['field_trustee_council_group'] = $node->get('field_trustee_council_group')->value;
   }
 
   if (isset($node->field_policymaker_reference->entity)) {
@@ -285,67 +285,6 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
 function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
   $title = $variables['items'][0]['content']['#context']['value'];
   $variables['items'][0]['content']['#context']['value'] = TrusteeService::transformTrusteeName($title);
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
-  $main_article_id = NULL;
-  $main_article_query = \Drupal::entityQuery('node')
-    ->accessCheck(TRUE)
-    ->condition('status', 1)
-    ->condition('type', 'imported_article')
-    ->condition('field_image_url', '', '!=')
-    ->sort('field_published', 'DESC')
-    ->range(0, 1);
-  $main_article_results = $main_article_query->execute();
-
-  if (!empty($main_article_results)) {
-    $main_article_id = reset($main_article_results);
-  }
-
-  $query = \Drupal::entityQuery('node')
-    ->accessCheck(TRUE)
-    ->condition('status', 1)
-    ->condition('type', 'imported_article')
-    ->sort('field_published', 'DESC')
-    ->range(0, 5);
-
-  if ($main_article_id) {
-    $query->condition('nid', $main_article_id, '!=');
-  }
-
-  $article_ids = $query->execute();
-  $article_nodes = $main_article_id ?
-    Node::loadMultiple(array_merge([$main_article_id], $article_ids)) :
-    Node::loadMultiple($article_ids);
-  $articles = [];
-
-  if (!empty($article_nodes)) {
-    foreach ($article_nodes as $article_node) {
-      if ($article_node->id() === $main_article_id) {
-        $articles[] = [
-          'title' => $article_node->title->value,
-          'lead' => $article_node->body->view('teaser'),
-          'lead_image' => $article_node->field_image_url->uri,
-          'image_alt' => $article_node->field_image_alt->value,
-          'image_title' => $article_node->field_image_title->value,
-          'url' => $article_node->toUrl(),
-          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp()),
-        ];
-      }
-      else {
-        $articles[] = [
-          'title' => $article_node->title->value,
-          'url' => $article_node->toUrl(),
-          'published' => date('d.m.y H:i', $article_node->field_published->date->getTimeStamp()),
-        ];
-      }
-    }
-  }
-
-  $variables['articles'] = $articles;
 }
 
 /**

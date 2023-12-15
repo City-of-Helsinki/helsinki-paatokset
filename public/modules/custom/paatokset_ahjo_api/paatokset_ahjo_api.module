@@ -805,7 +805,7 @@ function _paatokset_ahjo_api_lookup_organization_nid(string $decisionmaker_id): 
  * @param int $length
  *   Max length of string.
  *
- * @return string|null
+ * @return string
  *   Truncated value.
  */
 function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): string {
@@ -980,7 +980,7 @@ function _paatokset_ahjo_api_get_existing_value_with_override(array $values) {
  * @return string|null
  *   Top category name based on the first part of the code, if found.
  */
-function _paatokset_ahjo_api_get_top_category(array $values): ?string {
+function _paatokset_ahjo_api_get_top_category(mixed $values): ?string {
   if (!is_array($values)) {
     return NULL;
   }
