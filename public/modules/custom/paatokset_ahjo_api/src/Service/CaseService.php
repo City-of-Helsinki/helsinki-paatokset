@@ -148,11 +148,9 @@ class CaseService {
 
     if ($case instanceof NodeInterface && $case->bundle() === self::CASE_NODE_TYPE) {
       $this->case = $case;
+      $this->caseId = $case->get('field_diary_number')->value;
+      $this->selectedDecision = $this->guessDecisionFromPath($case);
     }
-
-    // This crashes if $case is NULL:
-    $this->caseId = $case->get('field_diary_number')->value;
-    $this->selectedDecision = $this->guessDecisionFromPath($case);
   }
 
   /**
@@ -171,9 +169,10 @@ class CaseService {
 
     if (!empty($cases)) {
       $this->case = reset($cases);
-      $this->caseId = $case_id;
-      $this->selectedDecision = $decision;
     }
+
+    $this->caseId = $case_id;
+    $this->selectedDecision = $decision;
   }
 
   /**
