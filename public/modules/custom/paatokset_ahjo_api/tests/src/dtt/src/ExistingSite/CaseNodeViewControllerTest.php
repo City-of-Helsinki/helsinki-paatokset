@@ -137,6 +137,7 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
    * @return array
    *   Test data.
    */
+  // phpcs:ignore
   private function canonicalUrlData(): array {
     // Format ['url', 'expected canonical url'].
     return [
