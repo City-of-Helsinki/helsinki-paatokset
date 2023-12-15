@@ -51,6 +51,33 @@
   }
 }
 
+.policymaker-organization {
+  margin-top: $spacing-and-half;
+
+  @include breakpoint($breakpoint-m) {
+    margin-top: $spacing-double;
+  }
+
+  .organizations {
+    @include font(body);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+
+    .hel-icon {
+      --icon-size: 18px;
+    }
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    margin-top: $spacing-and-half;
+    border-bottom: 2px solid $color-black;
+    width: 90px;
+  }
+}
+
 .policymaker-image {
   margin-bottom: $spacing-triple;
 

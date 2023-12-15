@@ -14,7 +14,7 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
  * @SearchApiProcessor(
  *    id = "organization_hierarchy",
  *    label = @Translation("Show organizations as hierarchy"),
- *    description = @Translation("Full organization path as a hierarchy."),
+ *    description = @Translation("Full organization path in hierarchical order."),
  *    stages = {
  *      "alter_items" = -50
  *    }

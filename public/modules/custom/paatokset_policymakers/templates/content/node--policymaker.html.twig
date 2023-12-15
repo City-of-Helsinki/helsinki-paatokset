@@ -96,9 +96,7 @@
           {{ organization_type }}
         </div>
       </div>
-      <div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
-        {{  organization_hierarchy }}
-      </div>
+      {{  organization_hierarchy }}
     {% endif %}
     {% if not is_active %}
       <div class="warning-label">
