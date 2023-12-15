@@ -154,7 +154,7 @@ class CaseService {
   }
 
   /**
-   * Set entities from decision.
+   * Set entities from decision. Can be used if decision is found but not case.
    *
    * @param \Drupal\node\NodeInterface $decision
    *   Decision node.
@@ -167,10 +167,12 @@ class CaseService {
       'limit' => 1,
     ]);
 
+    // Set selected case, if found.
     if (!empty($cases)) {
       $this->case = reset($cases);
     }
 
+    // Set case ID and decision based on decision node data.
     $this->caseId = $case_id;
     $this->selectedDecision = $decision;
   }
