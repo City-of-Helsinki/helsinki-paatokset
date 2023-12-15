@@ -9,16 +9,16 @@
 #}
 
 {% if organizations %}
-    <div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
-        <div class="organizations hds-tag__container">
-            {% for item in organizations %}
-                <span class="">
-                    {% if not loop.first %}
-                        {% include '@hdbt/misc/icon.twig' with {icon: 'angle-right'} %}
-                    {% endif %}
-                    {{ item.title|striptags }}
-                </span>
-            {% endfor %}
-        </div>
-    </div>
+	<div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
+		<div class="organizations hds-tag__container">
+			{% for item in organizations %}
+				<span class="">
+					{% if not loop.first %}
+						{% include '@hdbt/misc/icon.twig' with {icon: 'angle-right'} %}
+					{% endif %}
+					{{ item.title|striptags }}
+				</span>
+			{% endfor %}
+		</div>
+	</div>
 {% endif %}
