@@ -89,7 +89,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     private CacheBackendInterface $dataCache,
     private EntityTypeManagerInterface $entityTypeManager,
     private MigrationPluginManager $migrationManager,
-    private LoggerChannelFactoryInterface $logger_factory,
+    LoggerChannelFactoryInterface $logger_factory,
     private MessengerInterface $messenger,
     private FileRepositoryInterface $fileRepository,
     private ConfigFactoryInterface $config,

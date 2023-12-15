@@ -51,7 +51,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
   /**
-   * Build the attributes.
+   * {@inheritdoc}
    */
   public function build() {
     $council_id = $this->config->get('paatokset_helsinki_kanava.settings')->get('city_council_id');
@@ -87,21 +87,14 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
   /**
-   * Set cache age to zero.
-   */
-  public function getCacheMaxAge() {
-    return 0;
-  }
-
-  /**
-   * Get cache contexts.
+   * {@inheritdoc}
    */
   public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
   /**
-   * Get cache tags.
+   * {@inheritdoc}
    */
   public function getCacheTags() {
     return ['meeting_video_list', 'node_list:meeting'];

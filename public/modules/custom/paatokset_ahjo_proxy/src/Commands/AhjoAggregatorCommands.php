@@ -48,7 +48,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Module extension list.
    */
   public function __construct(
-    private LoggerChannelFactoryInterface $logger_factory,
+    LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
     private EntityTypeManagerInterface $entityTypeManager,
     private FileRepositoryInterface $fileRepository,
@@ -2946,13 +2946,12 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $ids = $query->execute();
     $id = reset($ids);
-
-    $node = $this->nodeStorage->load($id);
-    if (!$node instanceof NodeInterface) {
+    if (empty($id) || !$node = $this->nodeStorage->load($id) instanceof NodeInterface) {
       $this->writeln(sprintf('No meeting found with ID: %s', $meeting_id));
       return;
     }
 
+    /** @var Drupal\node\NodeInterface $node */
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
 

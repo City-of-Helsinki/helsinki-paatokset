@@ -16,21 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 class MeetingController extends ControllerBase {
 
   /**
-   * Instance of MeetingService.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\MeetingService
+   * {@inheritDoc}
    */
-  protected $meetingService;
-
-  /**
-   * Class constuctor.
-   */
-  public function __construct(MeetingService $meetingService) {
-    $this->meetingService = $meetingService;
+  public function __construct(protected MeetingService $meetingService) {
   }
 
   /**
-   * Create and inject.
+   * {@inheritDoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
