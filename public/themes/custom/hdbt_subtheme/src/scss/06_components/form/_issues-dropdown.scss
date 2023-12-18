@@ -25,6 +25,12 @@
       background-color: transparent;
     }
 
+    &[disabled]:hover:active,
+    &[disabled]:hover:focus {
+      color: $color-black;
+      background-color: transparent;
+    }
+
     &[disabled] .hel-icon.hel-icon--angle-down {
       display: none;
     }
