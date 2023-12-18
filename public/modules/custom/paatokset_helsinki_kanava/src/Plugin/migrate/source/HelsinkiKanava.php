@@ -139,7 +139,6 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
     $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
-    $previousMeetingDate = $meetingsService->previousMeetingDate($council_id);
     $fromTime = strtotime('-4 months') * 1000;
     $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
     $toTime = $nextMeetingDate ? $nextMeetingDate * 1000 : round(microtime(TRUE) * 1000);

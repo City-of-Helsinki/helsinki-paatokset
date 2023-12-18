@@ -3,7 +3,11 @@
 namespace Drupal\paatokset_policymakers\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Contacts Block.
@@ -14,22 +18,33 @@ use Drupal\node\NodeInterface;
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class ContactsBlock extends BlockBase {
+class ContactsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * PolicymakerService instance.
-   *
-   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
+   * {@inheritDoc}
    */
-  private $policymakerService;
-
-  /**
-   * Class constructor.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private EntityTypeManagerInterface $entityTypeManager,
+    private PolicymakerService $policymakerService,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('paatokset_policymakers');
     $this->policymakerService->setPolicyMakerByPath();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager'),
+      $container->get('paatokset_policymakers')
+    );
   }
 
   /**
@@ -58,7 +73,7 @@ class ContactsBlock extends BlockBase {
           'url.query_args',
         ],
       ],
-      '#title' => t('Contact information'),
+      '#title' => $this->t('Contact information'),
       'contacts' => $this->getContacts(),
       '#attributes' => [
         'class' => ['policymaker-contacts'],
@@ -80,9 +95,11 @@ class ContactsBlock extends BlockBase {
     }
 
     $renderableEntities = [];
-    $entities = $policymaker->get('field_contacts')->referencedEntities();
-    foreach ($entities as $entity) {
-      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('tpr_unit');
+
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $field */
+    $field = $policymaker->get('field_contacts');
+    foreach ($field->referencedEntities() as $entity) {
+      $view_builder = $this->entityTypeManager->getViewBuilder('tpr_unit');
       $build = $view_builder->view($entity, 'contact_card');
 
       $renderableEntities[] = $build;

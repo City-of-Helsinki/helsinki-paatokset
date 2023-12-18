@@ -14,7 +14,7 @@
 
       function moveFocus(element) {
         element
-          .closest(".accordion__wrapper")
+          .closest(".accordion-inner__wrapper")
           .querySelector(".accordion-item__button--toggle")
           .focus();
       }

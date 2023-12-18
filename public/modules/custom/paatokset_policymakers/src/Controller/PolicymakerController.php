@@ -2,7 +2,9 @@
 
 namespace Drupal\paatokset_policymakers\Controller;
 
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -14,13 +16,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class PolicymakerController extends ControllerBase {
 
+  use StringTranslationTrait;
+
   /**
    * Controller for policymaker subpages.
    *
+   * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
    */
   public function __construct(
+    private ImmutableConfig $config,
     private PolicymakerService $policymakerService
   ) {
     $this->policymakerService->setPolicyMakerByPath();
@@ -31,6 +38,7 @@ class PolicymakerController extends ControllerBase {
    */
   public static function create(ContainerInterface $container): static {
     return new static(
+      $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
       $container->get('paatokset_policymakers')
     );
   }
@@ -49,9 +57,13 @@ class PolicymakerController extends ControllerBase {
     }
 
     $documentsDescription = $policymaker->get('field_documents_description')->value;
+    if (empty($documentsDescription)) {
+      $documentsDescription = $this->config->get('documents_description.value');
+    }
+
     $build = [
-      '#title' => t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
-      '#markup' => '<div class="policymaker-text">' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>',
+      '#title' => $this->t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
+      '#markup' => '<div class="policymaker-text">' . $documentsDescription . '</div>',
     ];
 
     return $build;
@@ -89,9 +101,12 @@ class PolicymakerController extends ControllerBase {
     }
 
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
+    if (empty($decisionsDescription)) {
+      $decisionsDescription = $this->config->get('decisions_description.value');
+    }
     $build = [
-      '#title' => t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      '#markup' => '<div class="policymaker-text">' . ($decisionsDescription ? $decisionsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description.value')) . '</div>',
+      '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+      '#markup' => '<div class="policymaker-text">' . $decisionsDescription . '</div>',
     ];
 
     return $build;
@@ -122,7 +137,7 @@ class PolicymakerController extends ControllerBase {
    *   Render array.
    */
   public function discussionMinutes(): array {
-    $build = ['#title' => t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
+    $build = ['#title' => $this->t('Discussion minutes: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value])];
     return $build;
   }
 
@@ -145,11 +160,14 @@ class PolicymakerController extends ControllerBase {
     if ($meetingData) {
       $policymaker = $this->policymakerService->getPolicymaker();
       $documentsDescription = $policymaker->get('field_documents_description')->value;
+      if (empty($documentsDescription)) {
+        $documentsDescription = $this->config->get('documents_description.value');
+      }
 
       $build['meeting'] = $meetingData['meeting'];
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
-      $build['#documents_description'] = '<div>' . (!empty($documentsDescription) ? $documentsDescription : \Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description.value')) . '</div>';
+      $build['#documents_description'] = '<div>' . $documentsDescription . '</div>';
 
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
@@ -207,7 +225,7 @@ class PolicymakerController extends ControllerBase {
       return $this->policymakerService->getMeetingTitle($meeting);
     }
 
-    return t('Minutes');
+    return $this->t('Minutes');
   }
 
   /**

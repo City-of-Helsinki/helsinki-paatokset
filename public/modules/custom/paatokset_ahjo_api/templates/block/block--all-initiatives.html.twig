@@ -12,11 +12,11 @@
       <div class="decision-tree__title">
         <span>{{ 'Select year' |trans }}</span>
       </div>
-      {% embed "@hdbt/misc/container.twig" with {container_element: 'accordion'} %}
+      {% embed "@hdbt/misc/container.twig" with {container_element: 'tabbed-content'} %}
         {% block container_content %}
-          <div class="accordion__wrapper tabbed-list">
-            <div class="accordion-item__content tabbed-list__content">
-              <div class="accordion-item__content__inner tabbed-list__content__inner">
+          <div class="tabbed-list">
+            <div class="tabbed-list__content">
+              <div class="tabbed-list__content__inner">
                 <ul class="menu">
                   {% for year in years %}
                     {% set item_attributes = create_attribute() %}
@@ -35,6 +35,22 @@
                     </li>
                   {% endfor %}
                 </ul>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select">
+                    <div class="custom-select__trigger" id="custom-select__trigger"><span id="showMoreTitle">{{ 'Show more' |trans }}</span>
+                      <div class="arrow">
+                        <i class="hel-icon hel-icon--angle-down"></i>
+                      </div>
+                    </div>
+                    <div class="custom-options" id="custom-options">
+                      {% for year in years %}
+                        <div class="custom-option">
+                          <input type="button" value="{{ year }}"/>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

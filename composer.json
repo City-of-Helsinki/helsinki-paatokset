@@ -161,9 +161,11 @@
         ],
         "test": [
             "@lint-php",
-            "@test-php"
+            "@test-php",
+            "@analyze-php"
         ],
         "test-php": "vendor/bin/phpunit -c $PWD/phpunit.xml.dist",
-        "lint-php": "vendor/bin/phpcs --standard=Drupal"
+        "lint-php": "vendor/bin/phpcs --ignore=*.js,*.css --standard=Drupal,DrupalPractice",
+        "analyze-php": "vendor/bin/phpstan analyze"
     }
 }

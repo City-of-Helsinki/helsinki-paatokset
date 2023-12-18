@@ -35,22 +35,22 @@ class HelsinkiKanavaForm extends ConfigFormBase {
     $form['city_council_id'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('city_council_id'),
-      '#title' => t('City Council ID'),
-      '#description' => 'Id for the city council policymaker.',
+      '#title' => $this->t('City Council ID'),
+      '#description' => $this->t('Id for the city council policymaker.'),
     ];
 
     $form['all_recordings_link'] = [
       '#type' => 'url',
       '#default_value' => $config->get('all_recordings_link'),
-      '#title' => t('All recordings link'),
-      '#description' => 'Link to listing on helsinkikanava.fi containing all recorded meetings',
+      '#title' => $this->t('All recordings link'),
+      '#description' => $this->t('Link to listing on helsinkikanava.fi containing all recorded meetings'),
     ];
 
     $form['debug_mode'] = [
       '#type' => 'checkbox',
       '#default_value' => $config->get('debug_mode'),
-      '#title' => t('Debug mode for integration.'),
-      '#description' => 'Always display livestream for functionality testing, etc.',
+      '#title' => $this->t('Debug mode for integration.'),
+      '#description' => $this->t('Always display livestream for functionality testing, etc.'),
     ];
 
     return parent::buildForm($form, $form_state);

@@ -1,11 +1,12 @@
 .paatokset-accordion {
-  .accordion-item__header {
+  .paatokset-accordion-item__header {
     .handorgel__header__button {
       color: black;
       border: none;
       border-top: 2px solid $color-black-20;
       background-color: #f7f7f8;
-      padding: 32px 32px 32px 0;
+      padding: $spacing-double;
+      padding-left: $spacing-half;
       display: flex;
       justify-content: space-between;
       font-weight: normal;
@@ -16,7 +17,12 @@
       }
     }
   }
-  .accordion-item__header--novotes .handorgel__header__button::after {
+  .handorgel__header--focus .handorgel__header__button {
+    outline: 3px solid $color-black;
+    outline-offset: -3px;
+    position: relative;
+  }
+  .paatokset-accordion-item__header--novotes .handorgel__header__button::after {
     display: none;
   }
 
@@ -25,7 +31,7 @@
     border: none;
   }
 
-  .accordion-item__content__inner {
+  .paatokset-accordion-item__content__inner {
     padding: 0;
     max-width: 90vw;
 
@@ -37,11 +43,11 @@
     }
   }
 
-  .handorgel__content--open .accordion-item__content__inner {
+  .handorgel__content--open .paatokset-accordion-item__content__inner {
     padding-bottom: 64px;
   }
 
-  .accordion__wrapper {
+  .paatokset-accordion__wrapper {
     border: none;
   }
 

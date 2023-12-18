@@ -237,10 +237,10 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       }
 
       if (empty($row['sector'])) {
-        $title = t('Office holders');
+        $title = $this->t('Office holders');
       }
       else {
-        $title = t('Office holders: @sector_title', ['@sector_title' => $row['sector']]);
+        $title = $this->t('Office holders: @sector_title', ['@sector_title' => $row['sector']]);
       }
 
       $sectors_occupants[$row['sector']] = [
@@ -263,13 +263,13 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
     $accordions = [];
     if (!empty($hallituksen_jaosto)) {
       $accordions[] = [
-        'heading' => t('City Board sub-committees'),
+        'heading' => $this->t('City Board sub-committees'),
         'items' => $hallituksen_jaosto,
       ];
     }
     if (!empty($sectors)) {
       $accordions[] = [
-        'heading' => t('Committees and Boards'),
+        'heading' => $this->t('Committees and Boards'),
         'items' => $sectors,
       ];
     }
@@ -285,7 +285,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
     if (!empty($accordion_contents['trustee']['items'])) {
       $accordions[] = [
-        'heading' => t('Elected official decisionmakers'),
+        'heading' => $this->t('Elected official decisionmakers'),
         'items' => $accordion_contents['trustee']['items'],
       ];
     }
@@ -399,7 +399,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
     if (!empty($items)) {
       return [
-        'heading' => t('City Council members'),
+        'heading' => $this->t('City Council members'),
         'items' => $items,
       ];
     }

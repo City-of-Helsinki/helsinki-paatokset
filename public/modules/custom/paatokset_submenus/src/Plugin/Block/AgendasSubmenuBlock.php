@@ -3,7 +3,10 @@
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
@@ -14,21 +17,31 @@ use Drupal\node\NodeInterface;
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class AgendasSubmenuBlock extends BlockBase {
-  /**
-   * PolicymakerService instance.
-   *
-   * @var Drupal\paatokset_policymakers\Service\PolicymakerService
-   */
-  private $policymakerService;
+class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Class constructor.
+   * {@inheritDoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private PolicymakerService $policymakerService,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService = \Drupal::service('paatokset_policymakers');
     $this->policymakerService->setPolicyMakerByPath();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('paatokset_policymakers')
+    );
   }
 
   /**

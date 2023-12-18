@@ -53,15 +53,15 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     $form['links']['committees_boards_url'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('committees_boards_url'),
-      '#title' => t('Committees and boards URL'),
-      '#description' => t('Used on the decision tree page.'),
+      '#title' => $this->t('Committees and boards URL'),
+      '#description' => $this->t('Used on the decision tree page.'),
     ];
 
     $form['links']['office_holders_url'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('office_holders_url'),
-      '#title' => t('Office holders URL'),
-      '#description' => t('Used on the decision tree page.'),
+      '#title' => $this->t('Office holders URL'),
+      '#description' => $this->t('Used on the decision tree page.'),
     ];
 
     $form['alerts'] = [
@@ -133,7 +133,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     $form['banner']['banner_heading'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('banner_heading'),
-      '#title' => t('Banner heading'),
+      '#title' => $this->t('Banner heading'),
     ];
 
     $form['banner']['banner_text'] = [
@@ -146,13 +146,13 @@ class DefaultTextSettingsForm extends ConfigFormBase {
     $form['banner']['banner_label'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('banner_label'),
-      '#title' => t('CTA button label'),
+      '#title' => $this->t('CTA button label'),
     ];
 
     $form['banner']['banner_url'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('banner_url'),
-      '#title' => t('CTA button link'),
+      '#title' => $this->t('CTA button link'),
     ];
 
     return parent::buildForm($form, $form_state);

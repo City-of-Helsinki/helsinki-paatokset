@@ -47,15 +47,15 @@ class DisallowedDecisionsPrefixesForm extends ConfigFormBase {
     $form['years'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('years'),
-      '#title' => t('Disallowed decision years'),
-      '#description' => t('Years separated by a comma.'),
+      '#title' => $this->t('Disallowed decision years'),
+      '#description' => $this->t('Years separated by a comma.'),
     ];
 
     $form['id_prefixes'] = [
       '#type' => 'textfield',
       '#default_value' => $config->get('id_prefixes'),
-      '#title' => t('Disallowed decision organisation prefixes'),
-      '#description' => t('Org ID prefixes separated by a comma.'),
+      '#title' => $this->t('Disallowed decision organisation prefixes'),
+      '#description' => $this->t('Org ID prefixes separated by a comma.'),
     ];
 
     return parent::buildForm($form, $form_state);

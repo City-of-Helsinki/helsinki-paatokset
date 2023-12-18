@@ -5,17 +5,36 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_council_info\Form;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use League\Csv\Reader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Councilmember info import form.
  */
 class InfoImportForm extends FormBase {
+
+  /**
+   * EntityTypeManager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    $instance = parent::create($container);
+    $instance->entityTypeManager = $container->get('entity_type.manager');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -99,18 +118,16 @@ class InfoImportForm extends FormBase {
       return;
     }
 
-    $entity_manager = \Drupal::service('entity_type.manager');
-    $file_storage = $entity_manager->getStorage('file');
-    $messenger = \Drupal::service('messenger');
+    $file_storage = $this->entityTypeManager->getStorage('file');
     $file = $file_storage->load($file_id);
 
     if (!$file instanceof FileInterface) {
-      $messenger->addError('File could not be loaded.');
+      $this->messenger->addError('File could not be loaded.');
       return;
     }
 
     if ($file->get('filemime')->value !== 'text/csv') {
-      $messenger->addError('File must be a CSV file.');
+      $this->messenger->addError('File must be a CSV file.');
       return;
     }
 
@@ -118,19 +135,19 @@ class InfoImportForm extends FormBase {
     if ($file_setting === 'permanent') {
       $file->setPermanent();
       $file->save();
-      $messenger->addMessage('File is now stored permanently.');
+      $this->messenger->addMessage('File is now stored permanently.');
     }
     elseif ($file_setting === 'temporary') {
       $file->setTemporary();
       $file->save();
-      $messenger->addMessage('File storage set to temporary.');
+      $this->messenger->addMessage('File storage set to temporary.');
     }
 
     try {
       $csv_reader = $this->getCsvReader($file);
     }
     catch (\Exception $e) {
-      $messenger->addMessage($e->getMessage(), 'error');
+      $this->messenger->addMessage($e->getMessage(), 'error');
       return;
     }
 
@@ -147,16 +164,16 @@ class InfoImportForm extends FormBase {
     }
 
     if (empty($operations)) {
-      $messenger->addWarning('Nothing to import');
+      $this->messenger->addWarning('Nothing to import');
       return;
     }
 
     $batch = [
-      'title' => t('Importing council member information.'),
+      'title' => $this->t('Importing council member information.'),
       'operations' => $operations,
-      'init_message'     => t('Starting batch'),
-      'progress_message' => t('Processed @current out of @total.'),
-      'error_message'    => t('An error occurred during processing'),
+      'init_message'     => $this->t('Starting batch'),
+      'progress_message' => $this->t('Processed @current out of @total.'),
+      'error_message'    => $this->t('An error occurred during processing'),
       'finished' => '\Drupal\paatokset_council_info\Form\InfoImportForm::finishedCallback',
     ];
 
@@ -190,6 +207,7 @@ class InfoImportForm extends FormBase {
    */
   public static function doProcess($data, &$context) {
     $logger = \Drupal::logger('paatokset_council_info');
+
     $context['message'] = 'Importing item number ' . $data['count'];
     if (!isset($context['results']['items'])) {
       $context['results']['items'] = [];

@@ -13,11 +13,6 @@
 }
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-and-half;
-  --line-height:1.5555555556;
-
-  @include breakpoint($breakpoint-m) {
-    margin-bottom: $spacing-double + 8px;
-  }
 
   p {
     font-size: $fontsize-body-l;
@@ -29,7 +24,7 @@
 
   .policymaker-summary__label {
     display: flex;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-double;
   }
 
   .issue__favorite-button {

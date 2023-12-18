@@ -68,18 +68,17 @@
 }
 
 .node--type-trustee {
-  .accordion-item__header {
-    font-size: 1.5rem;
+  .accordion-legacy-item__header {
 
     .handorgel__header__button {
+      font-size: 1.5rem;
       color: black;
       border: none;
       border-top: 2px solid $color-black-20;
-      padding: 24px;
+      padding: $spacing-and-half;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 32px 32px 32px 0;
     }
 
     .icon {
@@ -112,18 +111,18 @@
     padding: 0;
   }
 
-  .accordion-item__content__inner {
-    padding: 0;
+  .accordion-legacy-item__content__inner {
+    padding: $spacing-and-half;
   }
 
-  .accordion__wrapper.handorgel {
+  .accordion-legacy__wrapper.handorgel {
     border: none;
   }
 
   .accordion-item__button--close {
     display: flex;
     justify-content: right;
-    padding: 24px;
+    padding: $spacing-and-half;
     cursor: pointer;
 
     .icon {
@@ -134,7 +133,7 @@
 
 .accordion_initiatives,
 .accordion_resolutions {
-  .accordion-item__content__inner > div {
+  .accordion-legacy-item__content__inner > div {
     margin-bottom: $spacing;
   }
 
@@ -150,7 +149,7 @@
 }
 
 .accordion_speaking-turn {
-  .accordion-item__content__inner > div {
+  .accordion-legacy-item__content__inner > div {
     margin-bottom: $spacing;
   }
 

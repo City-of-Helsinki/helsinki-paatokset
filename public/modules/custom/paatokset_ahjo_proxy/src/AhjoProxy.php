@@ -12,6 +12,8 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
@@ -20,6 +22,7 @@ use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationPluginManager;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -49,6 +52,13 @@ class AhjoProxy implements ContainerInjectionInterface {
   protected bool $useRequestCache = TRUE;
 
   /**
+   * Case service.
+   *
+   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
+   */
+  private CaseService $caseService;
+
+  /**
    * Constructs Ahjo Proxy service.
    *
    * @param \GuzzleHttp\ClientInterface $httpClient
@@ -61,12 +71,16 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Migration manager.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   Messenger service.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
    *   File repository.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   Config factory.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
+   * @param \Drupal\Core\Queue\QueueFactory $queue
+   *   Queue factory.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjoOpenId
    *   Ahjo Open ID service.
    */
@@ -76,12 +90,19 @@ class AhjoProxy implements ContainerInjectionInterface {
     private EntityTypeManagerInterface $entityTypeManager,
     private MigrationPluginManager $migrationManager,
     LoggerChannelFactoryInterface $logger_factory,
+    private MessengerInterface $messenger,
     private FileRepositoryInterface $fileRepository,
     private ConfigFactoryInterface $config,
     private Connection $database,
+    private QueueFactory $queue,
     private AhjoOpenId $ahjoOpenId
   ) {
     $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
+
+    // Using dependency injection here fails on `make new` due to cyclical
+    // dependency with paatokset_ahjo_api module.
+    // phpcs:ignore
+    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
   }
 
   /**
@@ -94,9 +115,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       $container->get('entity_type.manager'),
       $container->get('plugin.manager.migration'),
       $container->get('logger.factory'),
+      $container->get('messenger'),
       $container->get('file.repository'),
       $container->get('config.factory'),
       $container->get('database'),
+      $container->get('connection'),
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -431,20 +454,21 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Structured array with organizations, or NULL if first org is not found.
    */
   public function getOrgChart(string $orgId, int $steps = 3, string $langcode = 'fi'): ?array {
-    $query = \Drupal::entityQuery('node')
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $ids = $nodeStorage('node')->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->range(0, 1)
       ->condition('field_policymaker_id', $orgId)
-      ->condition('type', 'organization');
+      ->condition('type', 'organization')
+      ->execute();
 
-    $ids = $query->execute();
     if (empty($ids)) {
       return NULL;
     }
 
     $id = reset($ids);
-    $node = Node::load($id);
+    $node = $nodeStorage->load($id);
     if (!$node instanceof NodeInterface) {
       return NULL;
     }
@@ -500,21 +524,22 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $orgs_below = [];
 
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
     foreach ($node->field_org_level_below_ids as $field) {
-      $query = \Drupal::entityQuery('node')
+      $ids = $nodeStorage->getQuery()
         ->accessCheck(TRUE)
         ->condition('status', 1)
         ->range(0, 1)
         ->condition('field_policymaker_id', $field->value)
-        ->condition('type', 'organization');
+        ->condition('type', 'organization')
+        ->execute();
 
-      $ids = $query->execute();
       if (empty($ids)) {
         continue;
       }
 
       $id = reset($ids);
-      $child_node = Node::load($id);
+      $child_node = $nodeStorage->load($id);
       if ($child_node instanceof NodeInterface) {
         if ($child_node->hasTranslation($langcode)) {
           $child_node = $child_node->getTranslation($langcode);
@@ -999,9 +1024,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Endpoint to get data from.
    */
   protected function updateDecisionHistoryContent(NodeInterface &$node, string $endpoint): void {
-    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $content = $ahjo_proxy->getData($endpoint, NULL);
+    $content = $this->getData($endpoint, NULL);
 
     // Local data is formatted a bit differently.
     if (!empty($content['decisions'])) {
@@ -1042,9 +1065,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
     $query_string = 'apireqlang=' . $langcode;
 
-    /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
-    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $content = $ahjo_proxy->getData($endpoint, $query_string);
+    $content = $this->getData($endpoint, $query_string);
 
     // Local data is formatted a bit differently.
     if (!empty($content['decisions'])) {
@@ -1160,8 +1181,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Set decision record and issued date from case node.
    */
   protected function updateDecisionCaseData(NodeInterface &$node, string $case_id, bool $set_record = FALSE): void {
-    $messenger = \Drupal::messenger();
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'case')
       ->condition('status', 1)
@@ -1171,13 +1192,13 @@ class AhjoProxy implements ContainerInjectionInterface {
     $nids = $query->execute();
 
     if (empty($nids)) {
-      $messenger->addMessage('Case not found: ' . $case_id);
+      $this->messenger->addMessage('Case not found: ' . $case_id);
       $this->addItemToAhjoQueue('cases', $case_id);
       return;
     }
 
     $nid = array_shift($nids);
-    $case = Node::load($nid);
+    $case = $nodeStorage->load($nid);
 
     if (!$case instanceof NodeInterface) {
       return;
@@ -1225,8 +1246,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Meeting ID.
    */
   protected function updateDecisionMeetingData(NodeInterface &$node, string $meeting_id): void {
-    $messenger = \Drupal::messenger();
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -1236,13 +1257,13 @@ class AhjoProxy implements ContainerInjectionInterface {
     $nids = $query->execute();
 
     if (empty($nids)) {
-      $messenger->addMessage('Meeting not found: ' . $meeting_id);
+      $this->messenger->addMessage('Meeting not found: ' . $meeting_id);
       $this->addItemToAhjoQueue('meetings', $meeting_id);
       return;
     }
 
     $nid = array_shift($nids);
-    $meeting = Node::load($nid);
+    $meeting = $nodeStorage->load($nid);
 
     if (!$meeting instanceof NodeInterface) {
       return;
@@ -1309,8 +1330,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   protected function updateCaseTitleFromDecision(NodeInterface &$node, string $endpoint): void {
     // Fetch decision content from endpoint.
-    $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $content = $ahjo_proxy->getData($endpoint, NULL);
+    $content = $this->getData($endpoint, NULL);
 
     // Local and proxy data is formatted a bit differently than API data.
     if (isset($content['decisions'])) {
@@ -1577,7 +1597,8 @@ class AhjoProxy implements ContainerInjectionInterface {
       return NULL;
     }
     $created = (int) (new \DateTime('NOW'))->format('U');
-    $queue = \Drupal::service('queue')->get($queue_name);
+
+    $queue = $this->queue->get($queue_name);
     $item_id = $queue->createItem([
       'id' => $endpoint,
       'content' => (object) [
@@ -2034,9 +2055,6 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $meeting_id = $node->get('field_meeting_id')->value;
 
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-
     $missing = FALSE;
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
@@ -2050,7 +2068,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         continue;
       }
 
-      $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+      $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
       if (!$url instanceof Url) {
         $missing = TRUE;
         break;
@@ -2076,8 +2094,6 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $meeting_id = $node->get('field_meeting_id')->value;
 
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
     $missing = [];
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
@@ -2092,10 +2108,10 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       if (isset($item['Section'])) {
         $section_clean = (string) intval($item['Section']);
-        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id, $section_clean);
+        $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id, $section_clean);
       }
       else {
-        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+        $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
       }
 
       if (!$url instanceof Url) {
@@ -2271,7 +2287,8 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Meeting ID.
    */
   public function markMeetingMotionsAsUnprocessed(string $meeting_id): void {
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -2287,7 +2304,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $nodeStorage->loadMultiple($ids);
     foreach ($nodes as $node) {
       if ($node instanceof NodeInterface) {
         $node->set('field_agenda_items_processed', 0);
@@ -2640,7 +2657,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     // Only invalidate cached agenda item URLs if:
     // - Agenda is published and not empty.
     // - Minutes aren't published yet.
-    $query = $this->entityTypeManager->getStorage('node')->getQuery()
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
       ->condition('status', 1)
@@ -2656,7 +2674,7 @@ class AhjoProxy implements ContainerInjectionInterface {
       return;
     }
 
-    $entity = Node::load(reset($nids));
+    $entity = $nodeStorage->load(reset($nids));
     if (!$entity instanceof NodeInterface) {
       return;
     }

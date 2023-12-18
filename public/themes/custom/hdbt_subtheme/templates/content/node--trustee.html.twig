@@ -78,7 +78,8 @@
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  first_paragraph_grey ? 'has-first-gray-bg-block'
+  first_paragraph_grey ? 'has-first-gray-bg-block',
+  'trustee-content',
 ]
 %}
 
@@ -99,8 +100,8 @@
     <span>{{ content.field_trustee_council_group }}</span>
   </div>
   <div class="trustee-image">
-      {{ content.field_trustee_image }}
-    </div>
+    {{ content.field_trustee_image }}
+  </div>
   {% if
     content.field_trustee_profession|render or
     content.field_trustee_home_district|render or
@@ -158,14 +159,14 @@
   {% endif %}
 
   {% if speaking_turns.content is not empty %}
-  <div class="accordion__wrapper handorgel accordion_speaking-turn">
-    <h2 class="accordion-item__header handorgel__header">
+  <div class="accordion-legacy__wrapper handorgel accordion_speaking-turn">
+    <h2 class="accordion-legacy-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ speaking_turns.title }}</span>
       </button>
     </h2>
-    <div class="accordion-item__content handorgel__content">
-      <div class="accordion-item__content__inner handorgel__content__inner">
+    <div class="accordion-legacy-item__content handorgel__content">
+      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
         {% for year, statements in speaking_turns.content %}
           <h3 class="speaking-turn__group__title">{{ year }}</h3>
           {% for row in statements %}
@@ -178,7 +179,6 @@
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
         </span>
       </div>
     </div>
@@ -186,14 +186,14 @@
   {% endif %}
 
   {% if initiatives.content is not empty %}
-  <div class="accordion__wrapper handorgel accordion_initiatives">
-    <h2 class="accordion-item__header handorgel__header">
+  <div class="accordion-legacy__wrapper handorgel accordion_initiatives">
+    <h2 class="accordion-legacy-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ initiatives.title }}</span>
       </button>
     </h2>
-    <div class="accordion-item__content handorgel__content">
-      <div class="accordion-item__content__inner handorgel__content__inner">
+    <div class="accordion-legacy-item__content handorgel__content">
+      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
         {% for row in initiatives.content %}
         <div>
           <div class="date">{{ row.Date|date("d.m.Y") }}</div>
@@ -202,7 +202,6 @@
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
         </span>
       </div>
     </div>
@@ -210,14 +209,14 @@
   {% endif %}
 
   {% if resolutions.content is not empty %}
-  <div class="accordion__wrapper handorgel accordion_resolutions">
-    <h2 class="accordion-item__header handorgel__header">
+  <div class="accordion-legacy__wrapper handorgel accordion_resolutions">
+    <h2 class="accordion-legacy-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ resolutions.title }}</span>
       </button>
     </h2>
-    <div class="accordion-item__content handorgel__content">
-      <div class="accordion-item__content__inner handorgel__content__inner">
+    <div class="accordion-legacy-item__content handorgel__content">
+      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
         {% for row in resolutions.content %}
         <div>
           <div class="date">{{ row.Date|date("d.m.Y") }}</div>
@@ -226,7 +225,6 @@
         {% endfor %}
         <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
         </span>
       </div>
     </div>
@@ -234,22 +232,21 @@
   {% endif %}
 
   {% if memberships.content is not empty %}
-  <div class="accordion__wrapper handorgel accordion_speaking-turn">
-    <h2 class="accordion-item__header handorgel__header">
+  <div class="accordion-legacy__wrapper handorgel accordion_speaking-turn">
+    <h2 class="accordion-legacy-item__header handorgel__header">
       <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
         <span>{{ memberships.title }}</span>
       </button>
     </h2>
-    <div class="accordion-item__content handorgel__content">
-      <div class="accordion-item__content__inner handorgel__content__inner">
+    <div class="accordion-legacy-item__content handorgel__content">
+      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
         {% for row in memberships.content %}
         <div>
           {{ row }}
         </div>
         {% endfor %}
-        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
+        <span class="accordion-legacy-item__button accordion-item__button--close" role="button" tabindex="0">
           {{ 'Close'|t }}
-          {% include '@hdbt/misc/icon.twig' with {icon: 'angle-up'} %}
         </span>
       </div>
     </div>

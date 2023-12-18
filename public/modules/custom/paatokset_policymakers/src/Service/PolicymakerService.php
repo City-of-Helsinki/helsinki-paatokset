@@ -5,21 +5,24 @@ declare(strict_types = 1);
 namespace Drupal\paatokset_policymakers\Service;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
-use Drupal\file\Entity\File;
-use Drupal\image\Entity\ImageStyle;
-use Drupal\media\Entity\Media;
+use Drupal\file\FileInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\path_alias\AliasManagerInterface;
+use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\search_api\Entity\Index;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +33,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @package Drupal\paatokset_ahjo_api\Serivces
  */
 class PolicymakerService {
+
+  use StringTranslationTrait;
 
   /**
    * Machine name for meeting node type.
@@ -75,31 +80,50 @@ class PolicymakerService {
   private MeetingService $meetingService;
 
   /**
+   * Case service.
+   *
+   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
+   */
+  private CaseService $caseService;
+
+  /**
    * Constructs policymaker service.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   Language manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
+   * @param Drupal\Core\Config\ConfigFactoryInterface $config
+   *   Config service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   Route match service.
    * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
    *   Path alias manager.
+   * @param \Drupal\pathauto\AliasCleanerInterface $pathAliasCleaner
+   *   Path alias cleaner.
+   * @param \Drupal\Core\File\FileUrlGenerator $fileUrlGenerator
+   *   File URL generator.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
    */
   public function __construct(
     private LanguageManagerInterface $languageManager,
-    EntityTypeManagerInterface $entityTypeManager,
+    private EntityTypeManagerInterface $entityTypeManager,
+    private ConfigFactoryInterface $config,
     private RouteMatchInterface $routeMatch,
     private AliasManagerInterface $pathAliasManager,
+    private AliasCleanerInterface $pathAliasCleaner,
+    private FileUrlGeneratorInterface $fileUrlGenerator,
     private LoggerInterface $logger,
   ) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
 
     // Using dependency injection here fails on `make new` due to cyclical
     // dependency with paatokset_ahjo_api module.
+    // phpcs:ignore
     $this->meetingService = \Drupal::service('paatokset_ahjo_meetings');
+    // phpcs:ignore
+    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
   }
 
   /**
@@ -580,7 +604,7 @@ class PolicymakerService {
     $main_title = $xpath->query("//*[contains(@class, 'Paattaja')]");
     if ($main_title) {
       foreach ($main_title as $node) {
-        $announcement_title = t('Decision announcement: @title', ['@title' => $node->nodeValue]);
+        $announcement_title = $this->t('Decision announcement: @title', ['@title' => $node->nodeValue]);
       }
     }
 
@@ -610,8 +634,6 @@ class PolicymakerService {
 
     $accordions = [];
     $main_sections = $xpath->query("//*[@class='Tiedote']");
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
 
     if ($main_sections) {
       foreach ($main_sections as $node) {
@@ -644,12 +666,12 @@ class PolicymakerService {
 
           // Next try to get URL without loading nodes.
           if (!$motion_url instanceof Url) {
-            $motion_url = $caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+            $motion_url = $this->caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
           }
 
           // Last try to get URL based on native ID.
           if (!$motion_url instanceof Url) {
-            $motion_url = $caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+            $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
           }
 
           if ($motion_url instanceof Url) {
@@ -909,7 +931,9 @@ class PolicymakerService {
       return [];
     }
 
-    $meeting = Node::load(reset($ids));
+    $id = reset($ids);
+
+    $meeting = $this->nodeStorage->load($id);
     if (!$meeting instanceof NodeInterface) {
       return [];
     }
@@ -991,6 +1015,7 @@ class PolicymakerService {
     $results = [];
     $person_nodes = $this->getTrusteeNodesByName($names);
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+    $imageStyleStorage = $this->entityTypeManager->getStorage('image_style');
     foreach ($person_nodes as $node) {
       if ($node->hasTranslation($currentLanguage)) {
         $node = $node->getTranslation($currentLanguage);
@@ -1000,7 +1025,8 @@ class PolicymakerService {
 
       if ($node->hasField('field_trustee_image') && !$node->get('field_trustee_image')->isEmpty()) {
         $image_uri = $node->get('field_trustee_image')->first()->entity->getFileUri();
-        $image_style = ImageStyle::load('1_1_thumbnail_2x');
+        $image_style = $imageStyleStorage->load('1_1_thumbnail_2x');
+        /** @var \Drupal\image\Entity\ImageStyle $image_style */
         $image_url = $image_style->buildUrl($image_uri);
       }
       else {
@@ -1076,19 +1102,19 @@ class PolicymakerService {
     $context = ['context' => 'Council group members list'];
     switch ($role) {
       case 'Jäsen':
-        $translation = t('Member', [], $context);
+        $translation = $this->t('Member', [], $context);
         break;
 
       case 'Varajäsen':
-        $translation = t('Deputy member', [], $context);
+        $translation = $this->t('Deputy member', [], $context);
         break;
 
       case 'Puheenjohtaja':
-        $translation = t('Chairman', [], $context);
+        $translation = $this->t('Chairman', [], $context);
         break;
 
       case 'Varapuheenjohtaja':
-        $translation = t('Vice chairman', [], $context);
+        $translation = $this->t('Vice chairman', [], $context);
         break;
 
       default:
@@ -1127,7 +1153,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    $trustee_id = \Drupal::service('pathauto.alias_cleaner')->cleanString($node->get('field_trustee_id')->value);
+    $trustee_id = $this->pathAliasCleaner->cleanString($node->get('field_trustee_id')->value);
 
     $localized_route = 'policymaker.page.' . $langcode;
     if ($this->routeExists($localized_route)) {
@@ -1159,15 +1185,15 @@ class PolicymakerService {
       $path_prefix = '/paattajat';
     }
 
-    $path = \Drupal::service('path_alias.manager')->getPathByAlias($path_prefix . '/' . $agent_id, $currentLanguage);
-    $fallback_path = \Drupal::service('path_alias.manager')->getPathByAlias($fallback_prefix . '/' . $agent_id, $fallback_lang);
+    $path = $this->pathAliasManager->getPathByAlias($path_prefix . '/' . $agent_id, $currentLanguage);
+    $fallback_path = $this->pathAliasManager->getPathByAlias($fallback_prefix . '/' . $agent_id, $fallback_lang);
 
     $node = NULL;
     if (preg_match('/node\/(\d+)/', $path, $matches)) {
-      $node = Node::load($matches[1]);
+      $node = $this->nodeStorage->load($matches[1]);
     }
     elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
-      $node = Node::load($matches[1]);
+      $node = $this->nodeStorage->load($matches[1]);
     }
 
     return $node;
@@ -1196,7 +1222,7 @@ class PolicymakerService {
       return [];
     }
 
-    return Node::loadMultiple($ids);
+    return $this->nodeStorage->loadMultiple($ids);
   }
 
   /**
@@ -1261,20 +1287,21 @@ class PolicymakerService {
       return [];
     }
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
 
     $transformedResults = [];
     foreach ($nodes as $node) {
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       $meeting_timestamp = strtotime($node->get('field_meeting_date')->value);
       $meeting_year = date('Y', $meeting_timestamp);
       $meeting_id = $node->get('field_meeting_id')->value;
       $decision_link = NULL;
 
       if ($document = $this->meetingService->getDocumentFromEntity($node, 'pöytäkirja')) {
-        $document_title = t('Minutes');
+        $document_title = $this->t('Minutes');
       }
       elseif ($document = $this->meetingService->getDocumentFromEntity($node, 'esityslista')) {
-        $document_title = t('Agenda');
+        $document_title = $this->t('Agenda');
         if (!$node->get('field_meeting_decision')->isEmpty()) {
           $decision_link = $this->getMinutesRoute($meeting_id);
         }
@@ -1337,7 +1364,8 @@ class PolicymakerService {
       return NULL;
     }
 
-    return Node::load(reset($ids));
+    $id = reset($ids);
+    return $this->nodeStorage->load($id);
   }
 
   /**
@@ -1384,16 +1412,16 @@ class PolicymakerService {
 
     // Prefer pöytäkirja if it exists.
     if ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'pöytäkirja', $currentLanguage)) {
-      $pageTitle = t('Minutes');
-      $documentTitle = t('Minutes publication date');
+      $pageTitle = $this->t('Minutes');
+      $documentTitle = $this->t('Minutes publication date');
     }
     // Fall back to esityslist.
     elseif ($document = $this->getMeetingDocumentWithLanguageFallback($meeting, 'esityslista', $currentLanguage)) {
-      $pageTitle = t('Agenda');
-      $documentTitle = t('Agenda publication date');
+      $pageTitle = $this->t('Agenda');
+      $documentTitle = $this->t('Agenda publication date');
     }
     else {
-      $pageTitle = t('Meeting');
+      $pageTitle = $this->t('Meeting');
       $documentTitle = NULL;
     }
 
@@ -1504,9 +1532,6 @@ class PolicymakerService {
    *   Array of agenda items. Can be empty.
    */
   private function getAgendaItems(FieldItemListInterface $list_field, string $meeting_id, string $langcode = 'fi'): array {
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-
     $agendaItems = [];
     $agendaItemsLast = [];
     $last_count = 0;
@@ -1523,7 +1548,7 @@ class PolicymakerService {
       }
 
       if (!empty($data['Section']) && !empty($data['AgendaPoint']) && $data['AgendaPoint'] !== 'null') {
-        $index = t('Case @point. / @section', [
+        $index = $this->t('Case @point. / @section', [
           '@point' => $data['AgendaPoint'],
           '@section' => $data['Section'],
         ]);
@@ -1544,26 +1569,26 @@ class PolicymakerService {
       $native_id = NULL;
       if (!empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
         $native_id = $data['PDF']['NativeId'];
-        $agenda_link = $caseService->getDecisionUrlWithoutNode($native_id, $data['CaseIDLabel'], $langcode);
+        $agenda_link = $this->caseService->getDecisionUrlWithoutNode($native_id, $data['CaseIDLabel'], $langcode);
       }
 
       // Next, try with native ID.
       if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['NativeId'])) {
-        $agenda_link = $caseService->getDecisionUrlByNativeId($data['PDF']['NativeId']);
+        $agenda_link = $this->caseService->getDecisionUrlByNativeId($data['PDF']['NativeId']);
       }
 
       // Next, try with version series ID.
       if (!$agenda_link && !empty($data['PDF']) && !empty($data['PDF']['VersionSeriesId'])) {
-        $agenda_link = $caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);
+        $agenda_link = $this->caseService->getDecisionUrlByVersionSeriesId($data['PDF']['VersionSeriesId']);
       }
 
       // If a decision can't be found with ID or series ID, try with title.
       if (!$agenda_link && !empty($data['Section']) && !empty($data['AgendaItem'])) {
         $section_clean = (string) intval($data['Section']);
-        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
+        $agenda_link = $this->caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id, $section_clean);
       }
       elseif (!$agenda_link) {
-        $agenda_link = $caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
+        $agenda_link = $this->caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
       if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
@@ -1632,10 +1657,10 @@ class PolicymakerService {
 
     $meeting_minutes = $this->getMeetingMediaEntities($ids);
     $meeting_ids = array_keys($meeting_minutes);
-    $nodes = Node::loadMultiple($meeting_ids);
-
+    $nodes = $this->nodeStorage->loadMultiple($meeting_ids);
+    $fileStorage = $this->entityTypeManager->getStorage('file');
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     $transformedResults = [];
-
     foreach ($meeting_minutes as $meeting_id => $meeting) {
       foreach ($meeting as $entity) {
         $meeting_timestamp = $nodes[$meeting_id]->get('field_meeting_date')->date->getTimeStamp();
@@ -1650,9 +1675,14 @@ class PolicymakerService {
         ];
 
         $download_link = NULL;
+        $file = NULL;
         if ($entity->get('field_document')->target_id) {
           $file_id = $entity->get('field_document')->target_id;
-          $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
+          $file = $fileStorage->load($file_id);
+        }
+
+        if ($file instanceof FileInterface) {
+          $download_link = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
         }
 
         if (!$download_link) {
@@ -1682,22 +1712,6 @@ class PolicymakerService {
   }
 
   /**
-   * Get policymaker-related declarations of affiliation.
-   *
-   * @return array
-   *   Array of resulting documents
-   */
-  private function getDeclarationsOfAffilition() {
-    $ids = \Drupal::entityQuery('media')
-      ->accessCheck(TRUE)
-      ->condition('bundle', 'declaration_of_affiliation')
-      ->condition('field__policymaker_reference', $this->policymaker->id())
-      ->execute();
-
-    return Media::loadMultiple($ids);
-  }
-
-  /**
    * Get meeting-related documents.
    *
    * @return array
@@ -1708,13 +1722,15 @@ class PolicymakerService {
       return [];
     }
 
-    $ids = \Drupal::entityQuery('media')
+    $mediaStorage = $this->entityTypeManager->getStorage('media');
+    $ids = $mediaStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('bundle', 'minutes_of_the_discussion')
       ->condition('field_meetings_reference', $meetingids, 'IN')
       ->execute();
-    $entities = Media::loadMultiple($ids);
 
+    $entities = $mediaStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $entities */
     $result = [];
     foreach ($entities as $entity) {
       $meeting_id = $entity->get('field_meetings_reference')->target_id;
@@ -1739,7 +1755,7 @@ class PolicymakerService {
       ->condition('field_trustee_initiatives', '', '<>')
       ->execute();
 
-    $nodes = Node::loadMultiple($nids);
+    $nodes = $this->nodeStorage->loadMultiple($nids);
     $initiatives = [];
     foreach ($nodes as $node) {
       if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
@@ -1808,7 +1824,7 @@ class PolicymakerService {
    *   Translated version of type stored in config.
    */
   public function getPolicymakerType(string $type, string $langcode = 'fi'): string {
-    $config = \Drupal::config('paatokset_ahjo_api.policymaker_labels');
+    $config = $this->config->get('paatokset_ahjo_api.policymaker_labels');
     $key = Html::cleanCssIdentifier(strtolower($type)) . '_' . $langcode;
     if ($value = $config->get($key)) {
       return $value;
