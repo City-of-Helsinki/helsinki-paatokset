@@ -12,7 +12,7 @@
 	<div aria-label="{{ 'Organization and sector'|t }}" class="policymaker-organization">
 		<div class="organizations hds-tag__container">
 			{% for item in organizations %}
-				<span class="">
+				<span {{ current_langcode != item.langcode ? create_attribute(({ 'lang': item.langcode})) }}>
 					{% if not loop.first %}
 						{% include '@hdbt/misc/icon.twig' with {icon: 'angle-right'} %}
 					{% endif %}

@@ -135,14 +135,21 @@ final class OrganizationService {
       return NULL;
     }
 
+    $fallback_language = 'fi';
     $nodes = $this->organizationStorage->loadByProperties([
       'type' => self::ORGANIZATION_TYPE,
-      'langcode' => $language->getId(),
       'field_policymaker_id' => $organization->get('field_org_level_above_id')->getString(),
     ]);
 
     if ($node = reset($nodes)) {
-      return $node;
+      // If a translation exists, get the node in current language.
+      // Otherwise default to the fallback language.
+      if ($node->hasTranslation($language->getId())) {
+        return $node;
+      }
+      elseif ($fallback_node = $node->hasTranslation($fallback_language)) {
+        return $fallback_node;
+      }
     }
 
     // Should not happen.

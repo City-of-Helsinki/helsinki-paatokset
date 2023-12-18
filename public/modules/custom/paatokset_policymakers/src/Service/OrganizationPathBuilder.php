@@ -73,6 +73,7 @@ final readonly class OrganizationPathBuilder {
 
     return [
       'title' => $organization->getTitle(),
+      'langcode' => $organization->get('langcode')->value,
     ];
   }
 
