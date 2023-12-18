@@ -20,7 +20,7 @@ class PolicymakerListingBlock extends BlockBase {
    */
   public function build() {
     return [
-      'label' => t('Browse policymakers'),
+      'label' => $this->t('Browse policymakers'),
       '#attributes' => [
         'class' => ['policymaker-listing'],
       ],

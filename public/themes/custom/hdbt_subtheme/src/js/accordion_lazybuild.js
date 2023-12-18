@@ -15,13 +15,13 @@
 
         function closeFold(folds) {
           let closeButton = folds.content.querySelector(
-            '.accordion-item__button--close'
+            '.handorgel__close'
           );
 
           function moveFocus(element) {
             element
-              .closest('.accordion__wrapper')
-              .querySelector('.accordion-item__button--toggle')
+              .closest('.handorgel-lazy')
+              .querySelector('.handorgel__header__button')
               .focus();
           }
 

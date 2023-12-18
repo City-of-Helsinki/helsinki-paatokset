@@ -5,6 +5,8 @@ namespace Drupal\paatokset_ahjo_api\Controller;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,18 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
  * Controller for retrieving meeting data.
  */
 class MeetingController extends ControllerBase {
-  /**
-   * Instance of MeetingService.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\MeetingService
-   */
-  private $meetingService;
 
   /**
-   * Class constuctor.
+   * {@inheritDoc}
    */
-  public function __construct() {
-    $this->meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  public function __construct(protected MeetingService $meetingService) {
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('paatokset_ahjo_meetings')
+    );
   }
 
   /**

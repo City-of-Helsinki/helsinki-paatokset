@@ -23,7 +23,7 @@ class ArticlesBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      'label' => t('All articles'),
+      'label' => $this->t('All articles'),
       '#attributes' => [
         'class' => ['all-articles'],
       ],

@@ -10,7 +10,7 @@ dependencies:
     - hdbt_subtheme
 id: paatoksetpolicymakersearch
 theme: hdbt_subtheme
-region: content_lower
+region: after_content
 weight: -20
 provider: null
 plugin: policymaker_search_block

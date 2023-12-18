@@ -21,7 +21,7 @@ class MeetingsCalendarBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      'label' => t('Upcoming meetings'),
+      'label' => $this->t('Upcoming meetings'),
       '#attributes' => [
         'class' => ['meetings-calendar'],
       ],

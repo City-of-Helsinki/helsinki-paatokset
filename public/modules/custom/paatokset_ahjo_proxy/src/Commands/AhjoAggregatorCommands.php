@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\paatokset_ahjo_proxy\Commands;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileRepositoryInterface;
-use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\search_api\Entity\Index;
@@ -40,12 +42,18 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Entity type manager.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
    *   File repository.
+   * @param \Drupal\Core\Database\Connection $database
+   *   Database connection.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
+   *   Module extension list.
    */
   public function __construct(
     LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
     private EntityTypeManagerInterface $entityTypeManager,
-    private FileRepositoryInterface $fileRepository
+    private FileRepositoryInterface $fileRepository,
+    private Connection $database,
+    private ModuleExtensionList $moduleExtensionList,
   ) {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->setLogger($logger_factory->get('paatokset_ahjo_proxy'));
@@ -481,9 +489,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
     $operations = [];
     $count = 0;
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if (!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->isEmpty()) {
         continue;
@@ -686,8 +695,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $count = 0;
     foreach ($ids as $id) {
       // Load nodes individually to avoid out of memory errors.
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
 
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -820,9 +830,10 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
     $operations = [];
     $count = 0;
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if (!$node->hasField('field_diary_number') || $node->get('field_diary_number')->isEmpty()) {
         continue;
@@ -937,7 +948,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Total nodes: ' . count($ids));
 
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       $node->set('field_outdated_document', 1);
       $node->save();
     }
@@ -998,6 +1010,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('status', 1)
       ->latestRevision();
 
+    /** @var \Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager $dd_manager */
     $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
 
     if ($org) {
@@ -1022,7 +1035,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\node\NodeInterface $node */
       if ($node->get('field_decision_section')->isEmpty() || $node->get('field_meeting_date')->isEmpty()) {
         continue;
       }
@@ -1052,6 +1066,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:gfi
    */
   public function getFlaggedOrgIds(): void {
+    /** @var \Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager $dd_manager */
     $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
     $orgs = $dd_manager->getDisallowedDecisionOrgs();
     foreach ($orgs as $org) {
@@ -1108,7 +1123,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $operations = [];
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1198,7 +1214,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $operations = [];
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1289,7 +1306,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $operations = [];
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_decision_native_id') || $node->get('field_decision_native_id')->isEmpty()) {
         continue;
       }
@@ -1657,7 +1675,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       $node->set('field_agenda_items_processed', 0);
       $node->save();
@@ -1686,7 +1705,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       $node->set('field_agenda_items_processed', 0);
       $node->save();
@@ -1736,7 +1756,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Total nodes: ' . count($ids));
 
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$this->ahjoProxy->checkDecisionRecord($node)) {
         $node->set('field_outdated_document', 1);
       }
@@ -1789,7 +1810,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Total nodes: ' . count($ids));
 
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       $record_content = json_decode($node->get('field_decision_record')->value, TRUE);
       if (empty($record_content) || !isset($record_content['Type'])) {
         $node->set('field_decision_record', NULL);
@@ -1868,7 +1890,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $table->setHeaders([
       'Date', 'ID', 'Status', 'Agenda', 'Minutes', 'Minutes document',
     ]);
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if ($node->hasField('field_meeting_agenda_published') && $node->get('field_meeting_agenda_published')->value) {
         $agenda_published = '✓';
@@ -1957,7 +1980,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if (!$this->ahjoProxy->checkMeetingMotions($node)) {
         $this->logger->info('Missing motions for meeting: ' . $node->get('field_meeting_id')->value);
@@ -2045,8 +2069,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
-
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       $meeting_id = $node->get('field_meeting_id')->value;
 
@@ -2146,7 +2170,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $classes = [];
     $reasons = [];
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_decision_attachments') || $node->get('field_decision_attachments')->isEmpty()) {
         continue;
       }
@@ -2237,7 +2263,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if (!$node->hasField('field_meeting_date') || $node->get('field_meeting_date')->isEmpty()) {
         continue;
@@ -2329,10 +2356,11 @@ class AhjoAggregatorCommands extends DrushCommands {
     $ids = $query->execute();
     $this->logger->info('Total nodes: ' . count($ids));
 
-    $nodes = Node::loadMultiple($ids);
+    $nodes = $this->nodeStorage->loadMultiple($ids);
 
     $operations = [];
     $count = 0;
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
     foreach ($nodes as $node) {
       if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
         continue;
@@ -2471,7 +2499,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
       $table->addRow([
         $node->field_decision_native_id->value,
         $node->id(),
@@ -2491,9 +2519,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    * @aliases ap:lmdm
    */
   public function listMissingDecisionMakers(): void {
-    $database = \Drupal::database();
-
-    $pm_query = $database->select('node__field_policymaker_id', 'field')
+    $pm_query = $this->database->select('node__field_policymaker_id', 'field')
       ->fields('field', ['field_policymaker_id_value'])
       ->condition('field.bundle', 'policymaker');
     $pm_results = $pm_query->distinct()->execute()->fetchAll();
@@ -2513,7 +2539,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'Organization ID',
     ]);
 
-    $decision_query = $database->select('node__field_policymaker_id', 'field')
+    $decision_query = $this->database->select('node__field_policymaker_id', 'field')
       ->fields('field', ['field_policymaker_id_value'])
       ->condition('field.bundle', 'decision');
     $decision_results = $decision_query->distinct()->execute()->fetchAll();
@@ -2648,7 +2674,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $count = 0;
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
       $table->addRow([
         $node->field_decision_native_id->value,
         $node->id(),
@@ -2755,7 +2781,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $motions = [];
     foreach ($ids as $id) {
-      $node = Node::load($id);
+      $node = $this->nodeStorage->load($id);
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $node */
       if (!$node->hasField('field_meeting_id') || $node->get('field_meeting_id')->isEmpty()) {
         continue;
       }
@@ -2777,7 +2804,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
     $meeting_ids = $meeting_query->execute();
 
-    $meetings = Node::loadMultiple($meeting_ids);
+    $meetings = $this->nodeStorage->loadMultiple($meeting_ids);
 
     $table = new Table($this->output());
     $table->setHeaders([
@@ -2786,6 +2813,7 @@ class AhjoAggregatorCommands extends DrushCommands {
 
     $orphans = 0;
     $operations = [];
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $meetings */
     foreach ($meetings as $meeting) {
       if (!$meeting->hasField('field_meeting_minutes_published')) {
         continue;
@@ -2854,14 +2882,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
 
     $ids = $query->execute();
+    $id = reset($ids);
 
-    $nodes = Node::loadMultiple($ids);
-    if (empty($nodes)) {
+    $node = $this->nodeStorage->load($id);
+    if (!$node instanceof NodeInterface) {
       $this->writeln(sprintf('No meeting found with ID: %s', $meeting_id));
       return;
     }
-
-    $node = reset($nodes);
 
     $table = new Table($this->output());
     $table->setHeaders([
@@ -2918,15 +2945,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->latestRevision();
 
     $ids = $query->execute();
-
-    $nodes = Node::loadMultiple($ids);
-    if (empty($nodes)) {
+    $id = reset($ids);
+    if (empty($id) || !$node = $this->nodeStorage->load($id) instanceof NodeInterface) {
       $this->writeln(sprintf('No meeting found with ID: %s', $meeting_id));
       return;
     }
 
-    $node = reset($nodes);
-
+    /** @var Drupal\node\NodeInterface $node */
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
 
@@ -2994,7 +3019,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     foreach ($static_files as $file) {
-      $file_path = \Drupal::service('extension.list.module')->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
+      $file_path = $this->moduleExtensionList->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
       $file_contents = file_get_contents($file_path);
       if (!empty($file_contents)) {
         $this->fileRepository->writeData($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
@@ -3137,11 +3162,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *    Stores default static files into filesystem (for debugging migrations).
    */
   public function fixPolicymakerReferences(): void {
-    $nodeStorage = \Drupal::entityTypeManager()
-      ->getStorage('node');
-
     // Load policymakers that are missing field_dm_organization.
-    $nids = $nodeStorage
+    $nids = $this->nodeStorage
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('type', 'policymaker')
@@ -3151,12 +3173,14 @@ class AhjoAggregatorCommands extends DrushCommands {
     $count = 0;
 
     foreach ($nids as $nid) {
-      if (is_null($policymaker = $nodeStorage->load($nid))) {
+      $policymaker = $this->nodeStorage->load($nid);
+      if ($policymaker instanceof NodeInterface) {
         continue;
       }
 
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $policymaker */
       $policymaker_id = $policymaker->get('field_policymaker_id')->getString();
-      $organizations = $nodeStorage->loadByProperties([
+      $organizations = $this->nodeStorage->loadByProperties([
         'type' => 'organization',
         'field_policymaker_id' => $policymaker_id,
       ]);

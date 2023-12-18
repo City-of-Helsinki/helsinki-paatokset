@@ -3,4 +3,4 @@ services:
     class: Drupal\paatokset_ahjo_proxy\Commands\AhjoAggregatorCommands
     tags:
       - { name: drush.command }
-    arguments: ['@logger.factory', '@paatokset_ahjo_proxy', '@entity_type.manager', '@file.repository']
+    arguments: ['@logger.factory', '@paatokset_ahjo_proxy', '@entity_type.manager', '@file.repository', '@database', '@extension.list.module']

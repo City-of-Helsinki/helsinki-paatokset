@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -13,6 +14,9 @@ use Drupal\node\NodeInterface;
  * @package Drupal\paatokset_ahjo_api\Services
  */
 class MeetingService {
+
+  use StringTranslationTrait;
+
   /**
    * Machine name for meeting node type.
    */
@@ -114,10 +118,10 @@ class MeetingService {
       $additional_info = NULL;
       $meeting_moved = FALSE;
       if ($meeting_cancelled) {
-        $additional_info = t('Meeting cancelled');
+        $additional_info = $this->t('Meeting cancelled');
       }
       elseif ($orig_timestamp && $orig_timestamp !== $timestamp) {
-        $additional_info = t('Meeting moved, original time: @orig_time', [
+        $additional_info = $this->t('Meeting moved, original time: @orig_time', [
           '@orig_time' => date('d.m. H:i', $orig_timestamp),
         ]);
         $meeting_moved = TRUE;
@@ -280,7 +284,7 @@ class MeetingService {
       return NULL;
     }
 
-    $text = t('Meeting minutes.');
+    $text = $this->t('Meeting minutes.');
 
     return Link::fromTextAndUrl($text, $url);
   }

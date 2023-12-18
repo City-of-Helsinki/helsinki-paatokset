@@ -29,6 +29,7 @@ final class CaseController extends ControllerBase {
     private readonly ThemeExtensionList $extensionList,
   ) {
     // Include twig engine.
+    // phpcs:ignore
     include_once \Drupal::root() . '/core/themes/engines/twig/twig.engine';
   }
 

@@ -126,7 +126,6 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
 
     // Make the request.
     $this->drupalGetWithLanguage($path, $langcode, $options);
-
     $this->assertSession()->statusCodeEquals(200);
     $this->assertCanonicalTag($expected);
   }
@@ -136,6 +135,8 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
    *
    * @return array
    *   Test data.
+   *
+   * phpcs:disable DrupalPractice.Objects.UnusedPrivateMethod.UnusedMethod
    */
   private function canonicalUrlData(): array {
     // Format ['url', 'expected canonical url'].
@@ -166,6 +167,7 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
       // Untranslated decision should use actual language of the decision.
       ['/en/case/001/001-decision-sv', '/sv/arende/001/001-decision-sv'],
     ];
+    // phpcs:enable
   }
 
 }

@@ -20,7 +20,7 @@ class DecisionTreeBlock extends BlockBase {
    */
   public function build() {
     return [
-      'label' => t('Decision tree'),
+      'label' => $this->t('Decision tree'),
       '#attributes' => [
         'class' => ['decision-tree'],
       ],

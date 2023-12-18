@@ -21,7 +21,7 @@ class MembersBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#title' => t('Members'),
+      '#title' => $this->t('Members'),
       '#attributes' => [
         'class' => ['policymaker-members'],
       ],

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function accordionListeners() {
     const closeButton = folds.content.querySelector('.accordion-item__button--close');
 
     function moveFocus(element) {
-      element.closest('.accordion__wrapper').querySelector('.accordion-item__button--toggle').focus();
+      element.closest('.accordion-legacy__wrapper').querySelector('.accordion-item__button--toggle').focus();
     }
 
     function closeFolds(e) {

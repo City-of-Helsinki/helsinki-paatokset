@@ -21,7 +21,7 @@ class CalendarBlock extends BlockBase {
   public function build() {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      '#title' => t('Calendar'),
+      '#title' => $this->t('Calendar'),
       '#attributes' => [
         'class' => ['policymaker-calendar'],
       ],

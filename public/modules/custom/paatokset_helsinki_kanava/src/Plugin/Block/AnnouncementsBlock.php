@@ -3,8 +3,13 @@
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
@@ -15,24 +20,50 @@ use Drupal\Core\Url;
  *    category = @Translation("Paatokset custom blocks")
  * )
  */
-class AnnouncementsBlock extends BlockBase {
+class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private ConfigFactoryInterface $config,
+    private PolicymakerService $policymakerService,
+    private MeetingService $meetingService
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('config.factory'),
+      $container->get('paatokset_policymakers'),
+      $container->get('paatokset_ahjo_meetings')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function build() {
-    $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $councilNode = $policymakerService->getPolicyMaker($council_id);
+    $council_id = $this->config->get('paatokset_helsinki_kanava.settings')->get('city_council_id');
+    $councilNode = $this->policymakerService->getPolicyMaker($council_id);
 
     $announcement = [];
     if ($councilNode) {
-      $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
-      $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
+      $nextMeetingDate = $this->meetingService->nextMeetingDate($council_id);
 
       if ($nextMeetingDate && $this->shouldShowAlert($nextMeetingDate)) {
 
-        $announcement['text'] = t('Next council stream will start on @date at @time',
+        $announcement['text'] = $this->t('Next council stream will start on @date at @time',
           [
             '@date' => date('d.m', $nextMeetingDate),
             '@time' => date('H:i', $nextMeetingDate),
@@ -41,7 +72,7 @@ class AnnouncementsBlock extends BlockBase {
 
         $url = $councilNode->toUrl();
         if ($url) {
-          $linkText = t("You can see the stream on council's page, starting at @time", [
+          $linkText = $this->t("You can see the stream on council's page, starting at @time", [
             '@time' => date('H:i', $nextMeetingDate),
           ]);
           $announcement['link'] = Link::fromTextAndUrl($linkText, Url::fromUri('internal:' . $url->toString() . '#policymaker-live-stream'));
@@ -56,21 +87,14 @@ class AnnouncementsBlock extends BlockBase {
   }
 
   /**
-   * Set cache age to zero.
-   */
-  public function getCacheMaxAge() {
-    return 0;
-  }
-
-  /**
-   * Get cache contexts.
+   * {@inheritdoc}
    */
   public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
   /**
-   * Get cache tags.
+   * {@inheritdoc}
    */
   public function getCacheTags() {
     return ['meeting_video_list', 'node_list:meeting'];
@@ -86,7 +110,7 @@ class AnnouncementsBlock extends BlockBase {
    *   If alert should be displayed.
    */
   private function shouldShowAlert(string $time): bool {
-    if (\Drupal::config('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
+    if ($this->config->get('paatokset_helsinki_kanava.settings')->get('debug_mode')) {
       return TRUE;
     }
     return strtotime('+1 day') > (int) $time;
