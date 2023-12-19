@@ -3,7 +3,8 @@
 .news-content,
 .policymaker-content,
 .policymaker-text,
-.trustee-content {
+.trustee-content,
+.views-element-container >  .views--taxonomy-term {
   @include components-container-max-width;
   @include component-side-padding;
   margin-left: auto;
