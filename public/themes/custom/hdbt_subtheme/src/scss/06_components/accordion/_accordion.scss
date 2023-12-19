@@ -12,6 +12,10 @@
       font-weight: normal;
       font-size: inherit;
 
+      span {
+        padding-right: $spacing-double;
+      }
+
       &::after {
         right: 32px;
       }

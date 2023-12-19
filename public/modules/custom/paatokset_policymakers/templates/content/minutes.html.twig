@@ -86,14 +86,14 @@
 
       <div class="paatokset-accordion">
         {% for accordion in decision_announcement.accordions %}
-          <div class="accordion__wrapper handorgel">
-            <h3 class="accordion-item__header handorgel__header">
+          <div class="paatokset-accordion__wrapper handorgel">
+            <h3 class="paatokset-accordion-item__header handorgel__header">
               <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
                 <span>{{ accordion.heading }}</span>
               </button>
             </h3>
-            <div class="accordion-item__content handorgel__content">
-              <div class="accordion-item__content__inner handorgel__content__inner">
+            <div class="paatokset-accordion-item__content handorgel__content">
+              <div class="paatokset-accordion-item__content__inner handorgel__content__inner">
                 {{ accordion.content }}
                 {% if accordion.link %}
                   <p>
