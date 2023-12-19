@@ -145,10 +145,10 @@ final class OrganizationService {
       // If a translation exists, get the node in current language.
       // Otherwise default to the fallback language.
       if ($node->hasTranslation($language->getId())) {
-        return $node;
+        return $node->getTranslation($language->getId());
       }
-      elseif ($fallback_node = $node->hasTranslation($fallback_language)) {
-        return $fallback_node;
+      elseif ($node->hasTranslation($fallback_language)) {
+        return $node->getTranslation($fallback_language);
       }
     }
 
