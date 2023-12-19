@@ -1,0 +1,5 @@
+label: 'Andra ämnen'
+display:
+  default:
+    display_options:
+      title: 'Andra ämnen'
