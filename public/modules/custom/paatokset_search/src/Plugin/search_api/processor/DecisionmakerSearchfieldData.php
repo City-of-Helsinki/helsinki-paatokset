@@ -3,14 +3,13 @@
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
- * Combines policymaker_id, organization_name and organization_above_name
+ * Adds decisionmaker related data to index as json.
  *
  * @SearchApiProcessor(
  *    id = "decisionmaker_searchfield_data",
@@ -75,7 +74,7 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
       }
 
       $fields = $this->getFieldsHelper()
-        ->filterForPropertyPath($item->getFields(),'entity:node','decisionmaker_searchfield_data');
+        ->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_searchfield_data');
       if (isset($fields['decisionmaker_searchfield_data'])) {
         $fields['decisionmaker_searchfield_data']->addValue(
           json_encode($data)
