@@ -148,6 +148,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_dm_org_name
+  decisionmaker_searchfield_data:
+    label: 'Decisionmaker searchfield data'
+    datasource_id: 'entity:node'
+    property_path: decisionmaker_searchfield_data
+    type: text
   organization_type:
     label: 'Organization type'
     datasource_id: 'entity:node'
