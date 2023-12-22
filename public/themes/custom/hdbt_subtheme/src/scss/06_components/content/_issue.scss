@@ -69,6 +69,11 @@
   }
 }
 
+.issue__in_this_meeting {
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-double;
+}
+
 .issue__container {
   h3 {
     font-size: $fontsize-heading-m;
