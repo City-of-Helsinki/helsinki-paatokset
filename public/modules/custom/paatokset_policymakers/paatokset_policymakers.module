@@ -11,8 +11,10 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Implements hook_node_access().
@@ -31,8 +33,14 @@ function paatokset_policymakers_node_access(NodeInterface $node, $op, AccountInt
 /**
  * Implements hook_theme().
  */
-function paatokset_policymakers_theme($existing, $type, $theme, $path) {
+function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
   return [
+    'organization_path' => [
+      'variables' => [
+        'organizations' => [],
+      ],
+      'path' => $path . '/templates/component',
+    ],
     'policymaker_cards' => [
       'variables' => [
         'cards' => [],
@@ -117,6 +125,37 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
 }
 
 /**
+ * Return TRUE if policymaker exists.
+ *
+ * @return bool
+ *   True if policymaker is marked existing or the existing field is not set.
+ */
+function _paatokset_policymakers_does_policymaker_exists(NodeInterface $policymaker): bool {
+  Assert::true($policymaker->hasField('field_policymaker_existing'));
+
+  $existing_field = $policymaker->get('field_policymaker_existing');
+
+  return !$existing_field->isEmpty() && $existing_field->value;
+}
+
+/**
+ * Returns true if policymaker is an organization.
+ *
+ * @return bool
+ *   True if policymaker is an organization.
+ */
+function _paatokset_policymakers_is_policymaker_organization(NodeInterface $policymaker): bool {
+  $not_organization_types = [
+    'Luottamushenkilö',
+    'Viranhaltija',
+  ];
+
+  $orgType = $policymaker->get('field_organization_type')->value;
+
+  return $orgType && !in_array($orgType, $not_organization_types);
+}
+
+/**
  * Implements preprocess_node hook.
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
@@ -132,32 +171,26 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $policymakerService->setPolicyMakerNode($policymaker);
   $variables['organization_type'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
   $variables['organization_type_color'] = $policymakerService->getPolicymakerClass($policymaker);
+  $variables['organization_hierarchy'] = \Drupal::service(OrganizationPathBuilder::class)->build($policymaker);
   $no_content = TRUE;
-
-  $not_organization_types = [
-    'Luottamushenkilö',
-    'Viranhaltija',
-  ];
 
   $cache_tags = [];
 
-  $orgType = $policymaker->get('field_organization_type')->value;
+  $isOrganization = _paatokset_policymakers_is_policymaker_organization($policymaker);
   $variables['is_organization'] = FALSE;
   $variables['is_active'] = TRUE;
+  $variables['is_organization'] = $isOrganization;
 
-  // If policymaker is not existing, hide all content.
-  if ($policymaker->hasField('field_policymaker_existing') && !$policymaker->get('field_policymaker_existing')->isEmpty() && !$policymaker->get('field_policymaker_existing')->value) {
+  // Hide all content if the policymaker does not exist.
+  if (!_paatokset_policymakers_does_policymaker_exists($policymaker)) {
     $variables['is_active'] = FALSE;
-    if (!in_array($orgType, $not_organization_types)) {
-      $variables['is_organization'] = TRUE;
-    }
     return;
   }
 
-  if ($orgType) {
-    if (!in_array($orgType, $not_organization_types)) {
-      $variables['is_organization'] = TRUE;
+  // fixme: is this check necessary?
+  if ($policymaker->get('field_organization_type')->value) {
 
+    if ($isOrganization) {
       $members = $policymakerService->getComposition();
       if ($members) {
         $variables['has_members'] = TRUE;
@@ -202,7 +235,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   }
 
   // Add custom cache tags for meetings or decisions based on org type.
-  if ($variables['is_organization']) {
+  if ($isOrganization) {
     $cache_tags[] = 'meeting_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
   else {

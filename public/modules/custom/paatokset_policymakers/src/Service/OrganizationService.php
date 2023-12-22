@@ -97,7 +97,7 @@ final class OrganizationService {
    * @param ?\Drupal\Core\Language\LanguageInterface $language
    *   Language for organization hierarchy. Defaults to current language.
    *
-   * @returns NodeInterface[]
+   * @returns \Drupal\node\NodeInterface[]
    *   Organizations above the given organization and the given organization.
    *   Root organization is the first element.
    */
@@ -135,14 +135,21 @@ final class OrganizationService {
       return NULL;
     }
 
+    $fallback_language = 'fi';
     $nodes = $this->organizationStorage->loadByProperties([
       'type' => self::ORGANIZATION_TYPE,
-      'langcode' => $language->getId(),
       'field_policymaker_id' => $organization->get('field_org_level_above_id')->getString(),
     ]);
 
     if ($node = reset($nodes)) {
-      return $node;
+      // If a translation exists, get the node in current language.
+      // Otherwise default to the fallback language.
+      if ($node->hasTranslation($language->getId())) {
+        return $node->getTranslation($language->getId());
+      }
+      elseif ($node->hasTranslation($fallback_language)) {
+        return $node->getTranslation($fallback_language);
+      }
     }
 
     // Should not happen.

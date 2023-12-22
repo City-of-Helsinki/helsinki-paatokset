@@ -3163,18 +3163,22 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function fixPolicymakerReferences(): void {
     // Load policymakers that are missing field_dm_organization.
-    $nids = $this->nodeStorage
+    $query = $this->nodeStorage
       ->getQuery()
       ->accessCheck(FALSE)
-      ->condition('type', 'policymaker')
-      ->notExists('field_dm_organization')
-      ->execute();
+      ->condition('type', 'policymaker');
 
+    $or = $query->orConditionGroup();
+    $or->notExists('field_dm_organization');
+    $or->condition('field_dm_organization', '');
+    $query->condition($or);
+
+    $nids = $query->execute();
     $count = 0;
 
     foreach ($nids as $nid) {
       $policymaker = $this->nodeStorage->load($nid);
-      if ($policymaker instanceof NodeInterface) {
+      if (!$policymaker instanceof NodeInterface) {
         continue;
       }
 
