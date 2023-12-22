@@ -26,10 +26,13 @@ class PolicymakerController extends ControllerBase {
    *   The config.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
+   * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
+   *   Policymaker service.
    */
   public function __construct(
     private ImmutableConfig $config,
-    private PolicymakerService $policymakerService
+    private PolicymakerService $policymakerService,
+    private OrganizationPathBuilder $organizationPathBuilderService
   ) {
     $this->policymakerService->setPolicyMakerByPath();
   }
@@ -40,7 +43,8 @@ class PolicymakerController extends ControllerBase {
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
-      $container->get('paatokset_policymakers')
+      $container->get('paatokset_policymakers'),
+      $container->get(OrganizationPathBuilder::class)
     );
   }
 
@@ -101,7 +105,7 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
-    $organizationPath = \Drupal::service(OrganizationPathBuilder::class)->build($policymaker);
+    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
 
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     if (empty($decisionsDescription)) {

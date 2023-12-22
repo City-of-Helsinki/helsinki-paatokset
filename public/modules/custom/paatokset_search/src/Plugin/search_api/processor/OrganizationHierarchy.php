@@ -27,7 +27,7 @@ final class OrganizationHierarchy extends ProcessorPluginBase {
    */
   public function alterIndexedItems(array &$items): void {
     /** @var \Drupal\search_api\Item\ItemInterface $item */
-    foreach ($items as $item_id => $item) {
+    foreach ($items as $item) {
       $object = $item->getOriginalObject()->getValue();
 
       // Skip trustees as they don't have organization field.
