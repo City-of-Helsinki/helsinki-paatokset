@@ -27,7 +27,7 @@ class PolicymakerController extends ControllerBase {
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
    * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
-   *   Policymaker service.
+   *   Organization path builder service.
    */
   public function __construct(
     private ImmutableConfig $config,
