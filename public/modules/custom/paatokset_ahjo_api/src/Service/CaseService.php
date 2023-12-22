@@ -1631,6 +1631,18 @@ class CaseService {
       }
     }
 
+    // To be decided in this meeting.
+    $decided_in_this_meeting = $motion_xpath->query("//*[contains(@class, 'Muokkaustieto')]");
+    if ($decided_in_this_meeting->length > 0) {
+      $decided_in_this_meeting_content = $decided_in_this_meeting[0]->nodeValue;
+    }
+    if ($decided_in_this_meeting_content) {
+      $output['decided_in_this_meeting'] = [
+        '#markup' => $decided_in_this_meeting_content,
+      ];
+    }
+
+
     // More information.
     $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
     $more_info_content = NULL;
