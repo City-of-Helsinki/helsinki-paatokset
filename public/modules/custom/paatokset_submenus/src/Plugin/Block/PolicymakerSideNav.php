@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\RouteProvider;
+use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
@@ -40,7 +40,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     $plugin_id,
     $plugin_definition,
     private MenuLinkTreeInterface $menuTree,
-    private RouteProvider $routeProvider,
+    private RouteProviderInterface $routeProvider,
     private PolicymakerService $policymakerService,
     private string $currentLang,
     private string $currentPath
