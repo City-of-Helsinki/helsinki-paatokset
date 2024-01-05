@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e6fbe4434e0fd3ada20a6aac433ba74",
+    "content-hash": "b28653851d78b5d0f13617bc5ca8e12f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4034,16 +4034,16 @@
         },
         {
             "name": "drupal/helfi_tunnistamo",
-            "version": "2.2.4",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo.git",
-                "reference": "17badf64ebfcc6a30458634b19a4387cb4ce3d34"
+                "reference": "a866ceb3c42f72bef8c2ae9878b24490f257607c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tunnistamo/zipball/17badf64ebfcc6a30458634b19a4387cb4ce3d34",
-                "reference": "17badf64ebfcc6a30458634b19a4387cb4ce3d34",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tunnistamo/zipball/a866ceb3c42f72bef8c2ae9878b24490f257607c",
+                "reference": "a866ceb3c42f72bef8c2ae9878b24490f257607c",
                 "shasum": ""
             },
             "require": {
@@ -4060,10 +4060,10 @@
             ],
             "description": "Tunnistamo integration",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/tree/2.2.4",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/tree/3.0.1",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/issues"
             },
-            "time": "2023-05-17T11:53:24+00:00"
+            "time": "2023-12-20T09:14:52+00:00"
         },
         {
             "name": "drupal/image_style_quality",
