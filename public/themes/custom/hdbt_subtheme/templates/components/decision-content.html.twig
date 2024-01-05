@@ -55,6 +55,12 @@
 
 <div class="issue-content__container">
   <div{{ content_attributes.addClass('issue-content') }}>
+    {% if decision_content.decided_in_this_meeting %}
+      <div class="issue__in_this_meeting">
+        {{ decision_content.decided_in_this_meeting }}
+      </div>
+    {% endif %}
+
     {{ decision_content.message }}
     {{ decision_content.main }}
     {% if vote_results %}
