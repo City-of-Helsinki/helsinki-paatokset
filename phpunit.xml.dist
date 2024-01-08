@@ -49,6 +49,7 @@
     <directory>./public/modules/contrib/*/tests/src/ExistingSite</directory>
   </testsuite>
   <testsuite name="existing-site-javascript">
+    <directory>./tests/dtt/src/ExistingSiteJavascript</directory>
     <directory>./public/modules/custom/*/tests/src/ExistingSiteJavascript</directory>
     <directory>./public/modules/contrib/*/tests/src/ExistingSiteJavascript</directory>
   </testsuite>
