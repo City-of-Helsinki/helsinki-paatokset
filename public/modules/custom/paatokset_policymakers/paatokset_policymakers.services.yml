@@ -11,3 +11,6 @@ services:
   Drupal\paatokset_policymakers\Service\OrganizationService:
     class: Drupal\paatokset_policymakers\Service\OrganizationService
     arguments: ['@language_manager', '@entity_type.manager', '@logger.factory']
+  Drupal\paatokset_policymakers\Service\OrganizationPathBuilder:
+    class: Drupal\paatokset_policymakers\Service\OrganizationPathBuilder
+    arguments: ['@Drupal\paatokset_policymakers\Service\OrganizationService']

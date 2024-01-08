@@ -7,6 +7,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,10 +26,13 @@ class PolicymakerController extends ControllerBase {
    *   The config.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
+   * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
+   *   Organization path builder service.
    */
   public function __construct(
     private ImmutableConfig $config,
-    private PolicymakerService $policymakerService
+    private PolicymakerService $policymakerService,
+    private OrganizationPathBuilder $organizationPathBuilderService
   ) {
     $this->policymakerService->setPolicyMakerByPath();
   }
@@ -39,7 +43,8 @@ class PolicymakerController extends ControllerBase {
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
-      $container->get('paatokset_policymakers')
+      $container->get('paatokset_policymakers'),
+      $container->get(OrganizationPathBuilder::class)
     );
   }
 
@@ -100,13 +105,23 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
+    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
+
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     if (empty($decisionsDescription)) {
       $decisionsDescription = $this->config->get('decisions_description.value');
     }
     $build = [
+      '#type' => 'container',
       '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      '#markup' => '<div class="policymaker-text">' . $decisionsDescription . '</div>',
+      'content' => [
+        [
+          'organizationPath' => $organizationPath,
+        ],
+        [
+          '#markup' => '<div class="policymaker-text">' . $decisionsDescription . '</div>',
+        ],
+      ],
     ];
 
     return $build;

@@ -19,7 +19,7 @@
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_platform_config": "^4.0",
         "drupal/helfi_tpr": "^2.0.5",
-        "drupal/helfi_tunnistamo": "^2.0",
+        "drupal/helfi_tunnistamo": "^3.0",
         "drupal/json_field": "^1.0@RC",
         "drupal/key_auth": "^2.0",
         "drupal/migrate_plus": "^6.0",
@@ -31,7 +31,7 @@
         "elasticsearch/elasticsearch": "^7.15",
         "josdejong/jsoneditor": "^5.29",
         "league/csv": "^9.8",
-        "paatokset/paatokset_search": "1.1.0"
+        "paatokset/paatokset_search": "1.1.1"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -49,6 +49,9 @@
         "weitzman/drupal-test-traits": "^2.0"
     },
     "conflict": {
+        "drupal/core": ">=10.2",
+        "drupal/core-composer-scaffold": ">=10.2",
+        "drupal/core-dev": ">=10.2",
         "drupal/drupal": "*"
     },
     "config": {
@@ -59,7 +62,8 @@
             "cweagans/composer-patches": true,
             "composer/installers": true,
             "drupal/core-composer-scaffold": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": false
         },
         "audit": {
             "abandoned": "report"
@@ -112,6 +116,9 @@
             "drupal/default_content": {
                 "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
             }
+        },
+        "patchLevel": {
+            "drupal/core": "-p2"
         }
     },
     "repositories": [
@@ -144,9 +151,9 @@
             "type": "package",
             "package": {
                 "name": "paatokset/paatokset_search",
-                "version": "1.1.0",
+                "version": "1.1.1",
                 "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.1.0/paatokset_search.zip",
+                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.1.1/paatokset_search.zip",
                     "type": "zip"
                 }
             }

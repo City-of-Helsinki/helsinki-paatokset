@@ -71,11 +71,12 @@
 }
 
 .policymaker-row__link {
-  padding: 36px;
+  padding: $spacing-double;
   display: flex;
   justify-content: space-between;
   background-color: $color-white;
-  margin-bottom: 16px;
+  margin-bottom: $spacing;
+  margin-top: $spacing;
   position: relative;
   text-decoration: none;
   align-items: center;
@@ -117,17 +118,17 @@
     font-size: 20px;
     color: $color-black-50;
   }
-
-  & + h4 {
-    margin-top: 64px !important;
-  }
 }
 
-.policymaker-listing .accordion-item__content__inner {
+.policymaker-listing .paatokset-accordion-item__content__inner {
   h4 {
-    font-weight: 500;
-    margin-bottom: 32px;
-    margin-top: 0;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing;
+    margin-top: $spacing;
+  }
+
+  .policymaker-row__link + h4 {
+    margin-top: $spacing-quadruple;
   }
 }
 
