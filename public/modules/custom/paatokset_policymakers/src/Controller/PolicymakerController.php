@@ -61,14 +61,28 @@ class PolicymakerController extends ControllerBase {
       return [];
     }
 
+    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
+    $organizationTag = $this->policymakerService->getPolicymakerTag($policymaker);
+
     $documentsDescription = $policymaker->get('field_documents_description')->value;
     if (empty($documentsDescription)) {
       $documentsDescription = $this->config->get('documents_description.value');
     }
 
     $build = [
-      '#title' => $this->t('Documents: @title', ['@title' => $policymaker->get('title')->value]),
-      '#markup' => '<div class="policymaker-text">' . $documentsDescription . '</div>',
+      '#type' => 'container',
+      '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
+      'content' => [
+        'organization' => [
+          '#prefix' => '<div class="policymaker-content policymaker-tags">',
+          '#suffix' => '</div>',
+          'tag' => $organizationTag,
+          'path' => $organizationPath,
+        ],
+        'description' => [
+          '#markup' => '<div class="policymaker-text">' . $documentsDescription . '</div>',
+        ],
+      ],
     ];
 
     return $build;
@@ -106,6 +120,7 @@ class PolicymakerController extends ControllerBase {
     }
 
     $organizationPath = $this->organizationPathBuilderService->build($policymaker);
+    $organizationTag = $this->policymakerService->getPolicymakerTag($policymaker);
 
     $decisionsDescription = $policymaker->get('field_decisions_description')->value;
     if (empty($decisionsDescription)) {
@@ -115,10 +130,13 @@ class PolicymakerController extends ControllerBase {
       '#type' => 'container',
       '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
       'content' => [
-        [
-          'organizationPath' => $organizationPath,
+        'organization' => [
+          '#prefix' => '<div class="policymaker-content policymaker-tags">',
+          '#suffix' => '</div>',
+          'tag' => $organizationTag,
+          'path' => $organizationPath,
         ],
-        [
+        'description' => [
           '#markup' => '<div class="policymaker-text">' . $decisionsDescription . '</div>',
         ],
       ],
