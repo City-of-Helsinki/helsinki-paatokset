@@ -84,15 +84,9 @@
 
 <article{{ attributes.addClass(classes) }}>
   <section class="policymaker-summary policymaker-content">
-    {% if is_organization %}
+    {% if organization_type %}
       <div class="policymaker-summary__label">
         <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color}}">
-          {{ organization_type }}
-        </div>
-      </div>
-    {% else %}
-      <div role="region" aria-label="{{ 'Page tags'|t }}" class="policymaker-summary__label">
-        <div class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color }}">
           {{ organization_type }}
         </div>
       </div>

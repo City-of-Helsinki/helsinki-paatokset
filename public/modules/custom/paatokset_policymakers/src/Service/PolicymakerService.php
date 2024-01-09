@@ -1850,6 +1850,30 @@ class PolicymakerService {
   }
 
   /**
+   * Get organization tag render array.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   Policymaker node.
+   *
+   * @return array|null
+   *   Render array for tag.
+   */
+  public function getPolicyMakerTag(NodeInterface $node): ?array {
+    $type = $this->getPolicymakerTypeFromNode($node);
+    $color = $this->getPolicymakerClass($node);
+
+    if (!$type) {
+      return NULL;
+    }
+
+    return [
+      '#prefix' => '<div class="policymaker-summary__label"><div role="region" class="issue-content__policymaker-label policymaker-label--small ' . $color . '">',
+      '#suffix' => '</div></div>',
+      '#markup' => $type,
+    ];
+  }
+
+  /**
    * Get organization name by ID.
    *
    * @param string $id
