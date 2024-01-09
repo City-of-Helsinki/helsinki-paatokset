@@ -60,16 +60,26 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
         $data['id'] = $node->get('field_policymaker_id')->value;
       }
 
+      // Policymakers have slightly different field names.
+      if ($node->getType() === 'policymaker') {
+        $org_name_field = 'field_ahjo_title';
+        $org_above_name_field = 'field_dm_org_name';
+      }
+      else {
+        $org_name_field = 'field_dm_org_name';
+        $org_above_name_field = 'field_dm_org_above_name';
+      }
+
       $original_translation = $node->hasTranslation('fi') ? $node->getTranslation('fi') : $node;
       $languages = ['fi', 'en', 'sv'];
       foreach ($languages as $langcode) {
         $node = $node->hasTranslation($langcode) ? $node->getTranslation($langcode) : $original_translation;
 
-        if ($node->hasField('field_dm_org_name')) {
-          $data['organization'][$langcode] = $node->get('field_dm_org_name')->value;
+        if ($node->hasField($org_name_field)) {
+          $data['organization'][$langcode] = $node->get($org_name_field)->value;
         }
-        if ($node->hasField('field_dm_org_above_name')) {
-          $data['organization_above'][$langcode] = $node->get('field_dm_org_above_name')->value;
+        if ($node->hasField($org_above_name_field)) {
+          $data['organization_above'][$langcode] = $node->get($org_above_name_field)->value;
         }
       }
 
