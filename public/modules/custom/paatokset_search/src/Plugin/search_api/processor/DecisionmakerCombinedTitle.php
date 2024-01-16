@@ -58,14 +58,17 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
 
       $full_title = $node->title->value;
       if ($node->getType() === 'policymaker') {
-        $sector_name = '';
-        if ($node->hasField('field_sector_name') && !empty($node->get('field_sector_name'))) {
-          $full_title .= ' - ' . $node->get('field_sector_name')->value;
-          $sector_name = $node->get('field_sector_name')->value;
+        $title_sections = [$node->title->value];
+
+        if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
+          $title_sections[] = $node->get('field_sector_name')->value;
         }
-        if ($node->hasField('field_dm_org_name') && !empty($node->get('field_dm_org_name')) && $sector_name != $node->get('field_dm_org_name')->value) {
-          $full_title .= ' - ' . $node->get('field_dm_org_name')->value;
+        if ($node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
+          $title_sections[] = $node->get('field_dm_org_name')->value;
         }
+
+        $title_sections = array_unique($title_sections);
+        $full_title = implode(" - ", $title_sections);
       }
 
       if ($node->getType() === 'trustee') {

@@ -131,7 +131,13 @@ final class OrganizationService {
   private function getParentOrganization(NodeInterface $organization, LanguageInterface $language): ?NodeInterface {
     Assert::eq($organization->getType(), self::ORGANIZATION_TYPE);
 
+    // Top level reached.
     if ($organization->get('field_org_level_above_id')->isEmpty()) {
+      return NULL;
+    }
+
+    // Root organization reached.
+    if ($organization->get('field_policymaker_id')->value === PolicymakerService::CITY_COUNCIL_DM_ID) {
       return NULL;
     }
 
