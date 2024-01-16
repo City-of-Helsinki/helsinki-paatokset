@@ -13,6 +13,8 @@ use Webmozart\Assert\Assert;
  */
 final readonly class OrganizationPathBuilder {
 
+  private const ROOT_IDS = ['02900', '00400'];
+
   /**
    * Constructs a new OrganizationPathBuilder object.
    *
@@ -37,6 +39,11 @@ final readonly class OrganizationPathBuilder {
     if (!$organization = $this->organizationService->getPolicymakerOrganization($policymaker)) {
       return [];
     }
+
+    if (in_array($organization->get('field_policymaker_id')->value, self::ROOT_IDS)) {
+      return [];
+    }
+
     $hierarchy = $this->organizationService->getOrganizationHierarchy($organization);
 
     $build = [];

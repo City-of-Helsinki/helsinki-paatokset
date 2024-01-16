@@ -19,6 +19,7 @@ use Webmozart\Assert\Assert;
 final class OrganizationService {
 
   private const ORGANIZATION_TYPE = 'organization';
+  private const ROOT_ORG_ID = '02900';
 
   /**
    * Node storage interface.
@@ -131,7 +132,13 @@ final class OrganizationService {
   private function getParentOrganization(NodeInterface $organization, LanguageInterface $language): ?NodeInterface {
     Assert::eq($organization->getType(), self::ORGANIZATION_TYPE);
 
+    // Top level reached.
     if ($organization->get('field_org_level_above_id')->isEmpty()) {
+      return NULL;
+    }
+
+    // Root organization reached.
+    if ($organization->get('field_policymaker_id')->value === self::ROOT_ORG_ID) {
       return NULL;
     }
 
