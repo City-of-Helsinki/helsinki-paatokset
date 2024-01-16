@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 final readonly class OrganizationPathBuilder {
 
-  private const ROOT_IDS = ['02900', '00400'];
+  private const ROOT_ID = '02900';
 
   /**
    * Constructs a new OrganizationPathBuilder object.
@@ -40,7 +40,7 @@ final readonly class OrganizationPathBuilder {
       return [];
     }
 
-    if (in_array($organization->get('field_policymaker_id')->value, self::ROOT_IDS)) {
+    if ($organization->get('field_policymaker_id')->value === self::ROOT_ID) {
       return [];
     }
 
