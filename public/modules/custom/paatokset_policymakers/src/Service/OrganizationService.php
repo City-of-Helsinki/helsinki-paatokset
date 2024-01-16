@@ -19,7 +19,6 @@ use Webmozart\Assert\Assert;
 final class OrganizationService {
 
   private const ORGANIZATION_TYPE = 'organization';
-  private const ROOT_ORG_ID = '02900';
 
   /**
    * Node storage interface.
@@ -138,7 +137,7 @@ final class OrganizationService {
     }
 
     // Root organization reached.
-    if ($organization->get('field_policymaker_id')->value === self::ROOT_ORG_ID) {
+    if ($organization->get('field_policymaker_id')->value === PolicymakerService::CITY_COUNCIL_DM_ID) {
       return NULL;
     }
 

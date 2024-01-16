@@ -13,8 +13,6 @@ use Webmozart\Assert\Assert;
  */
 final readonly class OrganizationPathBuilder {
 
-  private const ROOT_ID = '02900';
-
   /**
    * Constructs a new OrganizationPathBuilder object.
    *
@@ -40,11 +38,13 @@ final readonly class OrganizationPathBuilder {
       return [];
     }
 
-    if ($organization->get('field_policymaker_id')->value === self::ROOT_ID) {
+    $hierarchy = $this->organizationService->getOrganizationHierarchy($organization);
+
+    // Don't bother printing org path if there's only one item.
+    // It would only duplicate the current org's title.
+    if (count($hierarchy) <= 1) {
       return [];
     }
-
-    $hierarchy = $this->organizationService->getOrganizationHierarchy($organization);
 
     $build = [];
 
