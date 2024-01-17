@@ -4,6 +4,8 @@
 .policymaker-content,
 .policymaker-text,
 .trustee-content,
+.layout-content > .node--type-decision,
+.layout-content > .node--type-case,
 .views-element-container >  .views--taxonomy-term {
   @include components-container-max-width;
   @include component-side-padding;
