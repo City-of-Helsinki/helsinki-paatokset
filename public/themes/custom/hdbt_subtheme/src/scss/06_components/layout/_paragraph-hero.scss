@@ -15,6 +15,10 @@
     margin-bottom: $spacing-quadruple;
   }
 
+  .hero__description {
+    @include font('body');
+  }
+
   .hero__text-content {
     padding-top: $spacing-double;
     padding-bottom: $spacing-double;
