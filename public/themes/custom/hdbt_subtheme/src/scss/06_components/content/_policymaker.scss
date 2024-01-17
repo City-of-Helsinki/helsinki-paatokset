@@ -206,12 +206,16 @@
 
 h1.minutes__header {
   @include font(h1);
-  line-height: 4rem;
+  line-height: 3rem;
   margin-top: 0;
   display: flex;
   flex-direction: column;
   margin-bottom: $spacing;
-  gap: 24px;
+  gap: 0px;
+
+  @include breakpoint($breakpoint-l) {
+    line-height: 4rem;
+  }
 
   .minutes__header-prefix {
     font-size: 20px;
@@ -220,10 +224,6 @@ h1.minutes__header {
   .minutes__header-suffix {
     font-size: $fontsize-body-m;
     color: $color-black-50;
-  }
-
-  @include breakpoint($breakpoint-l) {
-    gap: 0px;
   }
 }
 

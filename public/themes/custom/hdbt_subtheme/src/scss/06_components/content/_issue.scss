@@ -541,25 +541,6 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .page-type--case, .page-type--decision {
-  .layout-content {
-    max-width: 100vw;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-
-    @include breakpoint($breakpoint-m) {
-      max-width: 1328px;
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
-    .content-lower {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-
   .component.component--banner {
     margin-top: $spacing-triple;
 
