@@ -8,5 +8,6 @@ _core:
   default_config_hash: u4xPVzzez1KP66PPTRiynkPmjXyIwJw6Nqjz01tLAjQ
 id: media.image_content_area
 label: 'Image (content area)'
+description: ''
 targetEntityType: media
 cache: true

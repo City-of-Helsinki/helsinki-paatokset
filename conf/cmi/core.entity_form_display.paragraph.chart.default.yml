@@ -11,6 +11,8 @@ dependencies:
   module:
     - media_library
     - text
+_core:
+  default_config_hash: JfX1NDmZllc_fHMeOSFBgWspFRoEEmivcXOUu014O-k
 id: paragraph.chart.default
 targetEntityType: paragraph
 bundle: chart
