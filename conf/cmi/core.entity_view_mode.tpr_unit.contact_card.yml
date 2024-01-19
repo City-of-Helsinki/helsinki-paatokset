@@ -6,5 +6,6 @@ dependencies:
     - helfi_tpr
 id: tpr_unit.contact_card
 label: Yhteystietokortti
+description: ''
 targetEntityType: tpr_unit
 cache: true

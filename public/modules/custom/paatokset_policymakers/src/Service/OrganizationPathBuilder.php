@@ -37,7 +37,14 @@ final readonly class OrganizationPathBuilder {
     if (!$organization = $this->organizationService->getPolicymakerOrganization($policymaker)) {
       return [];
     }
+
     $hierarchy = $this->organizationService->getOrganizationHierarchy($organization);
+
+    // Don't bother printing org path if there's only one item.
+    // It would only duplicate the current org's title.
+    if (count($hierarchy) <= 1) {
+      return [];
+    }
 
     $build = [];
 

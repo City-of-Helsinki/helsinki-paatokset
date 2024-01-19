@@ -79,6 +79,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      span {
+        padding-right: $spacing-double;
+        font-weight: normal;
+      }
     }
 
     .icon {

@@ -8,5 +8,6 @@ _core:
   default_config_hash: q8QZDYrGHAdl67dw9Z1DdTCTIhOo3lpW0dGN70STnCk
 id: helfi_news.medium_teaser
 label: 'Medium Teaser'
+description: ''
 targetEntityType: helfi_news
 cache: true

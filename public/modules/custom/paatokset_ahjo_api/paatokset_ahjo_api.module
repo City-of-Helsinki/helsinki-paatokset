@@ -65,18 +65,42 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
  * Implements hook_helfi_paragraph_types().
  */
 function paatokset_ahjo_api_helfi_paragraph_types() : array {
-  return [
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'pdf_listing'),
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'meetings_calendar'),
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'accordion'),
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'custom_content_links'),
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'image'),
-    new ParagraphTypeCollection('node', 'landing_page', 'field_content', 'text'),
-    new ParagraphTypeCollection('node', 'page', 'field_content', 'pdf_listing'),
-    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'custom_content_links'),
-    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'liftup_with_image'),
-    new ParagraphTypeCollection('node', 'page', 'field_lower_content', 'pdf_listing'),
+  $entities = [
+    'node' => [
+      'landing_page' => [
+        'field_content' => [
+          'image' => 18,
+          'accordion' => 19,
+          'meetings_calendar' => 20,
+          'pdf_listing' => 21,
+          'custom_content_links' => 22,
+          'text' => 23,
+        ],
+      ],
+      'page' => [
+        'field_content' => [
+          'pdf_listing' => 18,
+        ],
+        'field_lower_content' => [
+          'pdf_listing' => 18,
+          'custom_content_links' => 19,
+          'liftup_with_image' => 20,
+        ],
+      ],
+    ],
   ];
+
+  $enabled = [];
+  foreach ($entities as $entityTypeId => $bundles) {
+    foreach ($bundles as $bundle => $fields) {
+      foreach ($fields as $field => $paragraphTypes) {
+        foreach ($paragraphTypes as $paragraphType => $weight) {
+          $enabled[] = new ParagraphTypeCollection($entityTypeId, $bundle, $field, $paragraphType, $weight);
+        }
+      }
+    }
+  }
+  return $enabled;
 }
 
 /**
