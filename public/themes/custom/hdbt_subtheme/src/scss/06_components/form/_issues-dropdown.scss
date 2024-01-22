@@ -155,13 +155,22 @@
 
 .new-handlings-warning__wrapper {
   .warning-label {
-    visibility: hidden;
+    display: none;
+
     &.visible {
-      visibility: visible;
+      display: block;
     }
   }
 
   @include breakpoint($breakpoint-l) {
     margin-left: auto;
+
+    .warning-label {
+      display: block;
+      visibility: hidden;
+      &.visible {
+        visibility: visible;
+      }
+    }
   }
 }

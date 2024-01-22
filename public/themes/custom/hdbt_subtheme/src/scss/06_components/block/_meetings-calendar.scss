@@ -1,5 +1,9 @@
 .meetings-calendar {
-  margin-top: 90px;
+  margin-top: $spacing-triple;
+
+  @include breakpoint($breakpoint-l) {
+    margin-top: $spacing-quadruple;
+  }
 
   .hds-loading-spinner {
     margin: 90px auto;
@@ -14,9 +18,13 @@
 
   .calendar-header {
     display: flex;
-    margin-bottom: 65px;
+    margin-bottom: $spacing-double;
     justify-content: center;
     align-items: center;
+
+    @include breakpoint($breakpoint-l) {
+      margin-bottom: $spacing-triple;
+    }
 
     h2 {
       margin: 0 15px;

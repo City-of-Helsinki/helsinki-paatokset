@@ -240,7 +240,11 @@
   display: flex;
   align-items: center;
   margin-top: $spacing-half;
-  margin-bottom: 45px;
+  margin-bottom: $spacing;
+
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: $spacing-double;
+  }
 
   .decision-navigation-button--next span {
     margin-left: auto;
