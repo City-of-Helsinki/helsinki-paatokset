@@ -71,3 +71,9 @@ Disallow: /index.php/user/login
 Disallow: /index.php/user/logout
 Disallow: /index.php/media/oembed
 Disallow: /index.php/*/media/oembed
+
+# Disallow search query parameters. Allow only dm and results
+Disallow: /*?*from=*
+Disallow: /*?*to=*
+Disallow: /*?*category=*
+Disallow: /*?*s=*

@@ -76,7 +76,10 @@
                 "web-root": "./public"
             },
             "file-mapping": {
-                "[project-root]/.editorconfig": false
+                "[project-root]/.editorconfig": false,
+                "[web-root]/robots.txt": {
+                    "append": "assets/robots-append.txt"
+                }
             }
         },
         "enable-patching": true,
