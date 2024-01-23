@@ -1,0 +1,5 @@
+# Disallow search query parameters. Allow only dm and results
+Disallow: /*?*from=*
+Disallow: /*?*to=*
+Disallow: /*?*category=*
+Disallow: /*?*s=*
