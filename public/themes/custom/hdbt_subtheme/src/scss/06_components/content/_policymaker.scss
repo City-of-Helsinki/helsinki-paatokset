@@ -62,6 +62,7 @@
 
 .policymaker-organization {
   margin-top: $spacing-and-half;
+  margin-bottom: $spacing-and-half;
 
   @include breakpoint($breakpoint-m) {
     margin-top: $spacing-double;
