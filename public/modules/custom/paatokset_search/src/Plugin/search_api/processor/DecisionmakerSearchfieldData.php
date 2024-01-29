@@ -60,15 +60,27 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
         $data['id'] = $node->get('field_policymaker_id')->value;
       }
 
+      // Attempt to load policymaker node, if one exists.
+      if ($node->getType() !== 'policymaker') {
+        /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService */
+        $policymakerService = \Drupal::service('paatokset_policymakers');
+        $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value, $item->getLanguage());
+        if ($policymaker instanceof NodeInterface) {
+          $node = $policymaker;
+        }
+      }
+
       // Policymakers have slightly different field names.
       if ($node->getType() === 'policymaker') {
-        $org_name_field = 'field_ahjo_title';
+        $org_name_field = 'title';
         $org_above_name_field = 'field_dm_org_name';
       }
       else {
         $org_name_field = 'field_dm_org_name';
         $org_above_name_field = 'field_dm_org_above_name';
       }
+
+      $org_sector_field = 'field_sector_name';
 
       $original_translation = $node->hasTranslation('fi') ? $node->getTranslation('fi') : $node;
       $languages = ['fi', 'en', 'sv'];
@@ -80,6 +92,9 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
         }
         if ($node->hasField($org_above_name_field)) {
           $data['organization_above'][$langcode] = $node->get($org_above_name_field)->value;
+        }
+        if ($node->hasFIeld($org_sector_field)) {
+          $data['sector'][$langcode] = $node->get($org_sector_field)->value;
         }
       }
 
