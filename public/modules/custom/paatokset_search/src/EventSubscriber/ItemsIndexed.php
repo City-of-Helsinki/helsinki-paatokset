@@ -60,7 +60,7 @@ class ItemsIndexed implements EventSubscriberInterface {
       /** @var \Drupal\Core\Field\FieldItemList $org_type_field */
       $office_holder_types = [
         'Viranhaltija',
-        'Luottamushenkilö'
+        'Luottamushenkilö',
       ];
       $org_type_field = $item->get('field_organization_type');
       if ($org_type_field->isEmpty() || !in_array($org_type_field->value, $office_holder_types)) {
