@@ -448,17 +448,57 @@ class CaseService {
   }
 
   /**
-   * Get active decision's PDF file.
+   * Get active decision's PDF file URI from record of minutes field.
    *
    * @return string|null
    *   URL for PDF.
    */
   public function getDecisionPdf(): ?string {
-    if (!$this->selectedDecision instanceof NodeInterface || !$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    // Check for office holder and trustee decisions for minutes PDF URI first.
+    if ($minutes_file_uri = $this->getMinutesPdf()) {
+      return $minutes_file_uri;
+    }
+
+    if (!$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
       return NULL;
     }
 
     $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
+    if (!empty($data) && isset($data['FileURI'])) {
+      return $data['FileURI'];
+    }
+    return NULL;
+  }
+
+  /**
+   * Get active decisions Minutes PDF file URI.
+   *
+   * @return string|null
+   *   URL for PDF.
+   */
+  public function getMinutesPdf(): ?string {
+    if (!$this->selectedDecision instanceof NodeInterface) {
+      return NULL;
+    }
+
+    // Check desicion org type first.
+    $trustee_types = [
+      'Viranhaltija',
+      'Luottamushenkilö',
+    ];
+    if (!$this->selectedDecision->hasField('field_organization_type') || !in_array($this->selectedDecision->get('field_organization_type')->value, $trustee_types)) {
+      return NULL;
+    }
+
+    if (!$this->selectedDecision->hasField('field_decision_minutes_pdf') || $this->selectedDecision->get('field_decision_minutes_pdf')->isEmpty()) {
+      return NULL;
+    }
+
+    $data = json_decode($this->selectedDecision->get('field_decision_minutes_pdf')->value, TRUE);
     if (!empty($data) && isset($data['FileURI'])) {
       return $data['FileURI'];
     }
