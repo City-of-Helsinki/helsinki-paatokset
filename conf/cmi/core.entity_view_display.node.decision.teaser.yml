@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.decision.field_decision_history
     - field.field.node.decision.field_decision_history_pdf
     - field.field.node.decision.field_decision_meeting
+    - field.field.node.decision.field_decision_minutes_pdf
     - field.field.node.decision.field_decision_motion
     - field.field.node.decision.field_decision_motion_parsed
     - field.field.node.decision.field_decision_native_id
@@ -70,6 +71,7 @@ hidden:
   field_decision_history: true
   field_decision_history_pdf: true
   field_decision_meeting: true
+  field_decision_minutes_pdf: true
   field_decision_motion: true
   field_decision_motion_parsed: true
   field_decision_native_id: true
