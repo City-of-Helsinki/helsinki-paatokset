@@ -671,10 +671,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
       elseif ($logic === 'history') {
         $query->condition('field_is_decision', 1);
-        $or = $query->orConditionGroup();
-        $or->notExists('field_decision_history');
-        $or->condition('field_decision_history', '');
-        $query->condition($or);
+        $query->notExists('field_decision_history_pdf');
       }
       elseif ($logic === 'minutes') {
         $query->condition('field_is_decision', 1);

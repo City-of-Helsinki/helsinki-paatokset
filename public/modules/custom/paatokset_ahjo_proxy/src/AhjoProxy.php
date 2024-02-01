@@ -935,7 +935,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function processDecisionItem($data, &$context) {
     $messenger = \Drupal::messenger();
-    $context['message'] = 'Importing item number ' . $data['count'];
+    $context['message'] = 'Importing item number ' . $data['count'] . ' (' . $data['nid'] . ')';
 
     static::initBatchContext($context);
 
@@ -968,7 +968,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
 
     if ($update_pdf_content) {
-      $ahjo_proxy->updateDecisionPDFContent($node, $data['decision_endpoint']);
+      $ahjo_proxy->updateDecisionPdfContent($node, $data['decision_endpoint']);
     }
 
     // If language is set to outdated, refetch organization data.
@@ -1031,7 +1031,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @param string $endpoint
    *   Endpoint to get data from.
    */
-  protected function updateDecisionPDFContent(NodeInterface &$node, string $endpoint): void {
+  protected function updateDecisionPdfContent(NodeInterface &$node, string $endpoint): void {
     $content = $this->getData($endpoint, NULL);
 
     // Local data is formatted a bit differently.
