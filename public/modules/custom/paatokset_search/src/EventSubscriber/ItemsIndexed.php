@@ -58,8 +58,12 @@ class ItemsIndexed implements EventSubscriberInterface {
       // Only invalidate cache tags for office holders.
       // They are the only ones currently that are fetched from ElasticSearch.
       /** @var \Drupal\Core\Field\FieldItemList $org_type_field */
+      $office_holder_types = [
+        'Viranhaltija',
+        'Luottamushenkilö'
+      ];
       $org_type_field = $item->get('field_organization_type');
-      if ($org_type_field->isEmpty() || $org_type_field->value !== 'Viranhaltija') {
+      if ($org_type_field->isEmpty() || !in_array($org_type_field->value, $office_holder_types)) {
         continue;
       }
 
