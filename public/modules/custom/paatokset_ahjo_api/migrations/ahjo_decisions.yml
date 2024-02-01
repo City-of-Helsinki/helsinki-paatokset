@@ -76,6 +76,10 @@ source:
       label: Decision history PDF
       selector: DecisionHistoryPDF
     -
+      name: minutes_pdf
+      label: Minutes PDF
+      selector: MinutesPDF
+    -
       name: organization
       label: Organization
       selector: Organization
@@ -205,9 +209,19 @@ process:
     plugin: default_value
     default_value: plain_text
   field_decision_history_pdf:
-    plugin: callback
-    callable: json_encode
-    source: decision_history_pdf
+    -
+      plugin: single_value
+      source: decision_history_pdf
+    -
+      plugin: callback
+      callable: json_encode
+  field_decision_minutes_pdf:
+    -
+      plugin: single_value
+      source: minutes_pdf
+    -
+      plugin: callback
+      callable: json_encode
   field_decision_attachments:
     plugin: callback
     callable: json_encode
