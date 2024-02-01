@@ -25,3 +25,32 @@ $config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_
 
 // Sentry DSN for React.
 $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
+
+$additionalEnvVars = [
+  'AZURE_BLOB_STORAGE_SAS_TOKEN|BLOBSTORAGE_SAS_TOKEN',
+  'AZURE_BLOB_STORAGE_NAME',
+  'AZURE_BLOB_STORAGE_CONTAINER',
+  'DRUPAL_VARNISH_HOST',
+  'DRUPAL_VARNISH_PORT',
+  'PROJECT_NAME',
+  'REDIS_HOST',
+  'REDIS_PORT',
+  'REDIS_PASSWORD',
+  'TUNNISTAMO_CLIENT_ID',
+  'TUNNISTAMO_CLIENT_SECRET',
+  'TUNNISTAMO_ENVIRONMENT_URL',
+  'SENTRY_DSN',
+  'SENTRY_ENVIRONMENT',
+  // Project specific variables.
+  'DRUPAL_REVERSE_PROXY_ADDRESS|AHJO_PROXY_BASE_URL',
+  'LOCAL_PROXY_API_KEY',
+  'REACT_APP_PROXY_URL|REACT_APP_ELASTIC_URL',
+  'ELASTIC_CONNECTOR_URL',
+  'ELASTIC_INTERNAL_USER',
+  'ELASTIC_INTERNAL_PWD',
+  'SENTRY_DSN_REACT',
+];
+
+foreach ($additionalEnvVars as $var) {
+  $preflight_checks['environmentVariables'][] = $var;
+}
