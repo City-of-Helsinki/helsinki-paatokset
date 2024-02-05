@@ -935,7 +935,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function processDecisionItem($data, &$context) {
     $messenger = \Drupal::messenger();
-    $context['message'] = 'Importing item number ' . $data['count'];
+    $context['message'] = 'Importing item number ' . $data['count'] . ' (' . $data['nid'] . ')';
 
     static::initBatchContext($context);
 
@@ -958,9 +958,17 @@ class AhjoProxy implements ContainerInjectionInterface {
       $record_content = $record_content['records'][0];
     }
 
-    // Update decision history if the field is empty.
+    $update_pdf_content = FALSE;
+    // Update decision history and minutes PDF if the fields are empty.
     if (!empty($data['decision_endpoint']) && $node->hasField('field_decision_history') && $node->get('field_decision_history')->isEmpty()) {
-      $ahjo_proxy->updateDecisionHistoryContent($node, $data['decision_endpoint']);
+      $update_pdf_content = TRUE;
+    }
+    if (!empty($data['decision_endpoint']) && $node->hasField('field_decision_minutes_pdf') && $node->get('field_decision_minutes_pdf')->isEmpty()) {
+      $update_pdf_content = TRUE;
+    }
+
+    if ($update_pdf_content) {
+      $ahjo_proxy->updateDecisionPdfContent($node, $data['decision_endpoint']);
     }
 
     // If language is set to outdated, refetch organization data.
@@ -1016,14 +1024,14 @@ class AhjoProxy implements ContainerInjectionInterface {
   }
 
   /**
-   * Update decision history from endpoint.
+   * Update decision history and minutes PDF from endpoint.
    *
    * @param \Drupal\node\NodeInterface $node
    *   Node to update.
    * @param string $endpoint
    *   Endpoint to get data from.
    */
-  protected function updateDecisionHistoryContent(NodeInterface &$node, string $endpoint): void {
+  protected function updateDecisionPdfContent(NodeInterface &$node, string $endpoint): void {
     $content = $this->getData($endpoint, NULL);
 
     // Local data is formatted a bit differently.
@@ -1047,6 +1055,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     }
     if (!empty($content['DecisionHistoryPDF'])) {
       $node->set('field_decision_history_pdf', json_encode($content['DecisionHistoryPDF']));
+    }
+    if (!empty($content['MinutesPDF'])) {
+      $node->set('field_decision_minutes_pdf', json_encode($content['MinutesPDF']));
     }
   }
 
