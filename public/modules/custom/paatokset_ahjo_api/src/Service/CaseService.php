@@ -9,6 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -486,11 +487,7 @@ class CaseService {
     }
 
     // Check desicion org type first.
-    $trustee_types = [
-      'Viranhaltija',
-      'Luottamushenkilö',
-    ];
-    if (!$this->selectedDecision->hasField('field_organization_type') || !in_array($this->selectedDecision->get('field_organization_type')->value, $trustee_types)) {
+    if (!$this->selectedDecision->hasField('field_organization_type') || !in_array($this->selectedDecision->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
       return NULL;
     }
 
@@ -1705,7 +1702,7 @@ class CaseService {
       $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
     }
 
-    if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && $this->selectedDecision->get('field_organization_type')->value === 'Viranhaltija') {
+    if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && in_array($this->selectedDecision->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
       $output['signature_info'] = [
         'heading' => $this->t('Decisionmaker'),
         'content' => ['#markup' => $signature_info_content],

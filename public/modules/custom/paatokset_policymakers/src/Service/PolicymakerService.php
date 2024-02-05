@@ -41,6 +41,8 @@ class PolicymakerService {
    */
   const NODE_TYPE = 'policymaker';
 
+  const TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
+
   /**
    * City council id in Ahjo.
    */
@@ -400,7 +402,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
+    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
       return NULL;
     }
 
@@ -428,11 +430,6 @@ class PolicymakerService {
    *   URL object, if route is valid.
    */
   public function getDecisionsRoute(?string $policymaker_id = NULL): ?Url {
-    $trustee_types = [
-      'Viranhaltija',
-      'Luottamushenkilö',
-    ];
-
     if (!empty($policymaker_id)) {
       $this->setPolicyMaker($policymaker_id);
     }
@@ -441,7 +438,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    if (!in_array($this->policymaker->get('field_organization_type')->value, $trustee_types)) {
+    if (!in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
       return NULL;
     }
 
@@ -480,7 +477,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    if ($this->policymaker->get('field_organization_type')->value === 'Luottamushenkilö') {
+    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
       return NULL;
     }
 

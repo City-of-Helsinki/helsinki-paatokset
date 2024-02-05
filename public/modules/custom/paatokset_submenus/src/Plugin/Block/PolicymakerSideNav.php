@@ -162,13 +162,8 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       'attributes' => new Attribute(),
     ];
 
-    $trustee_types = [
-      'Viranhaltija',
-      'Luottamushenkilö',
-    ];
-
     $org_type = $policymaker->get('field_organization_type')->value;
-    if (in_array($org_type, $trustee_types)) {
+    if (in_array($org_type, PolicymakerService::TRUSTEE_TYPES)) {
       $routes = PolicymakerRoutes::getTrusteeRoutes();
     }
     else {
