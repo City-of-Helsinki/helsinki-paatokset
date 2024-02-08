@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Webmozart\Assert\Assert;
@@ -145,14 +146,8 @@ function _paatokset_policymakers_does_policymaker_exists(NodeInterface $policyma
  *   True if policymaker is an organization.
  */
 function _paatokset_policymakers_is_policymaker_organization(NodeInterface $policymaker): bool {
-  $not_organization_types = [
-    'Luottamushenkilö',
-    'Viranhaltija',
-  ];
-
   $orgType = $policymaker->get('field_organization_type')->value;
-
-  return $orgType && !in_array($orgType, $not_organization_types);
+  return $orgType && !in_array($orgType, PolicymakerService::TRUSTEE_TYPES);
 }
 
 /**
@@ -382,13 +377,8 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
     return;
   }
 
-  $allowed_types = [
-    'Viranhaltija',
-    'Luottamushenkilö',
-  ];
-
   // Only act on Viranhaltija decisionmakers.
-  if (!in_array($node->get('field_organization_type')->value, $allowed_types)) {
+  if (!in_array($node->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
     return;
   }
 

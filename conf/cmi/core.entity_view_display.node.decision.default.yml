@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.decision.field_decision_history
     - field.field.node.decision.field_decision_history_pdf
     - field.field.node.decision.field_decision_meeting
+    - field.field.node.decision.field_decision_minutes_pdf
     - field.field.node.decision.field_decision_motion
     - field.field.node.decision.field_decision_motion_parsed
     - field.field.node.decision.field_decision_native_id
@@ -156,6 +157,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 12
+    region: content
+  field_decision_minutes_pdf:
+    type: json
+    label: above
+    settings:
+      attach_library: true
+    third_party_settings: {  }
+    weight: 39
     region: content
   field_decision_motion:
     type: text_default

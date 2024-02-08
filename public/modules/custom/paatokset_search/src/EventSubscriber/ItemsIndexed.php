@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_search\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -59,7 +60,7 @@ class ItemsIndexed implements EventSubscriberInterface {
       // They are the only ones currently that are fetched from ElasticSearch.
       /** @var \Drupal\Core\Field\FieldItemList $org_type_field */
       $org_type_field = $item->get('field_organization_type');
-      if ($org_type_field->isEmpty() || $org_type_field->value !== 'Viranhaltija') {
+      if ($org_type_field->isEmpty() || !in_array($org_type_field->value, PolicymakerService::TRUSTEE_TYPES)) {
         continue;
       }
 
