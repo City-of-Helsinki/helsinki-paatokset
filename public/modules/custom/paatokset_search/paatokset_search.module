@@ -5,7 +5,7 @@
  * Primary module hooks for Paatokset search module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Implements hook_preprocess_html().

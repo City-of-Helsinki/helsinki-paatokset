@@ -8,7 +8,7 @@
  * @see https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/documentation/openshift.md for documentation.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Collect preflight messages.

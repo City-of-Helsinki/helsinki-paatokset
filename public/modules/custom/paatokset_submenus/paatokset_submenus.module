@@ -5,7 +5,7 @@
  * Contains paatokset_submenus.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
