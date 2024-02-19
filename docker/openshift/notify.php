@@ -24,7 +24,7 @@
  * be appended to all messages, such as APP_ENV, OPENSHIFT_BUILD_ID etc.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Sentry\ClientInterface;
 use Sentry\State\Scope;

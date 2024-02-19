@@ -26,6 +26,22 @@ $config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_
 // Sentry DSN for React.
 $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
 
+// AD role mapping
+$config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
+  [
+    'ad_role' => 'Drupal_Helfi_kaupunkitaso_paakayttajat',
+    'roles' => ['admin'],
+  ],
+  [
+    'ad_role' => 'Drupal_Helfi_Paatokset_sisallontuottajat_laaja',
+    'roles' => ['editor'],
+  ],
+  [
+    'ad_role' => 'Drupal_Helfi_Paatokset_sisallontuottajat_suppea',
+    'roles' => ['content_producer'],
+  ],
+];
+
 $additionalEnvVars = [
   'AZURE_BLOB_STORAGE_SAS_TOKEN|BLOBSTORAGE_SAS_TOKEN',
   'AZURE_BLOB_STORAGE_NAME',
