@@ -1,0 +1,8 @@
+uuid: 7d5f71d4-4aa9-44eb-a1e2-22a697f8aa25
+langcode: fi
+status: true
+dependencies: {  }
+id: node__trustee
+label: 'Sisältö: Trustee'
+tags:
+  title: '[node:field_first_name] [node:field_last_name] | [site:name] | [site:page-title-suffix]'
