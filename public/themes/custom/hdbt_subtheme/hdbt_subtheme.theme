@@ -5,7 +5,7 @@
  * Functions to support theming in the HDBT Subtheme.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
