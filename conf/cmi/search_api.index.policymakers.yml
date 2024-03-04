@@ -170,7 +170,6 @@ processor_settings:
   entity_type: {  }
   exclude_trustees: {  }
   has_translation: {  }
-  inactive_decisionmakers: {  }
   language_with_fallback: {  }
   organization_hierarchy: {  }
   project_execution_schedule: {  }
