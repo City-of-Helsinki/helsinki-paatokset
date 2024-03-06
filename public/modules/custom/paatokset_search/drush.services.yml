@@ -1,0 +1,7 @@
+services:
+  paatokset.database_cleaner:
+    class: \Drupal\paatokset_search\Commands\DevelopmentDatabaseCleanerCommand
+    arguments:
+      - '@entity_type.manager'
+    tags:
+      - { name: drush.command }
