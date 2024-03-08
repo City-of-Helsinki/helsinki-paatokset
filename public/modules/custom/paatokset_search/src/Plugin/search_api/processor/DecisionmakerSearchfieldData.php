@@ -17,9 +17,7 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *    description = @Translation("Combines policymaker_id id, organization_name and organization_above_name."),
  *    stages = {
  *      "add_properties" = 0,
- *    },
- *    locked = true,
- *    hidden = true,
+ *    }
  * )
  */
 class DecisionmakerSearchfieldData extends ProcessorPluginBase {
