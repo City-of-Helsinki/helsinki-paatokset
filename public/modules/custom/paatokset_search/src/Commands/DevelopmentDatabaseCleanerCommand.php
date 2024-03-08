@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Drupal\paatokset_search\Commands;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drush\Attributes\Command;
-use Drush\Commands\DrushCommands;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\Entity\Node;
-
+use Drush\Attributes\Command;
+use Drush\Commands\DrushCommands;
 
 /**
  * A drush command to clean up database for development purpose.
@@ -25,21 +24,20 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
-  )
-  {
+  ) {
   }
 
   /**
    * Deletes the old decisions.
    *
-   * @param array $options
-   *   The options.
+   * @param string $dateFrom
+   *   Decisions older than given date will be removed from database.
    *
    * @return int
    *   The exit code.
    */
   #[Command(name: 'paatokset:decisions:delete')]
-  public function databaseCleanup(string $dateFrom = null): int {
+  public function databaseCleanup(string $dateFrom = NULL): int {
 
     if (getenv('APP_ENV') !== 'local') {
       $this->io()->writeln('Stopping execution. APP_ENV is not "local" or is missing.');
@@ -59,9 +57,9 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
       ->condition('type', 'decision')
       ->condition('field_decision_date', $formatted, '<')
       ->accessCheck(FALSE)
-      ->range(0,100);
+      ->range(0, 100);
 
-    while($ids = $query->execute()) {
+    while ($ids = $query->execute()) {
       foreach ($ids as $id) {
         $node = Node::load($id);
         $node->delete();

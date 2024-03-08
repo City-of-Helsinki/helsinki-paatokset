@@ -62,8 +62,8 @@ class SectorData extends ProcessorPluginBase {
       }
 
       $sector_field = 'field_sector_name';
-      $dm = null;
-      $dmId = $node->hasField('field_policymaker_id') ? $node->get('field_policymaker_id')->value : null;
+      $dm = NULL;
+      $dmId = $node->hasField('field_policymaker_id') ? $node->get('field_policymaker_id')->value : NULL;
       if ($dmId) {
         $nodes = \Drupal::entityTypeManager()
           ->getStorage('node')
@@ -75,7 +75,7 @@ class SectorData extends ProcessorPluginBase {
         $dm = reset($nodes);
       }
 
-      $data['sector'] = ['fi' => null, 'en' => null, 'sv' => null];
+      $data['sector'] = ['fi' => NULL, 'en' => NULL, 'sv' => NULL];
 
       if ($dm) {
         $original_translation = $dm->hasTranslation('fi') ? $dm->getTranslation('fi') : $dm;
