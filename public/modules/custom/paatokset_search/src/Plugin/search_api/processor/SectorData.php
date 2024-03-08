@@ -49,7 +49,10 @@ class SectorData extends ProcessorPluginBase {
     if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if (!$node instanceof NodeInterface) {
+      if (
+        !$node instanceof NodeInterface ||
+        $node->getType() !== 'decision'
+      ) {
         return;
       }
 
@@ -58,45 +61,41 @@ class SectorData extends ProcessorPluginBase {
         $data['id'] = $node->get('field_policymaker_id')->value;
       }
 
-      $sector_data = null;
       $sector_field = 'field_sector_name';
+      $dm = null;
+      $dmId = $node->hasField('field_policymaker_id') ? $node->get('field_policymaker_id')->value : null;
+      if ($dmId) {
+        $nodes = \Drupal::entityTypeManager()
+          ->getStorage('node')
+          ->loadByProperties([
+            'type' => 'policymaker',
+            'field_policymaker_id' => $dmId,
+          ]);
 
-      if ($node->getType() !== 'policymaker') {
-        $dm = null;
-        $dmId = $node->hasField('field_policymaker_id') ? $node->get('field_policymaker_id')->value : null;
-        if ($dmId) {
-          $nodes = \Drupal::entityTypeManager()
-            ->getStorage('node')
-            ->loadByProperties([
-              'type' => 'policymaker',
-              'field_policymaker_id' => $dmId,
-            ]);
+        $dm = reset($nodes);
+      }
 
-          $dm = reset($nodes);
-        }
+      $data['sector'] = ['fi' => null, 'en' => null, 'sv' => null];
 
-        if (!$dm) {
-          $data['sector'] = ['fi' => null, 'en' => null, 'sv' => null];
-        } else {
-          $original_translation = $dm->hasTranslation('fi') ? $dm->getTranslation('fi') : $dm;
-          $languages = ['fi', 'en', 'sv'];
+      if ($dm) {
+        $original_translation = $dm->hasTranslation('fi') ? $dm->getTranslation('fi') : $dm;
+        $languages = ['fi', 'en', 'sv'];
 
-          foreach ($languages as $langcode) {
-            $dm = $dm->hasTranslation($langcode) ? $dm->getTranslation($langcode) : $original_translation;
-            if ($dm && $dm->hasTranslation($langcode)) {
-              $dm = $dm->getTranslation($langcode);
-              $data['sector'][$langcode] = $dm->get($sector_field)->value;
-            }
+        foreach ($languages as $langcode) {
+          $dm = $dm->hasTranslation($langcode) ? $dm->getTranslation($langcode) : $original_translation;
+          if ($dm && $dm->hasTranslation($langcode)) {
+            $dm = $dm->getTranslation($langcode);
+            $data['sector'][$langcode] = $dm->get($sector_field)->value;
           }
         }
+      }
 
-        $fields = $this->getFieldsHelper()
-          ->filterForPropertyPath($item->getFields(), 'entity:node', 'sector_data');
-        if (isset($fields['sector_data'])) {
-          $fields['sector_data']->addValue(
-            json_encode($data)
-          );
-        }
+      $fields = $this->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(), 'entity:node', 'sector_data');
+      if (isset($fields['sector_data'])) {
+        $fields['sector_data']->addValue(
+          json_encode($data)
+        );
       }
 
     }
