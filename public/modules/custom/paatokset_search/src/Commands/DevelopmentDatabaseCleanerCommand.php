@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_search\Commands;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\Entity\Node;
 use Drush\Attributes\Command;
