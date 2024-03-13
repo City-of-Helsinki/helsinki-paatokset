@@ -62,6 +62,7 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
       if ($node->getType() === 'policymaker') {
         $org_name_field = 'field_ahjo_title';
         $org_above_name_field = 'field_dm_org_name';
+        $sector_field = 'field_sector_name';
       }
       else {
         $org_name_field = 'field_dm_org_name';
@@ -73,6 +74,10 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
       foreach ($languages as $langcode) {
         $node = $node->hasTranslation($langcode) ? $node->getTranslation($langcode) : $original_translation;
 
+        if (isset($sector_field) && $node->hasField($sector_field)) {
+          $data['sector'][$langcode] = $node->get($sector_field)->value;
+        }
+
         if ($node->hasField($org_name_field)) {
           $data['organization'][$langcode] = $node->get($org_name_field)->value;
         }
@@ -83,10 +88,9 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
 
       $fields = $this->getFieldsHelper()
         ->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_searchfield_data');
+
       if (isset($fields['decisionmaker_searchfield_data'])) {
-        $fields['decisionmaker_searchfield_data']->addValue(
-          json_encode($data)
-        );
+        $fields['decisionmaker_searchfield_data']->addValue(json_encode($data));
       }
 
     }
