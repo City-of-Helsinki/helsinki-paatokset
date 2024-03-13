@@ -455,7 +455,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public function getOrgChart(string $orgId, int $steps = 3, string $langcode = 'fi'): ?array {
     $nodeStorage = $this->entityTypeManager->getStorage('node');
-    $ids = $nodeStorage('node')->getQuery()
+    $ids = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->range(0, 1)
@@ -510,6 +510,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         'TypeId',
         'Sector',
         'Formed',
+        'Existing',
       ];
       foreach ($values as $value) {
         if (isset($org[$value])) {
