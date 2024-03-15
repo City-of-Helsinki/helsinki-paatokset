@@ -40,7 +40,12 @@ process:
       source: response/OrganizationLevelAbove/organizations
       process:
         value: ID
-  field_org_level_below_ids: response/OrganizationLevelBelow/organizations/0/ID
+  field_org_level_below_ids:
+    -
+      plugin: sub_process
+      source: response/OrganizationLevelBelow/organizations
+      process:
+        value: ID
 destination:
   plugin: 'entity:node'
   translations: true
