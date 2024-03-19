@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains alterations for config.
+ */
+
+declare(strict_types=1);
+
+use Drupal\config_rewrite\ConfigRewriterInterface;
+
+/**
+ * Implements hook_rewrite_config_update().
+ */
+function paatokset_config_rewrite_config_update(string $module, ConfigRewriterInterface $configRewriter): void {
+  $modules = [
+    'helfi_base_content',
+  ];
+
+  if (in_array($module, $modules)) {
+    // Rewrite module configuration.
+    $configRewriter->rewriteModuleConfig('paatokset_config');
+  }
+}
