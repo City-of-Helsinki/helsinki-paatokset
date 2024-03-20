@@ -15,5 +15,5 @@ tags:
   og_title: '[node:title]'
   og_updated_time: '[node:changed:html_datetime]'
   og_url: '[current-page:url:absolute]'
-  title: '[node:title] | [site:name] | [site:page-title-suffix]'
+  title: '[node:title] | [site:page-title-suffix]'
   twitter_cards_image: '[node:shareable-image]'
