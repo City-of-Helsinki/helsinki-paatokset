@@ -50,8 +50,8 @@ class SectorData extends ProcessorPluginBase {
       $node = $item->getOriginalObject()->getValue();
 
       if (
-        !$node instanceof NodeInterface ||
-        $node->getType() !== 'decision'
+        $node instanceof NodeInterface &&
+        $node->getType() === 'policymaker'
       ) {
         return;
       }
