@@ -1,0 +1,4 @@
+config_rewrite:
+  replace: ['tags.title']
+tags:
+  title: '[current-page:title] | [site:name] | [site:page-title-suffix]'

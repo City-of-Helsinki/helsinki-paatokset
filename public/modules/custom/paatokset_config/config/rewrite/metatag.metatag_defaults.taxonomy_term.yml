@@ -1,0 +1,4 @@
+config_rewrite:
+  replace: ['tags.title']
+tags:
+  title: '[term:name] | [site:name] | [site:page-title-suffix]'
