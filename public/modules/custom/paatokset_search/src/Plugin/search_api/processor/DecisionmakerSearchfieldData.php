@@ -49,7 +49,10 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
     if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if (!$node instanceof NodeInterface) {
+      if (
+        $node instanceof NodeInterface &&
+        $node->getType() === 'policymaker'
+      ) {
         return;
       }
 
@@ -58,16 +61,9 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
         $data['id'] = $node->get('field_policymaker_id')->value;
       }
 
-      // Policymakers have slightly different field names.
-      if ($node->getType() === 'policymaker') {
-        $org_name_field = 'field_ahjo_title';
-        $org_above_name_field = 'field_dm_org_name';
-        $sector_field = 'field_sector_name';
-      }
-      else {
-        $org_name_field = 'field_dm_org_name';
-        $org_above_name_field = 'field_dm_org_above_name';
-      }
+      $org_name_field = 'field_ahjo_title';
+      $org_above_name_field = 'field_dm_org_name';
+      $sector_field = 'field_sector_name';
 
       $original_translation = $node->hasTranslation('fi') ? $node->getTranslation('fi') : $node;
       $languages = ['fi', 'en', 'sv'];
