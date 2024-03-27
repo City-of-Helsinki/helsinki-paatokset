@@ -17,9 +17,7 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *    description = @Translation("Combines policymaker_id id, organization_name and organization_above_name."),
  *    stages = {
  *      "add_properties" = 0,
- *    },
- *    locked = true,
- *    hidden = true,
+ *    }
  * )
  */
 class DecisionmakerSearchfieldData extends ProcessorPluginBase {
@@ -51,7 +49,10 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
     if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
 
-      if (!$node instanceof NodeInterface) {
+      if (
+        $node instanceof NodeInterface &&
+        $node->getType() === 'policymaker'
+      ) {
         return;
       }
 
@@ -60,20 +61,18 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
         $data['id'] = $node->get('field_policymaker_id')->value;
       }
 
-      // Policymakers have slightly different field names.
-      if ($node->getType() === 'policymaker') {
-        $org_name_field = 'field_ahjo_title';
-        $org_above_name_field = 'field_dm_org_name';
-      }
-      else {
-        $org_name_field = 'field_dm_org_name';
-        $org_above_name_field = 'field_dm_org_above_name';
-      }
+      $org_name_field = 'field_ahjo_title';
+      $org_above_name_field = 'field_dm_org_name';
+      $sector_field = 'field_sector_name';
 
       $original_translation = $node->hasTranslation('fi') ? $node->getTranslation('fi') : $node;
       $languages = ['fi', 'en', 'sv'];
       foreach ($languages as $langcode) {
         $node = $node->hasTranslation($langcode) ? $node->getTranslation($langcode) : $original_translation;
+
+        if (isset($sector_field) && $node->hasField($sector_field)) {
+          $data['sector'][$langcode] = $node->get($sector_field)->value;
+        }
 
         if ($node->hasField($org_name_field)) {
           $data['organization'][$langcode] = $node->get($org_name_field)->value;
@@ -85,10 +84,9 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
 
       $fields = $this->getFieldsHelper()
         ->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_searchfield_data');
+
       if (isset($fields['decisionmaker_searchfield_data'])) {
-        $fields['decisionmaker_searchfield_data']->addValue(
-          json_encode($data)
-        );
+        $fields['decisionmaker_searchfield_data']->addValue(json_encode($data));
       }
 
     }
