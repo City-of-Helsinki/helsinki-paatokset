@@ -50,8 +50,8 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
       $node = $item->getOriginalObject()->getValue();
 
       if (
-        $node instanceof NodeInterface &&
-        $node->getType() === 'policymaker'
+        !$node instanceof NodeInterface ||
+        $node->getType() !== 'policymaker'
       ) {
         return;
       }
