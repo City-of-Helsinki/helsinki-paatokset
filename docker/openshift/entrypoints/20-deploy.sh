@@ -35,6 +35,7 @@ if [ "$CURRENT_DEPLOY_ID" != "$OPENSHIFT_BUILD_NAME" ]; then
   # Run pre-deploy tasks.
   # @see https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/deploy-hooks.md
   drush helfi:pre-deploy || true
+  sleep 300
   # Run maintenance tasks (config import, database updates etc)
   drush deploy
 
