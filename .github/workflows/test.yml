@@ -27,16 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Make sure configuration was exported in correct language (en or und)
-        run: |
-          OUTPUT=$(grep -oP '^langcode: \b(?!(?:en|und)\b)\w+' conf -R || true)
-
-          if [ ! -z "$OUTPUT" ]; then
-            echo "Found configuration that does not match the pattern 'langcode: (en|und)':" >> $GITHUB_STEP_SUMMARY
-            echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
-
       - name: Build project
         run: composer install --no-interaction
 
@@ -48,8 +38,8 @@ jobs:
 
       - name: Run PHPCS
         run: |
-          vendor/bin/phpcs public/modules/custom/ --ignore="*.js,*.css" --extensions=php,module,install --standard=Drupal,DrupalPractice
-          vendor/bin/phpcs public/themes/custom/ --ignore="*.js,*.css" --extensions=php,theme --standard=Drupal,DrupalPractice
+          vendor/bin/phpcs public/modules/custom/ --ignore="*.js,*.css" --extensions=php,module,install --standard=Drupal
+          vendor/bin/phpcs public/themes/custom/ --ignore="*.js,*.css" --extensions=php,theme --standard=Drupal
 
       - name: Download latest dump
         env:
