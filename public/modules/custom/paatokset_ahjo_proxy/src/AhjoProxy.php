@@ -1890,7 +1890,7 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     // If node can't be found use meeting data or create it.
     if (!$node instanceof NodeInterface) {
-      $node = $case_service->findOrCreateMotionByMeetingData($native_id, $version_id, $case_id, $meeting_id, $title, TRUE);
+      $node = $case_service->findOrCreateMotionByMeetingData($version_id, $case_id, $meeting_id, $title);
     }
 
     if (!$node instanceof NodeInterface) {
