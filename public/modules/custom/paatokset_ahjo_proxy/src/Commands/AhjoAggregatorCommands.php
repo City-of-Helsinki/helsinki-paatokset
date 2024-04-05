@@ -2402,6 +2402,13 @@ class AhjoAggregatorCommands extends DrushCommands {
           $native_id = $item['PDF']['NativeId'];
         }
 
+        if (isset($item['PDF']['VersionSeriesId'])) {
+          $version_id = $item['PDF']['VersionSeriesId'];
+        }
+        else {
+          $version_id = NULL;
+        }
+
         $item['PDF']['AgendaPoint'] = $item['AgendaPoint'];
 
         $endpoint = NULL;
@@ -2424,6 +2431,7 @@ class AhjoAggregatorCommands extends DrushCommands {
           'count' => $count,
           'title' => $item['AgendaItem'],
           'native_id' => $native_id,
+          'version_id' => $version_id,
           'pdf' => $item['PDF'],
           'html' => $item['HTML'],
           'meeting_data' => $meeting_data,

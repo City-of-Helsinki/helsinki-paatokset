@@ -2135,34 +2135,64 @@ class CaseService {
   }
 
   /**
-   * Find or create motion as decision node.
+   * Find motion as decision node based on NativeId or VersionSeriesId.
    *
+   * @param string $native_id
+   *   NativeId for motion PDF document.
+   * @param string $version_id
+   *   VersionSeriesId for motion PDF document.
+   *
+   * @return Drupal\node\NodeInterface|null
+   *   Decision node as motion. NULL if not found.
+   */
+  public function findMotionById(string $native_id, string $version_id): ?NodeInterface {
+    // See if node already exists with same NativeId.
+    $node = $this->decisionQuery([
+      'decision_id' => $native_id,
+      'limit' => 1,
+    ]);
+
+    $node = reset($node);
+    if ($node instanceof NodeInterface) {
+      return $node;
+    }
+
+    // If not, try with VersionSeriesId.
+    $node = $this->decisionQuery([
+      'version_id' => $version_id,
+      'limit' => 1,
+    ]);
+
+    $node = reset($node);
+    if ($node instanceof NodeInterface) {
+      return $node;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Find or create motion as decision node based on IDs or meeting data.
+   *
+   * @param string|null $version_id
+   *   VersionSeriesId for motion document.
    * @param string|null $case_id
    *   Diary number for motion. Can be NULL.
    * @param string $meeting_id
    *   Meeting ID for motion.
    * @param string $title
    *   Motion title (used in case there are multiple motions with same id).
-   * @param bool $check_title
-   *   Check if title matches. If not, create new node. FALSE by default.
    *
    * @return Drupal\node\NodeInterface|null
-   *   Decision node as motion. NULL if not found or if a decision was found.
+   *   Decision node as motion. NULL if not found.
    */
-  public function findOrCreateMotion(?string $case_id, string $meeting_id, string $title, bool $check_title = FALSE): ?NodeInterface {
-    if ($check_title) {
-      $nodes = $this->decisionQuery([
-        'case_id' => $case_id,
-        'meeting_id' => $meeting_id,
-        'title' => $title,
-      ]);
-    }
-    else {
-      $nodes = $this->decisionQuery([
-        'case_id' => $case_id,
-        'meeting_id' => $meeting_id,
-      ]);
-    }
+  public function findOrCreateMotionByMeetingData(?string $version_id, ?string $case_id, string $meeting_id, string $title): ?NodeInterface {
+    $nodes = $this->decisionQuery([
+      'case_id' => $case_id,
+      'meeting_id' => $meeting_id,
+      'version_id' => $version_id,
+      'limit' => 1,
+    ]);
 
     // If there is only one node, use that.
     $found_node = NULL;
