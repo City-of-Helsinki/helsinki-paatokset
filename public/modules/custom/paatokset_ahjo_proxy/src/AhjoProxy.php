@@ -1878,13 +1878,21 @@ class AhjoProxy implements ContainerInjectionInterface {
     $case_id = $ids['case_id'];
     $title = $data['title'];
     $native_id = $data['native_id'];
+    $version_id = $data['version_id'];
     $meeting_id = $data['meeting_data']['meeting_id'];
     $meeting_date = $data['meeting_data']['meeting_date'];
     $meeting_number = $data['meeting_data']['meeting_number'];
     $org_id = $data['meeting_data']['org_id'];
     $org_name = $data['meeting_data']['org_name'];
 
-    $node = $case_service->findOrCreateMotion($case_id, $meeting_id, $title, TRUE);
+    // Attempt to find node by ID.
+    $node = $case_service->findMotionById($native_id, $version_id);
+
+    // If node can't be found use meeting data or create it.
+    if (!$node instanceof NodeInterface) {
+      $node = $case_service->findOrCreateMotionByMeetingData($native_id, $version_id, $case_id, $meeting_id, $title, TRUE);
+    }
+
     if (!$node instanceof NodeInterface) {
       $context['results']['failed'][] = $data['title'];
       return;
@@ -1974,6 +1982,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     $node->set('field_top_category_name', $top_category);
     $node->set('field_classification_code', $classification_code);
     $node->set('field_decision_native_id', $native_id);
+    $node->set('field_decision_series_id', $version_id);
     $node->set('field_diary_number', $case_id);
     $node->set('field_meeting_id', $meeting_id);
     $node->set('field_decision_date', $meeting_date);
