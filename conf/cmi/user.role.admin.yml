@@ -105,7 +105,6 @@ permissions:
   - 'administer tpr_unit'
   - 'administer url aliases'
   - 'administer users'
-  - 'assign admin role'
   - 'assign api_user role'
   - 'assign content_producer role'
   - 'assign editor role'

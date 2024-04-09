@@ -11,6 +11,8 @@ dependencies:
     - responsive_image.styles.content_cards
   module:
     - responsive_image
+_core:
+  default_config_hash: 96VDzdJ0d-RMHgGUC1vFlJ89q6BDz5cj3OYAkr0lsIo
 id: media.image.content_card
 targetEntityType: media
 bundle: image

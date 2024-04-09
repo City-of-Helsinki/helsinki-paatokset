@@ -7,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.list_of_links_item
   module:
     - link
+_core:
+  default_config_hash: wFZyOnJEZnJFSnq5JOrEixUK4E7XTVGxvYfpRjXh46I
 id: paragraph.list_of_links_item.field_list_of_links_link
 field_name: field_list_of_links_link
 entity_type: paragraph

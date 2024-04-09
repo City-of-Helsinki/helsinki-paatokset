@@ -11,6 +11,8 @@ dependencies:
   module:
     - entity_reference_revisions
     - options
+_core:
+  default_config_hash: KNfAPmqwI7H1wTiwpq3VATIRIqt_hPORQRsgoQExpjU
 id: paragraph.columns.default
 targetEntityType: paragraph
 bundle: columns

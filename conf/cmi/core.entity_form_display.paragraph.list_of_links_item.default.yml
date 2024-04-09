@@ -13,6 +13,8 @@ dependencies:
   enforced:
     module:
       - linkit
+_core:
+  default_config_hash: dBbGeUHGIzsIn01gkhgiDNbzbZ_tLNPptyiYZSC7x4c
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
 bundle: list_of_links_item
@@ -38,8 +40,8 @@ content:
     weight: 1
     region: content
     settings:
-      linkit_profile: helfi
       linkit_auto_link_text: false
+      linkit_profile: helfi
     third_party_settings: {  }
 hidden:
   created: true

@@ -20,4 +20,4 @@ display:
           content: 'Нет доступных материалов.'
       use_more_text: Ещё
   block_1:
-    display_title: Блок
+    display_title: Block

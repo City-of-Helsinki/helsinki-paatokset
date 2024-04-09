@@ -1,4 +1,4 @@
 label: 'Evenemang på distans'
 settings:
-  on_label: Ja
-  off_label: Nej
+  on_label: 'Yes'
+  off_label: 'No'

@@ -31,7 +31,7 @@ display:
           label: Innehållstyp
           separator: ', '
         name:
-          label: 'Lås ägare'
+          label: 'Lock owner'
           separator: ', '
         operations:
           label: Funktioner

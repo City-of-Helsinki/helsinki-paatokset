@@ -9,6 +9,8 @@ dependencies:
     - paragraphs.paragraphs_type.content_cards
   module:
     - hdbt_admin_tools
+_core:
+  default_config_hash: 2OyOKAdDhG-kFNxxt7Dc75wHvetreVM22KBjGHxWhMQ
 id: paragraph.content_cards.default
 targetEntityType: paragraph
 bundle: content_cards

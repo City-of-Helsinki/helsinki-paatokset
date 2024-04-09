@@ -1,4 +1,4 @@
-label: 'Помещено на главную страницу'
+label: 'Promoted to front page'
 settings:
-  on_label: Вкл
-  off_label: Выкл
+  on_label: 'On'
+  off_label: 'Off'

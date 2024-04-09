@@ -10,6 +10,8 @@ dependencies:
   module:
     - link
     - text
+_core:
+  default_config_hash: gdwGWJ777jQK9Sp9u3B8_ezV69VGMbEqOiKax-7vUM8
 id: media.helfi_chart.default
 targetEntityType: media
 bundle: helfi_chart

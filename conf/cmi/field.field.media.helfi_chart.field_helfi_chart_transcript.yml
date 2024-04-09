@@ -12,6 +12,8 @@ third_party_settings:
   allowed_formats:
     allowed_formats:
       - minimal
+_core:
+  default_config_hash: eYXYJE9ziG8ujmLaO266WejbGDf4DUbUQU6QJac4zXY
 id: media.helfi_chart.field_helfi_chart_transcript
 field_name: field_helfi_chart_transcript
 entity_type: media
