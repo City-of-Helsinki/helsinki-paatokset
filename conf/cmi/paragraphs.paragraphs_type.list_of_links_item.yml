@@ -5,6 +5,8 @@ dependencies:
   enforced:
     config:
       - paragraphs.paragraphs_type.list_of_links
+_core:
+  default_config_hash: eRqeMt3xpA_D_dl6z_yti3-HnjbVz09xNeEccyLkTUk
 id: list_of_links_item
 label: 'List of links item'
 icon_uuid: null

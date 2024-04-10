@@ -8,6 +8,7 @@ display:
           label: Otsikko
         type:
           label: Sisältötyyppi
+          separator: ', '
         name:
           label: Kirjoittaja
         status:
@@ -51,8 +52,6 @@ display:
             label: Julkaisutila
             group_items:
               1:
-                title: Julkaisematon
-              0:
                 title: Julkaistu
         langcode:
           expose:

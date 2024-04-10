@@ -1,0 +1,41 @@
+display:
+  default:
+    display_title: 'По умолчанию'
+    display_options:
+      fields:
+        name:
+          separator: ', '
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Элементов на страницу'
+            items_per_page_options_all_label: '- Все -'
+            offset_label: Пропустить
+      exposed_form:
+        options:
+          submit_button: Применить
+          reset_button_label: Сбросить
+          exposed_sorts_label: 'Сортировать по'
+          sort_asc_label: 'По возрастанию'
+          sort_desc_label: 'По убыванию'
+      empty:
+        area:
+          content:
+            value: 'No results'
+      arguments:
+        id:
+          exception:
+            title: Все
+  entity_reference:
+    display_title: 'Entity Reference'
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '

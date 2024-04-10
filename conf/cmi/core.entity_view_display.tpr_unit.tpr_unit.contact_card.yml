@@ -4,6 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.tpr_unit.contact_card
+    - field.field.tpr_unit.tpr_unit.field_content
+    - field.field.tpr_unit.tpr_unit.field_lower_content
+    - field.field.tpr_unit.tpr_unit.field_metatags
+    - field.field.tpr_unit.tpr_unit.field_phone_label
+    - field.field.tpr_unit.tpr_unit.field_phone_with_contacts
+    - field.field.tpr_unit.tpr_unit.field_unit_type
   module:
     - address
     - helfi_tpr
@@ -68,6 +74,8 @@ hidden:
   field_content: true
   field_lower_content: true
   field_metatags: true
+  field_phone_label: true
+  field_phone_with_contacts: true
   field_unit_type: true
   hide_description: true
   highlights: true
