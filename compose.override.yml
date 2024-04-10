@@ -1,6 +1,10 @@
-version: '3.7'
-
 services:
+  db:
+    command:
+      - --max_allowed_packet=512M
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_swedish_ci
+      - --sort_buffer_size=4096k
   app:
     env_file:
       - .env.local
