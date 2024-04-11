@@ -44,9 +44,8 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
       return DrushCommands::EXIT_SUCCESS;
     }
 
-    $query = $this->entityTypeManager
-      ->getStorage('node')
-      ->getQuery();
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery();
 
     $date = $dateFrom ? new DrupalDateTime($dateFrom) : new DrupalDateTime(date("Y-m-d", strtotime("-6 months")));
 
@@ -61,7 +60,7 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
 
     while ($ids = $query->execute()) {
       foreach ($ids as $id) {
-        $node = Node::load($id);
+        $node = $nodeStorage->load($id);
         $node->delete();
       }
     }
