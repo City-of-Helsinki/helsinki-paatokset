@@ -7,7 +7,6 @@ namespace Drupal\paatokset_search\Commands;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drupal\node\Entity\Node;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
 
@@ -52,17 +51,16 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
     $date->setTimezone(new \DateTimezone(DateTimeItemInterface::STORAGE_TIMEZONE));
     $formatted = $date->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
 
-    $query
+    $ids = $query
       ->condition('type', 'decision')
       ->condition('field_decision_date', $formatted, '<')
       ->accessCheck(FALSE)
-      ->range(0, 100);
+      ->range(0, 100)
+      ->execute();
 
-    while ($ids = $query->execute()) {
-      foreach ($ids as $id) {
-        $node = $nodeStorage->load($id);
-        $node->delete();
-      }
+    foreach ($ids as $id) {
+      $node = $nodeStorage->load($id);
+      $node->delete();
     }
 
     return DrushCommands::EXIT_SUCCESS;
