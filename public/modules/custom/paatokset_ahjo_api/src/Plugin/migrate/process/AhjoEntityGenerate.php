@@ -76,9 +76,9 @@ class AhjoEntityGenerate extends EntityLookup {
     }
 
     // Updates either the existing or created entity.
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface $entity */
     if ($entity = $this->entityTypeManager->getStorage($this->lookupEntityType)
       ->load($result)) {
+      /** @var \Drupal\Core\Entity\FieldableEntityInterface $entity */
       $this->updateEntity($entity, $value);
     }
 
@@ -100,10 +100,10 @@ class AhjoEntityGenerate extends EntityLookup {
    */
   protected function generateEntity($value) {
     if (empty($value)) {
-      return;
+      return NULL;
     }
     if (!is_array($value)) {
-      return;
+      return NULL;
     }
 
     $entity = $this->entityTypeManager
