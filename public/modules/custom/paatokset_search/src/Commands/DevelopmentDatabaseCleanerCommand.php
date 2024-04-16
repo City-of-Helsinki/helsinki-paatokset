@@ -51,16 +51,17 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
     $date->setTimezone(new \DateTimezone(DateTimeItemInterface::STORAGE_TIMEZONE));
     $formatted = $date->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
 
-    $ids = $query
+    $query
       ->condition('type', 'decision')
       ->condition('field_decision_date', $formatted, '<')
       ->accessCheck(FALSE)
-      ->range(0, 100)
-      ->execute();
+      ->range(0, 100);
 
-    foreach ($ids as $id) {
-      $node = $nodeStorage->load($id);
-      $node->delete();
+    while ($ids = $query->execute()) {
+      foreach ($ids as $id) {
+        $node = $nodeStorage->load($id);
+        $node->delete();
+      }
     }
 
     return DrushCommands::EXIT_SUCCESS;
