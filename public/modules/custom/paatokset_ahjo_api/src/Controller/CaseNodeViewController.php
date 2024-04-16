@@ -129,7 +129,7 @@ final class CaseNodeViewController extends NodeViewController {
       $case->hasField('field_dm_org_name') &&
       !$case->get('field_dm_org_name')->isEmpty()
     ) {
-      return $case->getTitle() . ' - ' . $case->field_dm_org_name->value;
+      return $case->getTitle() . ' - ' . $case->get('field_dm_org_name')->value;
     }
 
     return $case->getTitle();
@@ -144,7 +144,7 @@ final class CaseNodeViewController extends NodeViewController {
    *   Decision native ID.
    */
   public function decisionTitle(string $case_id, NodeInterface $decision): ?string {
-    return $decision->getTitle() . ' - ' . $decision->field_dm_org_name->value;
+    return $decision->getTitle() . ' - ' . $decision->get('field_dm_org_name')->value;
   }
 
   /**

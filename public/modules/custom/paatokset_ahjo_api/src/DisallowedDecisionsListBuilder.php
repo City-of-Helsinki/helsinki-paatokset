@@ -43,6 +43,7 @@ class DisallowedDecisionsListBuilder extends DraggableListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
+    /** @var \Drupal\paatokset_ahjo_api\Entity\DisallowedDecisions $entity  */
     $row['sorter'] = ['#markup' => ''];
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();

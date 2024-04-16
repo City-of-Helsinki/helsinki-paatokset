@@ -49,6 +49,7 @@ class DisallowedDecisionsForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    /** @var \Drupal\paatokset_ahjo_api\Entity\DisallowedDecisions $disallowed_decisions  */
     $disallowed_decisions = $this->entity;
     $form['label'] = [
       '#type' => 'textfield',
@@ -102,6 +103,8 @@ class DisallowedDecisionsForm extends EntityForm {
           ]));
     }
     $form_state->setRedirectUrl($disallowed_decisions->toUrl('collection'));
+
+    return $status;
   }
 
 }
