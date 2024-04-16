@@ -665,7 +665,7 @@ class CaseService {
     // Case alias exists, so build URL with query parameter.
     if ($case_alias && $this->routeExists($localizedCaseRoute)) {
       $case_url = Url::fromRoute($localizedCaseRoute, ['case' => $case_id]);
-      $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $id]);
+      $case_url->setOption('query', [$this->getDecisionQueryKey($language) => $id]);
       return $case_url;
     }
 

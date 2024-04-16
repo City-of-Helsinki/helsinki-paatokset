@@ -99,7 +99,7 @@ class AhjoSubscriberController extends ControllerBase {
       $entity_id = (string) $content->id;
     }
     else {
-      $update_type = 'unknown';
+      $entity_id = 'unknown';
     }
 
     if ($item_id) {

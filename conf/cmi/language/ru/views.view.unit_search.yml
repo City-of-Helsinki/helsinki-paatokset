@@ -1,0 +1,56 @@
+display:
+  default:
+    display_title: 'По умолчанию'
+    display_options:
+      fields:
+        name:
+          separator: ', '
+        address__postal_code:
+          separator: ', '
+        address__address_line1:
+          separator: ', '
+        address__address_line2:
+          separator: ', '
+      pager:
+        options:
+          tags:
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
+          expose:
+            items_per_page_label: 'Элементов на страницу'
+            items_per_page_options_all_label: '- Все -'
+            offset_label: Пропустить
+      exposed_form:
+        options:
+          submit_button: Search
+          reset_button_label: Сбросить
+          sort_asc_label: Ascending
+          sort_desc_label: Descending
+      empty:
+        area:
+          content:
+            value: 'No results'
+      arguments:
+        id:
+          exception:
+            title: Все
+      filters:
+        combine:
+          expose:
+            label: Search
+          group_info:
+            label: 'Combine fields filter'
+  block:
+    display_title: Block
+  entity_reference:
+    display_title: 'Entity Reference'
+    display_options:
+      fields:
+        name_override:
+          separator: ', '
+        id:
+          separator: ', '
+        name:
+          separator: ', '

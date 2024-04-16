@@ -8,8 +8,8 @@ display:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       pager:
         options:
           tags:
@@ -56,7 +56,7 @@ display:
       title: 'Lukitut sisällöt'
       empty:
         area_text_custom:
-          content: 'Lukittua sisältöä ei ole.'
+          content: 'Lukittuja toimipisteitä ei ole.'
   page_1:
     display_title: Sivu
     display_options:

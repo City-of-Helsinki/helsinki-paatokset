@@ -9,6 +9,8 @@ dependencies:
     - paragraphs.paragraphs_type.image
   module:
     - helfi_platform_config
+_core:
+  default_config_hash: 3mLKi-YKV64AEso5VbzLofy-2PrULe3WFxhURqVP6NM
 id: paragraph.image.default
 targetEntityType: paragraph
 bundle: image

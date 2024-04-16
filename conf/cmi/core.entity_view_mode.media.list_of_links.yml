@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - media
+_core:
+  default_config_hash: 4vzSL8Da6oEU32PQ9zBI3vo8qBGk3WF3fQDA6CiiVv0
 id: media.list_of_links
 label: 'List of Links'
 description: ''

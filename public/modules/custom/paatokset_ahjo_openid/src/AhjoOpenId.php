@@ -86,10 +86,10 @@ class AhjoOpenId {
   /**
    * Get Auth and refresh tokens.
    *
-   * @return ?mixed
+   * @return mixed
    *   Decoded json response or NULL on failure.
    */
-  public function getAuthAndRefreshTokens(string $code = NULL): ?string {
+  public function getAuthAndRefreshTokens(string $code = NULL): mixed {
     // getHeaders throw an exception if settings are not valid.
     if (!$this->validateSettings()) {
       return NULL;

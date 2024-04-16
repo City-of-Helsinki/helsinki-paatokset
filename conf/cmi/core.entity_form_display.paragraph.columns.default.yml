@@ -11,6 +11,8 @@ dependencies:
   module:
     - hdbt_admin_tools
     - paragraphs
+_core:
+  default_config_hash: oroMP1jkQbLAJhpJO-wTlhPikdJTERoZqcixppzSsBA
 id: paragraph.columns.default
 targetEntityType: paragraph
 bundle: columns

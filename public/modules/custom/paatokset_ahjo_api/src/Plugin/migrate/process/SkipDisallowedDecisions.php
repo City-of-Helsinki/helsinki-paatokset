@@ -104,6 +104,7 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
       return FALSE;
     }
 
+    /** @var \Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager $dd_manager */
     $dd_manager = \Drupal::service('entity_type.manager')->getStorage('disallowed_decisions');
     return $dd_manager->checkIfDisallowed($dm_id, $year, $section);
   }

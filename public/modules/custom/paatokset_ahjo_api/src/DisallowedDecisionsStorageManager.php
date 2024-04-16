@@ -57,6 +57,7 @@ class DisallowedDecisionsStorageManager extends ConfigEntityStorage {
   public function getDisallowedDecisionOrgs(): array {
     $orgs = [];
     $entities = $this->loadMultiple();
+    /** @var \Drupal\paatokset_ahjo_api\Entity\DisallowedDecisions[] $entities  */
     foreach ($entities as $entity) {
       if (!$entity->get('status')) {
         continue;
@@ -103,6 +104,7 @@ class DisallowedDecisionsStorageManager extends ConfigEntityStorage {
    *   Sections grouped by year. NULL if data is invalid or entity is hidden.
    */
   protected function getDisallowedSectionsByYearFromEntity(EntityInterface $entity): ?array {
+    /** @var \Drupal\paatokset_ahjo_api\Entity\DisallowedDecisions $entity  */
     if (!$entity->get('status')) {
       return NULL;
     }

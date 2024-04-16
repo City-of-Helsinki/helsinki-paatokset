@@ -7,6 +7,8 @@ dependencies:
     - media.type.helfi_chart
   module:
     - link
+_core:
+  default_config_hash: V1HwyhpRiVfBUpG1VW9xYqhX2nyWcObeJLStCHAWJ0U
 id: media.helfi_chart.field_helfi_chart_url
 field_name: field_helfi_chart_url
 entity_type: media
