@@ -23,12 +23,12 @@ dependencies:
     - entity_reference_revisions
     - helfi_tpr
 _core:
-  default_config_hash: xwV8V9oqgwBpuEwFQk0laZrlgnyTvyKUPjFd9p1mMOY
+  default_config_hash: IreRPp_R8iN3HQMvgE4hlVOYKqJwXMN5-jYgCzswYaE
 id: tpr_service.tpr_service.field_content
 field_name: field_content
 entity_type: tpr_service
 bundle: tpr_service
-label: 'Upper content region'
+label: 'Ylempi sisältöalue'
 description: ''
 required: false
 translatable: true
