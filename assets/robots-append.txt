@@ -2,4 +2,10 @@
 Disallow: /*?*from=*
 Disallow: /*?*to=*
 Disallow: /*?*category=*
-Disallow: /*?*s=*
+Disallow: /*?*dm=*
+Disallow: /fi/asia?*s=*
+Disallow: /sv/arende?*s=*
+Disallow: /en/case?*s=*
+Disallow: /fi/paattajat?*s=*
+Disallow: /sv/beslutsfattare?*s=*
+Disallow: /en/decisionmakers?*s=*
