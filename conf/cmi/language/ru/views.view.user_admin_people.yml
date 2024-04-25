@@ -7,7 +7,7 @@ display:
       title: Пользователи
       fields:
         user_bulk_form:
-          label: 'Массовое обновление'
+          label: 'Bulk update'
         name:
           label: 'Имя пользователя'
         status:

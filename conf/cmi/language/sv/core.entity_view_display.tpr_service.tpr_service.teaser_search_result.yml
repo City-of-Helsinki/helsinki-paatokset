@@ -7,7 +7,7 @@ content:
         CHAT:
           label: Chatt
         EMAIL:
-          label: 'Skicka via e-post'
+          label: E-post
         TELEPHONE:
           label: Telefon
         PRINTABLE_FORM:
