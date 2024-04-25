@@ -1,3 +1,3 @@
 settings:
-  on_label: Вкл
-  off_label: Выкл
+  on_label: Да
+  off_label: Нет
