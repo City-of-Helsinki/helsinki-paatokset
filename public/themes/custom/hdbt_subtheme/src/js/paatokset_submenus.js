@@ -6,13 +6,15 @@
     const dropdown = $(headerContainer).find('.custom-select-wrapper');
 
     $(dropdown).removeClass('hidden');
-    const allowedWidth = containerWidth - dropdown.width() - 100;
+    const adjustingOffset = containerWidth * 0.25;
+    const allowedWidth = containerWidth - dropdown.width() - adjustingOffset;
 
     const items = $(menu).find('li').toArray();
     let itemsWidth = 0;
     let exceeded = false;
     const allowedItems = [];
-    for(item of items) {
+    const selectedFirst = items.sort((a, b) => $(b).hasClass('selected') - $(a).hasClass('selected'));
+    for(const item of selectedFirst) {
       itemsWidth += $(item).width();
       exceeded = itemsWidth >= allowedWidth;
 
@@ -21,6 +23,12 @@
       } else {
         allowedItems.push($(item).find('input').attr('value'));
         $(item).removeClass('hidden');
+      }
+
+      if ($(item).hasClass('selected')) {
+        $(item).find('input').attr('aria-pressed', true);
+      } else {
+        $(item).find('input').attr('aria-pressed', false);
       }
     }
 
@@ -78,6 +86,9 @@
       $(`.tabbed-list__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
       $(`.custom-select-wrapper .custom-option input[value="${value}"]`).parent('.custom-option').addClass('selected');
       $(`.custom-select-wrapper .custom-option input[value="${value}"]`).attr('aria-pressed', 'true');
+
+      // Handle narrow views
+      handleListVisibility();
     }
 
     showSelected();
@@ -90,6 +101,7 @@
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
         $(context).find('.tabbed-list__content__inner input').click(handleSelect);
+        $(context).find('#custom-options').click(handleSelect);
       })
     }
   }
