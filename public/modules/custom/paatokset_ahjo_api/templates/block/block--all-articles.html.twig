@@ -67,7 +67,7 @@
 
         <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
           {% for document in documents %}
-            <a href="{{ document.url }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
+            <a href="{{ document.url }}" class="policymaker-list-item policymaker-list-item--document">
               <div class="list-item__date">
                 {% if document.date %}
                   <span>{{ document.date|format_date('publication_date_format') }}</span>

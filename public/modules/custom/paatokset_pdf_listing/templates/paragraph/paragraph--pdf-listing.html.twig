@@ -109,7 +109,7 @@
 
         <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
           {% for file in files %}
-            <a href="{{ file.link }}" class="policymaker-list-item policymaker-list-item--document" role="region" aria-label="{{ 'Document'|t }}">
+            <a href="{{ file.link }}" class="policymaker-list-item policymaker-list-item--document">
               <div class="list-item__date">
                 <span>{{ file.date }}</span>
               </div>
