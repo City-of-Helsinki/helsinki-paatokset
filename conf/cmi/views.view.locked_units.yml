@@ -9,7 +9,7 @@ dependencies:
 _core:
   default_config_hash: 0hlcjVvL7vdLtkyp8OVSiK8ue6rkEHayXkv5S316yTY
 id: locked_units
-label: 'Locked units'
+label: 'Lukitut toimipisteet'
 module: views
 description: ''
 tag: ''
@@ -18,11 +18,11 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Oletus
     display_plugin: default
     position: 0
     display_options:
-      title: 'Locked units'
+      title: 'Lukitut toimipisteet'
       fields:
         tpr_unit_bulk_form:
           id: tpr_unit_bulk_form
@@ -33,7 +33,7 @@ display:
           admin_label: ''
           entity_type: tpr_unit
           plugin_id: bulk_form
-          label: 'Bulk update'
+          label: Massapäivitys
           exclude: false
           alter:
             alter_text: false
@@ -74,7 +74,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Action
+          action_title: Toiminto
           include_exclude: include
           selected_actions:
             - tpr_unit_break_lock_action
@@ -88,7 +88,7 @@ display:
           entity_type: null
           entity_field: name
           plugin_id: field
-          label: Title
+          label: Otsikko
           exclude: false
           alter:
             alter_text: false
@@ -153,7 +153,7 @@ display:
           entity_type: user
           entity_field: name
           plugin_id: field
-          label: 'Lock owner'
+          label: 'Lukituksen tekijä'
           exclude: false
           alter:
             alter_text: false
@@ -216,7 +216,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: date
-          label: 'Lock Date/Time'
+          label: 'Lukituksen ajankohta'
           exclude: false
           alter:
             alter_text: false
@@ -270,7 +270,7 @@ display:
           entity_type: tpr_unit
           entity_field: langcode
           plugin_id: field
-          label: 'Content language'
+          label: 'Sisällön kieli'
           exclude: false
           alter:
             alter_text: false
@@ -335,7 +335,7 @@ display:
           admin_label: ''
           entity_type: tpr_unit
           plugin_id: entity_operations
-          label: Operations
+          label: Toimenpiteet
           exclude: false
           alter:
             alter_text: false
@@ -385,29 +385,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Käytä
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       access:
         type: perm
         options:
@@ -425,7 +425,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'There is no currently locked units.'
+          content: 'Lukittuja toimipisteitä ei ole.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -484,7 +484,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Title
+            label: Otsikko
             description: ''
             use_operator: false
             operator: name_op
@@ -607,7 +607,7 @@ display:
       tags: {  }
   locked_units_block:
     id: locked_units_block
-    display_title: Block
+    display_title: Lohko
     display_plugin: block
     position: 1
     display_options:

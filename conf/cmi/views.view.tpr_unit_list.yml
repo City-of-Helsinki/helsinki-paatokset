@@ -6,10 +6,8 @@ dependencies:
     - helfi_tpr
     - user
     - views_bulk_operations
-    - views_bulk_edit
-    - content_lock
 id: tpr_unit_list
-label: 'TPR unit list'
+label: 'TPR Toimipisteet'
 module: views
 description: ''
 tag: ''
@@ -18,11 +16,11 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Oletus
     display_plugin: default
     position: 0
     display_options:
-      title: 'TPR Units'
+      title: 'TPR Toimipisteet'
       fields:
         views_bulk_operations_bulk_form:
           id: views_bulk_operations_bulk_form
@@ -183,7 +181,7 @@ display:
           entity_type: null
           entity_field: name
           plugin_id: field
-          label: Name
+          label: Nimi
           exclude: false
           alter:
             alter_text: false
@@ -248,7 +246,7 @@ display:
           entity_type: tpr_unit
           entity_field: langcode
           plugin_id: field
-          label: Language
+          label: Kieli
           exclude: false
           alter:
             alter_text: false
@@ -314,7 +312,7 @@ display:
           entity_type: tpr_unit
           entity_field: content_translation_status
           plugin_id: field
-          label: Status
+          label: Tila
           exclude: false
           alter:
             alter_text: false
@@ -359,8 +357,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Unpublished
-            format_custom_true: Published
+            format_custom_false: Julkaisematon
+            format_custom_true: Julkaistu
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -381,7 +379,7 @@ display:
           entity_type: tpr_unit
           entity_field: content_translation_changed
           plugin_id: field
-          label: Updated
+          label: Päivitetty
           exclude: false
           alter:
             alter_text: false
@@ -456,7 +454,7 @@ display:
           admin_label: ''
           entity_type: tpr_unit
           plugin_id: entity_operations
-          label: Operations
+          label: Toimenpiteet
           exclude: false
           alter:
             alter_text: false
@@ -506,29 +504,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: ››
-            previous: ‹‹
-            first: '« First'
-            last: 'Last »'
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
+            first: '« Ensimmäinen'
+            last: 'Viimeinen »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Käytä
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       access:
         type: perm
         options:
@@ -547,7 +545,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: 'No results found.'
+            value: 'Ei tuloksia.'
             format: plain_text
           tokenize: false
       sorts:
@@ -583,7 +581,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: Search
+            label: Etsi
             description: ''
             use_operator: false
             operator: combine_op
@@ -631,7 +629,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Language
+            label: Kieli
             description: ''
             use_operator: false
             operator: langcode_op
@@ -748,7 +746,7 @@ display:
           admin_label: ''
           plugin_id: result
           empty: true
-          content: 'Displaying @start - @end of @total'
+          content: 'Näytetään @start - @end / @total'
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -762,7 +760,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Page
+    display_title: Sivu
     display_plugin: page
     position: 1
     display_options:
