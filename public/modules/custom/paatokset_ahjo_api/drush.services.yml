@@ -4,3 +4,8 @@ services:
     tags:
       - { name: drush.command }
     arguments: ['@queue', '@logger.factory', '@database']
+  paatokset_ahjo_api.ahjo_org_composition:
+    class: Drupal\paatokset_ahjo_api\Commands\AhjoOrgCompositionCommands
+    tags:
+      - { name: drush.command }
+    arguments: ['@plugin.manager.migration']
