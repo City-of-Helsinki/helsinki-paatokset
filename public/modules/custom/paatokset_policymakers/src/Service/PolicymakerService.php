@@ -877,10 +877,7 @@ class PolicymakerService {
   }
 
   /**
-   * Get normalized field_meeting_composition data from latest meeting.
-   *
-   * If no meetings have been held, returns data from the most recently updated
-   * meeting.
+   * Get normalized field_meeting_composition data from policymaker node.
    *
    * @param \Drupal\node\NodeInterface|null $policymaker
    *   Policymaker node.
@@ -888,50 +885,8 @@ class PolicymakerService {
    * @return array
    *   Meeting composition keyed by alternative spellings of trustee names.
    */
-  private function getCompositionDataFromLatestMeeting(?NodeInterface $policymaker): array {
-    if (!$policymaker instanceof NodeInterface || $policymaker->get('field_policymaker_id')->isEmpty()) {
-      return [];
-    }
-
-    $policymaker_id = $policymaker->get('field_policymaker_id')->value;
-
-    // Get the latest held meeting.
-    $query = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $policymaker_id)
-      ->condition('field_meeting_composition', '', '<>')
-      ->condition('field_meeting_status', 'pidetty')
-      ->range(0, 1)
-      ->sort('field_meeting_date', 'DESC');
-
-    $ids = $query->execute();
-
-    // If no meetings have been held, get the most recently updated one.
-    if (empty($ids)) {
-      $query = $this->nodeStorage
-        ->getQuery()
-        ->accessCheck(TRUE)
-        ->condition('status', 1)
-        ->condition('type', 'meeting')
-        ->condition('field_meeting_dm_id', $policymaker_id)
-        ->condition('field_meeting_composition', '', '<>')
-        ->range(0, 1)
-        ->sort('changed', 'DESC');
-
-      $ids = $query->execute();
-    }
-
-    if (empty($ids)) {
-      return [];
-    }
-
-    $id = reset($ids);
-
-    $meeting = $this->nodeStorage->load($id);
-    if (!$meeting instanceof NodeInterface) {
+  private function getCompositionDataFromNode(?NodeInterface $policymaker): array {
+    if (!$policymaker instanceof NodeInterface || $policymaker->get('field_meeting_composition')->isEmpty()) {
       return [];
     }
 
@@ -943,7 +898,7 @@ class PolicymakerService {
       'Varapuheenjohtaja',
     ];
 
-    foreach ($meeting->get('field_meeting_composition') as $field) {
+    foreach ($policymaker->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value, TRUE);
       if (!isset($data['Role']) || !in_array($data['Role'], $allowed_roles)) {
         continue;
@@ -972,7 +927,7 @@ class PolicymakerService {
   }
 
   /**
-   * Get composition based on latest meeting.
+   * Get composition data from policymaker node.
    *
    * @param string|null $id
    *   Policymaker ID, leave NULL to use currently set.
@@ -982,14 +937,21 @@ class PolicymakerService {
    */
   public function getTrustees(?string $id = NULL): array {
     $policymaker = $this->getPolicyMaker($id);
-    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    $composition = $this->getCompositionDataFromNode($policymaker);
     if (empty($composition)) {
       return [];
     }
 
-    $names = array_keys($composition);
+    $ids = [];
+    foreach ($composition as $trustee) {
+      if (empty($trustee['ID'])) {
+        continue;
+      }
 
-    return $this->getTrusteeNodesByName($names);
+      $ids[] = $trustee['ID'];
+    }
+
+    return $this->getTrusteeNodesById($ids);
   }
 
   /**
@@ -1003,14 +965,23 @@ class PolicymakerService {
    */
   public function getComposition(?string $id = NULL): ?array {
     $policymaker = $this->getPolicyMaker($id);
-    $composition = $this->getCompositionDataFromLatestMeeting($policymaker);
+    $composition = $this->getCompositionDataFromNode($policymaker);
     if (empty($composition)) {
       return [];
     }
 
-    $names = array_keys($composition);
+    $ids = [];
+    foreach ($composition as $trustee) {
+      if (empty($trustee['ID'])) {
+        continue;
+      }
+
+      $ids[] = $trustee['ID'];
+    }
+
+
     $results = [];
-    $person_nodes = $this->getTrusteeNodesByName($names);
+    $person_nodes = $this->getTrusteeNodesById($ids);
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $imageStyleStorage = $this->entityTypeManager->getStorage('image_style');
     foreach ($person_nodes as $node) {
@@ -1197,21 +1168,21 @@ class PolicymakerService {
   }
 
   /**
-   * Load trustee nodes based on names.
+   * Load trustee nodes based on IDs.
    *
-   * @param array $names
-   *   Names of trustees to load.
+   * @param array $ids
+   *   Agent IDs of trustee nodes to load.
    *
    * @return array|null
    *   Array of nodes.
    */
-  private function getTrusteeNodesByName(array $names): ?array {
+  private function getTrusteeNodesById(array $ids): ?array {
     $query = $this->nodeStorage
       ->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', 'trustee')
-      ->condition('title', $names, 'IN');
+      ->condition('field_trustee_id', $ids, 'IN');
 
     $ids = $query->execute();
 
