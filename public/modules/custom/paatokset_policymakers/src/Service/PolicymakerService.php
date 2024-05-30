@@ -979,7 +979,6 @@ class PolicymakerService {
       $ids[] = $trustee['ID'];
     }
 
-
     $results = [];
     $person_nodes = $this->getTrusteeNodesById($ids);
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();

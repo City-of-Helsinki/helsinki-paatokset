@@ -78,7 +78,7 @@ class TrusteeService {
   /**
    * Get trustee speaking turns from Datapumppu integration.
    *
-   * @param Drupal\node\NodeInterface $trustee
+   * @param \Drupal\node\NodeInterface $trustee
    *   Trustee node.
    *
    * @return array|null
@@ -121,47 +121,54 @@ class TrusteeService {
    *   Array of chairmanships and roles.
    */
   public static function getMemberships(NodeInterface $node): array {
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
     $chairmanships = [];
     if ($node->hasField('field_trustee_chairmanships') && !$node->get('field_trustee_chairmanships')->isEmpty()) {
       foreach ($node->get('field_trustee_chairmanships') as $json) {
         $data = json_decode($json->value, TRUE);
-        $chairmanships[] = $data['Position'] . ', ' . $data['OrganizationName'];
+        $position = $policymakerService->getTranslationForRole($data['Position']);
+        $chairmanships[] = $position . ', ' . $data['OrganizationName'];
       };
     };
 
-    // Only get meetings for the last year.
-    $date_limit = date('Y-m-d', strtotime('-1 year'));
-    $name = self::getTrusteeName($node);
-    $meeting_nids = \Drupal::entityQuery('node')
+    $id = $node->get('field_trustee_id')->value;
+    $org_nids = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_composition', $name, 'CONTAINS')
-      ->condition('field_meeting_date', $date_limit, '>=')
-      ->sort('field_meeting_date', 'DESC')
+      ->condition('type', 'policymaker')
+      ->condition('field_meeting_composition', $id, 'CONTAINS')
       ->execute();
 
     $memberships = [];
     $organizations = [];
-    foreach (Node::loadMultiple($meeting_nids) as $node) {
-      if (!$node->hasField('field_meeting_dm_id') || $node->get('field_meeting_dm_id')->isEmpty()) {
+
+    foreach (Node::loadMultiple($org_nids) as $node) {
+      if ($node->hasTranslation($langcode)) {
+        $node = $node->getTranslation($langcode);
+      }
+
+      $org_name = $node->title->value;
+
+      if (in_array($org_name, $organizations)) {
         continue;
       }
 
-      if (in_array($node->field_meeting_dm_id->value, $organizations)) {
-        continue;
-      }
-      $organizations[] = $node->field_meeting_dm_id->value;
-      $org_name = $node->field_meeting_dm->value;
+      $organizations[] = $org_name;
 
       foreach ($node->field_meeting_composition as $field) {
         $data = json_decode($field->value, TRUE);
-        if ($data['Name'] !== $name) {
+        if ($data['ID'] !== $id) {
           continue;
         }
-        if ($data['Role'] === 'Puheenjohtaja') {
+        if ($data['Role'] === 'Puheenjohtaja' || $data['Role'] === 'Varapuheenjohtaja') {
           continue;
         }
-        $memberships[] = $data['Role'] . ', ' . $org_name;
+
+        $role = $policymakerService->getTranslationForRole($data['Role']);
+
+        $memberships[] = $role . ', ' . $org_name;
       }
     }
 
