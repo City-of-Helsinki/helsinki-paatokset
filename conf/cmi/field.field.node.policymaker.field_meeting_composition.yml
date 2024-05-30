@@ -1,0 +1,21 @@
+uuid: ae53d03f-684a-411c-963d-c8f59c768e1f
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_composition
+    - node.type.policymaker
+  module:
+    - json_field
+id: node.policymaker.field_meeting_composition
+field_name: field_meeting_composition
+entity_type: node
+bundle: policymaker
+label: Composition
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
