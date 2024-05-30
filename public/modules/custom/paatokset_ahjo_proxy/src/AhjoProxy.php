@@ -409,13 +409,35 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = $this->getApiBaseUrl() . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
-    $org = $this->getContent($agent_url, $bypass_cache);
+    $org_url = $this->getApiBaseUrl() . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
+    $org = $this->getContent($org_url, $bypass_cache);
     return [
       'decisionMakers' => [
         ['Organization' => $org],
       ],
     ];
+  }
+
+  /**
+   * Get single decisionmaker from Ahjo API.
+   *
+   * @param string $id
+   *   Organization ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Organization data, including composition.
+   */
+  public function getSingleDecisionmaker(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $org_url = $this->getApiBaseUrl() . 'organization/decisionmakingorganizations?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
+    $org = $this->getContent($org_url, $bypass_cache);
+    return $org;
   }
 
   /**
