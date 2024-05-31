@@ -970,6 +970,12 @@ function _paatokset_ahjo_api_get_existing_value_with_override(array $values) {
   $override_field = $values[2];
   $default = $values[3];
   $langcode = $values[4];
+  $fallback = $values[5];
+
+  // If Name field is empty for some reason, use ID instead.
+  if (empty($default)) {
+    $default = $fallback;
+  }
 
   if (!$nid) {
     return $default;
