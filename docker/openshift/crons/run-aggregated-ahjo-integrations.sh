@@ -56,6 +56,8 @@ do
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
     drush migrate-import ahjo_decisionmakers:latest --update
     drush migrate-import ahjo_decisionmakers:latest_sv --update
+    drush migrate-reset-status ahjo_org_composition
+    drush migrate-import ahjo_org_composition
     echo "Checking for inactive decisionmakers: $(date)"
     drush ahjo-proxy:check-dm-status -v
 
