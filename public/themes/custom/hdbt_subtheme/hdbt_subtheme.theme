@@ -225,6 +225,10 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
     ],
   ];
 
+  if ($node->hasField('field_trustee_id') && !$node->get('field_trustee_id')->isEmpty()) {
+    $variables['#cache']['tags'][] = 'trustee:' . $node->get('field_trustee_id')->value;
+  }
+
   if ($node->get('field_trustee_initiatives')) {
     $variables['initiatives'] = [
       'title' => t('Initiatives by the councillor'),

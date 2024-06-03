@@ -41,7 +41,20 @@ class PolicymakerService {
    */
   const NODE_TYPE = 'policymaker';
 
+  /**
+   * Policymaker roles for trustees (not decisionmaker organizations).
+   */
   const TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
+
+  /**
+   * Visible trustee roles.
+   */
+  const TRUSTEE_ROLES = [
+    'Jäsen',
+    'Varajäsen',
+    'Puheenjohtaja',
+    'Varapuheenjohtaja',
+  ];
 
   /**
    * City council id in Ahjo.
@@ -891,16 +904,10 @@ class PolicymakerService {
     }
 
     $composition = [];
-    $allowed_roles = [
-      'Jäsen',
-      'Varajäsen',
-      'Puheenjohtaja',
-      'Varapuheenjohtaja',
-    ];
 
     foreach ($policymaker->get('field_meeting_composition') as $field) {
       $data = json_decode($field->value, TRUE);
-      if (!isset($data['Role']) || !in_array($data['Role'], $allowed_roles)) {
+      if (!isset($data['Role']) || !in_array($data['Role'], self::TRUSTEE_ROLES)) {
         continue;
       }
       if (!empty($data)) {

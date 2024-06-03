@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
@@ -29,6 +31,20 @@ function paatokset_policymakers_node_access(NodeInterface $node, $op, AccountInt
 
   // No opinion.
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function paatokset_policymakers_node_update(EntityInterface $entity) {
+  _paatokset_policymakers_invalidate_policymaker_cache_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function paatokset_policymakers_node_delete(EntityInterface $entity) {
+  _paatokset_policymakers_invalidate_policymaker_cache_tags($entity);
 }
 
 /**
@@ -561,4 +577,71 @@ function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool 
   $policymakerService = \Drupal::service('paatokset_policymakers');
   $policymakerService->setPolicyMakerNode($parent);
   return TRUE;
+}
+
+/**
+ * Invalidates custom cache tags for policymakers.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to base cache invalidations on.
+ */
+function _paatokset_policymakers_invalidate_policymaker_cache_tags(FieldableEntityInterface $entity): void {
+  $policymaker_id = NULL;
+  if ($entity->hasField('field_policymaker_id') && !$entity->get('field_policymaker_id')->isEmpty()) {
+    $policymaker_id = $entity->get('field_policymaker_id')->value;
+  }
+
+  $tags = [];
+  if ($policymaker_id) {
+    $tags[] = 'policymaker:' . $policymaker_id;
+  }
+
+  // Invalidate trustee node tags. Handled this way because if a person is
+  // added to the org composition the profile cache would not be invalidated.
+  $trustee_tags = _paatokset_policymakers_get_trustee_ids_from_composition($entity);
+  // Get original entity version too to handle removals.
+  $orig_trustee_tags = [];
+  if ($entity->original) {
+    $orig_trustee_tags = _paatokset_policymakers_get_trustee_ids_from_composition($entity->original);
+  }
+
+  $tags = array_merge($tags, $trustee_tags, $orig_trustee_tags);
+  $tags = array_unique($tags);
+
+  if (!empty($tags)) {
+    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
+    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator->invalidateTags($tags);
+  }
+}
+
+/**
+ * Gets trustee IDs from entity's composition field.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   Entity to get composition field and trustee IDs from.
+ *
+ * @return array
+ *   List of custom tags for trustee IDs.
+ */
+function _paatokset_policymakers_get_trustee_ids_from_composition(FieldableEntityInterface $entity): array {
+  $tags = [];
+  if (!$entity->hasField('field_meeting_composition')) {
+    return $tags;
+  }
+
+  foreach ($entity->get('field_meeting_composition') as $field) {
+    $data = json_decode($field->value, TRUE);
+    if (!isset($data['ID']) || !isset($data['Role']) || !in_array($data['Role'], PolicymakerService::TRUSTEE_ROLES)) {
+      continue;
+    }
+
+    $tag = 'trustee:' . $data['ID'];
+
+    if (!isset($tags[$tag])) {
+      $tags[] = $tag;
+    }
+  }
+
+  return $tags;
 }
