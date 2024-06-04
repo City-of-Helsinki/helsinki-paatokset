@@ -138,6 +138,7 @@ class TrusteeService {
     $org_nids = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
       ->condition('type', 'policymaker')
+      ->condition('field_policymaker_existing', 1)
       ->condition('field_meeting_composition', $id, 'CONTAINS')
       ->execute();
 
