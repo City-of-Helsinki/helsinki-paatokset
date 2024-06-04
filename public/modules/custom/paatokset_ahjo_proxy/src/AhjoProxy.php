@@ -163,6 +163,7 @@ class AhjoProxy implements ContainerInjectionInterface {
           || str_starts_with($url, 'decisions')
           || str_starts_with($url, 'agenda-items')
           || str_starts_with($url, 'organization')
+          || str_starts_with($url, 'decisionmaker/single')
         ) {
         $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
