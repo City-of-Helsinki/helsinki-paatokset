@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\Commands;
+namespace Drupal\paatokset_ahjo_api\Drush\Commands;
 
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drush\Attributes\Command;
+use Drush\Attributes\Option;
+use Drush\Attributes\Usage;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -15,7 +19,10 @@ use Drush\Commands\DrushCommands;
  *
  * @package Drupal\paatokset_ahjo_api\Commands
  */
-final class AhjoOrgCompositionCommands extends DrushCommands {
+final class AhjoOrgCompositionDrushCommands extends DrushCommands {
+
+  use AutowireTrait;
+
   private const COMPOSITION_MIGRATION_ID = 'ahjo_org_composition';
 
   /**
@@ -27,20 +34,19 @@ final class AhjoOrgCompositionCommands extends DrushCommands {
   public function __construct(
     private MigrationPluginManagerInterface $migrationManager
   ) {
+    parent::__construct();
   }
 
   /**
    * Fetches all decisionmaker compositions, even for non active organizations.
    *
-   * @command org-composition:fetch-all
+   * @return int
+   *   The exit code.
    *
-   * @usage org-composition:fetch-all
-   *   Retrieves all decisionmaker compositions.
-   *
-   * @aliases oc:all
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
+  #[Command(name: 'org-composition:fetch-all', aliases: ['oc:all'])]
+  #[Usage(name: 'drush org-composition:fetch-all', description: 'Retrieves all decisionmaker compositions.')]
   public function getAllOrgCompositions(): int {
     $configuration = [
       'source' => [
@@ -57,20 +63,16 @@ final class AhjoOrgCompositionCommands extends DrushCommands {
    * Fetches decisionmaker compositions by ID.
    *
    * @param array $options
-   *   Additional options for the command.
+   *   The command options.
    *
-   * @command org-composition:fetch-by-id
+   * @return int
+   *   The exit code.
    *
-   * @option ids
-   *   Organization IDs, separated by comma.
-   *
-   * @usage org-composition:fetch-by-id --ids=00400,02900
-   *   Fetches composition for city board and council only.
-   *
-   * @aliases oc:id
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
+  #[Command(name: 'org-composition:fetch-by-id', aliases: ['oc:id'])]
+  #[Option(name: 'ids', description: 'Organization IDs, separated by comma.')]
+  #[Usage(name: 'drush org-composition:fetch-by-id --ids=00400,02900', description: 'Fetches composition for city board and council only.')]
   public function getOrgCompositionsById(array $options = [
     'ids' => NULL,
   ]): int {
