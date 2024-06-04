@@ -638,7 +638,7 @@ function _paatokset_policymakers_get_trustee_ids_from_composition(FieldableEntit
 
     $tag = 'trustee:' . $data['ID'];
 
-    if (!isset($tags[$tag])) {
+    if (in_array($tag, $tags)) {
       $tags[] = $tag;
     }
   }

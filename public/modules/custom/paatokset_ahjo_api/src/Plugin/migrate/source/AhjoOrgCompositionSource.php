@@ -275,7 +275,7 @@ final class AhjoOrgCompositionSource extends HttpSourcePluginBase implements Con
       $this->logger->error('Data not found for @id', [
         '@id' => $id,
       ]);
-      return NULL;
+      return [];
     }
 
     return $organization;
