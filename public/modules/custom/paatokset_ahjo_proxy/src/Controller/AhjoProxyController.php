@@ -211,6 +211,23 @@ class AhjoProxyController extends ControllerBase {
   }
 
   /**
+   * Get data for a single decisionmaker organization.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   HTTP request.
+   * @param string $id
+   *   Organization ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JSON data for organizations.
+   */
+  public function decisionmakerSingle(Request $request, string $id): JsonResponse {
+    $query_string = $request->getQueryString();
+    $data = $this->ahjoProxy->getSingleDecisionmaker($id, $query_string);
+    return new JsonResponse($data);
+  }
+
+  /**
    * Get organization positions of trust.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request

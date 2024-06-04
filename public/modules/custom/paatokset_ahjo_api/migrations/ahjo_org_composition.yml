@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+      - paatokset_ahjo_proxy
+id: ahjo_org_composition
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - ahjo_api
+  - ahjo_api_composition
+migration_group: ahjo_api
+label: 'Ahjo API - Organization composition'
+source:
+  plugin: ahjo_org_composition
+  orgs: active
+  # Some url is required by HttpSourcePluginBase.
+  url: 'https://ahjo.hel.fi:9802/ahjorest/v1/organization/decisionmakingorganizations'
+process:
+  type:
+    plugin: default_value
+    default_value: policymaker
+  langcode:
+    plugin: default_value
+    default_value: fi
+  nid:
+    plugin: callback
+    callable: _paatokset_ahjo_api_lookup_policymaker_nid
+    source: ID
+  field_meeting_composition:
+    plugin: callback
+    callable: json_encode
+    source: Composition
+destination:
+  plugin: 'entity:node'
