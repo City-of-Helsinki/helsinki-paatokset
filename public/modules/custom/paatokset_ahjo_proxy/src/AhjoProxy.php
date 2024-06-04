@@ -436,7 +436,9 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $org_url = $this->getApiBaseUrl() . 'organization/decisionmakingorganizations?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
+    $org_url = $this->getApiBaseUrl();
+    $org_url .= 'organization/decisionmakingorganizations?orgid=';
+    $org_url .= strtoupper($id) . '&' . urldecode($query_string);
     $org = $this->getContent($org_url, $bypass_cache);
     return $org;
   }
