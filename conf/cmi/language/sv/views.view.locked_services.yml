@@ -4,13 +4,13 @@ display:
     display_options:
       fields:
         tpr_service_bulk_form:
-          label: 'Bulk update'
+          label: Massuppdatera
           action_title: Åtgärd
         name:
           label: Titel
           separator: ', '
         name_1:
-          label: 'Lock owner'
+          label: 'Lås ägare'
           separator: ', '
         langcode:
           label: 'Content language'
@@ -25,16 +25,16 @@ display:
             first: '« Första'
             last: 'Sista »'
           expose:
+            offset_label: Kompensera
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
-            offset_label: Kompensera
       exposed_form:
         options:
           submit_button: Filtrera
-          reset_button_label: Återställ
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
+          reset_button_label: Återställ
       filters:
         name:
           expose:
