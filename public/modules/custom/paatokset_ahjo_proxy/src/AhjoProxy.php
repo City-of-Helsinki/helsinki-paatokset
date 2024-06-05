@@ -163,6 +163,7 @@ class AhjoProxy implements ContainerInjectionInterface {
           || str_starts_with($url, 'decisions')
           || str_starts_with($url, 'agenda-items')
           || str_starts_with($url, 'organization')
+          || str_starts_with($url, 'decisionmaker/single')
         ) {
         $api_url = $base_url . '/ahjo-proxy/' . $url . '?' . urldecode($query_string);
       }
@@ -409,13 +410,37 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agent_url = $this->getApiBaseUrl() . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
-    $org = $this->getContent($agent_url, $bypass_cache);
+    $org_url = $this->getApiBaseUrl() . 'organization?orgid=' . strtoupper($id) . '&' . urldecode($query_string);
+    $org = $this->getContent($org_url, $bypass_cache);
     return [
       'decisionMakers' => [
         ['Organization' => $org],
       ],
     ];
+  }
+
+  /**
+   * Get single decisionmaker from Ahjo API.
+   *
+   * @param string $id
+   *   Organization ID.
+   * @param string|null $query_string
+   *   Query string to pass on.
+   * @param bool $bypass_cache
+   *   Bypass request cache.
+   *
+   * @return array
+   *   Organization data, including composition.
+   */
+  public function getSingleDecisionmaker(string $id, ?string $query_string, bool $bypass_cache = FALSE): array {
+    if ($query_string === NULL) {
+      $query_string = '';
+    }
+    $org_url = $this->getApiBaseUrl();
+    $org_url .= 'organization/decisionmakingorganizations?orgid=';
+    $org_url .= strtoupper($id) . '&' . urldecode($query_string);
+    $org = $this->getContent($org_url, $bypass_cache);
+    return $org;
   }
 
   /**

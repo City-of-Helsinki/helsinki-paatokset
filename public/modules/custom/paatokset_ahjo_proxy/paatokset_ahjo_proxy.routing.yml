@@ -119,6 +119,17 @@ paatokset_ahjo_proxy.organization_single:
   options:
     _auth: ['cookie', 'key_auth']
 
+paatokset_ahjo_proxy.decisionmaker_single:
+  path: '/ahjo-proxy/decisionmaker/single/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_proxy\Controller\AhjoProxyController::decisionmakerSingle'
+    id: placeholder
+  requirements:
+    _permission: 'access ahjo proxy'
+  methods: [GET]
+  options:
+    _auth: ['cookie', 'key_auth']
+
 paatokset_ahjo_proxy.organization_positions:
   path: '/ahjo-proxy/organization/positionsoftrust/{id}'
   defaults:

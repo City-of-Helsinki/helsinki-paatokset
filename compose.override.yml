@@ -6,5 +6,7 @@ services:
       - --collation-server=utf8mb4_swedish_ci
       - --sort_buffer_size=4096k
   app:
+    environment:
+      DRUPAL_REVERSE_PROXY_ADDRESS: helsinki-paatokset.docker.so
     env_file:
       - .env.local

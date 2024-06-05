@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.policymaker.field_first_name
     - field.field.node.policymaker.field_is_decisionmaker
     - field.field.node.policymaker.field_last_name
+    - field.field.node.policymaker.field_meeting_composition
     - field.field.node.policymaker.field_meetings_description
     - field.field.node.policymaker.field_organization_color_code
     - field.field.node.policymaker.field_organization_type
@@ -33,6 +34,7 @@ dependencies:
     - field.field.node.policymaker.field_sector_name
     - node.type.policymaker
   module:
+    - json_field
     - options
     - text
     - user
@@ -95,6 +97,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 6
+    region: content
+  field_meeting_composition:
+    type: json
+    label: above
+    settings:
+      attach_library: true
+    third_party_settings: {  }
+    weight: 16
     region: content
   field_meetings_description:
     type: text_default
