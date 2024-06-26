@@ -1,0 +1,4 @@
+services:
+  Drupal\paatokset_headers\EventSubscriber\RobotsResponseSubscriber:
+    tags:
+      - { name: event_subscriber }
