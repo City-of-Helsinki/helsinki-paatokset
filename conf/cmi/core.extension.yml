@@ -123,6 +123,7 @@ module:
   paatokset_config: 0
   paatokset_council_info: 0
   paatokset_datapumppu: 0
+  paatokset_headers: 0
   paatokset_helsinki_kanava: 0
   paatokset_lang_switcher: 0
   paatokset_pdf_listing: 0
