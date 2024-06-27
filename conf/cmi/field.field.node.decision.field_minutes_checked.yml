@@ -1,0 +1,21 @@
+uuid: 8aa51ceb-dffb-48d4-a2a7-f661230c705b
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_minutes_checked
+    - node.type.decision
+id: node.decision.field_minutes_checked
+field_name: field_minutes_checked
+entity_type: node
+bundle: decision
+label: 'Minutes checked'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: Kyllä
+  off_label: Ei
+field_type: boolean
