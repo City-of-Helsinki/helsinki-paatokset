@@ -12,20 +12,16 @@
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/ckeditor": "^1.0",
         "drupal/core": "^10.0",
-        "drupal/core-composer-scaffold": "^9.1",
+        "drupal/core-composer-scaffold": "^10.0",
         "drupal/hdbt": "^6.0",
         "drupal/hdbt_admin": "^3.0",
-        "drupal/helfi_api_base": "^2.5.3",
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_platform_config": "^4.0",
-        "drupal/helfi_tpr": "^2.0.5",
         "drupal/helfi_tunnistamo": "^3.0",
         "drupal/json_field": "^1.0@RC",
         "drupal/key_auth": "^2.0",
         "drupal/migrate_plus": "^6.0",
         "drupal/purge": "^3.0",
-        "drupal/raven": "^5.0",
-        "drupal/search_api": "^1.20",
         "drupal/varnish_purge": "^2.1",
         "drush/drush": "^12",
         "elasticsearch/elasticsearch": "^7.15",
@@ -110,9 +106,6 @@
             ]
         },
         "patches": {
-            "drupal/core": {
-                "[#3385550] Language negotiation breaks updating Drupal 9 to 10": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-module-helfi-proxy/ffbde3654e0011e237a17ea1cb3a7291685e0c30/patches/3385550.patch"
-            },
             "drupal/default_content": {
                 "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
             }
