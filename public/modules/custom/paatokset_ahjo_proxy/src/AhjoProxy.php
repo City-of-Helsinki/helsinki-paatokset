@@ -1534,7 +1534,7 @@ class AhjoProxy implements ContainerInjectionInterface {
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $node = Node::load($data['nid']);
-    $context['message'] = 'Importing item number ' . $data['count'] . ' ('. $node->id() .')';
+    $context['message'] = 'Importing item number ' . $data['count'] . ' (' . $node->id() . ')';
 
     if (empty($data['endpoint'])) {
       $messenger->addMessage('Could not fetch attachments for for nid: ' . $node->id());
