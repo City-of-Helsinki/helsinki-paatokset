@@ -24,9 +24,9 @@ third_party_settings:
     unpublish_revision: false
 _core:
   default_config_hash: 5LIFOTYiEIZ-5hHp0f6QL1DxwgHtbaRqEd49DlVpwBk
-name: Uutinen
+name: 'News item'
 type: news_item
-description: 'Sisältötyyppi uutisille.'
+description: 'Content type for news items.'
 help: null
 new_revision: true
 preview_mode: 1
