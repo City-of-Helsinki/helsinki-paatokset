@@ -14,10 +14,7 @@ do
   if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
     echo "Updating decision and motion data: $(date)"
     drush ahjo-proxy:update-decisions -v
-    drush ahjo-proxy:update-cases --logic=title --limit=100 -v
-    drush ahjo-proxy:update-decisions --logic=seriesid --limit=50 -v
-    drush ahjo-proxy:update-decisions --logic=uniqueid --limit=50 -v
-    drush ahjo-proxy:update-decisions --logic=minutes --limit=100 -v
+    drush ahjo-proxy:update-decisions --logic=uniqueid --limit=20 -v
     drush ahjo-proxy:update-decisions --logic=outdated --limit=100 -v
     drush ahjo-proxy:check-decision-status --limit=100 -v
   fi

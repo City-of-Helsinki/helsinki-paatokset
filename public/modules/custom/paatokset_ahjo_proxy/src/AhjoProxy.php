@@ -997,6 +997,10 @@ class AhjoProxy implements ContainerInjectionInterface {
       $ahjo_proxy->updateDecisionPdfContent($node, $data['decision_endpoint']);
     }
 
+    // Set "Minutes checked" toggle regardless here,
+    // so we don't refetch empty results over and over again.
+    $node->set('field_minutes_checked', 1);
+
     // If language is set to outdated, refetch organization data.
     if ($node->hasField('field_record_language_checked') && !$node->get('field_record_language_checked')->value) {
       $recheck_language = TRUE;
@@ -1034,7 +1038,6 @@ class AhjoProxy implements ContainerInjectionInterface {
     if ($node->get('field_meeting_date')->isEmpty()) {
       $node->set('field_meeting_date', '2001-01-01T00:00:00');
     }
-
     // If decision date can't be set, use a default value.
     if ($node->get('field_decision_date')->isEmpty()) {
       $messenger->addMessage('Decision date fetching failed for decision with nid: ' . $node->id());
@@ -1079,6 +1082,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         'format' => 'plain_text',
       ]);
     }
+
     if (!empty($content['DecisionHistoryPDF'])) {
       $node->set('field_decision_history_pdf', json_encode($content['DecisionHistoryPDF']));
     }
@@ -1524,13 +1528,13 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public static function updateDecisionAttachments($data, &$context) {
     $messenger = \Drupal::messenger();
-    $context['message'] = 'Importing item number ' . $data['count'];
 
     static::initBatchContext($context);
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
     $node = Node::load($data['nid']);
+    $context['message'] = 'Importing item number ' . $data['count'] . ' ('. $node->id() .')';
 
     if (empty($data['endpoint'])) {
       $messenger->addMessage('Could not fetch attachments for for nid: ' . $node->id());
