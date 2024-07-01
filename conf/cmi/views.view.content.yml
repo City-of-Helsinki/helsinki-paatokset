@@ -6,20 +6,20 @@ dependencies:
     - node
     - user
 id: content
-label: Sisältö
+label: Content
 module: node
-description: 'Etsi ja ylläpidä sisältöä.'
+description: 'Find and manage content.'
 tag: default
 base_table: node_field_data
 base_field: nid
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
-      title: Sisältö
+      title: Content
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -44,7 +44,7 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-          label: Otsikko
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -67,7 +67,7 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: field
-          label: Sisältötyyppi
+          label: 'Content type'
           exclude: false
           alter:
             alter_text: false
@@ -130,7 +130,7 @@ display:
           entity_type: user
           entity_field: name
           plugin_id: field
-          label: Kirjoittaja
+          label: Author
           exclude: false
           alter:
             alter_text: false
@@ -151,7 +151,7 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: field
-          label: Kieli
+          label: Language
           exclude: false
           alter:
             alter_text: false
@@ -214,7 +214,7 @@ display:
           entity_type: node
           entity_field: status
           plugin_id: field
-          label: Tila
+          label: Status
           exclude: false
           alter:
             alter_text: false
@@ -227,8 +227,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Julkaisematon
-            format_custom_true: Julkaistu
+            format_custom_false: Unpublished
+            format_custom_true: Published
         changed:
           id: changed
           table: node_field_data
@@ -236,7 +236,7 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-          label: Päivitetty
+          label: Updated
           exclude: false
           alter:
             alter_text: false
@@ -268,7 +268,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: entity_operations
-          label: Toimenpiteet
+          label: Operations
           exclude: false
           alter:
             alter_text: false
@@ -315,21 +315,20 @@ display:
         options:
           items_per_page: 50
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
-          pagination_heading_level: h4
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Filter
           reset_button: true
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: perm
         options:
@@ -343,7 +342,7 @@ display:
           field: area_text_custom
           plugin_id: text_custom
           empty: true
-          content: 'Ei sisältöä.'
+          content: 'No content available.'
       sorts: {  }
       arguments: {  }
       filters:
@@ -363,7 +362,7 @@ display:
           exposed: true
           expose:
             operator_id: title_op
-            label: Otsikko
+            label: Title
             description: ''
             use_operator: false
             operator: title_op
@@ -405,7 +404,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: Sisältötyyppi
+            label: 'Content type'
             description: ''
             use_operator: false
             operator: type_op
@@ -448,7 +447,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: Tila
+            label: Status
             description: ''
             use_operator: false
             operator: status_op
@@ -462,7 +461,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Julkaisutila
+            label: 'Published status'
             description: ''
             identifier: status
             optional: true
@@ -477,7 +476,7 @@ display:
                 operator: '='
                 value: '1'
               -
-                title: Julkaistu
+                title: Unpublished
                 operator: '='
                 value: '0'
         langcode:
@@ -499,7 +498,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Kieli
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op
@@ -645,7 +644,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Sivu
+    display_title: Page
     display_plugin: page
     position: 1
     display_options:
@@ -653,15 +652,15 @@ display:
       path: admin/content/node
       menu:
         type: 'default tab'
-        title: Sisältö
+        title: Content
         description: ''
         weight: -10
         menu_name: admin
         context: ''
       tab_options:
         type: normal
-        title: Sisältö
-        description: 'Etsi ja hallitse sisältöä'
+        title: Content
+        description: 'Find and manage content'
         weight: -10
         menu_name: admin
     cache_metadata:

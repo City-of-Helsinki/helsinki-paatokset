@@ -9,7 +9,7 @@ dependencies:
 _core:
   default_config_hash: 5d0haVUeS4PdeswmDM70yzvx0GY5-QeA2qfjzbW-FXM
 id: locked_services
-label: 'Lukitut palvelut'
+label: 'Locked services'
 module: views
 description: ''
 tag: ''
@@ -18,11 +18,11 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
-      title: 'Lukitut palvelut'
+      title: 'Locked services'
       fields:
         tpr_service_bulk_form:
           id: tpr_service_bulk_form
@@ -33,7 +33,7 @@ display:
           admin_label: ''
           entity_type: tpr_service
           plugin_id: bulk_form
-          label: Massapäivitys
+          label: 'Bulk update'
           exclude: false
           alter:
             alter_text: false
@@ -74,7 +74,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Toiminto
+          action_title: Action
           include_exclude: include
           selected_actions:
             - tpr_service_break_lock_action
@@ -88,7 +88,7 @@ display:
           entity_type: null
           entity_field: name
           plugin_id: field
-          label: Otsikko
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -153,7 +153,7 @@ display:
           entity_type: user
           entity_field: name
           plugin_id: field
-          label: 'Lukituksen tekijä'
+          label: 'Lock owner'
           exclude: false
           alter:
             alter_text: false
@@ -216,7 +216,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: date
-          label: 'Lukituksen ajankohta'
+          label: 'Lock Date/Time'
           exclude: false
           alter:
             alter_text: false
@@ -270,7 +270,7 @@ display:
           entity_type: tpr_service
           entity_field: langcode
           plugin_id: field
-          label: 'Sisällön kieli'
+          label: 'Content language'
           exclude: false
           alter:
             alter_text: false
@@ -335,7 +335,7 @@ display:
           admin_label: ''
           entity_type: tpr_service
           plugin_id: entity_operations
-          label: Toimenpiteet
+          label: Operations
           exclude: false
           alter:
             alter_text: false
@@ -385,30 +385,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Filter
           reset_button: false
-          reset_button_label: Palauta
-          exposed_sorts_label: Järjestä
+          reset_button_label: Reset
+          exposed_sorts_label: Sort
           expose_sort_order: true
-          sort_asc_label: Nouseva
-          sort_desc_label: Laskeva
+          sort_asc_label: Ascending
+          sort_desc_label: Descending
       access:
         type: perm
         options:
@@ -426,7 +425,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Lukittuja palveluita ei ole.'
+          content: 'There is no currently locked services.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -485,7 +484,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Otsikko
+            label: Title
             description: ''
             use_operator: false
             operator: name_op
@@ -606,7 +605,7 @@ display:
       tags: {  }
   locked_services_block:
     id: locked_services_block
-    display_title: Lohko
+    display_title: Block
     display_plugin: block
     position: 1
     display_options:
