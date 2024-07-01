@@ -2,7 +2,8 @@ uuid: 9a3ece14-def5-4e5c-91ab-2af6b6bd03d6
 langcode: en
 status: true
 dependencies: {  }
-name: 'PDF minutes category'
+name: PDF-pöytäkirjalistat
 vid: pdf_minutes_category
-description: ''
+description: null
 weight: 0
+new_revision: false

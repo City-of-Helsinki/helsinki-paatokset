@@ -14,16 +14,16 @@ dependencies:
     module:
       - media_library
 id: media_library
-label: 'Media library'
+label: Mediakirjasto
 module: views
-description: 'Find and manage media.'
+description: 'Etsi ja ylläpidä mediatiedostoja.'
 tag: ''
 base_table: media_field_data
 base_field: mid
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Oletus
     display_plugin: default
     position: 0
     display_options:
@@ -79,7 +79,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Action
+          action_title: Toiminto
           include_exclude: exclude
           selected_actions: {  }
         rendered_entity:
@@ -141,26 +141,27 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: ››
-            previous: ‹‹
+            next: 'Seuraava ›'
+            previous: '‹ Edellinen'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '6, 12, 24, 48'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: 'Apply filters'
+          submit_button: 'Suodata tuloksia'
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: false
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       access:
         type: perm
         options:
@@ -178,7 +179,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No media available.'
+          content: 'Mediatiedostoja ei ole saatavilla.'
           tokenize: false
       sorts:
         created:
@@ -193,7 +194,7 @@ display:
           plugin_id: date
           order: DESC
           expose:
-            label: 'Newest first'
+            label: 'Uusin ensin'
             field_identifier: created
           exposed: true
           granularity: second
@@ -209,7 +210,7 @@ display:
           plugin_id: standard
           order: ASC
           expose:
-            label: 'Name (A-Z)'
+            label: 'Nimi (A-Z)'
             field_identifier: name
           exposed: true
         name_1:
@@ -224,7 +225,7 @@ display:
           plugin_id: standard
           order: DESC
           expose:
-            label: 'Name (Z-A)'
+            label: 'Nimi (Z-A)'
             field_identifier: name_1
           exposed: true
       filters:
@@ -244,7 +245,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: 'Publishing status'
+            label: 'Julkaisun tila'
             description: null
             use_operator: false
             operator: status_op
@@ -258,7 +259,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Published
+            label: Julkaistu
             description: ''
             identifier: status
             optional: true
@@ -273,7 +274,7 @@ display:
                 operator: '='
                 value: '1'
               -
-                title: Unpublished
+                title: Julkaistu
                 operator: '='
                 value: '0'
         name:
@@ -292,7 +293,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Name
+            label: Nimi
             description: ''
             use_operator: false
             operator: name_op
@@ -334,7 +335,7 @@ display:
           exposed: true
           expose:
             operator_id: bundle_op
-            label: 'Media type'
+            label: 'Median tyyppi'
             description: ''
             use_operator: false
             operator: bundle_op
@@ -351,7 +352,7 @@ display:
             reduce: false
           is_grouped: false
           group_info:
-            label: 'Media type'
+            label: 'Median tyyppi'
             description: null
             identifier: bundle
             optional: true
@@ -417,7 +418,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Language
+            label: Kieli
             description: ''
             use_operator: false
             operator: langcode_op
@@ -484,7 +485,7 @@ display:
       tags: {  }
   page:
     id: page
-    display_title: Page
+    display_title: Sivu
     display_plugin: page
     position: 1
     display_options:
@@ -539,7 +540,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Action
+          action_title: Toiminto
           include_exclude: exclude
           selected_actions: {  }
         name:
@@ -620,7 +621,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: 'Edit {{ name }}'
+            text: 'Muokkaa {{ name }}'
             make_link: true
             path: ''
             absolute: false
@@ -628,7 +629,7 @@ display:
             replace_spaces: false
             path_case: none
             trim_whitespace: false
-            alt: 'Edit {{ name }}'
+            alt: 'Muokkaa {{ name }}'
             rel: ''
             link_class: ''
             prefix: ''
@@ -657,7 +658,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: Edit
+          text: Muokkaa
           output_url_as_text: false
           absolute: false
         delete_media:
@@ -673,7 +674,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: 'Delete {{ name }}'
+            text: 'Poista {{ name }}'
             make_link: true
             path: ''
             absolute: false
@@ -681,7 +682,7 @@ display:
             replace_spaces: false
             path_case: none
             trim_whitespace: false
-            alt: 'Delete {{ name }}'
+            alt: 'Poista {{ name }}'
             rel: ''
             link_class: ''
             prefix: ''
@@ -710,7 +711,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: Delete
+          text: Poista
           output_url_as_text: false
           absolute: false
         rendered_entity:
@@ -781,7 +782,7 @@ display:
       tags: {  }
   widget:
     id: widget
-    display_title: Widget
+    display_title: Widgetti
     display_plugin: page
     position: 2
     display_options:
@@ -1092,6 +1093,7 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       access:
         type: perm
         options:
@@ -1111,7 +1113,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: All
+            title: Kaikki
           title_enable: false
           title: ''
           default_argument_type: fixed
@@ -1194,7 +1196,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Name
+            label: Nimi
             description: ''
             use_operator: false
             operator: name_op
@@ -1280,7 +1282,7 @@ display:
           table: views
           field: display_link
           plugin_id: display_link
-          label: Grid
+          label: Ruudukko
           empty: true
           display_id: widget
         display_link_table:
@@ -1288,7 +1290,7 @@ display:
           table: views
           field: display_link
           plugin_id: display_link
-          label: Table
+          label: Taulukko
           empty: true
           display_id: widget_table
       rendering_language: '***LANGUAGE_language_interface***'
@@ -1305,7 +1307,7 @@ display:
       tags: {  }
   widget_table:
     id: widget_table
-    display_title: 'Widget (table)'
+    display_title: 'Widget (taulukko)'
     display_plugin: page
     position: 3
     display_options:
@@ -1328,7 +1330,7 @@ display:
           entity_type: media
           entity_field: thumbnail
           plugin_id: field
-          label: Thumbnail
+          label: Pienoiskuva
           type: image
           settings:
             image_link: ''
@@ -1343,7 +1345,7 @@ display:
           entity_type: media
           entity_field: name
           plugin_id: field
-          label: Name
+          label: Nimi
           type: string
           settings:
             link_to_entity: false
@@ -1355,7 +1357,7 @@ display:
           entity_type: media
           entity_field: uid
           plugin_id: field
-          label: Author
+          label: Kirjoittaja
           type: entity_reference_label
           settings:
             link: true
@@ -1367,7 +1369,7 @@ display:
           entity_type: media
           entity_field: changed
           plugin_id: field
-          label: Updated
+          label: Päivitetty
           type: timestamp
           settings:
             date_format: long
@@ -1401,7 +1403,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: All
+            title: Kaikki
           title_enable: false
           title: ''
           default_argument_type: fixed
@@ -1484,7 +1486,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Name
+            label: Nimi
             description: ''
             use_operator: false
             operator: name_op
@@ -1578,7 +1580,7 @@ display:
           table: views
           field: display_link
           plugin_id: display_link
-          label: Grid
+          label: Ruudukko
           empty: true
           display_id: widget
         display_link_table:
@@ -1586,7 +1588,7 @@ display:
           table: views
           field: display_link
           plugin_id: display_link
-          label: Table
+          label: Taulukko
           empty: true
           display_id: widget_table
       rendering_language: '***LANGUAGE_language_interface***'

@@ -24,10 +24,10 @@ third_party_settings:
     unpublish_revision: false
 _core:
   default_config_hash: k-VdWbiJkFID9ruTM9Dc5eynPOdDlRjcf2j1oL7EZb0
-name: Announcement
+name: Poikkeusilmoitus
 type: announcement
-description: 'Content type for announcements that can be used to show notifications, attentions and alerts on different pages.'
-help: ''
+description: 'Poikkeusilmoituksien avulla eri sivuilla voidaan näyttää ilmoituksia, huomioilmoituksia ja hälytysilmoituksia.'
+help: null
 new_revision: true
 preview_mode: 1
 display_submitted: false

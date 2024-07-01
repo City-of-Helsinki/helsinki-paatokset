@@ -4,7 +4,8 @@ status: true
 dependencies: {  }
 _core:
   default_config_hash: vwgTruq_bxZ5J1FxeUioSBiPtqh6Zx2fFBVYErHZnKI
-name: 'News tags'
+name: Uutistagit
 vid: news_tags
-description: ''
+description: null
 weight: 0
+new_revision: false

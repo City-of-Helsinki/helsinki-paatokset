@@ -4,7 +4,8 @@ status: true
 dependencies: {  }
 _core:
   default_config_hash: d5rETFNsjsIV5l3mRop-SdWxiSRJFUvK2YnOGFn4pUw
-name: 'Article keywords'
+name: Asiasanat
 vid: keywords
-description: ''
+description: null
 weight: 0
+new_revision: false
