@@ -79,6 +79,7 @@ module:
   helfi_platform_config: 0
   helfi_platform_config_base: 0
   helfi_react_search: 0
+  helfi_robots_header: 0
   helfi_toc: 0
   helfi_tpr: 0
   helfi_tpr_config: 0
