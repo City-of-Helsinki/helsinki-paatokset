@@ -12,7 +12,7 @@ dependencies:
 _core:
   default_config_hash: tYU3ozJEdEzgBo7vNnkTpTLq-d2yJOpuOWqzo8j_jl0
 id: service_list
-label: 'Service list'
+label: Palvelut
 module: views
 description: ''
 tag: ''
@@ -21,7 +21,7 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Oletus
     display_plugin: default
     position: 0
     display_options:
@@ -113,29 +113,30 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Käytä
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       access:
         type: perm
         options:
@@ -154,7 +155,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: 'No results'
+            value: '<p>Ei tuloksia</p>'
             format: full_html
           tokenize: false
       sorts:
@@ -203,7 +204,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: All
+            title: Kaikki
           title_enable: false
           title: ''
           default_argument_type: fixed
@@ -355,7 +356,7 @@ display:
       tags: {  }
   block:
     id: block
-    display_title: Block
+    display_title: Lohko
     display_plugin: block
     position: 1
     display_options:
@@ -377,11 +378,11 @@ display:
       tags: {  }
   block_search:
     id: block_search
-    display_title: Block
+    display_title: Lohko
     display_plugin: block
     position: 3
     display_options:
-      title: 'Service list search'
+      title: Palveluluettelohaku
       fields:
         name:
           id: name
@@ -649,29 +650,30 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: Search
+          submit_button: Etsi
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       sorts:
         name:
           id: name
@@ -717,7 +719,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: All
+            title: Kaikki
           title_enable: false
           title: ''
           default_argument_type: fixed
@@ -794,7 +796,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Advisory service name or Search term'
+            label: 'Neuvontapalvelun nimi tai hakusana'
             description: ''
             use_operator: false
             operator: combine_op
@@ -811,7 +813,7 @@ display:
               content_producer: '0'
               editor: '0'
               admin: '0'
-            placeholder: 'e.g Social Counseling, Health, or Digital'
+            placeholder: 'Esim. Sosiaalineuvonta, terveys tai digi'
           is_grouped: false
           group_info:
             label: ''
@@ -909,7 +911,7 @@ display:
       tags: {  }
   entity_reference_1:
     id: entity_reference_1
-    display_title: 'Entity Reference'
+    display_title: Entiteettiviittaus
     display_plugin: entity_reference
     position: 2
     display_options:

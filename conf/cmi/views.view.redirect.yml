@@ -11,14 +11,14 @@ _core:
 id: redirect
 label: Redirect
 module: views
-description: 'List of redirects'
+description: Uudelleenohjaukset
 tag: ''
 base_table: redirect
 base_field: rid
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Oletus
     display_plugin: default
     position: 0
     display_options:
@@ -74,7 +74,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: 'With selection'
+          action_title: Valinnalla
           include_exclude: exclude
           selected_actions: {  }
         redirect_source__path:
@@ -87,7 +87,7 @@ display:
           entity_type: redirect
           entity_field: redirect_source
           plugin_id: field
-          label: From
+          label: Lähettäjä
           exclude: false
           alter:
             alter_text: false
@@ -172,7 +172,7 @@ display:
           entity_type: redirect
           entity_field: created
           plugin_id: date
-          label: Created
+          label: Luotu
           exclude: false
           alter:
             alter_text: false
@@ -230,29 +230,30 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'next ›'
-            previous: '‹ previous'
-            first: '« first'
-            last: 'last »'
+            next: 'seuraava ›'
+            previous: '‹ edellinen'
+            first: '« ensimmäinen'
+            last: 'viimeinen »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Kaikki -'
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: Filter
+          submit_button: Suodata
           reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       access:
         type: perm
         options:
@@ -270,7 +271,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'There is no redirect yet.'
+          content: 'Ei ole vielä uudelleenohjaksia.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -291,7 +292,7 @@ display:
           exposed: true
           expose:
             operator_id: redirect_source__path_op
-            label: From
+            label: Lähettäjä
             description: ''
             use_operator: false
             operator: redirect_source__path_op
@@ -333,7 +334,7 @@ display:
           exposed: true
           expose:
             operator_id: redirect_redirect__uri_op
-            label: To
+            label: Osoitteeseen
             description: ''
             use_operator: false
             operator: redirect_redirect__uri_op
@@ -378,7 +379,7 @@ display:
           exposed: true
           expose:
             operator_id: status_code_op
-            label: 'Status code'
+            label: Tilakoodi
             description: ''
             use_operator: false
             operator: status_code_op
@@ -394,7 +395,7 @@ display:
               administrator: '0'
           is_grouped: true
           group_info:
-            label: 'Status code'
+            label: Tilakoodi
             description: ''
             identifier: status_code
             optional: true
@@ -405,49 +406,49 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: '300 Multiple Choices'
+                title: '300 Useita valintoja'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '300'
               2:
-                title: '301 Moved Permanently'
+                title: '301 Pysyvästi siirretty'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '301'
               3:
-                title: '302 Found'
+                title: '302 Löydetty'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '302'
               4:
-                title: '303 See Other'
+                title: '303 Kts. toinen'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '303'
               5:
-                title: '304 Not Modified'
+                title: '304 Muuttamaton'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '304'
               6:
-                title: '305 Use Proxy'
+                title: '305 Käytä proxyä'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '305'
               7:
-                title: '307 Temporary Redirect'
+                title: '307 Tilapäinen uudelleenohjaus'
                 operator: '='
                 value:
                   min: ''
@@ -469,7 +470,7 @@ display:
           exposed: true
           expose:
             operator_id: language_op
-            label: 'Original language'
+            label: 'Alkuperäinen kieli'
             description: ''
             use_operator: false
             operator: language_op
@@ -589,7 +590,7 @@ display:
       cacheable: false
   page_1:
     id: page_1
-    display_title: Page
+    display_title: Sivu
     display_plugin: page
     position: 1
     display_options:
