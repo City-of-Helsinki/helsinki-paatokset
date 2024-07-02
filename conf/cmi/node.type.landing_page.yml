@@ -25,9 +25,9 @@ third_party_settings:
     unpublish_revision: false
 _core:
   default_config_hash: PfTlYxtl_LoeL3LJeT4Qwnzu5MZq6Rc7R5o3NLTInHU
-name: Laskeutumissivu
+name: 'Landing page'
 type: landing_page
-description: 'Sisältötyyppi osion tai aiheen etusivuksi. Laskeutumissivu koostuu nostoista, sisältölistauksista ja linkeistä.'
+description: 'Content type for the front page of a section or theme. A landing page consists of highlight areas, content listings and links.'
 help: null
 new_revision: true
 preview_mode: 1

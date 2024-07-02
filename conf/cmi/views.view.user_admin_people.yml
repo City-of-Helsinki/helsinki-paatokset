@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - role_delegation
     - user
 _core:
   default_config_hash: J5EbGNdz0YUaSIYKwomyFSOtZjsV9TrBA3qdb3ZwBS0
@@ -342,7 +341,7 @@ display:
           type: timestamp_ago
           settings:
             future_format: '@interval hence'
-            past_format: '@interval sitten'
+            past_format: '@interval ago'
             granularity: 2
         operations:
           id: operations
@@ -463,6 +462,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 50
           total_pages: 0
           id: 0
@@ -480,11 +480,10 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Suodatin
           reset_button: true
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele

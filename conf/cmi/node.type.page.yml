@@ -25,9 +25,9 @@ third_party_settings:
     unpublish_revision: false
 _core:
   default_config_hash: A1XVcWETFW22MWUdDTxkOE331kBoYUWPQILECfHoBfk
-name: Perussivu
+name: 'Standard page'
 type: page
-description: 'Sisältötyyppi tavalliselle verkkosisällölle.'
+description: 'Content type for standard web content.'
 help: null
 new_revision: true
 preview_mode: 1
