@@ -27,7 +27,7 @@ _core:
 name: Article
 type: article
 description: 'Content type for news and other topical content.'
-help: ''
+help: null
 new_revision: true
 preview_mode: 1
 display_submitted: false

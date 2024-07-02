@@ -35,6 +35,7 @@ dependencies:
     - field.field.node.decision.field_meeting_date
     - field.field.node.decision.field_meeting_id
     - field.field.node.decision.field_meeting_sequence_number
+    - field.field.node.decision.field_minutes_checked
     - field.field.node.decision.field_organization_type
     - field.field.node.decision.field_outdated_document
     - field.field.node.decision.field_policymaker_id
@@ -75,7 +76,6 @@ third_party_settings:
         - field_decision_minutes_pdf
         - field_decision_content
         - field_decision_motion
-        - field_attachments_checked
         - field_decision_attachments
         - field_decision_history_pdf
         - field_decision_history
@@ -128,6 +128,26 @@ third_party_settings:
         open: false
         description: ''
         required_fields: false
+    group_data_checks:
+      children:
+        - field_status_checked
+        - field_dates_checked
+        - field_record_language_checked
+        - field_outdated_document
+        - field_minutes_checked
+        - field_attachments_checked
+      label: 'Data checks'
+      region: content
+      parent_name: ''
+      weight: 26
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
 id: node.decision.default
 targetEntityType: node
 bundle: decision
@@ -135,13 +155,13 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 17
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   field_attachments_checked:
     type: boolean_checkbox
-    weight: 20
+    weight: 15
     region: content
     settings:
       display_label: true
@@ -164,7 +184,7 @@ content:
     third_party_settings: {  }
   field_dates_checked:
     type: boolean_checkbox
-    weight: 7
+    weight: 11
     region: content
     settings:
       display_label: true
@@ -381,6 +401,13 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_minutes_checked:
+    type: boolean_checkbox
+    weight: 14
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_organization_type:
     type: string_textfield
     weight: 22
@@ -391,7 +418,7 @@ content:
     third_party_settings: {  }
   field_outdated_document:
     type: boolean_checkbox
-    weight: 6
+    weight: 13
     region: content
     settings:
       display_label: true
@@ -406,14 +433,14 @@ content:
     third_party_settings: {  }
   field_record_language_checked:
     type: boolean_checkbox
-    weight: 8
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_status_checked:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
@@ -454,26 +481,26 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 21
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 19
+    weight: 18
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 22
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -484,14 +511,14 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 25
+    weight: 24
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 20
+    weight: 19
     region: content
     settings:
       display_label: true
@@ -516,12 +543,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 23
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 24
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
