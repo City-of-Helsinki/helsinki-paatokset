@@ -23,9 +23,9 @@ third_party_settings:
     unpublish_enable: false
     unpublish_required: false
     unpublish_revision: false
-name: Policymaker
+name: Päättäjä
 type: policymaker
-description: 'Policymaker page that has information imported from an integration. You can enrich some of that information if you wish do to do so.'
+description: 'Päättäjä-sivu. Sivulle on tuotu dataa Ahjo-integraatiosta. Käyttäjät voivat lisätä dataa sivulle.'
 help: null
 new_revision: true
 preview_mode: 1
