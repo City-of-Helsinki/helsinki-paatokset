@@ -676,8 +676,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       elseif ($logic === 'minutes') {
         $query->condition('field_is_decision', 1);
         $or = $query->orConditionGroup();
-        $or->notExists('field_decision_minutes_pdf');
-        $or->condition('field_decision_minutes_pdf', '');
+        $or->notExists('field_minutes_checked');
+        $or->condition('field_minutes_checked', 0);
         $query->condition($or);
       }
       elseif ($logic === 'uniqueid') {
