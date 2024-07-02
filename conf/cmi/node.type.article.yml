@@ -24,9 +24,9 @@ third_party_settings:
     unpublish_revision: false
 _core:
   default_config_hash: 55S0TlpZeQGEnh_bhvpAW797f2LnTyORBp4AUhX2qwI
-name: Article
+name: Kuulutus
 type: article
-description: 'Content type for news and other topical content.'
+description: 'Sisältötyyppi kuulutuksille ja ilmoituksille.'
 help: null
 new_revision: true
 preview_mode: 1
