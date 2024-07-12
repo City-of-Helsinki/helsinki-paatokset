@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Set field_policymaker_existing field on all trustee nodes.
  */
-function paatokset_search_update_9001(): void {
+function paatokset_search_deploy_0001_trustee_field(): void {
   $query = \Drupal::entityQuery('node');
   $nids = $query->accessCheck(TRUE)
     ->condition('status', 1)
