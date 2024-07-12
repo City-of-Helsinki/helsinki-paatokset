@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.trustee.field_first_name
     - field.field.node.trustee.field_last_name
+    - field.field.node.trustee.field_policymaker_existing
     - field.field.node.trustee.field_policymaker_reference
     - field.field.node.trustee.field_trustee_chairmanships
     - field.field.node.trustee.field_trustee_council_group
@@ -53,7 +54,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 16
+    weight: 15
     region: content
   field_trustee_chairmanships:
     type: json
@@ -61,7 +62,7 @@ content:
     settings:
       attach_library: true
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_trustee_council_group:
     type: string
@@ -69,7 +70,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_trustee_datapumppu_id:
     type: string
@@ -84,7 +85,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 15
+    weight: 14
     region: content
   field_trustee_home_district:
     type: string
@@ -104,7 +105,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: null
+    weight: 0
     region: content
   field_trustee_image:
     type: image
@@ -115,7 +116,7 @@ content:
       image_loading:
         attribute: lazy
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_trustee_initiatives:
     type: json
@@ -123,7 +124,7 @@ content:
     settings:
       attach_library: true
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_trustee_phone:
     type: string
@@ -147,7 +148,7 @@ content:
     settings:
       attach_library: true
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_trustee_title:
     type: string
@@ -155,14 +156,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
 hidden:
+  field_policymaker_existing: true
   field_trustee_id: true
   langcode: true
   published_at: true
