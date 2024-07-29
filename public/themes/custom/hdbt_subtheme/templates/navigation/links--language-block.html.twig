@@ -54,10 +54,10 @@
         {% if lang_override and override_url is not empty %}
           {% set language_link = override_url %}
           {% set element = 'a' %}
-        {% elseif not untranslated and not alternative_language and lang != current_langcode %}
+        {% elseif not untranslated and not alternative_language and lang != language.id %}
           {% set language_link = path('<current>', {}, {'language': item.link['#options']['language']}) %}
           {% set element = 'a' %}
-        {% elseif lang == current_langcode %}
+        {% elseif lang == language.id %}
           {% set language_link = path('<current>', {}, {'language': item.link['#options']['language']}) %}
           {% set element = 'a' %}
           {% set ariaCurrent = create_attribute({'aria-current': 'true'}) %}
