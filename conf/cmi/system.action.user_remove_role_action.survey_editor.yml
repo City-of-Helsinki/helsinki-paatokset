@@ -7,7 +7,7 @@ dependencies:
   module:
     - user
 id: user_remove_role_action.survey_editor
-label: 'Poista rooli Survey editor valituilta käyttäjiltä'
+label: 'Remove the Survey editor role from the selected user(s)'
 type: user
 plugin: user_remove_role_action
 configuration:
