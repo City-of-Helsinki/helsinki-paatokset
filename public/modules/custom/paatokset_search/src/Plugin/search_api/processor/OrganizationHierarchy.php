@@ -6,6 +6,7 @@ namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
+use Drupal\search_api\Item\FieldInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
@@ -45,7 +46,9 @@ final class OrganizationHierarchy extends ProcessorPluginBase {
       }
 
       $field = $item->getField('organization_hierarchy');
-      $field->setValues($organization_hierarchy);
+      if ($field instanceof FieldInterface) {
+        $field->setValues($organization_hierarchy);
+      }
     }
 
   }
