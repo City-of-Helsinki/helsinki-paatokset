@@ -1,0 +1,21 @@
+uuid: ecd0436f-62c5-41e4-ab43-a2df0c2e0d2d
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_etusivu_entities
+  theme:
+    - hdbt_subtheme
+id: surveys
+theme: hdbt_subtheme
+region: before_content
+weight: -15
+provider: helfi_node_survey
+plugin: surveys
+settings:
+  id: surveys
+  label: Surveys
+  label_display: ''
+  provider: helfi_node_survey
+  use_remote_entities: true
+visibility: {  }
