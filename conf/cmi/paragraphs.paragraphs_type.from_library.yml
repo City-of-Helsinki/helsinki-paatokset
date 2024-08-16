@@ -5,6 +5,7 @@ dependencies:
   enforced:
     module:
       - paragraphs_library
+      - paragraphs_library
 _core:
   default_config_hash: OJUwL6xTTiHbXZy10swc5Fckkr7qhSm4b0nK3326LO8
 id: from_library
