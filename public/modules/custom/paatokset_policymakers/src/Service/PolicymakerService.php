@@ -42,6 +42,11 @@ class PolicymakerService {
   const NODE_TYPE = 'policymaker';
 
   /**
+   * Cut off date for old meetings.
+   */
+  const MEETING_START_DATE = '2018-04-01';
+
+  /**
    * Policymaker roles for trustees (not decisionmaker organizations).
    */
   const TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
@@ -1224,6 +1229,89 @@ class PolicymakerService {
     return $last_names . ', ' . $first_names;
   }
 
+   /**
+   * Get API-retrieved minutes and agendas from ElasticSearch Index.
+   *
+   * @param int|null $limit
+   *   Limit results. Defaults to 10000 (maximum amount of results from index).
+   * @param bool $byYear
+   *   Group decision by year.
+   *
+   * @return array
+   *   List of meeting documents.
+   */
+  public function getApiMinutesFromElasticSearch(?int $limit = NULL, bool $byYear = FALSE): array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+
+    if (!$limit) {
+      $limit = 10000;
+    }
+
+    $index = Index::load('meetings');
+    $query = $index
+      ->query()
+      ->range(0, $limit)
+      ->addCondition('field_meeting_dm_id', $this->policymakerId)
+      ->addCondition('field_meeting_date', self::MEETING_START_DATE, '>=')
+      ->addCondition('field_meeting_status', 'peruttu', '<>')
+      ->addCondition('meeting_phase', NULL, '<>')
+      ->sort('field_meeting_date', 'DESC');
+
+    try {
+      $results = $query->execute();
+    }
+    catch (\Throwable $exception) {
+      Error::logException($this->logger, $exception);
+      return [];
+    }
+
+    $data = [];
+    foreach ($results as $result) {
+      $meeting_timestamp = $result->getField('field_meeting_date')->getValues()[0];
+      $meeting_year = date('Y', $meeting_timestamp);
+      $meeting_id = $result->getField('field_meeting_id')->getValues()[0];
+      $phase = $result->getField('meeting_phase')->getValues()[0];
+      $document_title = NULL;
+      $decision_link = NULL;
+      $link = $this->getMinutesRoute($meeting_id, NULL, FALSE);
+
+      if ($phase === 'minutes') {
+        $document_title = $this->t('Minutes');
+      }
+      elseif ($phase === 'agenda' || $phase === 'decision') {
+        $document_title = $this->t('Agenda');
+      }
+
+      if ($phase === 'decision') {
+        $decision_link = $this->getMinutesRoute($meeting_id);
+      }
+
+      $item = [
+        'id' => $result->getField('field_meeting_id')->getValues()[0],
+        'publish_date' => date('d.m.Y', $meeting_timestamp),
+        'publish_date_short' => date('m - Y', $meeting_timestamp),
+        'title' => $document_title,
+        'phase' => $phase,
+        'meeting_number' => $result->getField('field_meeting_sequence_number')->getValues()[0] . ' - ' . $meeting_year,
+        'link' => $link,
+        'decision_link' => $decision_link,
+      ];
+
+      if ($byYear) {
+        $data[$meeting_year][] = $item;
+      }
+      else {
+        $data[] = $item;
+      }
+    }
+
+    return $data;
+  }
+
   /**
    * Get all API-retrieved minutes.
    *
@@ -1247,7 +1335,7 @@ class PolicymakerService {
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
       ->condition('field_meeting_documents', '', '<>')
-      ->condition('field_meeting_date', '2018-04-01', '>=')
+      ->condition('field_meeting_date', self::MEETING_START_DATE, '>=')
       ->condition('field_meeting_status', 'peruttu', '<>')
       ->sort('field_meeting_date', 'DESC');
 
