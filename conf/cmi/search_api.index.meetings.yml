@@ -1,0 +1,146 @@
+uuid: 32151e41-5391-4234-a200-bb2bb81bf6f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_dm_id
+    - field.storage.node.field_meeting_date
+    - field.storage.node.field_meeting_date_original
+    - field.storage.node.field_meeting_id
+    - field.storage.node.field_meeting_sequence_number
+    - field.storage.node.field_meeting_status
+    - search_api.server.elasticsearch
+  module:
+    - node
+    - search_api
+    - helfi_react_search
+    - paatokset_search
+id: meetings
+name: Meetings
+description: ''
+read_only: false
+field_settings:
+  field_meeting_date:
+    label: 'Meeting Date'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_date
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_date
+  field_meeting_date_original:
+    label: 'Meeting date (original)'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_date_original
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_date_original
+  field_meeting_dm_id:
+    label: 'Decision Maker ID'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_dm_id
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_dm_id
+  field_meeting_id:
+    label: 'Meeting ID'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_id
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_id
+  field_meeting_sequence_number:
+    label: 'Meeting sequence number'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_sequence_number
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_sequence_number
+  field_meeting_status:
+    label: Status
+    datasource_id: 'entity:node'
+    property_path: field_meeting_status
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_status
+  meeting_phase:
+    label: 'Meeting phase'
+    datasource_id: 'entity:node'
+    property_path: meeting_phase
+    type: string
+  node_grants:
+    label: 'Node access information'
+    property_path: search_api_node_grants
+    type: string
+    indexed_locked: true
+    type_locked: true
+    hidden: true
+  status:
+    label: Boolean
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  uid:
+    label: 'Entity reference'
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - meeting
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  color_class: {  }
+  content_access:
+    weights:
+      preprocess_query: -30
+  custom_value: {  }
+  decision_url: {  }
+  decisionmaker_combined_title: {  }
+  district_image_absolute_url: {  }
+  entity_status: {  }
+  entity_type: {  }
+  has_translation: {  }
+  language_with_fallback: {  }
+  meeting_phase: {  }
+  project_execution_schedule: {  }
+  project_image_absolute_url: {  }
+  project_plan_schedule: {  }
+  rendered_item: {  }
+  sector_id: {  }
+  sector_json: {  }
+  special_status: {  }
+  top_category_id: {  }
+  trustee_name: {  }
+  trustee_title: {  }
+  unique_issue_id: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 0
+  index_directly: false
+  track_changes_in_references: true
+server: elasticsearch
