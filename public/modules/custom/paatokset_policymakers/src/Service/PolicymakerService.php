@@ -1229,7 +1229,7 @@ class PolicymakerService {
     return $last_names . ', ' . $first_names;
   }
 
-   /**
+  /**
    * Get API-retrieved minutes and agendas from ElasticSearch Index.
    *
    * @param int|null $limit
@@ -1244,8 +1244,6 @@ class PolicymakerService {
     if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
       return [];
     }
-
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     if (!$limit) {
       $limit = 10000;
