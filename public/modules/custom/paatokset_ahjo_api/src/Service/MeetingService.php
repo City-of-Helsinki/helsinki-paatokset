@@ -5,8 +5,10 @@ namespace Drupal\paatokset_ahjo_api\Service;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\search_api\Entity\Index;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -21,6 +23,153 @@ class MeetingService {
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'meeting';
+
+  /**
+   * Query Ahjo API meetings from ElasticSearch Index.
+   *
+   * @param array $params
+   *   Containing query parameters
+   *   $params = [
+   *     from  => (string) time string in format Y-m-d.
+   *     to    => (string) time string in format Y-m-d.
+   *     sort  => (string) ASC or DESC.
+   *     agenda_published => (bool).
+   *     minutes_published => (bool).
+   *     policymaker => (string) policymaker ID.
+   *     limit => (int) Limit results. Defaults to 10000 (ES maximum).
+   *     policymaker_name => (string) policymaker name.
+   *   ].
+   *
+   * @return array
+   *   of meetings.
+   */
+  public function elasticQuery(array $params = []) : array {
+    if (isset($params['sort'])) {
+      $sort = $params['sort'];
+    }
+    else {
+      $sort = 'ASC';
+    }
+
+    $index = Index::load('meetings');
+    $query = $index
+      ->query()
+      ->sort('field_meeting_date', $sort);
+
+    if (isset($params['from'])) {
+      $this->validateTime($params['from'], 'from');
+      $query->addCondition('field_meeting_date', $params['from'], '>=');
+    }
+    if (isset($params['to'])) {
+      $this->validateTime($params['to'], 'to');
+      $query->addCondition('field_meeting_date', $params['to'], '<=');
+    }
+
+    // Set default limit to ES maximum if not already set in params.
+    if (isset($params['limit'])) {
+      $query->range(0, $params['limit']);
+    }
+    else {
+      $query->range(0, 10000);
+    }
+
+    if (isset($params['agenda_published'])) {
+      $query->addCondition('field_agenda_published', TRUE);
+    }
+    if (isset($params['minutes_published'])) {
+      $query->addCondition('field_minutes_published', TRUE);
+    }
+
+    if (isset($params['not_cancelled'])) {
+      $query->addCondition('field_meeting_status', 'peruttu', '<>');
+    }
+
+    if (isset($params['policymaker'])) {
+      $query->addCondition('field_meeting_dm_id', $params['policymaker']);
+    }
+    if (isset($params['policymaker_name'])) {
+      $query->addCondition('field_meeting_dm', $params['policymaker_name']);
+    }
+
+    try {
+      $results = $query->execute();
+    }
+    catch (\Throwable $exception) {
+      Error::logException(\Drupal::logger('paatokset_ahjo_api'), $exception);
+      return [];
+    }
+
+    $data = [];
+    foreach ($results as $result) {
+      $timestamp = $result->getField('field_meeting_date')->getValues()[0];
+      $date = date('Y-m-d', $timestamp);
+
+      // Check if meeting was moved.
+      $orig_timestamp = $result->getField('field_meeting_date_original')->getValues()[0];
+
+      // Check if meeting is cancelled and determine if it should be visible.
+      $meeting_cancelled = FALSE;
+      if ($result->getField('field_meeting_status')->getValues()[0] === 'peruttu') {
+        $meeting_cancelled = TRUE;
+      }
+      // Only show future cancelled meetings in the calendar, not past ones.
+      if ($meeting_cancelled && isset($params['only_future_cancelled'])) {
+        $now = strtotime('now');
+        if ($meeting_cancelled && $timestamp < $now) {
+          continue;
+        }
+      }
+
+      // Determine which kind of additional info to show.
+      $additional_info = NULL;
+      $meeting_moved = FALSE;
+      if ($meeting_cancelled) {
+        $additional_info = $this->t('Meeting cancelled');
+      }
+      elseif ($orig_timestamp && $orig_timestamp !== $timestamp) {
+        $additional_info = $this->t('Meeting moved, original time: @orig_time', [
+          '@orig_time' => date('d.m. H:i', $orig_timestamp),
+        ]);
+        $meeting_moved = TRUE;
+      }
+
+      $meeting_id = $result->getField('field_meeting_id')->getValues()[0];
+      $phase = $result->getField('meeting_phase')->getValues()[0];
+      $policymaker_id = $result->getField('field_meeting_dm_id')->getValues()[0];
+      $policymaker_name = $result->getField('field_meeting_dm')->getValues()[0];
+      $policymaker_type = $this->getPolicymakerType($policymaker_name);
+
+      $item = [
+        'title' => $result->getField('title')->getValues()[0],
+        'meeting_date' => $timestamp,
+        'meeting_moved' => $meeting_moved,
+        'meeting_cancelled' => $meeting_cancelled,
+        'policymaker' => $policymaker_id,
+        'policymaker_type' => $policymaker_type,
+        'policymaker_name' => $policymaker_name,
+        'start_time' => date('H:i', $timestamp),
+        'orig_time' => date('d.m. H:i', $orig_timestamp),
+        'phase' => $phase,
+        'status' => $result->getField('field_meeting_status')->getValues()[0],
+        'additional_info' => $additional_info,
+      ];
+
+      if (!$meeting_cancelled && $phase === 'minutes') {
+        $item['minutes_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id);
+      }
+      elseif (!$meeting_cancelled && $phase === 'decision') {
+        $item['decision_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id, TRUE);
+      }
+      elseif (!$meeting_cancelled && $phase === 'agenda') {
+        $item['motions_list_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id);
+      }
+
+      // Group based on day.
+      $data[$date][] = $item;
+    }
+
+    return $data;
+  }
 
   /**
    * Query Ahjo API meetings from database.
@@ -305,6 +454,30 @@ class MeetingService {
     $meeting_id = $node->get('field_meeting_id')->value;
     $policymaker_id = $node->get('field_meeting_dm_id')->value;
     $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+    if ($url instanceof Url) {
+      return $url->toString(TRUE)->getGeneratedUrl();
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get Meeting URL.
+   *
+   * @param string $meeting_id
+   *   Meeting ID.
+   * @param string $policymaker_id
+   *   Policymaker ID.
+   * @param bool $include_anchor
+   *   Include decision announcement anchor.
+   *
+   * @return string|null
+   *   URL as string, if possible to get.
+   */
+  public function getMeetingUrlWithoutNode(string $meeting_id, string $policymaker_id, bool $include_anchor = FALSE) : ?string {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id, $include_anchor);
     if ($url instanceof Url) {
       return $url->toString(TRUE)->getGeneratedUrl();
     }
