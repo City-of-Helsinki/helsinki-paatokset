@@ -54,11 +54,6 @@ class MeetingPhase extends ProcessorPluginBase {
       }
 
       $phase = NULL;
-
-      if (!$node->hasField('field_meeting_documents') || $node->get('field_meeting_documents')->isEmpty()) {
-        return;
-      }
-
       foreach ($node->get('field_meeting_documents') as $field) {
         $json = json_decode($field->value, TRUE);
         if (empty($json['Type'])) {
