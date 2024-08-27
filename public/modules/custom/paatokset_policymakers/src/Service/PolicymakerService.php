@@ -723,9 +723,11 @@ class PolicymakerService {
    * @return string
    *   Element ID or URL fragment.
    */
-  public function getDecisionAnnouncementAnchor(): string {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'sv') {
+  public function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
+    if (!$langcode) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    }
+    if ($langcode === 'sv') {
       return 'beslutsmeddelanden';
     }
     return 'paatostiedote';
