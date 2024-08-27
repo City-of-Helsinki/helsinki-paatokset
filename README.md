@@ -39,15 +39,11 @@ Stop project and remove app container:
 $ make down
 ``
 
-
-``
-
 Start project, update all packages and sync db from test:
 
 ``
 $ make fresh
 ``
-
 
 To create a local SQL dump to save your site's state, run:
 
@@ -96,8 +92,30 @@ Most of the content comes through migration and aggregation scripts. The Päät�
 
 Critical functionality, API content lifecycle and flow and debugging instructions can be found in Confluence: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/8333819923/Kriittiset+toiminnallisuudet+ja+ongelmatilanteiden+selvitys
 
-More in-depth documentation:
-* Content module and custom components: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688516251/Drupal+sis+lt+malli
-* Custom roles and permissions: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/6189809682/K+ytt+j+roolit+oikeudet+ja+k+ytt+j+tilit
-* AHJO API integration: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688254056/AHJO+API
+### Integrations and features
+#### AHJO API
+The majority of the site's content come from AHJO API: Meetings, motions decisions, policymakers, office holder profiles. Custom modules handle the authentication and aggregation of data.
+
+Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688254056/AHJO+API
+
+
+#### HelsinkiKanava
+Helsinki City Council meeting recordings and livestreams come from HelsinkiKanava. Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2689106104/Helsinki-kanavan+videot
+
+#### Datapumppu API
+Information for City Council member speaking turns is fetched from here and dislplayed on the council member's profile page. Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2689073189/Datapumppu+API
+
+#### Search implementation (ElasticSearch)
+Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/7592214536/Hakutoteutus
+
+#### Internal APIs and AHJO API Proxy
+Includes APIs used by Javascript applications (open endpoints) and a proxy for querying AHJO API directly (requires authentication).
+
+Describe in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/7874904065/Sis+iset+rajapinnat+ja+proxy+Ahjon+suuntaan
+
+### Content model and custom components:
+Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688516251/Drupal+sis+lt+malli
+
+### Custom roles and permissions:
+Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/6189809682/K+ytt+j+roolit+oikeudet+ja+k+ytt+j+tilit
 * Other integrations and search implementation: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2681897044/Integraatiot
