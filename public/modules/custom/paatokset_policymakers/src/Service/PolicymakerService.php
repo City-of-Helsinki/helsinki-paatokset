@@ -1265,7 +1265,7 @@ class PolicymakerService {
       ->addCondition('field_meeting_dm_id', $this->policymakerId)
       ->addCondition('field_meeting_date', self::MEETING_START_DATE, '>=')
       ->addCondition('field_meeting_status', 'peruttu', '<>')
-      ->addCondition('meeting_phase', NULL, '<>')
+      ->addCondition('meeting_phase', '', '<>')
       ->sort('field_meeting_date', 'DESC');
 
     try {
