@@ -86,6 +86,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_meeting_status
+  meeting_dm_data:
+    label: 'Meeting Decisionmaker Data'
+    datasource_id: 'entity:node'
+    property_path: meeting_dm_data
+    type: text
   meeting_phase:
     label: 'Meeting phase'
     datasource_id: 'entity:node'
@@ -155,6 +160,7 @@ processor_settings:
   entity_type: {  }
   has_translation: {  }
   language_with_fallback: {  }
+  meeting_dm_data: {  }
   meeting_phase: {  }
   meeting_url: {  }
   project_execution_schedule: {  }

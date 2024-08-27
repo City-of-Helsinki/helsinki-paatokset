@@ -137,8 +137,6 @@ class MeetingService {
 
       $phase = $result->getField('meeting_phase')->getValues()[0];
       $policymaker_id = $result->getField('field_meeting_dm_id')->getValues()[0];
-      $policymaker_name = $result->getField('field_meeting_dm')->getValues()[0];
-      $policymaker_type = $this->getPolicymakerType($policymaker_name);
 
       $item = [
         'title' => $result->getField('title')->getValues()[0],
@@ -146,14 +144,28 @@ class MeetingService {
         'meeting_moved' => $meeting_moved,
         'meeting_cancelled' => $meeting_cancelled,
         'policymaker' => $policymaker_id,
-        'policymaker_type' => $policymaker_type,
-        'policymaker_name' => $policymaker_name,
         'start_time' => date('H:i', $timestamp),
         'orig_time' => date('d.m. H:i', $orig_timestamp),
         'phase' => $phase,
         'status' => $result->getField('field_meeting_status')->getValues()[0],
         'additional_info' => $additional_info,
       ];
+
+      // Get JSON data for policymaker data.
+      $dm_json = $result->getField('meeting_dm_data')->getValues();
+      $dm_data = [];
+      if (!empty($dm_json)) {
+        $dm_data = json_decode($dm_json[0], TRUE);
+      }
+
+      // Set DM values.
+      if (isset($dm_data['type'])) {
+        $item['policymaker_type'] = $dm_data['type'];
+      }
+
+      if (isset($dm_data['title'][$langcode])) {
+        $item['policymaker_name'] = $dm_data['title'][$langcode];
+      }
 
       // Get JSON data for meeting URLs, but only if it's not cancelled.
       $url_json = NULL;
