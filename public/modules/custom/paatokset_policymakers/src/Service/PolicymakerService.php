@@ -482,11 +482,13 @@ class PolicymakerService {
    *   Policymaker ID. NULL if using default.
    * @param bool $include_anchor
    *   Include decision announcement anchor, if valid.
+   * @param string|null $langcode
+   *   Language for URL, defaults to current language. Supports fi, en, sv.
    *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE): ?Url {
+  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE, ?string $langcode = NULL): ?Url {
     if (!empty($policymaker_id)) {
       $this->setPolicyMaker($policymaker_id);
     }
@@ -505,17 +507,22 @@ class PolicymakerService {
       return NULL;
     }
 
+    if (!$langcode) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    }
+
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    $localizedRoute = "$route.$currentLanguage";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $currentLanguage);
+    $localizedRoute = "$route.$langcode";
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $langcode);
 
     $routeSettings = [
       'organization' => $policymaker_org,
       'id' => $id,
     ];
 
-    $routeOptions = [];
+    $routeOptions = [
+      'language' => $this->languageManager->getLanguage($langcode),
+    ];
     if ($include_anchor && $this->checkDecisionAnnouncementById($id)) {
       $anchor = $this->getDecisionAnnouncementAnchor();
       $routeOptions['fragment'] = $anchor;
