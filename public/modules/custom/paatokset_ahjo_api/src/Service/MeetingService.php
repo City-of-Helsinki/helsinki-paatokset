@@ -99,6 +99,8 @@ class MeetingService {
       return [];
     }
 
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
     $data = [];
     foreach ($results as $result) {
       $timestamp = $result->getField('field_meeting_date')->getValues()[0];
@@ -133,7 +135,6 @@ class MeetingService {
         $meeting_moved = TRUE;
       }
 
-      $meeting_id = $result->getField('field_meeting_id')->getValues()[0];
       $phase = $result->getField('meeting_phase')->getValues()[0];
       $policymaker_id = $result->getField('field_meeting_dm_id')->getValues()[0];
       $policymaker_name = $result->getField('field_meeting_dm')->getValues()[0];
@@ -154,14 +155,25 @@ class MeetingService {
         'additional_info' => $additional_info,
       ];
 
-      if (!$meeting_cancelled && $phase === 'minutes') {
-        $item['minutes_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id);
+      // Get JSON data for meeting URLs, but only if it's not cancelled.
+      $url_json = NULL;
+      if (!$meeting_cancelled) {
+        $url_json = $result->getField('meeting_url')->getValues();
       }
-      elseif (!$meeting_cancelled && $phase === 'decision') {
-        $item['decision_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id, TRUE);
+      $url_data = [];
+      if (!empty($url_json)) {
+        $url_data = json_decode($url_json[0], TRUE);
       }
-      elseif (!$meeting_cancelled && $phase === 'agenda') {
-        $item['motions_list_link'] = $this->getMeetingUrlWithoutNode($meeting_id, $policymaker_id);
+
+      // Set correct links.
+      if ($phase === 'minutes' && isset($url_data['meeting_link'][$langcode])) {
+        $item['minutes_link'] = $url_data['meeting_link'][$langcode];
+      }
+      elseif ($phase === 'decision' && isset($url_data['decision_link'][$langcode])) {
+        $item['decision_link'] = $url_data['decision_link'][$langcode];
+      }
+      elseif ($phase === 'agenda' && isset($url_data['meeting_link'][$langcode])) {
+        $item['motions_list_link'] = $url_data['meeting_link'][$langcode];
       }
 
       // Group based on day.

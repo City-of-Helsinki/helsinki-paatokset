@@ -3,11 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_meeting_agenda_published
     - field.storage.node.field_meeting_dm_id
     - field.storage.node.field_meeting_date
     - field.storage.node.field_meeting_date_original
     - field.storage.node.field_meeting_id
     - field.storage.node.field_meeting_sequence_number
+    - field.storage.node.field_meeting_minutes_published
     - field.storage.node.field_meeting_status
     - search_api.server.elasticsearch
   module:
@@ -20,6 +22,14 @@ name: Meetings
 description: ''
 read_only: false
 field_settings:
+  field_meeting_agenda_published:
+    label: 'Agenda published'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_agenda_published
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_agenda_published
   field_meeting_date:
     label: 'Meeting Date'
     datasource_id: 'entity:node'
@@ -52,6 +62,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_meeting_id
+  field_meeting_minutes_published:
+    label: 'Minutes published'
+    datasource_id: 'entity:node'
+    property_path: field_meeting_minutes_published
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_meeting_minutes_published
   field_meeting_sequence_number:
     label: 'Meeting sequence number'
     datasource_id: 'entity:node'
@@ -73,6 +91,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: meeting_phase
     type: string
+  meeting_url:
+    label: 'Meeting URL'
+    datasource_id: 'entity:node'
+    property_path: meeting_url
+    type: text
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -87,6 +110,14 @@ field_settings:
     type: boolean
     indexed_locked: true
     type_locked: true
+    dependencies:
+      module:
+        - node
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
     dependencies:
       module:
         - node
@@ -115,7 +146,7 @@ processor_settings:
   color_class: {  }
   content_access:
     weights:
-      preprocess_query: -30
+      preprocess_query: -15
   custom_value: {  }
   decision_url: {  }
   decisionmaker_combined_title: {  }
@@ -125,6 +156,7 @@ processor_settings:
   has_translation: {  }
   language_with_fallback: {  }
   meeting_phase: {  }
+  meeting_url: {  }
   project_execution_schedule: {  }
   project_image_absolute_url: {  }
   project_plan_schedule: {  }
