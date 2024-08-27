@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class MeetingUrl extends ProcessorPluginBase {
 
   /**
-   * Case service.
+   * PolicymakerService.
    *
    * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
    */
