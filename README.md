@@ -98,7 +98,6 @@ The majority of the site's content come from AHJO API: Meetings, motions decisio
 
 Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688254056/AHJO+API
 
-
 #### HelsinkiKanava
 Helsinki City Council meeting recordings and livestreams come from HelsinkiKanava. Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2689106104/Helsinki-kanavan+videot
 
@@ -111,11 +110,10 @@ Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki
 #### Internal APIs and AHJO API Proxy
 Includes APIs used by Javascript applications (open endpoints) and a proxy for querying AHJO API directly (requires authentication).
 
-Describe in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/7874904065/Sis+iset+rajapinnat+ja+proxy+Ahjon+suuntaan
+Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/7874904065/Sis+iset+rajapinnat+ja+proxy+Ahjon+suuntaan
 
 ### Content model and custom components:
 Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688516251/Drupal+sis+lt+malli
 
 ### Custom roles and permissions:
 Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/6189809682/K+ytt+j+roolit+oikeudet+ja+k+ytt+j+tilit
-* Other integrations and search implementation: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2681897044/Integraatiot
