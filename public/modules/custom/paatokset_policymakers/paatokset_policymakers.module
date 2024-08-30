@@ -136,7 +136,6 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   // phpcs:ignore
   //$variables['meetings'] = $meetingService->elasticQuery($params);
 
-
   if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
     $variables['meetings_description'] = $node->get('field_meetings_description')->value;
   }

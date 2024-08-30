@@ -4,9 +4,9 @@ namespace Drupal\paatokset_search\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
+use Drupal\search_api\IndexInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -47,7 +47,7 @@ class ItemsIndexed implements EventSubscriberInterface {
     if ($index->id() === 'decisions') {
       $tags = $this->getCacheTagsForOfficeHolderDecisions($event, $index);
     }
-    else if ($index->id() === 'meetings') {
+    elseif ($index->id() === 'meetings') {
       $tags = $this->getCacheTagsForMeetings($event, $index);
     }
     else {
@@ -62,9 +62,9 @@ class ItemsIndexed implements EventSubscriberInterface {
   /**
    * Get cache tags to invalidate for office holder decisions.
    *
-   * @param ItemsIndexedEvent $event
+   * @param \Drupal\search_api\Event\ItemsIndexedEvent $event
    *   The ItemsIndexed event.
-   * @param IndexInterface $index
+   * @param \Drupal\search_api\IndexInterface $index
    *   The index to act on.
    *
    * @return array
@@ -106,9 +106,9 @@ class ItemsIndexed implements EventSubscriberInterface {
   /**
    * Get cache tags to invalidate for meetings.
    *
-   * @param ItemsIndexedEvent $event
+   * @param \Drupal\search_api\Event\ItemsIndexedEvent $event
    *   The ItemsIndexed event.
-   * @param IndexInterface $index
+   * @param \Drupal\search_api\IndexInterface $index
    *   The index to act on.
    *
    * @return array
