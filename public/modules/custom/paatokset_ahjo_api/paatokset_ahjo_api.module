@@ -230,6 +230,9 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   }
 
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
+  // UHF-10527: Switch over to using elasticQuery.
+  // phpcs:ignore
+  //$all_meetings = array_merge(...array_values($meetingService->elasticQuery($params)));
 
   $meetings_with_color = [];
   foreach ($all_meetings as $meeting) {
@@ -287,6 +290,9 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
   }
 
   $all_meetings = array_merge(...array_values($meetingService->query($params)));
+  // UHF-10527: Switch over to using elasticQuery.
+  // phpcs:ignore
+  //$all_meetings = array_merge(...array_values($meetingService->elasticQuery($params)));
 
   if (count($all_meetings) > 8) {
     $all_meetings = array_slice($all_meetings, 0, 8);
