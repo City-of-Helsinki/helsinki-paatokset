@@ -4,6 +4,7 @@ namespace Drupal\paatokset_search\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -42,14 +43,37 @@ class ItemsIndexed implements EventSubscriberInterface {
   public function itemsIndexed(ItemsIndexedEvent $event): void {
     $index = $event->getIndex();
 
-    // Only act on decision nodes.
-    if ($index->id() !== 'decisions') {
+    // Cache tag handling for office holder decisions.
+    if ($index->id() === 'decisions') {
+      $tags = $this->getCacheTagsForOfficeHolderDecisions($event, $index);
+    }
+    else if ($index->id() === 'meetings') {
+      $tags = $this->getCacheTagsForMeetings($event, $index);
+    }
+    else {
       return;
     }
 
+    if (!empty($tags)) {
+      $this->cacheInvalidator->invalidateTags($tags);
+    }
+  }
+
+  /**
+   * Get cache tags to invalidate for office holder decisions.
+   *
+   * @param ItemsIndexedEvent $event
+   *   The ItemsIndexed event.
+   * @param IndexInterface $index
+   *   The index to act on.
+   *
+   * @return array
+   *   Array of cache tags to invalidate.
+   */
+  private function getCacheTagsForOfficeHolderDecisions(ItemsIndexedEvent $event, IndexInterface $index): array {
+    $tags = [];
     $ids = $event->getProcessedIds();
     $items = $index->loadItemsMultiple($ids);
-    $tags = [];
     foreach ($items as $item) {
       $properties = $item->getProperties();
       if (empty($properties['field_organization_type']) || empty($properties['field_policymaker_id'])) {
@@ -76,10 +100,42 @@ class ItemsIndexed implements EventSubscriberInterface {
       }
 
     }
+    return $tags;
+  }
 
-    if (!empty($tags)) {
-      $this->cacheInvalidator->invalidateTags($tags);
+  /**
+   * Get cache tags to invalidate for meetings.
+   *
+   * @param ItemsIndexedEvent $event
+   *   The ItemsIndexed event.
+   * @param IndexInterface $index
+   *   The index to act on.
+   *
+   * @return array
+   *   Array of cache tags to invalidate.
+   */
+  private function getCacheTagsForMeetings(ItemsIndexedEvent $event, IndexInterface $index): array {
+    $tags = [];
+    $ids = $event->getProcessedIds();
+    $items = $index->loadItemsMultiple($ids);
+    foreach ($items as $item) {
+      $properties = $item->getProperties();
+      if (empty($properties['field_meeting_dm_id'])) {
+        continue;
+      }
+      /** @var \Drupal\Core\Field\FieldItemList $dm_id_field */
+      $dm_id_field = $item->get('field_meeting_dm_id');
+      if ($dm_id_field->isEmpty()) {
+        continue;
+      }
+
+      $tag = 'meeting_pm:' . $dm_id_field->value;
+      if (!in_array($tag, $tags)) {
+        $tags[] = $tag;
+      }
+
     }
+    return $tags;
   }
 
 }
