@@ -2,13 +2,16 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Entity\Index;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -20,9 +23,34 @@ class MeetingService {
   use StringTranslationTrait;
 
   /**
+   * The logger service.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected LoggerInterface $logger;
+
+  /**
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'meeting';
+
+  /**
+   * Constructs MeetingService.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   The language manager.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+   *   The logger factory.
+   */
+  public function __construct(
+    private EntityTypeManagerInterface $entityTypeManager,
+    private readonly LanguageManagerInterface $languageManager,
+    LoggerChannelFactoryInterface $loggerFactory,
+  ) {
+    $this->logger = $loggerFactory->get('paatokset_ahjo_proxy');
+  }
 
   /**
    * Query Ahjo API meetings from ElasticSearch Index.
@@ -95,11 +123,11 @@ class MeetingService {
       $results = $query->execute();
     }
     catch (\Throwable $exception) {
-      Error::logException(\Drupal::logger('paatokset_ahjo_api'), $exception);
+      Error::logException($this->logger, $exception);
       return [];
     }
 
-    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $data = [];
     foreach ($results as $result) {
@@ -221,7 +249,8 @@ class MeetingService {
       $sort = 'ASC';
     }
 
-    $query = \Drupal::entityQuery('node')
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
@@ -263,10 +292,13 @@ class MeetingService {
       return [];
     }
 
-    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $result = [];
-    foreach (Node::loadMultiple($ids) as $node) {
+
+    /** @var \Drupal\node\NodeInterface[] $nodes */
+    $nodes = $nodeStorage->loadMultiple($ids);
+    foreach ($nodes as $node) {
       $timestamp = $node->get('field_meeting_date')->date->getTimeStamp();
       $date = date('Y-m-d', $timestamp);
 
@@ -371,9 +403,10 @@ class MeetingService {
    *   Policymaker name.
    */
   private function getPolicymakerName(string $id, string $default_name, string $langcode = 'fi'): string {
+    // Leaving this \Drupal::service() call here temporarily,
+    // until this whole code block can be removed.
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-
     $name = $policymakerService->getPolicymakerNameById($id, $langcode, FALSE);
     if ($name !== NULL) {
       return $name;
@@ -450,6 +483,8 @@ class MeetingService {
       return NULL;
     }
 
+    // Leaving this \Drupal::service() call here temporarily,
+    // until this whole code block can be removed.
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
     $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
@@ -472,11 +507,13 @@ class MeetingService {
    *   URL as string, if possible to get.
    */
   public function getMeetingUrl(NodeInterface $node): ?string {
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
     $meeting_id = $node->get('field_meeting_id')->value;
     $policymaker_id = $node->get('field_meeting_dm_id')->value;
+
+    // Leaving this \Drupal::service() call here temporarily,
+    // until this whole code block can be removed.
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
     $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
     if ($url instanceof Url) {
       return $url->toString(TRUE)->getGeneratedUrl();
@@ -499,6 +536,8 @@ class MeetingService {
    *   URL as string, if possible to get.
    */
   public function getMeetingUrlWithoutNode(string $meeting_id, string $policymaker_id, bool $include_anchor = FALSE) : ?string {
+    // Leaving this \Drupal::service() call here temporarily,
+    // until this whole code block can be removed.
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
     $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id, $include_anchor);
@@ -521,7 +560,8 @@ class MeetingService {
    *   URL to meeting minutes document, if one exists.
    */
   public function getMeetingsDocumentUrl(string $id, string $document_type): ?string {
-    $query = \Drupal::entityQuery('node')
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $query = $nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', self::NODE_TYPE)
@@ -533,7 +573,7 @@ class MeetingService {
       return NULL;
     }
 
-    $entity = Node::load(reset($ids));
+    $entity = $nodeStorage->load(reset($ids));
     if (!$entity instanceof NodeInterface) {
       return NULL;
     }
