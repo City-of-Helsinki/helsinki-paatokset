@@ -15,8 +15,10 @@ dependencies:
     - image.style.original_xxs_2x
   module:
     - helfi_image_styles
+_core:
+  default_config_hash: x0r2QzNDWHXqyg7HGSzEHFBxCBm4wqYqaKZIMFrwAD8
 id: original
-label: Original
+label: 'DEPRECATED Original'
 image_style_mappings:
   -
     image_mapping_type: image_style

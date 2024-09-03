@@ -7,8 +7,10 @@ dependencies:
     - image.style.1_1_thumbnail_2x
   module:
     - helfi_image_styles
+_core:
+  default_config_hash: FZ-_wC1OLQNLznIQJEUA1-VJTDXBViLp3w989x3o3Y8
 id: gallery_thumbnail
-label: 'Gallery thumbnail'
+label: 'DEPRECATED Gallery thumbnail'
 image_style_mappings:
   -
     image_mapping_type: image_style
