@@ -13,7 +13,6 @@ use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\search_api\Entity\Index;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
