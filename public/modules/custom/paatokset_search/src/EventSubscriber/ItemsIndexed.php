@@ -72,6 +72,7 @@ class ItemsIndexed implements EventSubscriberInterface {
    */
   private function getCacheTagsForOfficeHolderDecisions(ItemsIndexedEvent $event, IndexInterface $index): array {
     $tags = [];
+
     $ids = $event->getProcessedIds();
     $items = $index->loadItemsMultiple($ids);
     foreach ($items as $item) {
@@ -103,6 +104,7 @@ class ItemsIndexed implements EventSubscriberInterface {
     return $tags;
   }
 
+  // phpcs:disable
   /**
    * Get cache tags to invalidate for meetings.
    *
@@ -116,6 +118,7 @@ class ItemsIndexed implements EventSubscriberInterface {
    */
   private function getCacheTagsForMeetings(ItemsIndexedEvent $event, IndexInterface $index): array {
     $tags = [];
+    return $tags;
     $ids = $event->getProcessedIds();
     $items = $index->loadItemsMultiple($ids);
     foreach ($items as $item) {
@@ -137,5 +140,6 @@ class ItemsIndexed implements EventSubscriberInterface {
     }
     return $tags;
   }
+  // phpcs:enable
 
 }
