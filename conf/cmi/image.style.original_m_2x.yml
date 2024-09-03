@@ -4,8 +4,10 @@ status: true
 dependencies:
   module:
     - image_style_quality
+_core:
+  default_config_hash: Xm_4TTEYVFIIJ0DNY8sAqMrJKuN2Bjep97ZtJatKl_I
 name: original_m_2x
-label: 'Original M (2x)'
+label: 'DEPRECATED Original M (2x)'
 effects:
   030a8bc9-6a90-44d4-b920-691c51ace740:
     uuid: 030a8bc9-6a90-44d4-b920-691c51ace740

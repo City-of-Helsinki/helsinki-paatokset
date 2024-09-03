@@ -2,12 +2,14 @@ uuid: d0584d33-27c7-4ee7-b17c-3ca833062197
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: Z5cLehFHTeqGLzRMPiYu5ifBzZ2bCw3JYViB-iLqVWA
 id: helfi_hearings
 label: 'Helfi: Hearing'
 label_plural: 'Helfi: Hearing'
 description: 'Helfi hearings from hearing api.'
-read_only: true
 generate_aliases: false
+read_only: true
 field_mapper_id: jsonpath
 field_mapper_config:
   field_mappings:
