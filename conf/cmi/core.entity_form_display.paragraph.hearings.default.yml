@@ -8,6 +8,8 @@ dependencies:
     - paragraphs.paragraphs_type.hearings
   module:
     - text
+_core:
+  default_config_hash: rGQtQ1nX81Wvo4p_03feZAyTAtQGGbUt2Pnq_bcMD2g
 id: paragraph.hearings.default
 targetEntityType: paragraph
 bundle: hearings
