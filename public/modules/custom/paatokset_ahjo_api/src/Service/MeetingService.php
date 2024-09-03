@@ -10,7 +10,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\node\NodeInterface;
-use Drupal\search_api\Entity\Index;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -79,7 +78,9 @@ class MeetingService {
       $sort = 'ASC';
     }
 
-    $index = Index::load('meetings');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('meetings');
+
     $query = $index
       ->query()
       ->sort('field_meeting_date', $sort);

@@ -814,7 +814,8 @@ class PolicymakerService {
 
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
-    $index = Index::load('decisions');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('decisions');
     $query = $index
       ->query()
       ->range(0, $limit)
@@ -1258,7 +1259,9 @@ class PolicymakerService {
       $limit = 10000;
     }
 
-    $index = Index::load('meetings');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('meetings');
+
     $query = $index
       ->query()
       ->range(0, $limit)
