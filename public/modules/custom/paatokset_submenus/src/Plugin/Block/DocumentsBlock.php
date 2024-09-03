@@ -4,6 +4,7 @@ namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -48,6 +49,9 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     $list = $this->policymakerService->getApiMinutes(NULL, TRUE);
+    // UHF-10527: Switch over to using elasticQuery.
+    // phpcs:ignore
+    //$list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
 
     return [
       '#title' => $this->t('Office holder decisions'),
@@ -60,7 +64,12 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * Get cache tags.
    */
   public function getCacheTags() {
-    return ['node_list:meeting'];
+    $policymaker = $this->policymakerService->getPolicyMaker();
+    if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
+      $policymaker_id = $policymaker->get('field_policymaker_id')->value;
+      return ['meeting_pm:' . $policymaker_id];
+    }
+    return [];
   }
 
   /**

@@ -13,7 +13,6 @@ use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\search_api\Entity\Index;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
 
@@ -2726,7 +2725,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $db_count = count($ids);
     $this->writeln('Total found for ' . $id . ' in db: ' . $db_count);
 
-    $index = Index::load('decisions');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('decisions');
     $query = $index->query();
     $query->range(0, 10000);
     $query->addCondition('field_policymaker_id', strtoupper($id))

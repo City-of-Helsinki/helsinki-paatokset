@@ -132,6 +132,9 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   $variables['open_decisions'] = t('Open decision announcement');
   $variables['open_minutes'] = t('Open minutes');
   $variables['meetings'] = $meetingService->query($params);
+  // UHF-10527: Switch over to using elasticQuery.
+  // phpcs:ignore
+  //$variables['meetings'] = $meetingService->elasticQuery($params);
 
   if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
     $variables['meetings_description'] = $node->get('field_meetings_description')->value;
@@ -209,6 +212,10 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       }
 
       $documents = $policymakerService->getApiMinutes(2);
+      // UHF-10527: Switch over to using elasticQuery.
+      // phpcs:ignore
+      //$documents = $policymakerService->getApiMinutesFromElasticSearch(2);
+
       if ($documents) {
         $variables['recent_documents'] = $documents;
         $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();

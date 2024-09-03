@@ -32,6 +32,9 @@ class FrontpageCalendarBlock extends BlockBase {
    * Get cache tags.
    */
   public function getCacheTags() {
+    // UHF-10527: Switch over to using elasticQuery.
+    // phpcs:ignore
+    //return ['search_api_list:meetings'];
     return ['node_list:meeting'];
   }
 

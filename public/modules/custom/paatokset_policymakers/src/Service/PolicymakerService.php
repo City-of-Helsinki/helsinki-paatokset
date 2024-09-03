@@ -23,7 +23,6 @@ use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\pathauto\AliasCleanerInterface;
-use Drupal\search_api\Entity\Index;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -40,6 +39,11 @@ class PolicymakerService {
    * Machine name for meeting node type.
    */
   const NODE_TYPE = 'policymaker';
+
+  /**
+   * Cut off date for old meetings.
+   */
+  const MEETING_START_DATE = '2018-04-01';
 
   /**
    * Policymaker roles for trustees (not decisionmaker organizations).
@@ -477,11 +481,13 @@ class PolicymakerService {
    *   Policymaker ID. NULL if using default.
    * @param bool $include_anchor
    *   Include decision announcement anchor, if valid.
+   * @param string|null $langcode
+   *   Language for URL, defaults to current language. Supports fi, en, sv.
    *
    * @return Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
-  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE): ?Url {
+  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE, ?string $langcode = NULL): ?Url {
     if (!empty($policymaker_id)) {
       $this->setPolicyMaker($policymaker_id);
     }
@@ -500,17 +506,22 @@ class PolicymakerService {
       return NULL;
     }
 
+    if (!$langcode) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    }
+
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    $localizedRoute = "$route.$currentLanguage";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $currentLanguage);
+    $localizedRoute = "$route.$langcode";
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $langcode);
 
     $routeSettings = [
       'organization' => $policymaker_org,
       'id' => $id,
     ];
 
-    $routeOptions = [];
+    $routeOptions = [
+      'language' => $this->languageManager->getLanguage($langcode),
+    ];
     if ($include_anchor && $this->checkDecisionAnnouncementById($id)) {
       $anchor = $this->getDecisionAnnouncementAnchor();
       $routeOptions['fragment'] = $anchor;
@@ -711,9 +722,11 @@ class PolicymakerService {
    * @return string
    *   Element ID or URL fragment.
    */
-  public function getDecisionAnnouncementAnchor(): string {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'sv') {
+  public function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
+    if (!$langcode) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    }
+    if ($langcode === 'sv') {
       return 'beslutsmeddelanden';
     }
     return 'paatostiedote';
@@ -800,7 +813,8 @@ class PolicymakerService {
 
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
-    $index = Index::load('decisions');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('decisions');
     $query = $index
       ->query()
       ->range(0, $limit)
@@ -1225,6 +1239,89 @@ class PolicymakerService {
   }
 
   /**
+   * Get API-retrieved minutes and agendas from ElasticSearch Index.
+   *
+   * @param int|null $limit
+   *   Limit results. Defaults to 10000 (maximum amount of results from index).
+   * @param bool $byYear
+   *   Group decision by year.
+   *
+   * @return array
+   *   List of meeting documents.
+   */
+  public function getApiMinutesFromElasticSearch(?int $limit = NULL, bool $byYear = FALSE): array {
+    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
+      return [];
+    }
+
+    if (!$limit) {
+      $limit = 10000;
+    }
+
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('meetings');
+
+    $query = $index
+      ->query()
+      ->range(0, $limit)
+      ->addCondition('field_meeting_dm_id', $this->policymakerId)
+      ->addCondition('field_meeting_date', self::MEETING_START_DATE, '>=')
+      ->addCondition('field_meeting_status', 'peruttu', '<>')
+      ->addCondition('meeting_phase', '', '<>')
+      ->sort('field_meeting_date', 'DESC');
+
+    try {
+      $results = $query->execute();
+    }
+    catch (\Throwable $exception) {
+      Error::logException($this->logger, $exception);
+      return [];
+    }
+
+    $data = [];
+    foreach ($results as $result) {
+      $meeting_timestamp = $result->getField('field_meeting_date')->getValues()[0];
+      $meeting_year = date('Y', $meeting_timestamp);
+      $meeting_id = $result->getField('field_meeting_id')->getValues()[0];
+      $phase = $result->getField('meeting_phase')->getValues()[0];
+      $document_title = NULL;
+      $decision_link = NULL;
+      $link = $this->getMinutesRoute($meeting_id, NULL, FALSE);
+
+      if ($phase === 'minutes') {
+        $document_title = $this->t('Minutes');
+      }
+      elseif ($phase === 'agenda' || $phase === 'decision') {
+        $document_title = $this->t('Agenda');
+      }
+
+      if ($phase === 'decision') {
+        $decision_link = $this->getMinutesRoute($meeting_id);
+      }
+
+      $item = [
+        'id' => $result->getField('field_meeting_id')->getValues()[0],
+        'publish_date' => date('d.m.Y', $meeting_timestamp),
+        'publish_date_short' => date('m - Y', $meeting_timestamp),
+        'title' => $document_title,
+        'phase' => $phase,
+        'meeting_number' => $result->getField('field_meeting_sequence_number')->getValues()[0] . ' - ' . $meeting_year,
+        'link' => $link,
+        'decision_link' => $decision_link,
+      ];
+
+      if ($byYear) {
+        $data[$meeting_year][] = $item;
+      }
+      else {
+        $data[] = $item;
+      }
+    }
+
+    return $data;
+  }
+
+  /**
    * Get all API-retrieved minutes.
    *
    * @param int|null $limit
@@ -1247,7 +1344,7 @@ class PolicymakerService {
       ->condition('type', 'meeting')
       ->condition('field_meeting_dm_id', $this->policymakerId)
       ->condition('field_meeting_documents', '', '<>')
-      ->condition('field_meeting_date', '2018-04-01', '>=')
+      ->condition('field_meeting_date', self::MEETING_START_DATE, '>=')
       ->condition('field_meeting_status', 'peruttu', '<>')
       ->sort('field_meeting_date', 'DESC');
 
