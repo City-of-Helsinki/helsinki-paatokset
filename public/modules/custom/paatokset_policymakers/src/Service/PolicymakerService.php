@@ -1673,15 +1673,26 @@ class PolicymakerService {
         ];
       }
       else {
-        $id = $data['AgendaPoint'] . '-' . $data['Section'];
+        $id = $data['Section'] . '-' . $data['AgendaPoint'];
         $agendaItems[$id] = [
           'subject' => $data['AgendaItem'],
+          'sequence' => (int) $data['AgendaPoint'],
+          'section' => (int) $data['Section'],
           'index' => $index,
           'link' => $agenda_link,
           'native_id' => $native_id,
         ];
       }
     }
+
+    // Sort agenda items first by sequence number, then by section number.
+    // Missing section or sequence numbers will be handled as 0.
+    usort($agendaItems, function ($item1, $item2) {
+      return $item1['sequence'] - $item2['sequence'];
+    });
+    usort($agendaItems, function ($item1, $item2) {
+      return $item1['section'] - $item2['section'];
+    });
 
     return array_merge($agendaItems, $agendaItemsLast);
   }
