@@ -1667,6 +1667,7 @@ class PolicymakerService {
         $id = 'x-' . $last_count . '-' . $data['Section'];
         $agendaItemsLast[$id] = [
           'subject' => $data['AgendaItem'],
+          'section' => (int) $data['Section'],
           'index' => $index,
           'link' => $agenda_link,
           'native_id' => $native_id,
@@ -1691,6 +1692,12 @@ class PolicymakerService {
       return $item1['sequence'] - $item2['sequence'];
     });
     usort($agendaItems, function ($item1, $item2) {
+      return $item1['section'] - $item2['section'];
+    });
+
+    // Sort items without sequence number by section number.
+    // These will be displayed last on the list.
+    usort($agendaItemsLast, function ($item1, $item2) {
       return $item1['section'] - $item2['section'];
     });
 
