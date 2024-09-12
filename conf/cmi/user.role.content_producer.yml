@@ -41,6 +41,7 @@ dependencies:
     - scheduler
     - system
     - taxonomy
+    - tfa
     - toolbar
     - view_unpublished
 _core:
@@ -97,6 +98,7 @@ permissions:
   - 'delete own page content'
   - 'delete own policymaker_images media'
   - 'delete own remote_video media'
+  - 'disable own tfa'
   - 'edit any announcement content'
   - 'edit any declaration_of_affiliation media'
   - 'edit any file media'
@@ -138,6 +140,7 @@ permissions:
   - 'set announcement published on date'
   - 'set landing_page published on date'
   - 'set page published on date'
+  - 'setup own tfa'
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
