@@ -6,10 +6,12 @@ required_roles:
   content_producer: content_producer
   editor: editor
   admin: admin
-  api_user: api_user
-  elevated_api_user: elevated_api_user
   super_administrator: super_administrator
   survey_editor: survey_editor
+  authenticated: '0'
+  read_only: '0'
+  api_user: '0'
+  elevated_api_user: '0'
 send_plugins: {  }
 login_plugins: {  }
 login_plugin_settings:
