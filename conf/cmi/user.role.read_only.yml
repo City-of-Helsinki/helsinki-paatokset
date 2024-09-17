@@ -14,7 +14,6 @@ dependencies:
     - node.type.policymaker
     - node.type.trustee
   module:
-    - file
     - helfi_tpr
     - node
     - paragraphs
@@ -27,7 +26,6 @@ weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
-  - 'delete own files'
   - 'disable own tfa'
   - 'setup own tfa'
   - 'view any unpublished announcement content'

@@ -5,13 +5,11 @@ dependencies:
   module:
     - eu_cookie_compliance
     - external_entities
-    - file
     - helfi_api_base
     - helfi_tpr
     - media
     - paragraphs
     - system
-    - tfa
     - toolbar
 _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
@@ -22,10 +20,7 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
-  - 'delete own files'
-  - 'disable own tfa'
   - 'display eu cookie compliance popup'
-  - 'setup own tfa'
   - 'view helfi_announcements external entity'
   - 'view helfi_news external entity'
   - 'view helfi_news_groups external entity'

@@ -3,17 +3,12 @@ langcode: en
 status: true
 dependencies:
   module:
-    - file
     - key_auth
     - paatokset_ahjo_proxy
-    - tfa
 id: api_user
 label: 'API user'
 weight: 6
 is_admin: null
 permissions:
   - 'access ahjo proxy'
-  - 'delete own files'
-  - 'disable own tfa'
-  - 'setup own tfa'
   - 'use key authentication'
