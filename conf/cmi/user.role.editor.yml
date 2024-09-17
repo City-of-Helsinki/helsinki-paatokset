@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - entity_browser.browser.meeting_browser
+    - entity_browser.browser.paragraphs_library_items
     - filter.format.full_html
     - filter.format.minimal
     - media.type.ahjo_document
@@ -47,6 +49,7 @@ dependencies:
     - scheduler
     - system
     - taxonomy
+    - tfa
     - toolbar
     - view_unpublished
 id: editor
@@ -134,6 +137,7 @@ permissions:
   - 'delete terms in keywords'
   - 'delete terms in pdf_categories'
   - 'delete terms in pdf_minutes_category'
+  - 'disable own tfa'
   - 'edit any announcement content'
   - 'edit any article content'
   - 'edit any declaration_of_affiliation media'
@@ -186,6 +190,7 @@ permissions:
   - 'set meeting published on date'
   - 'set news_item published on date'
   - 'set page published on date'
+  - 'setup own tfa'
   - 'translate announcement node'
   - 'translate any entity'
   - 'translate article node'

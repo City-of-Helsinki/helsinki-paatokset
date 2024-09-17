@@ -14,10 +14,10 @@ dependencies:
     - node.type.policymaker
     - node.type.trustee
   module:
-    - file
     - helfi_tpr
     - node
     - paragraphs
+    - tfa
     - toolbar
     - view_unpublished
 id: read_only
@@ -26,7 +26,8 @@ weight: 2
 is_admin: null
 permissions:
   - 'access toolbar'
-  - 'delete own files'
+  - 'disable own tfa'
+  - 'setup own tfa'
   - 'view any unpublished announcement content'
   - 'view any unpublished article content'
   - 'view any unpublished case content'
