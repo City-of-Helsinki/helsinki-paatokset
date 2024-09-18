@@ -1604,8 +1604,6 @@ class PolicymakerService {
    */
   private function getAgendaItems(FieldItemListInterface $list_field, string $meeting_id, string $langcode = 'fi'): array {
     $agendaItems = [];
-    $agendaItemsLast = [];
-    $last_count = 0;
     foreach ($list_field as $item) {
 
       $data = json_decode($item->value, TRUE);
@@ -1662,28 +1660,34 @@ class PolicymakerService {
         $agenda_link = $this->caseService->getDecisionUrlByTitle($data['AgendaItem'], $meeting_id);
       }
 
-      if (empty($data['AgendaPoint']) || $data['AgendaPoint'] === 'null') {
-        $last_count++;
-        $id = 'x-' . $last_count . '-' . $data['Section'];
-        $agendaItemsLast[$id] = [
-          'subject' => $data['AgendaItem'],
-          'index' => $index,
-          'link' => $agenda_link,
-          'native_id' => $native_id,
-        ];
+      // Prevent PHP warnings if sequence or section number is missing.
+      if (empty($data['AgendaPoint'])) {
+        $data['AgendaPoint'] = '';
       }
-      else {
-        $id = $data['AgendaPoint'] . '-' . $data['Section'];
-        $agendaItems[$id] = [
-          'subject' => $data['AgendaItem'],
-          'index' => $index,
-          'link' => $agenda_link,
-          'native_id' => $native_id,
-        ];
+      if (empty($data['Section'])) {
+        $data['Section'] = '';
       }
+
+      $agendaItems[] = [
+        'subject' => $data['AgendaItem'],
+        'sequence' => (int) $data['AgendaPoint'],
+        'section' => (int) $data['Section'],
+        'index' => $index,
+        'link' => $agenda_link,
+        'native_id' => $native_id,
+      ];
     }
 
-    return array_merge($agendaItems, $agendaItemsLast);
+    // Sort agenda items first by sequence number, then by section number.
+    // Missing section or sequence numbers will be handled as 0.
+    usort($agendaItems, function ($item1, $item2) {
+      return $item1['sequence'] - $item2['sequence'];
+    });
+    usort($agendaItems, function ($item1, $item2) {
+      return $item1['section'] - $item2['section'];
+    });
+
+    return $agendaItems;
   }
 
   /**

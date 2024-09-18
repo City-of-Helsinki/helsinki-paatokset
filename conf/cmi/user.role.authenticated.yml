@@ -5,7 +5,6 @@ dependencies:
   module:
     - eu_cookie_compliance
     - external_entities
-    - file
     - helfi_api_base
     - helfi_tpr
     - media
@@ -21,7 +20,6 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
-  - 'delete own files'
   - 'display eu cookie compliance popup'
   - 'view helfi_announcements external entity'
   - 'view helfi_news external entity'

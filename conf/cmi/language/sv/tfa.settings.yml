@@ -1,0 +1,26 @@
+help_text: 'Kontakta supporten för att återställa din åtkomst'
+mail:
+  tfa_enabled_configuration:
+    subject: 'Ditt [site:name]-konto har nu tvåfaktorsautentisering'
+    body: |-
+      [user:display-name],
+
+      Tack för att du konfigurerade tvåfaktorsautentisering på ditt [site:name]konto!
+
+      Denna extra nivå av säkerhet hjälper till att säkerställa att enbart du kan logga in på ditt konto.
+
+      Om du någonsin förlorar den enhet som du konfigurerat detta med så bör du genast ta bort kopplingen till detta konto.
+
+      --
+      [site:name] teamet
+  tfa_disabled_configuration:
+    subject: 'Ditt [site:name] konto har inte längre tvåfaktorsautentisering'
+    body: |-
+      [user:display-name],
+
+      Tvåfaktorsautentisering har stängts av på ditt [site:name] konto.
+
+      Var vänlig och kontakta en administratör ifall det inte vara du som gjorde detta.
+
+      --
+      [site:name] teamet
