@@ -8,7 +8,6 @@ tags:
   article_modified_time: '[node:changed:html_datetime]'
   article_published_time: '[node:created:html_datetime]'
   canonical_url: '[node:url]'
-  content_language: '[node:langcode]'
   description: '[node:lead-in]'
   og_description: '[node:lead-in]'
   og_image: '[node:shareable-image]'
