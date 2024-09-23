@@ -2614,6 +2614,7 @@ class AhjoProxy implements ContainerInjectionInterface {
    */
   public function checkAndRefreshAuthToken(bool $refresh = FALSE): bool {
     // Check if access token is still valid (not expired).
+    // Or skip straight to refreshing token if $refresh is TRUE.
     if (!$refresh && $this->ahjoOpenId->checkAuthToken()) {
       $access_token = $this->ahjoOpenId->getAuthToken();
     }
