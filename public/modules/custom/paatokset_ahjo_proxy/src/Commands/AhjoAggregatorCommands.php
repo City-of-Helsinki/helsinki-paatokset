@@ -2989,6 +2989,32 @@ class AhjoAggregatorCommands extends DrushCommands {
   }
 
   /**
+   * Check and refresh AHJO auth token.
+   *
+   * @param string|null $action
+   *   Action to take. 'check' or 'refresh'.
+   *
+   * @command ahjo-proxy:check-auth-token
+   *
+   * @aliases ap:token
+   */
+  public function checkAhjoAuthToken(?string $action = 'check'): void {
+    if ($action === 'refresh') {
+      $refresh = TRUE;
+    }
+    else {
+      $refresh = FALSE;
+    }
+
+    $token = $this->ahjoProxy->checkAndRefreshAuthToken($refresh);
+    if (!$token) {
+      $this->logger->error(
+        'Auth token is no longer valid and could not be refreshed.'
+      );
+    }
+  }
+
+  /**
    * Store static files into filesystem.
    *
    * @param string|null $filename
