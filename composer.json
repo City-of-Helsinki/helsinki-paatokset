@@ -60,7 +60,8 @@
             "php-http/discovery": false
         },
         "audit": {
-            "abandoned": "report"
+            "abandoned": "report",
+            "ignore": ["GHSA-mg8j-w93w-xjgc"]
         }
     },
     "extra": {
