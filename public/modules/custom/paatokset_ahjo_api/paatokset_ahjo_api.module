@@ -17,12 +17,22 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Article;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['node']['article'])) {
+    $bundles['node']['article']['class'] = Article::class;
+  }
+}
 
 /**
  * Implements hook_theme().
  */
-function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
+function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
     'node__meeting' => [
       'render element' => 'elements',
@@ -46,10 +56,6 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
       'base hook' => 'entity',
       'template' => 'block/block--all-initiatives',
     ],
-    'block__all_articles' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--all-articles',
-    ],
     'block__meetings_calendar' => [
       'base hook' => 'entity',
       'template' => 'block/block--meetings-calendar',
@@ -57,6 +63,12 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path) {
     'block__dictionary_banner' => [
       'base hook' => 'entity',
       'template' => 'block/block--dictionary-banner',
+    ],
+    'all_articles' => [
+      'variables' => [
+        'articles_by_year' => [],
+      ],
+      'template' => 'block/all-articles',
     ],
   ];
 }
@@ -410,56 +422,6 @@ function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables)
 
   if (isset($variables['elements']['#block__all_initiatives'])) {
     $variables['entity'] = $variables['elements']['#block__all_initiatives'];
-  }
-}
-
-/**
- * Preprocess all initiatives block.
- */
-function paatokset_ahjo_api_preprocess_block__all_articles(array &$variables): void {
-  $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
-  $nids = \Drupal::entityQuery('node')
-    ->accessCheck(TRUE)
-    ->condition('type', 'article')
-    ->condition('langcode', $currentLanguage)
-    ->condition('status', 1)
-    ->sort('sticky', 'DESC')
-    // Field defined by publication_date module.
-    ->sort('published_at', 'DESC')
-    ->execute();
-
-  $nodes = Node::loadMultiple($nids);
-
-  $by_year = [];
-  foreach ($nodes as $node) {
-    if ($node->hasTranslation($currentLanguage)) {
-      $node = $node->getTranslation($currentLanguage);
-    }
-
-    if ($node->hasField('published_at') && !$node->get('published_at')->isEmpty()) {
-      $timestamp = (int) $node->get('published_at')->value;
-    }
-    else {
-      $timestamp = (int) $node->get('created')->value;
-    }
-    $year = date('Y', $timestamp);
-
-    $by_year[$year][] = [
-      'url' => $node->toUrl(),
-      'date' => $timestamp,
-      'title' => $node->getTitle(),
-    ];
-  }
-
-  $variables['articles'] = $by_year;
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-
-  if (isset($variables['elements']['#block__all_articles'])) {
-    $variables['entity'] = $variables['elements']['#block__all_articles'];
   }
 }
 

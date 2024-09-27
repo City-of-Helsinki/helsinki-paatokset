@@ -15,7 +15,8 @@
     </div>
 
     {# Created date and modified date #}
-    {% if published_at %}
+    {% if published_at is not empty %}
+      {% set html_published_at = published_at|format_date('custom', 'Y-m-d') ~ 'T' ~ published_at|format_date('custom', 'H:i') %}
       <div class="news-content content-date">
         <time datetime="{{ html_published_at }}" class="content-date__datetime content-date__datetime--published">
           <span class="visually-hidden">{{ 'Published'|t({}, {'context': 'The helper text before the node published timestamp'}) }}</span>
@@ -24,15 +25,16 @@
       </div>
     {% endif %}
 
-    {% if scheduled_unpublish_date %}
-    <div class="news-content">
-      <div class="warning-label">
-        <div class="warning-label__container">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': scheduled_unpublish_date|format_date('publication_date_format')}) } %}
-          <span>{{ 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': scheduled_unpublish_date|format_date('publication_date_format') }) }}</span>
+    {% if unpublish_on %}
+      {% set html_unpublish_on = unpublish_on|format_date('custom', 'Y-m-d') ~ 'T' ~ unpublish_on|format_date('custom', 'H:i') %}
+      <div class="news-content">
+        <div class="warning-label">
+          <div class="warning-label__container">
+            {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': unpublish_on|format_date('publication_date_format')}) } %}
+            <span>{{ 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': unpublish_on|format_date('publication_date_format') }) }}</span>
+          </div>
         </div>
       </div>
-    </div>
     {% endif %}
 
     {# Content region #}

@@ -1,31 +1,7 @@
 .views--taxonomy-term {
-  .views-row {
-    border-bottom: 1px solid $color-black-20;
-    padding:  $spacing-and-half 0;
-    display: block;
-
-    &:first-child {
-      border-top: 1px solid $color-black-20;
-    }
-
-    .views-field-published-at {
-      font-size: $fontsize-body-m;
-      color: $color-black-50;
-      margin-bottom: $spacing;
-    }
-
-    .views-field-title {
-      font-weight: $font-weight-medium;
-      font-size: 24px;
-
-      a {
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+  .policymaker-list-item {
+    border-top: 0;
+    border-color: $color-black-20;
   }
 
   .feed-icon {
