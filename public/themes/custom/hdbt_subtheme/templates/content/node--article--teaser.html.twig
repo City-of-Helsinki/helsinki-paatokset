@@ -1,0 +1,26 @@
+{%
+  set classes = [
+  'policymaker-list-item',
+  'policymaker-list-item--document',
+  not node.isPublished() ? 'content-card--unpublished',
+]
+%}
+
+{% set node %}
+  {% if content.published_at | render %}
+    <div class="list-item__date">
+      {{ content.published_at }}
+    </div>
+  {% endif %}
+
+  <div class="list-item__subject">
+    {{ label }}
+  </div>
+{% endset %}
+
+{% set link_attributes = {
+  'class': [
+  ]
+} %}
+
+{{ link(node, node_url, attributes.addClass(classes)) }}

@@ -14,6 +14,7 @@ dependencies:
     - hdbt_admin_tools
     - paragraphs
     - path
+    - publication_date
     - scheduler
     - select2
 _core:
@@ -25,13 +26,13 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 2
+    weight: 3
     region: content
     settings:
       title: Paragraph
@@ -50,7 +51,7 @@ content:
     third_party_settings: {  }
   field_keywords:
     type: select2_entity_reference
-    weight: 3
+    weight: 4
     region: content
     settings:
       width: 100%
@@ -71,16 +72,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    weight: 7
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
     weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  published_at:
+    type: publication_date_timestamp
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -110,20 +110,20 @@ content:
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 4
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
@@ -148,4 +148,4 @@ hidden:
   field_liftup_image: true
   field_metatags: true
   hide_sidebar_navigation: true
-  published_at: true
+  promote: true
