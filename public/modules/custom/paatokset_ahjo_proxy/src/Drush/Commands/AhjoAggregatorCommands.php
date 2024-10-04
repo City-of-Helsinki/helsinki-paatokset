@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_proxy\Commands;
+namespace Drupal\paatokset_ahjo_proxy\Drush\Commands;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
@@ -22,6 +23,8 @@ use Symfony\Component\Console\Helper\Table;
  * @package Drupal\paatokset_ahjo_proxy\Commands
  */
 class AhjoAggregatorCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * Node storage service.
