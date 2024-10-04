@@ -21,6 +21,7 @@ class AhjoOpenIdTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'migrate_plus',
     'paatokset_ahjo_openid',
   ];
 
@@ -43,7 +44,7 @@ class AhjoOpenIdTest extends KernelTestBase {
   /**
    * Tests token refreshing.
    */
-  public function testTokenRefresh(): void {
+  public function testGetToken(): void {
     $this->setupMockHttpClient([
       new Response(body: json_encode([
         'access_token' => '123',
@@ -55,6 +56,13 @@ class AhjoOpenIdTest extends KernelTestBase {
     $sut = $this->container->get(AhjoOpenId::class);
     $this->assertNotNull($sut->getAuthAndRefreshTokens('789'));
     $this->assertTrue($sut->checkAuthToken());
+
+    $plugin = $this->container->get('plugin.manager.migrate_plus.authentication')->createInstance('ahjo_openid_token', []);
+    $this->assertEquals([
+      'headers' => [
+        'Authorization' => 'Bearer 123',
+      ],
+    ], $plugin->getAuthenticationOptions());
   }
 
 }

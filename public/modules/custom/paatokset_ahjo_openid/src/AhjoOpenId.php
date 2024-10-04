@@ -14,6 +14,10 @@ use GuzzleHttp\ClientInterface;
  */
 class AhjoOpenId {
 
+  private const STATE_AUTH_TOKEN = 'ahjo-api-auth-key';
+  private const STATE_AUTH_TOKEN_EXPIRATION = 'ahjo-api-auth-expiration';
+  private const STATE_REFRESH_TOKEN = 'ahjo_api_refresh_token';
+
   /**
    * Constructs AhjoOpenId Controller.
    *
@@ -44,7 +48,7 @@ class AhjoOpenId {
     }
 
     // Missing refresh token.
-    if (!$this->state->get('ahjo_api_refresh_token')) {
+    if (!$this->state->get(self::STATE_REFRESH_TOKEN)) {
       return FALSE;
     }
 
@@ -114,7 +118,7 @@ class AhjoOpenId {
 
     if (isset($data->access_token) && isset($data->refresh_token)) {
       $this->setAuthToken($data->access_token, $data->expires_in);
-      $this->state->set('ahjo_api_refresh_token', $data->refresh_token);
+      $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
 
       return $data;
     }
@@ -124,9 +128,6 @@ class AhjoOpenId {
 
   /**
    * Refresh AUTH token.
-   *
-   * @return ?string
-   *   Auth token string or NULL on failure.
    */
   public function refreshAuthToken(): ?string {
     // getHeaders throw an exception if settings are not valid.
@@ -134,7 +135,7 @@ class AhjoOpenId {
       return NULL;
     }
 
-    $refresh_token = $this->state->get('ahjo_api_refresh_token');
+    $refresh_token = $this->state->get(self::STATE_REFRESH_TOKEN);
     $request = $this->httpClient->request(
       'POST',
       $this->settings->tokenUrl,
@@ -153,7 +154,7 @@ class AhjoOpenId {
 
     if (!empty($data->access_token) && !empty($data->refresh_token)) {
       $this->setAuthToken($data->access_token, $data->expires_in);
-      $this->state->set('ahjo_api_refresh_token', $data->refresh_token);
+      $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
       return $data->access_token;
     }
     return NULL;
@@ -166,7 +167,7 @@ class AhjoOpenId {
    *   TRUE if token has not expired.
    */
   public function checkAuthToken(): bool {
-    if (!$this->getAuthToken()) {
+    if (!$this->state->get(self::STATE_AUTH_TOKEN)) {
       return FALSE;
     }
 
@@ -174,24 +175,33 @@ class AhjoOpenId {
     if (time() > $auth_expiration) {
       return FALSE;
     }
+
     return TRUE;
   }
 
   /**
-   * Gets the auth token state variable.
+   * Gets the access token.
    *
-   * @return ?string
-   *   Auth token. NULL if value does not exist.
+   * Token is refreshed using the refresh token if current access token is
+   * expired.
+   *
+   * @return string|null
+   *   The access token.
    */
   public function getAuthToken(): ?string {
-    return $this->state->get('ahjo-api-auth-key');
+    if ($this->checkAuthToken()) {
+      return $this->state->get(self::STATE_AUTH_TOKEN);
+    }
+
+    // Refresh and return new access token.
+    return $this->refreshAuthToken();
   }
 
   /**
    * Get token expiry data and time.
    */
   public function getAuthTokenExpiration(): int {
-    return (int) $this->state->get('ahjo-api-auth-expiration');
+    return (int) $this->state->get(self::STATE_AUTH_TOKEN_EXPIRATION);
   }
 
   /**
@@ -203,8 +213,8 @@ class AhjoOpenId {
    *   Token lifetime.
    */
   private function setAuthToken(string $token, int $expiration): void {
-    $this->state->set('ahjo-api-auth-key', $token);
-    $this->state->set('ahjo-api-auth-expiration', time() + $expiration);
+    $this->state->set(self::STATE_AUTH_TOKEN, $token);
+    $this->state->set(self::STATE_AUTH_TOKEN_EXPIRATION, time() + $expiration);
   }
 
   /**

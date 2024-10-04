@@ -19,17 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
-   * Open ID Connector service.
-   *
-   * @var \Drupal\paatokset_ahjo_openid\AhjoOpenId
-   */
-  protected $ahjoOpenId;
-
-  /**
    * Constructor.
    */
-  public function __construct(AhjoOpenId $ahjo_open_id) {
-    $this->ahjoOpenId = $ahjo_open_id;
+  public function __construct(private readonly AhjoOpenId $ahjoOpenId) {
   }
 
   /**

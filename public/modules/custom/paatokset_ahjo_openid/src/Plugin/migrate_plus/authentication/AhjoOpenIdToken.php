@@ -46,14 +46,7 @@ class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFacto
   public function getAuthenticationOptions(): array {
     // Check if Ahjo Open ID connector is configured.
     if ($this->ahjoOpenId->isConfigured()) {
-      // Check if access token is still valid (not expired).
-      if ($this->ahjoOpenId->getAuthToken()) {
-        $access_token = $this->ahjoOpenId->getAuthToken();
-      }
-      else {
-        // Refresh and return new access token.
-        $access_token = $this->ahjoOpenId->refreshAuthToken();
-      }
+      $access_token = $this->ahjoOpenId->getAuthToken();
 
       if ($access_token) {
         return [

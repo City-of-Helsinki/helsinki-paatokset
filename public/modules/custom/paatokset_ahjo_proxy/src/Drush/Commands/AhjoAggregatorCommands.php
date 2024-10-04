@@ -13,6 +13,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
+use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
@@ -40,6 +41,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Logger service.
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   Ahjo Proxy service.
+   * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjoOpenId
+   *    Ahjo Open Id service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
@@ -52,6 +55,7 @@ class AhjoAggregatorCommands extends DrushCommands {
   public function __construct(
     LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
+    private AhjoOpenId $ahjoOpenId,
     private EntityTypeManagerInterface $entityTypeManager,
     private FileRepositoryInterface $fileRepository,
     private Connection $database,
@@ -3003,14 +3007,10 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function checkAhjoAuthToken(?string $action = 'check'): void {
     if ($action === 'refresh') {
-      $refresh = TRUE;
-    }
-    else {
-      $refresh = FALSE;
+      $this->ahjoOpenId->refreshAuthToken();
     }
 
-    $token = $this->ahjoProxy->checkAndRefreshAuthToken($refresh);
-    if (!$token) {
+    if (!$this->ahjoOpenId->checkAuthToken()) {
       $this->logger->error(
         'Auth token is no longer valid and could not be refreshed.'
       );
