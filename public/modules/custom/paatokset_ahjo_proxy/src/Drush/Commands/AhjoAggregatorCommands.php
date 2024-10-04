@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -3007,7 +3008,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function checkAhjoAuthToken(?string $action = 'check'): void {
     if ($action === 'refresh') {
-      $this->ahjoOpenId->refreshAuthToken();
+      try {
+        $this->ahjoOpenId->getAuthToken(refresh: TRUE);
+      }
+      catch (\Throwable $e) {
+        Error::logException($this->logger(), $e);
+      }
     }
 
     if (!$this->ahjoOpenId->checkAuthToken()) {

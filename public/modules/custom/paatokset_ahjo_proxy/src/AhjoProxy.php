@@ -15,6 +15,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\migrate\MigrateExecutable;
@@ -24,6 +25,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Utils;
@@ -2512,8 +2514,11 @@ class AhjoProxy implements ContainerInjectionInterface {
       return [];
     }
 
-    $access_token = $this->ahjoOpenId->getAuthToken();
-    if (!$access_token) {
+    try {
+      $access_token = $this->ahjoOpenId->getAuthToken();
+    }
+    catch (AhjoOpenIdException $e) {
+      Error::logException($this->logger, $e);
       return [];
     }
 
@@ -2580,11 +2585,19 @@ class AhjoProxy implements ContainerInjectionInterface {
       return TRUE;
     }
 
-    $access_token = $this->ahjoOpenId->getAuthToken();
-    if (!$access_token) {
-      return FALSE;
+    // What is this trying to accomplish? Should this check
+    // AhjoOpenID::isConfigured()?
+    try {
+      $access_token = $this->ahjoOpenId->getAuthToken();
+      if ($access_token) {
+        return TRUE;
+      }
     }
-    return TRUE;
+    catch (\Throwable $e) {
+      Error::logException($this->logger, $e);
+    }
+
+    return FALSE;
   }
 
   /**

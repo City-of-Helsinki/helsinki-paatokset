@@ -10,7 +10,8 @@ use GuzzleHttp\ClientInterface;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * @coversDefaultClass \Drupal\paatokset_ahjo_openid\AhjoOpenId
+ * Unit tests for ahjo open id.
+ *
  * @group paatokset_ahjo_openid
  */
 class AhjoOpenIdTest extends UnitTestCase {
@@ -46,9 +47,7 @@ class AhjoOpenIdTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::isConfigured
-   * @covers ::getAuthUrl
-   * @covers ::__construct
+   * Tests empty configuration.
    */
   public function testNoConfiguration() : void {
     $settings = new Settings(
@@ -62,12 +61,13 @@ class AhjoOpenIdTest extends UnitTestCase {
     $sut = $this->getSut($settings);
     $this->assertFalse($sut->isConfigured());
     $this->assertEmpty($sut->getAuthUrl());
+
+    $this->expectException(\InvalidArgumentException::class);
+    $sut->getAuthAndRefreshTokens('123');
   }
 
   /**
-   * @covers ::isConfigured
-   * @covers ::getAuthUrl
-   * @covers ::__construct
+   * Tests with valid configuration, but auth flow is not yet configured.
    */
   public function testPartialConfiguration() : void {
     $settings = new Settings(
@@ -87,12 +87,13 @@ class AhjoOpenIdTest extends UnitTestCase {
     $sut = $this->getSut($settings, state: $state->reveal());
     $this->assertFalse($sut->isConfigured());
     $this->assertEquals('auth?client_id=id&scope=scope&response_type=code&redirect_uri=endpoint', $sut->getAuthUrl());
+
+    $this->expectException(\InvalidArgumentException::class);
+    $sut->getAuthToken(refresh: TRUE);
   }
 
   /**
-   * @covers ::isConfigured
-   * @covers ::getAuthUrl
-   * @covers ::__construct
+   * Test with valid configuration.
    */
   public function testFullConfiguration() : void {
     $settings = new Settings(

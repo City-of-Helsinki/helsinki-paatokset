@@ -3,6 +3,10 @@ services:
     autowire: true
     autoconfigure: true
 
+  logger.channel.paatokset_ahjo_openid:
+    parent: logger.channel_base
+    arguments: [ 'paatokset_ahjo_openid' ]
+
   paatokset_ahjo_openid.settings_factory:
     class: Drupal\paatokset_ahjo_openid\SettingsFactory
 

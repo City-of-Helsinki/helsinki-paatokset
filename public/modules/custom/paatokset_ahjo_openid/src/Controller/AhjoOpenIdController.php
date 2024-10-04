@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -159,14 +160,14 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
    */
   public function auth($code = NULL): array {
     $code = (string) $code;
-    $data = $this->ahjoOpenId->getAuthAndRefreshTokens($code);
-
-    if (isset($data->access_token) && isset($data->refresh_token)) {
+    try {
+      $this->ahjoOpenId->getAuthAndRefreshTokens($code);
       $auth_response = $this->t('Token successfully stored!');
     }
-    else {
-      $auth_response = $this->t('Unable to authenticate:') . ' ' . $data->error;
+    catch (AhjoOpenIdException $e) {
+      $auth_response = $this->t('Unable to authenticate:') . ' ' . $e->getMessage();
     }
+
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
 
     return [
@@ -182,13 +183,11 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
   /**
    * Refresh Access token.
    */
-  public function refresh() {
-    $token = $this->ahjoOpenId->refreshAuthToken();
-
-    if (!empty($token)) {
-      $refresh_response = $this->t('Access token has been refreshed and stored.');
+  public function refresh(): array {
+    try {
+      $refresh_response = $this->ahjoOpenId->getAuthToken(refresh: TRUE);
     }
-    else {
+    catch (\Throwable $e) {
       $refresh_response = $this->t('Could not refresh access token.');
     }
 
@@ -202,13 +201,6 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
         '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',
       ],
     ];
-  }
-
-  /**
-   * Misc debug functionality.
-   */
-  public function debug() {
-    die('...');
   }
 
 }
