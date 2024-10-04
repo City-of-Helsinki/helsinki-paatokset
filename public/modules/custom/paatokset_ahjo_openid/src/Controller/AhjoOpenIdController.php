@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\paatokset_ahjo_openid\Controller
  */
-class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
+final class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Constructor.
@@ -29,7 +29,7 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
    * Create and inject.
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('paatokset_ahjo_openid')
     );
   }

@@ -5,8 +5,10 @@ parameters:
       - install
       - theme
   paths:
-    - ./public/modules/custom
-    - ./public/themes/custom
+    - ./public/modules/custom/paatokset_ahjo_openid
+    # TODO: Enable for all files.
+    #- ./public/modules/custom
+    #- ./public/themes/custom
   excludePaths:
     - vendor
   level: 3

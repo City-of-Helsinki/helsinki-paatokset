@@ -54,6 +54,9 @@ jobs:
           vendor/bin/phpcs public/modules/custom/ --ignore="*.js,*.css" --extensions=php,module,install --standard=Drupal,DrupalPractice
           vendor/bin/phpcs public/themes/custom/ --ignore="*.js,*.css" --extensions=php,theme --standard=Drupal,DrupalPractice
 
+      - name: Run phpstan
+        run: vendor/bin/phpstan analyze
+
       - name: Download latest dump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

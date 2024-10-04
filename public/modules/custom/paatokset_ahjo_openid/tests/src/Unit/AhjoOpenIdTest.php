@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\paatokset_ahjo_openid\Unit;
 
 use Drupal\Core\State\StateInterface;

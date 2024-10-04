@@ -20,13 +20,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = @Translation("Ahjo Open ID Token")
  * )
  */
-class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
+final class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
+    return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,

@@ -110,7 +110,7 @@ class AhjoOpenId {
       'redirect_uri' => $this->settings->callbackUrl,
     ]);
 
-    if (isset($data->access_token) && isset($data->refresh_token)) {
+    if (isset($data->access_token, $data->refresh_token, $data->expires_in)) {
       $this->setAuthToken($data->access_token, $data->expires_in);
       $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
 
@@ -139,7 +139,7 @@ class AhjoOpenId {
       'refresh_token' => $refresh_token,
     ]);
 
-    if (empty($data->access_token) || empty($data->refresh_token)) {
+    if (empty($data->access_token) || empty($data->refresh_token) || empty($data->expires_in)) {
       throw new AhjoOpenIdException("Invalid token response");
     }
 
