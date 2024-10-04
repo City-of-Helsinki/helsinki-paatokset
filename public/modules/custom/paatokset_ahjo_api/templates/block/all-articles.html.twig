@@ -4,9 +4,8 @@
   view_mode ? 'all-initiatives--view-mode-' ~ view_mode|clean_class,
 ]
 %}
-{% if articles %}
 <div {{ attributes.addClass(classes) }}>
-  {% set years = articles | keys %}
+  {% set years = articles_by_year | keys %}
   {% if (years is not empty ) %}
     <div class="paatokset__decision-tree-container">
       <div class="decision-tree__title">
@@ -56,7 +55,7 @@
           </div>
         {% endblock %}
       {% endembed %}
-      {% for year, documents in articles %}
+      {% for year, documents in articles_by_year %}
         {% set document_container_attributes = create_attribute() %}
         {%
           set document_container_classes = [
@@ -67,22 +66,10 @@
 
         <div{{ document_container_attributes.addClass(document_container_classes).setAttribute('value', year) }}>
           {% for document in documents %}
-            <a href="{{ document.url }}" class="policymaker-list-item policymaker-list-item--document">
-              <div class="list-item__date">
-                {% if document.date %}
-                  <span>{{ document.date|format_date('publication_date_format') }}</span>
-                {% endif %}
-              </div>
-              <div class="list-item__subject">
-                <span>
-                  {{ document.title }}
-                </span>
-              </div>
-            </a>
+            {{ document }}
           {% endfor %}
         </div>
       {% endfor %}
     </div>
   {% endif %}
 </div>
-{% endif %}
