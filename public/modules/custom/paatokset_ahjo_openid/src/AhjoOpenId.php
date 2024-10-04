@@ -25,9 +25,9 @@ class AhjoOpenId {
    *   State API.
    */
   public function __construct(
-    private Settings $settings,
-    private ClientInterface $httpClient,
-    private StateInterface $state,
+    private readonly Settings $settings,
+    private readonly ClientInterface $httpClient,
+    private readonly StateInterface $state,
   ) {
   }
 
