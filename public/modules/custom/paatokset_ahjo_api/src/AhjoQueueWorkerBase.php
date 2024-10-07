@@ -17,11 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Name of the logger channel that is requested from logger factory.
-   */
-  protected const LOGGER_CHANNEL = 'ahjo_api_subscriber_queue';
-
-  /**
    * {@inheritDoc}
    */
   public function __construct(
@@ -43,7 +38,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       $plugin_id,
       $plugin_definition,
       $container->get('paatokset_ahjo_proxy'),
-      $container->get('logger.factory')->get(static::LOGGER_CHANNEL),
+      $container->get('logger.channel.paatokset_ahjo_api'),
     );
   }
 

@@ -6,7 +6,6 @@ namespace Drupal\Tests\paatokset_ahjo_api\Unit;
 
 use Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
@@ -28,25 +27,21 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    *
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   The ahjo proxy.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
-   *   The logger channel factory.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
    *
    * @return \Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker
    *   Ahjo queue worker SUT.
    */
-  private function getSut(AhjoProxy $ahjoProxy, LoggerChannelFactoryInterface $loggerChannelFactory = NULL): DummyWorker {
-    if (is_null($loggerChannelFactory)) {
+  private function getSut(AhjoProxy $ahjoProxy, LoggerChannelInterface $logger = NULL): DummyWorker {
+    if (is_null($logger)) {
       $logger = $this->prophesize(LoggerChannelInterface::class);
-      $loggerChannelFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
-      $loggerChannelFactory
-        ->get(Argument::type('string'))
-        ->willReturn($logger->reveal());
-      $loggerChannelFactory = $loggerChannelFactory->reveal();
+      $logger = $logger->reveal();
     }
 
     $container = new ContainerBuilder();
     $container->set('paatokset_ahjo_proxy', $ahjoProxy);
-    $container->set('logger.factory', $loggerChannelFactory);
+    $container->set('logger.channel.paatokset_ahjo_api', $logger);
 
     return DummyWorker::create($container, [], 'ahjo_queue_worker_test', []);
   }
@@ -67,25 +62,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
       ->willReturn($migrationReturnCode);
 
     return $ahjoProxy;
-  }
-
-  /**
-   * Test that derived class can override logger channel.
-   *
-   * @covers ::create
-   */
-  public function testDerivedClassLoggerChannel(): void {
-    $ahjoProxy = $this->prophesizeAhjoProxy(-1, FALSE);
-    $logger = $this->prophesize(LoggerChannelInterface::class);
-    $loggerChannelFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
-
-    $loggerChannelFactory
-      // Dummy class override is used.
-      ->get(DummyWorker::LOGGER_CHANNEL)
-      ->shouldBeCalled()
-      ->willReturn($logger->reveal());
-
-    $this->getSut($ahjoProxy->reveal(), $loggerChannelFactory->reveal());
   }
 
   /**

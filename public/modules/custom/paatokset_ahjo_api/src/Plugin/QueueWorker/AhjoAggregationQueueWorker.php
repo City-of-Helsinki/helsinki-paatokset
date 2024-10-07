@@ -15,10 +15,4 @@ use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
  * )
  */
 class AhjoAggregationQueueWorker extends AhjoQueueWorkerBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected const LOGGER_CHANNEL = 'ahjo_api_aggregation_queue';
-
 }
