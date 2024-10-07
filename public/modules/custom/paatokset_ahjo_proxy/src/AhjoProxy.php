@@ -8,10 +8,8 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Url;
@@ -20,31 +18,22 @@ use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
-use Drupal\migrate\Plugin\MigrationPluginManager;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
 use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Handler for AHJO API Proxy.
  *
  * @package Drupal\paatokset_ahjo_proxy
  */
-class AhjoProxy implements ContainerInjectionInterface {
-
-  /**
-   * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
+class AhjoProxy {
 
   /**
    * Whether to use request cache or not.
@@ -52,13 +41,6 @@ class AhjoProxy implements ContainerInjectionInterface {
    * @var bool
    */
   protected bool $useRequestCache = TRUE;
-
-  /**
-   * Case service.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
-   */
-  private CaseService $caseService;
 
   /**
    * Constructs Ahjo Proxy service.
@@ -69,10 +51,10 @@ class AhjoProxy implements ContainerInjectionInterface {
    *   Data Cache.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
-   * @param \Drupal\migrate\Plugin\MigrationPluginManager $migrationManager
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migrationManager
    *   Migration manager.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   The logger factory service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   Messenger service.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
@@ -90,8 +72,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     private ClientInterface $httpClient,
     private CacheBackendInterface $dataCache,
     private EntityTypeManagerInterface $entityTypeManager,
-    private MigrationPluginManager $migrationManager,
-    LoggerChannelFactoryInterface $logger_factory,
+    private MigrationPluginManagerInterface $migrationManager,
+    private LoggerInterface $logger,
     private MessengerInterface $messenger,
     private FileRepositoryInterface $fileRepository,
     private ConfigFactoryInterface $config,
@@ -99,31 +81,8 @@ class AhjoProxy implements ContainerInjectionInterface {
     private QueueFactory $queue,
     private AhjoOpenId $ahjoOpenId
   ) {
-    $this->logger = $logger_factory->get('paatokset_ahjo_proxy');
-
-    // Using dependency injection here fails on `make new` due to cyclical
-    // dependency with paatokset_ahjo_api module.
-    // phpcs:ignore
-    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('http_client'),
-      $container->get('cache.default'),
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.migration'),
-      $container->get('logger.factory'),
-      $container->get('messenger'),
-      $container->get('file.repository'),
-      $container->get('config.factory'),
-      $container->get('database'),
-      $container->get('connection'),
-      $container->get('paatokset_ahjo_openid')
-    );
+    // Using dependency injection for caseService fails on `make new` due to
+    // cyclical dependency with paatokset_ahjo_api module.
   }
 
   /**
@@ -1622,6 +1581,9 @@ class AhjoProxy implements ContainerInjectionInterface {
   /**
    * Add entity to callback queue.
    *
+   * @todo this should not be in ahjo proxy - other queue code is in
+   *       paatokset_ahjo_api.
+   *
    * @param string $endpoint
    *   Endpoint to use (cases, meetings, decisions).
    * @param string $id
@@ -1657,6 +1619,9 @@ class AhjoProxy implements ContainerInjectionInterface {
 
   /**
    * Check if item has already been added to queue. Used to reduce duplicates.
+   *
+   * @todo this should not be in ahjo proxy - other queue code is in
+   *        paatokset_ahjo_api.
    *
    * @param string $endpoint
    *   Entity type / endpoint for item.
@@ -2107,6 +2072,10 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $meeting_id = $node->get('field_meeting_id')->value;
 
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    // @phpcs:ignore
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
     $missing = FALSE;
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
@@ -2120,7 +2089,7 @@ class AhjoProxy implements ContainerInjectionInterface {
         continue;
       }
 
-      $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+      $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
       if (!$url instanceof Url) {
         $missing = TRUE;
         break;
@@ -2146,6 +2115,10 @@ class AhjoProxy implements ContainerInjectionInterface {
 
     $meeting_id = $node->get('field_meeting_id')->value;
 
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    // phpcs:ignore
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+
     $missing = [];
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
@@ -2160,10 +2133,10 @@ class AhjoProxy implements ContainerInjectionInterface {
 
       if (isset($item['Section'])) {
         $section_clean = (string) intval($item['Section']);
-        $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id, $section_clean);
+        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id, $section_clean);
       }
       else {
-        $url = $this->caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
+        $url = $caseService->getDecisionUrlByTitle($item['AgendaItem'], $meeting_id);
       }
 
       if (!$url instanceof Url) {
