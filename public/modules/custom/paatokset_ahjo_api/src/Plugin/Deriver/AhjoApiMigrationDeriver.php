@@ -1,32 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\Deriver;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Deriver for Ahjo API migrations.
  */
-class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInterface {
-
-  /**
-   * AhjoApiMigrationDeriver constructor.
-   */
-  public function __construct() {}
+class AhjoApiMigrationDeriver extends DeriverBase {
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDerivativeDefinitions($base_plugin_definition) {
+  public function getDerivativeDefinitions($base_plugin_definition): array {
     $derivatives = [
       'all',
       'latest',
@@ -88,7 +76,7 @@ class AhjoApiMigrationDeriver extends DeriverBase implements ContainerDeriverInt
     ];
 
     // Set values for translation migrations.
-    if (strpos($key, '_sv') !== FALSE) {
+    if (str_contains($key, '_sv')) {
       $base_plugin_definition['destination']['translations'] = TRUE;
       $base_plugin_definition['process']['langcode']['default_value'] = 'sv';
     }

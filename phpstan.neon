@@ -7,6 +7,7 @@ parameters:
   paths:
     - ./public/modules/custom/paatokset_ahjo_openid
     - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/QueueWorker
+    - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver
     - ./public/modules/custom/paatokset_ahjo_api/src/AhjoQueueWorkerBase.php
     # TODO: Enable for all files.
     #- ./public/modules/custom
