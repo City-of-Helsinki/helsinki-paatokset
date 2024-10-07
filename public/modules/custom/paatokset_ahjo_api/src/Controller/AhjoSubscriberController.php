@@ -9,7 +9,6 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class AhjoSubscriberController extends ControllerBase {
 
-  private const QUEUE_NAME = 'ahjo_api_subscriber_queue';
+  public const QUEUE_NAME = 'ahjo_api_subscriber_queue';
 
   /**
    * Constructor.
@@ -89,6 +88,7 @@ final class AhjoSubscriberController extends ControllerBase {
       ]);
     }
 
+    // Can cache clearing happen in queue worker?
     $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
     if ($id === 'meetings') {
       $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
