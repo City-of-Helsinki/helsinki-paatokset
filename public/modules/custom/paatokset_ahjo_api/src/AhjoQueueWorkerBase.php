@@ -19,7 +19,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
   /**
    * {@inheritDoc}
    */
-  public function __construct(
+  final public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,

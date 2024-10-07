@@ -15,7 +15,14 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @coversDefaultClass \Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase
+ * Tests ahjo queues.
+ *
+ * Queues should:
+ * - Run ahjo migration for single entity. Move item to error/failure queue if
+ *   the migration fails.
+ * - If processing meeting and if not retrying previously failed item
+ *   (=feature or a bug?), set `field_agenda_items_processed` to false.
+ *
  * @group paatokset_ahjo_api
  */
 class AhjoQueueWorkerTest extends UnitTestCase {
@@ -66,9 +73,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that queue is suspended when ahjo proxy is not operational.
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testAhjoProxyNotOperational(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1, FALSE);
@@ -85,9 +89,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that queue worker marks meeting motions to be regenerated.
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testMeetingMotionUpdating(): void {
     $entityId = '123';
@@ -109,9 +110,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Meeting motions should not be updated if we are processing moved items.
    *
    * Is this a bug or wanted behaviour?
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testMeetingMotionMoved(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(1);
@@ -135,11 +133,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Items are expired if they are created after the max retry time.
    *
    * @see QueueWorkerInterface::processItem
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testRetryNonExpired(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -160,11 +153,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that the item should not be moved if is already ih the queue.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testMoveItemAlreadyInQueue(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -193,12 +181,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Test that the item is moved into another queue if it is expired.
    *
    * Only expired items are moved to the retry queue.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getFallbackQueueId
-   * @covers ::getMaxRetryTime
    */
   public function testMoveExpiredItem(): void {
     $entity_id = '123';
@@ -227,11 +209,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that items are always moved if the created timestamp is missing.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testMoveNoCreatedField(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -256,11 +233,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that fallback queue insert failure should throw an exception.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testFallbackInsertFailure(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
