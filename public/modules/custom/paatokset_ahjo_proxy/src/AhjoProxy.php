@@ -2270,7 +2270,7 @@ class AhjoProxy {
 
     $endpoint_url = $base_url . $migration_url . $id;
 
-    if (strpos($migration_id, '_sv') !== FALSE) {
+    if (str_contains($migration_id, '_sv')) {
       $endpoint_url .= '?apireqlang=sv';
     }
 

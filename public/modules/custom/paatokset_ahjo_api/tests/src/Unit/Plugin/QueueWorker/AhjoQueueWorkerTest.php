@@ -20,6 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Queues should:
  * - Run ahjo migration for single entity. Move item to error/failure queue if
  *   the migration fails.
+ * - Migrations fail if the returned status code != 1.
  * - If processing meeting and if not retrying previously failed item
  *   (=feature or a bug?), set `field_agenda_items_processed` to false.
  *
