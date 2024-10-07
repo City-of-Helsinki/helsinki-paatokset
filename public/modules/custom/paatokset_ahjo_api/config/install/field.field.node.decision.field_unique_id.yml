@@ -1,0 +1,19 @@
+uuid: ec287c1e-45a7-48fa-abcf-46cea402f274
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_unique_id
+    - node.type.decision
+id: node.decision.field_unique_id
+field_name: field_unique_id
+entity_type: node
+bundle: decision
+label: 'Unique ID'
+description: 'Unique ID for decision for connecting translations together.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

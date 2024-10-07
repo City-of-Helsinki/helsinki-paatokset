@@ -1,0 +1,11 @@
+uuid: 0e25dfff-3b19-4671-8138-4141ac65a276
+langcode: en
+status: true
+dependencies:
+name: Case
+type: case
+description: 'Single case, imported from Ahjo Api.'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: false

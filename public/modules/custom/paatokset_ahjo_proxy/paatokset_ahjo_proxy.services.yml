@@ -1,7 +1,13 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   logger.channel.paatokset_ahjo_proxy:
     parent: logger.channel_base
     arguments: [ 'paatokset_ahjo_openid' ]
+
+  Drupal\paatokset_ahjo_proxy\AhjoBatchBuilder: ~
 
   paatokset_ahjo_proxy:
     class: Drupal\paatokset_ahjo_proxy\AhjoProxy

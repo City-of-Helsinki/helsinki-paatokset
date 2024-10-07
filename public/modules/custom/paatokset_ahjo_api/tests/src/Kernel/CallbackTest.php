@@ -6,7 +6,6 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -23,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @group paatokset_ahjo_api
  */
-class CallbackTest extends KernelTestBase {
+class CallbackTest extends AhjoKernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;
@@ -31,30 +30,10 @@ class CallbackTest extends KernelTestBase {
   use ProphecyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'system',
-    'user',
-    'node',
-    'paatokset_ahjo_api',
-    'paatokset_ahjo_proxy',
-    'migrate',
-    'file',
-    'field',
-    'json_field',
-    'paatokset_ahjo_openid',
-  ];
-
-  /**
    * {@inheritDoc}
    */
   public function setUp(): void {
     parent::setUp();
-
-    $this->installEntitySchema('node');
-    $this->installConfig('paatokset_ahjo_api');
-
     putenv('AHJO_PROXY_BASE_URL=https://paatokset.hel.fi/');
   }
 

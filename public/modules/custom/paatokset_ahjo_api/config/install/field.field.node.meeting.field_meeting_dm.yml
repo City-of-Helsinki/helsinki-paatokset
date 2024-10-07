@@ -1,0 +1,19 @@
+uuid: fe268c6e-aeb3-47a6-9baa-f553298a868c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_dm
+    - node.type.meeting
+id: node.meeting.field_meeting_dm
+field_name: field_meeting_dm
+entity_type: node
+bundle: meeting
+label: 'Decision Maker'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

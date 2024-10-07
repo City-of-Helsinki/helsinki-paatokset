@@ -1996,10 +1996,11 @@ class AhjoProxy {
       $ahjo_proxy->updateDecisionRecordData($node, $record_content);
     }
 
-    if ($node->save()) {
+    try {
+      $node->save();
       $context['results']['items'][] = $data['title'];
     }
-    else {
+    catch (\Throwable $e) {
       $context['results']['failed'][] = $data['title'];
     }
   }
