@@ -9,6 +9,7 @@ parameters:
     - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/QueueWorker
     - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver
     - ./public/modules/custom/paatokset_ahjo_api/src/AhjoQueueWorkerBase.php
+    - ./public/modules/custom/paatokset_datapumppu
     # TODO: Enable for all files.
     #- ./public/modules/custom
     #- ./public/themes/custom

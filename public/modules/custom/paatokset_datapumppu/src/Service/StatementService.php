@@ -60,7 +60,10 @@ final class StatementService {
       ->sort('start_time', 'DESC')
       ->execute();
 
-    return $this->statementStorage->loadMultiple($statements);
+    /** @var \Drupal\paatokset_datapumppu\Entity\Statement[] $entities */
+    $entities = $this->statementStorage->loadMultiple($statements);
+
+    return $entities;
   }
 
   /**
@@ -73,6 +76,7 @@ final class StatementService {
    *   Formatted title.
    */
   public function formatStatementTitle(Statement $statement): TranslatableMarkup {
+    // @phpstan-ignore-next-line.
     $startTime = $statement->get('start_time')->date;
     $startDate = $this->dateFormatter->format($startTime->getTimestamp(), 'custom', 'd.m.Y');
 
