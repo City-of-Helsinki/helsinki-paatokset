@@ -1,0 +1,21 @@
+uuid: 01cd94eb-b26b-4465-bbbe-84ea7400ab95
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_date
+    - node.type.decision
+  module:
+    - datetime
+id: node.decision.field_decision_date
+field_name: field_decision_date
+entity_type: node
+bundle: decision
+label: 'Decision issued date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,11 @@
+uuid: 0e74c8d4-eb56-49be-8a1c-563086b6cca8
+langcode: en
+status: true
+dependencies:
+name: Decision
+type: decision
+description: 'Decisions from Ahjo API.'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: false

@@ -17,11 +17,6 @@ use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
 class AhjoErrorQueueWorker extends AhjoQueueWorkerBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected const LOGGER_CHANNEL = 'ahjo_api_error_queue';
-
-  /**
    * {@inheritDoc}
    */
   protected function getFallbackQueueId(): ?string {

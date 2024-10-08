@@ -17,15 +17,9 @@ use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
 class AhjoRetryQueueWorker extends AhjoQueueWorkerBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected const LOGGER_CHANNEL = 'ahjo_api_retry_queue';
-
-  /**
    * {@inheritDoc}
    */
   protected function getFallbackQueueId(): ?string {
-    // End of the line.
     return 'ahjo_api_error_queue';
   }
 

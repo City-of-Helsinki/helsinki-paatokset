@@ -53,12 +53,3 @@ paatokset_ahjo_openid.token:
   options:
     _auth: ['cookie', 'key_auth']
     no_cache: 'TRUE'
-
-paatokset_ahjo_openid.debug:
-  path: '/admin/ahjo-open-id/debug'
-  defaults:
-    _controller: '\Drupal\paatokset_ahjo_openid\Controller\AhjoOpenIdController::debug'
-  requirements:
-    _permission: 'administer ahjo openid'
-  options:
-    no_cache: 'TRUE'

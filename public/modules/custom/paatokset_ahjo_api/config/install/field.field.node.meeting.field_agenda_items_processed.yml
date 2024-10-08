@@ -1,0 +1,23 @@
+uuid: b4844803-0e57-4942-9151-c3b0f38ceaf1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agenda_items_processed
+    - node.type.meeting
+id: node.meeting.field_agenda_items_processed
+field_name: field_agenda_items_processed
+entity_type: node
+bundle: meeting
+label: 'Agenda items processed'
+description: 'Agenda items have been processed into motions (decision nodes).'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

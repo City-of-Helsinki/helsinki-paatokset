@@ -1,0 +1,22 @@
+uuid: 2469396b-2bce-4cd4-9cfc-318445abe5a7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_policymaker_id
+field_name: field_policymaker_id
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

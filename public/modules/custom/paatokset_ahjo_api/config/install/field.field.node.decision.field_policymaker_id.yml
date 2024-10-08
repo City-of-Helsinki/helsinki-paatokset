@@ -1,0 +1,19 @@
+uuid: ac855ac4-d705-4a4c-ab3a-84807b0b654e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_id
+    - node.type.decision
+id: node.decision.field_policymaker_id
+field_name: field_policymaker_id
+entity_type: node
+bundle: decision
+label: 'Organization ID'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

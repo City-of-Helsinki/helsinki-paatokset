@@ -1,0 +1,19 @@
+uuid: fc3fcc85-dd27-4160-a2c5-46f5ec9cdeb4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_top_category_name
+    - node.type.case
+id: node.case.field_top_category_name
+field_name: field_top_category_name
+entity_type: node
+bundle: case
+label: 'Top category name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

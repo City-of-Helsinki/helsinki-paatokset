@@ -16,6 +16,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  on_label: Kyllä
-  off_label: Ei
+  on_label: 'On'
+  off_label: 'Off'
 field_type: boolean

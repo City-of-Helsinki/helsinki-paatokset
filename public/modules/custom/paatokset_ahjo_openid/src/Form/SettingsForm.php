@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_openid\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\State\StateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,10 +18,8 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * State API.
-   *
-   * @var \Drupal\Core\State\StateInterface
    */
-  private $state;
+  private StateInterface $state;
 
   /**
    * {@inheritdoc}

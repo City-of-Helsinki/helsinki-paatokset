@@ -6,7 +6,6 @@ namespace Drupal\Tests\paatokset_ahjo_api\Unit;
 
 use Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
@@ -16,7 +15,15 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @coversDefaultClass \Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase
+ * Tests ahjo queues.
+ *
+ * Queues should:
+ * - Run ahjo migration for single entity. Move item to error/failure queue if
+ *   the migration fails.
+ * - Migrations fail if the returned status code != 1.
+ * - If processing meeting and if not retrying previously failed item
+ *   (=feature or a bug?), set `field_agenda_items_processed` to false.
+ *
  * @group paatokset_ahjo_api
  */
 class AhjoQueueWorkerTest extends UnitTestCase {
@@ -28,25 +35,21 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    *
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   The ahjo proxy.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
-   *   The logger channel factory.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
    *
    * @return \Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker
    *   Ahjo queue worker SUT.
    */
-  private function getSut(AhjoProxy $ahjoProxy, LoggerChannelFactoryInterface $loggerChannelFactory = NULL): DummyWorker {
-    if (is_null($loggerChannelFactory)) {
+  private function getSut(AhjoProxy $ahjoProxy, LoggerChannelInterface $logger = NULL): DummyWorker {
+    if (is_null($logger)) {
       $logger = $this->prophesize(LoggerChannelInterface::class);
-      $loggerChannelFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
-      $loggerChannelFactory
-        ->get(Argument::type('string'))
-        ->willReturn($logger->reveal());
-      $loggerChannelFactory = $loggerChannelFactory->reveal();
+      $logger = $logger->reveal();
     }
 
     $container = new ContainerBuilder();
     $container->set('paatokset_ahjo_proxy', $ahjoProxy);
-    $container->set('logger.factory', $loggerChannelFactory);
+    $container->set('logger.channel.paatokset_ahjo_api', $logger);
 
     return DummyWorker::create($container, [], 'ahjo_queue_worker_test', []);
   }
@@ -70,29 +73,7 @@ class AhjoQueueWorkerTest extends UnitTestCase {
   }
 
   /**
-   * Test that derived class can override logger channel.
-   *
-   * @covers ::create
-   */
-  public function testDerivedClassLoggerChannel(): void {
-    $ahjoProxy = $this->prophesizeAhjoProxy(-1, FALSE);
-    $logger = $this->prophesize(LoggerChannelInterface::class);
-    $loggerChannelFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
-
-    $loggerChannelFactory
-      // Dummy class override is used.
-      ->get(DummyWorker::LOGGER_CHANNEL)
-      ->shouldBeCalled()
-      ->willReturn($logger->reveal());
-
-    $this->getSut($ahjoProxy->reveal(), $loggerChannelFactory->reveal());
-  }
-
-  /**
    * Test that queue is suspended when ahjo proxy is not operational.
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testAhjoProxyNotOperational(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1, FALSE);
@@ -109,9 +90,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that queue worker marks meeting motions to be regenerated.
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testMeetingMotionUpdating(): void {
     $entityId = '123';
@@ -133,9 +111,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Meeting motions should not be updated if we are processing moved items.
    *
    * Is this a bug or wanted behaviour?
-   *
-   * @covers ::create
-   * @covers ::processItem
    */
   public function testMeetingMotionMoved(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(1);
@@ -159,11 +134,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Items are expired if they are created after the max retry time.
    *
    * @see QueueWorkerInterface::processItem
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testRetryNonExpired(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -184,11 +154,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that the item should not be moved if is already ih the queue.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testMoveItemAlreadyInQueue(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -217,12 +182,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * Test that the item is moved into another queue if it is expired.
    *
    * Only expired items are moved to the retry queue.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getFallbackQueueId
-   * @covers ::getMaxRetryTime
    */
   public function testMoveExpiredItem(): void {
     $entity_id = '123';
@@ -251,11 +210,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that items are always moved if the created timestamp is missing.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testMoveNoCreatedField(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
@@ -280,11 +234,6 @@ class AhjoQueueWorkerTest extends UnitTestCase {
 
   /**
    * Test that fallback queue insert failure should throw an exception.
-   *
-   * @covers ::create
-   * @covers ::processItem
-   * @covers ::moveToErrorQueue
-   * @covers ::getMaxRetryTime
    */
   public function testFallbackInsertFailure(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);

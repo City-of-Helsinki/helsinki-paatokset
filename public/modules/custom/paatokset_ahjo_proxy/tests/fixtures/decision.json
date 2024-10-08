@@ -1,0 +1,42 @@
+{
+  "records": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B8E100ECE-7BE1-46A7-8D53-C49F02B762D3%7D"
+        }
+      ],
+      "Title": "Kaupunkiympäristölautakunnan esitys kaupunginhallitukselle Elielinaukion kehittämisen aiesopimuksen hyväksymiseksi",
+      "AttachmentNumber": null,
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "VersionSeriesId": "{DFB58794-34EC-C90D-BBC7-7453C0400008}",
+      "NativeId": "{8E100ECE-7BE1-46A7-8D53-C49F02B762D3}",
+      "Type": "päätös",
+      "FileURI": "https://ahjojulkaisu.hel.fi/DFB58794-34EC-C90D-BBC7-7453C0400008.pdf",
+      "Language": "fi",
+      "PersonalData": "Sisältää henkilötietoja",
+      "Issued": "2020-09-04T03:00:00.000",
+      "Created": "2020-09-03T14:35:44.533",
+      "AgendaPoint": "3",
+      "MeetingID": "U540202024",
+      "DateMeeting": "2020-09-01T03:00:00.000",
+      "Acquired": "",
+      "Description": null,
+      "Reference": "Elielinaukio",
+      "PublicReference": null,
+      "Agents": [
+        {
+          "agentId": "TEST",
+          "links": [],
+          "ID": "TEST",
+          "Name": "Doe, John",
+          "Title": "asianhallintavastaava",
+          "Role": "mainCreator",
+          "Email": "john.doe@hel.fi"
+        }
+      ]
+    }
+  ]
+}
