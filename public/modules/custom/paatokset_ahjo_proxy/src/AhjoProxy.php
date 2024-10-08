@@ -2559,8 +2559,11 @@ class AhjoProxy {
       return TRUE;
     }
 
-    // What is this trying to accomplish? Should this check
-    // AhjoOpenID::isConfigured()?
+    if (!$this->ahjoOpenId->isConfigured()) {
+      $this->logger->warning('Ahjo Proxy is not operational');
+      return FALSE;
+    }
+
     try {
       $access_token = $this->ahjoOpenId->getAuthToken();
       if ($access_token) {
