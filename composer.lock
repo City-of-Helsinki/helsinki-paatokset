@@ -4117,16 +4117,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.7.5",
+            "version": "6.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "9c2b2ae745b62791bc33eacc3b6e99606241ef62"
+                "reference": "09da3d83c2c01a36420329b87592eb701ae8ccb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/9c2b2ae745b62791bc33eacc3b6e99606241ef62",
-                "reference": "9c2b2ae745b62791bc33eacc3b6e99606241ef62",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/09da3d83c2c01a36420329b87592eb701ae8ccb7",
+                "reference": "09da3d83c2c01a36420329b87592eb701ae8ccb7",
                 "shasum": ""
             },
             "require": {
@@ -4145,10 +4145,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.7.5",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.7.9",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2024-10-03T11:30:20+00:00"
+            "time": "2024-10-09T08:00:11+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4416,16 +4416,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "4.6.10",
+            "version": "4.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "f24e3dc0f9a95a2a5e1a5e34cdbeab35d21e0b4c"
+                "reference": "46f83e38d3e63714779f3b040e040c9b4be406bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/f24e3dc0f9a95a2a5e1a5e34cdbeab35d21e0b4c",
-                "reference": "f24e3dc0f9a95a2a5e1a5e34cdbeab35d21e0b4c",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/46f83e38d3e63714779f3b040e040c9b4be406bb",
+                "reference": "46f83e38d3e63714779f3b040e040c9b4be406bb",
                 "shasum": ""
             },
             "require": {
@@ -4544,10 +4544,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.6.10",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.6.11",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2024-10-04T07:44:38+00:00"
+            "time": "2024-10-08T06:10:45+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -6057,17 +6057,17 @@
         },
         {
             "name": "drupal/raven",
-            "version": "5.0.18",
+            "version": "5.0.19",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/raven.git",
-                "reference": "5.0.18"
+                "reference": "5.0.19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/raven-5.0.18.zip",
-                "reference": "5.0.18",
-                "shasum": "7107a602cb87e4f652991e66d5083f876defa4d1"
+                "url": "https://ftp.drupal.org/files/projects/raven-5.0.19.zip",
+                "reference": "5.0.19",
+                "shasum": "7ff86084a389c0740a42aa1d23b5fbcaa1a42d9f"
             },
             "require": {
                 "drupal/core": "^10.1 || ^11",
@@ -6081,8 +6081,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.0.18",
-                    "datestamp": "1726679171",
+                    "version": "5.0.19",
+                    "datestamp": "1728261182",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7147,11 +7147,11 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Dave Reid",
+                    "name": "dave reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
@@ -9819,16 +9819,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.3.0",
+            "version": "v5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "3abf7425cd284141dc5d8d14a9ee444de3345d1a"
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3abf7425cd284141dc5d8d14a9ee444de3345d1a",
-                "reference": "3abf7425cd284141dc5d8d14a9ee444de3345d1a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8eea230464783aa9671db8eea6f8c6ac5285794b",
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b",
                 "shasum": ""
             },
             "require": {
@@ -9871,9 +9871,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.1"
             },
-            "time": "2024-09-29T13:56:26+00:00"
+            "time": "2024-10-08T18:51:32+00:00"
         },
         {
             "name": "nodespark/des-connector",
