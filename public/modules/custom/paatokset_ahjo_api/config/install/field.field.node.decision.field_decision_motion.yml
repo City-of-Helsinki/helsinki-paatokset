@@ -1,0 +1,22 @@
+uuid: ecd2f77e-4a86-4400-920c-263f2e261e87
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_motion
+    - node.type.decision
+  module:
+    - text
+id: node.decision.field_decision_motion
+field_name: field_decision_motion
+entity_type: node
+bundle: decision
+label: Motion
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

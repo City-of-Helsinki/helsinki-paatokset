@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,27 +17,19 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\paatokset_ahjo_openid\Controller
  */
-class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
-
-  /**
-   * Open ID Connector service.
-   *
-   * @var \Drupal\paatokset_ahjo_openid\AhjoOpenId
-   */
-  protected $ahjoOpenId;
+final class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Constructor.
    */
-  public function __construct(AhjoOpenId $ahjo_open_id) {
-    $this->ahjoOpenId = $ahjo_open_id;
+  public function __construct(private readonly AhjoOpenId $ahjoOpenId) {
   }
 
   /**
    * Create and inject.
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('paatokset_ahjo_openid')
     );
   }
@@ -167,14 +160,14 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
    */
   public function auth($code = NULL): array {
     $code = (string) $code;
-    $data = $this->ahjoOpenId->getAuthAndRefreshTokens($code);
-
-    if (isset($data->access_token) && isset($data->refresh_token)) {
+    try {
+      $this->ahjoOpenId->getAuthAndRefreshTokens($code);
       $auth_response = $this->t('Token successfully stored!');
     }
-    else {
-      $auth_response = $this->t('Unable to authenticate:') . ' ' . $data->error;
+    catch (AhjoOpenIdException $e) {
+      $auth_response = $this->t('Unable to authenticate:') . ' ' . $e->getMessage();
     }
+
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
 
     return [
@@ -190,13 +183,11 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
   /**
    * Refresh Access token.
    */
-  public function refresh() {
-    $token = $this->ahjoOpenId->refreshAuthToken();
-
-    if (!empty($token)) {
-      $refresh_response = $this->t('Access token has been refreshed and stored.');
+  public function refresh(): array {
+    try {
+      $refresh_response = $this->ahjoOpenId->getAuthToken(refresh: TRUE);
     }
-    else {
+    catch (\Throwable $e) {
       $refresh_response = $this->t('Could not refresh access token.');
     }
 
@@ -210,13 +201,6 @@ class AhjoOpenIdController extends ControllerBase implements ContainerInjectionI
         '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',
       ],
     ];
-  }
-
-  /**
-   * Misc debug functionality.
-   */
-  public function debug() {
-    die('...');
   }
 
 }

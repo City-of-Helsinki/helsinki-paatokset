@@ -1,13 +1,20 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.paatokset_ahjo_openid:
+    parent: logger.channel_base
+    arguments: [ 'paatokset_ahjo_openid' ]
+
   paatokset_ahjo_openid.settings_factory:
     class: Drupal\paatokset_ahjo_openid\SettingsFactory
-    arguments:
-      - '@config.factory'
 
   paatokset_ahjo_openid.settings:
     class: Drupal\paatokset_ahjo_openid\Settings
     factory: [ '@paatokset_ahjo_openid.settings_factory', 'create' ]
+  Drupal\paatokset_ahjo_openid\Settings: '@paatokset_ahjo_openid.settings'
 
   paatokset_ahjo_openid:
     class: Drupal\paatokset_ahjo_openid\AhjoOpenId
-    arguments: [ '@paatokset_ahjo_openid.settings', '@http_client', '@state' ]
+  Drupal\paatokset_ahjo_openid\AhjoOpenId: '@paatokset_ahjo_openid'

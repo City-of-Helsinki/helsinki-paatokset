@@ -1,0 +1,21 @@
+uuid: 0bf102e7-da0c-4d4e-b0df-54d787b47812
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_agenda
+    - node.type.meeting
+  module:
+    - json_field
+id: node.meeting.field_meeting_agenda
+field_name: field_meeting_agenda
+entity_type: node
+bundle: meeting
+label: Agenda
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

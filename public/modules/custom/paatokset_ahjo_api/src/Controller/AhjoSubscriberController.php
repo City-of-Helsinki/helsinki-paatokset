@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,49 +17,26 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\paatokset_ahjo_api\Controller
  */
-class AhjoSubscriberController extends ControllerBase {
+final class AhjoSubscriberController extends ControllerBase {
 
-  private const QUEUE_NAME = 'ahjo_api_subscriber_queue';
-
-  /**
-   * Queue Factory.
-   *
-   * @var \Drupal\Core\Queue\QueueFactory
-   */
-  protected $queueFactory;
-
-  /**
-   * The logger.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
-   */
-  protected $logger;
-
-  /**
-   * Ahjo proxy service.
-   *
-   * @var \Drupal\paatokset_ahjo_proxy\AhjoProxy
-   */
-  protected $ahjoProxy;
+  public const QUEUE_NAME = 'ahjo_api_subscriber_queue';
 
   /**
    * Constructor.
+   *
+   * @param \Drupal\Core\Queue\QueueFactory $queueFactory
+   *   Queue factory.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
+   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
+   *   Ahjo proxy service.
    */
-  public function __construct(QueueFactory $queue_factory, LoggerChannelFactoryInterface $logger_factory, AhjoProxy $ahjo_proxy) {
-    $this->queueFactory = $queue_factory;
-    $this->logger = $logger_factory->get('ahjo_api_subscriber');
-    $this->ahjoProxy = $ahjo_proxy;
-  }
-
-  /**
-   * Create and inject.
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('queue'),
-      $container->get('logger.factory'),
-      $container->get('paatokset_ahjo_proxy')
-    );
+  public function __construct(
+    private readonly QueueFactory $queueFactory,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    private readonly LoggerChannelInterface $logger,
+    private readonly AhjoProxy $ahjoProxy
+  ) {
   }
 
   /**
@@ -68,7 +45,7 @@ class AhjoSubscriberController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   HTTP request.
    * @param string $id
-   *   Subscriber callback ID (decisions, meetings, etc).
+   *   Subscriber callback ID (decisions, meetings, etc.).
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JSON response for debugging.
@@ -111,6 +88,7 @@ class AhjoSubscriberController extends ControllerBase {
       ]);
     }
 
+    // Can cache clearing happen in queue worker?
     $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
     if ($id === 'meetings') {
       $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
@@ -123,7 +101,7 @@ class AhjoSubscriberController extends ControllerBase {
    * List subscriber queue contents.
    *
    * @param string $id
-   *   Subsciber callback ID to filter (decisions, meetings, etc).
+   *   Subscriber callback ID to filter (decisions, meetings, etc).
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Queue contents.

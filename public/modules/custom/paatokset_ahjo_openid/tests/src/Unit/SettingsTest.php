@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\paatokset_ahjo_openid\Unit;
 
 use Drupal\paatokset_ahjo_openid\Settings;
@@ -7,15 +9,15 @@ use Drupal\paatokset_ahjo_openid\SettingsFactory;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * @coversDefaultClass \Drupal\paatokset_ahjo_openid\SettingsFactory
+ * Tests for Settings.
+ *
  * @group paatokset_ahjo_openid
  */
 class SettingsTest extends UnitTestCase {
 
   /**
-   * @covers \Drupal\paatokset_ahjo_openid\Settings::__construct
-   * @covers ::create
-   * @covers ::__construct
+   * Tests settings.
+   *
    * @dataProvider settingsData
    */
   public function testSettings(array $environment, array $values, array $expectedValues) : void {

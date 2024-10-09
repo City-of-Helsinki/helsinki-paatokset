@@ -1,0 +1,23 @@
+uuid: f743fefb-cb95-4b7f-b066-9ed464e28db4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_sequence_number
+    - node.type.meeting
+id: node.meeting.field_meeting_sequence_number
+field_name: field_meeting_sequence_number
+entity_type: node
+bundle: meeting
+label: 'Meeting sequence number'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,19 @@
+uuid: 328e54c5-d060-4856-a499-9bdb2cc8d276
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_classification_code
+    - node.type.decision
+id: node.decision.field_classification_code
+field_name: field_classification_code
+entity_type: node
+bundle: decision
+label: 'Classification code'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

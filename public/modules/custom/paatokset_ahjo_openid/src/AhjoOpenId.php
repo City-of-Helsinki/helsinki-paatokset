@@ -6,6 +6,8 @@ namespace Drupal\paatokset_ahjo_openid;
 
 use Drupal\Core\State\StateInterface;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Utils;
 
 /**
  * Handler for AHJO API Open ID connector.
@@ -13,6 +15,10 @@ use GuzzleHttp\ClientInterface;
  * @package Drupal\paatokset_ahjo_openid
  */
 class AhjoOpenId {
+
+  private const STATE_AUTH_TOKEN = 'ahjo-api-auth-key';
+  private const STATE_AUTH_TOKEN_EXPIRATION = 'ahjo-api-auth-expiration';
+  private const STATE_REFRESH_TOKEN = 'ahjo_api_refresh_token';
 
   /**
    * Constructs AhjoOpenId Controller.
@@ -25,9 +31,9 @@ class AhjoOpenId {
    *   State API.
    */
   public function __construct(
-    private Settings $settings,
-    private ClientInterface $httpClient,
-    private StateInterface $state,
+    private readonly Settings $settings,
+    private readonly ClientInterface $httpClient,
+    private readonly StateInterface $state,
   ) {
   }
 
@@ -44,7 +50,7 @@ class AhjoOpenId {
     }
 
     // Missing refresh token.
-    if (!$this->state->get('ahjo_api_refresh_token')) {
+    if (!$this->state->get(self::STATE_REFRESH_TOKEN)) {
       return FALSE;
     }
 
@@ -87,76 +93,83 @@ class AhjoOpenId {
    * Get Auth and refresh tokens.
    *
    * @return mixed
-   *   Decoded json response or NULL on failure.
+   *   Decoded json response
+   *
+   * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
    */
   public function getAuthAndRefreshTokens(string $code = NULL): mixed {
     // getHeaders throw an exception if settings are not valid.
     if (!$this->validateSettings()) {
-      return NULL;
+      throw new \InvalidArgumentException("Ahjo Open Id is not configured");
     }
 
-    $request = $this->httpClient->request(
-      'POST',
-      $this->settings->tokenUrl,
-      [
-        'http_errors' => FALSE,
-        'headers' => $this->getHeaders(),
-        'form_params' => [
-          'client_id' => $this->settings->clientId,
-          'grant_type' => 'authorization_code',
-          'code' => $code,
-          'redirect_uri' => $this->settings->callbackUrl,
-        ],
-      ]
-    );
+    $data = $this->makeTokenRequest([
+      'client_id' => $this->settings->clientId,
+      'grant_type' => 'authorization_code',
+      'code' => $code,
+      'redirect_uri' => $this->settings->callbackUrl,
+    ]);
 
-    $data = json_decode((string) $request->getBody());
-
-    if (isset($data->access_token) && isset($data->refresh_token)) {
+    if (isset($data->access_token, $data->refresh_token, $data->expires_in)) {
       $this->setAuthToken($data->access_token, $data->expires_in);
-      $this->state->set('ahjo_api_refresh_token', $data->refresh_token);
+      $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
 
       return $data;
     }
 
-    return NULL;
+    throw new AhjoOpenIdException("Invalid token response");
   }
 
   /**
    * Refresh AUTH token.
    *
-   * @return ?string
-   *   Auth token string or NULL on failure.
+   * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
    */
-  public function refreshAuthToken(): ?string {
+  private function refreshAuthToken(): void {
     // getHeaders throw an exception if settings are not valid.
-    if (!$this->validateSettings()) {
-      return NULL;
+    // Refresh token is required.
+    if (!$this->isConfigured()) {
+      throw new \InvalidArgumentException("Ahjo Open Id is not configured");
     }
 
-    $refresh_token = $this->state->get('ahjo_api_refresh_token');
-    $request = $this->httpClient->request(
-      'POST',
-      $this->settings->tokenUrl,
-      [
-        'http_errors' => FALSE,
+    $refresh_token = $this->state->get(self::STATE_REFRESH_TOKEN);
+    $data = $this->makeTokenRequest([
+      'client_id' => $this->settings->clientId,
+      'grant_type' => 'refresh_token',
+      'refresh_token' => $refresh_token,
+    ]);
+
+    if (empty($data->access_token) || empty($data->refresh_token) || empty($data->expires_in)) {
+      throw new AhjoOpenIdException("Invalid token response");
+    }
+
+    $this->setAuthToken($data->access_token, $data->expires_in);
+    $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
+  }
+
+  /**
+   * Make openid request.
+   *
+   * @param array $formParameters
+   *   Request parameters.
+   *
+   * @return mixed
+   *   Decoded json response.
+   *
+   * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
+   */
+  private function makeTokenRequest(array $formParameters): mixed {
+    try {
+      $request = $this->httpClient->request('POST', $this->settings->tokenUrl, [
         'headers' => $this->getHeaders(),
-        'form_params' => [
-          'client_id' => $this->settings->clientId,
-          'grant_type' => 'refresh_token',
-          'refresh_token' => $refresh_token,
-        ],
-      ]
-    );
+        'form_params' => $formParameters,
+      ]);
 
-    $data = json_decode((string) $request->getBody());
-
-    if (!empty($data->access_token) && !empty($data->refresh_token)) {
-      $this->setAuthToken($data->access_token, $data->expires_in);
-      $this->state->set('ahjo_api_refresh_token', $data->refresh_token);
-      return $data->access_token;
+      return Utils::jsonDecode($request->getBody()->getContents());
     }
-    return NULL;
+    catch (GuzzleException $e) {
+      throw new AhjoOpenIdException($e->getMessage(), previous: $e);
+    }
   }
 
   /**
@@ -166,7 +179,7 @@ class AhjoOpenId {
    *   TRUE if token has not expired.
    */
   public function checkAuthToken(): bool {
-    if (!$this->getAuthToken()) {
+    if (!$this->state->get(self::STATE_AUTH_TOKEN)) {
       return FALSE;
     }
 
@@ -174,24 +187,38 @@ class AhjoOpenId {
     if (time() > $auth_expiration) {
       return FALSE;
     }
+
     return TRUE;
   }
 
   /**
-   * Gets the auth token state variable.
+   * Gets the access token.
    *
-   * @return ?string
-   *   Auth token. NULL if value does not exist.
+   * Token is refreshed using the refresh token if current access token is
+   * expired.
+   *
+   * @param bool $refresh
+   *   Force token refresh (is this ever useful?).
+   *
+   * @return string
+   *   The access token.
+   *
+   * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
    */
-  public function getAuthToken(): ?string {
-    return $this->state->get('ahjo-api-auth-key');
+  public function getAuthToken(bool $refresh = FALSE): string {
+    if ($refresh || !$this->checkAuthToken()) {
+      // Refresh the access token.
+      $this->refreshAuthToken();
+    }
+
+    return $this->state->get(self::STATE_AUTH_TOKEN);
   }
 
   /**
    * Get token expiry data and time.
    */
   public function getAuthTokenExpiration(): int {
-    return (int) $this->state->get('ahjo-api-auth-expiration');
+    return (int) $this->state->get(self::STATE_AUTH_TOKEN_EXPIRATION);
   }
 
   /**
@@ -203,8 +230,8 @@ class AhjoOpenId {
    *   Token lifetime.
    */
   private function setAuthToken(string $token, int $expiration): void {
-    $this->state->set('ahjo-api-auth-key', $token);
-    $this->state->set('ahjo-api-auth-expiration', time() + $expiration);
+    $this->state->set(self::STATE_AUTH_TOKEN, $token);
+    $this->state->set(self::STATE_AUTH_TOKEN_EXPIRATION, time() + $expiration);
   }
 
   /**

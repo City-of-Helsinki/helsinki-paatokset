@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_proxy\Commands;
+namespace Drupal\paatokset_ahjo_proxy\Drush\Commands;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
+use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_proxy\AhjoBatchBuilder;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\Table;
@@ -22,6 +26,8 @@ use Symfony\Component\Console\Helper\Table;
  * @package Drupal\paatokset_ahjo_proxy\Commands
  */
 class AhjoAggregatorCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * Node storage service.
@@ -37,6 +43,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Logger service.
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   Ahjo Proxy service.
+   * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjoOpenId
+   *   Ahjo Open Id service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\file\FileRepositoryInterface $fileRepository
@@ -45,14 +53,18 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Database connection.
    * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
    *   Module extension list.
+   * @param \Drupal\paatokset_ahjo_proxy\AhjoBatchBuilder $ahjoBatchBuilder
+   *   Batch builder for meetings.
    */
   public function __construct(
     LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
+    private AhjoOpenId $ahjoOpenId,
     private EntityTypeManagerInterface $entityTypeManager,
     private FileRepositoryInterface $fileRepository,
     private Connection $database,
     private ModuleExtensionList $moduleExtensionList,
+    private AhjoBatchBuilder $ahjoBatchBuilder,
   ) {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->setLogger($logger_factory->get('paatokset_ahjo_proxy'));
@@ -2332,135 +2344,13 @@ class AhjoAggregatorCommands extends DrushCommands {
       $offset = 0;
     }
 
-    if ($use_local_data) {
-      $this->logger->info('Using local data...');
+    $batch = $this->ahjoBatchBuilder
+      ->getMotionsFromAgendaItemsBatch($update_all, $use_local_data, $limit, $offset);
+
+    if ($batch) {
+      batch_set($batch->toArray());
+      drush_backend_batch_process();
     }
-    else {
-      $this->logger->info('Fetching data from API...');
-    }
-
-    if ($limit) {
-      $this->logger->info('Limiting nodes to range: ' . $offset . ' to ' . $limit);
-    }
-
-    $query = $this->nodeStorage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'meeting')
-      ->condition('status', 1)
-      ->condition('field_meeting_agenda_published', 1)
-      ->condition('field_meeting_minutes_published', 0)
-      ->condition('field_meeting_agenda', '', '<>')
-      ->latestRevision();
-
-    if (!$update_all) {
-      $query->condition('field_agenda_items_processed', 1, '<>');
-    }
-
-    if ($limit) {
-      $query->range($offset, $limit);
-    }
-
-    $ids = $query->execute();
-    $this->logger->info('Total nodes: ' . count($ids));
-
-    $nodes = $this->nodeStorage->loadMultiple($ids);
-
-    $operations = [];
-    $count = 0;
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
-    foreach ($nodes as $node) {
-      if (!$node->hasField('field_meeting_agenda') || $node->get('field_meeting_agenda')->isEmpty()) {
-        continue;
-      }
-
-      $meeting_data = [
-        'meeting_id' => $node->field_meeting_id->value,
-        'meeting_number' => $node->field_meeting_sequence_number->value,
-        'meeting_date' => $node->field_meeting_date->value,
-        'org_id' => $node->field_meeting_dm_id->value,
-        'org_name' => $node->field_meeting_dm->value,
-      ];
-
-      foreach ($node->get('field_meeting_agenda') as $field) {
-        $item = json_decode($field->value, TRUE);
-
-        // Do nothing if PDF record isn't available.
-        if (!isset($item['PDF'])) {
-          continue;
-        }
-
-        // Only create finnish or swedish language motions.
-        if (!in_array($item['PDF']['Language'], ['fi', 'sv'])) {
-          continue;
-        }
-
-        if (!isset($item['PDF']['NativeId'])) {
-          continue;
-        }
-        else {
-          $native_id = $item['PDF']['NativeId'];
-        }
-
-        if (isset($item['PDF']['VersionSeriesId'])) {
-          $version_id = $item['PDF']['VersionSeriesId'];
-        }
-        else {
-          $version_id = NULL;
-        }
-
-        $item['PDF']['AgendaPoint'] = $item['AgendaPoint'];
-
-        $endpoint = NULL;
-        if (!$use_local_data) {
-          $endpoint = 'records/' . $native_id;
-        }
-
-        if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-          $agenda_endpoint = 'agenda-item/' . $meeting_data['meeting_id'] . '/' . $native_id;
-        }
-        else {
-          $agenda_endpoint = 'meetings/' . $meeting_data['meeting_id'] . '/agendaitems' . '/' . $native_id;
-        }
-
-        $count++;
-        $data = [
-          'endpoint' => $endpoint,
-          'agenda_endpoint' => $agenda_endpoint,
-          'update_all' => $update_all,
-          'count' => $count,
-          'title' => $item['AgendaItem'],
-          'native_id' => $native_id,
-          'version_id' => $version_id,
-          'pdf' => $item['PDF'],
-          'html' => $item['HTML'],
-          'meeting_data' => $meeting_data,
-        ];
-
-        $operations[] = [
-          '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processMotionsItem',
-          [$data],
-        ];
-      }
-
-      // Mark meeting as processed.
-      $node->set('field_agenda_items_processed', 1);
-      $node->save();
-    }
-
-    if (empty($operations)) {
-      $this->logger->info('Nothing to import.');
-      return;
-    }
-
-    $this->logger->info('Amount of items to process: ' . count($operations));
-
-    batch_set([
-      'title' => 'Fetching data for motions.',
-      'operations' => $operations,
-      'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishMotions',
-    ]);
-
-    drush_backend_batch_process();
   }
 
   /**
@@ -3000,14 +2890,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function checkAhjoAuthToken(?string $action = 'check'): void {
     if ($action === 'refresh') {
-      $refresh = TRUE;
-    }
-    else {
-      $refresh = FALSE;
+      try {
+        $this->ahjoOpenId->getAuthToken(refresh: TRUE);
+      }
+      catch (\Throwable $e) {
+        Error::logException($this->logger(), $e);
+      }
     }
 
-    $token = $this->ahjoProxy->checkAndRefreshAuthToken($refresh);
-    if (!$token) {
+    if (!$this->ahjoOpenId->checkAuthToken()) {
       $this->logger->error(
         'Auth token is no longer valid and could not be refreshed.'
       );
