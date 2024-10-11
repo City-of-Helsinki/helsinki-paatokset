@@ -4,11 +4,12 @@ Drupal Website for the Helsinki Päätökset project.
 
 ## Environments
 
-Env        | Branch    | Drush alias | URL                                                | Notes
----------- | --------- | ----------- | -------------------------------------------------- | -----
-dev        |     *     |      -      | http://helsinki-paatokset.docker.so/               | Local development environment
-stage      |     *     |      -      | https://nginx-paatokset-staging.apps.platta.hel.fi | Staging environment
-production | tag based |      -      | https://paatokset.hel.fi                           | Production environment
+Env        | Branch    | Drush alias | URL                                                            | Notes
+---------- | --------- | ----------- | -------------------------------------------------------------- | -----
+dev        |     *     |      -      | http://helsinki-paatokset.docker.so/                           | Local development environment
+test       |     *     |      -      | https://nginx-paatokset-test.agw.arodevtest.hel.fi/fi/etusivu  | Test environment
+stage      |     *     |      -      | https://nginx-paatokset-staging.apps.platta.hel.fi             | Staging environment
+production | tag based |      -      | https://paatokset.hel.fi                                       | Production environment
 
 ## Requirements
 
