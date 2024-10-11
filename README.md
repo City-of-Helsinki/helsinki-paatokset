@@ -7,6 +7,7 @@ Drupal 9 Website for the Helsinki Päätökset project.
 Env | Branch | Drush alias | URL | Notes
 --- | ------ | ----------- | --- | -----
 dev | * | - | http://helsinki-paatokset.docker.so/ | Local development environment
+stage | * | - | https://nginx-paatokset-staging.apps.platta.hel.fi | Staging environment
 production | tag based | - | https://paatokset.hel.fi | Production environment
 
 ## Requirements
