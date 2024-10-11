@@ -11,7 +11,6 @@ dependencies:
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.contact_card_listing
     - paragraphs.paragraphs_type.content_cards
-    - paragraphs.paragraphs_type.content_liftup
     - paragraphs.paragraphs_type.custom_content_links
     - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.from_library
@@ -30,12 +29,12 @@ dependencies:
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: AejXN443GE3b159k_6fsqDyZ_BHs68SU9wBMY24Ueog
+  default_config_hash: v3n3ZeAjQ22N3kPPeDCIlFFcOuTiJ9F1CB0Gf4HQ6ZI
 id: node.page.field_lower_content
 field_name: field_lower_content
 entity_type: node
 bundle: page
-label: 'Lower content region'
+label: 'Alempi sisältöalue'
 description: ''
 required: false
 translatable: true
@@ -60,13 +59,12 @@ settings:
       event_list: event_list
       contact_card_listing: contact_card_listing
       news_list: news_list
-      content_liftup: content_liftup
       service_list_search: service_list_search
       unit_search: unit_search
+      unit_contact_card: unit_contact_card
       pdf_listing: pdf_listing
       custom_content_links: custom_content_links
       liftup_with_image: liftup_with_image
-      unit_contact_card: unit_contact_card
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -86,9 +84,6 @@ settings:
         enabled: true
       content_cards:
         weight: 1
-        enabled: true
-      content_liftup:
-        weight: 12
         enabled: true
       custom_content_links:
         weight: 19
