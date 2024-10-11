@@ -5,7 +5,7 @@ dependencies:
   module:
     - helfi_tpr
 id: tpr_unit.contact_card
-label: Yhteystietokortti
+label: 'Contact card'
 description: ''
 targetEntityType: tpr_unit
 cache: true
