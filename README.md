@@ -8,7 +8,7 @@ Env        | Branch    | Drush alias | URL                                      
 ---------- | --------- | ----------- | -------------------------------------------------------------- | -----
 dev        |     *     |      -      | http://helsinki-paatokset.docker.so/                           | Local development environment
 test       |     *     |      -      | https://nginx-paatokset-test.agw.arodevtest.hel.fi/fi/etusivu  | Test environment
-stage      |     *     |      -      | https://nginx-paatokset-staging.apps.platta.hel.fi             | Staging environment
+stage      |     *     |      -      | https://nginx-paatokset-staging.apps.platta.hel.fi             | Requires VPN
 production | tag based |      -      | https://paatokset.hel.fi                                       | Production environment
 
 ## Requirements
