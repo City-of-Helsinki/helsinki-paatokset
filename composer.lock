@@ -4239,16 +4239,16 @@
         },
         {
             "name": "drupal/helfi_api_base",
-            "version": "2.7.8",
+            "version": "2.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base.git",
-                "reference": "7a37870d06234179c50f9f5c5d190d49af7c2e62"
+                "reference": "189161e8d674072f0a345c45b93dd4c42896b52b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/7a37870d06234179c50f9f5c5d190d49af7c2e62",
-                "reference": "7a37870d06234179c50f9f5c5d190d49af7c2e62",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/189161e8d674072f0a345c45b93dd4c42896b52b",
+                "reference": "189161e8d674072f0a345c45b93dd4c42896b52b",
                 "shasum": ""
             },
             "require": {
@@ -4278,10 +4278,10 @@
             ],
             "description": "Helfi - API Base",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.8",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.9",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
-            "time": "2024-10-03T06:20:46+00:00"
+            "time": "2024-10-10T08:24:13+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
@@ -4419,16 +4419,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "4.6.14",
+            "version": "4.6.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "a5706c1fff0690115510224dcdccf61ce2b6dadd"
+                "reference": "96e619f1399be1140cef46c5dd67cce2a035613e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/a5706c1fff0690115510224dcdccf61ce2b6dadd",
-                "reference": "a5706c1fff0690115510224dcdccf61ce2b6dadd",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/96e619f1399be1140cef46c5dd67cce2a035613e",
+                "reference": "96e619f1399be1140cef46c5dd67cce2a035613e",
                 "shasum": ""
             },
             "require": {
@@ -4547,10 +4547,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.6.14",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.6.15",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2024-10-11T08:52:39+00:00"
+            "time": "2024-10-14T06:10:36+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -5174,17 +5174,17 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "6.1.4",
+            "version": "6.1.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "6.1.4"
+                "reference": "6.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-6.1.4.zip",
-                "reference": "6.1.4",
-                "shasum": "f5544a39d691af5efd1532bd5403862a7153f60b"
+                "url": "https://ftp.drupal.org/files/projects/linkit-6.1.5.zip",
+                "reference": "6.1.5",
+                "shasum": "ce2e0f545e5213874e658a44ed3ef606b80b760d"
             },
             "require": {
                 "drupal/core": "^10.1"
@@ -5196,8 +5196,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "6.1.4",
-                    "datestamp": "1715203830",
+                    "version": "6.1.5",
+                    "datestamp": "1728680387",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -17352,16 +17352,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.32.0",
+            "version": "1.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6ca22b154efdd9e3c68c56f5d94670920a1c19a4"
+                "reference": "82a311fd3690fb2bf7b64d5c98f912b3dd746140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6ca22b154efdd9e3c68c56f5d94670920a1c19a4",
-                "reference": "6ca22b154efdd9e3c68c56f5d94670920a1c19a4",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/82a311fd3690fb2bf7b64d5c98f912b3dd746140",
+                "reference": "82a311fd3690fb2bf7b64d5c98f912b3dd746140",
                 "shasum": ""
             },
             "require": {
@@ -17393,9 +17393,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.32.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.33.0"
             },
-            "time": "2024-09-26T07:23:32+00:00"
+            "time": "2024-10-13T11:25:22+00:00"
         },
         {
             "name": "phpstan/phpstan",
