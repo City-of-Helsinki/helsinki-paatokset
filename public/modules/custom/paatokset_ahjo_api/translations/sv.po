@@ -18,3 +18,12 @@ msgstr "möte flyttade, gammal tid: @orig_time"
 
 msgid "There's an error with this attachment. We are resolving the issue as soon as possible."
 msgstr "Det finns ett fel i den publicerade bilagan. Vi rättar till felet så fort som möjligt."
+
+msgid "Confidential"
+msgstr "Sekretessbelagd"
+
+msgid "Confidential: @reasons"
+msgstr "Sekretessbelagd: @reasons"
+
+msgid "The attachment will not be published on the internet."
+msgstr "Bilagan publiceras inte på internet."
