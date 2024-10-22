@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.curated_event_list
     - paragraphs.paragraphs_type.custom_content_links
     - paragraphs.paragraphs_type.event_list
     - paragraphs.paragraphs_type.from_library
@@ -38,7 +39,7 @@ id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
 bundle: landing_page
-label: 'Content region'
+label: Sisältöalue
 description: ''
 required: false
 translatable: true
@@ -73,6 +74,7 @@ settings:
       pdf_listing: pdf_listing
       custom_content_links: custom_content_links
       text: text
+      curated_event_list: curated_event_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -89,6 +91,9 @@ settings:
         enabled: true
       content_cards:
         weight: 1
+        enabled: true
+      curated_event_list:
+        weight: 15
         enabled: true
       custom_content_links:
         weight: 22
