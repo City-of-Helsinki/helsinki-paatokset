@@ -26,7 +26,7 @@ display:
       empty:
         area:
           content:
-            value: 'No results'
+            value: 'Нет результатов'
       arguments:
         id:
           exception:
