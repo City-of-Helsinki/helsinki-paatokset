@@ -5,10 +5,12 @@ dependencies:
   module:
     - key_auth
     - paatokset_ahjo_proxy
+    - raven
 id: api_user
 label: 'API user'
 weight: 6
 is_admin: null
 permissions:
   - 'access ahjo proxy'
+  - 'send performance traces to sentry'
   - 'use key authentication'

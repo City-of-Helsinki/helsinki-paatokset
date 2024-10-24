@@ -23,6 +23,7 @@ permissions:
   - 'access toolbar'
   - 'display eu cookie compliance popup'
   - 'send javascript errors to sentry'
+  - 'send performance traces to sentry'
   - 'view helfi_announcements external entity'
   - 'view helfi_news external entity'
   - 'view helfi_news_groups external entity'
