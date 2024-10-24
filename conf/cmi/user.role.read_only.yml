@@ -17,6 +17,7 @@ dependencies:
     - helfi_tpr
     - node
     - paragraphs
+    - raven
     - tfa
     - toolbar
     - view_unpublished
@@ -27,6 +28,7 @@ is_admin: null
 permissions:
   - 'access toolbar'
   - 'disable own tfa'
+  - 'send performance traces to sentry'
   - 'setup own tfa'
   - 'view any unpublished announcement content'
   - 'view any unpublished article content'
