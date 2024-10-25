@@ -185,7 +185,7 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
    */
   public function refresh(): array {
     try {
-      $refresh_response = $this->ahjoOpenId->getAuthToken(refresh: TRUE);
+      $refresh_response = $this->ahjoOpenId->getAuthToken(TRUE);
     }
     catch (\Throwable $e) {
       $refresh_response = $this->t('Could not refresh access token.');
