@@ -56,6 +56,7 @@ dependencies:
     - path
     - pathauto
     - publication_date
+    - raven
     - redirect
     - role_delegation
     - scheduler
@@ -242,6 +243,7 @@ permissions:
   - 'revert policymaker revisions'
   - 'revert trustee revisions'
   - 'schedule publishing of nodes'
+  - 'send performance traces to sentry'
   - 'set announcement published on date'
   - 'set any published on date'
   - 'set article published on date'
