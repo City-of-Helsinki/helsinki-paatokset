@@ -142,9 +142,10 @@ class AhjoOpenId {
     if (empty($data->access_token) || empty($data->refresh_token) || empty($data->expires_in)) {
       throw new AhjoOpenIdException("Invalid token response");
     }
-
-    $this->setAuthToken($data->access_token, $data->expires_in);
-    $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
+    else {
+      $this->setAuthToken($data->access_token, $data->expires_in);
+      $this->state->set(self::STATE_REFRESH_TOKEN, $data->refresh_token);
+    }
   }
 
   /**
@@ -194,11 +195,8 @@ class AhjoOpenId {
   /**
    * Gets the access token.
    *
-   * Token is refreshed using the refresh token if current access token is
-   * expired.
-   *
    * @param bool $refresh
-   *   Force token refresh (is this ever useful?).
+   *   Force token refresh.
    *
    * @return string
    *   The access token.
@@ -206,7 +204,7 @@ class AhjoOpenId {
    * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
    */
   public function getAuthToken(bool $refresh = FALSE): string {
-    if ($refresh || !$this->checkAuthToken()) {
+    if ($refresh) {
       // Refresh the access token.
       $this->refreshAuthToken();
     }
