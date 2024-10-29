@@ -54,7 +54,7 @@ final class AhjoOpenIdToken extends AuthenticationPluginBase implements Containe
    * @inheritdoc
    */
   public function getAuthenticationOptions(): array {
-    if (!$this->ahjoOpenId->isConfigured() || !$this->ahjoOpenId->checkAuthToken()) {
+    if (!$this->ahjoOpenId->isConfigured()) {
       Error::logException($this->logger, new \InvalidArgumentException('Ahjo Open Id is not configured.'));
       return [];
     }
