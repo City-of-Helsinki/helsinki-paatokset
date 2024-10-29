@@ -2,10 +2,9 @@
 
 while true
 do
-  if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
-    echo "Checking access token: $(date)"
-    drush ahjo-proxy:check-auth-token
-  fi
-  # Sleep for 15 minutes.
-  sleep 900
+  # Renew auth and refresh tokens every 60 minutes.
+  echo "Checking access token: $(date)"
+  drush ahjo-proxy:check-auth-token refresh
+  # Sleep for 60 minutes.
+  sleep 3600
 done
