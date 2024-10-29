@@ -209,7 +209,7 @@ class AhjoOpenId {
       $this->refreshAuthToken();
     }
 
-    return $this->state->get(self::STATE_AUTH_TOKEN);
+    return (string) $this->state->get(self::STATE_AUTH_TOKEN);
   }
 
   /**
