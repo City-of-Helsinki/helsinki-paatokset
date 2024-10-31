@@ -2486,7 +2486,6 @@ class AhjoProxy {
       return [];
     }
 
-
     $access_token = $this->ahjoOpenId->getAuthToken();
     if (empty($access_token)) {
       return [];
