@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_openid\Plugin\migrate_plus\authentication;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Utility\Error;
 use Drupal\migrate_plus\AuthenticationPluginBase;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
-use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

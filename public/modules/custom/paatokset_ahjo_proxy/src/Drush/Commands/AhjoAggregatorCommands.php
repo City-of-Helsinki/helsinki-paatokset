@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Utility\Error;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
