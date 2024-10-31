@@ -55,27 +55,20 @@ final class AhjoOpenIdToken extends AuthenticationPluginBase implements Containe
    */
   public function getAuthenticationOptions(): array {
     if (!$this->ahjoOpenId->isConfigured()) {
-      Error::logException($this->logger, new \InvalidArgumentException('Ahjo Open Id is not configured.'));
+      $this->logger->error('Ahjo Open Id is not configured.');
       return [];
     }
 
     if (!$this->ahjoOpenId->checkAuthToken()) {
-      Error::logException($this->logger, new \InvalidArgumentException('Ahjo Open Id auth token is missing or has expired.'));
+      $this->logger->error('Ahjo Open Id auth token is missing or has expired.');
       return [];
     }
 
-    try {
-      return [
-        'headers' => [
-          'Authorization' => 'Bearer ' . $this->ahjoOpenId->getAuthToken(),
-        ],
-      ];
-    }
-    catch (AhjoOpenIdException $e) {
-      Error::logException($this->logger, $e);
-    }
-
-    return [];
+    return [
+      'headers' => [
+        'Authorization' => 'Bearer ' . $this->ahjoOpenId->getAuthToken(),
+      ],
+    ];
   }
 
 }

@@ -2896,14 +2896,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       $refresh = FALSE;
     }
 
-    try {
-      $this->ahjoOpenId->getAuthToken($refresh);
-    }
-    catch (\Throwable $e) {
-      Error::logException($this->logger(), $e);
-    }
+    $token = $this->ahjoOpenId->getAuthToken($refresh);
 
-    if (!$this->ahjoOpenId->checkAuthToken()) {
+    if (empty($token) || !$this->ahjoOpenId->checkAuthToken()) {
       $this->logger->error(
         'Auth token is no longer valid and could not be refreshed.'
       );

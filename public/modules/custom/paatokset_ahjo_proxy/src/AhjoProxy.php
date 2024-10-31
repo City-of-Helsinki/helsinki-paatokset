@@ -2488,11 +2488,9 @@ class AhjoProxy {
       return [];
     }
 
-    try {
-      $access_token = $this->ahjoOpenId->getAuthToken();
-    }
-    catch (AhjoOpenIdException $e) {
-      Error::logException($this->logger, $e);
+
+    $access_token = $this->ahjoOpenId->getAuthToken();
+    if (empty($access_token)) {
       return [];
     }
 
@@ -2564,14 +2562,9 @@ class AhjoProxy {
       return FALSE;
     }
 
-    try {
-      $access_token = $this->ahjoOpenId->getAuthToken();
-      if ($access_token) {
-        return TRUE;
-      }
-    }
-    catch (\Throwable $e) {
-      Error::logException($this->logger, $e);
+    $access_token = $this->ahjoOpenId->getAuthToken();
+    if (!empty($access_token)) {
+      return TRUE;
     }
 
     return FALSE;
