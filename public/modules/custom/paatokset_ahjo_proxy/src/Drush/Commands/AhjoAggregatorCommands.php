@@ -2895,7 +2895,12 @@ class AhjoAggregatorCommands extends DrushCommands {
       $refresh = FALSE;
     }
 
-    $token = $this->ahjoOpenId->getAuthToken($refresh);
+    try {
+      $token = $this->ahjoOpenId->getAuthToken($refresh);
+    }
+    catch (\Throwable $e) {
+      $this->logger->error($e->getMessage());
+    }
 
     if (empty($token) || !$this->ahjoOpenId->checkAuthToken()) {
       $this->logger->error(
