@@ -13,7 +13,6 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\migrate\MigrateExecutable;
@@ -22,7 +21,6 @@ use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_openid\AhjoOpenId;
-use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Utils;
@@ -2488,11 +2486,8 @@ class AhjoProxy {
       return [];
     }
 
-    try {
-      $access_token = $this->ahjoOpenId->getAuthToken();
-    }
-    catch (AhjoOpenIdException $e) {
-      Error::logException($this->logger, $e);
+    $access_token = $this->ahjoOpenId->getAuthToken();
+    if (empty($access_token)) {
       return [];
     }
 
@@ -2564,14 +2559,9 @@ class AhjoProxy {
       return FALSE;
     }
 
-    try {
-      $access_token = $this->ahjoOpenId->getAuthToken();
-      if ($access_token) {
-        return TRUE;
-      }
-    }
-    catch (\Throwable $e) {
-      Error::logException($this->logger, $e);
+    $access_token = $this->ahjoOpenId->getAuthToken();
+    if (!empty($access_token)) {
+      return TRUE;
     }
 
     return FALSE;
