@@ -7,7 +7,7 @@ log_levels:
   emergency: true
   alert: true
   critical: true
-  error: false
+  error: true
   warning: false
   notice: false
   info: false
