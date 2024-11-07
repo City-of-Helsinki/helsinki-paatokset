@@ -4239,23 +4239,23 @@
         },
         {
             "name": "drupal/helfi_api_base",
-            "version": "2.7.10",
+            "version": "2.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base.git",
-                "reference": "2327b07739cbead0d2e7d3482c074d717b786ba6"
+                "reference": "d149db10862c62980427c0ad124d0e54c7b97902"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/2327b07739cbead0d2e7d3482c074d717b786ba6",
-                "reference": "2327b07739cbead0d2e7d3482c074d717b786ba6",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/d149db10862c62980427c0ad124d0e54c7b97902",
+                "reference": "d149db10862c62980427c0ad124d0e54c7b97902",
                 "shasum": ""
             },
             "require": {
                 "drupal/entity": "^1.0",
                 "drupal/health_check": "^3.0",
                 "drupal/monolog": "^3.0",
-                "drupal/raven": "^4.0 || ^5.0",
+                "drupal/raven": "^5.0 || ^6.0",
                 "ext-curl": "*",
                 "firebase/php-jwt": "^6.5",
                 "php": "^8.1",
@@ -4278,10 +4278,10 @@
             ],
             "description": "Helfi - API Base",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.10",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.14",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
-            "time": "2024-10-18T12:57:18+00:00"
+            "time": "2024-11-07T10:23:06+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
@@ -19880,7 +19880,7 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": {},
-    "platform-dev": {},
+    "platform": [],
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
