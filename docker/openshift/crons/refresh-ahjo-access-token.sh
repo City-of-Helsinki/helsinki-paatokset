@@ -11,9 +11,9 @@ do
     # Sleep for an hour until we're out of the maintenance window.
     sleep 3600
   else
-
-  echo "Checking access token: $(date)"
-  drush ahjo-proxy:check-auth-token refresh
-  # Sleep for 60 minutes.
-  sleep 3600
+    echo "Checking access token: $(date)"
+    drush ahjo-proxy:check-auth-token refresh
+    # Sleep for 60 minutes.
+    sleep 3600
+  fi
 done
