@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Utility\Error;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -2890,15 +2889,20 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   public function checkAhjoAuthToken(?string $action = 'check'): void {
     if ($action === 'refresh') {
-      try {
-        $this->ahjoOpenId->getAuthToken(refresh: TRUE);
-      }
-      catch (\Throwable $e) {
-        Error::logException($this->logger(), $e);
-      }
+      $refresh = TRUE;
+    }
+    else {
+      $refresh = FALSE;
     }
 
-    if (!$this->ahjoOpenId->checkAuthToken()) {
+    try {
+      $token = $this->ahjoOpenId->getAuthToken($refresh);
+    }
+    catch (\Throwable $e) {
+      $this->logger->error($e->getMessage());
+    }
+
+    if (empty($token) || !$this->ahjoOpenId->checkAuthToken()) {
       $this->logger->error(
         'Auth token is no longer valid and could not be refreshed.'
       );

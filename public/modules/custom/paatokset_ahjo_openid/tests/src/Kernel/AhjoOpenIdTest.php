@@ -103,8 +103,8 @@ class AhjoOpenIdTest extends KernelTestBase {
     $this->assertNotNull($sut->getAuthAndRefreshTokens('789'));
     $this->assertFalse($sut->checkAuthToken());
 
-    // Token should be automatically refreshed.
-    $this->assertEquals('321', $sut->getAuthToken());
+    // Refresh token manually, this should get the new value.
+    $this->assertEquals('321', $sut->getAuthToken(TRUE));
     $this->assertTrue($sut->checkAuthToken());
 
     // Second call should not refresh since token should be valid.

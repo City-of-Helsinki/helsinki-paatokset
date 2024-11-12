@@ -185,10 +185,10 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
    */
   public function refresh(): array {
     try {
-      $refresh_response = $this->ahjoOpenId->getAuthToken(refresh: TRUE);
+      $refresh_response = $this->ahjoOpenId->getAuthToken(TRUE);
     }
     catch (\Throwable $e) {
-      $refresh_response = $this->t('Could not refresh access token.');
+      $refresh_response = $e->getMessage();
     }
 
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
