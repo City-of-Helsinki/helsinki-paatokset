@@ -286,7 +286,7 @@ class MeetingService {
    *   Meeting date as string if found
    */
   public function previousMeetingDate(string $id) {
-    $queryResult = $this->query([
+    $queryResult = $this->elasticQuery([
       'to' => date('Y-m-d', strtotime('now')),
       'limit' => 1,
       'policymaker' => $id,
@@ -310,7 +310,7 @@ class MeetingService {
    *   Meeting date as string if found
    */
   public function nextMeetingDate(string $id) {
-    $queryResult = $this->query([
+    $queryResult = $this->elasticQuery([
       'from' => date('Y-m-d', strtotime('now')),
       'limit' => 1,
       'policymaker' => $id,
