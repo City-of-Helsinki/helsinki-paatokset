@@ -61,10 +61,7 @@ class MeetingController extends ControllerBase {
     }
 
     try {
-      $meetings = $this->meetingService->query($params);
-      // UHF-10527: Switch over to using elasticQuery.
-      // phpcs:ignore
-      //$meetings = $this->meetingService->elasticQuery($params);
+      $meetings = $this->meetingService->elasticQuery($params);
     }
     catch (\throwable $error) {
       return new Response(
@@ -82,10 +79,7 @@ class MeetingController extends ControllerBase {
         'contexts' => [
           'url',
         ],
-        'tags' => ['node_list:meeting'],
-        // UHF-10527: Switch over to using elasticQuery.
-        // phpcs:ignore
-        //'tags' => ['search_api_list:meetings'],
+        'tags' => ['search_api_list:meetings'],
       ],
     ];
 
