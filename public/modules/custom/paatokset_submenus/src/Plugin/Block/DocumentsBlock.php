@@ -48,10 +48,7 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * Build the attributes.
    */
   public function build() {
-    $list = $this->policymakerService->getApiMinutes(NULL, TRUE);
-    // UHF-10527: Switch over to using elasticQuery.
-    // phpcs:ignore
-    //$list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
+    $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
 
     return [
       '#title' => $this->t('Office holder decisions'),
