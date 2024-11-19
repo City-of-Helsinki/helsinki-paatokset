@@ -22,6 +22,14 @@ name: Policymakers
 description: ''
 read_only: false
 field_settings:
+  _language:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
   color_class:
     label: 'Color Class'
     datasource_id: 'entity:node'
