@@ -25,7 +25,6 @@
         "drupal/purge": "^3.0",
         "drupal/varnish_purge": "^2.1",
         "drush/drush": "^12",
-        "elasticsearch/elasticsearch": "^7.15",
         "josdejong/jsoneditor": "^5.29",
         "league/csv": "^9.8",
         "paatokset/paatokset_search": "1.2.2"
