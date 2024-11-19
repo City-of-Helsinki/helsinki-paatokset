@@ -131,10 +131,7 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   $variables['open_motions'] = t('Open agenda');
   $variables['open_decisions'] = t('Open decision announcement');
   $variables['open_minutes'] = t('Open minutes');
-  $variables['meetings'] = $meetingService->query($params);
-  // UHF-10527: Switch over to using elasticQuery.
-  // phpcs:ignore
-  //$variables['meetings'] = $meetingService->elasticQuery($params);
+  $variables['meetings'] = $meetingService->elasticQuery($params);
 
   if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
     $variables['meetings_description'] = $node->get('field_meetings_description')->value;
@@ -211,10 +208,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
         $no_content = FALSE;
       }
 
-      $documents = $policymakerService->getApiMinutes(2);
-      // UHF-10527: Switch over to using elasticQuery.
-      // phpcs:ignore
-      //$documents = $policymakerService->getApiMinutesFromElasticSearch(2);
+      $documents = $policymakerService->getApiMinutesFromElasticSearch(2);
 
       if ($documents) {
         $variables['recent_documents'] = $documents;
@@ -226,7 +220,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
         'policymaker' => $policymaker->get('field_policymaker_id')->value,
         'from' => date("Y-m-d"),
       ];
-      $upcomingMeetings = $meetingService->query($params);
+      $upcomingMeetings = $meetingService->elasticQuery($params);
 
       if (!empty($upcomingMeetings)) {
         $variables['meeting_calendar'] = TRUE;
