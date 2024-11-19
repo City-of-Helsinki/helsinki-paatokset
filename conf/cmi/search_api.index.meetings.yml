@@ -11,7 +11,7 @@ dependencies:
     - field.storage.node.field_meeting_sequence_number
     - field.storage.node.field_meeting_minutes_published
     - field.storage.node.field_meeting_status
-    - search_api.server.elasticsearch
+    - search_api.server.default
   module:
     - node
     - search_api
@@ -180,4 +180,4 @@ options:
   cron_limit: 0
   index_directly: false
   track_changes_in_references: true
-server: elasticsearch
+server: default

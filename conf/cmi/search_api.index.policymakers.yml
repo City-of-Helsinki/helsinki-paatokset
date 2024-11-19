@@ -11,7 +11,7 @@ dependencies:
     - field.storage.node.field_organization_type
     - field.storage.node.field_ahjo_title
     - field.storage.node.field_sector_name
-    - search_api.server.elasticsearch
+    - search_api.server.default
   module:
     - node
     - search_api
@@ -199,4 +199,4 @@ options:
   cron_limit: 0
   index_directly: false
   track_changes_in_references: true
-server: elasticsearch
+server: default
