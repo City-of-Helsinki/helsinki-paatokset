@@ -10,13 +10,12 @@ ini_set('default_socket_timeout', 240);
 
 // Elasticsearch settings.
 if (getenv('ELASTIC_CONNECTOR_URL')) {
-  $config['elasticsearch_connector.cluster.paatokset']['url'] = getenv('ELASTIC_CONNECTOR_URL');
+  $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['url'] = getenv('ELASTIC_CONNECTOR_URL');
 
-  if (getenv('ELASTIC_INTERNAL_USER') && getenv('ELASTIC_INTERNAL_PWD')) {
-    $config['elasticsearch_connector.cluster.paatokset']['options']['use_authentication'] = '1';
-    $config['elasticsearch_connector.cluster.paatokset']['options']['authentication_type'] = 'Basic';
-    $config['elasticsearch_connector.cluster.paatokset']['options']['username'] = getenv('ELASTIC_INTERNAL_USER');
-    $config['elasticsearch_connector.cluster.paatokset']['options']['password'] = getenv('ELASTIC_INTERNAL_PWD');
+  if (getenv('ELASTIC_USER') && getenv('ELASTIC_PASSWORD')) {
+    $config['search_api.server.elastic_rekry']['backend_config']['connector'] = 'basicauth';
+    $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['username'] = getenv('ELASTIC_INTERNAL_USER');
+    $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['password'] = getenv('ELASTIC_INTERNAL_PWD');
   }
 }
 
