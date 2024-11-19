@@ -18,14 +18,14 @@ class PrepareIndex implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     return [
-      AlterSettingsEvent::class=> 'prepareIndices',
+      AlterSettingsEvent::class => 'prepareIndices',
     ];
   }
 
   /**
    * Method to prepare index.
    *
-   * @param AlterSettingsEvent $event
+   * @param \Drupal\elasticsearch_connector\Event\AlterSettingsEvent $event
    *   The PrepareIndex event.
    */
   public function prepareIndices(AlterSettingsEvent $event): void {
