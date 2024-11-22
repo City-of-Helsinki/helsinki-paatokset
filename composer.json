@@ -61,7 +61,9 @@
         },
         "audit": {
             "abandoned": "report",
-            "ignore": ["GHSA-mg8j-w93w-xjgc"]
+            "ignore": [
+                "GHSA-mg8j-w93w-xjgc"
+            ]
         }
     },
     "extra": {
@@ -112,7 +114,7 @@
                 "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
             },
             "drupal/core": {
-                "Fix missing theme suggestions for status messages in BigPipe": "https://www.drupal.org/files/issues/2024-06-28/3456176-45-missing-status-messages-theme-suggestions.patch"
+                "[UHF-10839]: Fix missing theme suggestions for status messages in BigPipe https://www.drupal.org/i/3456176": "https://raw.githubusercontent.com/City-of-Helsinki/helsinki-paatokset/8abc6661bb216ae19b9c6e1cd461d00493f9617b/patches/big_pipe_status_message_fix.patch"
             }
         },
         "patchLevel": {
