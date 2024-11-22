@@ -110,6 +110,9 @@
         "patches": {
             "drupal/default_content": {
                 "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
+            },
+            "drupal/core": {
+                "Fix missing theme suggestions for status messages in BigPipe": "https://www.drupal.org/files/issues/2024-06-28/3456176-45-missing-status-messages-theme-suggestions.patch"
             }
         },
         "patchLevel": {
