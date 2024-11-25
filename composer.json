@@ -61,7 +61,9 @@
         },
         "audit": {
             "abandoned": "report",
-            "ignore": ["GHSA-mg8j-w93w-xjgc"]
+            "ignore": [
+                "GHSA-mg8j-w93w-xjgc"
+            ]
         }
     },
     "extra": {
@@ -110,6 +112,9 @@
         "patches": {
             "drupal/default_content": {
                 "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
+            },
+            "drupal/core": {
+                "[UHF-10839]: Fix missing theme suggestions for status messages in BigPipe https://www.drupal.org/i/3456176": "https://raw.githubusercontent.com/City-of-Helsinki/helsinki-paatokset/8abc6661bb216ae19b9c6e1cd461d00493f9617b/patches/big_pipe_status_message_fix.patch"
             }
         },
         "patchLevel": {
