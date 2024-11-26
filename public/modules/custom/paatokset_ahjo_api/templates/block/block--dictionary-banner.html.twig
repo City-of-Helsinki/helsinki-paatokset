@@ -35,7 +35,7 @@
 
         {% if banner_link.url %}
           <p>
-            <a href="{{ banner_link.url }}" data-is-external="true" target="_blank" data-hds-component="button">
+            <a href="{{ banner_link.url }}" rel="noopener" data-is-external="true" target="_blank" data-hds-component="button">
               {{ banner_link.label }}
             </a>
           </p>
