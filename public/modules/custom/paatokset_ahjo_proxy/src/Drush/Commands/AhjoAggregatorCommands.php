@@ -2982,19 +2982,16 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Set options.
    */
   private function setDefaultOptions(string $endpoint, string $dataset, array $options): array {
-    switch ($endpoint) {
-      case 'meetings':
-        $timestamp_key = 'start';
-        $timestamp_key_end = 'end';
-        $date_range = strtotime('-4 weeks');
-        $date_range_end = strtotime('+2 months');
-        break;
-
-      default:
-        $timestamp_key = 'handledsince';
-        $timestamp_key_end = 'handledbefore';
-        $date_range = strtotime("-1 week");
-        break;
+    if ($endpoint === 'meetings') {
+      $timestamp_key = 'start';
+      $timestamp_key_end = 'end';
+      $date_range = strtotime('-4 weeks');
+      $date_range_end = strtotime('+2 months');
+    }
+    else {
+      $timestamp_key = 'handledsince';
+      $timestamp_key_end = 'handledbefore';
+      $date_range = strtotime("-1 week");
     }
 
     if (empty($options['start'])) {
