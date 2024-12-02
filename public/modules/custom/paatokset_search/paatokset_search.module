@@ -16,14 +16,3 @@ function paatokset_search_preprocess_html(array &$variables) {
   }
 }
 
-/**
- * Implements hook_elasticsearch_connector_load_library_options_alter().
- *
- * Set cURL options to trust self-signed certificate.
- *
- * @fixme rather than disabling verification, should set CURLOPT_SSLCERT to correct value.
- */
-function paatokset_search_elasticsearch_connector_load_library_options_alter(&$options, &$context) {
-  $options['curl'][CURLOPT_SSL_VERIFYPEER] = FALSE;
-  $options['curl'][CURLOPT_SSL_VERIFYHOST] = FALSE;
-}
