@@ -8,17 +8,6 @@
 $settings['http_client_config']['timeout'] = 240;
 ini_set('default_socket_timeout', 240);
 
-// Elasticsearch settings.
-if (getenv('ELASTIC_CONNECTOR_URL')) {
-  $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['url'] = getenv('ELASTIC_CONNECTOR_URL');
-
-  if (getenv('ELASTIC_USER') && getenv('ELASTIC_PASSWORD')) {
-    $config['search_api.server.elastic_rekry']['backend_config']['connector'] = 'basicauth';
-    $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['username'] = getenv('ELASTIC_INTERNAL_USER');
-    $config['search_api.server.elastic_rekry']['backend_config']['connector_config']['password'] = getenv('ELASTIC_INTERNAL_PWD');
-  }
-}
-
 // Elastic proxy URL.
 $config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_APP_PROXY_URL', 'REACT_APP_ELASTIC_URL']);
 
