@@ -654,7 +654,7 @@ class PolicymakerService {
     }
 
     $main_sections = $xpath->query("//*[@class='Tiedote']");
-    $accordions = $this->getDecisionAnnouncementSections($main_sections, $agendaItems);
+    $accordions = $this->getDecisionAnnouncementSections($main_sections, $langcode, $agendaItems);
 
     return [
       'element_id' => $element_id,
@@ -671,13 +671,15 @@ class PolicymakerService {
    *
    * @param \DOMNodeList|null $main_sections
    *   Main sections of the announcement.
+   * @param string $langcode
+   *   Langcode used for motion link checking.
    * @param array|null $agendaItems
    *   Agenda items for meetings, used to speed up link fetching.
    *
    * @return array
    *   Accordion render array, or empty array.
    */
-  public function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, ?array $agendaItems = []): array {
+  public function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, string $langcode, ?array $agendaItems = []): array {
     $accordions = [];
     if (!$main_sections) {
       return $accordions;
