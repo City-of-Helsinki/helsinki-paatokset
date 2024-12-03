@@ -2221,11 +2221,13 @@ class AhjoAggregatorCommands extends DrushCommands {
           $non_public++;
         }
 
-        if (isset($data['SecurityReasons']) && !empty($data['SecurityReasons'])) {
-          foreach ($data['SecurityReasons'] as $reason) {
-            if (!in_array($reason, $reasons)) {
-              $reasons[] = $reason;
-            }
+        if (!isset($data['SecurityReasons']) || empty($data['SecurityReasons'])) {
+          continue;
+        }
+
+        foreach ($data['SecurityReasons'] as $reason) {
+          if (!in_array($reason, $reasons)) {
+            $reasons[] = $reason;
           }
         }
       }
