@@ -11,7 +11,7 @@ dependencies:
     - field.storage.node.field_organization_type
     - field.storage.node.field_ahjo_title
     - field.storage.node.field_sector_name
-    - search_api.server.elasticsearch
+    - search_api.server.default
   module:
     - node
     - search_api
@@ -22,6 +22,14 @@ name: Policymakers
 description: ''
 read_only: false
 field_settings:
+  _language:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
   color_class:
     label: 'Color Class'
     datasource_id: 'entity:node'
@@ -199,4 +207,4 @@ options:
   cron_limit: 0
   index_directly: false
   track_changes_in_references: true
-server: elasticsearch
+server: default
