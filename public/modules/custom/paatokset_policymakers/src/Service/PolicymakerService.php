@@ -654,7 +654,12 @@ class PolicymakerService {
     }
 
     $main_sections = $xpath->query("//*[@class='Tiedote']");
-    $accordions = $this->getDecisionAnnouncementSections($main_sections, $langcode, $agendaItems);
+    if ($main_sections) {
+      $accordions = $this->getDecisionAnnouncementSections($main_sections, $langcode, $agendaItems);
+    }
+    else {
+      $accordions = [];
+    }
 
     return [
       'element_id' => $element_id,
@@ -681,9 +686,6 @@ class PolicymakerService {
    */
   public function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, string $langcode, ?array $agendaItems = []): array {
     $accordions = [];
-    if (!$main_sections) {
-      return $accordions;
-    }
 
     foreach ($main_sections as $node) {
       $accordion = [];
@@ -706,29 +708,28 @@ class PolicymakerService {
       }
 
       // Get link to motion based on native ID.
-      if ($motion_id) {
-        $motion_url = NULL;
-        // First check agenda because URLs were already generated there.
-        foreach ($agendaItems as $item) {
-          if ($item['native_id'] === $motion_id) {
-            $motion_url = $item['link'];
-            break;
-          }
-        }
+      $motion_url = NULL;
 
-        // Next try to get URL without loading nodes.
-        if (!$motion_url instanceof Url) {
-          $motion_url = $this->caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+      // First check agenda because URLs were already generated there.
+      foreach ($agendaItems as $item) {
+        if ($item['native_id'] === $motion_id) {
+          $motion_url = $item['link'];
+          break;
         }
+      }
 
-        // Last try to get URL based on native ID.
-        if (!$motion_url instanceof Url) {
-          $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
-        }
+      // Next try to get URL without loading nodes.
+      if (!empty($motion_id) && !$motion_url instanceof Url) {
+        $motion_url = $this->caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+      }
 
-        if ($motion_url instanceof Url) {
-          $accordion['link'] = $motion_url;
-        }
+      // Last try to get URL based on native ID.
+      if (!empty($motion_id) && !$motion_url instanceof Url) {
+        $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+      }
+
+      if ($motion_url instanceof Url) {
+        $accordion['link'] = $motion_url;
       }
 
       if (!empty($accordion['heading']) && !empty($accordion['content'])) {
