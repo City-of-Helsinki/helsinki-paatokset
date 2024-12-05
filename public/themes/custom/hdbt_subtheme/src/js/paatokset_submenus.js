@@ -36,7 +36,7 @@
       $(dropdown).removeClass('hidden');
       const dropdownItems = $('.custom-select-wrapper div.custom-option').toArray();
 
-      for(item of dropdownItems) {
+      for(const item of dropdownItems) {
         if(allowedItems.includes($(item).find('input').attr('value'))) {
           $(item).addClass('hidden');
         } else {

@@ -81,8 +81,6 @@ class ItemsIndexed implements EventSubscriberInterface {
         continue;
       }
 
-      // Only invalidate cache tags for office holders.
-      // They are the only ones currently that are fetched from ElasticSearch.
       /** @var \Drupal\Core\Field\FieldItemList $org_type_field */
       $org_type_field = $item->get('field_organization_type');
       if ($org_type_field->isEmpty() || !in_array($org_type_field->value, PolicymakerService::TRUSTEE_TYPES)) {
@@ -104,7 +102,6 @@ class ItemsIndexed implements EventSubscriberInterface {
     return $tags;
   }
 
-  // phpcs:disable
   /**
    * Get cache tags to invalidate for meetings.
    *
@@ -118,7 +115,6 @@ class ItemsIndexed implements EventSubscriberInterface {
    */
   private function getCacheTagsForMeetings(ItemsIndexedEvent $event, IndexInterface $index): array {
     $tags = [];
-    return $tags;
     $ids = $event->getProcessedIds();
     $items = $index->loadItemsMultiple($ids);
     foreach ($items as $item) {
@@ -140,6 +136,5 @@ class ItemsIndexed implements EventSubscriberInterface {
     }
     return $tags;
   }
-  // phpcs:enable
 
 }
