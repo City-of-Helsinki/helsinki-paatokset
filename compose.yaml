@@ -151,12 +151,13 @@ services:
       - search
   artemis:
     container_name: "${COMPOSE_PROJECT_NAME}-artemis"
-    image: apache/activemq-artemis
+    image: quay.io/artemiscloud/activemq-artemis-broker
+    environment:
+      AMQ_EXTRA_ARGS: "--user admin --password admin"
     depends_on:
       - app
     networks:
       - internal
-      - stonehenge-network
     profiles:
       - queue
   chromium:

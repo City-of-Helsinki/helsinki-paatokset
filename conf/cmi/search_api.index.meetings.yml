@@ -4,17 +4,18 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_meeting_agenda_published
+    - field.storage.node.field_meeting_dm_id
     - field.storage.node.field_meeting_date
     - field.storage.node.field_meeting_date_original
-    - field.storage.node.field_meeting_dm_id
     - field.storage.node.field_meeting_id
-    - field.storage.node.field_meeting_minutes_published
     - field.storage.node.field_meeting_sequence_number
+    - field.storage.node.field_meeting_minutes_published
     - field.storage.node.field_meeting_status
     - search_api.server.elasticsearch
   module:
-    - helfi_react_search
     - node
+    - search_api
+    - helfi_react_search
     - paatokset_search
 id: meetings
 name: Meetings
