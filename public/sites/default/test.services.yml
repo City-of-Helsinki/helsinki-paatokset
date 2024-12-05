@@ -2,8 +2,5 @@
 parameters:
   helfi_api_base.logger_enabled: false
   helfi_api_base.internal_domains:
-    - 'hel.fi'
-    - 'www.hel.fi'
     - 'paatokset.hel.fi'
-    - 'avustukset.hel.fi'
     - 'nginx-paatokset-test.agw.arodevtest.hel.fi'

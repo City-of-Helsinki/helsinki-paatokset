@@ -88,20 +88,19 @@ class DisallowedDecisionsForm extends EntityForm {
     $status = $disallowed_decisions->save();
     $status = 0;
 
-    switch ($status) {
-      case SAVED_NEW:
-        $this->messenger()
-          ->addMessage($this->t('Added disallowed decisions for: %label.', [
-            '%label' => $disallowed_decisions->label(),
-          ]));
-        break;
-
-      default:
-        $this->messenger()
-          ->addMessage($this->t('Saved disallowed decisions for %label.', [
-            '%label' => $disallowed_decisions->label(),
-          ]));
+    if ($status === SAVED_NEW) {
+      $this->messenger()
+        ->addMessage($this->t('Added disallowed decisions for: %label.', [
+          '%label' => $disallowed_decisions->label(),
+        ]));
     }
+    else {
+      $this->messenger()
+        ->addMessage($this->t('Saved disallowed decisions for %label.', [
+          '%label' => $disallowed_decisions->label(),
+        ]));
+    }
+
     $form_state->setRedirectUrl($disallowed_decisions->toUrl('collection'));
 
     return $status;

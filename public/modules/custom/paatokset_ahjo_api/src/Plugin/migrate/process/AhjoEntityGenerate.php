@@ -61,7 +61,7 @@ class AhjoEntityGenerate extends EntityLookup {
    */
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
     // If the source data is an empty array, return the same.
-    if (gettype($value) === 'array' && count($value) === 0) {
+    if (gettype($value) === 'array' && empty($value)) {
       return [];
     }
     $this->row = $row;

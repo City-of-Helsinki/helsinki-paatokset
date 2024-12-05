@@ -1,3 +1,4 @@
+// @todo UHF-10862 Remove once the HDBT cookie banner module is in use.
 (($, Drupal) => {
   Drupal.behaviors.paatoksetCookieComplianceBlock = {
     attach: function attach() {

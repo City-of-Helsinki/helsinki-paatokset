@@ -653,57 +653,12 @@ class PolicymakerService {
       $disclaimer['#markup'] = $this->policymaker->get('field_documents_description')->value;
     }
 
-    $accordions = [];
     $main_sections = $xpath->query("//*[@class='Tiedote']");
-
     if ($main_sections) {
-      foreach ($main_sections as $node) {
-        $accordion = [];
-        $motion_id = NULL;
-        foreach ($node->childNodes as $child_node) {
-          if ($child_node->nodeName === 'h3') {
-            $accordion['heading'] = $child_node->nodeValue;
-            continue;
-          }
-          if ($child_node->getAttribute('class') === 'TiedoteTeksti') {
-            $accordion['content']['#markup'] = $child_node->ownerDocument->saveHTML($child_node);
-          }
-
-          if ($child_node->getAttribute('class') === 'esitysPdfVersioId') {
-            $motion_id = trim($child_node->nodeValue);
-          }
-        }
-
-        // Get link to motion based on native ID.
-        if ($motion_id) {
-          $motion_url = NULL;
-          // First check agenda because URLs were already generated there.
-          foreach ($agendaItems as $item) {
-            if ($item['native_id'] === $motion_id) {
-              $motion_url = $item['link'];
-              break;
-            }
-          }
-
-          // Next try to get URL without loading nodes.
-          if (!$motion_url instanceof Url) {
-            $motion_url = $this->caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
-          }
-
-          // Last try to get URL based on native ID.
-          if (!$motion_url instanceof Url) {
-            $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
-          }
-
-          if ($motion_url instanceof Url) {
-            $accordion['link'] = $motion_url;
-          }
-        }
-
-        if (!empty($accordion['heading']) && !empty($accordion['content'])) {
-          $accordions[] = $accordion;
-        }
-      }
+      $accordions = $this->getDecisionAnnouncementSections($main_sections, $langcode, $agendaItems);
+    }
+    else {
+      $accordions = [];
     }
 
     return [
@@ -714,6 +669,75 @@ class PolicymakerService {
       'accordions' => $accordions,
       'more_info' => ['#markup' => $announcement_info],
     ];
+  }
+
+  /**
+   * Formats decision announcement HTML into accordions.
+   *
+   * @param \DOMNodeList|null $main_sections
+   *   Main sections of the announcement.
+   * @param string $langcode
+   *   Langcode used for motion link checking.
+   * @param array|null $agendaItems
+   *   Agenda items for meetings, used to speed up link fetching.
+   *
+   * @return array
+   *   Accordion render array, or empty array.
+   */
+  public function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, string $langcode, ?array $agendaItems = []): array {
+    $accordions = [];
+
+    foreach ($main_sections as $node) {
+      $accordion = [];
+      $motion_id = NULL;
+      foreach ($node->childNodes as $child_node) {
+        if (!$child_node instanceof \DOMElement) {
+          continue;
+        }
+        if ($child_node->nodeName === 'h3') {
+          $accordion['heading'] = $child_node->nodeValue;
+          continue;
+        }
+        if ($child_node->getAttribute('class') === 'TiedoteTeksti') {
+          $accordion['content']['#markup'] = $child_node->ownerDocument->saveHTML($child_node);
+        }
+
+        if ($child_node->getAttribute('class') === 'esitysPdfVersioId') {
+          $motion_id = trim($child_node->nodeValue);
+        }
+      }
+
+      // Get link to motion based on native ID.
+      $motion_url = NULL;
+
+      // First check agenda because URLs were already generated there.
+      foreach ($agendaItems as $item) {
+        if ($item['native_id'] === $motion_id) {
+          $motion_url = $item['link'];
+          break;
+        }
+      }
+
+      // Next try to get URL without loading nodes.
+      if (!empty($motion_id) && !$motion_url instanceof Url) {
+        $motion_url = $this->caseService->getDecisionUrlWithoutNode($motion_id, NULL, $langcode);
+      }
+
+      // Last try to get URL based on native ID.
+      if (!empty($motion_id) && !$motion_url instanceof Url) {
+        $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+      }
+
+      if ($motion_url instanceof Url) {
+        $accordion['link'] = $motion_url;
+      }
+
+      if (!empty($accordion['heading']) && !empty($accordion['content'])) {
+        $accordions[] = $accordion;
+      }
+    }
+
+    return $accordions;
   }
 
   /**

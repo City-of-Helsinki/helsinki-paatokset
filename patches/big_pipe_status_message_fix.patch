@@ -1,0 +1,23 @@
+diff --git a/core/modules/big_pipe/src/Render/BigPipe.php b/core/modules/big_pipe/src/Render/BigPipe.php
+index d7de08e29e..8e39116cbe 100644
+--- a/core/modules/big_pipe/src/Render/BigPipe.php
++++ b/core/modules/big_pipe/src/Render/BigPipe.php
+@@ -561,12 +561,12 @@ protected function sendPlaceholders(array $placeholders, array $placeholder_orde
+ 
+           // Delete all messages that were generated during the rendering of this
+           // placeholder, to render them in a BigPipe-optimized way.
+-          $messages = $this->messenger->deleteAll();
+-          foreach ($messages as $type => $type_messages) {
+-            foreach ($type_messages as $message) {
+-              $ajax_response->addCommand(new MessageCommand($message, NULL, ['type' => $type], FALSE));
+-            }
+-          }
++          // $messages = $this->messenger->deleteAll();
++          // foreach ($messages as $type => $type_messages) {
++          //  foreach ($type_messages as $message) {
++          //    $ajax_response->addCommand(new MessageCommand($message, NULL, ['type' => $type], FALSE));
++          //  }
++          //}
+ 
+           // Push a fake request with the asset libraries loaded so far and
+           // dispatch KernelEvents::RESPONSE event. This results in the
