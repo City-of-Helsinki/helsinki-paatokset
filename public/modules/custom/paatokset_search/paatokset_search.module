@@ -15,4 +15,3 @@ function paatokset_search_preprocess_html(array &$variables) {
     $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
   }
 }
-
