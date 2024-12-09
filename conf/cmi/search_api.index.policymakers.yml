@@ -3,19 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_policymaker_existing
+    - field.storage.node.field_ahjo_title
+    - field.storage.node.field_dm_org_name
+    - field.storage.node.field_dm_organization
     - field.storage.node.field_first_name
     - field.storage.node.field_last_name
-    - field.storage.node.field_dm_organization
-    - field.storage.node.field_dm_org_name
     - field.storage.node.field_organization_type
-    - field.storage.node.field_ahjo_title
+    - field.storage.node.field_policymaker_existing
     - field.storage.node.field_sector_name
     - search_api.server.default
   module:
-    - node
-    - search_api
     - helfi_react_search
+    - node
     - paatokset_search
 id: policymakers
 name: Policymakers

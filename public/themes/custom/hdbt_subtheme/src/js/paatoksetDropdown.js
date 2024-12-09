@@ -5,7 +5,7 @@ jQuery(function($) {
   const container = $('.issue__meetings-container')
   const dropdown = $('.issue__meetings-dropdown');
   const social_media = $('.social-media__items a');
-  var focusIndex = -1;
+  let focusIndex = -1;
 
   $(document).ready(function() {
     $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'true');
@@ -185,7 +185,7 @@ jQuery(function($) {
           $('.issue__pdf').css('display', 'none');
         }
         if (data.language_urls) {
-          for (langcode in data.language_urls) {
+          for (let langcode in data.language_urls) {
             $('.language-link[lang="' + langcode + '"]').attr('href', data.language_urls[langcode]);
           }
         }
@@ -210,7 +210,7 @@ jQuery(function($) {
       }
     });
 
-    var queryKey = 'paatos';
+    let queryKey = 'paatos';
     if (window.drupalSettings.path.currentLanguage === 'sv') {
       queryKey = 'beslut';
     }
@@ -218,9 +218,9 @@ jQuery(function($) {
       queryKey = 'decision';
     }
 
-    var queryparams = window.location.search;
+    let queryparams = window.location.search;
     if (queryparams === "") {
-      var queryparams = '?' + queryKey + '=';
+      queryparams = '?' + queryKey + '=';
     }
     const old_window_href = window.location.host + window.location.pathname + queryparams;
 
