@@ -112,11 +112,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_dm_organization
-  sector:
-    label: Sector
-    datasource_id: 'entity:node'
-    property_path: sector
-    type: string
   status:
     label: status
     datasource_id: 'entity:node'

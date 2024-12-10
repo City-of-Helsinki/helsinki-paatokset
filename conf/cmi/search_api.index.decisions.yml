@@ -165,11 +165,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_organization_type
-  sector:
-    label: Sector
-    datasource_id: 'entity:node'
-    property_path: sector
-    type: string
   sector_id:
     label: 'Sector ID'
     datasource_id: 'entity:node'
