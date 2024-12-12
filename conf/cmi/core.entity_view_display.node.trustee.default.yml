@@ -20,10 +20,10 @@ dependencies:
     - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
     - field.field.node.trustee.field_trustee_title
-    - image.style.original_m
+    - responsive_image.styles.image_orig
     - node.type.trustee
   module:
-    - image
+    - responsive_image
     - json_field
     - link
     - user
@@ -108,11 +108,11 @@ content:
     weight: 0
     region: content
   field_trustee_image:
-    type: image
+    type: responsive_image
     label: hidden
     settings:
+      responsive_image_style: image_orig
       image_link: ''
-      image_style: original_m
       image_loading:
         attribute: lazy
     third_party_settings: {  }
