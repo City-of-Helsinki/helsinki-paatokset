@@ -11,7 +11,7 @@ dependencies:
     - field.storage.node.field_meeting_minutes_published
     - field.storage.node.field_meeting_sequence_number
     - field.storage.node.field_meeting_status
-    - search_api.server.elasticsearch
+    - search_api.server.default
   module:
     - helfi_react_search
     - node
@@ -21,6 +21,14 @@ name: Meetings
 description: ''
 read_only: false
 field_settings:
+  _language:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
   field_meeting_agenda_published:
     label: 'Agenda published'
     datasource_id: 'entity:node'
@@ -179,4 +187,4 @@ options:
   cron_limit: 0
   index_directly: false
   track_changes_in_references: true
-server: elasticsearch
+server: default
