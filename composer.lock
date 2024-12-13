@@ -4248,16 +4248,16 @@
         },
         {
             "name": "drupal/helfi_api_base",
-            "version": "2.7.15",
+            "version": "2.7.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base.git",
-                "reference": "bfada1ee33120497e8dde6dbde201320f41e2dfc"
+                "reference": "bed9714f4c3334f3985df8d945159ca55b934f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/bfada1ee33120497e8dde6dbde201320f41e2dfc",
-                "reference": "bfada1ee33120497e8dde6dbde201320f41e2dfc",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/bed9714f4c3334f3985df8d945159ca55b934f16",
+                "reference": "bed9714f4c3334f3985df8d945159ca55b934f16",
                 "shasum": ""
             },
             "require": {
@@ -4279,7 +4279,9 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
                 "dg/bypass-finals": "^1.0",
                 "donatj/mock-webserver": "dev-master",
-                "drupal/coder": "^8.3"
+                "drupal/coder": "^8.3",
+                "drupal/elasticsearch_connector": "^8.0@alpha",
+                "drupal/search_api": "^1.0"
             },
             "type": "drupal-module",
             "license": [
@@ -4287,10 +4289,10 @@
             ],
             "description": "Helfi - API Base",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.15",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.7.16",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
-            "time": "2024-11-08T08:31:53+00:00"
+            "time": "2024-11-21T11:13:13+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
@@ -19768,7 +19770,7 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
