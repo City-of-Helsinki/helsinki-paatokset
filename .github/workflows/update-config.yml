@@ -9,7 +9,8 @@ jobs:
   update-config:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:8.3-alpine
+      image: ghcr.io/city-of-helsinki/drupal-web:8.3
+      options: --hostname app --user 1001
     services:
       db:
         image: mysql:8
@@ -23,6 +24,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check if required secrets are set
+        env:
+          AUTOMATIC_UPDATE_TOKEN: ${{ secrets.AUTOMATIC_UPDATE_TOKEN }}
+        if: env.AUTOMATIC_UPDATE_TOKEN == ''
+        run: exit 1
 
       - name: Download latest dump
         env:
@@ -77,6 +84,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: Update configuration
+          token: ${{ secrets.AUTOMATIC_UPDATE_TOKEN }}
           title: Automatic update
           labels: auto-update
           body: |

@@ -52,10 +52,16 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
   /**
    * Get auth token.
    */
-  public function getToken(): void {
+  public function getToken(): array {
     $token = $this->ahjoOpenId->getAuthToken();
-    print $token;
-    die;
+    return [
+      'heading' => [
+        '#markup' => '<h1>' . $this->t('Auth token') . '</h1>',
+      ],
+      'token' => [
+        '#markup' => '<code>' . $token . '</code>',
+      ],
+    ];
   }
 
   /**

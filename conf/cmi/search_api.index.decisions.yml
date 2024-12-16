@@ -4,31 +4,38 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_classification_title
+    - field.storage.node.field_decision_case_title
     - field.storage.node.field_decision_content_parsed
     - field.storage.node.field_decision_motion_parsed
-    - field.storage.node.field_decision_section
-    - field.storage.node.field_is_decision
-    - field.storage.node.field_policymaker_id
     - field.storage.node.field_decision_native_id
+    - field.storage.node.field_decision_section
     - field.storage.node.field_diary_number
-    - field.storage.node.field_decision_case_title
-    - field.storage.node.field_meeting_date
     - field.storage.node.field_dm_org_above_name
     - field.storage.node.field_dm_org_name
-    - field.storage.node.field_organization_type
     - field.storage.node.field_full_title
+    - field.storage.node.field_is_decision
+    - field.storage.node.field_meeting_date
+    - field.storage.node.field_organization_type
+    - field.storage.node.field_policymaker_id
     - field.storage.node.field_top_category_name
-    - search_api.server.elasticsearch
+    - search_api.server.default
   module:
-    - node
-    - search_api
     - helfi_react_search
+    - node
     - paatokset_search
 id: decisions
 name: Decisions
 description: ''
 read_only: false
 field_settings:
+  _language:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
   category_name:
     label: 'Classification title'
     datasource_id: 'entity:node'
@@ -157,11 +164,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_organization_type
-  sector:
-    label: Sector
-    datasource_id: 'entity:node'
-    property_path: sector
-    type: string
   sector_id:
     label: 'Sector ID'
     datasource_id: 'entity:node'
@@ -262,4 +264,4 @@ options:
   cron_limit: 0
   index_directly: false
   track_changes_in_references: true
-server: elasticsearch
+server: default

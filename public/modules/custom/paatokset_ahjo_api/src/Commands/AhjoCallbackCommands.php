@@ -102,26 +102,18 @@ class AhjoCallbackCommands extends DrushCommands {
 
       $count++;
 
-      if (isset($item->data['content']->updatetype)) {
-        $operation = $item->data['content']->updatetype;
-      }
-      else {
-        $operation = NULL;
-      }
+      $operation = $item->data['content']->updatetype ?? NULL;
+      $entity = $item->data['content']->id ?? NULL;
 
-      if (!isset($ids[$item->data['id']])) {
-        $ids[$item->data['id']] = [];
-      }
-
+      // Add operations and IDs to arrays so unique ones can be listed.
       if (!in_array($operation, $operations)) {
         $operations[] = $operation;
       }
-
-      if (isset($item->data['content']->id)) {
-        $entity = $item->data['content']->id;
+      if (!isset($ids[$item->data['id']])) {
+        $ids[$item->data['id']] = [];
       }
-      else {
-        $entity = NULL;
+      if ($entity && !in_array($entity, $ids[$item->data['id']])) {
+        $ids[$item->data['id']][] = $entity;
       }
 
       if (isset($item->data['created'])) {
@@ -129,10 +121,6 @@ class AhjoCallbackCommands extends DrushCommands {
       }
       else {
         $created = date('Y-m-d H:i:s', (int) $item->created) . ' (no timestamp)';
-      }
-
-      if ($entity && !in_array($entity, $ids[$item->data['id']])) {
-        $ids[$item->data['id']][] = $entity;
       }
 
       $table->addRow([

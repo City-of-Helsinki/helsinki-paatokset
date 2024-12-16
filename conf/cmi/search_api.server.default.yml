@@ -1,0 +1,19 @@
+uuid: d1e6967a-b9dc-4e0f-af78-d37647e3e089
+langcode: en
+status: true
+dependencies:
+  module:
+    - elasticsearch_connector
+id: default
+name: Elasticsearch
+description: ''
+backend: elasticsearch
+backend_config:
+  connector: standard
+  connector_config:
+    url: 'http://elastic:9200'
+    enable_debug_logging: false
+  advanced:
+    fuzziness: auto
+    prefix: paatokset_
+    suffix: ''
