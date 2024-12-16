@@ -1005,7 +1005,7 @@ class PolicymakerService {
    * @param string|null $id
    *   Policymaker ID, leave NULL to use currently set.
    *
-   * @return array
+   * @return array|null
    *   Policymaker composition, if found.
    */
   public function getComposition(?string $id = NULL): ?array {
@@ -1037,9 +1037,9 @@ class PolicymakerService {
 
       if ($node->hasField('field_trustee_image') && !$node->get('field_trustee_image')->isEmpty()) {
         $image_uri = $node->get('field_trustee_image')->first()->entity->getFileUri();
-        $image_style = $imageStyleStorage->load('1_1_thumbnail_2x');
+        $image_style = $imageStyleStorage->load('policymaker_thumbnail');
         /** @var \Drupal\image\Entity\ImageStyle $image_style */
-        $image_url = $image_style->buildUrl($image_uri);
+        $image_url = $image_style?->buildUrl($image_uri);
       }
       else {
         $image_url = NULL;
