@@ -3,26 +3,25 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_decision_case_title
     - field.storage.node.field_classification_title
+    - field.storage.node.field_decision_case_title
     - field.storage.node.field_decision_content_parsed
     - field.storage.node.field_decision_motion_parsed
-    - field.storage.node.field_diary_number
-    - field.storage.node.field_full_title
-    - field.storage.node.field_meeting_date
     - field.storage.node.field_decision_native_id
-    - field.storage.node.field_is_decision
-    - field.storage.node.field_policymaker_id
+    - field.storage.node.field_decision_section
+    - field.storage.node.field_diary_number
     - field.storage.node.field_dm_org_above_name
     - field.storage.node.field_dm_org_name
+    - field.storage.node.field_full_title
+    - field.storage.node.field_is_decision
+    - field.storage.node.field_meeting_date
     - field.storage.node.field_organization_type
-    - field.storage.node.field_decision_section
+    - field.storage.node.field_policymaker_id
     - field.storage.node.field_top_category_name
     - search_api.server.default
   module:
-    - node
-    - search_api
     - helfi_react_search
+    - node
     - paatokset_search
 id: decisions
 name: Decisions

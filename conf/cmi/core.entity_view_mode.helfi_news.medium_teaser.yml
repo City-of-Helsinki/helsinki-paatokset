@@ -5,7 +5,7 @@ dependencies:
   module:
     - external_entities
 _core:
-  default_config_hash: q8QZDYrGHAdl67dw9Z1DdTCTIhOo3lpW0dGN70STnCk
+  default_config_hash: Fl8HX68URx0CChkXzE5wAEZ9p94KnjuIbgmVIo6r5n4
 id: helfi_news.medium_teaser
 label: 'Medium Teaser'
 description: ''
