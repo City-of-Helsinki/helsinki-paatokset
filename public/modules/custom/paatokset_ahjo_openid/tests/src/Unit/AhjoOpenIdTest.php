@@ -35,8 +35,8 @@ class AhjoOpenIdTest extends UnitTestCase {
    */
   private function getSut(
     Settings $settings,
-    ClientInterface $httpClient = NULL,
-    StateInterface $state = NULL,
+    ?ClientInterface $httpClient = NULL,
+    ?StateInterface $state = NULL,
   ) : AhjoOpenId {
     if (!$httpClient) {
       $httpClient = $this->prophesize(ClientInterface::class)->reveal();

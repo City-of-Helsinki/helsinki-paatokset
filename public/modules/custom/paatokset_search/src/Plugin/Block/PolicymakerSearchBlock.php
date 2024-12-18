@@ -26,7 +26,7 @@ class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPlugin
     $plugin_id,
     $plugin_definition,
     private ImmutableConfig $proxyConfig,
-    private ImmutableConfig $searchConfig
+    private ImmutableConfig $searchConfig,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

@@ -1642,7 +1642,7 @@ class PolicymakerService {
    * @return array
    *   Meeting document data.
    */
-  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, string $meetingId = NULL) : array {
+  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, ?string $meetingId = NULL) : array {
     if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
       return [];
     }

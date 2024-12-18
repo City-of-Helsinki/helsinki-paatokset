@@ -46,7 +46,7 @@ final class CaseNodeViewController extends NodeViewController {
     EntityRepositoryInterface $entity_repository,
     private readonly RouteMatchInterface $routeMatch,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly CaseService $caseService
+    private readonly CaseService $caseService,
   ) {
     parent::__construct($entity_type_manager, $renderer, $current_user, $entity_repository);
   }

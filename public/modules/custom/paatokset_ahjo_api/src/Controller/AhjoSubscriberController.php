@@ -35,7 +35,7 @@ final class AhjoSubscriberController extends ControllerBase {
     private readonly QueueFactory $queueFactory,
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerChannelInterface $logger,
-    private readonly AhjoProxy $ahjoProxy
+    private readonly AhjoProxy $ahjoProxy,
   ) {
   }
 

@@ -97,7 +97,7 @@ class AhjoOpenId {
    *
    * @throws \Drupal\paatokset_ahjo_openid\AhjoOpenIdException
    */
-  public function getAuthAndRefreshTokens(string $code = NULL): mixed {
+  public function getAuthAndRefreshTokens(?string $code = NULL): mixed {
     // getHeaders throw an exception if settings are not valid.
     if (!$this->validateSettings()) {
       throw new \InvalidArgumentException("Ahjo Open Id is not configured");
