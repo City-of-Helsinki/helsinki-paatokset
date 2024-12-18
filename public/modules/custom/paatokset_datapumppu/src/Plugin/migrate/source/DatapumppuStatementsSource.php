@@ -94,7 +94,7 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    MigrationInterface $migration = NULL
+    ?MigrationInterface $migration = NULL,
   ) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition, $migration);
     $instance->logger = $container->get('logger.factory')->get('paatokset_datapumppu');

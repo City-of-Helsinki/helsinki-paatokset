@@ -105,17 +105,20 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:agg
    */
-  public function aggregate(string $endpoint, array $options = [
-    'dataset' => NULL,
-    'start' => NULL,
-    'end' => NULL,
-    'decisionmaker_id' => NULL,
-    'cancelledonly' => NULL,
-    'retry' => NULL,
-    'filename' => NULL,
-    'append' => NULL,
-    'queue' => NULL,
-  ]): void {
+  public function aggregate(
+    string $endpoint,
+    array $options = [
+      'dataset' => NULL,
+      'start' => NULL,
+      'end' => NULL,
+      'decisionmaker_id' => NULL,
+      'cancelledonly' => NULL,
+      'retry' => NULL,
+      'filename' => NULL,
+      'append' => NULL,
+      'queue' => NULL,
+    ],
+  ): void {
 
     $allowed_datasets = [
       'all',
@@ -264,17 +267,20 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:get
    */
-  public function get(string $endpoint, array $options = [
-    'dataset' => NULL,
-    'start' => NULL,
-    'end' => NULL,
-    'changedsince' => NULL,
-    'changedbefore' => NULL,
-    'handledsince' => NULL,
-    'handledbefore' => NULL,
-    'langcode' => NULL,
-    'filename' => NULL,
-  ]): void {
+  public function get(
+    string $endpoint,
+    array $options = [
+      'dataset' => NULL,
+      'start' => NULL,
+      'end' => NULL,
+      'changedsince' => NULL,
+      'changedbefore' => NULL,
+      'handledsince' => NULL,
+      'handledbefore' => NULL,
+      'langcode' => NULL,
+      'filename' => NULL,
+    ],
+  ): void {
     $data = [];
     $list_key = $this->getListKey($endpoint);
 
@@ -576,13 +582,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:ud
    */
-  public function updateDecisions(array $options = [
-    'update' => NULL,
-    'logic' => 'record',
-    'limit' => NULL,
-    'start' => NULL,
-    'end' => NULL,
-  ]): void {
+  public function updateDecisions(
+    array $options = [
+      'update' => NULL,
+      'logic' => 'record',
+      'limit' => NULL,
+      'start' => NULL,
+      'end' => NULL,
+    ],
+  ): void {
 
     $update_all = !empty($options['update']);
 
@@ -793,11 +801,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:uc
    */
-  public function updateCases(array $options = [
-    'logic' => 'publicity',
-    'localdata' => NULL,
-    'limit' => NULL,
-  ]): void {
+  public function updateCases(
+    array $options = [
+      'logic' => 'publicity',
+      'localdata' => NULL,
+      'limit' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['logic'])) {
       $logic = $options['logic'];
@@ -914,11 +924,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:rdr
    */
-  public function resetDecisionRecords(array $options = [
-    'start' => NULL,
-    'end' => NULL,
-    'limit' => NULL,
-  ]): void {
+  public function resetDecisionRecords(
+    array $options = [
+      'start' => NULL,
+      'end' => NULL,
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -993,11 +1005,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cdd
    */
-  public function checkDisallowedDecisions(array $options = [
-    'org' => NULL,
-    'dry' => NULL,
-    'limit' => NULL,
-  ]): void {
+  public function checkDisallowedDecisions(
+    array $options = [
+      'org' => NULL,
+      'dry' => NULL,
+      'limit' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['dry'])) {
       $do_unpublish = FALSE;
@@ -1105,9 +1119,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:uda
    */
-  public function updateDecisionAttachments(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function updateDecisionAttachments(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1197,9 +1213,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:udd
    */
-  public function updateDecisionDates(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function updateDecisionDates(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1288,9 +1306,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cds
    */
-  public function checkDecisionStatus(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function checkDecisionStatus(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1385,10 +1405,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:dc
    */
-  public function parseDecisionContents(array $options = [
-    'logic' => 'content',
-    'limit' => NULL,
-  ]): void {
+  public function parseDecisionContents(
+    array $options = [
+      'logic' => 'content',
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1471,9 +1493,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:sdf
    */
-  public function setDecisionFlag(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function setDecisionFlag(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1542,9 +1566,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:rpf
    */
-  public function removePolicymakerDescriptionFields(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function removePolicymakerDescriptionFields(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1618,9 +1644,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:ruid
    */
-  public function removeDecisionUniqueIdFields(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function removeDecisionUniqueIdFields(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1746,10 +1774,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cod
    */
-  public function checkOutdatedDocuments(array $options = [
-    'motions' => FALSE,
-    'limit' => NULL,
-  ]): void {
+  public function checkOutdatedDocuments(
+    array $options = [
+      'motions' => FALSE,
+      'limit' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
@@ -1799,10 +1829,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cmdf
    */
-  public function checkMotionDocuments(array $options = [
-    'motions' => FALSE,
-    'limit' => NULL,
-  ]): void {
+  public function checkMotionDocuments(
+    array $options = [
+      'motions' => FALSE,
+      'limit' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
@@ -1855,11 +1887,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cmr
    */
-  public function checkMeetingRecords(array $options = [
-    'start' => NULL,
-    'end' => NULL,
-    'limit' => NULL,
-  ]): void {
+  public function checkMeetingRecords(
+    array $options = [
+      'start' => NULL,
+      'end' => NULL,
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -1970,9 +2004,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cmp
    */
-  public function checkMeetingsMotionProcessing(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function checkMeetingsMotionProcessing(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
@@ -2028,12 +2064,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cdp
    */
-  public function checkMeetingsDecisionProcessing(array $options = [
-    'queue' => FALSE,
-    'limit' => NULL,
-    'start' => NULL,
-    'end' => NULL,
-  ]): void {
+  public function checkMeetingsDecisionProcessing(
+    array $options = [
+      'queue' => FALSE,
+      'limit' => NULL,
+      'start' => NULL,
+      'end' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -2132,11 +2170,13 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cda
    */
-  public function checkDecisionAttachments(array $options = [
-    'motions' => NULL,
-    'limit' => NULL,
-    'offset' => NULL,
-  ]): void {
+  public function checkDecisionAttachments(
+    array $options = [
+      'motions' => NULL,
+      'limit' => NULL,
+      'offset' => NULL,
+    ],
+  ): void {
     if (!empty($options['motions'])) {
       $motions = TRUE;
     }
@@ -2259,9 +2299,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:rmod
    */
-  public function resetMeetingsOriginalDate(array $options = [
-    'limit' => NULL,
-  ]): void {
+  public function resetMeetingsOriginalDate(
+    array $options = [
+      'limit' => NULL,
+    ],
+  ): void {
     if (!empty($options['limit'])) {
       $limit = (int) $options['limit'];
     }
@@ -2322,12 +2364,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:gm
    */
-  public function getMotionsFromAgendaItems(array $options = [
-    'update' => NULL,
-    'localdata' => NULL,
-    'limit' => NULL,
-    'offset' => NULL,
-  ]): void {
+  public function getMotionsFromAgendaItems(
+    array $options = [
+      'update' => NULL,
+      'localdata' => NULL,
+      'limit' => NULL,
+      'offset' => NULL,
+    ],
+  ): void {
     $update_all = !empty($options['update']);
     $use_local_data = !empty($options['localdata']);
 
@@ -2478,10 +2522,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @aliases ap:cdm
    */
-  public function checkDecisionMakers(array $options = [
-    'base_url' => NULL,
-    'ids' => NULL,
-  ]): void {
+  public function checkDecisionMakers(
+    array $options = [
+      'base_url' => NULL,
+      'ids' => NULL,
+    ],
+  ): void {
 
     if (!empty($options['base_url'])) {
       $base_url = (string) $options['base_url'];

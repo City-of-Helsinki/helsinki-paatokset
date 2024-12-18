@@ -32,7 +32,7 @@ final class AhjoOrgCompositionDrushCommands extends DrushCommands {
    *   The migration manager.
    */
   public function __construct(
-    private MigrationPluginManagerInterface $migrationManager
+    private MigrationPluginManagerInterface $migrationManager,
   ) {
     parent::__construct();
   }
@@ -73,9 +73,11 @@ final class AhjoOrgCompositionDrushCommands extends DrushCommands {
   #[Command(name: 'org-composition:fetch-by-id', aliases: ['oc:id'])]
   #[Option(name: 'ids', description: 'Organization IDs, separated by comma.')]
   #[Usage(name: 'drush org-composition:fetch-by-id --ids=00400,02900', description: 'Fetches composition for city board and council only.')]
-  public function getOrgCompositionsById(array $options = [
-    'ids' => NULL,
-  ]): int {
+  public function getOrgCompositionsById(
+    array $options = [
+      'ids' => NULL,
+    ],
+  ): int {
     $configuration = [
       'source' => [
         'orgs' => 'ids',

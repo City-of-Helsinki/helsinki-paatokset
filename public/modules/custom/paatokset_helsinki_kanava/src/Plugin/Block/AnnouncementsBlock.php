@@ -31,7 +31,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
     $plugin_definition,
     private ConfigFactoryInterface $config,
     private PolicymakerService $policymakerService,
-    private MeetingService $meetingService
+    private MeetingService $meetingService,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

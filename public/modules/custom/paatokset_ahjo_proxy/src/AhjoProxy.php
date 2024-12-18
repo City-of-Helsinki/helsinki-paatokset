@@ -77,7 +77,7 @@ class AhjoProxy {
     private ConfigFactoryInterface $config,
     private Connection $database,
     private QueueFactory $queue,
-    private AhjoOpenId $ahjoOpenId
+    private AhjoOpenId $ahjoOpenId,
   ) {
     // Using dependency injection for caseService fails on `make new` due to
     // cyclical dependency with paatokset_ahjo_api module.

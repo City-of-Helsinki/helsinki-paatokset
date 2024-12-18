@@ -21,7 +21,7 @@ class SearchController extends ControllerBase {
    */
   public function __construct(
     private ImmutableConfig $proxyConfig,
-    private ImmutableConfig $searchConfig
+    private ImmutableConfig $searchConfig,
   ) {
   }
 

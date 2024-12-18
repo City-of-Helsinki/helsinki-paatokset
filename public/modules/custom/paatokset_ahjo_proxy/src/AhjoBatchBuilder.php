@@ -44,7 +44,7 @@ readonly class AhjoBatchBuilder {
     bool $update_all = FALSE,
     bool $use_local_data = FALSE,
     ?int $limit = NULL,
-    int $offset = 0
+    int $offset = 0,
   ): ?BatchBuilder {
     if ($use_local_data) {
       $this->logger->info('Using local data...');

@@ -25,7 +25,7 @@ final class DatapumppuCommands extends DrushCommands {
    *   The migration manager.
    */
   public function __construct(
-    private MigrationPluginManagerInterface $migrationManager
+    private MigrationPluginManagerInterface $migrationManager,
   ) {
   }
 
@@ -51,9 +51,11 @@ final class DatapumppuCommands extends DrushCommands {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  public function getAllTrusteeStatements(array $options = [
-    'start-year' => NULL,
-  ]): int {
+  public function getAllTrusteeStatements(
+    array $options = [
+      'start-year' => NULL,
+    ],
+  ): int {
     if (is_numeric($options['start-year'])) {
       $startYear = (int) $options['start-year'];
     }

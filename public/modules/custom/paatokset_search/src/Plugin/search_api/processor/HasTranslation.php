@@ -49,7 +49,7 @@ class HasTranslation extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DataSourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL) {
     $properties = [];
 
     if ($datasource) {

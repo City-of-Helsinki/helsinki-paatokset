@@ -31,7 +31,7 @@ final class ImageDataUrlHandler extends FilterBase implements ContainerFactoryPl
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
 

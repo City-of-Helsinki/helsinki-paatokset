@@ -36,7 +36,7 @@ abstract class AhjoSourceBase extends SourcePluginBase implements ContainerFacto
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    MigrationInterface $migration = NULL
+    ?MigrationInterface $migration = NULL,
   ): static {
     $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
     $instance->logger = $container->get('logger.factory')->get('paatokset_ahjo_api');

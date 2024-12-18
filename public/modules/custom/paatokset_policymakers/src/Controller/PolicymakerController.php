@@ -32,7 +32,7 @@ class PolicymakerController extends ControllerBase {
   public function __construct(
     private ImmutableConfig $config,
     private PolicymakerService $policymakerService,
-    private OrganizationPathBuilder $organizationPathBuilderService
+    private OrganizationPathBuilder $organizationPathBuilderService,
   ) {
     $this->policymakerService->setPolicyMakerByPath();
   }
