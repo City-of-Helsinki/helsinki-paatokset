@@ -262,7 +262,7 @@ class CaseService {
    * @return \Drupal\node\NodeInterface|null
    *   Decision entity, if found.
    */
-  public function getDecision(string $decision_id, string $case_id = NULL): ?NodeInterface {
+  public function getDecision(string $decision_id, ?string $case_id = NULL): ?NodeInterface {
     $query = [
       'decision_id' => $decision_id,
       'limit' => 1,

@@ -111,7 +111,7 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    MigrationInterface $migration = NULL
+    ?MigrationInterface $migration = NULL,
   ) {
     if ($url = self::getApiUrl($configuration['url'])) {
       $configuration['url'] = $url;

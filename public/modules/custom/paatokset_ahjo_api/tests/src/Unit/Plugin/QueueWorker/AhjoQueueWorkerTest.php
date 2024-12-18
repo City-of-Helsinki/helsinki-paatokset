@@ -41,7 +41,7 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    * @return \Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker
    *   Ahjo queue worker SUT.
    */
-  private function getSut(AhjoProxy $ahjoProxy, LoggerChannelInterface $logger = NULL): DummyWorker {
+  private function getSut(AhjoProxy $ahjoProxy, ?LoggerChannelInterface $logger = NULL): DummyWorker {
     if (is_null($logger)) {
       $logger = $this->prophesize(LoggerChannelInterface::class);
       $logger = $logger->reveal();

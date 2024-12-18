@@ -43,7 +43,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     private RouteProviderInterface $routeProvider,
     private PolicymakerService $policymakerService,
     private string $currentLang,
-    private string $currentPath
+    private string $currentPath,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService->setPolicyMakerByPath();
