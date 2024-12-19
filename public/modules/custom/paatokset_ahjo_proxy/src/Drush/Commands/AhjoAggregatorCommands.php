@@ -291,11 +291,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       $dataset = 'all';
     }
 
-    if ($dataset === 'latest') {
-      $week_ago = strtotime("-1 week");
-      $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
-    }
-
     $query_string = '';
     if (!empty($options['start'])) {
       $query_string .= 'start=' . $options['start'];
@@ -307,6 +302,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query_string .= '&changedsince=' . $options['changedsince'];
     }
     elseif ($endpoint === 'decisionmakers' && $dataset === 'latest') {
+      $timestamp = date('Y-m-d\TH:i:s\Z', strtotime("-2 weeks"));
       $query_string .= '&changedsince=' . $timestamp;
     }
 
