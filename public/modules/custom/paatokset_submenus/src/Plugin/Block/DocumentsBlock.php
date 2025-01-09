@@ -1,32 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Documents Block.
- *
- * @Block(
- *    id = "agendas_submenu_documents",
- *    admin_label = @Translation("Paatokset policymaker documents"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'agendas_submenu_documents',
+  admin_label: new TranslatableMarkup('Paatokset policymaker documents'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritDoc}
    */
-  public function __construct(
+  final public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private PolicymakerService $policymakerService,
+    private readonly PolicymakerService $policymakerService,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService->setPolicyMakerByPath();
@@ -45,9 +48,9 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
 
     return [
@@ -58,9 +61,9 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $policymaker = $this->policymakerService->getPolicyMaker();
     if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
       $policymaker_id = $policymaker->get('field_policymaker_id')->value;
@@ -70,9 +73,9 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
