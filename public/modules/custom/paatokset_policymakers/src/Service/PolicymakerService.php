@@ -112,7 +112,7 @@ class PolicymakerService {
    *   Language manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
-   * @param Drupal\Core\Config\ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   Config service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   Route match service.
@@ -199,7 +199,7 @@ class PolicymakerService {
    * @param string|null $langcode
    *   Translation to get. Leave null to return active translation.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Policymaker node or NULL.
    */
   public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?Node {
@@ -244,7 +244,7 @@ class PolicymakerService {
   /**
    * Set policy maker node.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   Policy maker ID.
    */
   public function setPolicyMakerNode(NodeInterface $node): void {
@@ -266,7 +266,7 @@ class PolicymakerService {
    * Set policymaker from current path.
    *
    * @return bool
-   *   TRUE if setting pm was succesful.
+   *   TRUE if setting pm was successful.
    */
   public function setPolicyMakerByPath(): bool {
     $node = $this->routeMatch->getParameter('node');
