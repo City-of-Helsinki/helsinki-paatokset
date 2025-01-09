@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
@@ -16,13 +21,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
- *
- * @Block(
- *    id = "policymaker_side_nav",
- *    admin_label = @Translation("Policymaker side navigation"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'policymaker_side_nav',
+  admin_label: new TranslatableMarkup('Policymaker side navigation'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -35,15 +39,15 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritDoc}
    */
-  public function __construct(
+  final public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private MenuLinkTreeInterface $menuTree,
-    private RouteProviderInterface $routeProvider,
-    private PolicymakerService $policymakerService,
-    private string $currentLang,
-    private string $currentPath,
+    private readonly MenuLinkTreeInterface $menuTree,
+    private readonly RouteProviderInterface $routeProvider,
+    private readonly PolicymakerService $policymakerService,
+    private readonly string $currentLang,
+    private readonly string $currentPath,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService->setPolicyMakerByPath();
@@ -69,7 +73,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#items' => $this->items,
       '#currentPath' => $this->currentPath,
@@ -79,7 +83,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $cache_tags = [
       'config:system.menu.main',
     ];
@@ -96,7 +100,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
@@ -282,8 +286,9 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    */
   protected function getCustomLinks(NodeInterface $policymaker): array {
     $items = [];
-    $customLinks = $policymaker->field_custom_menu_links->referencedEntities();
+    $customLinks = $policymaker->get('field_custom_menu_links')->referencedEntities();
     foreach ($customLinks as $link) {
+      assert($link instanceof FieldableEntityInterface);
       if (empty($link->field_referenced_content->entity)) {
         continue;
       }
