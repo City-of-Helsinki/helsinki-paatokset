@@ -43,7 +43,7 @@ class PolicymakerService {
   /**
    * Cut off date for old meetings.
    */
-  const MEETING_START_DATE = '2018-04-01';
+  const MEETING_START_DATE = '2017-01-01';
 
   /**
    * Policymaker roles for trustees (not decisionmaker organizations).
