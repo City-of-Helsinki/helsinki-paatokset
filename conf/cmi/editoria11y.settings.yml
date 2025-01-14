@@ -8,5 +8,7 @@ download_links: ''
 ignore_link_strings: ''
 link_ignore_selector: 'svg.ext, svg.mailto, .link-purpose-text'
 hidden_handlers: ''
+disable_live: false
+live_h2: 'form[id^="node-"] #edit-body-wrapper .ck-content'
 ignore_containers: ''
 allow_overflow: ''
