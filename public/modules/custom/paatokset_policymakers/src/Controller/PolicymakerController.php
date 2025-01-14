@@ -4,10 +4,8 @@ namespace Drupal\paatokset_policymakers\Controller;
 
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Utility\Error;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -30,14 +28,11 @@ class PolicymakerController extends ControllerBase {
    *   Policymaker service.
    * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
    *   Organization path builder service.
-   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The logger.
    */
   public function __construct(
-    private readonly ImmutableConfig $config,
-    private readonly PolicymakerService $policymakerService,
-    private readonly OrganizationPathBuilder $organizationPathBuilderService,
-    private readonly LoggerChannelInterface $logger,
+    private ImmutableConfig $config,
+    private PolicymakerService $policymakerService,
+    private OrganizationPathBuilder $organizationPathBuilderService,
   ) {
     $this->policymakerService->setPolicyMakerByPath();
   }
@@ -49,8 +44,7 @@ class PolicymakerController extends ControllerBase {
     return new static(
       $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
       $container->get('paatokset_policymakers'),
-      $container->get(OrganizationPathBuilder::class),
-      $container->get('logger.channel.paatokset_policymakers')
+      $container->get(OrganizationPathBuilder::class)
     );
   }
 
@@ -190,13 +184,7 @@ class PolicymakerController extends ControllerBase {
    *   Render array.
    */
   public function minutes(string $id): array {
-    try {
-      $meetingData = $this->policymakerService->getMeetingAgenda($id);
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      $meetingData = [];
-    }
+    $meetingData = $this->policymakerService->getMeetingAgenda($id);
 
     $build = [
       '#theme' => 'policymaker_minutes',
@@ -224,11 +212,11 @@ class PolicymakerController extends ControllerBase {
     // Add cache context for minutes of the discussion for the link to show up.
     $build['#cache']['tags'][] = 'media_list:minutes_of_the_discussion';
 
-    if (isset($meetingData['decision_announcement'])) {
+    if ($meetingData['decision_announcement']) {
       $build['decision_announcement'] = $meetingData['decision_announcement'];
     }
 
-    if (isset($meetingData['meeting_metadata'])) {
+    if ($meetingData['meeting_metadata']) {
       $build['meeting_metadata'] = $meetingData['meeting_metadata'];
     }
 

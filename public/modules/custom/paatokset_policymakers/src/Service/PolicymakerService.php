@@ -1355,10 +1355,6 @@ class PolicymakerService {
    *   Meeting node or NULL if one can't be loaded.
    */
   public function getMeetingNode(string $meetingId): ?NodeInterface {
-    if (!$this->policymakerId) {
-      return NULL;
-    }
-
     $query = $this->nodeStorage
       ->getQuery()
       ->accessCheck(TRUE)
