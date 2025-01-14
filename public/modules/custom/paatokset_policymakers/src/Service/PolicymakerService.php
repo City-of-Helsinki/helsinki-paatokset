@@ -1356,7 +1356,7 @@ class PolicymakerService {
    */
   public function getMeetingNode(string $meetingId): ?NodeInterface {
     if (!$this->policymakerId) {
-      return null;
+      return NULL;
     }
 
     $query = $this->nodeStorage
