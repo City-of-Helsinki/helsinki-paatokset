@@ -31,12 +31,13 @@ class PolicymakerController extends ControllerBase {
    * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
    *   Organization path builder service.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
    */
   public function __construct(
     private readonly ImmutableConfig $config,
     private readonly PolicymakerService $policymakerService,
     private readonly OrganizationPathBuilder $organizationPathBuilderService,
-    private readonly LoggerChannelInterface $logger
+    private readonly LoggerChannelInterface $logger,
   ) {
     $this->policymakerService->setPolicyMakerByPath();
   }
