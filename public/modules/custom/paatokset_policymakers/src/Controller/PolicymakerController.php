@@ -178,7 +178,7 @@ class PolicymakerController extends ControllerBase {
   public function discussionMinutes(): array {
     $policymaker = $this->policymakerService->getPolicymaker();
     if (!$policymaker) {
-      return ['#title' => $this->t('Discussion minutes: ')];
+      return ['#title' => $this->t('Discussion minutes:')];
     }
     return ['#title' => $this->t('Discussion minutes: @title', ['@title' => $policymaker->get('title')->value])];
   }
