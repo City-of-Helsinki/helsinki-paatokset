@@ -1,31 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_submenus\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Documents Block.
- *
- * @Block(
- *    id = "paatokset_minutes_of_discussion",
- *    admin_label = @Translation("Paatokset minutes of discussion block"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'paatokset_minutes_of_discussion',
+  admin_label: new TranslatableMarkup('Paatokset minutes of discussion block'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritDoc}
    */
-  public function __construct(
+  final public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private PolicymakerService $policymakerService,
+    private readonly PolicymakerService $policymakerService,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->policymakerService->setPolicyMakerByPath();
@@ -44,9 +47,9 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
 
     return [
@@ -56,9 +59,9 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return [
       'media_list:minutes_of_the_discussion',
       'node_list:meeting',
@@ -66,9 +69,9 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 

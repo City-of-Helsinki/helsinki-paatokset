@@ -9,11 +9,4 @@ redirect_login: user
 redirect_logout: ''
 userinfo_mappings:
   timezone: zoneinfo
-role_mappings:
-  read_only: {  }
-  content_producer: {  }
-  editor: {  }
-  admin: {  }
-  api_user: {  }
-  elevated_api_user: {  }
-  super_administrator: {  }
+role_mappings: {  }
