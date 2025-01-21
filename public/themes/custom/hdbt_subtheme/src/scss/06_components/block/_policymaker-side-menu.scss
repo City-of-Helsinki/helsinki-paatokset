@@ -19,8 +19,8 @@
     .sidebar-navigation__title span {
       align-items: center;
       display: flex;
-      margin-block: 8px;
-      padding: 16px;
+      margin-block: $spacing-half;
+      padding: $spacing;
     }
   }
 }
