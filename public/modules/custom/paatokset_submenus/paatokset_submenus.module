@@ -100,8 +100,10 @@ function paatokset_submenus_preprocess_block(&$variables) {
 
     $variables['current_option'] = json_decode($variables['elements']['content']['#current_option']);
 
-    // Check if the current option is active.
-    function is_active_trail($currentOption, $option) {
+    /**
+     * Check if the current option is active.
+     */
+    function paatokset_submenus_is_active_trail($currentOption, $option) {
       return $currentOption->value === $option->value;
     }
 
