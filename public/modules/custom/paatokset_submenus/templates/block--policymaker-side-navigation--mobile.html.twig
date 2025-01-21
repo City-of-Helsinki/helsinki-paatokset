@@ -1,12 +1,5 @@
-
-
-{% if menu_link_parent_is_current %}
-  {% set section_menu_title_current = 'page' %}
-{% else %}
-  {% set section_menu_title_current = null %}
-{% endif %}
-
-{{ dump()}}
+{% set section_menu_title_link = attributes.id ~ '-menu-link'|clean_id %}
+{% set section_menu_aria_controls = attributes.id ~ '-menu'|clean_id %}
 
 {% set heading_id = attributes.id ~ '-menu'|clean_id %}
 <nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes|without('role', 'aria-labelledby') }} class="sidebar-navigation sidebar-navigation--section-navigation policymaker-side-menu policymaker-side-menu--mobile">
@@ -19,10 +12,7 @@
           'sidebar-navigation__title-link',
         ],
       } %}
-
-      <span>
-        {{ current_option.label }}
-      </span>
+      <span>{{ current_option.label }}</span>
     </div>
     <span class="section-navigation__toggle-wrapper">
       <button
@@ -37,7 +27,6 @@
     </span>
   </div>
   <div class="section-navigation__menu-wrapper" id=" {{ section_menu_aria_controls }}">
-    {# Group menu. #}
     {% block content %}
       {% embed "@hdbt/navigation/menu.html.twig" with {auto_open: true, allow_collabsible: true} %}{% endembed %}
     {% endblock %}

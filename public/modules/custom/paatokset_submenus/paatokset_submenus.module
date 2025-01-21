@@ -99,12 +99,18 @@ function paatokset_submenus_preprocess_block(&$variables) {
     $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
 
     $variables['current_option'] = json_decode($variables['elements']['content']['#current_option']);
+    function is_active_trail($currentOption, $option) {
+      return $currentOption->value === $option->value;
+    }
     
-    // Create menu items for mobile navigation.
+    // Create fake menu items for mobile navigation.
     foreach (json_decode($variables['elements']['content']['#options']) as $option) {
       $variables['items'][] = [
         'title' => $option->label,
         'url' => Url::fromUserInput($option->value),
+        'attributes' => new Attribute(),
+        'in_active_trail' => is_active_trail($variables['current_option'], $option),
+        'is_currentPage' => is_active_trail($variables['current_option'], $option),
       ];
     }
   }
