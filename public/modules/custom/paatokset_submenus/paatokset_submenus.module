@@ -100,13 +100,6 @@ function paatokset_submenus_preprocess_block(&$variables) {
 
     $variables['current_option'] = json_decode($variables['elements']['content']['#current_option']);
 
-    /**
-     * Check if the current option is active.
-     */
-    function paatokset_submenus_is_active_trail($currentOption, $option) {
-      return $currentOption->value === $option->value;
-    }
-
     // Create fake menu items for mobile navigation.
     foreach (json_decode($variables['elements']['content']['#options']) as $option) {
       $variables['items'][] = [
@@ -118,6 +111,13 @@ function paatokset_submenus_preprocess_block(&$variables) {
       ];
     }
   }
+}
+
+/**
+ * Helper function to check if the current option is in active trail.
+ */
+function paatokset_submenus_is_active_trail($currentOption, $option) {
+  return $currentOption->value === $option->value;
 }
 
 /**
