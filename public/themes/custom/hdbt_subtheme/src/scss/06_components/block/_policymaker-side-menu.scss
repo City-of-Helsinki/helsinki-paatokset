@@ -8,24 +8,19 @@
 .policymaker-side-menu {
   &.policymaker-side-menu--mobile {
     max-width: 1328px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
+
     margin-bottom: -30px;
     margin-top: 30px;
 
-    @include breakpoint($breakpoint-m) {
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
-    li + li {
-      margin-top: 0;
-    }
-
     @include breakpoint($breakpoint-l) {
       display: none;
+    }
+
+    .sidebar-navigation__title span {
+      align-items: center;
+      display: flex;
+      margin-block: 8px;
+      padding: 16px;
     }
   }
 }

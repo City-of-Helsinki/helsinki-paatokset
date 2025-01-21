@@ -1,6 +1,45 @@
 
-{% if dropdown_attributes.options %}
-  <div class="policymaker-side-menu policymaker-side-menu--mobile">
-    <hds-dropdown{{ dropdown_attributes }} ></hds-dropdown>
-  </div>
+
+{% if menu_link_parent_is_current %}
+  {% set section_menu_title_current = 'page' %}
+{% else %}
+  {% set section_menu_title_current = null %}
 {% endif %}
+
+{{ dump()}}
+
+{% set heading_id = attributes.id ~ '-menu'|clean_id %}
+<nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes|without('role', 'aria-labelledby') }} class="sidebar-navigation sidebar-navigation--section-navigation policymaker-side-menu policymaker-side-menu--mobile">
+  <div class="section-navigation__header">
+    <div{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title section-navigation__title">
+      {% set link_attributes = {
+        'id': section_menu_title_link,
+        'aria-current':  section_menu_title_current,
+        'class': [
+          'sidebar-navigation__title-link',
+        ],
+      } %}
+
+      <span>
+        {{ current_option.label }}
+      </span>
+    </div>
+    <span class="section-navigation__toggle-wrapper">
+      <button
+        type="button"
+        aria-expanded="false"
+        aria-controls="{{ section_menu_aria_controls }}"
+        aria-labelledby="{{ section_menu_title_link }}"
+        aria-haspopup="true"
+        class="menu__toggle-button">
+        {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down', class: 'menu__toggle-button-icon'} %}
+      </button>
+    </span>
+  </div>
+  <div class="section-navigation__menu-wrapper" id=" {{ section_menu_aria_controls }}">
+    {# Group menu. #}
+    {% block content %}
+      {% embed "@hdbt/navigation/menu.html.twig" with {auto_open: true, allow_collabsible: true} %}{% endembed %}
+    {% endblock %}
+  </div>
+</nav>

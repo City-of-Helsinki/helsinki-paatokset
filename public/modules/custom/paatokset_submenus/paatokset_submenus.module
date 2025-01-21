@@ -96,21 +96,16 @@ function paatokset_submenus_preprocess_block(&$variables) {
   }
 
   if ($variables['plugin_id'] === 'policymaker_side_nav_mobile') {
-    $variables['#attached']['library'][] = 'hds_web_components/Dropdown';
     $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
 
-    if (isset($variables['elements']['content']['#options'])) {
-      $attributes = [
-        'link-to-selection' => 'link-to-selection',
-        'placeholder' => t('Move to page'),
-        'options' => $variables['elements']['content']['#options'],
+    $variables['current_option'] = json_decode($variables['elements']['content']['#current_option']);
+    
+    // Create menu items for mobile navigation.
+    foreach (json_decode($variables['elements']['content']['#options']) as $option) {
+      $variables['items'][] = [
+        'title' => $option->label,
+        'url' => Url::fromUserInput($option->value),
       ];
-
-      if (isset($variables['elements']['content']['#current_option'])) {
-        $attributes['value'] = $variables['elements']['content']['#current_option'];
-      }
-
-      $variables['dropdown_attributes'] = new Attribute($attributes);
     }
   }
 }
