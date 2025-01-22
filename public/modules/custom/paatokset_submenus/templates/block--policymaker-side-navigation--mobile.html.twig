@@ -12,13 +12,6 @@
 <nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes.addClass(nav_classes)|without('role', 'aria-labelledby') }}>
   <div class="section-navigation__header">
     <div{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title section-navigation__title">
-      {% set link_attributes = {
-        'id': section_menu_title_link,
-        'aria-current':  section_menu_title_current,
-        'class': [
-          'sidebar-navigation__title-link',
-        ],
-      } %}
       <span>{{ current_option.label }}</span>
     </div>
     <span class="section-navigation__toggle-wrapper">
