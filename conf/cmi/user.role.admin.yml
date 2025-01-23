@@ -38,7 +38,6 @@ dependencies:
     - editoria11y
     - entity_browser
     - entity_usage
-    - eu_cookie_compliance
     - file
     - filter
     - helfi_api_base
@@ -96,8 +95,6 @@ permissions:
   - 'administer ahjo openid'
   - 'administer ahjo proxy'
   - 'administer blocks'
-  - 'administer eu cookie compliance categories'
-  - 'administer eu cookie compliance popup'
   - 'administer menu'
   - 'administer nodes'
   - 'administer paatokset'
