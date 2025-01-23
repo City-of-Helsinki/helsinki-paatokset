@@ -2,14 +2,19 @@
 {% set section_menu_aria_controls = attributes.id ~ '-menu'|clean_id %}
 
 {% set heading_id = attributes.id ~ '-menu'|clean_id %}
-{% set nav_classes = [
-  'sidebar-navigation',
-  'sidebar-navigation--section-navigation',
-  'policymaker-side-menu',
-  'policymaker-side-menu--mobile',
-]%}
+{% set wrapper_attributes = {
+  'class': [
+    'sidebar-navigation',
+    'sidebar-navigation--section-navigation',
+    'policymaker-side-menu',
+    'policymaker-side-menu--mobile',
+  ],
+  'role': 'navigation',
+  'aria-labelledby': heading_id,
+  'id': attributes.id,
+} %}
 
-<nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes.addClass(nav_classes)|without('role', 'aria-labelledby') }}>
+<nav {{ create_attribute(wrapper_attributes) }} >
   <div class="section-navigation__header">
     <div{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title section-navigation__title">
       <span>{{ current_option.label }}</span>
