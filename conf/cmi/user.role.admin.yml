@@ -40,6 +40,7 @@ dependencies:
     - entity_usage
     - file
     - filter
+    - hdbt_cookie_banner
     - helfi_api_base
     - helfi_tpr
     - locale
@@ -95,6 +96,7 @@ permissions:
   - 'administer ahjo openid'
   - 'administer ahjo proxy'
   - 'administer blocks'
+  - 'administer hdbt_cookie_banner'
   - 'administer menu'
   - 'administer nodes'
   - 'administer paatokset'
