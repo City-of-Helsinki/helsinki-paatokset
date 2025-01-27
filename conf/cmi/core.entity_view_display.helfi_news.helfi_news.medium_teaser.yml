@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.helfi_news.medium_teaser
-    - external_entities.external_entity_type.helfi_news
   module:
     - external_entities
   enforced:

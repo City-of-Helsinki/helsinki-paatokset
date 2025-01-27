@@ -3,6 +3,7 @@ display:
   default:
     display_title: Oletus
     display_options:
+      title: 'Lukitut sisällöt'
       exposed_form:
         options:
           submit_button: Käytä
@@ -31,13 +32,15 @@ display:
         type:
           label: Sisältötyyppi
           separator: ', '
-        timestamp:
-          label: 'Lukituksen ajankohta'
         name:
           label: 'Lukituksen tekijä'
           separator: ', '
         operations:
           label: Toimenpiteet
+        timestamp:
+          label: 'Lukituksen ajankohta'
+        langcode_1:
+          label: 'Sisällön kieli'
       filters:
         status:
           expose:
@@ -53,10 +56,9 @@ display:
         title:
           expose:
             label: Otsikko
-      title: 'Lukitut sisällöt'
       empty:
         area_text_custom:
-          content: 'Lukittuja toimipisteitä ei ole.'
+          content: 'Lukittua sisältöä ei ole.'
   page_1:
     display_title: Sivu
     display_options:

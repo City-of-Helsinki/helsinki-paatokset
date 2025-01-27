@@ -2,8 +2,6 @@ uuid: b2a4601b-3be0-4376-8751-c95db64866ac
 langcode: en
 status: true
 dependencies:
-  config:
-    - system.menu.admin
   module:
     - node
     - scheduler
@@ -20,7 +18,7 @@ base_field: vid
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
@@ -723,8 +721,8 @@ display:
             remember: false
             multiple: false
             remember_roles:
-              anonymous: '0'
               authenticated: '0'
+              anonymous: '0'
               administrator: '0'
           is_grouped: true
           group_info:
@@ -1076,7 +1074,7 @@ display:
           admin_label: ''
           entity_type: node
           entity_field: uid
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: empty
           exception:
             value: all
@@ -1108,6 +1106,7 @@ display:
             roles: {  }
           break_phrase: false
           not: false
+          target_entity_type_id: user
       defaults:
         empty: false
         access: true

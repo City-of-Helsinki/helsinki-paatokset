@@ -2,8 +2,6 @@ uuid: 7060dc64-5f95-4fa5-8046-bf0ad5e265c4
 langcode: en
 status: true
 dependencies:
-  config:
-    - external_entities.external_entity_type.helfi_news_tags
   module:
     - external_entities
 _core:
