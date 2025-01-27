@@ -11,7 +11,7 @@ display:
         name:
           label: Användarnamn
         status:
-          label: Tila
+          label: Status
           settings:
             format_custom_false: Spärrad
             format_custom_true: Aktiv
@@ -58,7 +58,7 @@ display:
             label: 'Namn eller e-post innehåller'
         status:
           group_info:
-            label: Tila
+            label: Status
             group_items:
               1:
                 title: Aktiv
