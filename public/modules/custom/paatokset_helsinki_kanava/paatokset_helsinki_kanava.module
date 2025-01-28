@@ -65,7 +65,6 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     ->accessCheck(TRUE)
     ->range(0, 10)
     ->condition('start_time', strtotime('now'), '<')
-    ->condition('asset_id', '', '<>')
     ->sort('start_time', 'DESC');
 
   $ids = $query->execute();
@@ -79,11 +78,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder($video->getEntityTypeId());
 
     $variables['most_recent_meeting'] = $view_builder->view($video);
-    $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'), [
-      'query' => [
-        'assetId' => $video->get('asset_id')->value,
-      ],
-    ])->toString();
+    $variables['all_recordings_link'] = Url::fromUri(\Drupal::config('paatokset_helsinki_kanava.settings')->get('all_recordings_link'))->toString();
   }
 
   $upcomingIds = \Drupal::entityQuery('meeting_video')

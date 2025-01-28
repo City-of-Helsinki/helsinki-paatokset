@@ -6,7 +6,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\migrate\Row;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -82,25 +81,6 @@ final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryP
    */
   public function count($refresh = FALSE): int {
     return -1;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row): bool {
-    $recordings = $row->getSourceProperty('recordings');
-
-    if (empty($recordings)) {
-      return FALSE;
-    }
-    foreach ($recordings as $record) {
-      if (isset($record['assetId'])) {
-        $row->setSourceProperty('assetId', $record['assetId']);
-        break;
-      }
-    }
-
-    return TRUE;
   }
 
   /**
