@@ -7,9 +7,7 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Render\Element;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
@@ -139,38 +137,4 @@ function _paatokset_helsinki_kanava_should_show_label(string $time): bool {
   // Convert start time to date only.
   $date = strtotime(date('j.n.Y', (int) $time));
   return strtotime('now') < $date;
-}
-
-/**
- * Add start_time field to meeting videos.
- */
-function paatokset_helsinki_kanava_update_9001() {
-  $entity_type_id = 'meeting_video';
-  $field_storage_definition = BaseFieldDefinition::create('string')
-    ->setLabel(new TranslatableMarkup('start_time'))
-    ->setTranslatable(TRUE)
-    ->setRevisionable(TRUE)
-    ->setDefaultValue('')
-    ->setCardinality(1)
-    ->setDisplayConfigurable('view', TRUE)
-    ->setDisplayConfigurable('form', TRUE);
-
-  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('start_time', $entity_type_id, $entity_type_id, $field_storage_definition);
-}
-
-/**
- * Add asset ID field for meeting videos.
- */
-function paatokset_helsinki_kanava_update_9002() {
-  $entity_type_id = 'meeting_video';
-  $field_storage_definition = BaseFieldDefinition::create('string')
-    ->setLabel(new TranslatableMarkup('asset_id'))
-    ->setTranslatable(TRUE)
-    ->setRevisionable(TRUE)
-    ->setDefaultValue('')
-    ->setCardinality(1)
-    ->setDisplayConfigurable('view', TRUE)
-    ->setDisplayConfigurable('form', TRUE);
-
-  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('asset_id', $entity_type_id, $entity_type_id, $field_storage_definition);
 }

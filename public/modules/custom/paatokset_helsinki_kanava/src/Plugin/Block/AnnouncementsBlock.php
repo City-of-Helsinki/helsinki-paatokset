@@ -2,10 +2,12 @@
 
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -13,14 +15,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Agendas Submenu Block.
- *
- * @Block(
- *    id = "paatokset_helsinki_kanava_announcements",
- *    admin_label = @Translation("Helsinki Kanava announcements"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
-class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
+#[Block(
+  id: "paatokset_helsinki_kanava_announcements",
+  admin_label: new TranslatableMarkup("Helsinki Kanava announcements"),
+  category: new TranslatableMarkup("Paatokset custom blocks")
+)]
+final class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritDoc}
@@ -40,7 +41,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
+    return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
@@ -53,7 +54,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $council_id = $this->config->get('paatokset_helsinki_kanava.settings')->get('city_council_id');
     $councilNode = $this->policymakerService->getPolicyMaker($council_id);
 
@@ -96,7 +97,7 @@ class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['meeting_video_list', 'node_list:meeting'];
   }
 

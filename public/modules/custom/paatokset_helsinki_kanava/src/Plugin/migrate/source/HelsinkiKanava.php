@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  id = "helsinki_kanava"
  * )
  */
-class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginInterface {
+final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginInterface {
   /**
    * The total count.
    *
@@ -32,6 +32,29 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
    * @var \GuzzleHttp\ClientInterface
    */
   protected ClientInterface $httpClient;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    ?MigrationInterface $migration = NULL,
+  ) {
+    if ($url = self::getApiUrl($configuration['url'])) {
+      $configuration['url'] = $url;
+    }
+
+    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
+    $instance->httpClient = $container->get('http_client');
+    if (!isset($configuration['ids'])) {
+      throw new \InvalidArgumentException('The "ids" configuration is missing.');
+    }
+
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -50,32 +73,34 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function fields() {
+  public function fields(): array {
     return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function count($refresh = FALSE) {
+  public function count($refresh = FALSE): int {
     return -1;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row): void {
+  public function prepareRow(Row $row): bool {
     $recordings = $row->getSourceProperty('recordings');
 
     if (empty($recordings)) {
-      return;
+      return FALSE;
     }
     foreach ($recordings as $record) {
       if (isset($record['assetId'])) {
         $row->setSourceProperty('assetId', $record['assetId']);
-        return;
+        break;
       }
     }
+
+    return TRUE;
   }
 
   /**
@@ -104,29 +129,6 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    ?MigrationInterface $migration = NULL,
-  ) {
-    if ($url = self::getApiUrl($configuration['url'])) {
-      $configuration['url'] = $url;
-    }
-
-    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
-    $instance->httpClient = $container->get('http_client');
-    if (!isset($configuration['ids'])) {
-      throw new \InvalidArgumentException('The "ids" configuration is missing.');
-    }
-
-    return $instance;
-  }
-
-  /**
    * Gets modified API Url with correct query parameters for fetching videos.
    *
    * @param string $base_url
@@ -138,10 +140,11 @@ class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginI
   protected static function getApiUrl(string $base_url): ?string {
     $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
+    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingsService */
     $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
     $fromTime = strtotime('-4 months') * 1000;
     $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
-    $toTime = $nextMeetingDate ? $nextMeetingDate * 1000 : round(microtime(TRUE) * 1000);
+    $toTime = $nextMeetingDate ? ((int) $nextMeetingDate) * 1000 : round(microtime(TRUE) * 1000);
 
     $version = '01';
     $languageId = 'fi_FI';
