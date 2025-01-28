@@ -16,8 +16,8 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
           tags:
-            previous: ‹‹
-            next: ››
+            previous: Föregående
+            next: Nästa
       fields:
         entity_browser_select:
           label: Välj

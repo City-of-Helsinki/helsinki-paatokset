@@ -19,10 +19,10 @@ display:
       pager:
         options:
           tags:
-            next: 'Следующий ›'
-            previous: '‹ Предыдущий'
-            first: '« Первая'
-            last: 'Последняя »'
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'

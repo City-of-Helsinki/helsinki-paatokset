@@ -1,5 +1,5 @@
-label: Omdirigera
-description: 'Lista över omdirigeringar'
+label: Redirect
+description: 'List of redirects'
 display:
   default:
     display_title: Förvald
@@ -14,10 +14,10 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ föregående'
-            next: 'nästa ›'
-            first: '« första'
-            last: 'sista »'
+            previous: Föregående
+            next: Nästa
+            first: Första
+            last: Sista
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -60,7 +60,7 @@ display:
         language:
           expose:
             label: Originalspråk
-      title: Omdirigera
+      title: Redirect
       empty:
         area_text_custom:
           content: 'Det finns inga omdirigeringar ännu.'
