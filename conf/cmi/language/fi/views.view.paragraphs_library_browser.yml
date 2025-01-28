@@ -16,8 +16,8 @@ display:
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
           tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
+            previous: Edellinen
+            next: Seuraava
       fields:
         entity_browser_select:
           label: Valitse

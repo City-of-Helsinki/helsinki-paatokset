@@ -22,7 +22,7 @@ display:
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
-          label: Status
+          label: Tila
           separator: ', '
         changed:
           label: Uppdaterad
@@ -32,10 +32,10 @@ display:
       pager:
         options:
           tags:
-            next: 'Nästa ›'
-            previous: '‹ Föregående'
-            first: '« Första'
-            last: 'Sista »'
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'

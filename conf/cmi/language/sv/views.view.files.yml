@@ -14,8 +14,8 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ Föregående'
-            next: 'Nästa ›'
+            previous: Föregående
+            next: Nästa
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -31,7 +31,7 @@ display:
         filesize:
           label: Storlek
         status:
-          label: Status
+          label: Tila
           settings:
             format_custom_false: Temporär
             format_custom_true: Permanent
@@ -53,7 +53,7 @@ display:
             label: 'Typ av MIME'
         status:
           expose:
-            label: Status
+            label: Tila
       title: Filer
       empty:
         area_text_custom:
@@ -69,8 +69,8 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ Föregående'
-            next: 'Nästa ›'
+            previous: Föregående
+            next: Nästa
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'

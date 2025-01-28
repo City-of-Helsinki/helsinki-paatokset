@@ -17,7 +17,7 @@ display:
           settings:
             format_custom_true: Publicerad
             format_custom_false: 'Ej publicerad'
-          label: Status
+          label: Tila
           separator: ', '
         publish_on:
           label: 'Publicera den'
@@ -43,7 +43,7 @@ display:
               2:
                 title: 'Ej publicerad'
           expose:
-            label: Status
+            label: Tila
         langcode:
           expose:
             label: Språk
@@ -57,10 +57,10 @@ display:
       pager:
         options:
           tags:
-            previous: '‹ föregående'
-            next: 'nästa ›'
-            first: '« första'
-            last: 'sista »'
+            previous: Föregående
+            next: Nästa
+            first: Första
+            last: Sista
       title: 'Schemalagt innehåll'
       empty:
         area_text_custom:

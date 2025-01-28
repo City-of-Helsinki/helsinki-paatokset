@@ -11,7 +11,7 @@ display:
         name:
           label: Användarnamn
         status:
-          label: Status
+          label: Tila
           settings:
             format_custom_false: Spärrad
             format_custom_true: Aktiv
@@ -34,10 +34,10 @@ display:
       pager:
         options:
           tags:
-            next: 'Nästa ›'
-            previous: '‹ Föregående'
-            first: '« Första'
-            last: 'Sista »'
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
           expose:
             items_per_page_label: 'Inlägg per sida'
             items_per_page_options_all_label: '- Alla -'
@@ -58,7 +58,7 @@ display:
             label: 'Namn eller e-post innehåller'
         status:
           group_info:
-            label: Status
+            label: Tila
             group_items:
               1:
                 title: Aktiv
