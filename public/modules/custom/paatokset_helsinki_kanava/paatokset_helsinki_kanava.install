@@ -13,7 +13,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Add start_time field to meeting videos.
  */
-function paatokset_helsinki_kanava_update_9001() {
+function paatokset_helsinki_kanava_update_9001(): void {
   $entity_type_id = 'meeting_video';
   $field_storage_definition = BaseFieldDefinition::create('string')
     ->setLabel(new TranslatableMarkup('start_time'))
@@ -30,7 +30,7 @@ function paatokset_helsinki_kanava_update_9001() {
 /**
  * Add asset ID field for meeting videos.
  */
-function paatokset_helsinki_kanava_update_9002() {
+function paatokset_helsinki_kanava_update_9002(): void {
   $entity_type_id = 'meeting_video';
   $field_storage_definition = BaseFieldDefinition::create('string')
     ->setLabel(new TranslatableMarkup('asset_id'))
