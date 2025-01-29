@@ -1,0 +1,9 @@
+paatokset_helsinki_kanava.settings:
+  type: config_object
+  mapping:
+    debug_mode:
+      type: boolean
+    city_council_id:
+      type: string
+    all_recordings_link:
+      type: string
