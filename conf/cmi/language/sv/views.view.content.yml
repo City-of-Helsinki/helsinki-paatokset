@@ -4,16 +4,13 @@ display:
       fields:
         langcode:
           label: Språk
-          separator: ', '
         title:
           label: Titel
         type:
           label: Innehållstyp
-          separator: ', '
         name:
           label: Författare
         status:
-          label: Status
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
@@ -25,10 +22,10 @@ display:
       pager:
         options:
           tags:
-            next: 'Nästa ›'
-            previous: '‹ Föregående'
-            first: '« Första'
-            last: 'Sista »'
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
       exposed_form:
         options:
           submit_button: Filtrera
@@ -47,13 +44,13 @@ display:
           expose:
             label: Innehållstyp
         status:
-          expose:
-            label: Status
           group_info:
             label: 'Status för publicering'
             group_items:
               1:
                 title: Publicerad
+              2:
+                title: 'Ej publicerad'
         langcode:
           expose:
             label: Språk
