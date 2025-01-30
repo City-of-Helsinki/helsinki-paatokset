@@ -25,6 +25,8 @@ final readonly class DatapumppuImportOptions {
    *   Statement import end year.
    * @param bool $sync
    *   Delete existing statements before import.
+   * @param bool $update
+   *   Update previously-imported items with the current data.
    * @param ?string $trustee
    *   Import statements for specific trustee.
    */
@@ -64,11 +66,11 @@ final readonly class DatapumppuImportOptions {
 
     $endYear = (int) date("Y");
 
-    if (is_numeric($options['year'])) {
+    if (!empty($options['year'])) {
       $startYear = (int) $options['year'];
       $endYear = (int) $options['year'];
     }
-    elseif (is_numeric($options['start-year'])) {
+    elseif (!empty($options['start-year'])) {
       $startYear = (int) $options['start-year'];
     }
     else {
@@ -76,8 +78,8 @@ final readonly class DatapumppuImportOptions {
     }
 
     $dataset = $options['dataset'] ?? 'all';
-    $sync = (bool) $options['sync'];
-    $update = (bool) $options['update'];
+    $sync = (bool) ($options['sync'] ?? FALSE);
+    $update = (bool) ($options['update'] ?? FALSE);
     $trustee = $options['trustee'] ?? NULL;
 
     return new self(
