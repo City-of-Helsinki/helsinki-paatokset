@@ -6,7 +6,6 @@ namespace Drupal\paatokset_datapumppu\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -61,7 +60,12 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  */
 final class Statement extends ContentEntityBase {
 
-  use RevisionLogEntityTrait;
+  /**
+   * Get speaker id.
+   */
+  public function getSpeakerId(): ?string {
+    return $this->get('speaker')->target_id;
+  }
 
   /**
    * {@inheritdoc}
