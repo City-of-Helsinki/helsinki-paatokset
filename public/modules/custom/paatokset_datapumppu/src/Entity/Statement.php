@@ -6,9 +6,9 @@ namespace Drupal\paatokset_datapumppu\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 
 /**
  * Defines the paatokset_statement entity class.
@@ -61,7 +61,25 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  */
 final class Statement extends ContentEntityBase {
 
-  use RevisionLogEntityTrait;
+  /**
+   * Get speaker id.
+   */
+  public function getSpeakerId(): ?string {
+    return $this->get('speaker')->target_id;
+  }
+
+  /**
+   * Get speaker.
+   */
+  public function getSpeaker(): ?Trustee {
+    if (!$this->get('speaker')->isEmpty()) {
+      $entity = $this->get('speaker')->entity;
+      assert($entity instanceof Trustee);
+      return $entity;
+    }
+
+    return NULL;
+  }
 
   /**
    * {@inheritdoc}

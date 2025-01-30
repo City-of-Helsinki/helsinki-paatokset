@@ -1,0 +1,19 @@
+uuid: 4c24b968-132e-4601-b846-028e4e4ce070
+langcode: en
+status: true
+dependencies:
+  module:
+    - json_field
+    - node
+id: node.field_trustee_resolutions
+field_name: field_trustee_resolutions
+entity_type: node
+type: json_native
+settings: {  }
+module: json_field
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

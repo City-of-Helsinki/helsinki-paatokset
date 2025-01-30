@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\paatokset_datapumppu\Entity\Statement;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -33,14 +35,13 @@ function paatokset_datapumppu_paatokset_statement_delete(EntityInterface $entity
 /**
  * Invalidates custom cache tags for statement.
  *
- * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   Entity to base cache invalidations on.
  */
 function _paatokset_datapumppu_invalidate_statement_cache_tags(EntityInterface $entity): void {
-  $trustee_id = NULL;
-  if ($entity->hasField('speaker') && !$entity->get('speaker')->isEmpty()) {
-    $trustee_id = $entity->get('speaker')->getString();
-  }
+  assert($entity instanceof Statement);
+
+  $trustee_id = $entity->getSpeakerId();
 
   $tags = [];
   if ($trustee_id) {
@@ -49,7 +50,7 @@ function _paatokset_datapumppu_invalidate_statement_cache_tags(EntityInterface $
 
   if (!empty($tags)) {
     /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
-    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_invalidator = \Drupal::service(CacheTagsInvalidatorInterface::class);
     $cache_invalidator->invalidateTags($tags);
   }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\paatokset_datapumppu\Service;
 
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
@@ -14,33 +13,20 @@ use Drupal\paatokset_datapumppu\Entity\Statement;
 /**
  * Statement service.
  */
-final class StatementService {
-
-  /**
-   * Node storage service.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  private EntityStorageInterface $statementStorage;
-
-  /**
-   * Date formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  private DateFormatterInterface $dateFormatter;
+readonly class StatementService {
 
   /**
    * Constructs StatementService.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date formatter.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, DateFormatterInterface $date_formatter) {
-    $this->statementStorage = $entity_type_manager->getStorage('paatokset_statement');
-    $this->dateFormatter = $date_formatter;
+  public function __construct(
+    private EntityTypeManagerInterface $entityTypeManager,
+    private DateFormatterInterface $dateFormatter,
+  ) {
   }
 
   /**
@@ -53,7 +39,10 @@ final class StatementService {
    *   Found statement entities.
    */
   public function getStatementsByTrustee(NodeInterface $trustee): array {
-    $statements = $this->statementStorage
+    $statementStorage = $this->entityTypeManager
+      ->getStorage('paatokset_statement');
+
+    $statements = $statementStorage
       ->getQuery()
       ->accessCheck(TRUE)
       ->condition('speaker', $trustee->id())
@@ -61,7 +50,7 @@ final class StatementService {
       ->execute();
 
     /** @var \Drupal\paatokset_datapumppu\Entity\Statement[] $entities */
-    $entities = $this->statementStorage->loadMultiple($statements);
+    $entities = $statementStorage->loadMultiple($statements);
 
     return $entities;
   }

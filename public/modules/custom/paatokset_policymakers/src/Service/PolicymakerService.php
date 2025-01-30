@@ -16,7 +16,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
@@ -202,7 +201,7 @@ class PolicymakerService {
    * @return \Drupal\node\NodeInterface|null
    *   Policymaker node or NULL.
    */
-  public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?Node {
+  public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?NodeInterface {
     if ($id === NULL) {
       return $this->policymaker;
     }
