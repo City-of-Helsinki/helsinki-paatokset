@@ -1,6 +1,0 @@
-services:
-  paatokset_datapumppu.datapumppu_commands:
-    class: Drupal\paatokset_datapumppu\Commands\DatapumppuCommands
-    tags:
-      - { name: drush.command }
-    arguments: ['@plugin.manager.migration']

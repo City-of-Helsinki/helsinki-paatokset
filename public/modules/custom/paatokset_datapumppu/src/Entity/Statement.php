@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 
 /**
  * Defines the paatokset_statement entity class.
@@ -65,6 +66,13 @@ final class Statement extends ContentEntityBase {
    */
   public function getSpeakerId(): ?string {
     return $this->get('speaker')->target_id;
+  }
+
+  /**
+   * Get speaker.
+   */
+  public function getSpeaker(): ?Trustee {
+    return $this->get('speaker')->entity;
   }
 
   /**
