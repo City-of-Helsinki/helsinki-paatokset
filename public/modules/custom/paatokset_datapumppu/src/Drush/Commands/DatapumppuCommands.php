@@ -11,7 +11,6 @@ use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
-use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
 use Drupal\paatokset_datapumppu\Entity\Statement;
 use Drush\Attributes;

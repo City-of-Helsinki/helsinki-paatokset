@@ -72,7 +72,13 @@ final class Statement extends ContentEntityBase {
    * Get speaker.
    */
   public function getSpeaker(): ?Trustee {
-    return $this->get('speaker')->entity;
+    if (!$this->get('speaker')->isEmpty()) {
+      $entity = $this->get('speaker')->entity;
+      assert($entity instanceof Trustee);
+      return $entity;
+    }
+
+    return NULL;
   }
 
   /**
