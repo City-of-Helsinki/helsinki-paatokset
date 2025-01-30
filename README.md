@@ -11,6 +11,10 @@ test       |     *     |      -      | https://drupal-paatokset.test.hel.ninja/ 
 stage      |     *     |      -      | https://drupal-paatokset.stage.hel.ninja/fi/etusivu    | Staging environment
 production | tag based |      -      | https://paatokset.hel.fi                               | Production environment
 
+## Documentation
+
+- [Datapumppu integration](./public/modules/custom/paatokset_datapumppu/README.md)
+
 ## Requirements
 
 You need to have these applications installed to operate on all environments:

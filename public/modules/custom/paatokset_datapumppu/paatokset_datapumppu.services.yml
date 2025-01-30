@@ -1,4 +1,11 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.paatokset_datapumppu:
+    parent: logger.channel_base
+    arguments: [ 'helfi_etusivu' ]
+
   Drupal\paatokset_datapumppu\Service\StatementService:
     class: Drupal\paatokset_datapumppu\Service\StatementService
-    arguments: ['@entity_type.manager', '@date.formatter']

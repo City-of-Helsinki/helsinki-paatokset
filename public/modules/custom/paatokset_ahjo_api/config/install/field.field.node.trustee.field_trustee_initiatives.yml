@@ -1,0 +1,21 @@
+uuid: 9b24614c-0e5f-48a1-b397-a30797c887d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_initiatives
+    - node.type.trustee
+  module:
+    - json_field
+id: node.trustee.field_trustee_initiatives
+field_name: field_trustee_initiatives
+entity_type: node
+bundle: trustee
+label: Initiatives
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

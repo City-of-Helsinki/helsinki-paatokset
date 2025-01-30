@@ -1,0 +1,21 @@
+uuid: b5bdecb8-e580-42ac-93bf-658a525004f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_chairmanships
+    - node.type.trustee
+  module:
+    - json_field
+id: node.trustee.field_trustee_chairmanships
+field_name: field_trustee_chairmanships
+entity_type: node
+bundle: trustee
+label: Chairmanships
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
