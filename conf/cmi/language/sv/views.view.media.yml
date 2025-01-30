@@ -22,7 +22,7 @@ display:
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
-          label: Status
+          label: Tila
           separator: ', '
         changed:
           label: Uppdaterad
