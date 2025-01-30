@@ -1,0 +1,12 @@
+uuid: 21f44270-7ecb-4b95-8905-a026322a9358
+langcode: en
+status: true
+dependencies: []
+third_party_settings: {}
+name: Trustee
+type: trustee
+description: 'Persons with position of trust, imported from Ahjo API.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false
