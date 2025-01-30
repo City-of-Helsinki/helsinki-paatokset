@@ -59,6 +59,7 @@ final class DatapumppuCommands extends DrushCommands {
   #[Attributes\Usage(name: 'datapumppu:all-trustee-statements --start-year=2020', description: 'Retries all trustee statements starting from a specific year.')]
   #[Attributes\Usage(name: 'datapumppu:all-trustee-statements --trustee="Mehiläinen Maija"', description: 'Retrieves statements made by specified trustee.')]
   #[Attributes\Usage(name: 'datapumppu:all-trustee-statements --year=2020 --sync', description: 'Deletes statements made in 2020 and and re-retrieves them.')]
+  #[Attributes\Usage(name: 'datapumppu:all-trustee-statements --year=2020 --update', description: 'Updates statements made in 2020 to match the API.')]
   public function getAllTrusteeStatements(
     array $options = [
       'start-year' => NULL,
