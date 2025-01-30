@@ -255,7 +255,7 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
     $this->logger->info("Fetching from $url");
     $result = $this->getContent($url);
 
-    return array_map(fn (array $row) => array_merge($row, [
+    return array_map(fn (array $row) => empty($row) ? [] : array_merge($row, [
       'trustee_nid' => $trustee->id(),
       'langcode' => $lang,
     ]), $result);
