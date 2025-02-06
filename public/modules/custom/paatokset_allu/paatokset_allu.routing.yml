@@ -1,0 +1,22 @@
+paatokset_allu.decision:
+  path: '/allu/decision/{document}'
+  defaults:
+    _controller: '\Drupal\paatokset_allu\Controller\Controller::decision'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      document:
+        type: entity:paatokset_allu_decision
+
+
+paatokset_allu.approval:
+  path: '/allu/approval/{document}/{approvalType}'
+  defaults:
+    _controller: '\Drupal\paatokset_allu\Controller\Controller::decision'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      document:
+        type: entity:paatokset_allu_approval

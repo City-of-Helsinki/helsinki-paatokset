@@ -1,0 +1,4 @@
+administer paatokset_allu_document types:
+  title: 'Administer document types'
+  description: 'Maintain the types of document entity.'
+  restrict access: true

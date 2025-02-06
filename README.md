@@ -14,6 +14,7 @@ production | tag based |      -      | https://paatokset.hel.fi                 
 ## Documentation
 
 - [Datapumppu integration](./public/modules/custom/paatokset_datapumppu/README.md)
+- [Allu integration](./public/modules/custom/paatokset_allu/README.md)
 
 ## Requirements
 
