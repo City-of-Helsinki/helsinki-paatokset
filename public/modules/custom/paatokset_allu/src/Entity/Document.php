@@ -8,7 +8,6 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Url;
 use Drupal\paatokset_allu\DocumentInterface;
 
 /**
@@ -57,11 +56,6 @@ class Document extends ContentEntityBase implements DocumentInterface {
   /**
    * {@inheritdoc}
    */
-  public const DOCUMENT_ROUTE = 'paatokset_allu.document';
-
-  /**
-   * {@inheritdoc}
-   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -84,19 +78,6 @@ class Document extends ContentEntityBase implements DocumentInterface {
       ->setSetting('max_length', 255);
 
     return $fields;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getDocumentUrl(): Url {
-    if (!static::DOCUMENT_ROUTE) {
-      throw new \LogicException("Subclasses must override DOCUMENT_ROUTE constant");
-    }
-
-    return Url::fromRoute(static::DOCUMENT_ROUTE, [
-      'document' => $this->id(),
-    ]);
   }
 
 }
