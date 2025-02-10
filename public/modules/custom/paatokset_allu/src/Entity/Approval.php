@@ -18,15 +18,16 @@ namespace Drupal\paatokset_allu\Entity;
  *     plural = "@count approvals",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\paatokset_allu\Entity\Listing\ListBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
  *     "form" = {
  *       "default" = "Drupal\Core\Entity\ContentEntityForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\paatokset_allu\Routing\DocumentHtmlRouteProvider",
+ *       "html" = "Drupal\helfi_api_base\Entity\Routing\EntityRouteProvider",
  *     },
  *   },
  *   base_table = "paatokset_allu_approval",
@@ -40,7 +41,6 @@ namespace Drupal\paatokset_allu\Entity;
  *     "collection" = "/admin/content/allu/approval",
  *     "canonical" = "/allu/document/approval/{paatokset_allu_decision}",
  *     "delete-form" = "/allu/document/approval/{paatokset_allu_decision}/delete",
- *     "delete-multiple-form" = "/admin/content/allu/approval/delete-multiple",
  *   },
  * )
  */

@@ -18,19 +18,20 @@ namespace Drupal\paatokset_allu\Entity;
  *     plural = "@count decisions",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\paatokset_allu\Entity\Listing\ListBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
  *     "form" = {
  *       "default" = "Drupal\Core\Entity\ContentEntityForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\paatokset_allu\Routing\DocumentHtmlRouteProvider",
+ *       "html" = "Drupal\helfi_api_base\Entity\Routing\EntityRouteProvider",
  *     },
  *   },
  *   base_table = "paatokset_allu_decision",
- *   admin_permission = "administer paatokset_allu_document types",
+ *   admin_permission = "administer remote entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
@@ -38,9 +39,9 @@ namespace Drupal\paatokset_allu\Entity;
  *   },
  *   links = {
  *     "collection" = "/admin/content/allu/decision",
+ *     "edit-form" = "/admin/content/allu/decision/{paatokset_allu_decision}/edit",
  *     "canonical" = "/allu/document/decision/{paatokset_allu_decision}",
  *     "delete-form" = "/allu/document/decision/{paatokset_allu_decision}/delete",
- *     "delete-multiple-form" = "/admin/content/allu/decision/delete-multiple",
  *   },
  * )
  */
