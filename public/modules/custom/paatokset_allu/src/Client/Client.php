@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * Allu API client.
  */
-readonly class Client {
+class Client {
 
   /**
    * Cache control header for PDF documents.
@@ -29,9 +29,9 @@ readonly class Client {
    *   The settings.
    */
   public function __construct(
-    private ClientInterface $client,
-    private TokenFactory $tokenFactory,
-    private Settings $settings,
+    private readonly ClientInterface $client,
+    private readonly TokenFactory $tokenFactory,
+    private readonly Settings $settings,
   ) {
   }
 
