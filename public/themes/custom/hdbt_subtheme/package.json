@@ -4,13 +4,14 @@
   "description": "Webpack configuration for HDBT Subtheme",
   "author": "Druid",
   "license": "MIT",
-  "repository": "github:City-of-Helsinki/drupal-hel-platform",
+  "repository": "github:City-of-Helsinki/helsinki-paatokset",
   "scripts": {
     "dev": "webpack --progress --mode=development --config  webpack.config.js --watch",
     "build": "webpack --progress --mode=production --config webpack.config.js",
     "preinstall": "npx update-browserslist-db@latest",
     "lint": "lint-staged",
-    "lint:js": "eslint --fix src/"
+    "lint:js": "eslint --fix src/",
+    "prepare": "cd ../../../.. && husky install public/themes/custom/hdbt_subtheme/.husky || true"
   },
   "dependencies": {
     "@babel/core": "^7.14.3",
