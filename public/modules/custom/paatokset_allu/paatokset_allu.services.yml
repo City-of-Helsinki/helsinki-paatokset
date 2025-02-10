@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.paatokset_allu:
+    parent: logger.channel_base
+    arguments: ['paatokset_allu']
+
+  Drupal\paatokset_allu\Client\Client: ~
+  Drupal\paatokset_allu\Client\TokenFactory: ~
+  Drupal\paatokset_allu\Client\SettingsFactory: ~
+  Drupal\paatokset_allu\Client\Settings:
+    factory: [ '@Drupal\paatokset_allu\Client\SettingsFactory', 'create' ]
+
