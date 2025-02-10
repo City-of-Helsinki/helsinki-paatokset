@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_allu\DocumentInterface;
 
 /**
  * Defines the decision entity class.
@@ -50,7 +51,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  *   },
  * )
  */
-class Approval extends ContentEntityBase {
+class Approval extends ContentEntityBase implements DocumentInterface {
 
   /**
    * {@inheritdoc}
