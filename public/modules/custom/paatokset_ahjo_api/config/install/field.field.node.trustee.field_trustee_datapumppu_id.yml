@@ -1,0 +1,19 @@
+uuid: 13cd519d-0f2c-487a-a6fc-279328a929d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_trustee_datapumppu_id
+    - node.type.trustee
+id: node.trustee.field_trustee_datapumppu_id
+field_name: field_trustee_datapumppu_id
+entity_type: node
+bundle: trustee
+label: 'Nimitieto Datapumppua varten'
+description: 'Valmiiksi formatoitu nimitieto Datapumpun rajapintaa varten, jos ei vastaa AHJOsta saatavia nimiä.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -14,7 +14,7 @@ $config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_
 // Sentry DSN for React.
 $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
 
-// AD role mapping
+// AD role mapping.
 $config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
   [
     'ad_role' => 'Drupal_Helfi_kaupunkitaso_paakayttajat',
@@ -34,7 +34,23 @@ $config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
   ],
 ];
 
+$config['helfi_api_base.api_accounts']['vault'][] = [
+  'id' => 'allu',
+  'plugin' => 'json',
+  'data' => json_encode([
+    'username' => getenv('ALLU_USERNAME'),
+    'password' => getenv('ALLU_PASSWORD'),
+  ]),
+];
+
+if (getenv('ALLU_BASE_URL')) {
+  $config['paatokset_allu.settings']['base_url'] = getenv('ALLU_BASE_URL');
+}
+
 $additionalEnvVars = [
+  // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-9640.
+  // 'ALLU_USERNAME',
+  // 'ALLU_PASSWORD',
   'DRUPAL_VARNISH_HOST',
   'DRUPAL_VARNISH_PORT',
   'REDIS_HOST',
