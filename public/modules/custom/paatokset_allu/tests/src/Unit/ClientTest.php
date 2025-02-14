@@ -51,14 +51,14 @@ class ClientTest extends KernelTestBase {
       new Response(body: json_encode([$approval])),
     ]);
 
-    $response = $sut->decisions(DecisionType::EVENT, new \DateTimeImmutable('-1 week'));
+    $response = $sut->decisions(DecisionType::EVENT, new \DateTimeImmutable('-1 week'), new \DateTimeImmutable('now'));
     $this->assertIsArray($response);
     $this->assertCount(2, $response);
     foreach ($response as $document) {
       $this->assertSame($document + ['type' => DecisionType::EVENT->value], $document);
     }
 
-    $response = $sut->approvals(ApprovalType::OPERATIONAL_CONDITION, new \DateTimeImmutable('-1 week'));
+    $response = $sut->approvals(ApprovalType::OPERATIONAL_CONDITION, new \DateTimeImmutable('-1 week'), new \DateTimeImmutable('now'));
     $this->assertIsArray($response);
     $this->assertCount(1, $response);
     foreach ($response as $document) {
@@ -75,7 +75,7 @@ class ClientTest extends KernelTestBase {
     ]);
 
     $this->expectException(AlluException::class);
-    $sut->decisions(DecisionType::EVENT, new \DateTimeImmutable('-1 week'));
+    $sut->decisions(DecisionType::EVENT, new \DateTimeImmutable('-1 week'), new \DateTimeImmutable('now'));
   }
 
   /**
@@ -87,7 +87,7 @@ class ClientTest extends KernelTestBase {
     ]);
 
     $this->expectException(AlluException::class);
-    $sut->approvals(ApprovalType::OPERATIONAL_CONDITION, new \DateTimeImmutable('-1 week'));
+    $sut->approvals(ApprovalType::OPERATIONAL_CONDITION, new \DateTimeImmutable('-1 week'), new \DateTimeImmutable('now'));
   }
 
   /**

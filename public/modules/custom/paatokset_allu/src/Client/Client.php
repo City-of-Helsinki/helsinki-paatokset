@@ -54,7 +54,7 @@ class Client {
    *
    * @throws \Drupal\paatokset_allu\AlluException
    */
-  public function decisions(DecisionType $type, \DateTimeImmutable $after, \DateTimeImmutable $before = new \DateTimeImmutable()): array {
+  public function decisions(DecisionType $type, \DateTimeImmutable $after, \DateTimeImmutable $before): array {
     try {
       $response = $this->client->request('POST', "{$this->settings->baseUrl}/external/v2/documents/applications/decisions/search", [
         'headers' => [
@@ -92,7 +92,7 @@ class Client {
    *
    * @throws \Drupal\paatokset_allu\AlluException
    */
-  public function approvals(ApprovalType $type, \DateTimeImmutable $after, \DateTimeImmutable $before = new \DateTimeImmutable()): array {
+  public function approvals(ApprovalType $type, \DateTimeImmutable $after, \DateTimeImmutable $before): array {
     try {
       $response = $this->client->request('POST', "{$this->settings->baseUrl}/external/v1/documents/applications/approval/{$type->value}/search", [
         'headers' => [
