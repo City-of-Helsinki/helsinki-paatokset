@@ -15,6 +15,24 @@ is to render frontend search component ([@todo UHF-10566](https://helsinkisoluti
 The PDF files are not publicly accessible from Allu, since the api requires authentication, so the public links
 proxy the files from Allu API.
 
+## Migrations
+
+Allu documents are imported with a Drupal migration. The migration imports documents that have been created within one week
+and older content can be imported with a Drush command. Under the hood, the Drush command just runs the same migration with
+different parameters.
+
+Import most recent documents:
+```shell
+drush migrate:import allu_decisions
+drush migrate:import allu_approvals
+```
+
+Import historical data:
+```shell
+drush allu:run-allu-migration allu_decisions --start="-5 year" --update
+```
+Check all available parameters with `--help` option.
+
 ## Configuration
 
 Using this integration locally requires allu credentials in your `local.settings.php` file. The value can be found from [Confluence](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
