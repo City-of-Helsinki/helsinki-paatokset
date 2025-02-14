@@ -67,10 +67,9 @@ class Client {
         ],
       ]);
 
-      return array_map(
-        fn ($decision) => $decision + ['type' => $type->value],
-        Utils::jsonDecode($response->getBody()->getContents(), TRUE)
-      );
+      $content = $response->getBody()->getContents();
+
+      return array_map(fn ($decision) => $decision + ['type' => $type->value], Utils::jsonDecode($content, TRUE));
     }
     catch (GuzzleException $e) {
       throw new AlluException($e->getMessage(), $e->getCode(), $e);
