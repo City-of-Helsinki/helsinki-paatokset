@@ -1,0 +1,126 @@
+uuid: 95470af7-7fe8-41b4-8120-ee3762a4b8b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.default
+  module:
+    - helfi_react_search
+    - paatokset_allu
+    - paatokset_search
+id: allu
+name: Allu
+description: ''
+read_only: false
+field_settings:
+  address:
+    label: Address
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: address
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  aggregated_field:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      separator: |+
+
+
+      fields: {  }
+  approval_created:
+    label: 'Authored on'
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - paatokset_allu
+  approval_type:
+    label: 'Document type'
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  custom_value:
+    label: 'Custom value'
+    property_path: custom_value
+    type: string
+    configuration:
+      value: ''
+  decision_type:
+    label: 'Document type'
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  document:
+    label: Document
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: document
+    type: integer
+    dependencies:
+      module:
+        - paatokset_allu
+  document_created:
+    label: 'Authored on'
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - paatokset_allu
+  label:
+    label: Label
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: label
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
+    configuration:
+      absolute: false
+datasource_settings:
+  'entity:paatokset_allu_approval': {  }
+  'entity:paatokset_allu_document': {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  color_class: {  }
+  custom_value: {  }
+  decision_url: {  }
+  decisionmaker_combined_title: {  }
+  district_image_absolute_url: {  }
+  entity_type: {  }
+  has_translation: {  }
+  language_with_fallback: {  }
+  project_execution_schedule: {  }
+  project_image_absolute_url: {  }
+  project_plan_schedule: {  }
+  rendered_item: {  }
+  sector_id: {  }
+  special_status: {  }
+  top_category_id: {  }
+  trustee_name: {  }
+  trustee_title: {  }
+  unique_issue_id: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 100
+  delete_on_fail: true
+  index_directly: false
+  track_changes_in_references: true
+server: default

@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\DocumentInterface;
 
 /**
@@ -33,19 +34,18 @@ use Drupal\paatokset_allu\DocumentInterface;
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+ *       "html" = "Drupal\paatokset_allu\Entity\Routing\EntityRouteProvider",
  *     },
  *   },
  *   base_table = "paatokset_allu_approval",
  *   admin_permission = "administer remote entities",
  *   entity_keys = {
  *     "id" = "id",
- *     "label" = "label",
  *     "uuid" = "uuid",
  *   },
  *   links = {
  *     "collection" = "/admin/content/allu/approval",
- *     "canonical" = "/allu/approval/{paatokset_allu_approval}",
+ *     "canonical" = "/allu/approval/{paatokset_allu_approval}/download",
  *     "edit-form" = "/allu/approval/{paatokset_allu_approval}/edit",
  *     "delete-form" = "/allu/approval/{paatokset_allu_approval}/delete",
  *   },
@@ -75,6 +75,22 @@ class Approval extends ContentEntityBase implements DocumentInterface {
       ]);
 
     return $fields;
+  }
+
+  /**
+   * Get referenced document.
+   */
+  public function getDocument(): ?Document {
+    $entity = $this->get('document')?->entity;
+    assert(!$entity || $entity instanceof Document);
+    return $entity;
+  }
+
+  /**
+   * Get approval type.
+   */
+  public function getApprovalType(): ?ApprovalType {
+    return ApprovalType::tryFrom($this->get('type')->value);
   }
 
 }

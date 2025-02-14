@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_allu
+id: allu_decisions
+migration_tags:
+  - paatokset_allu
+migration_group: paatokset_allu
+label: 'Allu API - Decisions'
+source:
+  plugin: paatokset_allu:DECISION
+  ids:
+    id:
+      type: 'string'
+  fields:
+    - name: id
+      selector: id
+    - name: type
+      selector: type
+    - name: label
+      selector: applicationId
+    - name: address
+      selector: address
+    - name: created
+      selector: decisionDate
+process:
+  id: id
+  label: label
+  type: type
+  address: address
+  created:
+    plugin: callback
+    source: created
+    callable: strtotime
+destination:
+  plugin: entity:paatokset_allu_document
+migration_dependencies: {  }
