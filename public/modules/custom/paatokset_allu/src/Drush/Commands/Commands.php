@@ -19,9 +19,6 @@ final class Commands extends DrushCommands {
 
   use AutowireTrait;
 
-  private const DECISION_MIGRATION_ID = 'allu_decisions';
-  private const APPROVAL_MIGRATION_ID = 'allu_approvals';
-
   /**
    * Constructor for Commands.
    *
