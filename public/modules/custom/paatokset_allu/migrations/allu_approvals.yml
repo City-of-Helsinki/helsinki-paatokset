@@ -33,6 +33,7 @@ process:
   document:
     - plugin: migration_lookup
       migration: allu_decisions
+      no_stub: true
       source:
         - id
   created:
