@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_allu
+id: allu_approvals
+migration_tags:
+  - paatokset_allu
+migration_group: paatokset_allu
+label: 'Allu API - Approvals'
+source:
+  plugin: paatokset_allu:APPROVAL
+  ids:
+    id:
+      type: 'string'
+    type:
+      type: 'string'
+  fields:
+    - name: id
+      selector: id
+    - name: type
+      selector: type
+    - name: label
+      selector: applicationId
+    - name: address
+      selector: address
+    - name: created
+      selector: approvalDate
+process:
+  label: label
+  type: type
+  document:
+    - plugin: migration_lookup
+      migration: allu_decisions
+      no_stub: true
+      source:
+        - id
+  created:
+    plugin: callback
+    source: created
+    callable: strtotime
+destination:
+  plugin: entity:paatokset_allu_approval
+migration_dependencies: {  }
