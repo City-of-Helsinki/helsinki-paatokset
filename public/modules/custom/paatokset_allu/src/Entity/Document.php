@@ -68,7 +68,7 @@ class Document extends ContentEntityBase implements DocumentInterface {
       ->setLabel(new TranslatableMarkup('Authored on'))
       ->setDescription(new TranslatableMarkup('The time that the document was created.'));
 
-    $fields['address'] = BaseFieldDefinition::create('created')
+    $fields['address'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Address'))
       ->setDescription(new TranslatableMarkup('Address that this document relates to.'));
 

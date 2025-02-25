@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\Client\Client;
+use Drupal\paatokset_allu\Entity\Approval;
 use Drupal\paatokset_allu\Entity\Document;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,13 +53,32 @@ class Controller extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\StreamedResponse
    *   PDF document.
    */
-  public function approval(Document $paatokset_allu_document, string $type): StreamedResponse {
+  public function approvalFromDecision(Document $paatokset_allu_document, string $type): StreamedResponse {
     $approvalType = ApprovalType::tryFrom($type);
     if (!$approvalType) {
       throw new NotFoundHttpException();
     }
 
     return $this->client->streamApproval($paatokset_allu_document->id(), $approvalType);
+  }
+
+  /**
+   * Stream approval.
+   *
+   * @param \Drupal\paatokset_allu\Entity\Approval $paatokset_allu_approval
+   *   Approval id.
+   *
+   * @return \Symfony\Component\HttpFoundation\StreamedResponse
+   *   PDF document.
+   */
+  public function approval(Approval $paatokset_allu_approval): StreamedResponse {
+    $document = $paatokset_allu_approval->getDocument();
+    $approvalType = $paatokset_allu_approval->getApprovalType();
+    if (!$document || !$approvalType) {
+      throw new NotFoundHttpException();
+    }
+
+    return $this->client->streamApproval($document->id(), $approvalType);
   }
 
 }
