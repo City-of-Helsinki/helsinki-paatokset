@@ -76,11 +76,11 @@ function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables) 
     $suggestions[] = 'block__views_block__news_latest_news';
   }
 
-  if($element['#plugin_id'] === 'system_branding_block') {
+  if ($element['#plugin_id'] === 'system_branding_block') {
     $suggestions[] = 'block__system_branding_block__non_core';
   }
 
-  if($element['#id'] === 'hdbt_subtheme_mainnavigation') {
+  if ($element['#id'] === 'hdbt_subtheme_mainnavigation') {
     $suggestions[] = 'block__mainnavigation__non_core';
   }
 }
@@ -147,7 +147,7 @@ function hdbt_subtheme_preprocess_region(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function hdbt_subtheme_theme_suggestions_region_alter(array &$suggestions, array $variables) {
-  if($variables['elements']['#region'] === 'header_top') {
+  if ($variables['elements']['#region'] === 'header_top') {
     $suggestions[] = 'region__header_top__non_core';
   }
 }
