@@ -7,6 +7,7 @@ dependencies:
     - paatokset_ahjo_openid
     - paatokset_ahjo_proxy
     - raven
+    - tfa
 id: elevated_api_user
 label: 'Elevated API user'
 weight: 7
@@ -15,5 +16,7 @@ permissions:
   - 'access ahjo documents'
   - 'access ahjo openid token'
   - 'access ahjo proxy'
+  - 'disable own tfa'
   - 'send performance traces to sentry'
+  - 'setup own tfa'
   - 'use key authentication'

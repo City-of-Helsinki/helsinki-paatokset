@@ -10,6 +10,7 @@ dependencies:
     - paragraphs
     - raven
     - system
+    - tfa
     - toolbar
 _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
@@ -20,8 +21,10 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
+  - 'disable own tfa'
   - 'send javascript errors to sentry'
   - 'send performance traces to sentry'
+  - 'setup own tfa'
   - 'view helfi_announcements external entity'
   - 'view helfi_news external entity'
   - 'view helfi_news_groups external entity'

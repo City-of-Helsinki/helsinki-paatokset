@@ -6,11 +6,14 @@ dependencies:
     - key_auth
     - paatokset_ahjo_proxy
     - raven
+    - tfa
 id: api_user
 label: 'API user'
 weight: 6
 is_admin: null
 permissions:
   - 'access ahjo proxy'
+  - 'disable own tfa'
   - 'send performance traces to sentry'
+  - 'setup own tfa'
   - 'use key authentication'
