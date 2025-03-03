@@ -63,6 +63,7 @@ settings:
       target_group_links: target_group_links
       event_list: event_list
       news_list: news_list
+      curated_event_list: curated_event_list
       hearings: hearings
       service_list: service_list
       service_list_search: service_list_search
@@ -74,7 +75,6 @@ settings:
       pdf_listing: pdf_listing
       custom_content_links: custom_content_links
       text: text
-      curated_event_list: curated_event_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
