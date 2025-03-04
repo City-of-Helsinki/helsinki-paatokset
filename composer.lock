@@ -4116,16 +4116,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.9.33",
+            "version": "6.9.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "1feb71ead47d16c2e56683f1edd99e37bb01e13c"
+                "reference": "09d9c0ac0c4c67a8f2766faf9387e6e676a2d93d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/1feb71ead47d16c2e56683f1edd99e37bb01e13c",
-                "reference": "1feb71ead47d16c2e56683f1edd99e37bb01e13c",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/09d9c0ac0c4c67a8f2766faf9387e6e676a2d93d",
+                "reference": "09d9c0ac0c4c67a8f2766faf9387e6e676a2d93d",
                 "shasum": ""
             },
             "require": {
@@ -4144,10 +4144,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.9.33",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.9.34",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2025-02-28T12:50:46+00:00"
+            "time": "2025-03-04T07:57:50+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4335,12 +4335,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-tools.git",
-                "reference": "cdb4837a98b7f30f2db719e03f45507abfedbe3b"
+                "reference": "50c4e5464ba09a29a22077e5a254c6f10e5ee316"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-tools/zipball/cdb4837a98b7f30f2db719e03f45507abfedbe3b",
-                "reference": "cdb4837a98b7f30f2db719e03f45507abfedbe3b",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-tools/zipball/50c4e5464ba09a29a22077e5a254c6f10e5ee316",
+                "reference": "50c4e5464ba09a29a22077e5a254c6f10e5ee316",
                 "shasum": ""
             },
             "require": {
@@ -4415,7 +4415,7 @@
                 "source": "https://github.com/City-of-Helsinki/drupal-tools/tree/main",
                 "issues": "https://github.com/City-of-Helsinki/drupal-tools/issues"
             },
-            "time": "2025-02-14T10:49:04+00:00"
+            "time": "2025-02-28T14:02:38+00:00"
         },
         {
             "name": "drupal/helfi_platform_config",
@@ -5764,17 +5764,17 @@
         },
         {
             "name": "drupal/paragraphs",
-            "version": "1.18.0",
+            "version": "1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/paragraphs.git",
-                "reference": "8.x-1.18"
+                "reference": "8.x-1.19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.18.zip",
-                "reference": "8.x-1.18",
-                "shasum": "594e2937ea5c95fc88b60420590c4d83f5cd71ee"
+                "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.19.zip",
+                "reference": "8.x-1.19",
+                "shasum": "831a81a11eac419e8410db45efef5b283c4d117c"
             },
             "require": {
                 "drupal/core": "^10.2 || ^11",
@@ -5787,7 +5787,7 @@
                 "drupal/entity_usage": "2.x-dev",
                 "drupal/feeds": "^3",
                 "drupal/field_group": "3.x-dev",
-                "drupal/inline_entity_form": "1.x-dev",
+                "drupal/inline_entity_form": "3.x-dev",
                 "drupal/paragraphs-paragraphs_library": "*",
                 "drupal/replicate": "1.x-dev",
                 "drupal/search_api": "^1",
@@ -5799,8 +5799,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.18",
-                    "datestamp": "1723029144",
+                    "version": "8.x-1.19",
+                    "datestamp": "1740907076",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5817,7 +5817,7 @@
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Frans",
+                    "name": "frans",
                     "homepage": "https://www.drupal.org/user/514222"
                 },
                 {
