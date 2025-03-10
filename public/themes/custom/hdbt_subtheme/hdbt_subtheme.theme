@@ -477,3 +477,56 @@ function hdbt_subtheme_preprocess_node__article(&$variables) {
     $variables['unpublish_on'] = $node->get('unpublish_on')->getString();
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_aggregator_item(&$variables) {
+  $feed_entity = $variables['elements']['fid'][0]['#entity'];
+  $feed_url = $feed_entity->get('url')->value;
+  $feed_title = $feed_entity->get('title')->value;
+  $item_url = $variables['url'];
+
+  if ($feed_title !== 'Lupapiste') {
+    return;
+  }
+
+  // Fetch XML content instead of loading it directly.
+  $xml_content = @file_get_contents($feed_url);
+  if ($xml_content === false) {
+    \Drupal::logger('aggregator')->error('Failed to retrieve RSS feed from @url', ['@url' => $feed_url]);
+    return;
+  }
+
+  $xml = simplexml_load_string($xml_content, "SimpleXMLElement", LIBXML_NOCDATA);
+  if (!$xml || !$xml->channel || !$xml->channel->item) {
+    return;
+  }
+
+  foreach ($xml->channel->item as $item) {
+    if ((string) $item->link === $item_url) {
+      $namespaces = $item->getNamespaces(true);
+      $lupapiste = $item->children($namespaces['lupapiste']);
+
+      // Helper function to extract values safely.
+      $getValue = function ($field) use ($lupapiste) {
+        return isset($lupapiste->$field) ? (string) $lupapiste->$field : 'N/A';
+      };
+
+      // Assign extracted data.
+      $variables['additional_data'] = [
+        'lupatunnus' => $getValue('lupatunnus'),
+        'rakennuspaikka' => $getValue('rakennuspaikka'),
+        'julkaisuAlkaa' => $getValue('julkaisuAlkaa'),
+        'julkaisuPaattyy' => $getValue('julkaisuPaattyy'),
+        'kiinteistotunnus' => $getValue('kiinteistotunnus'),
+        'paatosPvm' => $getValue('paatosPvm'),
+        'paatoksenPykala' => $getValue('paatoksenPykala'),
+        'paattaja' => $getValue('paattaja'),
+        'asiakirjaLink' => $getValue('asiakirjaLink'),
+      ];
+
+      break;
+    }
+  }
+}
