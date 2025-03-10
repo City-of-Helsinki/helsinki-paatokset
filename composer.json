@@ -9,6 +9,7 @@
     "require": {
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6.7",
+        "drupal/aggregator": "^2.2",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/ckeditor": "^1.0",
         "drupal/core": "^10.0",
