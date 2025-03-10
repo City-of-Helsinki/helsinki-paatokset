@@ -493,7 +493,7 @@ function hdbt_subtheme_preprocess_aggregator_item(&$variables) {
 
   // Fetch XML content instead of loading it directly.
   $xml_content = @file_get_contents($feed_url);
-  if ($xml_content === false) {
+  if ($xml_content === FALSE) {
     \Drupal::logger('aggregator')->error('Failed to retrieve RSS feed from @url', ['@url' => $feed_url]);
     return;
   }
@@ -505,7 +505,7 @@ function hdbt_subtheme_preprocess_aggregator_item(&$variables) {
 
   foreach ($xml->channel->item as $item) {
     if ((string) $item->link === $item_url) {
-      $namespaces = $item->getNamespaces(true);
+      $namespaces = $item->getNamespaces(TRUE);
       $lupapiste = $item->children($namespaces['lupapiste']);
 
       // Helper function to extract values safely.
