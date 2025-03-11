@@ -116,6 +116,17 @@ class RssFeedBlockTest extends UnitTestCase {
     // Set up mock storage to return the feed.
     $this->feedStorage->method('load')->with('3')->willReturn($feed);
 
+    // Mock the view builder
+    $view_builder = $this->createMock(\Drupal\Core\Entity\EntityViewBuilder::class);
+    $view_builder->method('view')->with($feed, 'default')->willReturn([
+      '#markup' => 'RSS Feed Content'
+    ]);
+
+    // Mock getViewBuilder to return the view builder mock
+    $this->entityTypeManager->method('getViewBuilder')
+      ->with('aggregator_feed')
+      ->willReturn($view_builder);
+
     // Set the block's configuration.
     $this->rssFeedBlock->setConfiguration(['aggregator_feed' => '3']);
 
@@ -123,10 +134,8 @@ class RssFeedBlockTest extends UnitTestCase {
     $build = $this->rssFeedBlock->build();
 
     // Verify that build contains the expected render array.
-    $this->assertArrayHasKey('#theme', $build['rss_feed']);
-    $this->assertEquals('aggregator_feed', $build['rss_feed']['#theme']);
-    $this->assertEquals($feed, $build['rss_feed']['#feed']);
-    $this->assertEquals('default', $build['rss_feed']['#view_mode']);
+    $this->assertArrayHasKey('rss_feed', $build);
+    $this->assertEquals(['#markup' => 'RSS Feed Content'], $build['rss_feed']);
   }
 
 }
