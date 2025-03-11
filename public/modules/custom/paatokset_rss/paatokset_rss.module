@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Paatokset RSS module.
+ */
+
+declare(strict_types=1);
+
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_rss_preprocess_aggregator_item(&$variables) {
+  $feed_entity = $variables['elements']['fid'][0]['#entity'];
+  $feed_url = $feed_entity->get('url')->value;
+  $feed_title = $feed_entity->get('title')->value;
+  $item_url = $variables['url'];
+
+  if ($feed_title !== 'Lupapiste') {
+    return;
+  }
+
+  /** @var ClientInterface $http_client */
+  $http_client = \Drupal::service('http_client');
+
+  try {
+    $content = $http_client->request('GET', $feed_url);
+    $xml_content = $content->getBody()->getContents();
+    $xml = simplexml_load_string($xml_content, "SimpleXMLElement", LIBXML_NOCDATA);
+    if (!$xml || !$xml->channel || !$xml->channel->item) {
+      return;
+    }
+  }
+  catch (RequestException | GuzzleException | InvalidArgumentException $e) {
+    \Drupal::logger('aggregator')->error('Failed to retrieve RSS feed from @url', ['@url' => $feed_url]);
+    return;
+  }
+
+  foreach ($xml->channel->item as $item) {
+    if ((string) $item->link === $item_url) {
+      $namespaces = $item->getNamespaces(TRUE);
+      $lupapiste = $item->children($namespaces['lupapiste']);
+
+      // Helper function to extract values safely.
+      $getValue = function ($field) use ($lupapiste) {
+        return isset($lupapiste->$field) ? (string) $lupapiste->$field : 'N/A';
+      };
+
+      // Assign extracted data.
+      $variables['additional_data'] = [
+        'lupatunnus' => $getValue('lupatunnus'),
+        'rakennuspaikka' => $getValue('rakennuspaikka'),
+        'julkaisuAlkaa' => $getValue('julkaisuAlkaa'),
+        'julkaisuPaattyy' => $getValue('julkaisuPaattyy'),
+        'kiinteistotunnus' => $getValue('kiinteistotunnus'),
+        'paatosPvm' => $getValue('paatosPvm'),
+        'paatoksenPykala' => $getValue('paatoksenPykala'),
+        'paattaja' => $getValue('paattaja'),
+        'asiakirjaLink' => $getValue('asiakirjaLink'),
+      ];
+
+      break;
+    }
+  }
+}

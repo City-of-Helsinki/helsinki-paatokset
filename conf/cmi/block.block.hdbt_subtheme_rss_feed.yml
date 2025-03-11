@@ -1,0 +1,26 @@
+uuid: 3edd33b3-cc47-449e-9fd1-9cffccfa1db8
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_rss
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_rss_feed
+theme: hdbt_subtheme
+region: content_lower
+weight: 0
+provider: null
+plugin: rss_feed
+settings:
+  id: rss_feed
+  label: 'RSS Feed'
+  label_display: '0'
+  provider: paatokset_rss
+  aggregator_feed: '1'
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /paatoksenteko/lupapiste

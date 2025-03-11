@@ -1,0 +1,41 @@
+uuid: 983e6f75-e95d-484a-a497-2494ca8ca4c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - aggregator
+id: aggregator_feed.aggregator_feed.default
+targetEntityType: aggregator_feed
+bundle: aggregator_feed
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  refresh:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url:
+    type: uri
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
