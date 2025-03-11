@@ -66,7 +66,8 @@ class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface 
       '#target_type' => 'aggregator_feed',
       '#selection_handler' => 'default',
       '#description' => $this->t('Select an RSS feed from the aggregator module.'),
-      '#default_value' => $default_feed, // Set the default value if available
+    // Set the default value if available.
+      '#default_value' => $default_feed,
     ];
 
     return $form;
