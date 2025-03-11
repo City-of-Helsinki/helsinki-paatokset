@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_rss\Plugin\Block;
 
-use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Block\Attribute\Block;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\views\Views;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an RSS feed block.
@@ -17,7 +19,37 @@ use Drupal\views\Views;
   id: "rss_feed",
   admin_label: new TranslatableMarkup("RSS Feed"),
 )]
-class RssFeedBlock extends BlockBase {
+class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entity type manager service.
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * Constructs a new RssFeedBlock instance.
+   */
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    mixed $plugin_definition,
+    EntityTypeManagerInterface $entityTypeManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -52,10 +84,10 @@ class RssFeedBlock extends BlockBase {
     $aggregator_feed_id = $config['aggregator_feed'] ?? NULL;
 
     if ($aggregator_feed_id) {
-      $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($aggregator_feed_id);
+      $feed = $this->entityTypeManager->getStorage('aggregator_feed')->load($aggregator_feed_id);
 
       if ($feed) {
-        $build['rss_feed'] = \Drupal::entityTypeManager()
+        $build['rss_feed'] = $this->entityTypeManager
           ->getViewBuilder('aggregator_feed')
           ->view($feed, 'default');
       }
