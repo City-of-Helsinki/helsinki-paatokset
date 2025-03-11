@@ -52,12 +52,21 @@ class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface 
   public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
 
+    $config = $this->getConfiguration();
+    $aggregator_feed_id = $config['aggregator_feed'] ?? NULL;
+    $default_feed = NULL;
+
+    if ($aggregator_feed_id) {
+      $default_feed = $this->entityTypeManager->getStorage('aggregator_feed')->load($aggregator_feed_id);
+    }
+
     $form['aggregator_feed'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('RSS feed'),
       '#target_type' => 'aggregator_feed',
       '#selection_handler' => 'default',
       '#description' => $this->t('Select an RSS feed from the aggregator module.'),
+      '#default_value' => $default_feed, // Set the default value if available
     ];
 
     return $form;
