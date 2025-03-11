@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_rss\Unit\Block;
 
+use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -116,13 +117,13 @@ class RssFeedBlockTest extends UnitTestCase {
     // Set up mock storage to return the feed.
     $this->feedStorage->method('load')->with('3')->willReturn($feed);
 
-    // Mock the view builder
-    $view_builder = $this->createMock(\Drupal\Core\Entity\EntityViewBuilder::class);
+    // Mock the view builder.
+    $view_builder = $this->createMock(EntityViewBuilder::class);
     $view_builder->method('view')->with($feed, 'default')->willReturn([
-      '#markup' => 'RSS Feed Content'
+      '#markup' => 'RSS Feed Content',
     ]);
 
-    // Mock getViewBuilder to return the view builder mock
+    // Mock getViewBuilder to return the view builder mock.
     $this->entityTypeManager->method('getViewBuilder')
       ->with('aggregator_feed')
       ->willReturn($view_builder);
