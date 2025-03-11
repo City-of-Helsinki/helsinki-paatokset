@@ -22,18 +22,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The entity type manager service.
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * Constructs a new RssFeedBlock instance.
+   * {@inheritDoc}
    */
   public function __construct(
     array $configuration,
-    string $plugin_id,
-    mixed $plugin_definition,
-    EntityTypeManagerInterface $entityTypeManager,
+    $plugin_id,
+    $plugin_definition,
+    private EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
@@ -42,7 +37,7 @@ class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new self(
       $configuration,
       $plugin_id,
