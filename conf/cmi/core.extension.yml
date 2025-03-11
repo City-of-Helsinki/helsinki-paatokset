@@ -4,6 +4,7 @@ module:
   address: 0
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  aggregator: 0
   allowed_formats: 0
   big_pipe: 0
   big_pipe_sessionless: 0
@@ -133,6 +134,7 @@ module:
   paatokset_lang_switcher: 0
   paatokset_pdf_listing: 0
   paatokset_policymakers: 0
+  paatokset_rss: 0
   paatokset_search: 0
   paatokset_search_form: 0
   paatokset_submenus: 0
