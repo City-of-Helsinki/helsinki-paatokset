@@ -8,7 +8,6 @@ dependencies:
     - content_translation
     - node
     - publication_date
-    - raven
     - tfa
 _core:
   default_config_hash: CliaTgzCQcvNF9ot3u_EbHnydymXh8bvNgNFlSffj9s
@@ -25,7 +24,6 @@ permissions:
   - 'edit any survey content'
   - 'edit own survey content'
   - 'revert survey revisions'
-  - 'send performance traces to sentry'
   - 'set survey published on date'
   - 'setup own tfa'
   - 'translate survey node'
