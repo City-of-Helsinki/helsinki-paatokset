@@ -67,21 +67,3 @@ function paatokset_rss_preprocess_aggregator_item(&$variables) {
     }
   }
 }
-
-/**
- * Implements hook_theme().
- */
-function paatokset_rss_theme($existing, $type, $theme, $path) {
-  return [
-    'block__policymaker_side_navigation' => [
-      'base hook' => 'block',
-      'template' => '/block--policymaker-side-navigation',
-      'path' => $path . '/templates',
-    ],
-    'block__policymaker_side_navigation__mobile' => [
-      'base hook' => 'block',
-      'template' => '/block--policymaker-side-navigation--mobile',
-      'path' => $path . '/templates',
-    ],
-  ];
-}
