@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_rss\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
+use Drupal\helfi_platform_config\Plugin\Block\ContentBlockBase;
 use Drupal\Core\Block\Attribute\Block;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an RSS feed block.
@@ -19,39 +17,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: "rss_feed",
   admin_label: new TranslatableMarkup("RSS Feed"),
 )]
-class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * {@inheritDoc}
-   */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private EntityTypeManagerInterface $entityTypeManager,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->entityTypeManager = $entityTypeManager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new self(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager')
-    );
-  }
+class RssFeedBlock extends ContentBlockBase {
 
   /**
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
-
+  
     $config = $this->getConfiguration();
     $aggregator_feed_id = $config['aggregator_feed'] ?? NULL;
     $default_feed = NULL;
@@ -66,7 +39,6 @@ class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface 
       '#target_type' => 'aggregator_feed',
       '#selection_handler' => 'default',
       '#description' => $this->t('Select an RSS feed from the aggregator module.'),
-    // Set the default value if available.
       '#default_value' => $default_feed,
     ];
 

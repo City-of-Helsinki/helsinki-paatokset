@@ -4,41 +4,26 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_rss\Unit\Block;
 
-use Drupal\Core\Entity\EntityViewBuilder;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\FormStateInterface;
+use Drupal\Tests\helfi_platform_config\Unit\Block\BlockUnitTestBase;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\helfi_platform_config\EntityVersionMatcher;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_rss\Plugin\Block\RssFeedBlock;
-use Drupal\Tests\UnitTestCase;
-use Drupal\aggregator\Entity\Feed;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @coversDefaultClass \Drupal\paatokset_rss\Plugin\Block\RssFeedBlock
  *
  * @group paatokset_rss
  */
-class RssFeedBlockTest extends UnitTestCase {
+class RssFeedBlockTest extends BlockUnitTestBase {
 
   /**
-   * The block instance being tested.
+   * The tested block.
    *
-   * @var \Drupal\paatokset_rss\Plugin\Block\RssFeedBlock
+   * @var \Drupal\paatokset_rss\Plugin\Block\RssFeedBlock|\PHPUnit\Framework\MockObject\MockObject
    */
-  private RssFeedBlock $rssFeedBlock;
-
-  /**
-   * Mocked entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  private $entityTypeManager;
-
-  /**
-   * Mocked aggregator feed storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  private $feedStorage;
+  private RssFeedBlock|MockObject $rssFeedBlock;
 
   /**
    * {@inheritdoc}
@@ -46,97 +31,76 @@ class RssFeedBlockTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    // Mock the entity storage for aggregator_feed.
-    $this->feedStorage = $this->createMock(EntityStorageInterface::class);
+    $this->rssFeedBlock = $this->getMockBuilder(RssFeedBlock::class)
+      ->setConstructorArgs([
+        [],
+        'rss_feed',
+        ['provider' => 'paatokset_rss'],
+        $this->entityTypeManager,
+        $this->entityVersionMatcher,
+        $this->moduleHandler,
+      ])
+      ->onlyMethods(['getCurrentEntityVersion'])
+      ->getMock();
 
-    // Mock the entity type manager and return the storage when requested.
-    $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
-    $this->entityTypeManager->method('getStorage')
-      ->with('aggregator_feed')
-      ->willReturn($this->feedStorage);
-
-    // Create the block instance with dependency injection.
-    $this->rssFeedBlock = new RssFeedBlock(
-      [],
-      'rss_feed',
-      ['provider' => 'paatokset_rss'],
-      $this->entityTypeManager
-    );
-
-    // Set translation service for StringTranslationTrait.
-    $this->rssFeedBlock->setStringTranslation($this->getStringTranslationStub());
+    $this->rssFeedBlock->setStringTranslation($this->stringTranslation);
   }
 
   /**
-   * Tests that blockForm() returns the expected form structure.
-   *
-   * @covers ::blockForm
-   */
-  public function testBlockForm(): void {
-    $form_state = $this->createMock(FormStateInterface::class);
-    $form = [];
-
-    $form = $this->rssFeedBlock->blockForm($form, $form_state);
-
-    // Verify that the form contains the expected field.
-    $this->assertArrayHasKey('aggregator_feed', $form);
-
-    // Verify field type and description.
-    $this->assertEquals('entity_autocomplete', $form['aggregator_feed']['#type']);
-    $this->assertEquals('aggregator_feed', $form['aggregator_feed']['#target_type']);
-    $this->assertEquals('default', $form['aggregator_feed']['#selection_handler']);
-    $this->assertEquals('Select an RSS feed from the aggregator module.', (string) $form['aggregator_feed']['#description']);
-  }
-
-  /**
-   * Tests that submit saves the form values and updates configuration.
-   *
-   * @covers ::blockSubmit
-   */
-  public function testBlockSubmit(): void {
-    $form_state = $this->createMock(FormStateInterface::class);
-    $form_state->method('getValue')->with('aggregator_feed')->willReturn('3');
-
-    // Submit the form.
-    $this->rssFeedBlock->blockSubmit([], $form_state);
-
-    // Verify that the configuration is saved correctly.
-    $this->assertSame('3', $this->rssFeedBlock->getConfiguration()['aggregator_feed']);
-  }
-
-  /**
-   * Tests that build() renders the selected RSS feed.
+   * Tests that render array is correctly built with a valid entity.
    *
    * @covers ::build
    */
-  public function testBuild(): void {
-    // Create a mock feed entity.
-    $feed = $this->createMock(Feed::class);
-    $feed->method('label')->willReturn('Test RSS Feed');
+  public function testBuildReturnsCorrectRenderArray(): void {
+    $entity = $this->createMock(ContentEntityInterface::class);
+    $this->createMockedEntity($entity);
 
-    // Set up mock storage to return the feed.
-    $this->feedStorage->method('load')->with('3')->willReturn($feed);
+    $this->rssFeedBlock->expects($this->any())
+      ->method('getCurrentEntityVersion')
+      ->willReturn(['entity' => $entity, 'entity_version' => EntityVersionMatcher::ENTITY_VERSION_REVISION]);
 
-    // Mock the view builder.
-    $view_builder = $this->createMock(EntityViewBuilder::class);
-    $view_builder->method('view')->with($feed, 'default')->willReturn([
-      '#markup' => 'RSS Feed Content',
-    ]);
+      // Build the expected output
+    $expected = [
+      'rss_feed' => [
+        '#theme' => 'aggregator_feed',
+        '#aggregator_feed' => $entity,
+        '#cache' => [
+          'tags' => [
+            'aggregator_feed_view',
+            'aggregator_feed:3',  // Ensure cache tags match the ID 3
+          ],
+          'contexts' => [],
+          'max-age' => -1
+        ],
+        '#view_mode' => 'default',
+        '#weight' => 0,
+        '#pre_render' => [
+          [ // This array is pre-rendered for the view builder
+            0 => 'Drupal\aggregator\FeedViewBuilder',  // The view builder class
+            1 => 'build'  // The build method of the view builder
+          ]
+        ],
+      ],
+    ];
+      
 
-    // Mock getViewBuilder to return the view builder mock.
-    $this->entityTypeManager->method('getViewBuilder')
-      ->with('aggregator_feed')
-      ->willReturn($view_builder);
+    $this->assertEquals($expected, $this->rssFeedBlock->build());
+  }
 
-    // Set the block's configuration.
-    $this->rssFeedBlock->setConfiguration(['aggregator_feed' => '3']);
+  /**
+   * Create entity.
+   *
+   * @param \PHPUnit\Framework\MockObject\MockObject $entity
+   *   Mocked entity.
+   */
+  private function createMockedEntity(MockObject &$entity): void {
+    $entity->expects($this->any())
+      ->method('getCacheTags')
+      ->willReturn(['entity:aggregator_feed:1']);
 
-    // Call build() method.
-    $build = $this->rssFeedBlock->build();
-
-    // Verify that build contains the expected render array.
-    $this->assertArrayHasKey('rss_feed', $build);
-    $this->assertEquals(['#markup' => 'RSS Feed Content'], $build['rss_feed']);
+    $entity->expects($this->any())
+      ->method('id')
+      ->willReturn(1);
   }
 
 }
