@@ -17,10 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides an RSS feed block.
  */
 #[Block(
-  id: "rss_feed",
+  id: "lupapiste_rss_feed",
   admin_label: new TranslatableMarkup("RSS Feed"),
 )]
-final class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class LupapisteRssBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The rss storage.

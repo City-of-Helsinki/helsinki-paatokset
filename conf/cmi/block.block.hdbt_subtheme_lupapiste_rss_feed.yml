@@ -12,10 +12,10 @@ theme: hdbt_subtheme
 region: content_lower
 weight: 0
 provider: null
-plugin: rss_feed
+plugin: lupapiste_rss_feed
 settings:
-  id: rss_feed
-  label: 'RSS Feed'
+  id: lupapiste_rss_feed
+  label: 'Lupapiste RSS Feed'
   label_display: '0'
   provider: paatokset
 visibility:
