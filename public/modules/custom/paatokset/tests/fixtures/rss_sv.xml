@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <copyright>Cloudpermit Oy</copyright>
+    <language>sv</language>
+    <lastBuildDate>Thu, 20 Mar 2025 07:59:33 +0200</lastBuildDate>
+    <link>https://www-qa.lupapiste.fi/rss/kuulutus?organization=049-R&amp;lang=fi</link>
+    <pubDate>Wed, 12 Mar 2025 08:54:15 +0200</pubDate>
+    <title>Kunnan rakennusvalvonta - Kuulutukset</title>
+    <description>Kunnan rakennusvalvonta - Kuulutukset</description>
+    <item>
+      <lupapiste:toimenpideteksti xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">sv Asuinkerrostalon tai rivitalon rakentaminen</lupapiste:toimenpideteksti>
+      <lupapiste:lupatunnus xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">LP-049-2025-90341</lupapiste:lupatunnus>
+      <lupapiste:rakennuspaikka xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Miniatontie 12</lupapiste:rakennuspaikka>
+      <lupapiste:julkaisuAlkaa xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Thu, 13 Mar 2025 00:00:00 +0200</lupapiste:julkaisuAlkaa>
+      <lupapiste:julkaisuPaattyy xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Tue, 22 Apr 2025 23:59:59 +0300</lupapiste:julkaisuPaattyy>
+      <lupapiste:kiinteistotunnus xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">04903300810006</lupapiste:kiinteistotunnus>
+      <lupapiste:paatosPvm xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Wed, 12 Mar 2025 00:00:00 +0200</lupapiste:paatosPvm>
+      <lupapiste:paatoksenPykala xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">13</lupapiste:paatoksenPykala>
+      <lupapiste:paattaja xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Rakennustarkastaja</lupapiste:paattaja>
+      <lupapiste:asiakirjaLink xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">https://www-qa.lupapiste.fi/api/raw/download-bulletin-doc?bulletinId=LP-049-2025-90341_67d12f9be5770069ee7a654c</lupapiste:asiakirjaLink>
+      <description>Rakennuslupa:
+        Pientalo
+
+        (tarvittaessa:)
+        Aloittamisoikeus
+
+        *****</description>
+      <guid isPermaLink="false">LP-049-2025-90341_67d12f9be5770069ee7a654c</guid>
+      <link>https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90341_67d12f9be5770069ee7a654c</link>
+      <pubDate>Wed, 12 Mar 2025 08:54:15 +0200</pubDate>
+      <title>sv Asuinkerrostalon tai rivitalon rakentaminen</title>
+    </item>
+    <item>
+      <lupapiste:toimenpideteksti xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Autokatoksen tai muun katoksen tai vajan (esim. venevaja) rakentaminen</lupapiste:toimenpideteksti>
+      <lupapiste:lupatunnus xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">LP-049-2025-90350</lupapiste:lupatunnus>
+      <lupapiste:rakennuspaikka xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Miniatontie 12</lupapiste:rakennuspaikka>
+      <lupapiste:julkaisuAlkaa xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Tue, 11 Mar 2025 00:00:00 +0200</lupapiste:julkaisuAlkaa>
+      <lupapiste:julkaisuPaattyy xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Thu, 17 Apr 2025 23:59:59 +0300</lupapiste:julkaisuPaattyy>
+      <lupapiste:kiinteistotunnus xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">04903300810006</lupapiste:kiinteistotunnus>
+      <lupapiste:paatosPvm xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Mon, 10 Mar 2025 00:00:00 +0200</lupapiste:paatosPvm>
+      <lupapiste:paatoksenPykala xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">11</lupapiste:paatoksenPykala>
+      <lupapiste:paattaja xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Rakennustarkastaja</lupapiste:paattaja>
+      <lupapiste:asiakirjaLink xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">https://www-qa.lupapiste.fi/api/raw/download-bulletin-doc?bulletinId=LP-049-2025-90350_67cee0fe31c8f029044f0251</lupapiste:asiakirjaLink>
+      <description>Testitekstiä kuulutukselle</description>
+      <guid isPermaLink="false">LP-049-2025-90350_67cee0fe31c8f029044f0251</guid>
+      <link>https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90350_67cee0fe31c8f029044f0251</link>
+      <pubDate>Mon, 10 Mar 2025 14:54:11 +0200</pubDate>
+      <title>Autokatoksen tai muun katoksen tai vajan (esim. venevaja) rakentaminen</title>
+    </item>
+  </channel>
+</rss>
