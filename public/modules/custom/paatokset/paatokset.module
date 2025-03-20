@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-use Drupal\paatokset_rss\ItemsImporter;
-use Drupal\paatokset_rss\ItemsStorage;
+use Drupal\paatokset\Lupapiste\ItemsImporter;
+use Drupal\paatokset\Lupapiste\ItemsStorage;
 
 /**
  * Implements hook_cron().
  */
-function paatokset_rss_cron() : void {
-  /** @var \Drupal\paatokset_rss\ItemsImporter $importer */
+function paatokset_cron() : void {
+  /** @var \Drupal\paatokset\Lupapiste\ItemsImporter $importer */
   $importer = \Drupal::service(ItemsImporter::class);
 
   foreach (['fi', 'en', 'sv'] as $langcode) {
@@ -28,7 +28,7 @@ function paatokset_rss_cron() : void {
 /**
  * Implements hook_theme().
  */
-function paatokset_rss_theme() : array {
+function paatokset_theme() : array {
   return [
     'paatokset_rss_item' => [
       'variables' => [

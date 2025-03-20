@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_rss;
+namespace Drupal\paatokset\Lupapiste;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\State\StateInterface;
-use Drupal\paatokset_rss\DTO\LupapisteItem;
+use Drupal\paatokset\Lupapiste\DTO\Item;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final readonly class ItemsStorage {
 
-  public const CACHE_TAGS = ['paatokset_rss'];
+  public const CACHE_TAGS = ['paatokset'];
 
   /**
    * Constructs a new instance.
@@ -37,11 +37,11 @@ final readonly class ItemsStorage {
    * @param string $data
    *   The JSON data to deserialize.
    *
-   * @return \Drupal\paatokset_rss\DTO\LupapisteItem[]
+   * @return \Drupal\paatokset\Lupapiste\DTO\Item[]
    *   The deserialized data.
    */
   private function deserialize(string $data) : array {
-    return $this->serializer->deserialize($data, LupapisteItem::class . '[]', 'json');
+    return $this->serializer->deserialize($data, Item::class . '[]', 'json');
   }
 
   /**
@@ -66,7 +66,7 @@ final readonly class ItemsStorage {
    * @param string $langcode
    *   The language.
    *
-   * @return \Drupal\paatokset_rss\DTO\LupapisteItem[]
+   * @return \Drupal\paatokset\Lupapiste\DTO\Item[]
    *   The data.
    */
   public function load(string $langcode) : array {

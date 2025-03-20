@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paatokset_rss
+    - paatokset
     - system
   theme:
     - hdbt_subtheme
@@ -17,7 +17,7 @@ settings:
   id: rss_feed
   label: 'RSS Feed'
   label_display: '0'
-  provider: paatokset_rss
+  provider: paatokset
 visibility:
   request_path:
     id: request_path

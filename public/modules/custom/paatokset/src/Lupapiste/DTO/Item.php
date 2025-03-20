@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_rss\DTO;
+namespace Drupal\paatokset\Lupapiste\DTO;
 
 /**
  * A DTO representing Lupapiste item.
  */
-final readonly class LupapisteItem {
+final readonly class Item {
 
   /**
    * Constructs a new object.
@@ -18,6 +18,7 @@ final readonly class LupapisteItem {
     public string $link,
     public \DateTime $pubDate,
     public string $toimenpideteksti,
+    public string $rakennuspaikka,
     public string $lupatunnus,
     public \DateTime $julkaisuAlkaa,
     public \DateTime $julkaisuPaattyy,

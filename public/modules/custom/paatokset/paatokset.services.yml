@@ -3,16 +3,16 @@ services:
     autowire: true
     autoconfigure: true
 
-  Drupal\paatokset_rss\ItemsImporter: ~
-  Drupal\paatokset_rss\ItemsStorage: ~
+  Drupal\paatokset\Lupapiste\ItemsImporter: ~
+  Drupal\paatokset\Lupapiste\ItemsStorage: ~
 
-  paatokset_rss.normalizer.array:
+  paatokset.normalizer.array:
     class: Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
     public: false
     tags:
       - { name: normalizer }
 
-  paatokset_rss.normalizer.datetime:
+  paatokset.normalizer.datetime:
     class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
     public: false
     arguments:
@@ -21,7 +21,7 @@ services:
     tags:
       - { name: normalizer }
 
-  paatokset_rss.normalizer.object:
+  paatokset.normalizer.object:
     class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
     public: false
     tags:

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_rss;
+namespace Drupal\paatokset\Lupapiste;
 
-use Drupal\paatokset_rss\DTO\LupapisteItem;
+use Drupal\paatokset\Lupapiste\DTO\Item;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Laminas\Feed\Reader\Feed\AbstractFeed;
@@ -54,7 +54,7 @@ final class ItemsImporter {
 
     $items = [];
 
-    $keys = get_class_vars(LupapisteItem::class);
+    $keys = get_class_vars(Item::class);
 
     foreach ($feed as $delta => $item) {
       if (!is_callable([$item, 'getXpathPrefix'], TRUE)) {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_rss\Plugin\Block;
+namespace Drupal\paatokset\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\Attribute\Block;
@@ -10,7 +10,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
-use Drupal\paatokset_rss\ItemsStorage;
+use Drupal\paatokset\Lupapiste\ItemsStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,7 +25,7 @@ final class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * The rss storage.
    *
-   * @var \Drupal\paatokset_rss\ItemsStorage
+   * @var \Drupal\paatokset\Lupapiste\ItemsStorage
    */
   private ItemsStorage $rssStorage;
 
