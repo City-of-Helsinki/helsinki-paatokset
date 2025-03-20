@@ -45,7 +45,7 @@ final class ItemsImporter {
 
     $feed->getXpath()->registerNamespace('lupapiste', 'https://www.lupapiste.fi/rss/extensions');
 
-    $evaluateXpath = function (string $field, string $prefix) use ($feed) {
+    $evaluateXpath = function (string $field, string $prefix) use ($feed) : string {
       if ($value = $feed->getXpath()->evaluate(sprintf('string(%s/%s)', $prefix, $field))) {
         return $value;
       }

@@ -66,7 +66,7 @@ final class RssFeedBlock extends BlockBase implements ContainerFactoryPluginInte
 
     foreach ($this->rssStorage->load($langcode) as $item) {
       $build[] = [
-        '#theme' => 'paatokset_rss_item',
+        '#theme' => 'lupapiste_rss_item',
         '#item' => $item,
       ];
     }

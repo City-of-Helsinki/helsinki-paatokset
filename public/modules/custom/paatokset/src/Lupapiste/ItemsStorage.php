@@ -8,6 +8,8 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\State\StateInterface;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
+use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

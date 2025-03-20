@@ -30,11 +30,11 @@ function paatokset_cron() : void {
  */
 function paatokset_theme() : array {
   return [
-    'paatokset_rss_item' => [
+    'lupapiste_rss_item' => [
       'variables' => [
         'item' => NULL,
       ],
-      'template' => 'paatokset-rss-item',
+      'template' => 'lupapiste-rss-item',
     ],
   ];
 }

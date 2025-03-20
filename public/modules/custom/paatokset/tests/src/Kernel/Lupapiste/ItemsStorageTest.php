@@ -24,6 +24,17 @@ class ItemsStorageTest extends KernelTestBase {
   ];
 
   /**
+   * Make we can save and load data with missing fields.
+   */
+  public function testSaveMissingData(): void {
+    $storage = $this->container->get(ItemsStorage::class);
+    $storage->save('fi', [
+      'title' => 'dsadsa',
+    ]);
+    $this->assertContainsOnlyInstancesOf(Item::class, $storage->load('fi'));
+  }
+
+  /**
    * Make sure we can load and save data.
    */
   public function testCrud(): void {
