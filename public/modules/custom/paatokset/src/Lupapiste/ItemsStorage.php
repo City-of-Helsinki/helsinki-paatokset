@@ -8,8 +8,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\State\StateInterface;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
-use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -47,6 +45,19 @@ final readonly class ItemsStorage {
   }
 
   /**
+   * Gets the storage key for given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The storage key.
+   */
+  private function getStorageKey(string $langcode) : string {
+    return sprintf('lupapiste_data_%s', $langcode);
+  }
+
+  /**
    * Saves the given items.
    *
    * @param string $langcode
@@ -58,7 +69,7 @@ final readonly class ItemsStorage {
     // Deserialize data to make sure it's valid.
     $data = $this->deserialize(json_encode($data));
 
-    $this->storage->set('lupapiste_data_' . $langcode, $this->serializer->serialize($data, 'json'));
+    $this->storage->set($this->getStorageKey($langcode), $this->serializer->serialize($data, 'json'));
     Cache::invalidateTags(self::CACHE_TAGS);
   }
 
@@ -72,7 +83,7 @@ final readonly class ItemsStorage {
    *   The data.
    */
   public function load(string $langcode) : array {
-    if (!$data = $this->storage->get('lupapiste_data_' . $langcode)) {
+    if (!$data = $this->storage->get($this->getStorageKey($langcode))) {
       return [];
     }
     return $this->deserialize($data);

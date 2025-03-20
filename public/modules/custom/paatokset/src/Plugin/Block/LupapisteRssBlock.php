@@ -65,7 +65,7 @@ final class LupapisteRssBlock extends BlockBase implements ContainerFactoryPlugi
     $langcode = $this->languageResolver->getCurrentOrFallbackLanguage(LanguageInterface::TYPE_CONTENT);
 
     foreach ($this->rssStorage->load($langcode) as $item) {
-      $build[] = [
+      $build['items'][] = [
         '#theme' => 'lupapiste_rss_item',
         '#item' => $item,
       ];

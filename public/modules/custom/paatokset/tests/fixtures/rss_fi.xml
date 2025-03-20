@@ -9,7 +9,7 @@
     <title>Kunnan rakennusvalvonta - Kuulutukset</title>
     <description>Kunnan rakennusvalvonta - Kuulutukset</description>
     <item>
-      <lupapiste:toimenpideteksti xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Asuinkerrostalon tai rivitalon rakentaminen</lupapiste:toimenpideteksti>
+      <lupapiste:toimenpideteksti xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">fi Asuinkerrostalon tai rivitalon rakentaminen</lupapiste:toimenpideteksti>
       <lupapiste:lupatunnus xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">LP-049-2025-90341</lupapiste:lupatunnus>
       <lupapiste:rakennuspaikka xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Miniatontie 12</lupapiste:rakennuspaikka>
       <lupapiste:julkaisuAlkaa xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Thu, 13 Mar 2025 00:00:00 +0200</lupapiste:julkaisuAlkaa>
@@ -29,7 +29,7 @@
       <guid isPermaLink="false">LP-049-2025-90341_67d12f9be5770069ee7a654c</guid>
       <link>https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90341_67d12f9be5770069ee7a654c</link>
       <pubDate>Wed, 12 Mar 2025 08:54:15 +0200</pubDate>
-      <title>Asuinkerrostalon tai rivitalon rakentaminen</title>
+      <title>fi Asuinkerrostalon tai rivitalon rakentaminen</title>
     </item>
     <item>
       <lupapiste:toimenpideteksti xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Autokatoksen tai muun katoksen tai vajan (esim. venevaja) rakentaminen</lupapiste:toimenpideteksti>

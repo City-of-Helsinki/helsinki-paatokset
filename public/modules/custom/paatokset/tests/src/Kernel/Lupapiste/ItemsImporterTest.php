@@ -52,11 +52,11 @@ class ItemsImporterTest extends KernelTestBase {
    */
   public function testFetch(): void {
     $httpClient = $this->createMockHttpClient([
-      new Response(body: $this->getFixture('paatokset', 'rss.xml')),
+      new Response(body: $this->getFixture('paatokset', 'rss_fi.xml')),
     ]);
     $importer = new ItemsImporter($httpClient);
     $expected = [
-      'toimenpideteksti' => 'Asuinkerrostalon tai rivitalon rakentaminen',
+      'toimenpideteksti' => 'fi Asuinkerrostalon tai rivitalon rakentaminen',
       'lupatunnus' => 'LP-049-2025-90341',
       'rakennuspaikka' => 'Miniatontie 12',
       'julkaisuAlkaa' => 'Thu, 13 Mar 2025 00:00:00 +0200',
@@ -75,7 +75,7 @@ class ItemsImporterTest extends KernelTestBase {
         *****',
       'link' => 'https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90341_67d12f9be5770069ee7a654c',
       'pubDate' => 'Wed, 12 Mar 2025 08:54:15 +0200',
-      'title' => 'Asuinkerrostalon tai rivitalon rakentaminen',
+      'title' => 'fi Asuinkerrostalon tai rivitalon rakentaminen',
     ];
 
     $data = $importer->fetch('fi');
