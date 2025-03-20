@@ -4,4 +4,4 @@ description: Block for displaying RSS feeds.
 package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
-  - drupal:serializer
+  - drupal:serialization
