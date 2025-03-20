@@ -1,0 +1,28 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Drupal\paatokset_rss\ItemsImporter: ~
+  Drupal\paatokset_rss\ItemsStorage: ~
+
+  paatokset_rss.normalizer.array:
+    class: Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
+    public: false
+    tags:
+      - { name: normalizer }
+
+  paatokset_rss.normalizer.datetime:
+    class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
+    public: false
+    arguments:
+      $defaultContext:
+        datetime_format: 'D, d M Y H:i:s T'
+    tags:
+      - { name: normalizer }
+
+  paatokset_rss.normalizer.object:
+    class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+    public: false
+    tags:
+      - { name: normalizer }
