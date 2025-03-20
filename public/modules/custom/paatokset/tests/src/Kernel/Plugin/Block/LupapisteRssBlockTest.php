@@ -55,7 +55,6 @@ class LupapisteRssBlockTest extends KernelTestBase {
       new Response(body: $this->getFixture('paatokset', 'rss_fi.xml')),
       new Response(body: $this->getFixture('paatokset', 'rss_en.xml')),
       new Response(body: $this->getFixture('paatokset', 'rss_sv.xml')),
-      new Response(body: $this->getFixture('paatokset', 'rss_en.xml')),
     ]));
     paatokset_update_lupapiste_items();
 
