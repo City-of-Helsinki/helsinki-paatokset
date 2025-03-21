@@ -2,10 +2,12 @@
 
 namespace Drupal\paatokset_ahjo_api\Controller;
 
+use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ThemeExtensionList;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +51,7 @@ final class CaseController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   JSON object containing data
    */
-  public function loadDecision(NodeInterface $decision): Response {
+  public function loadDecision(Decision $decision): Response {
     $this->caseService->setEntitiesFromDecision($decision);
 
     $data = [];
@@ -94,7 +96,7 @@ final class CaseController extends ControllerBase {
       'previous_decision' => $data['previous_decision'],
     ]);
 
-    return new JsonResponse([
+    $response = new CacheableJsonResponse([
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,
@@ -104,6 +106,13 @@ final class CaseController extends ControllerBase {
       'all_decisions_link' => $all_decisions_link,
       'other_decisions_link' => $other_decisions_link,
     ]);
+
+    $response->addCacheableDependency($decision);
+    if ($this->caseService->getSelectedCase()) {
+      $response->addCacheableDependency($this->caseService->getSelectedCase());
+    }
+
+    return $response;
   }
 
   /**

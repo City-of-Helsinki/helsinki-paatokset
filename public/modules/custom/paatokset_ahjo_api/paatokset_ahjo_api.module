@@ -18,6 +18,7 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Article;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 
@@ -30,6 +31,9 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
   }
   if (isset($bundles['node']['trustee'])) {
     $bundles['node']['trustee']['class'] = Trustee::class;
+  }
+  if (isset($bundles['node']['decision'])) {
+    $bundles['node']['decision']['class'] = Decision::class;
   }
 }
 
