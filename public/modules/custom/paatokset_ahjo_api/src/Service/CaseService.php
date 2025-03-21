@@ -2260,25 +2260,14 @@ class CaseService {
    * @param array $params
    *   Parameters for query.
    * @param bool $load_nodes
-   *   Load nodes or just return nids.
+   *   Load nodes or just return node ids.
    *
    * @return array
-   *   List of nodes or nids.
+   *   List of nodes or node ids.
    */
   private function query(array $params, bool $load_nodes = TRUE): array {
-    if (isset($params['sort'])) {
-      $sort = $params['sort'];
-    }
-    else {
-      $sort = 'DESC';
-    }
-
-    if (isset($params['sort_by'])) {
-      $sort_by = $params['sort_by'];
-    }
-    else {
-      $sort_by = 'field_created';
-    }
+    $sort = $params['sort'] ?? 'DESC';
+    $sort_by = $params['sort_by'] ?? 'field_created';
 
     $query = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)
