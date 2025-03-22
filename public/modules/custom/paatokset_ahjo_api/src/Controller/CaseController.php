@@ -81,8 +81,8 @@ final class CaseController extends ControllerBase {
       'selected_class' => $data['selected_class'],
       'decision_org_name' => $data['decision_org_name'],
       'decision_content' => $data['decision_content'],
-      'decision_section' => $data['decision_section'],
-      'vote_results' => $data['vote_results'],
+      'decision_section' => $decision->getFormattedDecisionSection(),
+      'vote_results' => $decision->getVotingResults(),
     ]);
 
     $attachments = $this->renderTemplate('/templates/components/case-attachments.html.twig', [

@@ -504,22 +504,24 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
  * Preprocess variables for case and decision pages.
  */
 function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $caseService): void {
+  $decision = $caseService->getSelectedDecision();
+
   $variables['no_title_for_case'] = $caseService->checkIfNoCaseTitle();
   $variables['decision_pdf'] = $caseService->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
   $variables['policymaker_is_active'] = $caseService->decisionPmIsActive();
-  $variables['decision_section'] = $caseService->getFormattedDecisionSection();
+  $variables['decision_section'] = $decision?->getFormattedDecisionSection();
   $variables['decision_org_name'] = $caseService->getDecisionOrgName();
   $variables['selected_label'] = $caseService->getDecisionLabel();
   $variables['selected_class'] = $caseService->getDecisionClass();
-  $variables['attachments'] = $caseService->getSelectedDecision()?->getAttachments() ?? [];
+  $variables['attachments'] = $decision?->getAttachments() ?? [];
   $variables['all_decisions'] = $caseService->getDecisionsList();
   $variables['next_decision'] = $caseService->getNextDecision();
   $variables['previous_decision'] = $caseService->getPrevDecision();
   $variables['decision_content'] = $caseService->parseContent();
   $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
   $variables['other_decisions_link'] = $caseService->getPolicymakerDecisionsLink();
-  $variables['vote_results'] = $caseService->getVotingResults();
+  $variables['vote_results'] = $decision?->getVotingResults() ?? [];
 }
 
 /**

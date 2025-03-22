@@ -724,80 +724,6 @@ class CaseService {
   }
 
   /**
-   * Get voting results as array for selected decision.
-   *
-   * @return array|null
-   *   Array with voting results or NULL.
-   */
-  public function getVotingResults(): ?array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_voting_results') || $this->selectedDecision->get('field_voting_results')->isEmpty()) {
-      return NULL;
-    }
-
-    $vote_results = [];
-    $not_formatted = $this->selectedDecision->get('field_voting_results');
-    $types = ['Ayes', 'Noes', 'Blank', 'Absent'];
-
-    foreach ($not_formatted as $row) {
-      $grouped_by_party = [];
-      $results = [];
-      $json = json_decode($row->value);
-      foreach ($types as $type) {
-
-        if (empty($json->{$type})) {
-          continue;
-        }
-
-        // Set accordion for each vote type.
-        $results[$type] = $json->{$type};
-
-        if (empty($json->{$type}->Voters)) {
-          continue;
-        }
-
-        // Collate votes by council group and type.
-        foreach ($json->{$type}->Voters as $voter) {
-          if (empty($voter->CouncilGroup)) {
-            $voter->CouncilGroup = (string) $this->t('No council group');
-          }
-
-          if (!isset($grouped_by_party[$voter->CouncilGroup])) {
-            $grouped_by_party[$voter->CouncilGroup] = [
-              'Name' => $voter->CouncilGroup,
-              'Ayes' => 0,
-            ];
-          }
-          if (!isset($grouped_by_party[$voter->CouncilGroup][$type])) {
-            $grouped_by_party[$voter->CouncilGroup][$type] = 1;
-          }
-          else {
-            $grouped_by_party[$voter->CouncilGroup][$type]++;
-          }
-        }
-      }
-
-      usort($grouped_by_party, function ($a, $b) {
-        return strcmp($a['Name'], $b['Name']);
-      });
-
-      usort($grouped_by_party, function ($a, $b) {
-        return $b['Ayes'] - $a['Ayes'];
-      });
-
-      $vote_results[] = [
-        'accordions' => $results,
-        'by_party' => $grouped_by_party,
-      ];
-    }
-
-    return $vote_results;
-  }
-
-  /**
    * Get localized case URL from node.
    *
    * @param \Drupal\node\NodeInterface|null $case
@@ -1443,40 +1369,6 @@ class CaseService {
       'title' => $found_node->title->value,
       'id' => $this->normalizeNativeId($found_node->field_decision_native_id->value),
     ];
-  }
-
-  /**
-   * Get formatted section label for decision, including agenda point.
-   *
-   * @return string|null|Drupal\Core\StringTranslation\TranslatableMarkup
-   *   Formatted section label, if possible to generate.
-   */
-  public function getFormattedDecisionSection(): mixed {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_decision_section') || $this->selectedDecision->get('field_decision_section')->isEmpty()) {
-      return NULL;
-    }
-
-    $section = $this->selectedDecision->get('field_decision_section')->value;
-
-    if (!$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
-      return '§ ' . $section;
-    }
-
-    $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
-
-    if (!empty($data) && isset($data['AgendaPoint'])) {
-      $section = $section . ' §';
-      return $this->t('Case @point. / @section', [
-        '@point' => $data['AgendaPoint'],
-        '@section' => $section,
-      ]);
-    }
-
-    return '§ ' . $section;
   }
 
   /**
