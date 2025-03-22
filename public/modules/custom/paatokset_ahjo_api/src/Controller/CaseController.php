@@ -6,11 +6,9 @@ use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ThemeExtensionList;
 use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -78,7 +76,7 @@ final class CaseController extends ControllerBase {
     }
 
     $content = $this->renderTemplate('/templates/components/decision-content.html.twig', [
-      'selectedDecision' => $data['selectedDecision'],
+      'selectedDecision' => $decision,
       'policymaker_is_active' => $data['policymaker_is_active'],
       'selected_class' => $data['selected_class'],
       'decision_org_name' => $data['decision_org_name'],
@@ -88,7 +86,7 @@ final class CaseController extends ControllerBase {
     ]);
 
     $attachments = $this->renderTemplate('/templates/components/case-attachments.html.twig', [
-      'attachments' => $data['attachments'],
+      'attachments' => $decision->getAttachments(),
     ]);
 
     $decision_navigation = $this->renderTemplate('/templates/components/decision-navigation.html.twig', [

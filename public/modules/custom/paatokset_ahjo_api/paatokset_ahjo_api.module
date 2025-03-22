@@ -512,7 +512,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $ca
   $variables['decision_org_name'] = $caseService->getDecisionOrgName();
   $variables['selected_label'] = $caseService->getDecisionLabel();
   $variables['selected_class'] = $caseService->getDecisionClass();
-  $variables['attachments'] = $caseService->getAttachments();
+  $variables['attachments'] = $caseService->getSelectedDecision()?->getAttachments() ?? [];
   $variables['all_decisions'] = $caseService->getDecisionsList();
   $variables['next_decision'] = $caseService->getNextDecision();
   $variables['previous_decision'] = $caseService->getPrevDecision();

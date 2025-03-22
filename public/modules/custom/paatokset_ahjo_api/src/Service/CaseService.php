@@ -9,6 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -40,10 +41,8 @@ class CaseService {
 
   /**
    * Decision node.
-   *
-   * @var \Drupal\node\Entity\Node
    */
-  private $selectedDecision;
+  private Decision|null $selectedDecision;
 
   /**
    * Case diary number.
@@ -109,10 +108,10 @@ class CaseService {
    * @param \Drupal\node\NodeInterface $case
    *   Case node to help with guessing.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Decision node or NULL if unable to guess.
    */
-  public function guessDecisionFromPath(NodeInterface $case): ?NodeInterface {
+  public function guessDecisionFromPath(NodeInterface $case): ?Decision {
     $caseId = $case->get('field_diary_number')->getString();
 
     // Search for default decisions if query parameter is not set.
@@ -157,11 +156,11 @@ class CaseService {
   /**
    * Set entities from decision. Can be used if decision is found but not case.
    *
-   * @param \Drupal\node\NodeInterface $decision
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
    *   Decision node.
    */
-  public function setEntitiesFromDecision(NodeInterface $decision): void {
-    $case_id = $decision->get('field_diary_number')->getString();
+  public function setEntitiesFromDecision(Decision $decision): void {
+    $case_id = $decision->getDiaryNumber();
 
     $cases = $this->caseQuery([
       'case_id' => $case_id,
@@ -220,7 +219,7 @@ class CaseService {
    * @param string $case_id
    *   Case diary number.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Default (latest) decision entity, if found.
    */
   private function getDefaultDecision(string $case_id): ?NodeInterface {
@@ -244,10 +243,10 @@ class CaseService {
   /**
    * Get active decision, if set.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Active decision entity.
    */
-  public function getSelectedDecision(): ?NodeInterface {
+  public function getSelectedDecision(): ?Decision {
     return $this->selectedDecision;
   }
 
@@ -1217,77 +1216,6 @@ class CaseService {
     $class = $policymakerService->getPolicymakerClassById($decision->field_policymaker_id->value);
 
     return Html::cleanCssIdentifier($class);
-  }
-
-  /**
-   * Get attachments for active decision.
-   *
-   * @return array
-   *   Array of links.
-   */
-  public function getAttachments(): array {
-    if (!$this->selectedDecision instanceof NodeInterface || !$this->selectedDecision->hasField('field_decision_attachments')) {
-      return [];
-    }
-
-    $attachments = [];
-    foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
-      $data = json_decode($field->value, TRUE);
-
-      $number = NULL;
-      if (isset($data['AttachmentNumber'])) {
-        $number = $data['AttachmentNumber'] . '. ';
-      }
-
-      $title = NULL;
-      if (isset($data['Title'])) {
-        $title = $data['Title'];
-      }
-
-      $publicity_class = NULL;
-      if (isset($data['PublicityClass'])) {
-        $publicity_class = $data['PublicityClass'];
-      }
-
-      $file_url = NULL;
-      if (isset($data['FileURI'])) {
-        $file_url = $data['FileURI'];
-      }
-
-      // If all relevant info is empty, do not display attachment.
-      if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
-        $title = $this->t("There's an error with this attachment. We are resolving the issue as soon as possible.");
-        $publicity_class = 'error';
-      }
-      // Override title if attachment is not public.
-      elseif ($publicity_class !== 'Julkinen') {
-        if (!empty($data['SecurityReasons'])) {
-          $title = $this->t('Confidential: @reasons', [
-            '@reasons' => implode(', ', $data['SecurityReasons']),
-          ]);
-        }
-        else {
-          $title = $this->t('Confidential');
-        }
-      }
-
-      $attachments[] = [
-        'number' => $number,
-        'file_url' => $file_url,
-        'title' => $title,
-        'publicity_class' => $publicity_class,
-      ];
-    }
-
-    $publicity_reason = \Drupal::config('paatokset_ahjo_api.default_texts')->get('non_public_attachments_text.value');
-    if (!empty($attachments)) {
-      return [
-        'items' => $attachments,
-        'publicity_reason' => ['#markup' => $publicity_reason],
-      ];
-    }
-
-    return [];
   }
 
   /**
