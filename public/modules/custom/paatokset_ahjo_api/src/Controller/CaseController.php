@@ -100,7 +100,7 @@ final class CaseController extends ControllerBase {
       'attachments' => $attachments,
       'decision_navigation' => $decision_navigation,
       'show_warning' => !empty($data['next_decision']),
-      'decision_pdf' => $data['decision_pdf'],
+      'decision_pdf' => $decision->getDecisionPdf(),
       'all_decisions_link' => $all_decisions_link,
       'other_decisions_link' => $other_decisions_link,
     ]);

@@ -6,6 +6,8 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
  * Bundle class for decisions.
@@ -173,6 +175,53 @@ class Decision extends Node {
     }
 
     return $vote_results;
+  }
+
+  /**
+   * Get active decision's PDF file URI from record of minutes field.
+   *
+   * @return string|null
+   *   URL for PDF.
+   */
+  public function getDecisionPdf(): ?string {
+    // Check for office holder and trustee decisions for minutes PDF URI first.
+    if ($minutes_file_uri = $this->getMinutesPdf()) {
+      return $minutes_file_uri;
+    }
+
+    if (!$this->get('field_decision_record')->isEmpty()) {
+      return NULL;
+    }
+
+    $data = json_decode($this->get('field_decision_record')->value, TRUE);
+    if (!empty($data) && isset($data['FileURI'])) {
+      return $data['FileURI'];
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get active decisions Minutes PDF file URI.
+   *
+   * @return string|null
+   *   URL for PDF.
+   */
+  private function getMinutesPdf(): ?string {
+    // Check decision org type first.
+    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+      return NULL;
+    }
+
+    if (!$this->get('field_decision_minutes_pdf')->isEmpty()) {
+      return NULL;
+    }
+
+    $data = json_decode($this->get('field_decision_minutes_pdf')->value, TRUE);
+    if (!empty($data) && isset($data['FileURI'])) {
+      return $data['FileURI'];
+    }
+    return NULL;
   }
 
 }
