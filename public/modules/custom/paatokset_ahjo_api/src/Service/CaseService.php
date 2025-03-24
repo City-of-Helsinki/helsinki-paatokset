@@ -10,7 +10,6 @@ use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -1030,9 +1029,6 @@ class CaseService {
    *   Dropdown contents.
    */
   public function getDecisionsList(?string $case_id = NULL): array {
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     if ($currentLanguage === 'en') {
       $currentLanguage = 'fi';
@@ -1084,8 +1080,8 @@ class CaseService {
   /**
    * Get next decision in list, if one exists.
    *
-   * @param Decision $decision
-   *   Current decision
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of next decision in list.
@@ -1097,8 +1093,8 @@ class CaseService {
   /**
    * Get previous decision in list, if one exists.
    *
-   * @param Decision $decision
-   *   Current decision
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of previous decision in list.
@@ -1112,8 +1108,8 @@ class CaseService {
    *
    * @param int $offset
    *   Which offset to use (1 for previous, -1 for next, etc).
-   * @param Decision $decision
-   *   Current decision
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of adjacent decision in list.

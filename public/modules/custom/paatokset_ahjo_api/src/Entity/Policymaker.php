@@ -6,7 +6,6 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
@@ -14,6 +13,7 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
  * Bundle class for policymaker.
  */
 class Policymaker extends Node {
+
   /**
    * Check if policymaker is currently active.
    *
@@ -79,6 +79,7 @@ class Policymaker extends Node {
    * @todo simplify decision/case routing logic.
    *
    * @param string $langcode
+   *   Route langcode.
    *
    * @return \Drupal\Core\Url|null
    *   URL object, if route is valid.

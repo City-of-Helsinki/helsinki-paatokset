@@ -7,8 +7,6 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
@@ -32,8 +30,6 @@ class Decision extends Node {
 
   /**
    * Gets decision maker org name that is stored in decision record.
-   *
-   * @return string|null
    */
   public function getDecisionMakerOrgName(): ?string {
     if (!$this->get('field_dm_org_name')->isEmpty()) {
@@ -73,7 +69,6 @@ class Decision extends Node {
     assert($case instanceof CaseBundle);
     return $case;
   }
-
 
   /**
    * Get meeting URL for selected decision.
