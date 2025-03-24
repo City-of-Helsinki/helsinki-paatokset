@@ -113,7 +113,7 @@ final class AhjoSubscriberController extends ControllerBase {
     $queue = $this->queueFactory->get(self::QUEUE_NAME);
 
     while ($item = $queue->claimItem()) {
-      if ($id === 'all' || $item->data['id'] === $id) {
+      if ($id === 'all' || (isset($item->data) && $item->data['id'] === $id)) {
         $data[] = $item;
       }
 
