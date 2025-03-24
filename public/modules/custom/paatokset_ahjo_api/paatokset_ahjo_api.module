@@ -544,9 +544,9 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $ca
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
   $variables['attachments'] = $decision?->getAttachments() ?? [];
   $variables['all_decisions'] = $caseService->getDecisionsList();
-  $variables['next_decision'] = $caseService->getNextDecision();
-  $variables['previous_decision'] = $caseService->getPrevDecision();
-  $variables['decision_content'] = $caseService->parseContent();
+  $variables['next_decision'] = $decision ? $caseService->getNextDecision($decision) : NULL;
+  $variables['previous_decision'] = $decision ? $caseService->getPrevDecision($decision) : NULL;
+  $variables['decision_content'] = $decision?->parseContent() ?? [];
   $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
   $variables['other_decisions_link'] = $caseService->getPolicymakerDecisionsLink();
   $variables['vote_results'] = $decision?->getVotingResults() ?? [];

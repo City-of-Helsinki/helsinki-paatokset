@@ -723,10 +723,10 @@ class CaseService {
         $decision = $this->selectedDecision;
       }
 
-      $decision_id = $decision->get('field_decision_native_id')->value;
+      if ($decision instanceof Decision) {
+        $decision_id = $this->normalizeNativeId($decision->getNativeId());
+      }
     }
-
-    $decision_id = $this->normalizeNativeId($decision_id);
 
     if ($decision_id !== NULL) {
       $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
@@ -1212,31 +1212,27 @@ class CaseService {
   /**
    * Get next decision in list, if one exists.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param Decision $decision
+   *   Current decision
    *
    * @return array|null
    *   ID and title of next decision in list.
    */
-  public function getNextDecision(?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    return $this->getAdjacentDecision(-1, $case_id, $decision_nid);
+  public function getNextDecision(Decision $decision): ?array {
+    return $this->getAdjacentDecision(-1, $decision);
   }
 
   /**
    * Get previous decision in list, if one exists.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param Decision $decision
+   *   Current decision
    *
    * @return array|null
    *   ID and title of previous decision in list.
    */
-  public function getPrevDecision(?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    return $this->getAdjacentDecision(1, $case_id, $decision_nid);
+  public function getPrevDecision(Decision $decision): ?array {
+    return $this->getAdjacentDecision(1, $decision);
   }
 
   /**
@@ -1244,31 +1240,19 @@ class CaseService {
    *
    * @param int $offset
    *   Which offset to use (1 for previous, -1 for next, etc).
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param Decision $decision
+   *   Current decision
    *
    * @return array|null
    *   ID and title of adjacent decision in list.
    */
-  private function getAdjacentDecision(int $offset, ?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
-
-    if (!$decision_nid) {
-      $decision_nid = $this->selectedDecision->id();
-    }
+  private function getAdjacentDecision(int $offset, Decision $decision): ?array {
+    $case_id = $decision->getDiaryNumber();
 
     $all_decisions = array_values($this->getAllDecisions($case_id));
     $found_node = NULL;
     foreach ($all_decisions as $key => $value) {
-      if ((string) $value->id() !== $decision_nid) {
+      if ((string) $value->id() !== $decision->id()) {
         continue;
       }
 
@@ -1278,215 +1262,20 @@ class CaseService {
       break;
     }
 
-    if (!$found_node instanceof NodeInterface) {
+    if (!$found_node instanceof Decision) {
       return [];
     }
 
     return [
       'title' => $found_node->title->value,
-      'id' => $this->normalizeNativeId($found_node->field_decision_native_id->value),
+      'id' => $this->normalizeNativeId($found_node->getNativeId()),
     ];
-  }
-
-  /**
-   * Parse decision content and motion data from HTML.
-   *
-   * @return array
-   *   Render arrays.
-   */
-  public function parseContent(): array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return [];
-    }
-
-    if ($this->selectedDecision->hasField('field_hide_decision_content') && $this->selectedDecision->get('field_hide_decision_content')->value) {
-      $hidden_decisions_text = \Drupal::config('paatokset_ahjo_api.default_texts')->get('hidden_decisions_text.value');
-      return [
-        'message' => [
-          '#prefix' => '<div class="issue__hidden-message">',
-          '#suffix' => '</div>',
-          '#markup' => $hidden_decisions_text,
-        ],
-      ];
-    }
-
-    if ($this->selectedDecision->hasField('field_diary_number') && !$this->selectedDecision->get('field_diary_number')->isEmpty()) {
-      $has_case_id = TRUE;
-    }
-    else {
-      $has_case_id = FALSE;
-    }
-
-    $content = $this->selectedDecision->get('field_decision_content')->value;
-    $motion = $this->selectedDecision->get('field_decision_motion')->value;
-    $history = $this->selectedDecision->get('field_decision_history')->value;
-
-    $content_dom = new \DOMDocument();
-    if (!empty($content)) {
-      @$content_dom->loadHTML($content);
-    }
-    $content_xpath = new \DOMXPath($content_dom);
-
-    $motion_dom = new \DOMDocument();
-    if (!empty($motion)) {
-      @$motion_dom->loadHTML($motion);
-    }
-    $motion_xpath = new \DOMXPath($motion_dom);
-
-    $history_dom = new \DOMDocument();
-    if (!empty($history)) {
-      @$history_dom->loadHTML($history);
-    }
-    $history_xpath = new \DOMXPath($history_dom);
-
-    // If content is not set, use motion html instead.
-    // Keep $content variable NULL so we can use that for checking later.
-    if (empty($content)) {
-      $content_xpath = $motion_xpath;
-    }
-
-    $output = [];
-    $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
-    if (!empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
-      $voting_link_paragraph = $content_dom->createElement('p');
-      $voting_link_a = $content_dom->createElement('a', $this->t('See table with voting results'));
-      $voting_link_a->setAttribute('href', '#voting-results-accordion');
-      $voting_link_a->setAttribute('id', 'open-voting-results');
-      $voting_link_paragraph->appendChild($voting_link_a);
-      $voting_results[0]->appendChild($voting_link_paragraph);
-    }
-
-    $main_content = NULL;
-    // Main decision content sections.
-    $content_sections = $content_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-
-    foreach ($content_sections as $section) {
-      $main_content .= $section->ownerDocument->saveHTML($section);
-    }
-
-    if ($main_content) {
-      $output['main'] = [
-        '#type' => 'processed_text',
-        '#format' => 'decision_html',
-        '#text' => $main_content,
-      ];
-    }
-
-    // Motion content sections.
-    // If decision content is empty, print motion content as main content.
-    $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-    if ($content) {
-      $motion_accordions = $this->getMotionSections($motion_sections);
-      foreach ($motion_accordions as $accordion) {
-        $output['accordions'][] = $accordion;
-      }
-    }
-
-    // To be decided in this meeting.
-    $decided_in_this_meeting = $motion_xpath->query("//*[contains(@class, 'Muokkaustieto')]");
-    $decided_in_this_meeting_content = NULL;
-    if ($decided_in_this_meeting->length > 0) {
-      $decided_in_this_meeting_content = $decided_in_this_meeting[0]->nodeValue;
-    }
-    if ($decided_in_this_meeting_content) {
-      $output['decided_in_this_meeting'] = [
-        '#markup' => $decided_in_this_meeting_content,
-      ];
-    }
-
-    // More information.
-    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info->length > 0) {
-      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
-      $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
-    }
-
-    if ($more_info_content) {
-      $output['more_info'] = [
-        'heading' => $this->t('Ask for more info'),
-        'content' => ['#markup' => $more_info_content],
-      ];
-    }
-
-    // Signature information.
-    $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
-    $signature_info_content = NULL;
-    if ($signature_info->length > 0) {
-      $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
-    }
-
-    if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && in_array($this->selectedDecision->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
-      $output['signature_info'] = [
-        'heading' => $this->t('Decisionmaker'),
-        'content' => ['#markup' => $signature_info_content],
-      ];
-    }
-
-    // Presenter information.
-    $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
-    $presenter_content = NULL;
-    if ($presenter_info->length > 0) {
-      $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
-    }
-
-    if ($presenter_content) {
-      $output['presenter_info'] = [
-        'heading' => $this->t('Presenter information'),
-        'content' => ['#markup' => $presenter_content],
-      ];
-    }
-
-    // Decision history.
-    $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
-    $decision_history_content = NULL;
-    if ($decision_history->length > 0) {
-      $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
-    }
-    if ($decision_history_content) {
-      $output['accordions'][] = [
-        'heading' => $this->t('Decision history'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $decision_history_content,
-        ],
-      ];
-    }
-
-    // Add decision IssuedDate (not DecisionDate) to appeal process accordion.
-    // Do not display for motions, only for decisions.
-    $appeal_content = NULL;
-    if ($has_case_id && $content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
-      $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
-      $decision_date = date('d.m.Y', $decision_timestamp);
-      $appeal_content = '<p class="issue__decision-date">' . $this->t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
-    }
-
-    // Appeal information. Only display for decisions (if content is available).
-    $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($content && $appeal_info) {
-      $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
-    }
-
-    if ($appeal_content) {
-      $output['accordions'][] = [
-        'heading' => $this->t('Appeal process'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $appeal_content,
-        ],
-      ];
-    }
-
-    return $output;
   }
 
   /**
    * Parse Ahjo API HTML main content from motion or content raw data.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   Decision node.
    * @param string $field_name
    *   Which field to get raw data from.
@@ -1563,144 +1352,6 @@ class CaseService {
     }
 
     return $content;
-  }
-
-  /**
-   * Split motions into sections.
-   *
-   * @param \DOMNodeList $list
-   *   Motion content sections.
-   *
-   * @return array
-   *   Array of sections.
-   */
-  private function getMotionSections(\DOMNodeList $list): array {
-    $output = [];
-    if ($list->length < 1) {
-      return [];
-    }
-
-    foreach ($list as $node) {
-      if (!$node instanceof \DOMElement) {
-        continue;
-      }
-
-      $section = [
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'full_html',
-          '#text' => NULL,
-        ],
-      ];
-      $heading_found = FALSE;
-      foreach ($node->childNodes as $node) {
-        if (!$heading_found && $node->nodeName === 'h3') {
-          $section['heading'] = $node->nodeValue;
-          $heading_found = TRUE;
-          continue;
-        }
-
-        $section['content']['#text'] .= $node->ownerDocument->saveHtml($node);
-      }
-
-      $output[] = $section;
-    }
-
-    return $output;
-  }
-
-  /**
-   * Get HTML content from first heading until next heading.
-   *
-   * @param \DOMNodeList $list
-   *   Xpath query results.
-   *
-   * @return string|null
-   *   HTML content as string, or NULL if content is empty.
-   */
-  private function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
-    $output = NULL;
-    if ($list->length < 1) {
-      return NULL;
-    }
-
-    $current_item = $list->item(0);
-    while ($current_item->nextSibling instanceof \DOMNode) {
-
-      // Iterate over to next sibling. This skips the first one.
-      $current_item = $current_item->nextSibling;
-
-      // H3 with a class is considered a breaking element.
-      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
-        break;
-      }
-      // More information section should stop before the signatures.
-      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
-        break;
-      }
-
-      // Skip over any empty elements.
-      if (empty($current_item->nodeValue)) {
-        continue;
-      }
-
-      $output .= $current_item->ownerDocument->saveHTML($current_item);
-    }
-
-    return $output;
-  }
-
-  /**
-   * Get HTML content for decision history.
-   *
-   * @param \DOMNodeList $list
-   *   Xpath query results.
-   *
-   * @return string|null
-   *   HTML content as string, or NULL if content is empty.
-   */
-  private function getDecisionHistoryHtmlContent(\DOMNodeList $list): ?string {
-    $output = NULL;
-
-    if ($list->length < 1) {
-      return NULL;
-    }
-
-    foreach ($list as $item) {
-      if (!$item instanceof \DOMNode) {
-        continue;
-      }
-
-      // Skip over any empty elements.
-      if (empty($item->nodeValue)) {
-        continue;
-      }
-
-      // Skip over H1 elements.
-      if ($item->nodeName === 'h1') {
-        continue;
-      }
-
-      // Skip over diary number field.
-      if ($item->getAttribute('class') === 'DnroTmuoto') {
-        continue;
-      }
-
-      if ($item->nodeName === 'h2') {
-        $output .= '<h4 class="decision-history-title">' . $item->nodeValue . '</h4>';
-      }
-      elseif ($item->nodeName === 'h3') {
-        $output .= '<h5 class="decision-history-title">' . $item->nodeValue . '</h5>';
-      }
-      elseif ($item->getAttribute('class') === 'SisaltoSektio' || $item->getAttribute('class') === 'paatoshistoria') {
-        $output .= $this->getDecisionHistoryHtmlContent($item->childNodes);
-      }
-      else {
-        $output .= $item->ownerDocument->saveHTML($item);
-      }
-    }
-
-    return $output;
   }
 
   /**

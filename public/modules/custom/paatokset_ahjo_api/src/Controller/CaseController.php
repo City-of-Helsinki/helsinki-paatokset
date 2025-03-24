@@ -72,14 +72,18 @@ final class CaseController extends ControllerBase {
 
     $content = $this->renderDecisionContent($decision, $policymaker, $data);
     $attachments = $this->renderCaseAttachments($decision);
-    $decision_navigation = $this->renderDecisionNavigation($decision, $data);
+    $navigation = [
+      '#theme' => 'decision_navigation',
+      '#next_decision' => $this->caseService->getNextDecision($decision),
+      '#previous_decision' => $this->caseService->getPrevDecision($decision),
+    ];
 
     $response = new CacheableJsonResponse([
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,
-      'decision_navigation' => $decision_navigation,
-      'show_warning' => !empty($data['next_decision']),
+      'decision_navigation' => $this->renderer->renderInIsolation($navigation),
+      'show_warning' => !empty($navigation['#next_decision']),
       'decision_pdf' => $decision->getDecisionPdf(),
       'all_decisions_link' => $all_decisions_link,
       'other_decisions_link' => $other_decisions_link,
@@ -103,7 +107,7 @@ final class CaseController extends ControllerBase {
       '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
       '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       '#decision_org_name' => $data['decision_org_name'],
-      '#decision_content' => $data['decision_content'],
+      '#decision_content' => $decision->parseContent(),
       '#decision_section' => $decision->getFormattedDecisionSection(),
       '#vote_results' => $decision->getVotingResults(),
     ];
@@ -117,18 +121,6 @@ final class CaseController extends ControllerBase {
     $build = [
       '#theme' => 'case_attachments',
       '#attachments' => $decision->getAttachments(),
-    ];
-    return $this->renderer->renderInIsolation($build);
-  }
-
-  /**
-   * Renders case attachments.
-   */
-  private function renderDecisionNavigation(Decision $decision, array $data): MarkupInterface {
-    $build = [
-      '#theme' => 'decision_navigation',
-      '#next_decision' => $data['next_decision'],
-      '#previous_decision' => $data['previous_decision'],
     ];
     return $this->renderer->renderInIsolation($build);
   }
