@@ -1,0 +1,68 @@
+{
+  "Ayes": {
+    "Voters": [
+      {
+        "ID": "exl.putte.possu",
+        "Name": "Putte, Possu",
+        "Title": null,
+        "links": [],
+        "agentId": "exl.putte.possu",
+        "CouncilGroup": "Sosiaalidemokraattinen valtuustoryhmä",
+        "CorporateName": null
+      },
+      {
+        "ID": "exl.john.doe",
+        "Name": "John, Doe",
+        "Title": null,
+        "links": [],
+        "agentId": "exl.john.doe",
+        "CouncilGroup": "Kokoomuksen valtuustoryhmä",
+        "CorporateName": null
+      },
+      {
+        "ID": "exl.jane.doe",
+        "Name": "Jane, Doe",
+        "Title": null,
+        "links": [],
+        "agentId": "exl.jane.doe",
+        "CouncilGroup": "Sosiaalidemokraattinen valtuustoryhmä",
+        "CorporateName": null
+      }
+    ],
+    "Content": " Samalla lautakunta edellyttää, että seteliin liittyvää kehitystyötä jatketaan tiiviissä vuorovaikutuksessa palvelutuottajien kanssa ja että KOHO-palvelusetelin toimivuudesta asiakkaan näkökulmasta, houkuttelevuudesta palveluntuottajan näkökulmasta ja vertautumisesta oman tuotannon kustannukseen tuodaan lautakunnalle selvitys seuraavan kuuden kuukauden kehityssyklin päätyttyä. ",
+    "NumberOfVotes": 11
+  },
+  "Noes": {
+    "Voters": [
+      {
+        "ID": "exl.aaa.bbb",
+        "Name": "Aaa, Bbb",
+        "Title": null,
+        "links": [],
+        "agentId": "exl.aaa.bbb",
+        "CouncilGroup": "Perussuomalaisten valtuustoryhmä",
+        "CorporateName": null
+      },
+      {
+        "ID": "exl.ccc.ddd",
+        "Name": "Ccc, Ddd",
+        "Title": null,
+        "links": [],
+        "agentId": "exl.ccc.ddd",
+        "CouncilGroup": "Perussuomalaisten valtuustoryhmä",
+        "CorporateName": null
+      }
+    ],
+    "Content": " Samalla lautakunta edellyttää, että seteliin liittyvää kehitystyötä jatketaan tiiviissä vuorovaikutuksessa palvelutuottajien kanssa ja että KOHO-palvelusetelin toimivuudesta asiakkaan näkökulmasta, houkuttelevuudesta palveluntuottajan näkökulmasta ja vertautumisesta oman tuotannon kustannukseen, sekä oman tuotannon/palvelusetelin tasapuolisesta jakautumisesta eri asiakaskunnille, tuodaan lautakunnalle selvitys seuraavan kuuden kuukauden kehityssyklin päätyttyä. ",
+    "NumberOfVotes": 2
+  },
+  "Blank": {
+    "Voters": [],
+    "NumberOfVotes": 0
+  },
+  "links": [],
+  "Absent": {
+    "Voters": [],
+    "NumberOfVotes": 0
+  }
+}

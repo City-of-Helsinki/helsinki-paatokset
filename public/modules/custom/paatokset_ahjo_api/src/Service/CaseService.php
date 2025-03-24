@@ -41,7 +41,7 @@ class CaseService {
   /**
    * Decision node.
    */
-  private Decision|null $selectedDecision;
+  private Decision|null $selectedDecision = NULL;
 
   /**
    * Case diary number.
@@ -669,7 +669,7 @@ class CaseService {
     $decision_id = NULL;
     if ($decision instanceof Decision) {
       try {
-        $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
+        $decision = $this->getDecisionTranslation($decision, $langcode);
       }
       catch (\InvalidArgumentException) {
         // Decision for $langcode does not exist.

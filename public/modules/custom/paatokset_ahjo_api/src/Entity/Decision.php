@@ -40,37 +40,6 @@ class Decision extends Node {
   }
 
   /**
-   * Get case.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  public function getCase(): ?CaseBundle {
-    $caseId = $this->getDiaryNumber();
-
-    if (!$caseId) {
-      return NULL;
-    }
-
-    $cases = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties([
-        'status' => 1,
-        'type' => 'case',
-        // @todo this query is most likely pretty inefficient.
-        'field_diary_number' => $caseId,
-      ]);
-
-    if (empty($cases)) {
-      return NULL;
-    }
-
-    $case = reset($cases);
-    assert($case instanceof CaseBundle);
-    return $case;
-  }
-
-  /**
    * Get meeting URL for selected decision.
    *
    * @return \Drupal\Core\Url|null
@@ -98,7 +67,7 @@ class Decision extends Node {
    * @return string|null|\Drupal\Core\StringTranslation\TranslatableMarkup
    *   Formatted section label, if possible to generate.
    */
-  public function getFormattedDecisionSection(): mixed {
+  public function getFormattedDecisionSection(): string|null|TranslatableMarkup {
     if ($this->get('field_decision_section')->isEmpty()) {
       return NULL;
     }
@@ -261,7 +230,7 @@ class Decision extends Node {
       return $minutes_file_uri;
     }
 
-    if (!$this->get('field_decision_record')->isEmpty()) {
+    if ($this->get('field_decision_record')->isEmpty()) {
       return NULL;
     }
 
@@ -285,7 +254,7 @@ class Decision extends Node {
       return NULL;
     }
 
-    if (!$this->get('field_decision_minutes_pdf')->isEmpty()) {
+    if ($this->get('field_decision_minutes_pdf')->isEmpty()) {
       return NULL;
     }
 

@@ -8,7 +8,7 @@ use Drupal\block\Entity\Block;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Url;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_helsinki_kanava\Plugin\Block\AnnouncementsBlock;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -53,7 +53,7 @@ class AnnouncementBlockTest extends KernelTestBase {
       ->set('city_council_id', 'test_id')
       ->save();
 
-    $policymakerNode = $this->prophesize(NodeInterface::class);
+    $policymakerNode = $this->prophesize(Policymaker::class);
     $policymakerNode->toUrl(Argument::any(), Argument::any())
       ->willReturn(Url::fromUri('https://example.com'));
 

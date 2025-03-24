@@ -1,0 +1,17 @@
+{
+  "Type": "aloite",
+  "Title": "Valtuustoaloite, syrjinnän vastainen verkosto, Putte Possu",
+  "links": [{
+    "rel": "self",
+    "href": "https://example.com/ahjorest/v1/records/%7BCD5AB283-59EC-4B23-9070-609D51594D7E%7D"
+  }],
+  "Issued": "",
+  "FileURI": "https://example.com/7B5AD719-F9FC-CDD5-9900-903221C00000.pdf",
+  "Language": "fi",
+  "NativeId": "{CD5AB283-59EC-4B23-9070-609D51594D7E}",
+  "PersonalData": "Sisältää henkilötietoja",
+  "PublicityClass": "Julkinen",
+  "SecurityReasons": null,
+  "VersionSeriesId": "{7B5AD719-F9FC-CDD5-9900-903221C00000}",
+  "AttachmentNumber": "1"
+}
