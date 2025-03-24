@@ -470,34 +470,6 @@ class CaseService {
   }
 
   /**
-   * Get meeting URL for selected decision.
-   *
-   * @return \Drupal\Core\Url|null
-   *   Meeting URL, if found.
-   */
-  public function getDecisionMeetingLink(): ?Url {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    // Check if decision has meeting ID.
-    if (!$this->selectedDecision->hasField('field_meeting_id') || $this->selectedDecision->get('field_meeting_id')->isEmpty()) {
-      return NULL;
-    }
-    $meeting_id = $this->selectedDecision->get('field_meeting_id')->value;
-
-    // Check if decision has policymaker ID.
-    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
-      return NULL;
-    }
-    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
-  }
-
-  /**
    * Get decision URL by native ID.
    *
    * @param string $id
@@ -672,60 +644,41 @@ class CaseService {
   /**
    * Get localized case URL from node.
    *
-   * @param \Drupal\node\NodeInterface|null $case
-   *   Case node, or default.
-   * @param string|null $langcode
-   *   Langcode to get URL for. Defaults to current language.
+   * @todo simplify case / decision url generation.
+   *
+   * @param string $diaryNumber
+   *   Case number.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision|null $decision
+   *   Decision.
+   * @param string $langcode
+   *   Langcode to get URL for.
    *
    * @return \Drupal\Core\Url|null
    *   Localized URL, if found.
    */
-  public function getCaseUrlFromNode(?NodeInterface $case = NULL, ?string $langcode = NULL): ?Url {
-    if ($case === NULL) {
-      $case = $this->case;
-    }
+  public function getCaseUrlFromNode(string $diaryNumber, ?Decision $decision, string $langcode): ?Url {
+    $localizedRoute = "paatokset_case.$langcode";
 
-    if (!$case instanceof NodeInterface) {
+    // We don't want an URL without a localized route.
+    if (!$this->routeExists($localizedRoute)) {
       return NULL;
     }
 
-    if ($langcode === NULL) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      $strict_lang = FALSE;
-    }
-    // If langcode is set, we want that localized URL specifically or nothing.
-    else {
-      $strict_lang = TRUE;
-    }
-
-    $localizedRoute = 'paatokset_case.' . $langcode;
-    if ($this->routeExists($localizedRoute)) {
-      $case_url = Url::fromRoute($localizedRoute, ['case' => strtolower($case->get('field_diary_number')->value)]);
-    }
-    // If langcode is set, we don't want an URL without a localized route.
-    elseif ($strict_lang) {
-      return NULL;
-    }
-    // If route doesn't exist, just use case URL.
-    else {
-      $case_url = $case->toUrl();
-    }
+    $case_url = Url::fromRoute($localizedRoute, ['case' => strtolower($diaryNumber)]);
 
     // Get decision ID from selected decision.
     $decision_id = NULL;
-    if ($this->selectedDecision instanceof NodeInterface) {
+    if ($decision instanceof Decision) {
       try {
         $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
       }
       catch (\InvalidArgumentException) {
         // Decision for $langcode does not exist.
         // Use the decision we have.
-        $decision = $this->selectedDecision;
       }
 
-      if ($decision instanceof Decision) {
-        $decision_id = $this->normalizeNativeId($decision->getNativeId());
-      }
+      assert($decision instanceof Decision);
+      $decision_id = $this->normalizeNativeId($decision->getNativeId());
     }
 
     if ($decision_id !== NULL) {
@@ -946,96 +899,19 @@ class CaseService {
   }
 
   /**
-   * Get label for decision (organization name + date).
-   *
-   * @param string|null $decision_id
-   *   Decision ID. Leave NULL to use active decision.
-   *
-   * @return string|null
-   *   Decision label.
-   */
-  public function getDecisionLabel(?string $decision_id = NULL): ?string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    return $this->formatDecisionLabel($decision);
-  }
-
-  /**
-   * Get decision org name translated to current language.
-   *
-   * @param string|null $decision_id
-   *   Decision ID, or use default decision.
-   *
-   * @return string|null
-   *   Org name, if found.
-   */
-  public function getDecisionOrgName(?string $decision_id = NULL): ?string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if ($decision->hasField('field_dm_org_name') && !$decision->get('field_dm_org_name')->isEmpty()) {
-      $default_name = $decision->get('field_dm_org_name')->value;
-    }
-    else {
-      $default_name = NULL;
-    }
-
-    if (!$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
-      return $default_name;
-    }
-
-    $language = $this->languageManager->getCurrentLanguage()->getId();
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value, $language, FALSE);
-    if (!$policymaker_name) {
-      return $default_name;
-    }
-    return $policymaker_name;
-  }
-
-  /**
    * Format decision label.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $node
    *   Decision node.
    *
    * @return string
    *   Formatted label.
    */
-  private function formatDecisionLabel(NodeInterface $node): string {
-    $org_label = NULL;
-
-    // Get organization name directly from policymaker node.
-    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
-      $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-      /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-      $policymakerService = \Drupal::service('paatokset_policymakers');
-      $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value, $currentLanguage, FALSE);
-    }
+  public function formatDecisionLabel(Decision $node): string {
+    $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
 
     // If policymaker node cannot be found, use value from decision node.
-    if (!$org_label && $node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
-      $org_label = $node->get('field_dm_org_name')->value;
-    }
+    $org_label = $policymaker?->getPolicymakerName() ?? $node->getDecisionMakerOrgName();
 
     $meeting_number = $node->field_meeting_sequence_number->value;
     if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
@@ -1170,14 +1046,10 @@ class CaseService {
     $native_results = [];
     $results = [];
     foreach ($decisions as $node) {
+      assert($node instanceof Decision);
       $label = $this->formatDecisionLabel($node);
-
-      if ($node->field_policymaker_id->value) {
-        $class = $policymakerService->getPolicymakerClassById($node->field_policymaker_id->value);
-      }
-      else {
-        $class = 'color-sumu';
-      }
+      $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
+      $class = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
 
       // Store all unique IDs for current language decisions.
       if ($node->langcode->value === $currentLanguage) {
@@ -1188,7 +1060,7 @@ class CaseService {
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
         'langcode' => $node->langcode->value,
-        'native_id' => $this->normalizeNativeId($node->field_decision_native_id->value),
+        'native_id' => $this->normalizeNativeId($node->getNativeId()),
         'title' => $node->title->value,
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,

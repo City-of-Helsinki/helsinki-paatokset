@@ -11,6 +11,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Service class for retrieving meeting-related data.
@@ -20,13 +21,6 @@ use Psr\Log\LoggerInterface;
 class MeetingService {
 
   use StringTranslationTrait;
-
-  /**
-   * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
 
   /**
    * Machine name for meeting node type.
@@ -40,15 +34,15 @@ class MeetingService {
    *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
-   *   The logger factory.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
     private readonly LanguageManagerInterface $languageManager,
-    LoggerChannelFactoryInterface $loggerFactory,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    private readonly LoggerInterface $logger,
   ) {
-    $this->logger = $loggerFactory->get('paatokset_ahjo_proxy');
   }
 
   /**
@@ -225,82 +219,6 @@ class MeetingService {
   }
 
   /**
-   * Get policy maker type based on name.
-   *
-   * @param string $name
-   *   Policy maker name.
-   *
-   * @return string
-   *   Policy maker type CSS class.
-   */
-  private function getPolicymakerType(string $name): string {
-    // @todo This should be refactored to fetch the actual type.
-    $name = strtolower($name);
-    if (strpos($name, 'valtuusto') !== FALSE) {
-      return 'valtuusto';
-    }
-    if (strpos($name, 'toimikunta') !== FALSE) {
-      return 'toimikunta';
-    }
-    if (strpos($name, 'lautakun') !== FALSE) {
-      return 'lautakunta';
-    }
-    if (strpos($name, 'hallitus') !== FALSE) {
-      return 'hallitus';
-    }
-    return 'trustee';
-  }
-
-  /**
-   * Get policymaker name for meeting.
-   *
-   * @param string $id
-   *   Policymaker ID.
-   * @param string $default_name
-   *   Default policymaker name if node can't be loaded.
-   * @param string $langcode
-   *   Which translation of policymaker node to get.
-   *
-   * @return string
-   *   Policymaker name.
-   */
-  private function getPolicymakerName(string $id, string $default_name, string $langcode = 'fi'): string {
-    // Leaving this \Drupal::service() call here temporarily,
-    // until this whole code block can be removed.
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $name = $policymakerService->getPolicymakerNameById($id, $langcode, FALSE);
-    if ($name !== NULL) {
-      return $name;
-    }
-    return $default_name;
-  }
-
-  /**
-   * Get the previous scheduled meeting.
-   *
-   * @param string $id
-   *   Policymaker id.
-   *
-   * @return string|void
-   *   Meeting date as string if found
-   */
-  public function previousMeetingDate(string $id) {
-    $queryResult = $this->elasticQuery([
-      'to' => date('Y-m-d', strtotime('now')),
-      'limit' => 1,
-      'policymaker' => $id,
-      'sort' => 'DESC',
-    ]);
-
-    if (!empty($queryResult)) {
-      $meeting = reset($queryResult);
-      $meeting = reset($meeting);
-      return $meeting['meeting_date'];
-    }
-  }
-
-  /**
    * Get the next scheduled meeting.
    *
    * @param string $id
@@ -357,90 +275,6 @@ class MeetingService {
     $text = $this->t('Meeting minutes.');
 
     return Link::fromTextAndUrl($text, $url);
-  }
-
-  /**
-   * Get Meeting minutes URL.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   Meeting node.
-   *
-   * @return string|null
-   *   URL as string, if possible to get.
-   */
-  public function getMeetingUrl(NodeInterface $node): ?string {
-    $meeting_id = $node->get('field_meeting_id')->value;
-    $policymaker_id = $node->get('field_meeting_dm_id')->value;
-
-    // Leaving this \Drupal::service() call here temporarily,
-    // until this whole code block can be removed.
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
-    if ($url instanceof Url) {
-      return $url->toString(TRUE)->getGeneratedUrl();
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Get Meeting URL.
-   *
-   * @param string $meeting_id
-   *   Meeting ID.
-   * @param string $policymaker_id
-   *   Policymaker ID.
-   * @param bool $include_anchor
-   *   Include decision announcement anchor.
-   *
-   * @return string|null
-   *   URL as string, if possible to get.
-   */
-  public function getMeetingUrlWithoutNode(string $meeting_id, string $policymaker_id, bool $include_anchor = FALSE) : ?string {
-    // Leaving this \Drupal::service() call here temporarily,
-    // until this whole code block can be removed.
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id, $include_anchor);
-    if ($url instanceof Url) {
-      return $url->toString(TRUE)->getGeneratedUrl();
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Get URL to meeting minutes document based on meeting ID.
-   *
-   * @param string $id
-   *   Meeting ID.
-   * @param string $document_type
-   *   Document type, for example: 'esityslista', 'pöytäkirja'.
-   *
-   * @return string|null
-   *   URL to meeting minutes document, if one exists.
-   */
-  public function getMeetingsDocumentUrl(string $id, string $document_type): ?string {
-    $nodeStorage = $this->entityTypeManager->getStorage('node');
-    $query = $nodeStorage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', self::NODE_TYPE)
-      ->condition('field_meeting_id', $id);
-
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return NULL;
-    }
-
-    $entity = $nodeStorage->load(reset($ids));
-    if (!$entity instanceof NodeInterface) {
-      return NULL;
-    }
-
-    return $this->getDocumentUrlFromEntity($entity, $document_type);
   }
 
   /**

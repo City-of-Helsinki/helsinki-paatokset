@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
@@ -25,6 +28,73 @@ class Decision extends Node {
    */
   public function getNativeId(): ?string {
     return $this->get('field_decision_native_id')->value;
+  }
+
+  /**
+   * Gets decision maker org name that is stored in decision record.
+   *
+   * @return string|null
+   */
+  public function getDecisionMakerOrgName(): ?string {
+    if (!$this->get('field_dm_org_name')->isEmpty()) {
+      return $this->get('field_dm_org_name')->value;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get case.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function getCase(): ?CaseBundle {
+    $caseId = $this->getDiaryNumber();
+
+    if (!$caseId) {
+      return NULL;
+    }
+
+    $cases = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'status' => 1,
+        'type' => 'case',
+        // @todo this query is most likely pretty inefficient.
+        'field_diary_number' => $caseId,
+      ]);
+
+    if (empty($cases)) {
+      return NULL;
+    }
+
+    $case = reset($cases);
+    assert($case instanceof CaseBundle);
+    return $case;
+  }
+
+
+  /**
+   * Get meeting URL for selected decision.
+   *
+   * @return \Drupal\Core\Url|null
+   *   Meeting URL, if found.
+   */
+  public function getDecisionMeetingLink(): ?Url {
+    if (
+      $this->get('field_meeting_id')->isEmpty() ||
+      $this->get('field_policymaker_id')->isEmpty()
+    ) {
+      return NULL;
+    }
+
+    $meeting_id = $this->get('field_meeting_id')->value;
+    $policymaker_id = $this->get('field_policymaker_id')->value;
+
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
   }
 
   /**
@@ -234,7 +304,7 @@ class Decision extends Node {
   /**
    * Get policymaker.
    */
-  public function getPolicymaker(): ?Policymaker {
+  public function getPolicymaker(string $langcode): ?Policymaker {
     if ($this->get('field_policymaker_id')->isEmpty()) {
       return NULL;
     }
@@ -256,6 +326,11 @@ class Decision extends Node {
 
     $policymaker = reset($policymakers);
     assert($policymaker instanceof Policymaker);
+
+    if ($policymaker->hasTranslation($langcode)) {
+      return $policymaker->getTranslation($langcode);
+    }
+
     return $policymaker;
   }
 

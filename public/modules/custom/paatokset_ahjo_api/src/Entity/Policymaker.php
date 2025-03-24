@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
  * Bundle class for policymaker.
@@ -52,4 +56,72 @@ class Policymaker extends Node {
       default => 'color-none',
     };
   }
+
+  /**
+   * Get organization name by ID.
+   *
+   * @param bool $get_ahjo_title
+   *   Get Ahjo title instead of node title.
+   *
+   * @return string|null
+   *   Organization name or NULL if policymaker can't be found.
+   */
+  public function getPolicymakerName(bool $get_ahjo_title = TRUE): ?string {
+    if ($get_ahjo_title) {
+      return $this->get('field_ahjo_title')->value;
+    }
+    return $this->title->value;
+  }
+
+  /**
+   * Return route for policymaker decisions.
+   *
+   * @todo simplify decision/case routing logic.
+   *
+   * @param string $langcode
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL object, if route is valid.
+   */
+  public function getDecisionsRoute(string $langcode): ?Url {
+    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+      return NULL;
+    }
+
+    $routes = PolicymakerRoutes::getTrusteeRoutes();
+    $baseRoute = $routes['decisions'];
+    $localizedRoute = "$baseRoute.$langcode";
+    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($langcode);
+
+    if (PolicymakerService::routeExists($localizedRoute)) {
+      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get policymaker organization from URL.
+   *
+   * @param string $langcode
+   *   Langcode to get organization for.
+   *
+   * @return string|null
+   *   Policymaker URL slug, if found.
+   */
+  public function getPolicymakerOrganizationFromUrl(string $langcode): ?string {
+    // Attempt to switch translation.
+    $policymaker = $this->hasTranslation($langcode) ? $this->getTranslation($langcode) : $this;
+
+    // If we can't get the actual translation, return just the policymaker ID.
+    if ($policymaker->get('langcode')->value !== $langcode && !$policymaker->get('field_policymaker_id')->isEmpty()) {
+      return strtolower($policymaker->get('field_policymaker_id')->value);
+    }
+
+    $policymaker_url = $policymaker->toUrl()->toString(TRUE)->getGeneratedUrl();
+    $policymaker_url_bits = explode('/', $policymaker_url);
+    $policymaker_org = array_pop($policymaker_url_bits);
+    return strtolower($policymaker_org);
+  }
+
 }

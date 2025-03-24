@@ -9,6 +9,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
@@ -27,7 +28,7 @@ final class CaseController extends ControllerBase {
    * Class constructor.
    *
    * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
-   *   CaseService for getting case and decision data.
+   *   The case service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
    */
@@ -44,33 +45,20 @@ final class CaseController extends ControllerBase {
    *   JSON object containing data
    */
   public function loadDecision(Decision $decision): Response {
-    $this->caseService->setEntitiesFromDecision($decision);
-    $policymaker = $decision->getPolicyMaker();
-
-    $data = [];
-    _paatokset_ahjo_api_get_decision_variables($data, $this->caseService);
-
-    $all_decisions_link = $this->caseService->getDecisionMeetingLink();
-    if ($all_decisions_link instanceof Url) {
-      $all_decisions_link = $all_decisions_link->toString();
-    }
-
-    $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
-    if ($other_decisions_link instanceof Url) {
-      $other_decisions_link = $other_decisions_link->toString();
-    }
-
     $languages = $this->languageManager()->getLanguages();
     $language_urls = [];
     foreach ($languages as $langcode => $language) {
-      $lang_url = $this->caseService->getCaseUrlFromNode(NULL, $langcode);
+      $lang_url = $this->caseService->getCaseUrlFromNode($decision->getDiaryNumber(), $decision, $langcode);
       if ($lang_url) {
         $lang_url->setOption('language', $language);
         $language_urls[$langcode] = $lang_url->toString();
       }
     }
 
-    $content = $this->renderDecisionContent($decision, $policymaker, $data);
+    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+    $policymaker = $decision->getPolicyMaker($langcode);
+
+    $content = $this->renderDecisionContent($decision, $policymaker);
     $attachments = $this->renderCaseAttachments($decision);
     $navigation = [
       '#theme' => 'decision_navigation',
@@ -85,13 +73,14 @@ final class CaseController extends ControllerBase {
       'decision_navigation' => $this->renderer->renderInIsolation($navigation),
       'show_warning' => !empty($navigation['#next_decision']),
       'decision_pdf' => $decision->getDecisionPdf(),
-      'all_decisions_link' => $all_decisions_link,
-      'other_decisions_link' => $other_decisions_link,
+      'all_decisions_link' => $decision->getDecisionMeetingLink()?->toString(),
+      'other_decisions_link' => $policymaker->getDecisionsRoute($langcode)?->toString(),
     ]);
 
     $response->addCacheableDependency($decision);
-    if ($this->caseService->getSelectedCase()) {
-      $response->addCacheableDependency($this->caseService->getSelectedCase());
+
+    if ($policymaker) {
+      $response->addCacheableDependency($policymaker);
     }
 
     return $response;
@@ -100,13 +89,13 @@ final class CaseController extends ControllerBase {
   /**
    * Renders decision content.
    */
-  private function renderDecisionContent(Decision $decision, ?Policymaker $policymaker, array $data): MarkupInterface {
+  private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface {
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
       '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
       '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
-      '#decision_org_name' => $data['decision_org_name'],
+      '#decision_org_name' => $policymaker?->getPolicymakerName() ?? $decision->getDecisionMakerOrgName(),
       '#decision_content' => $decision->parseContent(),
       '#decision_section' => $decision->getFormattedDecisionSection(),
       '#vote_results' => $decision->getVotingResults(),

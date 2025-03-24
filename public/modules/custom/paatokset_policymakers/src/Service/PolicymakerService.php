@@ -72,10 +72,8 @@ class PolicymakerService {
 
   /**
    * Policymaker node.
-   *
-   * @var \Drupal\node\Entity\Node
    */
-  private $policymaker;
+  private Policymaker $policymaker;
 
   /**
    * Policymaker ID.
@@ -199,10 +197,10 @@ class PolicymakerService {
    * @param string|null $langcode
    *   Translation to get. Leave null to return active translation.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Policymaker|null
    *   Policymaker node or NULL.
    */
-  public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?NodeInterface {
+  public function getPolicyMaker(?string $id = NULL, ?string $langcode = NULL): ?Policymaker {
     if ($id === NULL) {
       return $this->policymaker;
     }
@@ -224,6 +222,8 @@ class PolicymakerService {
     if ($result->hasTranslation($langcode)) {
       $result = $result->getTranslation($langcode);
     }
+
+    assert($result instanceof Policymaker);
 
     return $result;
   }
@@ -355,7 +355,7 @@ class PolicymakerService {
     $localized_route = 'policymaker.page.' . $langcode;
     if ($this->routeExists($localized_route)) {
       return Url::fromRoute($localized_route, [
-        'organization' => $this->getPolicymakerOrganizationFromUrl($policymaker, $langcode),
+        'organization' => $policymaker->getPolicymakerOrganizationFromUrl($langcode),
       ]);
     }
     return NULL;
@@ -381,42 +381,7 @@ class PolicymakerService {
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $localizedRoute = "$baseRoute.$currentLanguage";
 
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker, $currentLanguage);
-
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Return route for policymaker decisions.
-   *
-   * @param string|null $policymaker_id
-   *   Policymaker ID or NULL to use selected one.
-   *
-   * @return Drupal\Core\Url|null
-   *   URL object, if route is valid.
-   */
-  public function getDecisionsRoute(?string $policymaker_id = NULL): ?Url {
-    if (!empty($policymaker_id)) {
-      $this->setPolicyMaker($policymaker_id);
-    }
-
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymaker->hasField('field_organization_type')) {
-      return NULL;
-    }
-
-    if (!in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
-      return NULL;
-    }
-
-    $routes = PolicymakerRoutes::getTrusteeRoutes();
-    $baseRoute = $routes['decisions'];
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    $localizedRoute = "$baseRoute.$currentLanguage";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker, $currentLanguage);
+    $policymaker_org = $this->policymaker->getPolicymakerOrganizationFromUrl($currentLanguage);
 
     if ($this->routeExists($localizedRoute)) {
       return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
@@ -465,7 +430,7 @@ class PolicymakerService {
 
     $route = PolicymakerRoutes::getSubroutes()['minutes'];
     $localizedRoute = "$route.$langcode";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($policymaker, $langcode);
+    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($langcode);
 
     $routeSettings = [
       'organization' => $policymaker_org,
@@ -485,41 +450,6 @@ class PolicymakerService {
     }
 
     return NULL;
-  }
-
-  /**
-   * Get policymaker organization from URL.
-   *
-   * @param \Drupal\node\NodeInterface|null $policymaker
-   *   Policymaker node. NULL to use default.
-   * @param string|null $langcode
-   *   Langcode to get organization for.
-   *
-   * @return string|null
-   *   Policymaker URL slug, if found.
-   */
-  public function getPolicymakerOrganizationFromUrl(?NodeInterface $policymaker = NULL, ?string $langcode = NULL): ?string {
-    if ($policymaker === NULL) {
-      $policymaker = $this->getPolicyMaker();
-    }
-    if (!$policymaker instanceof NodeInterface) {
-      return NULL;
-    }
-
-    // If we want the URL for specific language, attempt to switch translation.
-    if ($langcode !== NULL && $policymaker->hasTranslation($langcode)) {
-      $policymaker = $policymaker->getTranslation($langcode);
-    }
-
-    // If we can't get the actual translation, return just the policymaker ID.
-    if ($langcode !== NULL && $policymaker->get('langcode')->value !== $langcode && $policymaker->hasField('field_policymaker_id') && !$policymaker->get('field_policymaker_id')->isEmpty()) {
-      return strtolower($policymaker->get('field_policymaker_id')->value);
-    }
-
-    $policymaker_url = $policymaker->toUrl()->toString(TRUE)->getGeneratedUrl();
-    $policymaker_url_bits = explode('/', $policymaker_url);
-    $policymaker_org = array_pop($policymaker_url_bits);
-    return strtolower($policymaker_org);
   }
 
   /**
@@ -734,7 +664,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($this->policymaker, $langcode);
+    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($langcode);
 
     // Use finnish route as default.
     $route = 'policymaker.page.' . $langcode;
@@ -1843,47 +1773,6 @@ class PolicymakerService {
       '#suffix' => '</div></div>',
       '#markup' => $type,
     ];
-  }
-
-  /**
-   * Get organization name by ID.
-   *
-   * @param string $id
-   *   Policymaker ID.
-   * @param string $langcode
-   *   Which node translation to get.
-   * @param bool $get_ahjo_title
-   *   Get Ahjo title instead of node title.
-   *
-   * @return string|null
-   *   Organization anme or NULL if policymaker can't be found.
-   */
-  public function getPolicymakerNameById(string $id, string $langcode = 'fi', bool $get_ahjo_title = TRUE): ?string {
-    $node = $this->getPolicyMaker($id, $langcode);
-    if (!$node instanceof NodeInterface) {
-      return NULL;
-    }
-    if ($get_ahjo_title) {
-      return $node->get('field_ahjo_title')->value;
-    }
-    return $node->title->value;
-  }
-
-  /**
-   * Gets policymaker color coding by ID.
-   *
-   * @param string $id
-   *   Policymaker ID.
-   *
-   * @return string
-   *   Color code for label.
-   */
-  public function getPolicymakerClassById(string $id): string {
-    $node = $this->getPolicyMaker($id);
-    if ($node instanceof Policymaker) {
-      return $node->getPolicymakerClass();
-    }
-    return 'color-sumu';
   }
 
   /**
