@@ -13,6 +13,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -181,7 +182,8 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $policymakerService->setPolicyMakerNode($policymaker);
   $variables['organization_type'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
-  $variables['organization_type_color'] = $policymakerService->getPolicymakerClass($policymaker);
+  assert($policymaker instanceof Policymaker);
+  $variables['organization_type_color'] = $policymaker->getPolicymakerClass();
   $variables['organization_hierarchy'] = \Drupal::service(OrganizationPathBuilder::class)->build($policymaker);
   $no_content = TRUE;
 

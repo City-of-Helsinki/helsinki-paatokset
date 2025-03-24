@@ -1062,35 +1062,6 @@ class CaseService {
   }
 
   /**
-   * Get CSS class based on decision organization type.
-   *
-   * @param string|null $decision_id
-   *   Decision ID. Leave NULL to use active decision.
-   *
-   * @return string
-   *   CSS class based on org type.
-   */
-  public function getDecisionClass(?string $decision_id = NULL): string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface || !$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
-      return 'color-sumu';
-    }
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
-    $class = $policymakerService->getPolicymakerClassById($decision->field_policymaker_id->value);
-
-    return Html::cleanCssIdentifier($class);
-  }
-
-  /**
    * Get all decisions for case.
    *
    * @param string|null $case_id
@@ -1315,29 +1286,6 @@ class CaseService {
       'title' => $found_node->title->value,
       'id' => $this->normalizeNativeId($found_node->field_decision_native_id->value),
     ];
-  }
-
-  /**
-   * Check if selected decision's decisionmaker is active.
-   *
-   * @return bool
-   *   Decisionmaker activity status.
-   */
-  public function decisionPmIsActive(): bool {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return FALSE;
-    }
-
-    // Return TRUE if policymaker is not set.
-    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
-      return TRUE;
-    }
-
-    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->policymakerIsActiveById($policymaker_id);
   }
 
   /**

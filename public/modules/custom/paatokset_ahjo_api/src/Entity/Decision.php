@@ -224,4 +224,30 @@ class Decision extends Node {
     return NULL;
   }
 
+  /**
+   * Get policymaker.
+   */
+  public function getPolicymaker(): ?Policymaker {
+    if ($this->get('field_policymaker_id')->isEmpty()) {
+      return NULL;
+    }
+
+    $policymaker_id = $this->get('field_policymaker_id')->value;
+
+    $policymakers = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'status' => 1,
+        'type' => 'policymaker',
+        // @todo this query is most likely pretty inefficient.
+        'field_policymaker_id' => $policymaker_id,
+      ]);
+
+    if (empty($policymakers)) {
+      return NULL;
+    }
+
+    return reset($policymakers);
+  }
+
 }

@@ -17,6 +17,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
@@ -310,53 +311,6 @@ class PolicymakerService {
 
     if ($node instanceof NodeInterface && $node->bundle() === 'policymaker') {
       $this->setPolicyMakerNode($node);
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Check if policymaker is currently active by ID.
-   *
-   * @param string $id
-   *   Policymaker ID.
-   *
-   * @return bool
-   *   Policymaker existing status.
-   */
-  public function policymakerIsActiveById(string $id): bool {
-    $policymaker = $this->getPolicyMaker($id);
-    if ($policymaker instanceof NodeInterface) {
-      return $this->policymakerIsActive($policymaker);
-    }
-    return FALSE;
-  }
-
-  /**
-   * Check if policymaker is currently active.
-   *
-   * @param \Drupal\node\NodeInterface|null $policymaker
-   *   Policymaker to check. Leave empty to use currently active.
-   *
-   * @return bool
-   *   Policymaker existing status.
-   */
-  public function policymakerIsActive(?NodeInterface $policymaker = NULL): bool {
-    if ($policymaker === NULL) {
-      $policymaker = $this->policymaker;
-    }
-
-    if (!$policymaker instanceof NodeInterface) {
-      return FALSE;
-    }
-
-    // If field doesn't exist or is empty, assume this isn't active.
-    if (!$policymaker->hasField('field_policymaker_existing') || $policymaker->get('field_policymaker_existing')->isEmpty()) {
-      return FALSE;
-    }
-
-    if ($policymaker->get('field_policymaker_existing')->value) {
       return TRUE;
     }
 
@@ -1877,7 +1831,8 @@ class PolicymakerService {
    */
   public function getPolicyMakerTag(NodeInterface $node): ?array {
     $type = $this->getPolicymakerTypeFromNode($node);
-    $color = $this->getPolicymakerClass($node);
+    assert($node instanceof Policymaker);
+    $color = $node->getPolicymakerClass();
 
     if (!$type) {
       return NULL;
@@ -1915,69 +1870,6 @@ class PolicymakerService {
   }
 
   /**
-   * Gets policymaker color coding from node.
-   *
-   * @param Drupal\node\NodeInterface|null $node
-   *   Policymaker node. Leave empty to use set policymaker.
-   *
-   * @return string
-   *   Color code for label.
-   */
-  public function getPolicymakerClass(?NodeInterface $node = NULL): string {
-    if ($node === NULL) {
-      $node = $this->getPolicyMaker();
-    }
-    if (!$node instanceof NodeInterface) {
-      return 'color-none';
-    }
-
-    // First check overridden color code.
-    if ($node->hasField('field_organization_color_code') && !$node->get('field_organization_color_code')->isEmpty()) {
-      return $node->get('field_organization_color_code')->value;
-    }
-
-    if ($node->hasField('field_city_council_division') && $node->get('field_city_council_division')->value) {
-      return 'color-hopea';
-    }
-
-    // If type isn't set, return with no color.
-    if (!$node->hasField('field_organization_type') || $node->get('field_organization_type')->isEmpty()) {
-      return 'color-none';
-    }
-
-    // Use org type to determine color coding.
-    switch (strtolower($node->get('field_organization_type')->value)) {
-      case 'valtuusto':
-        $color = 'color-kupari';
-        break;
-
-      case 'hallitus':
-        $color = 'color-hopea';
-        break;
-
-      case 'viranhaltija':
-        $color = 'color-suomenlinna';
-        break;
-
-      case 'luottamushenkilö':
-        $color = 'color-engel';
-        break;
-
-      case 'lautakunta':
-      case 'toimi-/neuvottelukunta':
-      case 'jaosto':
-        $color = 'color-sumu';
-        break;
-
-      default:
-        $color = 'color-none';
-        break;
-    }
-
-    return $color;
-  }
-
-  /**
    * Gets policymaker color coding by ID.
    *
    * @param string $id
@@ -1988,8 +1880,8 @@ class PolicymakerService {
    */
   public function getPolicymakerClassById(string $id): string {
     $node = $this->getPolicyMaker($id);
-    if ($node instanceof NodeInterface) {
-      return $this->getPolicyMakerClass($node);
+    if ($node instanceof Policymaker) {
+      return $node->getPolicymakerClass();
     }
     return 'color-sumu';
   }

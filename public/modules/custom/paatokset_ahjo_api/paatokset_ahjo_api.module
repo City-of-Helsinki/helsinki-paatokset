@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -19,6 +20,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Article;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 
@@ -34,6 +36,9 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
   }
   if (isset($bundles['node']['decision'])) {
     $bundles['node']['decision']['class'] = Decision::class;
+  }
+  if (isset($bundles['node']['policymaker'])) {
+    $bundles['node']['policymaker']['class'] = Policymaker::class;
   }
 }
 
@@ -527,15 +532,16 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
  */
 function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $caseService): void {
   $decision = $caseService->getSelectedDecision();
+  $policymaker = $decision->getPolicymaker();
 
   $variables['no_title_for_case'] = $caseService->checkIfNoCaseTitle();
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
-  $variables['policymaker_is_active'] = $caseService->decisionPmIsActive();
+  $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
   $variables['decision_org_name'] = $caseService->getDecisionOrgName();
   $variables['selected_label'] = $caseService->getDecisionLabel();
-  $variables['selected_class'] = $caseService->getDecisionClass();
+  $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
   $variables['attachments'] = $decision?->getAttachments() ?? [];
   $variables['all_decisions'] = $caseService->getDecisionsList();
   $variables['next_decision'] = $caseService->getNextDecision();

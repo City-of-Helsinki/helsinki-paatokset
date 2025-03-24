@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Component\Render\MarkupInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -43,6 +45,7 @@ final class CaseController extends ControllerBase {
    */
   public function loadDecision(Decision $decision): Response {
     $this->caseService->setEntitiesFromDecision($decision);
+    $policymaker = $decision->getPolicyMaker();
 
     $data = [];
     _paatokset_ahjo_api_get_decision_variables($data, $this->caseService);
@@ -67,7 +70,7 @@ final class CaseController extends ControllerBase {
       }
     }
 
-    $content = $this->renderDecisionContent($decision, $data);
+    $content = $this->renderDecisionContent($decision, $policymaker, $data);
     $attachments = $this->renderCaseAttachments($decision);
     $decision_navigation = $this->renderDecisionNavigation($decision, $data);
 
@@ -93,12 +96,12 @@ final class CaseController extends ControllerBase {
   /**
    * Renders decision content.
    */
-  private function renderDecisionContent(Decision $decision, array $data): MarkupInterface {
+  private function renderDecisionContent(Decision $decision, ?Policymaker $policymaker, array $data): MarkupInterface {
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
-      '#policymaker_is_active' => $data['policymaker_is_active'],
-      '#selected_class' => $data['selected_class'],
+      '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
+      '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       '#decision_org_name' => $data['decision_org_name'],
       '#decision_content' => $data['decision_content'],
       '#decision_section' => $decision->getFormattedDecisionSection(),
