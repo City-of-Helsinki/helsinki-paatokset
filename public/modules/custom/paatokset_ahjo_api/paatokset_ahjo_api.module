@@ -42,6 +42,28 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'decision_content' => [
+      'variables' => [
+        'selectedDecision' => NULL,
+        'policymaker_is_active' => NULL,
+        'selected_class' => NULL,
+        'decision_org_name' => NULL,
+        'decision_content' => NULL,
+        'decision_section' => NULL,
+        'vote_results' => NULL,
+      ],
+    ],
+    'case_attachments' => [
+      'variables' => [
+        'attachments' => NULL,
+      ],
+    ],
+    'decision_navigation' => [
+      'variables' => [
+        'next_decision' => NULL,
+        'previous_decision' => NULL,
+      ],
+    ],
     'node__meeting' => [
       'render element' => 'elements',
       'template' => 'node--meeting',

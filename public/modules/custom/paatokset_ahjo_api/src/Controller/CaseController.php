@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Controller;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Extension\ThemeExtensionList;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -16,31 +19,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CaseController extends ControllerBase {
 
+  use AutowireTrait;
+
   /**
    * Class constructor.
    *
    * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
    *   CaseService for getting case and decision data.
-   * @param \Drupal\Core\Extension\ThemeExtensionList $extensionList
-   *   Theme extension list.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
   public function __construct(
     private readonly CaseService $caseService,
-    private readonly ThemeExtensionList $extensionList,
+    private readonly RendererInterface $renderer,
   ) {
-    // Include twig engine.
-    // phpcs:ignore
-    include_once \Drupal::root() . '/core/themes/engines/twig/twig.engine';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('paatokset_ahjo_cases'),
-      $container->get('extension.list.theme'),
-    );
   }
 
   /**
@@ -75,24 +67,9 @@ final class CaseController extends ControllerBase {
       }
     }
 
-    $content = $this->renderTemplate('/templates/components/decision-content.html.twig', [
-      'selectedDecision' => $decision,
-      'policymaker_is_active' => $data['policymaker_is_active'],
-      'selected_class' => $data['selected_class'],
-      'decision_org_name' => $data['decision_org_name'],
-      'decision_content' => $data['decision_content'],
-      'decision_section' => $decision->getFormattedDecisionSection(),
-      'vote_results' => $decision->getVotingResults(),
-    ]);
-
-    $attachments = $this->renderTemplate('/templates/components/case-attachments.html.twig', [
-      'attachments' => $decision->getAttachments(),
-    ]);
-
-    $decision_navigation = $this->renderTemplate('/templates/components/decision-navigation.html.twig', [
-      'next_decision' => $data['next_decision'],
-      'previous_decision' => $data['previous_decision'],
-    ]);
+    $content = $this->renderDecisionContent($decision, $data);
+    $attachments = $this->renderCaseAttachments($decision);
+    $decision_navigation = $this->renderDecisionNavigation($decision, $data);
 
     $response = new CacheableJsonResponse([
       'content' => $content,
@@ -114,12 +91,43 @@ final class CaseController extends ControllerBase {
   }
 
   /**
-   * Render twig template in hdbt_subtheme folder.
+   * Renders decision content.
    */
-  private function renderTemplate(string $path, array $variables): string {
-    $template_file = $this->extensionList->getPath('hdbt_subtheme') . $path;
+  private function renderDecisionContent(Decision $decision, array $data): MarkupInterface {
+    $build = [
+      '#theme' => 'decision_content',
+      '#selectedDecision' => $decision,
+      '#policymaker_is_active' => $data['policymaker_is_active'],
+      '#selected_class' => $data['selected_class'],
+      '#decision_org_name' => $data['decision_org_name'],
+      '#decision_content' => $data['decision_content'],
+      '#decision_section' => $decision->getFormattedDecisionSection(),
+      '#vote_results' => $decision->getVotingResults(),
+    ];
+    return $this->renderer->renderInIsolation($build);
+  }
 
-    return twig_render_template($template_file, $variables);
+  /**
+   * Renders case attachments.
+   */
+  private function renderCaseAttachments(Decision $decision): MarkupInterface {
+    $build = [
+      '#theme' => 'case_attachments',
+      '#attachments' => $decision->getAttachments(),
+    ];
+    return $this->renderer->renderInIsolation($build);
+  }
+
+  /**
+   * Renders case attachments.
+   */
+  private function renderDecisionNavigation(Decision $decision, array $data): MarkupInterface {
+    $build = [
+      '#theme' => 'decision_navigation',
+      '#next_decision' => $data['next_decision'],
+      '#previous_decision' => $data['previous_decision'],
+    ];
+    return $this->renderer->renderInIsolation($build);
   }
 
 }

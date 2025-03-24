@@ -13,6 +13,7 @@ services:
   paatokset_ahjo_cases:
     class: Drupal\paatokset_ahjo_api\Service\CaseService
     arguments: ['@language_manager', '@request_stack']
+  Drupal\paatokset_ahjo_api\Service\CaseService: '@paatokset_ahjo_cases'
   paatokset_ahjo_trustees:
     class: Drupal\paatokset_ahjo_api\Service\TrusteeService
   paatokset_ahjo_api.term_route_subscriber:
