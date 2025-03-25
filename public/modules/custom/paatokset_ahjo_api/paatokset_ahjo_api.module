@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +19,9 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Article;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 
@@ -31,6 +35,15 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['trustee'])) {
     $bundles['node']['trustee']['class'] = Trustee::class;
   }
+  if (isset($bundles['node']['decision'])) {
+    $bundles['node']['decision']['class'] = Decision::class;
+  }
+  if (isset($bundles['node']['policymaker'])) {
+    $bundles['node']['policymaker']['class'] = Policymaker::class;
+  }
+  if (isset($bundles['node']['case'])) {
+    $bundles['node']['case']['class'] = CaseBundle::class;
+  }
 }
 
 /**
@@ -38,6 +51,28 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'decision_content' => [
+      'variables' => [
+        'selectedDecision' => NULL,
+        'policymaker_is_active' => NULL,
+        'selected_class' => NULL,
+        'decision_org_name' => NULL,
+        'decision_content' => NULL,
+        'decision_section' => NULL,
+        'vote_results' => NULL,
+      ],
+    ],
+    'case_attachments' => [
+      'variables' => [
+        'attachments' => NULL,
+      ],
+    ],
+    'decision_navigation' => [
+      'variables' => [
+        'next_decision' => NULL,
+        'previous_decision' => NULL,
+      ],
+    ],
     'node__meeting' => [
       'render element' => 'elements',
       'template' => 'node--meeting',
@@ -500,22 +535,26 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
  * Preprocess variables for case and decision pages.
  */
 function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $caseService): void {
+  $decision = $caseService->getSelectedDecision();
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $policymaker = $decision?->getPolicymaker($langcode);
+
   $variables['no_title_for_case'] = $caseService->checkIfNoCaseTitle();
-  $variables['decision_pdf'] = $caseService->getDecisionPdf();
+  $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['selectedDecision'] = $caseService->getSelectedDecision();
-  $variables['policymaker_is_active'] = $caseService->decisionPmIsActive();
-  $variables['decision_section'] = $caseService->getFormattedDecisionSection();
-  $variables['decision_org_name'] = $caseService->getDecisionOrgName();
-  $variables['selected_label'] = $caseService->getDecisionLabel();
-  $variables['selected_class'] = $caseService->getDecisionClass();
-  $variables['attachments'] = $caseService->getAttachments();
+  $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
+  $variables['decision_section'] = $decision?->getFormattedDecisionSection();
+  $variables['decision_org_name'] = $policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName();
+  $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision) : NULL;
+  $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
+  $variables['attachments'] = $decision?->getAttachments() ?? [];
   $variables['all_decisions'] = $caseService->getDecisionsList();
-  $variables['next_decision'] = $caseService->getNextDecision();
-  $variables['previous_decision'] = $caseService->getPrevDecision();
-  $variables['decision_content'] = $caseService->parseContent();
-  $variables['all_decisions_link'] = $caseService->getDecisionMeetingLink();
-  $variables['other_decisions_link'] = $caseService->getPolicymakerDecisionsLink();
-  $variables['vote_results'] = $caseService->getVotingResults();
+  $variables['next_decision'] = $decision ? $caseService->getNextDecision($decision) : NULL;
+  $variables['previous_decision'] = $decision ? $caseService->getPrevDecision($decision) : NULL;
+  $variables['decision_content'] = $decision?->parseContent() ?? [];
+  $variables['all_decisions_link'] = $decision?->getDecisionMeetingLink();
+  $variables['other_decisions_link'] = $policymaker?->getDecisionsRoute($langcode);
+  $variables['vote_results'] = $decision?->getVotingResults() ?? [];
 }
 
 /**

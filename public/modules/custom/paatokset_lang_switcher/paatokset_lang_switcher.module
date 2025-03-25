@@ -76,26 +76,25 @@ function paatokset_lang_switcher_language_switch_links_alter(array &$links, $typ
  *   Localized URL, if found.
  */
 function _paatokset_lang_switcher_get_alt_urls_for_node(NodeInterface $node, string $langCode): ?Url {
-  if ($node->bundle() === 'case' || $node->bundle() === 'decision') {
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-  }
-
-  if ($node->bundle() === 'policymaker' || $node->bundle() === 'trustee') {
+  if ($node->bundle() === 'policymaker') {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
-  }
-
-  if ($node->bundle() === 'policymaker') {
     return $policymakerService->getPolicymakerRoute($node, $langCode);
   }
   elseif ($node->bundle() === 'case') {
-    return $caseService->getCaseUrlFromNode($node, $langCode);
+    $diaryNumber = $node->get('field_diary_number')->value;
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    return $caseService->getCaseUrlFromNode($diaryNumber, $caseService->getSelectedDecision(), $langCode);
   }
   elseif ($node->bundle() === 'decision') {
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
     return $caseService->getDecisionUrlFromNode($node, $langCode);
   }
   elseif ($node->bundle() === 'trustee') {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
     return $policymakerService->getTrusteeUrl($node, $langCode);
   }
 
@@ -127,7 +126,8 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   // Special case for getting case URLs.
   // This is because we might want to get translated decision IDs.
   if (str_starts_with($route_name, 'paatokset_case.')) {
-    $url = $caseService->getCaseUrlFromNode(NULL, $langCode);
+    $decision = $caseService->getSelectedDecision();
+    $url = $caseService->getCaseUrlFromNode($decision->getDiaryNumber(), $decision, $langCode);
     if ($url === NULL) {
       $url = $caseService->getDecisionUrlFromNode(NULL, $langCode);
     }
@@ -148,7 +148,7 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
     if ($key === 'organization') {
       // Policymaker gets lost when returning page from cache, so set it again.
       $policymakerService->setPolicyMakerByPath();
-      $organization = $policymakerService->getPolicymakerOrganizationFromUrl(NULL, $langCode);
+      $organization = $policymakerService->getPolicyMaker()?->getPolicymakerOrganizationFromUrl($langCode);
 
       if ($organization) {
         $parameters[$key] = $organization;

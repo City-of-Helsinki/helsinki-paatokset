@@ -9,6 +9,8 @@ parameters:
     - ./public/modules/custom/paatokset_ahjo_openid
     - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/QueueWorker
     - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver
+    - ./public/modules/custom/paatokset_ahjo_api/src/Entity
+    - ./public/modules/custom/paatokset_ahjo_api/src/Controller
     - ./public/modules/custom/paatokset_ahjo_api/src/AhjoQueueWorkerBase.php
     - ./public/modules/custom/paatokset_datapumppu
     - ./public/modules/custom/paatokset_allu

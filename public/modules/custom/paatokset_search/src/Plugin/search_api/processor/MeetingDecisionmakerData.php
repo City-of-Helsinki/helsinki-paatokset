@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -82,7 +83,7 @@ class MeetingDecisionmakerData extends ProcessorPluginBase {
       $dm_id = $node->get('field_meeting_dm_id')->value;
       $dm_node = $this->policymakerService->getPolicyMaker($dm_id);
 
-      if (!$dm_node instanceof NodeInterface) {
+      if (!$dm_node instanceof Policymaker) {
         return;
       }
 
@@ -96,7 +97,11 @@ class MeetingDecisionmakerData extends ProcessorPluginBase {
       }
 
       foreach (['fi', 'sv', 'en'] as $langcode) {
-        $data['title'][$langcode] = $this->policymakerService->getPolicymakerNameById($dm_id, $langcode, FALSE);
+        if ($dm_node->hasTranslation($langcode)) {
+          $translation = $dm_node->getTranslation($langcode);
+          assert($translation instanceof Policymaker);
+          $data['title'][$langcode] = $translation->getPolicymakerName();
+        }
       }
 
       $fields = $this->getFieldsHelper()

@@ -1,0 +1,23 @@
+uuid: 745a784d-a669-4e73-9f7c-a9b0f0fd4872
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hide_decision_content
+    - node.type.decision
+id: node.decision.field_hide_decision_content
+field_name: field_hide_decision_content
+entity_type: node
+bundle: decision
+label: 'Hide decision content'
+description: 'This will hide the decision content, but will keep the title visible.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

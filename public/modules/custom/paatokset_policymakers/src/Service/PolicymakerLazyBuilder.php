@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 
 /**
  * Lazy building functions for policymaker data.
@@ -94,12 +95,14 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
       $title = $node->get('title')->value;
 
+      assert($node instanceof Policymaker);
+
       $cards[] = [
         'title' => $title,
         'ahjo_title' => $this->policymakerService->getPolicymakerTypeFromNode($node),
         'link' => $this->policymakerService->getPolicymakerRoute($node, $this->currentLanguage),
         'image' => $node->get('field_policymaker_image')->view('default'),
-        'organization_color' => $this->policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
+        'organization_color' => $node->getPolicymakerClass(),
       ];
     }
 
@@ -334,6 +337,8 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         $sector_display = '';
       }
 
+      assert($node instanceof Policymaker);
+
       $filtered[] = [
         'title' => $node->get('title')->value,
         'sort_title' => $node->get('field_dm_org_name')->value . ' ' . $node->get('title')->value,
@@ -342,7 +347,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_type' => $node->get('field_organization_type')->value,
         'organization_name' => $node->get('field_dm_org_name')->value,
         'image' => $node->get('field_policymaker_image')->view('default'),
-        'organization_color' => $this->policymakerService->getPolicymakerClassById($node->get('field_policymaker_id')->value),
+        'organization_color' => $node->getPolicymakerClass(),
         'is_city_council_division' => $node->get('field_city_council_division')->value,
         'sector' => $sector,
         'sector_display' => $sector_display,

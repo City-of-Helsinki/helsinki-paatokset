@@ -1,0 +1,19 @@
+uuid: bb0b6ed2-f959-439e-88ef-e6617561f601
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_decision_history
+field_name: field_decision_history
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
