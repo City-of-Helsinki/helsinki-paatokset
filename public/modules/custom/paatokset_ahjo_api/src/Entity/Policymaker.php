@@ -51,8 +51,7 @@ class Policymaker extends Node {
       'hallitus' => 'color-hopea',
       'viranhaltija' => 'color-suomenlinna',
       'luottamushenkilö' => 'color-engel',
-      'lautakunta' => 'toimi-/neuvottelukunta',
-      'jaosto' => 'color-sumu',
+      'lautakunta', 'toimi-/neuvottelukunta', 'jaosto' => 'color-sumu',
       default => 'color-none',
     };
   }
