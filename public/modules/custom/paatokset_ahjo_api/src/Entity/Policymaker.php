@@ -66,7 +66,7 @@ class Policymaker extends Node {
    * @return string|null
    *   Organization name or NULL if policymaker can't be found.
    */
-  public function getPolicymakerName(bool $get_ahjo_title = TRUE): ?string {
+  public function getPolicymakerName(bool $get_ahjo_title = FALSE): ?string {
     if ($get_ahjo_title) {
       return $this->get('field_ahjo_title')->value;
     }

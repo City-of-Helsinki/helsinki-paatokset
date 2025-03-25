@@ -87,7 +87,7 @@ final class CaseController extends ControllerBase {
   /**
    * Renders decision content.
    */
-  private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface {
+  private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface|string {
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
@@ -104,7 +104,7 @@ final class CaseController extends ControllerBase {
   /**
    * Renders case attachments.
    */
-  private function renderCaseAttachments(Decision $decision): MarkupInterface {
+  private function renderCaseAttachments(Decision $decision): MarkupInterface|string {
     $build = [
       '#theme' => 'case_attachments',
       '#attachments' => $decision->getAttachments(),

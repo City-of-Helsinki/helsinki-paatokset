@@ -550,10 +550,13 @@ class Decision extends Node {
     }
 
     $current_item = $list->item(0);
-    while ($current_item->nextSibling instanceof \DOMElement) {
-
+    while ($current_item->nextSibling instanceof \DOMNode) {
       // Iterate over to next sibling. This skips the first one.
       $current_item = $current_item->nextSibling;
+
+      if (!$current_item instanceof \DOMElement) {
+        continue;
+      }
 
       // H3 with a class is considered a breaking element.
       if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {

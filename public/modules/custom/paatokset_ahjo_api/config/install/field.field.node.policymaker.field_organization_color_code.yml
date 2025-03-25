@@ -1,0 +1,21 @@
+uuid: e75f95a0-8090-4b41-8b63-30cbf1983929
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organization_color_code
+    - node.type.policymaker
+  module:
+    - options
+id: node.policymaker.field_organization_color_code
+field_name: field_organization_color_code
+entity_type: node
+bundle: policymaker
+label: 'Organization color code'
+description: "Allows the organization's default color coding (determined by organization type) to be overridden."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

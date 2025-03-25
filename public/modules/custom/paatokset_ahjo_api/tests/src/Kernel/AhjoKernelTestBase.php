@@ -15,6 +15,7 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
   protected static $modules = [
     'system',
     'user',
+    'options',
     'node',
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',

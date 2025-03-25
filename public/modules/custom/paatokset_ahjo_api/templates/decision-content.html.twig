@@ -1,0 +1,14 @@
+{{ decision_section }}
+
+<div class="issue-content__title">
+  <h2>{{ selectedDecision.field_full_title.value }}</h2>
+</div>
+
+{% if decision_org_name %}
+  <div class="issue-content__policymaker-label {{ selected_class }}">
+    <span>{{ decision_org_name }} </span>
+  </div>
+{% endif %}
+
+{{ decision_content.message }}
+{{ decision_content.main }}

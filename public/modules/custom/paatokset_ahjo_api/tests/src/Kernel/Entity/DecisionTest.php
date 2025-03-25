@@ -28,12 +28,25 @@ class DecisionTest extends AhjoKernelTestBase {
       'field_diary_number' => 'test-diary-number',
       'field_decision_native_id' => 'test-native-id',
       'field_dm_org_name' => 'test-dm-org-name',
+      'field_policymaker_id' => '123',
     ]);
     $this->assertInstanceOf(Decision::class, $decision);
 
     $this->assertEquals('test-diary-number', $decision->getDiaryNumber());
     $this->assertEquals('test-native-id', $decision->getNativeId());
     $this->assertEquals('test-dm-org-name', $decision->getDecisionMakerOrgName());
+
+    $this->assertEmpty($decision->getPolicymaker('en'));
+
+    $storage->create([
+      'type' => 'policymaker',
+      'status' => '1',
+      'langcode' => 'en',
+      'title' => 'Test policymaker',
+      'field_policymaker_id' => '123',
+    ])->save();
+
+    $this->assertNotEmpty($decision->getPolicymaker('en'));
   }
 
   /**
@@ -145,6 +158,39 @@ class DecisionTest extends AhjoKernelTestBase {
     // Is not trustee.
     $decision->set('field_organization_type', 'Something else');
     $this->assertEquals('https://example.com/test-file.pdf', $decision->getDecisionPdf());
+  }
+
+  /**
+   * Tests decision pdf link.
+   */
+  public function testParseContent(): void {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $storage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('node');
+
+    $decision = $storage->create([
+      'type' => 'decision',
+      'title' => 'Test decision',
+    ]);
+
+    $this->assertInstanceOf(Decision::class, $decision);
+    $this->assertEmpty($decision->parseContent());
+
+    // Hide decision.
+    $this->config('paatokset_ahjo_api.default_texts')->set('hidden_decisions_text.value', 'test-message')->save();
+    $decision->set('field_hide_decision_content', '1');
+    $this->assertEquals('test-message', $decision->parseContent()['message']['#markup'] ?? NULL);
+
+    // Some decisions in production have 'null' on history field.
+    $decision->set('field_decision_history', 'null');
+    $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    $decision->set('field_decision_motion', file_get_contents(__DIR__ . '/../../../fixtures/decision-motion.html'));
+    $decision->set('field_diary_number', 'HEL-2024-009117');
+    $decision->set('field_hide_decision_content', '0');
+    $content = $decision->parseContent();
+
+    $this->assertStringContainsString('Jane Doe', $content['more_info']['content']['#markup'] ?? '');
+    $this->assertStringContainsString('John Doe', $content['presenter_info']['content']['#markup'] ?? '');
   }
 
 }

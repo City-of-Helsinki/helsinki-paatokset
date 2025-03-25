@@ -1,0 +1,12 @@
+uuid: c2cbd3f2-4f95-4935-8c4a-49f0186a845b
+langcode: en
+status: true
+dependencies: []
+third_party_settings: {}
+name: Policymaker
+type: policymaker
+description: 'Policymaker page that has information imported from an integration. You can enrich some of that information if you wish do to do so.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false
