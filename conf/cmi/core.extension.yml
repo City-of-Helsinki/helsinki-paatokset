@@ -123,6 +123,7 @@ module:
   oembed_providers: 0
   openid_connect: 0
   options: 0
+  paatokset: 0
   paatokset_ahjo_api: 0
   paatokset_ahjo_openid: 0
   paatokset_ahjo_proxy: 0
@@ -133,7 +134,6 @@ module:
   paatokset_lang_switcher: 0
   paatokset_pdf_listing: 0
   paatokset_policymakers: 0
-  paatokset: 0
   paatokset_search: 0
   paatokset_search_form: 0
   paatokset_submenus: 0
