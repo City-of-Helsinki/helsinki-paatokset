@@ -13,7 +13,7 @@
         "drupal/ckeditor": "^1.0",
         "drupal/core": "^10.0",
         "drupal/core-composer-scaffold": "^10.0",
-        "drupal/hdbt": "^6.0",
+        "drupal/hdbt": "^6.9",
         "drupal/hdbt_admin": "^3.0",
         "drupal/helfi_azure_fs": "^2.0",
         "drupal/helfi_drupal_tools": "dev-main",
@@ -26,8 +26,10 @@
         "drupal/varnish_purge": "^2.1",
         "drush/drush": "^12",
         "josdejong/jsoneditor": "^5.29",
+        "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
-        "paatokset/paatokset_search": "^1.3.3"
+        "paatokset/paatokset_search": "^1.3.3",
+        "symfony/property-access": "^7.2"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
