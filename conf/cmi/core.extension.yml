@@ -123,6 +123,7 @@ module:
   oembed_providers: 0
   openid_connect: 0
   options: 0
+  paatokset: 0
   paatokset_ahjo_api: 0
   paatokset_ahjo_openid: 0
   paatokset_ahjo_proxy: 0

@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Paatokset RSS module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\paatokset\Lupapiste\ItemsImporter;
+use Drupal\paatokset\Lupapiste\ItemsStorage;
+
+/**
+ * Implements hook_cron().
+ */
+function paatokset_cron() : void {
+  paatokset_update_lupapiste_items();
+}
+
+/**
+ * Updates Lupapiste items.
+ */
+function paatokset_update_lupapiste_items(): void {
+  /** @var \Drupal\paatokset\Lupapiste\ItemsImporter $importer */
+  $importer = \Drupal::service(ItemsImporter::class);
+
+  foreach (['fi', 'en', 'sv'] as $langcode) {
+    $data = $importer->fetch($langcode);
+
+    \Drupal::service(ItemsStorage::class)
+      ->save($langcode, $data);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_theme() : array {
+  return [
+    'lupapiste_rss_item' => [
+      'variables' => [
+        'item' => NULL,
+      ],
+      'template' => 'lupapiste-rss-item',
+    ],
+  ];
+}

@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -40,10 +40,8 @@ class CaseService {
 
   /**
    * Decision node.
-   *
-   * @var \Drupal\node\Entity\Node
    */
-  private $selectedDecision;
+  private Decision|null $selectedDecision = NULL;
 
   /**
    * Case diary number.
@@ -109,10 +107,10 @@ class CaseService {
    * @param \Drupal\node\NodeInterface $case
    *   Case node to help with guessing.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Decision node or NULL if unable to guess.
    */
-  public function guessDecisionFromPath(NodeInterface $case): ?NodeInterface {
+  public function guessDecisionFromPath(NodeInterface $case): ?Decision {
     $caseId = $case->get('field_diary_number')->getString();
 
     // Search for default decisions if query parameter is not set.
@@ -157,11 +155,11 @@ class CaseService {
   /**
    * Set entities from decision. Can be used if decision is found but not case.
    *
-   * @param \Drupal\node\NodeInterface $decision
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
    *   Decision node.
    */
-  public function setEntitiesFromDecision(NodeInterface $decision): void {
-    $case_id = $decision->get('field_diary_number')->getString();
+  public function setEntitiesFromDecision(Decision $decision): void {
+    $case_id = $decision->getDiaryNumber();
 
     $cases = $this->caseQuery([
       'case_id' => $case_id,
@@ -220,7 +218,7 @@ class CaseService {
    * @param string $case_id
    *   Case diary number.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Default (latest) decision entity, if found.
    */
   private function getDefaultDecision(string $case_id): ?NodeInterface {
@@ -244,10 +242,10 @@ class CaseService {
   /**
    * Get active decision, if set.
    *
-   * @return \Drupal\node\NodeInterface|null
+   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
    *   Active decision entity.
    */
-  public function getSelectedDecision(): ?NodeInterface {
+  public function getSelectedDecision(): ?Decision {
     return $this->selectedDecision;
   }
 
@@ -449,60 +447,6 @@ class CaseService {
   }
 
   /**
-   * Get active decision's PDF file URI from record of minutes field.
-   *
-   * @return string|null
-   *   URL for PDF.
-   */
-  public function getDecisionPdf(): ?string {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    // Check for office holder and trustee decisions for minutes PDF URI first.
-    if ($minutes_file_uri = $this->getMinutesPdf()) {
-      return $minutes_file_uri;
-    }
-
-    if (!$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
-      return NULL;
-    }
-
-    $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
-    if (!empty($data) && isset($data['FileURI'])) {
-      return $data['FileURI'];
-    }
-    return NULL;
-  }
-
-  /**
-   * Get active decisions Minutes PDF file URI.
-   *
-   * @return string|null
-   *   URL for PDF.
-   */
-  public function getMinutesPdf(): ?string {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    // Check desicion org type first.
-    if (!$this->selectedDecision->hasField('field_organization_type') || !in_array($this->selectedDecision->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_decision_minutes_pdf') || $this->selectedDecision->get('field_decision_minutes_pdf')->isEmpty()) {
-      return NULL;
-    }
-
-    $data = json_decode($this->selectedDecision->get('field_decision_minutes_pdf')->value, TRUE);
-    if (!empty($data) && isset($data['FileURI'])) {
-      return $data['FileURI'];
-    }
-    return NULL;
-  }
-
-  /**
    * Get policy maker URL for selected decision.
    *
    * @return \Drupal\Core\Url|null
@@ -522,34 +466,6 @@ class CaseService {
     /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
     return $policymakerService->getDecisionsRoute($policymaker_id);
-  }
-
-  /**
-   * Get meeting URL for selected decision.
-   *
-   * @return \Drupal\Core\Url|null
-   *   Meeting URL, if found.
-   */
-  public function getDecisionMeetingLink(): ?Url {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    // Check if decision has meeting ID.
-    if (!$this->selectedDecision->hasField('field_meeting_id') || $this->selectedDecision->get('field_meeting_id')->isEmpty()) {
-      return NULL;
-    }
-    $meeting_id = $this->selectedDecision->get('field_meeting_id')->value;
-
-    // Check if decision has policymaker ID.
-    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
-      return NULL;
-    }
-    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
   }
 
   /**
@@ -725,137 +641,44 @@ class CaseService {
   }
 
   /**
-   * Get voting results as array for selected decision.
-   *
-   * @return array|null
-   *   Array with voting results or NULL.
-   */
-  public function getVotingResults(): ?array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_voting_results') || $this->selectedDecision->get('field_voting_results')->isEmpty()) {
-      return NULL;
-    }
-
-    $vote_results = [];
-    $not_formatted = $this->selectedDecision->get('field_voting_results');
-    $types = ['Ayes', 'Noes', 'Blank', 'Absent'];
-
-    foreach ($not_formatted as $row) {
-      $grouped_by_party = [];
-      $results = [];
-      $json = json_decode($row->value);
-      foreach ($types as $type) {
-
-        if (empty($json->{$type})) {
-          continue;
-        }
-
-        // Set accordion for each vote type.
-        $results[$type] = $json->{$type};
-
-        if (empty($json->{$type}->Voters)) {
-          continue;
-        }
-
-        // Collate votes by council group and type.
-        foreach ($json->{$type}->Voters as $voter) {
-          if (empty($voter->CouncilGroup)) {
-            $voter->CouncilGroup = (string) $this->t('No council group');
-          }
-
-          if (!isset($grouped_by_party[$voter->CouncilGroup])) {
-            $grouped_by_party[$voter->CouncilGroup] = [
-              'Name' => $voter->CouncilGroup,
-              'Ayes' => 0,
-            ];
-          }
-          if (!isset($grouped_by_party[$voter->CouncilGroup][$type])) {
-            $grouped_by_party[$voter->CouncilGroup][$type] = 1;
-          }
-          else {
-            $grouped_by_party[$voter->CouncilGroup][$type]++;
-          }
-        }
-      }
-
-      usort($grouped_by_party, function ($a, $b) {
-        return strcmp($a['Name'], $b['Name']);
-      });
-
-      usort($grouped_by_party, function ($a, $b) {
-        return $b['Ayes'] - $a['Ayes'];
-      });
-
-      $vote_results[] = [
-        'accordions' => $results,
-        'by_party' => $grouped_by_party,
-      ];
-    }
-
-    return $vote_results;
-  }
-
-  /**
    * Get localized case URL from node.
    *
-   * @param \Drupal\node\NodeInterface|null $case
-   *   Case node, or default.
-   * @param string|null $langcode
-   *   Langcode to get URL for. Defaults to current language.
+   * @todo simplify case / decision url generation.
+   *
+   * @param string $diaryNumber
+   *   Case number.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision|null $decision
+   *   Decision.
+   * @param string $langcode
+   *   Langcode to get URL for.
    *
    * @return \Drupal\Core\Url|null
    *   Localized URL, if found.
    */
-  public function getCaseUrlFromNode(?NodeInterface $case = NULL, ?string $langcode = NULL): ?Url {
-    if ($case === NULL) {
-      $case = $this->case;
-    }
+  public function getCaseUrlFromNode(string $diaryNumber, ?Decision $decision, string $langcode): ?Url {
+    $localizedRoute = "paatokset_case.$langcode";
 
-    if (!$case instanceof NodeInterface) {
+    // We don't want an URL without a localized route.
+    if (!$this->routeExists($localizedRoute)) {
       return NULL;
     }
 
-    if ($langcode === NULL) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      $strict_lang = FALSE;
-    }
-    // If langcode is set, we want that localized URL specifically or nothing.
-    else {
-      $strict_lang = TRUE;
-    }
-
-    $localizedRoute = 'paatokset_case.' . $langcode;
-    if ($this->routeExists($localizedRoute)) {
-      $case_url = Url::fromRoute($localizedRoute, ['case' => strtolower($case->get('field_diary_number')->value)]);
-    }
-    // If langcode is set, we don't want an URL without a localized route.
-    elseif ($strict_lang) {
-      return NULL;
-    }
-    // If route doesn't exist, just use case URL.
-    else {
-      $case_url = $case->toUrl();
-    }
+    $case_url = Url::fromRoute($localizedRoute, ['case' => strtolower($diaryNumber)]);
 
     // Get decision ID from selected decision.
     $decision_id = NULL;
-    if ($this->selectedDecision instanceof NodeInterface) {
+    if ($decision instanceof Decision) {
       try {
-        $decision = $this->getDecisionTranslation($this->selectedDecision, $langcode);
+        $decision = $this->getDecisionTranslation($decision, $langcode);
       }
       catch (\InvalidArgumentException) {
         // Decision for $langcode does not exist.
         // Use the decision we have.
-        $decision = $this->selectedDecision;
       }
 
-      $decision_id = $decision->get('field_decision_native_id')->value;
+      assert($decision instanceof Decision);
+      $decision_id = $this->normalizeNativeId($decision->getNativeId());
     }
-
-    $decision_id = $this->normalizeNativeId($decision_id);
 
     if ($decision_id !== NULL) {
       $case_url->setOption('query', [$this->getDecisionQueryKey($langcode) => $decision_id]);
@@ -1075,96 +898,19 @@ class CaseService {
   }
 
   /**
-   * Get label for decision (organization name + date).
-   *
-   * @param string|null $decision_id
-   *   Decision ID. Leave NULL to use active decision.
-   *
-   * @return string|null
-   *   Decision label.
-   */
-  public function getDecisionLabel(?string $decision_id = NULL): ?string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    return $this->formatDecisionLabel($decision);
-  }
-
-  /**
-   * Get decision org name translated to current language.
-   *
-   * @param string|null $decision_id
-   *   Decision ID, or use default decision.
-   *
-   * @return string|null
-   *   Org name, if found.
-   */
-  public function getDecisionOrgName(?string $decision_id = NULL): ?string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if ($decision->hasField('field_dm_org_name') && !$decision->get('field_dm_org_name')->isEmpty()) {
-      $default_name = $decision->get('field_dm_org_name')->value;
-    }
-    else {
-      $default_name = NULL;
-    }
-
-    if (!$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
-      return $default_name;
-    }
-
-    $language = $this->languageManager->getCurrentLanguage()->getId();
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $policymaker_name = $policymakerService->getPolicymakerNameById($decision->get('field_policymaker_id')->value, $language, FALSE);
-    if (!$policymaker_name) {
-      return $default_name;
-    }
-    return $policymaker_name;
-  }
-
-  /**
    * Format decision label.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $node
    *   Decision node.
    *
    * @return string
    *   Formatted label.
    */
-  private function formatDecisionLabel(NodeInterface $node): string {
-    $org_label = NULL;
-
-    // Get organization name directly from policymaker node.
-    if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
-      $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-      /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-      $policymakerService = \Drupal::service('paatokset_policymakers');
-      $org_label = $policymakerService->getPolicymakerNameById($node->get('field_policymaker_id')->value, $currentLanguage, FALSE);
-    }
+  public function formatDecisionLabel(Decision $node): string {
+    $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
 
     // If policymaker node cannot be found, use value from decision node.
-    if (!$org_label && $node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
-      $org_label = $node->get('field_dm_org_name')->value;
-    }
+    $org_label = $policymaker?->getPolicymakerName() ?? $node->getDecisionMakerOrgName();
 
     $meeting_number = $node->field_meeting_sequence_number->value;
     if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
@@ -1188,106 +934,6 @@ class CaseService {
     }
 
     return $label;
-  }
-
-  /**
-   * Get CSS class based on decision organization type.
-   *
-   * @param string|null $decision_id
-   *   Decision ID. Leave NULL to use active decision.
-   *
-   * @return string
-   *   CSS class based on org type.
-   */
-  public function getDecisionClass(?string $decision_id = NULL): string {
-    if (!$decision_id) {
-      $decision = $this->selectedDecision;
-    }
-    else {
-      $decision = $this->getDecision($decision_id);
-    }
-
-    if (!$decision instanceof NodeInterface || !$decision->hasField('field_policymaker_id') || $decision->get('field_policymaker_id')->isEmpty()) {
-      return 'color-sumu';
-    }
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
-    $class = $policymakerService->getPolicymakerClassById($decision->field_policymaker_id->value);
-
-    return Html::cleanCssIdentifier($class);
-  }
-
-  /**
-   * Get attachments for active decision.
-   *
-   * @return array
-   *   Array of links.
-   */
-  public function getAttachments(): array {
-    if (!$this->selectedDecision instanceof NodeInterface || !$this->selectedDecision->hasField('field_decision_attachments')) {
-      return [];
-    }
-
-    $attachments = [];
-    foreach ($this->selectedDecision->get('field_decision_attachments') as $field) {
-      $data = json_decode($field->value, TRUE);
-
-      $number = NULL;
-      if (isset($data['AttachmentNumber'])) {
-        $number = $data['AttachmentNumber'] . '. ';
-      }
-
-      $title = NULL;
-      if (isset($data['Title'])) {
-        $title = $data['Title'];
-      }
-
-      $publicity_class = NULL;
-      if (isset($data['PublicityClass'])) {
-        $publicity_class = $data['PublicityClass'];
-      }
-
-      $file_url = NULL;
-      if (isset($data['FileURI'])) {
-        $file_url = $data['FileURI'];
-      }
-
-      // If all relevant info is empty, do not display attachment.
-      if (empty($data['PublicityClass']) && empty($data['Title']) && empty($data['FileURI'])) {
-        $title = $this->t("There's an error with this attachment. We are resolving the issue as soon as possible.");
-        $publicity_class = 'error';
-      }
-      // Override title if attachment is not public.
-      elseif ($publicity_class !== 'Julkinen') {
-        if (!empty($data['SecurityReasons'])) {
-          $title = $this->t('Confidential: @reasons', [
-            '@reasons' => implode(', ', $data['SecurityReasons']),
-          ]);
-        }
-        else {
-          $title = $this->t('Confidential');
-        }
-      }
-
-      $attachments[] = [
-        'number' => $number,
-        'file_url' => $file_url,
-        'title' => $title,
-        'publicity_class' => $publicity_class,
-      ];
-    }
-
-    $publicity_reason = \Drupal::config('paatokset_ahjo_api.default_texts')->get('non_public_attachments_text.value');
-    if (!empty($attachments)) {
-      return [
-        'items' => $attachments,
-        'publicity_reason' => ['#markup' => $publicity_reason],
-      ];
-    }
-
-    return [];
   }
 
   /**
@@ -1383,9 +1029,6 @@ class CaseService {
    *   Dropdown contents.
    */
   public function getDecisionsList(?string $case_id = NULL): array {
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     if ($currentLanguage === 'en') {
       $currentLanguage = 'fi';
@@ -1399,14 +1042,10 @@ class CaseService {
     $native_results = [];
     $results = [];
     foreach ($decisions as $node) {
+      assert($node instanceof Decision);
       $label = $this->formatDecisionLabel($node);
-
-      if ($node->field_policymaker_id->value) {
-        $class = $policymakerService->getPolicymakerClassById($node->field_policymaker_id->value);
-      }
-      else {
-        $class = 'color-sumu';
-      }
+      $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
+      $class = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
 
       // Store all unique IDs for current language decisions.
       if ($node->langcode->value === $currentLanguage) {
@@ -1417,7 +1056,7 @@ class CaseService {
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
         'langcode' => $node->langcode->value,
-        'native_id' => $this->normalizeNativeId($node->field_decision_native_id->value),
+        'native_id' => $this->normalizeNativeId($node->getNativeId()),
         'title' => $node->title->value,
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,
@@ -1441,31 +1080,27 @@ class CaseService {
   /**
    * Get next decision in list, if one exists.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of next decision in list.
    */
-  public function getNextDecision(?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    return $this->getAdjacentDecision(-1, $case_id, $decision_nid);
+  public function getNextDecision(Decision $decision): ?array {
+    return $this->getAdjacentDecision(-1, $decision);
   }
 
   /**
    * Get previous decision in list, if one exists.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of previous decision in list.
    */
-  public function getPrevDecision(?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    return $this->getAdjacentDecision(1, $case_id, $decision_nid);
+  public function getPrevDecision(Decision $decision): ?array {
+    return $this->getAdjacentDecision(1, $decision);
   }
 
   /**
@@ -1473,31 +1108,19 @@ class CaseService {
    *
    * @param int $offset
    *   Which offset to use (1 for previous, -1 for next, etc).
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
-   * @param string|null $decision_nid
-   *   Decision native ID. Leave NULL to use active selection.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
+   *   Current decision.
    *
    * @return array|null
    *   ID and title of adjacent decision in list.
    */
-  private function getAdjacentDecision(int $offset, ?string $case_id = NULL, ?string $decision_nid = NULL): ?array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
-
-    if (!$decision_nid) {
-      $decision_nid = $this->selectedDecision->id();
-    }
+  private function getAdjacentDecision(int $offset, Decision $decision): ?array {
+    $case_id = $decision->getDiaryNumber();
 
     $all_decisions = array_values($this->getAllDecisions($case_id));
     $found_node = NULL;
     foreach ($all_decisions as $key => $value) {
-      if ((string) $value->id() !== $decision_nid) {
+      if ((string) $value->id() !== $decision->id()) {
         continue;
       }
 
@@ -1507,272 +1130,20 @@ class CaseService {
       break;
     }
 
-    if (!$found_node instanceof NodeInterface) {
+    if (!$found_node instanceof Decision) {
       return [];
     }
 
     return [
       'title' => $found_node->title->value,
-      'id' => $this->normalizeNativeId($found_node->field_decision_native_id->value),
+      'id' => $this->normalizeNativeId($found_node->getNativeId()),
     ];
-  }
-
-  /**
-   * Get formatted section label for decision, including agenda point.
-   *
-   * @return string|null|Drupal\Core\StringTranslation\TranslatableMarkup
-   *   Formatted section label, if possible to generate.
-   */
-  public function getFormattedDecisionSection(): mixed {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_decision_section') || $this->selectedDecision->get('field_decision_section')->isEmpty()) {
-      return NULL;
-    }
-
-    $section = $this->selectedDecision->get('field_decision_section')->value;
-
-    if (!$this->selectedDecision->hasField('field_decision_record') || $this->selectedDecision->get('field_decision_record')->isEmpty()) {
-      return '§ ' . $section;
-    }
-
-    $data = json_decode($this->selectedDecision->get('field_decision_record')->value, TRUE);
-
-    if (!empty($data) && isset($data['AgendaPoint'])) {
-      $section = $section . ' §';
-      return $this->t('Case @point. / @section', [
-        '@point' => $data['AgendaPoint'],
-        '@section' => $section,
-      ]);
-    }
-
-    return '§ ' . $section;
-  }
-
-  /**
-   * Check if selected decision's decisionmaker is active.
-   *
-   * @return bool
-   *   Decisionmaker activity status.
-   */
-  public function decisionPmIsActive(): bool {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return FALSE;
-    }
-
-    // Return TRUE if policymaker is not set.
-    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
-      return TRUE;
-    }
-
-    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->policymakerIsActiveById($policymaker_id);
-  }
-
-  /**
-   * Parse decision content and motion data from HTML.
-   *
-   * @return array
-   *   Render arrays.
-   */
-  public function parseContent(): array {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return [];
-    }
-
-    if ($this->selectedDecision->hasField('field_hide_decision_content') && $this->selectedDecision->get('field_hide_decision_content')->value) {
-      $hidden_decisions_text = \Drupal::config('paatokset_ahjo_api.default_texts')->get('hidden_decisions_text.value');
-      return [
-        'message' => [
-          '#prefix' => '<div class="issue__hidden-message">',
-          '#suffix' => '</div>',
-          '#markup' => $hidden_decisions_text,
-        ],
-      ];
-    }
-
-    if ($this->selectedDecision->hasField('field_diary_number') && !$this->selectedDecision->get('field_diary_number')->isEmpty()) {
-      $has_case_id = TRUE;
-    }
-    else {
-      $has_case_id = FALSE;
-    }
-
-    $content = $this->selectedDecision->get('field_decision_content')->value;
-    $motion = $this->selectedDecision->get('field_decision_motion')->value;
-    $history = $this->selectedDecision->get('field_decision_history')->value;
-
-    $content_dom = new \DOMDocument();
-    if (!empty($content)) {
-      @$content_dom->loadHTML($content);
-    }
-    $content_xpath = new \DOMXPath($content_dom);
-
-    $motion_dom = new \DOMDocument();
-    if (!empty($motion)) {
-      @$motion_dom->loadHTML($motion);
-    }
-    $motion_xpath = new \DOMXPath($motion_dom);
-
-    $history_dom = new \DOMDocument();
-    if (!empty($history)) {
-      @$history_dom->loadHTML($history);
-    }
-    $history_xpath = new \DOMXPath($history_dom);
-
-    // If content is not set, use motion html instead.
-    // Keep $content variable NULL so we can use that for checking later.
-    if (empty($content)) {
-      $content_xpath = $motion_xpath;
-    }
-
-    $output = [];
-    $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
-    if (!empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
-      $voting_link_paragraph = $content_dom->createElement('p');
-      $voting_link_a = $content_dom->createElement('a', $this->t('See table with voting results'));
-      $voting_link_a->setAttribute('href', '#voting-results-accordion');
-      $voting_link_a->setAttribute('id', 'open-voting-results');
-      $voting_link_paragraph->appendChild($voting_link_a);
-      $voting_results[0]->appendChild($voting_link_paragraph);
-    }
-
-    $main_content = NULL;
-    // Main decision content sections.
-    $content_sections = $content_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-
-    foreach ($content_sections as $section) {
-      $main_content .= $section->ownerDocument->saveHTML($section);
-    }
-
-    if ($main_content) {
-      $output['main'] = [
-        '#type' => 'processed_text',
-        '#format' => 'decision_html',
-        '#text' => $main_content,
-      ];
-    }
-
-    // Motion content sections.
-    // If decision content is empty, print motion content as main content.
-    $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-    if ($content) {
-      $motion_accordions = $this->getMotionSections($motion_sections);
-      foreach ($motion_accordions as $accordion) {
-        $output['accordions'][] = $accordion;
-      }
-    }
-
-    // To be decided in this meeting.
-    $decided_in_this_meeting = $motion_xpath->query("//*[contains(@class, 'Muokkaustieto')]");
-    $decided_in_this_meeting_content = NULL;
-    if ($decided_in_this_meeting->length > 0) {
-      $decided_in_this_meeting_content = $decided_in_this_meeting[0]->nodeValue;
-    }
-    if ($decided_in_this_meeting_content) {
-      $output['decided_in_this_meeting'] = [
-        '#markup' => $decided_in_this_meeting_content,
-      ];
-    }
-
-    // More information.
-    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info->length > 0) {
-      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
-      $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
-    }
-
-    if ($more_info_content) {
-      $output['more_info'] = [
-        'heading' => $this->t('Ask for more info'),
-        'content' => ['#markup' => $more_info_content],
-      ];
-    }
-
-    // Signature information.
-    $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
-    $signature_info_content = NULL;
-    if ($signature_info->length > 0) {
-      $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
-    }
-
-    if ($signature_info_content && $this->selectedDecision->hasField('field_organization_type') && in_array($this->selectedDecision->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
-      $output['signature_info'] = [
-        'heading' => $this->t('Decisionmaker'),
-        'content' => ['#markup' => $signature_info_content],
-      ];
-    }
-
-    // Presenter information.
-    $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
-    $presenter_content = NULL;
-    if ($presenter_info->length > 0) {
-      $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
-    }
-
-    if ($presenter_content) {
-      $output['presenter_info'] = [
-        'heading' => $this->t('Presenter information'),
-        'content' => ['#markup' => $presenter_content],
-      ];
-    }
-
-    // Decision history.
-    $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
-    $decision_history_content = NULL;
-    if ($decision_history->length > 0) {
-      $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
-    }
-    if ($decision_history_content) {
-      $output['accordions'][] = [
-        'heading' => $this->t('Decision history'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $decision_history_content,
-        ],
-      ];
-    }
-
-    // Add decision IssuedDate (not DecisionDate) to appeal process accordion.
-    // Do not display for motions, only for decisions.
-    $appeal_content = NULL;
-    if ($has_case_id && $content && $this->selectedDecision->hasField('field_decision_date') && !$this->selectedDecision->get('field_decision_date')->isEmpty()) {
-      $decision_timestamp = strtotime($this->selectedDecision->get('field_decision_date')->value);
-      $decision_date = date('d.m.Y', $decision_timestamp);
-      $appeal_content = '<p class="issue__decision-date">' . $this->t('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
-    }
-
-    // Appeal information. Only display for decisions (if content is available).
-    $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($content && $appeal_info) {
-      $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
-    }
-
-    if ($appeal_content) {
-      $output['accordions'][] = [
-        'heading' => $this->t('Appeal process'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $appeal_content,
-        ],
-      ];
-    }
-
-    return $output;
   }
 
   /**
    * Parse Ahjo API HTML main content from motion or content raw data.
    *
-   * @param Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   Decision node.
    * @param string $field_name
    *   Which field to get raw data from.
@@ -1849,144 +1220,6 @@ class CaseService {
     }
 
     return $content;
-  }
-
-  /**
-   * Split motions into sections.
-   *
-   * @param \DOMNodeList $list
-   *   Motion content sections.
-   *
-   * @return array
-   *   Array of sections.
-   */
-  private function getMotionSections(\DOMNodeList $list): array {
-    $output = [];
-    if ($list->length < 1) {
-      return [];
-    }
-
-    foreach ($list as $node) {
-      if (!$node instanceof \DOMElement) {
-        continue;
-      }
-
-      $section = [
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'full_html',
-          '#text' => NULL,
-        ],
-      ];
-      $heading_found = FALSE;
-      foreach ($node->childNodes as $node) {
-        if (!$heading_found && $node->nodeName === 'h3') {
-          $section['heading'] = $node->nodeValue;
-          $heading_found = TRUE;
-          continue;
-        }
-
-        $section['content']['#text'] .= $node->ownerDocument->saveHtml($node);
-      }
-
-      $output[] = $section;
-    }
-
-    return $output;
-  }
-
-  /**
-   * Get HTML content from first heading until next heading.
-   *
-   * @param \DOMNodeList $list
-   *   Xpath query results.
-   *
-   * @return string|null
-   *   HTML content as string, or NULL if content is empty.
-   */
-  private function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
-    $output = NULL;
-    if ($list->length < 1) {
-      return NULL;
-    }
-
-    $current_item = $list->item(0);
-    while ($current_item->nextSibling instanceof \DOMNode) {
-
-      // Iterate over to next sibling. This skips the first one.
-      $current_item = $current_item->nextSibling;
-
-      // H3 with a class is considered a breaking element.
-      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
-        break;
-      }
-      // More information section should stop before the signatures.
-      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
-        break;
-      }
-
-      // Skip over any empty elements.
-      if (empty($current_item->nodeValue)) {
-        continue;
-      }
-
-      $output .= $current_item->ownerDocument->saveHTML($current_item);
-    }
-
-    return $output;
-  }
-
-  /**
-   * Get HTML content for decision history.
-   *
-   * @param \DOMNodeList $list
-   *   Xpath query results.
-   *
-   * @return string|null
-   *   HTML content as string, or NULL if content is empty.
-   */
-  private function getDecisionHistoryHtmlContent(\DOMNodeList $list): ?string {
-    $output = NULL;
-
-    if ($list->length < 1) {
-      return NULL;
-    }
-
-    foreach ($list as $item) {
-      if (!$item instanceof \DOMNode) {
-        continue;
-      }
-
-      // Skip over any empty elements.
-      if (empty($item->nodeValue)) {
-        continue;
-      }
-
-      // Skip over H1 elements.
-      if ($item->nodeName === 'h1') {
-        continue;
-      }
-
-      // Skip over diary number field.
-      if ($item->getAttribute('class') === 'DnroTmuoto') {
-        continue;
-      }
-
-      if ($item->nodeName === 'h2') {
-        $output .= '<h4 class="decision-history-title">' . $item->nodeValue . '</h4>';
-      }
-      elseif ($item->nodeName === 'h3') {
-        $output .= '<h5 class="decision-history-title">' . $item->nodeValue . '</h5>';
-      }
-      elseif ($item->getAttribute('class') === 'SisaltoSektio' || $item->getAttribute('class') === 'paatoshistoria') {
-        $output .= $this->getDecisionHistoryHtmlContent($item->childNodes);
-      }
-      else {
-        $output .= $item->ownerDocument->saveHTML($item);
-      }
-    }
-
-    return $output;
   }
 
   /**
@@ -2260,25 +1493,14 @@ class CaseService {
    * @param array $params
    *   Parameters for query.
    * @param bool $load_nodes
-   *   Load nodes or just return nids.
+   *   Load nodes or just return node ids.
    *
    * @return array
-   *   List of nodes or nids.
+   *   List of nodes or node ids.
    */
   private function query(array $params, bool $load_nodes = TRUE): array {
-    if (isset($params['sort'])) {
-      $sort = $params['sort'];
-    }
-    else {
-      $sort = 'DESC';
-    }
-
-    if (isset($params['sort_by'])) {
-      $sort_by = $params['sort_by'];
-    }
-    else {
-      $sort_by = 'field_created';
-    }
+    $sort = $params['sort'] ?? 'DESC';
+    $sort_by = $params['sort_by'] ?? 'field_created';
 
     $query = \Drupal::entityQuery('node')
       ->accessCheck(TRUE)

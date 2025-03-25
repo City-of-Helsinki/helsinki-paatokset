@@ -15,6 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -158,7 +159,8 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    */
   protected function getDynamicLinks(NodeInterface $policymaker): array {
     $items = [];
-    $policymaker_org = $this->policymakerService->getPolicymakerOrganizationFromUrl($policymaker, $this->currentLang);
+    assert($policymaker instanceof Policymaker);
+    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($this->currentLang);
 
     $items[] = [
       'title' => $policymaker->get('title')->value,

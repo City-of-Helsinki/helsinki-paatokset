@@ -1,0 +1,23 @@
+uuid: e309870c-eced-4b05-828a-3d1a4f630dfa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_existing
+    - node.type.policymaker
+id: node.policymaker.field_policymaker_existing
+field_name: field_policymaker_existing
+entity_type: node
+bundle: policymaker
+label: 'Active policymaker'
+description: 'Policymaker has not been dissolved and is still active.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

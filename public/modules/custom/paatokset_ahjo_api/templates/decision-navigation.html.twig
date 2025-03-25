@@ -1,0 +1,16 @@
+{% if previous_decision or next_decision %}
+<div class="issue__decision-navigation">
+  {% if previous_decision %}
+    <a data-link="{{ previous_decision.id }}" href="?decision={{ previous_decision.id }}" class="paatokset__link-plain paatokset-button-link decision-navigation-button decision-navigation-button--previous">
+      <i class="hel-icon hel-icon--arrow-left"></i>
+      <span>{{ 'Previous handling'|t }}</span>
+    </a>
+  {% endif %}
+  {% if next_decision %}
+    <a data-link="{{ next_decision.id }}" href="?decision={{ next_decision.id }}" class="paatokset__link-plain paatokset-button-link decision-navigation-button decision-navigation-button--next">
+      <span>{{ 'Next handling'|t }}</span>
+      <i class="hel-icon hel-icon--arrow-right"></i>
+    </a>
+  {% endif %}
+</div>
+{% endif %}

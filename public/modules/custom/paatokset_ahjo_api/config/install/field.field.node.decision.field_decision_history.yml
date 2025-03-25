@@ -1,0 +1,23 @@
+uuid: 5301a34b-4fb0-4c5c-bced-bbbc6a6e963a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_history
+    - node.type.decision
+  module:
+    - allowed_formats
+    - text
+id: node.decision.field_decision_history
+field_name: field_decision_history
+entity_type: node
+bundle: decision
+label: 'Decision history'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

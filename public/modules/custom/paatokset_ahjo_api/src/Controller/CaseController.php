@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Controller;
 
+use Drupal\Component\Render\MarkupInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Extension\ThemeExtensionList;
-use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Render\RendererInterface;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -16,31 +20,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CaseController extends ControllerBase {
 
+  use AutowireTrait;
+
   /**
    * Class constructor.
    *
    * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
-   *   CaseService for getting case and decision data.
-   * @param \Drupal\Core\Extension\ThemeExtensionList $extensionList
-   *   Theme extension list.
+   *   The case service.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
   public function __construct(
     private readonly CaseService $caseService,
-    private readonly ThemeExtensionList $extensionList,
+    private readonly RendererInterface $renderer,
   ) {
-    // Include twig engine.
-    // phpcs:ignore
-    include_once \Drupal::root() . '/core/themes/engines/twig/twig.engine';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('paatokset_ahjo_cases'),
-      $container->get('extension.list.theme'),
-    );
   }
 
   /**
@@ -49,70 +42,74 @@ final class CaseController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   JSON object containing data
    */
-  public function loadDecision(NodeInterface $decision): Response {
-    $this->caseService->setEntitiesFromDecision($decision);
-
-    $data = [];
-    _paatokset_ahjo_api_get_decision_variables($data, $this->caseService);
-
-    $all_decisions_link = $this->caseService->getDecisionMeetingLink();
-    if ($all_decisions_link instanceof Url) {
-      $all_decisions_link = $all_decisions_link->toString();
-    }
-
-    $other_decisions_link = $this->caseService->getPolicymakerDecisionsLink();
-    if ($other_decisions_link instanceof Url) {
-      $other_decisions_link = $other_decisions_link->toString();
-    }
-
+  public function loadDecision(Decision $decision): Response {
     $languages = $this->languageManager()->getLanguages();
     $language_urls = [];
     foreach ($languages as $langcode => $language) {
-      $lang_url = $this->caseService->getCaseUrlFromNode(NULL, $langcode);
+      $lang_url = $this->caseService->getCaseUrlFromNode($decision->getDiaryNumber(), $decision, $langcode);
       if ($lang_url) {
         $lang_url->setOption('language', $language);
         $language_urls[$langcode] = $lang_url->toString();
       }
     }
 
-    $content = $this->renderTemplate('/templates/components/decision-content.html.twig', [
-      'selectedDecision' => $data['selectedDecision'],
-      'policymaker_is_active' => $data['policymaker_is_active'],
-      'selected_class' => $data['selected_class'],
-      'decision_org_name' => $data['decision_org_name'],
-      'decision_content' => $data['decision_content'],
-      'decision_section' => $data['decision_section'],
-      'vote_results' => $data['vote_results'],
-    ]);
+    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+    $policymaker = $decision->getPolicyMaker($langcode);
 
-    $attachments = $this->renderTemplate('/templates/components/case-attachments.html.twig', [
-      'attachments' => $data['attachments'],
-    ]);
+    $content = $this->renderDecisionContent($decision, $policymaker);
+    $attachments = $this->renderCaseAttachments($decision);
+    $navigation = [
+      '#theme' => 'decision_navigation',
+      '#next_decision' => $this->caseService->getNextDecision($decision),
+      '#previous_decision' => $this->caseService->getPrevDecision($decision),
+    ];
 
-    $decision_navigation = $this->renderTemplate('/templates/components/decision-navigation.html.twig', [
-      'next_decision' => $data['next_decision'],
-      'previous_decision' => $data['previous_decision'],
-    ]);
-
-    return new JsonResponse([
+    $response = new CacheableJsonResponse([
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,
-      'decision_navigation' => $decision_navigation,
-      'show_warning' => !empty($data['next_decision']),
-      'decision_pdf' => $data['decision_pdf'],
-      'all_decisions_link' => $all_decisions_link,
-      'other_decisions_link' => $other_decisions_link,
+      'decision_navigation' => $this->renderer->renderInIsolation($navigation),
+      'show_warning' => !empty($navigation['#next_decision']),
+      'decision_pdf' => $decision->getDecisionPdf(),
+      'all_decisions_link' => $decision->getDecisionMeetingLink()?->toString(),
+      'other_decisions_link' => $policymaker->getDecisionsRoute($langcode)?->toString(),
     ]);
+
+    $response->addCacheableDependency($decision);
+
+    if ($policymaker) {
+      $response->addCacheableDependency($policymaker);
+    }
+
+    return $response;
   }
 
   /**
-   * Render twig template in hdbt_subtheme folder.
+   * Renders decision content.
    */
-  private function renderTemplate(string $path, array $variables): string {
-    $template_file = $this->extensionList->getPath('hdbt_subtheme') . $path;
+  private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface|string {
+    $build = [
+      '#theme' => 'decision_content',
+      '#selectedDecision' => $decision,
+      '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
+      '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
+      '#decision_org_name' => $policymaker?->getPolicymakerName() ?? $decision->getDecisionMakerOrgName(),
+      '#decision_content' => $decision->parseContent(),
+      '#decision_section' => $decision->getFormattedDecisionSection(),
+      '#vote_results' => $decision->getVotingResults(),
+    ];
+    return $this->renderer->renderInIsolation($build);
+  }
 
-    return twig_render_template($template_file, $variables);
+  /**
+   * Renders case attachments.
+   */
+  private function renderCaseAttachments(Decision $decision): MarkupInterface|string {
+    $build = [
+      '#theme' => 'case_attachments',
+      '#attachments' => $decision->getAttachments(),
+    ];
+    return $this->renderer->renderInIsolation($build);
   }
 
 }

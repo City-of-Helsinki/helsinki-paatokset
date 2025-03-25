@@ -1,0 +1,21 @@
+uuid: 0ef56e85-e249-4b4b-b404-72f8e8209c81
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_voting_results
+    - node.type.decision
+  module:
+    - json_field
+id: node.decision.field_voting_results
+field_name: field_voting_results
+entity_type: node
+bundle: decision
+label: 'Voting results'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native
