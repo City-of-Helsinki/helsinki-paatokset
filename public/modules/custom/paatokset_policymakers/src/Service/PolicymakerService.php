@@ -73,7 +73,7 @@ class PolicymakerService {
   /**
    * Policymaker node.
    */
-  private Policymaker $policymaker;
+  private ?Policymaker $policymaker = NULL;
 
   /**
    * Policymaker ID.
