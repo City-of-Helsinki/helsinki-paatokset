@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Extracts sector info from source JSON.
@@ -65,10 +67,8 @@ class SectorId extends ProcessorPluginBase {
     if ($node->getType() === 'policymaker') {
       $policymaker = $node;
     }
-    elseif ($node->getType() === 'decision') {
-      /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService */
-      $policymakerService = \Drupal::service('paatokset_policymakers');
-      $policymaker = $policymakerService->getPolicymaker($node->get('field_policymaker_id')->value, $item->getLanguage());
+    elseif ($node instanceof Decision) {
+      $policymaker = $node->getPolicymaker($item->getLanguage());
     }
 
     if (!$policymaker instanceof NodeInterface) {
@@ -88,7 +88,10 @@ class SectorId extends ProcessorPluginBase {
     if (!isset($json_data->SectorID)) {
       return;
     }
-    $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'sector_id');
+
+    $fields = $this->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), 'entity:node', 'sector_id');
+
     foreach ($fields as $field) {
       $field->addValue($json_data->SectorID);
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
@@ -51,39 +51,41 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDataSourceId();
-    if ($datasourceId === 'entity:node') {
-      $node = $item->getOriginalObject()->getValue();
+    if ($datasourceId !== 'entity:node') {
+      return;
+    }
 
-      if (!$node instanceof NodeInterface) {
-        return;
+    $node = $item->getOriginalObject()->getValue();
+
+    if (!$node instanceof NodeInterface) {
+      return;
+    }
+
+    $full_title = $node->get('title')->value;
+    if ($node->getType() === 'policymaker') {
+      $title_sections = [$node->get('title')->value];
+
+      if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
+        $title_sections[] = $node->get('field_sector_name')->value;
+      }
+      if ($node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
+        $title_sections[] = $node->get('field_dm_org_name')->value;
       }
 
-      $full_title = $node->title->value;
-      if ($node->getType() === 'policymaker') {
-        $title_sections = [$node->title->value];
+      $title_sections = array_unique($title_sections);
+      $full_title = implode(" - ", $title_sections);
+    }
 
-        if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
-          $title_sections[] = $node->get('field_sector_name')->value;
-        }
-        if ($node->hasField('field_dm_org_name') && !$node->get('field_dm_org_name')->isEmpty()) {
-          $title_sections[] = $node->get('field_dm_org_name')->value;
-        }
-
-        $title_sections = array_unique($title_sections);
-        $full_title = implode(" - ", $title_sections);
+    if ($node->getType() === 'trustee') {
+      $name = TrusteeService::getTrusteeName($node);
+      if ($name) {
+        $full_title = $name;
       }
+    }
 
-      if ($node->getType() === 'trustee') {
-        $name = TrusteeService::getTrusteeName($node);
-        if ($name) {
-          $full_title = $name;
-        }
-      }
-
-      $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_combined_title');
-      if (isset($fields['decisionmaker_combined_title'])) {
-        $fields['decisionmaker_combined_title']->addValue($full_title);
-      }
+    $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_combined_title');
+    if (isset($fields['decisionmaker_combined_title'])) {
+      $fields['decisionmaker_combined_title']->addValue($full_title);
     }
   }
 

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -57,6 +58,7 @@ class MeetingPhase extends ProcessorPluginBase {
 
       $phase = NULL;
       foreach ($node->get('field_meeting_documents') as $field) {
+        assert($field instanceof FieldItemListInterface);
         $json = json_decode($field->value, TRUE);
         if (empty($json['Type'])) {
           continue;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 use Drupal\search_api\Datasource\DatasourceInterface;

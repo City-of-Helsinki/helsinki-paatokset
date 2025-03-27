@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
+use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -28,7 +30,8 @@ class ColorClass extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array
+  {
     $properties = [];
 
     if ($datasource) {
@@ -47,27 +50,24 @@ class ColorClass extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item) {
-    $datasourceId = $item->getDataSourceId();
-    if ($datasourceId === 'entity:node' && $node = $item->getOriginalObject()->getValue()) {
-      $decisionMakers = [
-        'trustee',
-        'policymaker',
-      ];
-      $type = $node->getType();
-      /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService */
-      $policymakerService = \Drupal::service('paatokset_policymakers');
-      $colorClass = NULL;
-      if ($type === 'decision' && $id = $node->get('field_policymaker_id')->value) {
-        $colorClass = $policymakerService->getPolicymakerClassById($id);
+  public function addFieldValues(ItemInterface $item): void {
+    if (
+      $item->getDataSourceId() === 'entity:node' &&
+      $node = $item->getOriginalObject()->getValue()
+    ) {
+      if ($node instanceof Decision) {
+        $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass();
       }
-      elseif (in_array($type, $decisionMakers)) {
-        $colorClass = $policymakerService->getPolicymakerClass($node);
+      elseif ($node instanceof Policymaker) {
+        $colorClass = $node->getPolicymakerClass();
       }
 
-      $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'color_class');
+      $fields = $this
+        ->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(), 'entity:node', 'color_class');
+
       if (isset($fields['color_class'])) {
-        $fields['color_class']->addValue($colorClass);
+        $fields['color_class']->addValue($colorClass ?? 'color-none');
       }
     }
   }

@@ -73,6 +73,13 @@ class Policymaker extends Node {
   }
 
   /**
+   * Get policymaker ID.
+   */
+  public function getPolicymakerId(): ?string {
+    return $this->get('field_policymaker_id')->value;
+  }
+
+  /**
    * Return route for policymaker decisions.
    *
    * @todo simplify decision/case routing logic.
