@@ -5,21 +5,578 @@ parameters:
       - install
       - theme
   paths:
-    - ./public/modules/custom/paatokset_submenus
-    - ./public/modules/custom/paatokset_ahjo_openid
-    - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/QueueWorker
-    - ./public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver
-    - ./public/modules/custom/paatokset_ahjo_api/src/Entity
-    - ./public/modules/custom/paatokset_ahjo_api/src/Controller
-    - ./public/modules/custom/paatokset_ahjo_api/src/AhjoQueueWorkerBase.php
-    - ./public/modules/custom/paatokset_datapumppu
-    - ./public/modules/custom/paatokset_allu
-    - ./public/modules/custom/paatokset_helsinki_kanava
-    # TODO: Enable for all files.
-    #- ./public/modules/custom
-    #- ./public/themes/custom
+    - ./public/modules/custom
+    - ./public/themes/custom
   excludePaths:
     - vendor
   level: 3
   checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    -
+      message: "#^Call to an undefined method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getPolicymakerClassById\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
+
+    -
+      message: "#^Cannot access property \\$created on object\\|true\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+
+    -
+      message: "#^Cannot access property \\$data on object\\|true\\.$#"
+      count: 7
+      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+
+    -
+      message: "#^Cannot access property \\$item_id on object\\|true\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Form/DisallowedDecisionsForm.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 3
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/process/SkipDisallowedDecisions.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\AhjoOrgCompositionSource\\:\\:getDefaultQuery\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$org with type Drupal\\\\node\\\\NodeInterfac is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface is not subtype of native type Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
+
+    -
+      message: "#^Parameter \\$org of method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\AhjoOrgCompositionSource\\:\\:fetchOrgData\\(\\) has invalid type Drupal\\\\node\\\\NodeInterfac\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoSourceBase.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Routing/DecisionConverterBase.php
+
+    -
+      message: "#^Call to an undefined method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDecisionsRoute\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:findMotionById\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:findOrCreateMotionByMeetingData\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionFromQuery\\(\\) has invalid return type Drupal\\\\node\\\\Entity\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlByTitle\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlFromNode\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:guessDecisionFromPath\\(\\) should return Drupal\\\\paatokset_ahjo_api\\\\Entity\\\\Decision\\|null but returns Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:guessDecisionFromPath\\(\\) should return Drupal\\\\paatokset_ahjo_api\\\\Entity\\\\Decision\\|null but returns Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$case with type Drupal\\\\node\\\\Entity\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$decision with type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\node\\\\Entity\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\Core\\\\Url\\|null is not subtype of native type Drupal\\\\Core\\\\Url\\|null\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Parameter \\$case of method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionFromQuery\\(\\) has invalid type Drupal\\\\node\\\\Entity\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Parameter \\$decision of method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlFromNode\\(\\) has invalid type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Property Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:\\$case \\(Drupal\\\\node\\\\Entity\\\\Node\\) does not accept Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Variable \\$decision in PHPDoc tag @var does not exist\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 7
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$entity with type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
+
+    -
+      message: "#^Parameter \\$entity of method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\MeetingService\\:\\:getDocumentFromEntity\\(\\) has invalid type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/TrusteeService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/TrusteeService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_date\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_dm\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_dm_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_sequence_number\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoBatchBuilder.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 4
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_decision_native_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_full_title\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_org_level_below_ids\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_policymaker_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$langcode\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$title\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: """
+        #^Fetching deprecated class constant EXISTS_REPLACE of interface Drupal\\\\Core\\\\File\\\\FileSystemInterface\\:
+        in drupal\\:10\\.3\\.0 and is removed from drupal\\:12\\.0\\.0\\. Use
+        \\\\Drupal\\\\Core\\\\File\\\\FileExists\\:\\:Replace instead\\.$#
+      """
+      count: 7
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_proxy\\\\AhjoProxy\\:\\:getFile\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_proxy\\\\GuzzleHttp\\\\Psr7\\\\Response\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_proxy\\\\AhjoProxy\\:\\:getFile\\(\\) should return GuzzleHttp\\\\Psr7\\\\Response\\|null but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$node with type Drupal\\\\paatokset_ahjo_proxy\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_proxy\\\\GuzzleHttp\\\\Psr7\\\\Response is not subtype of native type GuzzleHttp\\\\Psr7\\\\Response\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^PHPDoc tag @return with type string is incompatible with native type int\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Parameter \\$node of method Drupal\\\\paatokset_ahjo_proxy\\\\AhjoProxy\\:\\:updateDecisionMeetingData\\(\\) has invalid type Drupal\\\\paatokset_ahjo_proxy\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Variable \\$decision_date might not be defined\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Variable \\$issued_date might not be defined\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Variable \\$record_content in empty\\(\\) always exists and is not falsy\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_proxy\\\\Controller\\\\AhjoProxyController\\:\\:getFile\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_proxy\\\\Controller\\\\GuzzleHttp\\\\Psr7\\\\Response\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Controller/AhjoProxyController.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_proxy\\\\Controller\\\\GuzzleHttp\\\\Psr7\\\\Response is not subtype of native type GuzzleHttp\\\\Psr7\\\\Response\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Controller/AhjoProxyController.php
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Controller/AhjoProxyController.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_decision_native_id\\.$#"
+      count: 11
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_decision_series_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_diary_number\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_id\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_meeting_status\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$field_policymaker_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$title\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 3
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_decision_native_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Cannot call method get\\(\\) on true\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: """
+        #^Fetching deprecated class constant EXISTS_REPLACE of interface Drupal\\\\Core\\\\File\\\\FileSystemInterface\\:
+        in drupal\\:10\\.3\\.0 and is removed from drupal\\:12\\.0\\.0\\. Use
+        \\\\Drupal\\\\Core\\\\File\\\\FileExists\\:\\:Replace instead\\.$#
+      """
+      count: 2
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^PHPDoc tag @var for variable \\$node contains unknown class Drupal\\\\paatokset_ahjo_proxy\\\\Drush\\\\Commands\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Variable \\$date_range_end might not be defined\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Variable \\$node in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$field$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
+
+    -
+      message: "#^Offset 'results' does not exist on array\\{\\}\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_ahjo_proxy/tests/src/Kernel/MeetingAggregatorsTest.php
+
+    -
+      message: "#^Method App\\\\Commands\\\\ListFetchCommand\\:\\:doRequest\\(\\) should return GuzzleHttp\\\\Psr7\\\\Response but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_cmdline_poc/src/Commands/ListFetchCommand.php
+
+    -
+      message: "#^Class Drupal\\\\paatokset_council_info\\\\Form\\\\string not found\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_council_info/src/Form/InfoImportForm.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$target_id\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_pdf_listing/paatokset_pdf_listing.module
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_pdf_listing/paatokset_pdf_listing.module
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Entity\\\\FieldableEntityInterface\\:\\:\\$original\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
+
+    -
+      message: "#^Call to an undefined method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDecisionsRoute\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
+
+    -
+      message: "#^Variable \\$cache_tags in empty\\(\\) always exists and is not falsy\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerController.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$title\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Plugin\\\\Block\\\\ContactsBlock\\:\\:build\\(\\) should return array but empty return statement found\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Plugin/Block/ContactsBlock.php
+
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Plugin/Block/ContactsBlock.php
+
+    -
+      message: "#^Call to an undefined method Drupal\\\\Core\\\\Entity\\\\EntityInterface\\:\\:getTranslation\\(\\)\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/OrganizationService.php
+
+    -
+      message: "#^Call to an undefined method Drupal\\\\Core\\\\Entity\\\\EntityInterface\\:\\:hasTranslation\\(\\)\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/OrganizationService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Call to an undefined method Drupal\\\\node\\\\NodeInterface\\:\\:getPolicymakerOrganizationFromUrl\\(\\)\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlByNativeId\\(\\) invoked with 3 parameters, 1 required\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDocumentsRoute\\(\\) has invalid return type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getMeetingNode\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getMinutesRoute\\(\\) has invalid return type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getTrusteeByPath\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$meeting with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^PHPDoc tag @param for parameter \\$node with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\|null is not subtype of native type Drupal\\\\Core\\\\Url\\|null\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Parameter \\$meeting of method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDecisionAnnouncement\\(\\) has invalid type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Parameter \\$node of method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getPolicymakerTypeFromNode\\(\\) has invalid type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Property Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:\\$policymaker \\(Drupal\\\\paatokset_ahjo_api\\\\Entity\\\\Policymaker\\|null\\) does not accept Drupal\\\\node\\\\NodeInterface\\.$#"
+      count: 1
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Variable \\$node might not be defined\\.$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 2
+      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\:\\:\\$date\\.$#"
+      count: 2
+      path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\:\\:\\$uri\\.$#"
+      count: 1
+      path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
+
+    -
+      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_trustee_council_group\\.$#"
+      count: 1
+      path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
