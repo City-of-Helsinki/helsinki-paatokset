@@ -3,8 +3,8 @@
 }
 .node--type-article {
   .content-author {
-    font-size: 1rem;
     color: #666;
+    font-size: 1rem;
   }
 
   .warning-label {
@@ -12,8 +12,8 @@
   }
 
   .keywords {
-    margin-bottom: 8px;
     display: flex;
+    margin-bottom: 8px;
 
     .hds-tag {
       margin: $spacing;
@@ -21,29 +21,29 @@
     }
 
     .hds-tag a {
-      font-size: 16px;
-      border-radius: 24px;
-      background: $color-black;
-      color: $color-white;
-      padding: 6px 16px;
-      text-decoration: none;
-      display: flex;
-      width: fit-content;
       --outline-gutter: 2px;
       --outline-width: 3px;
       --focus-outline-color: #000;
+      background: $color-black;
       border: 2px solid transparent;
+      border-radius: 24px;
+      color: $color-white;
+      display: flex;
+      font-size: 16px;
+      padding: 6px 16px;
+      text-decoration: none;
+      width: fit-content;
 
       &:hover, &:active, &:focus {
-        transition-property: background-color,border-color,color;
         transition-duration: 85ms;
+        transition-property: background-color,border-color,color;
         transition-timing-function: ease-out;
       }
 
       &:hover {
+        background-color: transparent;
         border-color: #000;
         color: #000;
-        background-color: transparent;
       }
 
       &:focus, &:active {
@@ -56,8 +56,8 @@
 }
 
 .latest-articles__list {
-  width: 100%;
   font-size: $fontsize-body-l;
+  width: 100%;
 
   .sidebar_block_heading {
     margin-top: 0;

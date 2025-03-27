@@ -4,19 +4,39 @@
  *  - item: Se Drupal\paatokset_rss\DTO\LupapisteItem for available variables.
  */
 #}
-<div class="paatokset-rss-item-container">
-  <div class="title">{{ item.title }}</div>
-  <div class="description">{{ item.description }}</div>
-  <div class="link">{{ item.link }}</div>
-  <div class="pubdate">{{ item.pubDate|date('Y-m-d H:i:s') }}</div>
-  <div class="toimenpideteksti">{{ item.toimenpideteksti }}</div>
-  <div class="rakennuspaikka">{{ item.rakennuspaikka }}</div>
-  <div class="lupatunnus">{{ item.lupatunnus }}</div>
-  <div class="julkaisuAlkaa">{{ item.julkaisuAlkaa|date('Y-m-d H:i:s') }}</div>
-  <div class="julkaisuPaattyy">{{ item.julkaisuPaattyy|date('Y-m-d H:i:s') }}</div>
-  <div class="kiinteistotunnus">{{ item.kiinteistotunnus }}</div>
-  <div class="paatosPvm">{{ item.paatosPvm|date('Y-m-d H:i:s') }}</div>
-  <div class="paatoksenPykala">{{ item.paatoksenPykala }}</div>
-  <div class="paattaja">{{ item.paattaja }}</div>
-  <div class="asiakirjaLink">{{ item.asiakirjaLink }}</div>
+<div class="rss-item__container">
+  <a href="{{ item.link }}">
+    <h3>{{ item.title }}</h3>
+  </a>
+  <div>
+    <div class="rss-item__row-container">
+      <div class="rss-item__item">
+        <span>{{ 'Building site'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.rakennuspaikka }}
+      </div>
+      <div class="rss-item__item">
+        <span>{{ 'Permit ID'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.lupatunnus }}
+      </div>
+    </div>
+    <div class="rss-item__row-container">
+      <div class="rss-item__item">
+        <span>{{ 'Property ID'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.kiinteistotunnus }}
+      </div>
+      <div class="rss-item__item">
+        <span>{{ 'Decicion date'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paatosPvm|date('m.d.Y') }}
+      </div>
+    </div>
+    <div class="rss-item__row-container">
+      <div class="rss-item__item">
+        <span>{{ 'Decision section'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paatoksenPykala }}
+      </div>
+      <div class="rss-item__item">
+        <span>{{ 'Decision maker'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paattaja }}
+      </div>
+    </div>    
+  </div>
+  <div class="rss-item__publication-date">
+  
+    <span>{{ 'Publication starts'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuAlkaa.date|date('U')|format_date('publication_date_format')}}.</span>
+    <span>{{ 'Publication ends'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuPaattyy.date|date('U')|format_date('publication_date_format')}}</span>
+  </div>
 </div>

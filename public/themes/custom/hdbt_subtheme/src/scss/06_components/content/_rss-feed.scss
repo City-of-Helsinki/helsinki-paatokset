@@ -1,0 +1,50 @@
+.rss-item__container {
+  border-top: 1px solid $color-black-20;
+  padding-block: $spacing-and-half;
+
+  h3 {
+    margin-bottom: $spacing;
+    margin-top: 0;
+  }
+}
+
+.rss-item__row-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  margin-bottom: $spacing-half;
+
+  &:first-of-type {
+    margin-top: $spacing;
+  }
+
+  @include breakpoint($breakpoint-s) {
+    flex-direction: row;
+  }
+}
+
+.rss-item__item {
+  display: flex;
+  gap: $spacing-quarter;
+ 
+
+  span {
+    font-weight: $font-weight-bold;
+  }
+
+  @include breakpoint($breakpoint-s) {
+    flex-direction: row;
+    width: 50%;
+  }
+}
+
+.rss-item__publication-date {
+  color: $color-black-60;
+  margin-top: $spacing;
+}
+
+.rss-feed__count-container {
+  @include font('h3');
+
+  margin-bottom: $spacing-and-half;
+}

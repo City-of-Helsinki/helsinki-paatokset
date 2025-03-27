@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ */
+#}
+<div{{ attributes }}>
+  {% block content %}
+    <h2 class="rss-feed__count-container">
+      {% if content.items|length > 1 %}
+        {{ content.items|length }} {% trans with {'context': 'Lupapiste rss'} %}proclamations{% endtrans %}
+      {% else %}
+        {{ 'No results'|t }}
+      {% endif %}
+    </h2>
+    {{ content }}
+  {% endblock %}
+</div>

@@ -2,7 +2,7 @@ jQuery(function($) {
   const handle = $('.issue__meetings-dropdown button');
   const optionList = $('.issue__meetings-select');
   const options = $('.issue__meetings-select li');
-  const container = $('.issue__meetings-container')
+  const container = $('.issue__meetings-container');
   const dropdown = $('.issue__meetings-dropdown');
   const social_media = $('.social-media__items a');
   let focusIndex = -1;
@@ -29,7 +29,7 @@ jQuery(function($) {
           openOptions();
         }
       }
-    })
+    });
 
     // Close dropdown if focus moves outside parent
     $(container).focusout(function(event) {
@@ -137,7 +137,7 @@ jQuery(function($) {
     $(handle).removeClass();
     buttonClasses.forEach(function(className) {
       $(handle).addClass(className);
-    })
+    });
     $(handle).data('link', link);
   }
 
@@ -145,17 +145,17 @@ jQuery(function($) {
    * Load decision content via ajax and update URL
    */
   function loadDecision(id) {
-    const caseId = $('#case-header').data('caseId')
+    const caseId = $('#case-header').data('caseId');
     const { baseUrl, pathPrefix, currentPath } = window.drupalSettings.path;
     const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}/${id}`;
 
 
     $.ajax({
       url: path,
-      beforeSend: function() {
+      beforeSend() {
         $('.issue__wrapper .ajax-progress-throbber').show();
       },
-      success: function(data) {
+      success(data) {
         if (data.content) {
           $('.issue__ajax-container').html(data.content);
         }
@@ -185,8 +185,8 @@ jQuery(function($) {
           $('.issue__pdf').css('display', 'none');
         }
         if (data.language_urls) {
-          for (let langcode in data.language_urls) {
-            $('.language-link[lang="' + langcode + '"]').attr('href', data.language_urls[langcode]);
+          for (const langcode in data.language_urls) {
+            $(`.language-link[lang="${  langcode  }"]`).attr('href', data.language_urls[langcode]);
           }
         }
         if (data.show_warning) {
@@ -197,13 +197,13 @@ jQuery(function($) {
         }
         $('.issue-ajax-error__container').hide();
       },
-      error: function() {
+      error() {
         $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'false');
         $('.issue-ajax-error__container').attr('aria-hidden', 'false').show();
       },
-      complete: function() {
+      complete() {
         $('.issue__wrapper .ajax-progress-throbber').hide();
-        window.document.dispatchEvent(new Event("DOMContentLoaded", {
+        window.document.dispatchEvent(new Event('DOMContentLoaded', {
           bubbles: true,
           cancelable: true
         }));
@@ -219,17 +219,17 @@ jQuery(function($) {
     }
 
     let queryparams = window.location.search;
-    if (queryparams === "") {
-      queryparams = '?' + queryKey + '=';
+    if (queryparams === '') {
+      queryparams = `?${  queryKey  }=`;
     }
     const old_window_href = window.location.host + window.location.pathname + queryparams;
 
     window.history.pushState({}, '', `${window.location.pathname}?${queryKey}=${id}`);
 
     social_media.each(function() {
-      const old_href =  $(this).attr('href')
+      const old_href =  $(this).attr('href');
       const new_window_href = window.location.host + window.location.pathname + window.location.search;
-      $(this).attr('href', old_href.replace(old_window_href, new_window_href))
+      $(this).attr('href', old_href.replace(old_window_href, new_window_href));
     });
   }
 

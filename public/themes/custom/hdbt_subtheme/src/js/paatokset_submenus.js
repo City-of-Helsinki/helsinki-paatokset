@@ -1,4 +1,4 @@
-(function ($, Drupal, once) {
+(function($, Drupal, once) {
   function handleListVisibility() {
     const headerContainer = $('.paatokset__decision-tree-container .tabbed-list');
     const containerWidth = headerContainer.width();
@@ -95,14 +95,14 @@
   }
 
   Drupal.behaviors.myBehavior = {
-    attach: function (context) {
-      once('paatokset_submenus', 'html', context).forEach( function () {
+    attach(context) {
+      once('paatokset_submenus', 'html', context).forEach(function() {
         handleListVisibility();
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
         $(context).find('.tabbed-list__content__inner input').click(handleSelect);
         $(context).find('#custom-options').click(handleSelect);
-      })
+      });
     }
-  }
+  };
 }(jQuery, Drupal, once));
