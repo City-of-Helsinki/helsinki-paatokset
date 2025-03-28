@@ -23,14 +23,8 @@
     </header>
   {% endif %}
 
-  {%- if total_rows > 1 -%}
-    <h2 class="rss-feed__count-container">
-        {{ total_rows }} {% trans with {'context': 'Lupapiste rss'} %}proclamations{% endtrans %}
-    </h2>
-  {%- endif -%}
-  {{ rows }}
+  {{ drupal_block('lupapiste_rss_feed') }}
 
-  {{ empty }}
   {{ feed_icons }}
   {{ pager }}
 </div>
