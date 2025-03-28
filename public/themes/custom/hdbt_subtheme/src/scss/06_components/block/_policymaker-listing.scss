@@ -2,8 +2,8 @@
   background-color: #f7f7f8;
 
   .container {
-    padding-top: 65px;
     padding-bottom: 65px;
+    padding-top: 65px;
   }
 
   h2 {
@@ -19,15 +19,15 @@
   }
 
   .policymaker-card {
-    text-decoration: none;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 16px;
+    text-decoration: none;
 
     @include breakpoint($breakpoint-s) {
-      width: 50%;
       padding-bottom: 0;
+      width: 50%;
 
       &:first-of-type {
         padding-right: 8px;
@@ -46,15 +46,15 @@
   }
 
   .policymaker-card__color-title {
-    text-align: center;
     font-weight: $font-weight-medium;
-    text-transform: uppercase;
     padding: 4px 0;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .policymaker-card__title-icon {
-    padding: 25px;
     background-color: $color-white;
+    padding: 25px;
 
     h4 {
       margin-top: 0;
@@ -62,24 +62,24 @@
   }
 
   .hel-icon {
-    width: 30px;
     height: 30px;
-    min-width: 30px;
     min-height: 30px;
+    min-width: 30px;
     transition: all 0.2s ease-in-out;
+    width: 30px;
   }
 }
 
 .policymaker-row__link {
-  padding: $spacing-double;
+  align-items: center;
+  background-color: $color-white;
   display: flex;
   justify-content: space-between;
-  background-color: $color-white;
   margin-bottom: $spacing;
   margin-top: $spacing;
+  padding: $spacing-double;
   position: relative;
   text-decoration: none;
-  align-items: center;
 
   &:hover {
     .hel-icon {
@@ -89,19 +89,19 @@
 
 
   .hel-icon {
-    min-width: 30px;
-    min-height: 30px;
-    width: 10%;
     height: 30px;
+    min-height: 30px;
+    min-width: 30px;
     transition: all 0.2s ease-in-out;
+    width: 10%;
   }
 
   .policymaker-row__color {
-    position: absolute;
-    left: 0;
-    top: 0;
     bottom: 0;
     height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
     width: 16px;
   }
 
@@ -115,8 +115,8 @@
   }
 
   .policymaker-row__sub-title {
-    font-size: 20px;
     color: $color-black-50;
+    font-size: 20px;
   }
 }
 

@@ -3,62 +3,62 @@
 }
 
 .decision-tree__box {
-  padding: 24px;
-  text-align: center;
   border: 2px solid #1a1a1a;
   font-size: 20px;
   font-weight: 500;
-  position: relative;
   hyphens: auto;
+  padding: 24px;
+  position: relative;
+  text-align: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
 
   @include breakpoint($breakpoint-s) {
-    padding: 28px;
     font-size: 24px;
+    padding: 28px;
   }
 
   &:not(&:last-of-type) {
     margin-bottom: 24px;
 
     &::after {
-      content: '';
-      height: 30px;
-      width: 30px;
+      background-color: white;
       border-bottom: 2px solid #1a1a1a;
       border-right: 2px solid #1a1a1a;
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: auto;
       bottom: -15.5px;
+      content: '';
+      height: 30px;
+      left: 0;
+      margin: auto;
+      position: absolute;
+      right: 0;
       transform: rotate(45deg);
-      background-color: white;
+      width: 30px;
     }
   }
 }
 
 .decision-tree__upper-tree {
-  margin: 0 60px 72px 60px;
-  position: relative;
   display: flex;
   flex-direction: column;
+  margin: 0 60px 72px 60px;
+  position: relative;
 
   .decision-tree__arrow {
     position: absolute;
   }
 
   .arrow-left {
+    height: 280px;
     left: -54px;
     top: 23px;
-    height: 280px;
     width: 55px;
   }
 
   .arrow-right {
-    right: -65px;
     bottom: 23px;
     height: 395px;
+    right: -65px;
     width: 65px;
   }
 
@@ -79,9 +79,9 @@
 }
 
 .decision-tree__lower-tree {
-  margin: 0 60px 72px 60px;
   display: flex;
   flex-direction: column;
+  margin: 0 60px 72px 60px;
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {
@@ -91,6 +91,6 @@
 
 .decision-tree__info-text {
   font-size: 36px;
-  text-align: center;
   margin-bottom: 36px;
+  text-align: center;
 }
