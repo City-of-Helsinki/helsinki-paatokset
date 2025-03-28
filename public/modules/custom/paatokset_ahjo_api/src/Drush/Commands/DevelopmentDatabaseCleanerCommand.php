@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Commands;
+namespace Drupal\paatokset_ahjo_api\Drush\Commands;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drush\Attributes\Command;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 
 /**
  * A drush command to clean up database for development purpose.
  */
 final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.
@@ -24,12 +27,13 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
+    parent::__construct();
   }
 
   /**
    * Deletes the old decisions.
    *
-   * @param string $dateFrom
+   * @param ?string $dateFrom
    *   Decisions older than given date will be removed from database.
    *
    * @return int
@@ -44,7 +48,7 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
     }
 
     $nodeStorage = $this->entityTypeManager->getStorage('node');
-    $query = $nodeStorage->getQuery();
+    $query = $nodeStorage->getQuery()->accessCheck(FALSE);
 
     $date = $dateFrom ? new DrupalDateTime($dateFrom) : new DrupalDateTime(date("Y-m-d", strtotime("-6 months")));
 
@@ -54,7 +58,6 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
     $query
       ->condition('type', 'decision')
       ->condition('field_decision_date', $formatted, '<')
-      ->accessCheck(FALSE)
       ->range(0, 100);
 
     while ($ids = $query->execute()) {

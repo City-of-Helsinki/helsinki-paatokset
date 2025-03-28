@@ -32,7 +32,7 @@ class SpecialStatus extends ProcessorPluginBase {
   public const TRUSTEE = '_trustee';
 
   /**
-   * Config factory
+   * Config factory.
    */
   private ConfigFactoryInterface $configFactory;
 

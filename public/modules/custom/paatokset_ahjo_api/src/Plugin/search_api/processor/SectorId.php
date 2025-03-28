@@ -10,7 +10,6 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Extracts sector info from source JSON.

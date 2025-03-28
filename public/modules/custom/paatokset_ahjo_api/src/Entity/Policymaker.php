@@ -57,13 +57,10 @@ class Policymaker extends Node {
   }
 
   /**
-   * Get organization name by ID.
+   * Get organization name.
    *
    * @param bool $get_ahjo_title
    *   Get Ahjo title instead of node title.
-   *
-   * @return string|null
-   *   Organization name or NULL if policymaker can't be found.
    */
   public function getPolicymakerName(bool $get_ahjo_title = FALSE): ?string {
     if ($get_ahjo_title) {

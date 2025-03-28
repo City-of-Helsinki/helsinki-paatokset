@@ -19,7 +19,7 @@ class SearchController extends ControllerBase {
    * @param \Drupal\Core\Config\ImmutableConfig $searchConfig
    *   The search config.
    */
-  public function __construct(
+  final public function __construct(
     private ImmutableConfig $proxyConfig,
     private ImmutableConfig $searchConfig,
   ) {

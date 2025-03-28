@@ -21,17 +21,17 @@ parameters:
     -
       message: "#^Cannot access property \\$created on object\\|true\\.$#"
       count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+      path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
       message: "#^Cannot access property \\$data on object\\|true\\.$#"
       count: 7
-      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+      path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
       message: "#^Cannot access property \\$item_id on object\\|true\\.$#"
       count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Commands/AhjoCallbackCommands.php
+      path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
       message: "#^Unsafe usage of new static\\(\\)\\.$#"

@@ -876,12 +876,8 @@ function _paatokset_ahjo_api_true_if_empty($value): bool {
  * @return bool
  *   TRUE is value is "true", FALSE if it is not.
  */
-function _paatokset_ahjo_api_string_to_boolean($value): bool {
-  if (strtolower($value) === 'true') {
-    return TRUE;
-  }
-
-  return FALSE;
+function _paatokset_ahjo_api_string_to_boolean(mixed $value): bool {
+  return strtolower($value) === 'true';
 }
 
 /**

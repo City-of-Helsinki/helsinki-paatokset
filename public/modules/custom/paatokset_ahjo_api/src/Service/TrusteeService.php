@@ -16,7 +16,7 @@ class TrusteeService {
   /**
    * Get trustee name in conventional name spelling.
    *
-   * @param Drupal\node\NodeInterface $trustee
+   * @param \Drupal\node\NodeInterface $trustee
    *   The trustee node.
    *
    * @return string
@@ -50,7 +50,7 @@ class TrusteeService {
   /**
    * Get the trustee title, with some cases transformed.
    *
-   * @param Drupal\node\NodeInterface $trustee
+   * @param \Drupal\node\NodeInterface $trustee
    *   The trustee node.
    *
    * @return string|null
@@ -73,6 +73,8 @@ class TrusteeService {
 
       return $title;
     }
+
+    return NULL;
   }
 
   /**

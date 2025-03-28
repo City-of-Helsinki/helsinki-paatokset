@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\Commands;
+namespace Drupal\paatokset_ahjo_api\Drush\Commands;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Ahjo Callback drush commands.
@@ -23,54 +25,51 @@ class AhjoCallbackCommands extends DrushCommands {
   private const RETRY_QUEUE_NAME = 'ahjo_api_retry_queue';
   private const ERROR_QUEUE_NAME = 'ahjo_api_error_queue';
 
+  use AutowireTrait;
+
   /**
    * Ahjo callback queue.
-   *
-   * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $queue;
+  protected QueueInterface $queue;
 
   /**
    * Ahjo retry queue.
-   *
-   * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $retryQueue;
+  protected QueueInterface $retryQueue;
 
   /**
    * Ahjo aggregation queue.
-   *
-   * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $aggregationQueue;
+  protected QueueInterface $aggregationQueue;
 
   /**
    * Ahjo error queue.
-   *
-   * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $errorQueue;
+  protected QueueInterface $errorQueue;
 
   /**
    * Constructor for Ahjo Callback commands.
    *
    * @param \Drupal\Core\Queue\QueueFactory $queueFactory
    *   Queue service.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   Logger service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   Logger.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
    */
   public function __construct(
     QueueFactory $queueFactory,
-    LoggerChannelFactoryInterface $logger_factory,
-    private Connection $database,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    LoggerInterface $logger,
+    private readonly Connection $database,
   ) {
+    parent::__construct();
+
     $this->queue = $queueFactory->get(self::QUEUE_NAME);
     $this->retryQueue = $queueFactory->get(self::RETRY_QUEUE_NAME);
     $this->aggregationQueue = $queueFactory->get(self::AGGREGATION_QUEUE_NAME);
     $this->errorQueue = $queueFactory->get(self::ERROR_QUEUE_NAME);
-    $this->setLogger($logger_factory->get('ahjo_api_subscriber'));
+    $this->setLogger($logger);
   }
 
   /**
@@ -269,16 +268,16 @@ class AhjoCallbackCommands extends DrushCommands {
    */
   public function deleteCallbackItem(string $id): void {
     if (!$item = $this->loadItem(self::QUEUE_NAME, $id)) {
-      $this->logger()->error('Unable to load item with id: ' . $id);
+      $this->logger->error('Unable to load item with id: ' . $id);
       return;
     }
 
     try {
       $this->queue->deleteItem($item);
-      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+      $this->logger->info('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
-      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+      $this->logger->error('Error removing item from queue: ' . $e->getMessage());
     }
   }
 
@@ -297,16 +296,16 @@ class AhjoCallbackCommands extends DrushCommands {
    */
   public function deleteRetryItem(string $id): void {
     if (!$item = $this->loadItem(self::RETRY_QUEUE_NAME, $id)) {
-      $this->logger()->error('Unable to load item with id: ' . $id);
+      $this->logger->error('Unable to load item with id: ' . $id);
       return;
     }
 
     try {
       $this->retryQueue->deleteItem($item);
-      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+      $this->logger->info('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
-      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+      $this->logger->error('Error removing item from queue: ' . $e->getMessage());
     }
   }
 
@@ -325,16 +324,16 @@ class AhjoCallbackCommands extends DrushCommands {
    */
   public function deleteAggregationItem(string $id): void {
     if (!$item = $this->loadItem(self::AGGREGATION_QUEUE_NAME, $id)) {
-      $this->logger()->error('Unable to load item with id: ' . $id);
+      $this->logger->error('Unable to load item with id: ' . $id);
       return;
     }
 
     try {
       $this->aggregationQueue->deleteItem($item);
-      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+      $this->logger->info('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
-      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+      $this->logger->error('Error removing item from queue: ' . $e->getMessage());
     }
   }
 
@@ -353,16 +352,16 @@ class AhjoCallbackCommands extends DrushCommands {
    */
   public function deleteErrorItem(string $id): void {
     if (!$item = $this->loadItem(self::ERROR_QUEUE_NAME, $id)) {
-      $this->logger()->error('Unable to load item with id: ' . $id);
+      $this->logger->error('Unable to load item with id: ' . $id);
       return;
     }
 
     try {
       $this->aggregationQueue->deleteItem($item);
-      $this->logger()->info('Removed item ' . $id . ' from the queue.');
+      $this->logger->info('Removed item ' . $id . ' from the queue.');
     }
     catch (\Exception $e) {
-      $this->logger()->error('Error removing item from queue: ' . $e->getMessage());
+      $this->logger->error('Error removing item from queue: ' . $e->getMessage());
     }
   }
 
@@ -431,7 +430,7 @@ class AhjoCallbackCommands extends DrushCommands {
    * @aliases ac:clear-err
    */
   public function clearErrorQueue(?string $name = NULL): void {
-    $this->clearQueueItems($this->aggregationQueue, $name);
+    $this->clearQueueItems($this->errorQueue, $name);
   }
 
   /**
