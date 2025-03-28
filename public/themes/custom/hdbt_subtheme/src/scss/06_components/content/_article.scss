@@ -13,7 +13,7 @@
 
   .keywords {
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: $spacing-half;
 
     .hds-tag {
       margin: $spacing;
@@ -22,16 +22,16 @@
 
     .hds-tag a {
       background: $color-black;
-      border-radius: 24px;
+      border-radius: $spacing-and-half;
       color: $color-white;
       display: flex;
       font-size: 16px;
-      padding: 6px 16px;
+      padding: 6px $spacing;
       text-decoration: none;
       width: fit-content;
       --outline-gutter: 2px;
       --outline-width: 3px;
-      --focus-outline-color: #000;
+      --focus-outline-color: $color-black;
       border: 2px solid transparent;
 
       &:hover, &:active, &:focus {
@@ -42,8 +42,8 @@
 
       &:hover {
         background-color: transparent;
-        border-color: #000;
-        color: #000;
+        border-color: $color-black;
+        color: $color-black;
       }
 
       &:focus, &:active {

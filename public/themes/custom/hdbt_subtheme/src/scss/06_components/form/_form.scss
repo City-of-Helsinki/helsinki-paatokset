@@ -6,14 +6,14 @@
     @include font('h1');
   }
   h1, label, .container > p {
-    color: #000;
+    color: $color-black;
   }
   button + ul li {
     font-size: 16px;
     margin-top: 0;
   }
   button + ul li[class*='Select-module_highlighted'] {
-    background-color: #000!important;
+    background-color: $color-black!important;
     color: #fff!important;
 
     span {
@@ -28,8 +28,8 @@
     border-top-color: #ccc;
   }
   .DateSelect__predefined-ranges-container + button:hover {
-    background-color: #000;
-    border-color: #000;
+    background-color: $color-black;
+    border-color: $color-black;
   }
 
   // Autocomplete styles.

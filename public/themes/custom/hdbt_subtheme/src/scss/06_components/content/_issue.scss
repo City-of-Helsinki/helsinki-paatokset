@@ -4,7 +4,7 @@
   margin-bottom: 27.5px;
 
   @include breakpoint($breakpoint-xl) {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-double;
   }
 }
 
@@ -56,12 +56,12 @@
 
   .hds-tag {
     background: $color-black;
-    border-radius: 24px;
+    border-radius: $spacing-and-half;
     color: $color-white;
     display: flex;
     font-size: 16px;
-    margin-right: 12px;
-    padding: 6px 16px;
+    margin-right: $spacing-three-quarters;
+    padding: 6px $spacing;
     width: fit-content;
   }
   .hds-tag--confidential {
@@ -130,9 +130,9 @@
     border-bottom: 1px solid rgb(151, 151, 151);
     font-size: 16px;
     font-weight: 600;
-    line-height: 24px;
+    line-height: $spacing-and-half;
 
-    padding: 24px 0;
+    padding: $spacing-and-half 0;
     vertical-align: top;
     & > a, & > div {
       display: flex;
@@ -175,7 +175,7 @@
 
 .issue-content__indices {
   font-size: $fontsize-body-xl;
-  margin-bottom: 8px;
+  margin-bottom: $spacing-half;
 }
 
 .issue-content__policymaker-label {
@@ -266,7 +266,7 @@
 }
 
 .issue__meetings-labels label {
-  font-weight: 500;
+  font-weight: $font-weight-medium;
 }
 
 .issue__more-info {
@@ -394,7 +394,7 @@ h4.decision-history-title + h5.decision-history-title {
       padding: 0;
 
       &::after {
-        padding-right: 16px;
+        padding-right: $spacing;
       }
 
       .result-key,
@@ -402,7 +402,7 @@ h4.decision-history-title + h5.decision-history-title {
         font-size: 18px;
         line-height: 1.5;
         margin: 0;
-        padding: 16px;
+        padding: $spacing;
       }
 
       .result-color {
@@ -468,13 +468,13 @@ h4.decision-history-title + h5.decision-history-title {
     width: 100%;
 
     th {
-      font-weight: 500;
+      font-weight: $font-weight-medium;
     }
 
     th,
     td {
       font-size: 16px;
-      padding: 16px;
+      padding: $spacing;
       text-align: left;
     }
   }
@@ -507,7 +507,7 @@ h4.decision-history-title + h5.decision-history-title {
 
     thead .results-table__row {
       th {
-        background-color: #000;
+        background-color: $color-black;
         color: #fff;
         min-width: unset;
 

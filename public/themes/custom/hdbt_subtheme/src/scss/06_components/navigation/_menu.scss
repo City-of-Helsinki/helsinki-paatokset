@@ -13,13 +13,13 @@
   grid-template-columns: 40px auto;
   grid-template-rows: auto;
   justify-items: center;
-  padding: 5px 12px; // Top and bottom paddings are for handling focus ring 3px width + 2px offset
+  padding: 5px $spacing-three-quarters; // Top and bottom paddings are for handling focus ring 3px width + 2px offset
   position: relative;
   text-decoration: none;
   width: 100%;
 
   .icon-wrapper {
-    background: #f7f7f8;
+    background: $color-silver-light;
     content: '';
     display: block;
     grid-area: icon;
@@ -28,11 +28,11 @@
   }
 
   .hel-icon--angle-right {
-    height: 32px;
+    height: $spacing-double;
     margin-left: 3px;
     margin-top: 3px;
     transform: rotate(180deg);
-    width: 32px;
+    width: $spacing-double;
   }
 
   &:hover,
@@ -40,7 +40,7 @@
     text-decoration: underline;
 
     &.hel-icon {
-      transform: translateX(-4px);
+      transform: translateX(-$spacing-quarter);
     }
   }
 
@@ -50,7 +50,7 @@
     outline-offset: -3px;
 
     &::before {
-      transform: translateX(-4px);
+      transform: translateX(-$spacing-quarter);
     }
   }
 }
@@ -80,10 +80,10 @@
 .mmenu__back-wrapper {
   color: $color-black;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   grid-area: label;
   justify-self: start;
-  margin-top: 8px;
+  margin-top: $spacing-half;
   padding-left: 10px;
 }
 

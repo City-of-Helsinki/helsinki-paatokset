@@ -3,11 +3,11 @@
 }
 
 .decision-tree__box {
-  border: 2px solid #1a1a1a;
+  border: 2px solid $color-black-90;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   hyphens: auto;
-  padding: 24px;
+  padding: $spacing-and-half;
   position: relative;
   text-align: center;
   word-wrap: break-word;
@@ -19,12 +19,12 @@
   }
 
   &:not(&:last-of-type) {
-    margin-bottom: 24px;
+    margin-bottom: $spacing-and-half;
 
     &::after {
-      background-color: white;
-      border-bottom: 2px solid #1a1a1a;
-      border-right: 2px solid #1a1a1a;
+      background-color: $color-white;
+      border-bottom: 2px solid $color-black-90;
+      border-right: 2px solid $color-black-90;
       bottom: -15.5px;
       content: '';
       height: 30px;
