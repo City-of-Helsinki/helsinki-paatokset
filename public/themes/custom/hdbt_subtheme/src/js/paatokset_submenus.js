@@ -1,4 +1,4 @@
-(function ($, Drupal, once) {
+(function($, Drupal, once) {
   function handleListVisibility() {
     const headerContainer = $('.paatokset__decision-tree-container .tabbed-list');
     const containerWidth = headerContainer.width();
@@ -14,35 +14,32 @@
     let exceeded = false;
     const allowedItems = [];
     const selectedFirst = items.sort((a, b) => $(b).hasClass('selected') - $(a).hasClass('selected'));
-    for(const item of selectedFirst) {
+
+    selectedFirst.forEach(item => {
       itemsWidth += $(item).width();
       exceeded = itemsWidth >= allowedWidth;
-
-      if(exceeded && allowedItems.length > 0) {
+    
+      if (exceeded && allowedItems.length > 0) {
         $(item).addClass('hidden');
       } else {
         allowedItems.push($(item).find('input').attr('value'));
         $(item).removeClass('hidden');
       }
+    
+      $(item).find('input').attr('aria-pressed', $(item).hasClass('selected'));
+    });
 
-      if ($(item).hasClass('selected')) {
-        $(item).find('input').attr('aria-pressed', true);
-      } else {
-        $(item).find('input').attr('aria-pressed', false);
-      }
-    }
-
-    if(exceeded) {
+    if (exceeded) {
       $(dropdown).removeClass('hidden');
       const dropdownItems = $('.custom-select-wrapper div.custom-option').toArray();
 
-      for(const item of dropdownItems) {
-        if(allowedItems.includes($(item).find('input').attr('value'))) {
+      dropdownItems.forEach(item => {
+        if (allowedItems.includes($(item).find('input').attr('value'))) {
           $(item).addClass('hidden');
         } else {
           $(item).removeClass('hidden');
         }
-      }
+      });
     } else {
       $(dropdown).addClass('hidden');
     }
@@ -95,14 +92,14 @@
   }
 
   Drupal.behaviors.myBehavior = {
-    attach: function (context) {
-      once('paatokset_submenus', 'html', context).forEach( function () {
+    attach(context) {
+      once('paatokset_submenus', 'html', context).forEach(function() {
         handleListVisibility();
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
         $(context).find('.tabbed-list__content__inner input').click(handleSelect);
         $(context).find('#custom-options').click(handleSelect);
-      })
+      });
     }
-  }
+  };
 }(jQuery, Drupal, once));

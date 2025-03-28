@@ -1,6 +1,6 @@
 .policymaker-members {
   h2 {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-double;
   }
 }
 
@@ -12,10 +12,10 @@
 
   input:not(input[type=checkbox]),
   select {
-    width: 100%;
-    height: 56px;
-    padding: 16px;
     border: 2px solid $color-black-50;
+    height: 56px;
+    padding: $spacing;
+    width: 100%;
   }
 
   select {
@@ -27,16 +27,16 @@
   }
 
   .search-wrapper {
-    width: 100%;
     margin-bottom: 36px;
     position: relative;
+    width: 100%;
 
     .hel-icon {
-      position: absolute;
+      bottom: $spacing;
+      height: $spacing-and-half;
       left: 20px;
-      bottom: 16px;
-      width: 24px;
-      height: 24px;
+      position: absolute;
+      width: $spacing-and-half;
     }
 
     input {
@@ -45,8 +45,8 @@
   }
 
   .form-item {
-    width: 100%;
     margin-bottom: 36px;
+    width: 100%;
 
     @include breakpoint($breakpoint-s) {
       width: 48%;
@@ -57,12 +57,12 @@
     position: relative;
 
     .hel-icon {
-      width: 24px;
-      height: 24px;
+      bottom: $spacing;
+      height: $spacing-and-half;
+      pointer-events: none;
       position: absolute;
       right: 20px;
-      bottom: 16px;
-      pointer-events: none;
+      width: $spacing-and-half;
     }
   }
 
@@ -74,28 +74,28 @@
     }
 
     span {
+      padding-left: $spacing-three-quarters;
       white-space: nowrap;
-      padding-left: 12px;
     }
 
     input {
       -moz-appearance:none;
       -webkit-appearance:none;
       -o-appearance:none;
-      outline: none;
       content: none;
+      outline: none;
 
       &::before {
-        content: '';
-        font-size: 20px;
-        display: flex;
-        justify-content: center;
         align-items: center;
-        width: 24px;
-        height: 24px;
-        max-width: 24px;
-        max-height: 24px;
         border: 2px solid $color-black-50;
+        content: '';
+        display: flex;
+        font-size: 20px;
+        height: $spacing-and-half;
+        justify-content: center;
+        max-height: $spacing-and-half;
+        max-width: $spacing-and-half;
+        width: $spacing-and-half;
       }
 
       &:checked::before {
@@ -109,11 +109,11 @@
   border-top: 2px solid  black;
 
   .member-row {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid black;
-    padding: 32px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-double 0;
     text-decoration: none;
 
     &:link:hover {
@@ -128,8 +128,8 @@
     flex-wrap: wrap;
 
     @include breakpoint($breakpoint-s) {
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
     }
   }
 
@@ -138,35 +138,35 @@
     flex-direction: column;
 
     .deputy-of {
-      margin-top: 16px;
+      margin-top: $spacing;
     }
   }
 
   .member-image {
+    border-radius: 50%;
     height: 75px;
-    width: 75px;
+    margin-left: $spacing-half;
     min-height: 75px;
     min-width: 75px;
-    border-radius: 50%;
     overflow: hidden;
-    margin-left: 8px;
+    width: 75px;
 
     img {
-      width: 100%;
       height: auto;
+      width: 100%;
     }
 
     @include breakpoint($breakpoint-s) {
       height: 120px;
-      width: 120px;
       min-height: 120px;
       min-width: 120px;
+      width: 120px;
     }
   }
 
   .member-name {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     line-height: 29px;
     margin-bottom: 0;
     margin-top: 0;
@@ -180,7 +180,7 @@
   .member-party {
     color: $color-black-60;
     font-size: 16px;
-    line-height: 24px;
+    line-height: $spacing-and-half;
 
     @include breakpoint($breakpoint-s) {
       font-size: 18px;
@@ -191,7 +191,7 @@
   .member-role {
     &::after {
       content: ',';
-      margin-right: 4px;
+      margin-right: $spacing-quarter;
     }
 
     @include breakpoint($breakpoint-s) {
@@ -202,26 +202,26 @@
   }
 
   .member-party {
-    display: flex;
     align-items: center;
+    display: flex;
 
     @include breakpoint($breakpoint-s) {
       &::before {
-        content: '';
-        height: 4px;
-        width: 4px;
+        background-color: $color-black;
         border-radius: 50%;
-        background-color: black;
+        content: '';
         display: inline-block;
-        margin: 0 8px;
+        height: $spacing-quarter;
+        margin: 0 $spacing-half;
+        width: $spacing-quarter;
       }
     }
   }
 
   .no-results {
-    margin: 16px 0;
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin: $spacing 0;
   }
 }

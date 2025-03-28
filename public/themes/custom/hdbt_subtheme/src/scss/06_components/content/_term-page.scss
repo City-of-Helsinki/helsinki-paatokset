@@ -1,12 +1,12 @@
 .views--taxonomy-term {
   .policymaker-list-item {
-    border-top: 0;
     border-color: $color-black-20;
+    border-top: 0;
   }
 
   .feed-icon {
-    display: flex;
     align-items: center;
+    display: flex;
     margin-top: $spacing-quadruple;
     text-decoration: none;
 

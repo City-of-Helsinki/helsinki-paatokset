@@ -1,23 +1,23 @@
 .paatokset-accordion {
   .paatokset-accordion-item__header {
     .handorgel__header__button {
-      color: black;
+      background-color: $color-silver-light;
       border: none;
       border-top: 2px solid $color-black-20;
-      background-color: #f7f7f8;
+      color: $color-black;
+      display: flex;
+      font-size: inherit;
+      font-weight: normal;
+      justify-content: space-between;
       padding: $spacing-double;
       padding-left: $spacing-half;
-      display: flex;
-      justify-content: space-between;
-      font-weight: normal;
-      font-size: inherit;
 
       span {
         padding-right: $spacing-double;
       }
 
       &::after {
-        right: 32px;
+        right: $spacing-double;
       }
     }
   }
@@ -31,13 +31,13 @@
   }
 
   .handorgel__content {
-    background-color: #f7f7f8;
+    background-color: $color-silver-light;
     border: none;
   }
 
   .paatokset-accordion-item__content__inner {
-    padding: 0;
     max-width: 90vw;
+    padding: 0;
 
     @include breakpoint($breakpoint-s) {
       max-width: 95vw;
@@ -48,7 +48,7 @@
   }
 
   .handorgel__content--open .paatokset-accordion-item__content__inner {
-    padding-bottom: 64px;
+    padding-bottom: $spacing-quadruple;
   }
 
   .paatokset-accordion__wrapper {
@@ -57,10 +57,10 @@
 
   .accordion-item__button--close,
   .accordion-item__button--close-inner {
+    cursor: pointer;
     display: flex;
     justify-content: right;
-    padding: 24px;
-    cursor: pointer;
-    margin-bottom: -16px;
+    margin-bottom: -$spacing;
+    padding: $spacing-and-half;
   }
 }

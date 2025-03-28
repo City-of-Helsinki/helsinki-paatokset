@@ -1,12 +1,12 @@
 .policymaker-list-item--agenda-item {
   & > a, & > div {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 
     @include breakpoint($breakpoint-l) {
-      flex-direction: row;
       align-items: flex-start;
+      flex-direction: row;
 
       .hel-icon {
         align-self: center;
@@ -19,8 +19,8 @@
 
   .agenda-item__index-number {
     font-weight: $font-weight-medium;
-    margin-right: $spacing-double;
     margin-bottom: 6px;
+    margin-right: $spacing-double;
     white-space: nowrap;
 
     @include breakpoint($breakpoint-l) {
@@ -29,8 +29,8 @@
   }
 
   .agenda-item__subject {
-    margin-right: $spacing-double;
     margin-bottom: $spacing-and-half;
+    margin-right: $spacing-double;
 
     @include breakpoint($breakpoint-l) {
       margin-bottom: 0;
@@ -46,8 +46,8 @@
   }
 
   .hel-icon {
-    min-width: $spacing-and-half;
     min-height: $spacing-and-half;
+    min-width: $spacing-and-half;
   }
 
   &.policymaker-list-item {

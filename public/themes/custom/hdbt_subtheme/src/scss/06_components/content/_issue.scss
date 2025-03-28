@@ -4,15 +4,15 @@
   margin-bottom: 27.5px;
 
   @include breakpoint($breakpoint-xl) {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-double;
   }
 }
 
 .issue__title {
-  margin-bottom: $spacing-and-half;
   font-size: 32px;
-  line-height: 1.1;
   font-weight: normal;
+  line-height: 1.1;
+  margin-bottom: $spacing-and-half;
 
   .issue__header & {
     margin-top: 0;
@@ -24,13 +24,13 @@
 }
 
 .issue__diarynumber {
+
+  font-size: 16px;
+  margin-bottom: $spacing-double;
   label {
     display: block;
     font-weight: 600;
   }
-
-  font-size: 16px;
-  margin-bottom: $spacing-double;
 }
 
 .issue-header__footer {
@@ -41,8 +41,8 @@
   }
 
   @include breakpoint($breakpoint-xl) {
-    display: flex;
     align-items: center;
+    display: flex;
     flex-wrap: wrap;
 
     .issue__category {
@@ -55,13 +55,13 @@
   display: flex;
 
   .hds-tag {
-    margin-right: 12px;
-    font-size: 16px;
-    border-radius: 24px;
     background: $color-black;
+    border-radius: $spacing-and-half;
     color: $color-white;
-    padding: 6px 16px;
     display: flex;
+    font-size: 16px;
+    margin-right: $spacing-three-quarters;
+    padding: 6px $spacing;
     width: fit-content;
   }
   .hds-tag--confidential {
@@ -100,8 +100,8 @@
   }
 
   .paatokset-accordion {
-    margin-bottom: $spacing-double;
     border-bottom: 2px solid $color-black-20;
+    margin-bottom: $spacing-double;
 
     .handorgel__header__button,
     .handorgel__content {
@@ -120,13 +120,20 @@
 
 .issue__left-column__container {
   @include breakpoint($breakpoint-xl) {
-    width: 65%;
     padding-right: 125px;
+    width: 65%;
   }
 }
 
 .issue-right-column__container {
   .issue__attachment {
+    border-bottom: 1px solid rgb(151, 151, 151);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: $spacing-and-half;
+
+    padding: $spacing-and-half 0;
+    vertical-align: top;
     & > a, & > div {
       display: flex;
     }
@@ -136,16 +143,9 @@
     }
 
     .hel-icon {
-      width: var(--spacing-m);
       height: var(--spacing-m);
+      width: var(--spacing-m);
     }
-
-    padding: 24px 0;
-    border-bottom: 1px solid rgb(151, 151, 151);
-    vertical-align: top;
-    font-weight: 600;
-    line-height: 24px;
-    font-size: 16px;
   }
 
   @include breakpoint($breakpoint-xl) {
@@ -162,11 +162,11 @@
 }
 
 .issue-content__title h2 {
-  margin-top: $spacing;
-  margin-bottom: $spacing-double;
-  line-height: 1.1;
-  font-weight: normal;
   font-size: 24px;
+  font-weight: normal;
+  line-height: 1.1;
+  margin-bottom: $spacing-double;
+  margin-top: $spacing;
 
   @include breakpoint($breakpoint-l) {
     font-size: 36px;
@@ -175,23 +175,23 @@
 
 .issue-content__indices {
   font-size: $fontsize-body-xl;
-  margin-bottom: 8px;
+  margin-bottom: $spacing-half;
 }
 
 .issue-content__policymaker-label {
+  display: inline-block;
+  font-size: $fontsize-body-s;
+  font-weight: bold;
+  margin-bottom: 36px;
+  max-width: 100%;
+  padding: 10px $spacing-triple;
   text-align: left;
   text-transform: uppercase;
-  font-weight: bold;
-  padding: 10px $spacing-triple;
-  margin-bottom: 36px;
-  display: inline-block;
-  max-width: 100%;
-  font-size: $fontsize-body-s;
 
   &.policymaker-label--small {
     display: inline-block;
-    padding: 10px 40px;
     font-size: 14px;
+    padding: 10px 40px;
   }
 
   @include breakpoint($breakpoint-m) {
@@ -215,16 +215,16 @@
 }
 
 .issue-content-top__container {
-  margin-top: $spacing-triple;
   margin-bottom: $spacing-triple;
+  margin-top: $spacing-triple;
 }
 
 .issue-content__section {
+  margin-bottom: $spacing-double;
   p, ul {
     margin-top: 0;
     padding-top: 0;
   }
-  margin-bottom: $spacing-double;
 
   @include breakpoint($breakpoint-xl) {
     font-size: $fontsize-body-xl;
@@ -240,38 +240,38 @@
 }
 
 .issue__decision-navigation {
-  height: 100%;
-  display: flex;
   align-items: center;
-  margin-top: $spacing-half;
+  display: flex;
+  height: 100%;
   margin-bottom: $spacing;
+  margin-top: $spacing-half;
 
   @include breakpoint($breakpoint-l) {
     margin-bottom: $spacing-double;
   }
 
   .decision-navigation-button--next span {
+    flex-basis: 0;
     margin-left: auto;
     margin-right: 0;
-    flex-basis: 0;
 
     @include breakpoint($breakpoint-s) {
       flex-basis: auto;
     }
   }
   .decision-navigation-button--next .hel-icon {
-    margin-right: 0;
     margin-left: 14px;
+    margin-right: 0;
   }
 }
 
 .issue__meetings-labels label {
-  font-weight: 500;
+  font-weight: $font-weight-medium;
 }
 
 .issue__more-info {
-  margin-top: $spacing-quadruple;
   margin-bottom: $spacing-quadruple;
+  margin-top: $spacing-quadruple;
 
   div {
     margin: $spacing 0;
@@ -279,8 +279,8 @@
 }
 
 .issue__more-info__content {
-  padding-left: $spacing-and-half;
   border-left: 5px solid var(--hdbt-color-palette--primary);
+  padding-left: $spacing-and-half;
 }
 
 .issue-ajax-error__container {
@@ -322,13 +322,13 @@
 
   .SisaltoSektio, .paatokset-accordion-item__content__inner {
     ul, ol {
-      padding-top: 0;
       padding-left: 1rem;
+      padding-top: 0;
     }
 
     table td {
-      display: block;
       background-color: #f1f1f1;
+      display: block;
 
       div {
         margin:0;
@@ -389,20 +389,20 @@ h4.decision-history-title + h5.decision-history-title {
 
   .accordion-inner-item__header {
     .accordion-item__button {
-      border: 1px solid $color-black;
       align-items: center;
+      border: 1px solid $color-black;
       padding: 0;
 
       &::after {
-        padding-right: 16px;
+        padding-right: $spacing;
       }
 
       .result-key,
       .result-color {
-        margin: 0;
         font-size: 18px;
-        padding: 16px;
         line-height: 1.5;
+        margin: 0;
+        padding: $spacing;
       }
 
       .result-color {
@@ -435,8 +435,8 @@ h4.decision-history-title + h5.decision-history-title {
   }
 
   .accordion-inner-item__content {
-    margin-top: $spacing;
     border: 1px solid $color-black;
+    margin-top: $spacing;
   }
 
   .accordion-inner-item__content__inner {
@@ -458,24 +458,24 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .results-table {
+  border-spacing: 0;
   margin: $spacing-double 0;
   max-width: unset;
   width: 100%;
-  border-spacing: 0;
 
   thead,
   tbody {
     width: 100%;
 
     th {
-      font-weight: 500;
+      font-weight: $font-weight-medium;
     }
 
     th,
     td {
-      text-align: left;
       font-size: 16px;
-      padding: 16px;
+      padding: $spacing;
+      text-align: left;
     }
   }
 
@@ -507,22 +507,22 @@ h4.decision-history-title + h5.decision-history-title {
 
     thead .results-table__row {
       th {
-        background-color: #000;
-        color: #fff;
+        background-color: $color-black;
+        color: $color-white;
         min-width: unset;
 
         &:first-of-type {
-          width: 100%;
           font-weight: 600;
+          width: 100%;
         }
 
         &:not(:first-of-type) {
-          min-width: 56px;
-          width: 56px;
-          max-width: 56px;
           font-size: 14px;
+          max-width: 56px;
+          min-width: 56px;
           padding: 6px;
           text-align: center;
+          width: 56px;
         }
       }
     }
@@ -533,11 +533,11 @@ h4.decision-history-title + h5.decision-history-title {
         min-width: unset;
 
         &:not(:first-of-type) {
-          min-width: 56px;
-          width: 56px;
           max-width: 56px;
+          min-width: 56px;
           padding: 10px;
           text-align: center;
+          width: 56px;
         }
       }
     }
@@ -555,8 +555,8 @@ h4.decision-history-title + h5.decision-history-title {
     // Set max width for banner element on issue page to match left-container
 
     @include breakpoint($breakpoint-xl) {
-      width: 65%;
       padding-right: 125px;
+      width: 65%;
     }
   }
 }
@@ -569,10 +569,10 @@ h4.decision-history-title + h5.decision-history-title {
 .info-label,
 .warning-label {
   display: inline-block;
-  padding: 5px;
-  padding-right: 10px;
   margin-bottom: 5px;
   margin-bottom: $spacing-and-half;
+  padding: 5px;
+  padding-right: 10px;
 
   span {
     font-size: $fontsize-body-m;
@@ -602,6 +602,6 @@ h4.decision-history-title + h5.decision-history-title {
 
 .info-label__container,
 .warning-label__container {
-  display: flex;
   align-items: center;
+  display: flex;
 }

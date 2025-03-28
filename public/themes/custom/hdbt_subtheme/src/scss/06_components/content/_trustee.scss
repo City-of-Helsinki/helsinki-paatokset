@@ -11,9 +11,9 @@
 }
 
 .trustee-information {
-  background-color: #e8f3fc;
+  background-color: $color-fog-light;
+  margin-bottom: $spacing-triple;
   padding: $spacing-and-half;
-  margin-bottom: 48px;
 
   .information-row {
     display: flex;
@@ -29,14 +29,14 @@
     }
 
     &.information-row--doa a {
-      display: inline-flex;
       align-items: center;
+      display: inline-flex;
     }
   }
 
   .label {
-    margin-right: 8px;
     font-weight: $font-weight-medium;
+    margin-right: $spacing-half;
   }
 }
 
@@ -48,8 +48,8 @@
   }
 
   span {
-    font-size: 18px;
     color: $color-black-50;
+    font-size: 18px;
 
     &:first-of-type::after {
       content: "•";
@@ -62,8 +62,8 @@
   margin-bottom: $spacing-and-half;
 
   img {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
   }
 }
 
@@ -71,27 +71,27 @@
   .accordion-legacy-item__header {
 
     .handorgel__header__button {
-      font-size: 1.5rem;
-      color: black;
+      align-items: center;
       border: none;
       border-top: 2px solid $color-black-20;
-      padding: $spacing-and-half;
+      color: $color-black;
       display: flex;
+      font-size: 1.5rem;
       justify-content: space-between;
-      align-items: center;
+      padding: $spacing-and-half;
 
       span {
-        padding-right: $spacing-double;
         font-weight: normal;
+        padding-right: $spacing-double;
       }
     }
 
     .icon {
-      min-width: 30px;
-      min-height: 30px;
-      width: 30px;
       height: 30px;
+      min-height: 30px;
+      min-width: 30px;
       transition: all 0.1s ease-in-out;
+      width: 30px;
     }
 
   }
@@ -105,7 +105,7 @@
   .handorgel__header--open,
   .handorgel__header--opened {
     .handorgel__header__button {
-      background-color: white;
+      background-color: $color-white;
     }
   }
 
@@ -125,13 +125,13 @@
   }
 
   .accordion-item__button--close {
+    cursor: pointer;
     display: flex;
     justify-content: right;
     padding: $spacing-and-half;
-    cursor: pointer;
 
     .icon {
-      margin-left: 8px;
+      margin-left: $spacing-half;
     }
   }
 }
@@ -143,9 +143,9 @@
   }
 
   .date {
-    font-size: 16px;
     color: $color-black-50;
-    margin-bottom: 8px;
+    font-size: 16px;
+    margin-bottom: $spacing-half;
   }
   .title {
     display: block;
@@ -169,8 +169,8 @@
   }
 
   .speaking-turn__link-container {
-    display: flex;
     align-items: center;
+    display: flex;
 
     .icon {
       margin-right: $spacing;

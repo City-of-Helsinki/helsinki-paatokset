@@ -19,14 +19,14 @@
   }
 
   .custom-select-wrapper {
+    bottom: $spacing-half;
     position: absolute;
     right: 0;
-    bottom: $spacing-half;
   }
 
   .arrow i {
-    width: $spacing;
     height: $spacing;
+    width: $spacing;
   }
 
   .custom-select {
@@ -41,53 +41,53 @@
 
   .decision-tree__title span {
     display: block;
-    font-weight: 500;
     font-size: 1.5rem;
-    margin-top: $spacing-triple;
+    font-weight: $font-weight-medium;
     margin-bottom: $spacing;
+    margin-top: $spacing-triple;
   }
 
   .decision-tree__title-container {
-    display: flex;
     align-items: center;
-    width: 100%;
-    max-width: 994px;
+    display: flex;
     margin-bottom: 20px;
+    max-width: 994px;
+    width: 100%;
   }
 
   .decistion-tree__item.open div {
     padding-left: 14px;
   }
   button.tabbed-list__header__button {
-    width: 289px;
-    height: 24px;
     color: rgb(26, 26, 26);
     font-size: 18px;
     font-weight: bold;
-    line-height: 24px;
+    height: $spacing-and-half;
+    line-height: $spacing-and-half;
+    width: 289px;
   }
 
   .tabbed-list__content__inner {
-    position: relative;
     border-bottom: 1px solid black;
     display: flex;
     display: inline-flex;
-    width: 100%;
     justify-content: space-between;
+    position: relative;
+    width: 100%;
   }
   .tabbed-list__content__inner input {
+    background: none;
+    border: none;
     color: rgb(6, 6, 6);
+    cursor: pointer;
     font-size: 20px;
     font-weight: normal;
     letter-spacing: 0;
     text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
   }
   .menu	{
-    overflow: auto;
     margin-bottom: 0;
+    overflow: auto;
     padding-left: 0;
 
     &:scroll {
@@ -95,15 +95,15 @@
     }
 
     .item {
-      display: inline-block;
+      border-bottom: 6px solid transparent;
       color: #060606;
+      display: inline-block;
       font-size: 20px;
       font-weight: bold;
       letter-spacing: 0.29px;
-      text-decoration: none;
       margin-right: 22px;
-      border-bottom: 6px solid transparent;
       padding-bottom: 19px;
+      text-decoration: none;
 
       &.hidden {
         display: none;
@@ -134,70 +134,70 @@
 }
 
 .custom-select__trigger {
-  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: justify;
-  padding: 0 10px;
-  cursor: pointer;
+  background-color: unset;
   border: none;
   color: #060606;
+  cursor: pointer;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   letter-spacing: 0;
-  padding-bottom: 23px;
   margin: 0;
-  background-color: unset;
+  padding: 0 10px;
+  padding-bottom: 23px;
 
   .arrow i {
-    width: 24px;
-    height: 24px;
+    height: $spacing-and-half;
+    width: $spacing-and-half;
   }
 }
 
 .custom-options {
-  position: absolute;
   display: block;
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
+  position: absolute;
+  visibility: hidden;
   z-index: 99;
 }
 
 .custom-select.open .custom-options {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  margin-top: 56px;
+  background-color: $color-white;
   border: 1px solid black;
-  background-color: white;
-  width: 148px;
+  margin-top: 56px;
+  opacity: 1;
+  pointer-events: all;
   text-align: center;
+  visibility: visible;
+  width: 148px;
 }
 
 .custom-option {
-  position: relative;
-  padding: 0 22px 0 22px;
+  color: #3b3b3b;
+  cursor: pointer;
   font-size: 22px;
   font-weight: 300;
-  color: #3b3b3b;
   line-height: 60px;
-  cursor: pointer;
+  padding: 0 22px 0 22px;
+  position: relative;
   transition: all 0.5s;
 }
 
 .custom-option:hover {
-  cursor: pointer;
   background-color: #b2b2b2;
+  cursor: pointer;
 }
 
 .custom-option.selected {
-  color: #ffffff;
   background-color: #305c91;
+  color: $color-white;
 }
 
 @media (max-width: $container-width-s) {
@@ -213,16 +213,16 @@
 }
 
 .paatokset_download-link-container .paatokset__link-plain {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   margin-top: 22px;
 
   span {
-    margin-right: 12px;
+    margin-right: $spacing-three-quarters;
   }
 }
 
 .policymaker-no-content {
-  margin-top: 24px;
+  margin-top: $spacing-and-half;
 }
