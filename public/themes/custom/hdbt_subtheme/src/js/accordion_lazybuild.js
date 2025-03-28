@@ -45,8 +45,8 @@
         window.handorgel_accordions_lazy = [];
 
         for (const singleAccordion of accordions) {
-          /* global handorgel */
-          const accordion = new handorgel(singleAccordion, {
+          /* global Handorgel */
+          const accordion = new Handorgel(singleAccordion, {
             // whether multiple folds can be opened at once
             multiSelectable: false,
             // whether the folds are collapsible

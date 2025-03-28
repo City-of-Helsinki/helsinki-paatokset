@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable func-names */
-(function($, Drupal) {
+(function($) {
 
   document.addEventListener('DOMContentLoaded', function() {
     // Bind closing function to the additional close button at the bottom of
@@ -52,8 +52,8 @@
     window.handorgel_accordions_inner = [];
 
     for (const singleAccordion of accordions) {
-      /* global handorgel */
-      const accordion = new handorgel(singleAccordion, {
+      /* global Handorgel */
+      const accordion = new Handorgel(singleAccordion, {
         // whether multiple folds can be opened at once
         multiSelectable: false,
         // whether the folds are collapsible
