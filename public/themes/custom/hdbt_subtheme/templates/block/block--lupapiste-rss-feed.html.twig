@@ -6,13 +6,11 @@
 #}
 <div{{ attributes }}>
   {% block content %}
-    <h2 class="rss-feed__count-container">
-      {% if content.items|length > 1 %}
+    {% if content.items|length > 1 %}
+      <h2 class="rss-feed__count-container">
         {{ content.items|length }} {% trans with {'context': 'Lupapiste rss'} %}proclamations{% endtrans %}
-      {% else %}
-        {{ 'No results'|t }}
-      {% endif %}
-    </h2>
+      </h2>
+    {% endif %}
     {{ content }}
   {% endblock %}
 </div>
