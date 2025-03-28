@@ -14,10 +14,10 @@
   }
   button + ul li[class*='Select-module_highlighted'] {
     background-color: $color-black!important;
-    color: #fff!important;
+    color: $color-white !important;
 
     span {
-      border-color: #fff!important;
+      border-color: $color-white !important;
       box-shadow: none!important;
     }
   }
@@ -25,7 +25,7 @@
     color: rgb(102, 102, 102);
   }
   .DateSelect__predefined-ranges-container + button {
-    border-top-color: #ccc;
+    border-top-color: $color-black-20;
   }
   .DateSelect__predefined-ranges-container + button:hover {
     background-color: $color-black;
@@ -34,7 +34,7 @@
 
   // Autocomplete styles.
   .search-autocomplete {
-    border-top-color: #ccc;
+    border-top-color: $color-black-20;
     border-top-width: 1px;
     left: 0;
     position: absolute;

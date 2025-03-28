@@ -508,7 +508,7 @@ h4.decision-history-title + h5.decision-history-title {
     thead .results-table__row {
       th {
         background-color: $color-black;
-        color: #fff;
+        color: $color-white;
         min-width: unset;
 
         &:first-of-type {
