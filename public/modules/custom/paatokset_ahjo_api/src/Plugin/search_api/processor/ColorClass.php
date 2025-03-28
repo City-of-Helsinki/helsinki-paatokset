@@ -30,8 +30,7 @@ class ColorClass extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array
-  {
+  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array {
     $properties = [];
 
     if ($datasource) {
@@ -51,24 +50,22 @@ class ColorClass extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public function addFieldValues(ItemInterface $item): void {
-    if (
-      $item->getDataSourceId() === 'entity:node' &&
-      $node = $item->getOriginalObject()->getValue()
-    ) {
-      if ($node instanceof Decision) {
-        $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass();
-      }
-      elseif ($node instanceof Policymaker) {
-        $colorClass = $node->getPolicymakerClass();
-      }
+    $node = $item->getOriginalObject()->getValue();
 
-      $fields = $this
-        ->getFieldsHelper()
-        ->filterForPropertyPath($item->getFields(), 'entity:node', 'color_class');
+    $colorClass = NULL;
+    if ($node instanceof Decision) {
+      $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass();
+    }
+    elseif ($node instanceof Policymaker) {
+      $colorClass = $node->getPolicymakerClass();
+    }
 
-      if (isset($fields['color_class'])) {
-        $fields['color_class']->addValue($colorClass ?? 'color-none');
-      }
+    $fields = $this
+      ->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'color_class');
+
+    foreach ($fields as $field) {
+      $field->addValue($colorClass ?? 'color-none');
     }
   }
 

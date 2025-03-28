@@ -19,6 +19,10 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
     'node',
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
+    'token',
+    'pathauto',
+    'path_alias',
+    'paatokset_policymakers',
     'migrate',
     'file',
     'text',
@@ -36,6 +40,7 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
+    $this->installEntitySchema('path_alias');
     $this->installSchema('node', 'node_access');
 
     // Install node types & fields.

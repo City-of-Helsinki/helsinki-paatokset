@@ -1,0 +1,19 @@
+uuid: cf3ef782-cbd2-4b3e-8652-12963385f471
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sector_name
+    - node.type.policymaker
+id: node.policymaker.field_sector_name
+field_name: field_sector_name
+entity_type: node
+bundle: policymaker
+label: 'Sector name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

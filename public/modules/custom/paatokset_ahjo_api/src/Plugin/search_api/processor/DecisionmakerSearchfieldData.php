@@ -84,8 +84,8 @@ class DecisionmakerSearchfieldData extends ProcessorPluginBase {
     $fields = $this->getFieldsHelper()
       ->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_searchfield_data');
 
-    if (isset($fields['decisionmaker_searchfield_data'])) {
-      $fields['decisionmaker_searchfield_data']->addValue(json_encode($data));
+    foreach ($fields as $field) {
+      $field->addValue(json_encode($data));
     }
   }
 

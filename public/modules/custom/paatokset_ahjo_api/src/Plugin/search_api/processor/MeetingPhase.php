@@ -47,7 +47,7 @@ class MeetingPhase extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item) {
+  public function addFieldValues(ItemInterface $item): void {
     $datasourceId = $item->getDataSourceId();
     if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
@@ -80,12 +80,11 @@ class MeetingPhase extends ProcessorPluginBase {
       }
 
       $fields = $this->getFieldsHelper()
-        ->filterForPropertyPath($item->getFields(), 'entity:node', 'meeting_phase');
+        ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'meeting_phase');
 
-      if (isset($fields['meeting_phase'])) {
-        $fields['meeting_phase']->addValue($phase);
+      foreach ($fields as $field) {
+        $field->addValue($phase);
       }
-
     }
   }
 

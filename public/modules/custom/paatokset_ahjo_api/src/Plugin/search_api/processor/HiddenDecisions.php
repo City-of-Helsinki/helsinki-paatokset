@@ -38,7 +38,7 @@ class HiddenDecisions extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function supportsIndex(IndexInterface $index) {
+  public static function supportsIndex(IndexInterface $index): bool {
     foreach ($index->getDatasources() as $datasource) {
       $entity_type_id = $datasource->getEntityTypeId();
       if (!$entity_type_id) {
@@ -57,7 +57,7 @@ class HiddenDecisions extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function preprocessIndexItems(array $items) {
+  public function preprocessIndexItems(array $items): void {
     /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($items as $item) {
       $object = $item->getOriginalObject()->getValue();

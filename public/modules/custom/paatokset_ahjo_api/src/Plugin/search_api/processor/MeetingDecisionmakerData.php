@@ -69,48 +69,49 @@ class MeetingDecisionmakerData extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item) {
     $datasourceId = $item->getDataSourceId();
-    if ($datasourceId === 'entity:node') {
-      $node = $item->getOriginalObject()->getValue();
+    if ($datasourceId !== 'entity:node') {
+      return;
+    }
 
-      if (!$node instanceof NodeInterface || $node->getType() !== 'meeting') {
-        return;
+    $node = $item->getOriginalObject()->getValue();
+
+    if (!$node instanceof NodeInterface || $node->getType() !== 'meeting') {
+      return;
+    }
+
+    if (!$node->hasField('field_meeting_dm_id') || $node->get('field_meeting_dm_id')->isEmpty()) {
+      return;
+    }
+
+    $dm_id = $node->get('field_meeting_dm_id')->value;
+    $dm_node = $this->policymakerService->getPolicyMaker($dm_id);
+
+    if (!$dm_node instanceof Policymaker) {
+      return;
+    }
+
+    $data = [
+      'title' => [],
+      'type' => '',
+    ];
+
+    if ($dm_node->hasField('field_organization_type') && !$dm_node->get('field_organization_type')->isEmpty()) {
+      $data['type'] = strtolower($dm_node->get('field_organization_type')->value);
+    }
+
+    foreach (['fi', 'sv', 'en'] as $langcode) {
+      if ($dm_node->hasTranslation($langcode)) {
+        $translation = $dm_node->getTranslation($langcode);
+        assert($translation instanceof Policymaker);
+        $data['title'][$langcode] = $translation->getPolicymakerName();
       }
+    }
 
-      if (!$node->hasField('field_meeting_dm_id') || $node->get('field_meeting_dm_id')->isEmpty()) {
-        return;
-      }
+    $fields = $this->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'meeting_dm_data');
 
-      $dm_id = $node->get('field_meeting_dm_id')->value;
-      $dm_node = $this->policymakerService->getPolicyMaker($dm_id);
-
-      if (!$dm_node instanceof Policymaker) {
-        return;
-      }
-
-      $data = [
-        'title' => [],
-        'type' => '',
-      ];
-
-      if ($dm_node->hasField('field_organization_type') && !$dm_node->get('field_organization_type')->isEmpty()) {
-        $data['type'] = strtolower($dm_node->get('field_organization_type')->value);
-      }
-
-      foreach (['fi', 'sv', 'en'] as $langcode) {
-        if ($dm_node->hasTranslation($langcode)) {
-          $translation = $dm_node->getTranslation($langcode);
-          assert($translation instanceof Policymaker);
-          $data['title'][$langcode] = $translation->getPolicymakerName();
-        }
-      }
-
-      $fields = $this->getFieldsHelper()
-        ->filterForPropertyPath($item->getFields(), 'entity:node', 'meeting_dm_data');
-
-      if (isset($fields['meeting_dm_data'])) {
-        $fields['meeting_dm_data']->addValue(json_encode($data));
-      }
-
+    foreach ($fields as $field) {
+      $field->addValue(json_encode($data));
     }
   }
 

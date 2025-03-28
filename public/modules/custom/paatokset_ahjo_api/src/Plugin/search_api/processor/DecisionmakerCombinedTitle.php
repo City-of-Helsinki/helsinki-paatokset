@@ -30,7 +30,7 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array {
     $properties = [];
 
     if ($datasource) {
@@ -49,7 +49,7 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item) {
+  public function addFieldValues(ItemInterface $item): void {
     $datasourceId = $item->getDataSourceId();
     if ($datasourceId !== 'entity:node') {
       return;
@@ -63,7 +63,7 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
 
     $full_title = $node->get('title')->value;
     if ($node->getType() === 'policymaker') {
-      $title_sections = [$node->get('title')->value];
+      $title_sections = [$full_title];
 
       if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
         $title_sections[] = $node->get('field_sector_name')->value;
@@ -83,9 +83,12 @@ class DecisionmakerCombinedTitle extends ProcessorPluginBase {
       }
     }
 
-    $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decisionmaker_combined_title');
-    if (isset($fields['decisionmaker_combined_title'])) {
-      $fields['decisionmaker_combined_title']->addValue($full_title);
+    $fields = $this
+      ->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'decisionmaker_combined_title');
+
+    foreach ($fields as $field) {
+      $field->addValue($full_title);
     }
   }
 

@@ -27,9 +27,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class SpecialStatus extends ProcessorPluginBase {
-  const CITY_COUNCIL = '_city_council';
-  const CITY_HALL = '_city_hall';
-  const TRUSTEE = '_trustee';
+  public const CITY_COUNCIL = '_city_council';
+  public const CITY_HALL = '_city_hall';
+  public const TRUSTEE = '_trustee';
 
   /**
    * Config factory
@@ -96,9 +96,12 @@ class SpecialStatus extends ProcessorPluginBase {
     }
 
     if ($status) {
-      $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'special_status');
-      if (isset($fields['special_status'])) {
-        $fields['special_status']->addValue($status);
+      $fields = $this
+        ->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'special_status');
+
+      foreach ($fields as $field) {
+        $field->addValue($status);
       }
     }
   }
