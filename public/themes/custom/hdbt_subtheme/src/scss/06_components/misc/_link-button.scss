@@ -1,18 +1,18 @@
 .paatokset-button-link {
-  color: $color-black;
-  width: 100%;
-  font-weight: $font-weight-medium;
-  display: flex;
   align-items: center;
+  color: $color-black;
+  display: flex;
+  font-weight: $font-weight-medium;
   text-decoration: none;
+  width: 100%;
 
   i, span {
     margin-right: $gutter - 2px;
   }
 
   .hel-icon {
-    width: var(--spacing-m);
     height: var(--spacing-m);
+    width: var(--spacing-m);
   }
 
   &:hover {

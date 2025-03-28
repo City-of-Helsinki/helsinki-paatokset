@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+
+msgctxt "Lupapiste rss"
+msgid "Building site"
+msgstr "Rakennuspaikka"
+
+msgctxt "Lupapiste rss"
+msgid "Permit ID"
+msgstr "Lupatunnus"
+
+msgctxt "Lupapiste rss"
+msgid "Property ID"
+msgstr "Kiinteistötunnus"
+
+msgctxt "Lupapiste rss"
+msgid "Decicion date"
+msgstr "Päätöspäivämäärä"
+
+msgctxt "Lupapiste rss"
+msgid "Decision section"
+msgstr "Päätöksen pykälä"
+
+msgctxt "Lupapiste rss"
+msgid "Decision maker"
+msgstr "Päätöksentekijä"
+
+msgctxt "Lupapiste rss"
+msgid "Publication starts"
+msgstr "Julkaisu alkaa"
+
+msgctxt "Lupapiste rss"
+msgid "Publication ends"
+msgstr "Julkaisu päättyy"
+
+msgctxt "Lupapiste rss"
+msgid "proclamations"
+msgstr "kuulutusta"

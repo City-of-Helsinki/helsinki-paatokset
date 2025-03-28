@@ -7,10 +7,10 @@
 }
 .policymaker-side-menu {
   &.policymaker-side-menu--mobile {
-    max-width: 1328px;
 
     margin-bottom: -30px;
     margin-top: 30px;
+    max-width: 1328px;
 
     @include breakpoint($breakpoint-l) {
       display: none;
@@ -40,8 +40,8 @@
   }
 
   a[icon="angle-left"] {
-    display: flex;
     align-items: center;
+    display: flex;
 
     svg {
       margin-right: $spacing-half;
@@ -53,14 +53,14 @@
   }
 
   #menu--level-0 li span.menu__link-wrapper {
+    border-bottom: 2px solid $color-black;
     font-size: 24px;
     padding-bottom: 26px;
-    border-bottom: 2px solid $color-black;
   }
 
   #menu--level-1 li span.menu__link-wrapper {
-    padding: 24px 0;
     border-bottom: 1px solid $color-black-20;
     font-size: $fontsize-body-l;
+    padding: 24px 0;
   }
 }

@@ -38,10 +38,10 @@
 
   .announcement {
     h2 {
-      font-weight: $font-weight-bold;
       font-size: 1.15rem;
-      margin-top: 1rem;
+      font-weight: $font-weight-bold;
       margin-bottom: 1rem;
+      margin-top: 1rem;
     }
 
     @include breakpoint($breakpoint-m) {
@@ -52,8 +52,8 @@
 }
 
 .policymaker-tags {
-  margin-top: $spacing-and-half;
   margin-bottom: $spacing-and-half;
+  margin-top: $spacing-and-half;
 
   .issue-content__policymaker-label {
     margin-bottom: 0;
@@ -61,8 +61,8 @@
 }
 
 .policymaker-organization {
-  margin-top: $spacing-and-half;
   margin-bottom: $spacing-and-half;
+  margin-top: $spacing-and-half;
 
   @include breakpoint($breakpoint-m) {
     margin-top: $spacing-double;
@@ -80,10 +80,10 @@
   }
 
   &:after {
+    border-bottom: 2px solid $color-black;
     content: "";
     display: block;
     margin-top: $spacing-and-half;
-    border-bottom: 2px solid $color-black;
     width: 90px;
   }
 }
@@ -103,8 +103,8 @@
 .policymaker-image {
   img {
     display: block;
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
   }
 }
 
@@ -115,8 +115,8 @@
 }
 
 .node--type-policymaker .table-of-contents__container {
-  position: relative;
   margin-bottom: $spacing-quadruple;
+  position: relative;
 }
 
 .table-of-contents + .policymaker-image {
@@ -131,18 +131,18 @@
   }
 
   @include breakpoint($breakpoint-xs) {
+    color: #FD4F00;
     display: block;
     height: 111px;
-    color: #FD4F00;
-    width: 90px;
     position: absolute;
     right: 0;
+    width: 90px;
   }
 }
 
 .node--type-policymaker > section {
-  margin-top: 0;
   margin-bottom: $spacing-quadruple;
+  margin-top: 0;
 
   .section-description {
     margin-bottom: $spacing-double;
@@ -163,8 +163,8 @@
 
 .policymaker-list-item {
   border-bottom: 1px solid $color-black-20;
-  padding:  $spacing-and-half 0;
   display: block;
+  padding:  $spacing-and-half 0;
 
   &:first-child {
     border-top: 1px solid $color-black-20;
@@ -172,8 +172,8 @@
 
   &.policymaker-list-item--document,
   .policymaker-list-item--document {
-    display: block;
     border-color: $color-black;
+    display: block;
     text-decoration: none;
 
     .subject__date {
@@ -182,8 +182,8 @@
   }
 
   .list-item__date {
-    font-size: $fontsize-body-m;
     color: $color-black-50;
+    font-size: $fontsize-body-m;
     margin-bottom: $spacing;
   }
 
@@ -192,8 +192,8 @@
   }
 
   .list-item__subject {
-    font-weight: $font-weight-medium;
     font-size: 24px;
+    font-weight: $font-weight-medium;
 
     a {
       text-decoration: none;
@@ -207,12 +207,12 @@
 
 h1.minutes__header {
   @include font(h1);
-  line-height: 3rem;
-  margin-top: 0;
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing;
   gap: 0px;
+  line-height: 3rem;
+  margin-bottom: $spacing;
+  margin-top: 0;
 
   @include breakpoint($breakpoint-l) {
     line-height: 4rem;
@@ -223,14 +223,14 @@ h1.minutes__header {
   }
 
   .minutes__header-suffix {
-    font-size: $fontsize-body-m;
     color: $color-black-50;
+    font-size: $fontsize-body-m;
   }
 }
 
 h2.minutes-list__header {
-  font-weight: $font-weight-medium;
   font-size: 24px;
+  font-weight: $font-weight-medium;
 
   margin-bottom: $spacing-and-half;
 }
@@ -247,20 +247,20 @@ h2.minutes-list__header {
   }
 
   .minutes__publish-date {
-    position: relative;
-    padding-bottom: $spacing-and-half;
-
-    &:after {
-      content: "";
-      height: 2px;
-      background: $color-black;
-      width: 62px;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
 
     margin-bottom: $spacing-double;
+    padding-bottom: $spacing-and-half;
+    position: relative;
+
+    &:after {
+      background: $color-black;
+      bottom: 0;
+      content: "";
+      height: 2px;
+      left: 0;
+      position: absolute;
+      width: 62px;
+    }
   }
 
   .publish-date__date {
@@ -283,13 +283,13 @@ h2.minutes-list__header {
   margin-bottom: $spacing-double;
 
   .hds-tag {
-    font-size: 16px;
-    border-radius: 24px;
     background: $color-black;
+    border-radius: 24px;
     color: $color-white;
-    padding: 6px 16px;
-    margin-right: 12px;
     display: flex;
+    font-size: 16px;
+    margin-right: 12px;
+    padding: 6px 16px;
     width: fit-content;
   }
 
@@ -298,10 +298,10 @@ h2.minutes-list__header {
   }
 
   &:after {
+    border-bottom: 2px solid $color-black;
     content: "";
     display: block;
     margin-top: $spacing-and-half;
-    border-bottom: 2px solid $color-black;
     width: 90px;
   }
 }
@@ -310,17 +310,17 @@ h2.minutes-list__header {
   margin-top: $spacing-quadruple;
 
   .paatokset-accordion {
-    margin-top: $spacing-double;
-    margin-bottom: $spacing-double;
     border-bottom: 2px solid $color-black-20;
+    margin-bottom: $spacing-double;
+    margin-top: $spacing-double;
 
     .handorgel__header__button,
     .handorgel__content {
       background: transparent;
     }
     .accordion-item__button {
-      padding-top: 20px;
       padding-bottom: 20px;
+      padding-top: 20px;
     }
     .accordion-item__header {
       font-size: 1.5rem;
@@ -337,10 +337,10 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__heading {
-  margin-bottom: 32px;
-  line-height: 1.1;
-  font-weight: normal;
   font-size: $fontsize-heading-m;
+  font-weight: normal;
+  line-height: 1.1;
+  margin-bottom: 32px;
 
   @include breakpoint($breakpoint-l) {
     font-size: $fontsize-heading-l;

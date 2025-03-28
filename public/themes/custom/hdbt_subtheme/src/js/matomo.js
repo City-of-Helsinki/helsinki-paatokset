@@ -1,5 +1,5 @@
 // eslint-disable-next-line func-names
-(function ($, Drupal) {
+(function($, Drupal) {
 
   const loadMatomoAnalytics = () => {
     // Load Matomo only if statistics cookies are allowed.

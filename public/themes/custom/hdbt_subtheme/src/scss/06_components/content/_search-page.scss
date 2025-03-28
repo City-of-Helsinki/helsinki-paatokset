@@ -4,8 +4,8 @@
   }
 
   .main-content {
-    margin-top: 0;
     background-color: #f7f7f8;
+    margin-top: 0;
     padding-bottom: calc(#{$footer-koro-height} + #{$spacing-triple}) auto 0;
 
     @include breakpoint($breakpoint-l) {

@@ -12,10 +12,10 @@
 
   input:not(input[type=checkbox]),
   select {
-    width: 100%;
+    border: 2px solid $color-black-50;
     height: 56px;
     padding: 16px;
-    border: 2px solid $color-black-50;
+    width: 100%;
   }
 
   select {
@@ -27,16 +27,16 @@
   }
 
   .search-wrapper {
-    width: 100%;
     margin-bottom: 36px;
     position: relative;
+    width: 100%;
 
     .hel-icon {
-      position: absolute;
-      left: 20px;
       bottom: 16px;
-      width: 24px;
       height: 24px;
+      left: 20px;
+      position: absolute;
+      width: 24px;
     }
 
     input {
@@ -45,8 +45,8 @@
   }
 
   .form-item {
-    width: 100%;
     margin-bottom: 36px;
+    width: 100%;
 
     @include breakpoint($breakpoint-s) {
       width: 48%;
@@ -57,12 +57,12 @@
     position: relative;
 
     .hel-icon {
-      width: 24px;
+      bottom: 16px;
       height: 24px;
+      pointer-events: none;
       position: absolute;
       right: 20px;
-      bottom: 16px;
-      pointer-events: none;
+      width: 24px;
     }
   }
 
@@ -74,28 +74,28 @@
     }
 
     span {
-      white-space: nowrap;
       padding-left: 12px;
+      white-space: nowrap;
     }
 
     input {
       -moz-appearance:none;
       -webkit-appearance:none;
       -o-appearance:none;
-      outline: none;
       content: none;
+      outline: none;
 
       &::before {
-        content: '';
-        font-size: 20px;
-        display: flex;
-        justify-content: center;
         align-items: center;
-        width: 24px;
-        height: 24px;
-        max-width: 24px;
-        max-height: 24px;
         border: 2px solid $color-black-50;
+        content: '';
+        display: flex;
+        font-size: 20px;
+        height: 24px;
+        justify-content: center;
+        max-height: 24px;
+        max-width: 24px;
+        width: 24px;
       }
 
       &:checked::before {
@@ -109,10 +109,10 @@
   border-top: 2px solid  black;
 
   .member-row {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
     padding: 32px 0;
     text-decoration: none;
 
@@ -128,8 +128,8 @@
     flex-wrap: wrap;
 
     @include breakpoint($breakpoint-s) {
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
     }
   }
 
@@ -143,24 +143,24 @@
   }
 
   .member-image {
+    border-radius: 50%;
     height: 75px;
-    width: 75px;
+    margin-left: 8px;
     min-height: 75px;
     min-width: 75px;
-    border-radius: 50%;
     overflow: hidden;
-    margin-left: 8px;
+    width: 75px;
 
     img {
-      width: 100%;
       height: auto;
+      width: 100%;
     }
 
     @include breakpoint($breakpoint-s) {
       height: 120px;
-      width: 120px;
       min-height: 120px;
       min-width: 120px;
+      width: 120px;
     }
   }
 
@@ -202,26 +202,26 @@
   }
 
   .member-party {
-    display: flex;
     align-items: center;
+    display: flex;
 
     @include breakpoint($breakpoint-s) {
       &::before {
-        content: '';
-        height: 4px;
-        width: 4px;
-        border-radius: 50%;
         background-color: black;
+        border-radius: 50%;
+        content: '';
         display: inline-block;
+        height: 4px;
         margin: 0 8px;
+        width: 4px;
       }
     }
   }
 
   .no-results {
-    margin: 16px 0;
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin: 16px 0;
   }
 }

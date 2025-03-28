@@ -6,10 +6,10 @@
   }
 
   .hds-loading-spinner {
+    left: unset;
     margin: 90px auto;
     position: relative;
     top: unset;
-    left: unset;
   }
 
   ol {
@@ -17,35 +17,35 @@
   }
 
   .calendar-header {
-    display: flex;
-    margin-bottom: $spacing-double;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: $spacing-double;
 
     @include breakpoint($breakpoint-l) {
       margin-bottom: $spacing-triple;
     }
 
     h2 {
-      margin: 0 15px;
       font-size: 26px;
+      margin: 0 15px;
       min-width: 190px;
       text-align: center;
       text-transform: capitalize;
 
       @include breakpoint($breakpoint-s) {
-        margin: 0 30px;
         font-size: 32px;
+        margin: 0 30px;
         min-width: 235px;
       }
     }
 
     .hel-icon,
     .icon-container {
+      cursor: pointer;
       height: 30px;
       min-width: 30px;
       width: 30px;
-      cursor: pointer;
     }
     .icon-container--disabled {
       color: $color-silver-medium-light;
@@ -66,9 +66,9 @@
 
   .calendar-day {
     flex: 1;
+    margin-top: 0;
     padding: 16px;
     position: relative;
-    margin-top: 0;
 
     @include breakpoint($breakpoint-l) {
       margin-bottom: 60px;
@@ -76,22 +76,22 @@
       min-width: 20%;
 
       &::after {
-        content: '';
-        height: 8px;
         background-color: #c2a251;
-        display: block;
-        position: absolute;
         bottom: -32px;
-        right: 0;
+        content: '';
+        display: block;
+        height: 8px;
         left: 0;
         margin: 0 16px;
+        position: absolute;
+        right: 0;
       }
     }
 
     .no-meetings {
-      padding: 16px;
-      height: 100%;
       background-color: #f7f7f8;
+      height: 100%;
+      padding: 16px;
 
       @include breakpoint($breakpoint-l) {
         height: calc(100% - 40px);
@@ -101,26 +101,26 @@
 
   .meeting-row {
     border-bottom: 1px dashed $color-black-60;
-    padding: $spacing 0;
     font-size: 16px;
+    padding: $spacing 0;
 
     a {
-      display: flex;
       align-items: center;
+      display: flex;
     }
 
     .hel-icon {
-      width: 16px;
       height: 16px;
+      width: 16px;
     }
   }
 
   .meeting-title {
+    font-size: 16px;
     font-weight: $font-weight-bold;
+    line-height: 1.5;
     margin-bottom: $spacing-half;
     margin-top: 0;
-    font-size: 16px;
-    line-height: 1.5;
   }
 
   .meeting-start-time {
@@ -135,31 +135,31 @@
   }
 
   .date-header {
+    border-bottom: 2px solid black;
+    display: flex;
     font-size: 20px;
     font-weight: $font-weight-medium;
-    padding-bottom: $spacing-half;
-    border-bottom: 2px solid black;
     justify-content: space-between;
+    padding-bottom: $spacing-half;
     white-space: nowrap;
-    display: flex;
   }
 
   .calendar-day__today {
     .meeting-row {
-      padding: $spacing;
       background-color: #f7f2e4;
+      padding: $spacing;
     }
 
     .date-header {
-      color: #c2a251;
       border-color: #c2a251;
+      color: #c2a251;
     }
   }
 
   .calendar-day__no-meetings {
     .date-header {
-      color: #666666;
       border-color: #666666;
+      color: #666666;
     }
   }
 }

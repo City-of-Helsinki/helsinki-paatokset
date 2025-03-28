@@ -5,11 +5,11 @@
 }
 
 .policymaker-calendar__table {
-  width: 100%;
-  max-width: unset;
-  display: table;
   border: 0;
   border-collapse: collapse;
+  display: table;
+  max-width: unset;
+  width: 100%;
 
   thead {
     background-color: white;
@@ -21,12 +21,12 @@
 
   th,
   td {
-    font-size: $fontsize-body-l;
     background-color: $color-white;
     color: $color-black;
+    font-size: $fontsize-body-l;
+    font-weight: 400;
     padding: $spacing-and-half 0;
     padding-right: $spacing-and-half;
-    font-weight: 400;
   }
 
   @media (max-width: $breakpoint-s) {
@@ -59,38 +59,38 @@
   }
 
   th:last-of-type {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 
 
   @media (max-width: $breakpoint-s) {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
     padding: 16px 0;
+    width: 100%;
 
     th {
       padding: $spacing-half;
     }
 
     td {
-      padding: $spacing-half;
       border-bottom: none !important;
+      padding: $spacing-half;
 
       &:first-of-type {
         font-weight: 500;
       }
 
       &:last-of-type a {
-        display: flex;
         align-items: center;
         color: $color-black;
+        display: flex;
         white-space: nowrap;
 
         .hel-icon--angle-right {
-          width: 16px;
           height: 16px;
+          width: 16px;
         }
       }
     }
@@ -99,8 +99,8 @@
     th:nth-of-type(2),
     td:nth-of-type(1),
     td:nth-of-type(2) {
-      width: 50%;
       padding-right: 0;
+      width: 50%;
     }
 
     td:nth-of-type(2) {

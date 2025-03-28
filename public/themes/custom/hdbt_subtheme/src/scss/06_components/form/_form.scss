@@ -13,8 +13,8 @@
     margin-top: 0;
   }
   button + ul li[class*='Select-module_highlighted'] {
-    color: #fff!important;
     background-color: #000!important;
+    color: #fff!important;
 
     span {
       border-color: #fff!important;
@@ -36,8 +36,8 @@
   .search-autocomplete {
     border-top-color: #ccc;
     border-top-width: 1px;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
   }
   .search-autocomplete__wrapper {
@@ -45,9 +45,9 @@
     z-index: 10;
   }
   .search-autocomplete__item {
+    cursor: pointer;
     font-size: 16px;
     padding: 0.75rem 1rem;
-    cursor: pointer;
   }
 }
 

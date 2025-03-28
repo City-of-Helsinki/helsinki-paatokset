@@ -15,8 +15,8 @@
   justify-items: center;
   padding: 5px 12px; // Top and bottom paddings are for handling focus ring 3px width + 2px offset
   position: relative;
-  width: 100%;
   text-decoration: none;
+  width: 100%;
 
   .icon-wrapper {
     background: #f7f7f8;
@@ -28,11 +28,11 @@
   }
 
   .hel-icon--angle-right {
-    width: 32px;
     height: 32px;
-    transform: rotate(180deg);
     margin-left: 3px;
     margin-top: 3px;
+    transform: rotate(180deg);
+    width: 32px;
   }
 
   &:hover,
@@ -79,11 +79,11 @@
 
 .mmenu__back-wrapper {
   color: $color-black;
+  font-size: 1rem;
+  font-weight: 500;
   grid-area: label;
   justify-self: start;
   margin-top: 8px;
-  font-weight: 500;
-  font-size: 1rem;
   padding-left: 10px;
 }
 
