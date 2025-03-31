@@ -6,6 +6,9 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Base class for Ahjo api kernel tests.
+ *
+ * This base class installs Ahjo related nodes and their configurations.
+ * For custom entity tests, extend KernelTestBase directly.
  */
 abstract class AhjoKernelTestBase extends KernelTestBase {
 
