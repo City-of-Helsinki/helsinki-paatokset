@@ -100,6 +100,23 @@ class Organization extends ContentEntityBase implements EntityPublishedInterface
   }
 
   /**
+   * Get child organizations.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Entity\Organization[]
+   *   Child organizations.
+   */
+  public function getChildOrganizations(): array {
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Organization[] $orgs */
+    $orgs = \Drupal::entityTypeManager()
+      ->getStorage('ahjo_organization')
+      ->loadByProperties([
+        'organization_above' => $this->id(),
+        'existing' => 1,
+      ]);
+    return $orgs;
+  }
+
+  /**
    * Get parent organization.
    */
   public function getParentOrganization(): ?Organization {

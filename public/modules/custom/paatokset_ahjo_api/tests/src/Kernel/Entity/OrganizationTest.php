@@ -52,6 +52,9 @@ class OrganizationTest extends RemoteEntityAccessTestBase {
 
     $this->assertOrganizationHierarchyIds([$root->id()], $root->getOrganizationHierarchy());
     $this->assertOrganizationHierarchyIds([$root->id(), $child->id()], $child->getOrganizationHierarchy());
+
+    $this->assertEmpty($child->getChildOrganizations());
+    $this->assertNotEmpty($root->getChildOrganizations());
   }
 
   /**

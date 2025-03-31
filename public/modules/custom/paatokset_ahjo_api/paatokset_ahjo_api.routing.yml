@@ -127,3 +127,15 @@ paatokset_ahjo_api.case_ajax:
     parameters:
       decision:
         type: decision
+
+paatokset_ahjo_api.org_chart:
+  path: 'ahjo_api/org-chart/{ahjo_organization}/{steps}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoApiController::getOrgChart'
+  requirements:
+    _entity_access: 'ahjo_organization.view'
+  methods: [GET]
+  options:
+    parameters:
+      ahjo_organization:
+        type: entity:ahjo_organization

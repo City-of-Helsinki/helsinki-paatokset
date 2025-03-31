@@ -239,26 +239,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
 
     -
-      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_org_level_below_ids\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-    -
-      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_policymaker_id\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-    -
-      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$langcode\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-    -
-      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$title\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-    -
       message: """
         #^Fetching deprecated class constant EXISTS_REPLACE of interface Drupal\\\\Core\\\\File\\\\FileSystemInterface\\:
         in drupal\\:10\\.3\\.0 and is removed from drupal\\:12\\.0\\.0\\. Use
