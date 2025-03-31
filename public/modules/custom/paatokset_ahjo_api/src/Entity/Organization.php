@@ -108,4 +108,24 @@ class Organization extends ContentEntityBase implements EntityPublishedInterface
     return $parent;
   }
 
+  /**
+   * Get list of organization hierarchy from root up to the given organization.
+   *
+   * @returns \Drupal\paatokset_ahjo_api\Entity\Organization[]
+   *   Organizations above this organization, including the current
+   *   organization. Root organization is the first element.
+   */
+  public function getOrganizationHierarchy(): array {
+    $hierarchy = [$this];
+    $organization = $this;
+    $langcode = $this->language()->getId();
+
+    // Recursively load until the root organization is reached.
+    while (!is_null($organization = $organization->getParentOrganization())) {
+      $hierarchy[] = $organization->hasTranslation($langcode) ? $organization->getTranslation($langcode) : $organization;
+    }
+
+    return array_reverse($hierarchy);
+  }
+
 }

@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.policymaker.field_custom_organization_type
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_name
-    - field.field.node.policymaker.field_dm_organization
     - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
@@ -53,7 +52,6 @@ third_party_settings:
         - field_ahjo_title
         - field_policymaker_id
         - field_ahjo_summary
-        - field_dm_organization
         - field_organization_type
         - field_organization_type_id
         - field_dm_org_name
@@ -241,16 +239,6 @@ content:
     weight: 10
     region: content
     settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_dm_organization:
-    type: entity_reference_autocomplete
-    weight: 7
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }

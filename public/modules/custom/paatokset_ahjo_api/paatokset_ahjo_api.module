@@ -51,6 +51,12 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'organization_path' => [
+      'variables' => [
+        'organizations' => [],
+      ],
+      'path' => $path . '/templates/component',
+    ],
     'decision_content' => [
       'variables' => [
         'selectedDecision' => NULL,

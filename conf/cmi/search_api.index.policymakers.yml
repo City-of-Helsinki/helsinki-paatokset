@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_ahjo_title
     - field.storage.node.field_dm_org_name
-    - field.storage.node.field_dm_organization
     - field.storage.node.field_first_name
     - field.storage.node.field_last_name
     - field.storage.node.field_organization_type
@@ -107,11 +106,8 @@ field_settings:
   organization_hierarchy:
     label: 'Organization hierarchy'
     datasource_id: 'entity:node'
-    property_path: field_dm_organization
+    property_path: organization_hierarchy
     type: string
-    dependencies:
-      config:
-        - field.storage.node.field_dm_organization
   status:
     label: status
     datasource_id: 'entity:node'

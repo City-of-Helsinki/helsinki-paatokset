@@ -38,7 +38,7 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
   /**
    * {@inheritDoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');

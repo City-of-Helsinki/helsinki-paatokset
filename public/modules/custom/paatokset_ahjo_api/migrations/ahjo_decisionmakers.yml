@@ -124,12 +124,6 @@ process:
     -
       plugin: callback
       callable: json_encode
-  field_dm_organization:
-    -
-      plugin: migration_lookup
-      migration: ahjo_organizations
-      source:
-        - decisionmaker_id
   field_dm_org_name:
     -
       plugin: array_shift

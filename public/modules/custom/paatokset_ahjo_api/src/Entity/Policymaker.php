@@ -128,4 +128,24 @@ class Policymaker extends Node {
     return strtolower($policymaker_org);
   }
 
+  /**
+   * Get policymaker organization.
+   *
+   * @returns ?Organization
+   *    Organizations of the given policymaker. Null if the policymaker does not
+   *    belong to any organization (we get invalid data from API).
+   */
+  public function getOrganization(): ?Organization {
+    $organization = \Drupal::entityTypeManager()
+      ->getStorage('ahjo_organization')
+      ->load($this->getPolicymakerId());
+    assert($organization === NULL || $organization instanceof Organization);
+
+    if ($organization?->hasTranslation($this->language()->getId())) {
+      return $organization->getTranslation($this->language()->getId());
+    }
+
+    return $organization;
+  }
+
 }

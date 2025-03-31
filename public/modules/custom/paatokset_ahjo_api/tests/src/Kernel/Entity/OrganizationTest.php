@@ -49,6 +49,21 @@ class OrganizationTest extends RemoteEntityAccessTestBase {
     $this->assertInstanceOf(Organization::class, $root);
     $this->assertEquals($root->id(), $child->getParentOrganization()?->id());
     $this->assertEquals(NULL, $root->getParentOrganization());
+
+    $this->assertOrganizationHierarchyIds([$root->id()], $root->getOrganizationHierarchy());
+    $this->assertOrganizationHierarchyIds([$root->id(), $child->id()], $child->getOrganizationHierarchy());
+  }
+
+  /**
+   * Assert that organization hierarchy matches given ids.
+   *
+   * @param array $expected
+   *   List of organization ids.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Organization[] $hierarchy
+   *   Organization hierarchy.
+   */
+  private function assertOrganizationHierarchyIds(array $expected, array $hierarchy): void {
+    $this->assertEquals($expected, array_map(static fn (Organization $org) => $org->id(), $hierarchy));
   }
 
 }

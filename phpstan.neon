@@ -477,16 +477,6 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Plugin/Block/ContactsBlock.php
 
     -
-      message: "#^Call to an undefined method Drupal\\\\Core\\\\Entity\\\\EntityInterface\\:\\:getTranslation\\(\\)\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/OrganizationService.php
-
-    -
-      message: "#^Call to an undefined method Drupal\\\\Core\\\\Entity\\\\EntityInterface\\:\\:hasTranslation\\(\\)\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/OrganizationService.php
-
-    -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
       count: 2
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php

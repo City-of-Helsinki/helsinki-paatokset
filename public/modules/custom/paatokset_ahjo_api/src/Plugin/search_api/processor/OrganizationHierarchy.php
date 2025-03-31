@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
-use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
-use Drupal\search_api\Item\FieldInterface;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
+use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
+use Drupal\search_api\Processor\ProcessorProperty;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *    label = @Translation("Show organizations as hierarchy"),
  *    description = @Translation("Full organization path in hierarchical order."),
  *    stages = {
- *      "alter_items" = -50
+ *      "add_properties" = 0
  *    }
  * )
  */
@@ -42,31 +44,47 @@ final class OrganizationHierarchy extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function alterIndexedItems(array &$items): void {
-    /** @var \Drupal\search_api\Item\ItemInterface $item */
-    foreach ($items as $item) {
-      $object = $item->getOriginalObject()->getValue();
+  public function getPropertyDefinitions(?DataSourceInterface $datasource = NULL): array {
+    $properties = [];
 
-      // Skip trustees as they don't have organization field.
-      if (!$object instanceof NodeInterface || $object->getType() === 'trustee') {
-        continue;
-      }
-
-      $organizations = $this->organizationPathBuilder->build($object);
-      $organization_hierarchy = [];
-
-      if ($organizations) {
-        foreach ($organizations['#organizations'] as $organization) {
-          $organization_hierarchy[] = $organization['title'];
-        }
-      }
-
-      $field = $item->getField('organization_hierarchy');
-      if ($field instanceof FieldInterface) {
-        $field->setValues($organization_hierarchy);
-      }
+    if ($datasource) {
+      $definition = [
+        'label' => $this->t('Show organizations as hierarchy'),
+        'description' => $this->t('Full organization path in hierarchical order.'),
+        'type' => 'string',
+        'processor_id' => $this->getPluginId(),
+        'hidden' => TRUE,
+        'is_list' => TRUE,
+      ];
+      $properties['organization_hierarchy'] = new ProcessorProperty($definition);
     }
 
+    return $properties;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addFieldValues(ItemInterface $item): void {
+    $object = $item->getOriginalObject()->getValue();
+
+    // Only policymakers have the organization field.
+    if (!$object instanceof Policymaker) {
+      return;
+    }
+
+    $organizations = $this->organizationPathBuilder->build($object);
+    $organization_hierarchy = array_map(static fn (array $org) => $org['title'], $organizations['#organizations'] ?? []);
+
+    $fields = $this
+      ->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'organization_hierarchy');
+
+    foreach ($fields as $field) {
+      foreach ($organization_hierarchy as $organization) {
+        $field->addValue($organization);
+      }
+    }
   }
 
 }

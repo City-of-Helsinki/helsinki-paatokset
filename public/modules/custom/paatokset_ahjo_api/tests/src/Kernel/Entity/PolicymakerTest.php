@@ -50,6 +50,18 @@ class PolicymakerTest extends AhjoKernelTestBase {
     $this->assertEquals('override', $policymaker->getPolicymakerClass());
 
     $this->assertEmpty($policymaker->getDecisionsRoute('fi'));
+
+    $this->installEntitySchema('ahjo_organization');
+    $this->assertEmpty($policymaker->getOrganization());
+    $this->container
+      ->get(EntityTypeManagerInterface::class)
+      ->getStorage('ahjo_organization')
+      ->create([
+        'id' => '123',
+        'label' => 'Test organization',
+      ])
+      ->save();
+    $this->assertNotEmpty($policymaker->getOrganization());
   }
 
 }
