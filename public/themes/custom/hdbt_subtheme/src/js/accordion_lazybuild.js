@@ -45,6 +45,7 @@
         window.handorgel_accordions_lazy = [];
 
         for (const singleAccordion of accordions) {
+          /* eslint-disable */
           /* global handorgel */
           const accordion = new handorgel(singleAccordion, {
             // whether multiple folds can be opened at once
@@ -82,6 +83,7 @@
             headerDisabledClass: 'handorgel__header--disabled',
             contentDisabledClass: 'handorgel__content--disabled',
           });
+          /* eslint-enable */
 
           // Add a global variable so that we can open accordions with anchor links where needed
           window.handorgel_accordions_lazy.push(accordion);

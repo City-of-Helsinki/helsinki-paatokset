@@ -42,7 +42,7 @@
   .decision-tree__title span {
     display: block;
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     margin-bottom: $spacing;
     margin-top: $spacing-triple;
   }
@@ -62,8 +62,8 @@
     color: rgb(26, 26, 26);
     font-size: 18px;
     font-weight: bold;
-    height: 24px;
-    line-height: 24px;
+    height: $spacing-and-half;
+    line-height: $spacing-and-half;
     width: 289px;
   }
 
@@ -134,28 +134,28 @@
 }
 
 .custom-select__trigger {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  -ms-flex-pack: justify;
   align-items: center;
+  -ms-flex-pack: justify;
   background-color: unset;
   border: none;
   color: #060606;
   cursor: pointer;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   letter-spacing: 0;
   margin: 0;
   padding: 0 10px;
   padding-bottom: 23px;
-  position: relative;
 
   .arrow i {
-    height: 24px;
-    width: 24px;
+    height: $spacing-and-half;
+    width: $spacing-and-half;
   }
 }
 
@@ -169,7 +169,7 @@
 }
 
 .custom-select.open .custom-options {
-  background-color: white;
+  background-color: $color-white;
   border: 1px solid black;
   margin-top: 56px;
   opacity: 1;
@@ -197,7 +197,7 @@
 
 .custom-option.selected {
   background-color: #305c91;
-  color: #ffffff;
+  color: $color-white;
 }
 
 @media (max-width: $container-width-s) {
@@ -219,10 +219,10 @@
   margin-top: 22px;
 
   span {
-    margin-right: 12px;
+    margin-right: $spacing-three-quarters;
   }
 }
 
 .policymaker-no-content {
-  margin-top: 24px;
+  margin-top: $spacing-and-half;
 }

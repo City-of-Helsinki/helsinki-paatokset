@@ -11,8 +11,8 @@
 }
 
 .trustee-information {
-  background-color: #e8f3fc;
-  margin-bottom: 48px;
+  background-color: $color-fog-light;
+  margin-bottom: $spacing-triple;
   padding: $spacing-and-half;
 
   .information-row {
@@ -36,7 +36,7 @@
 
   .label {
     font-weight: $font-weight-medium;
-    margin-right: 8px;
+    margin-right: $spacing-half;
   }
 }
 
@@ -74,7 +74,7 @@
       align-items: center;
       border: none;
       border-top: 2px solid $color-black-20;
-      color: black;
+      color: $color-black;
       display: flex;
       font-size: 1.5rem;
       justify-content: space-between;
@@ -105,7 +105,7 @@
   .handorgel__header--open,
   .handorgel__header--opened {
     .handorgel__header__button {
-      background-color: white;
+      background-color: $color-white;
     }
   }
 
@@ -131,7 +131,7 @@
     padding: $spacing-and-half;
 
     .icon {
-      margin-left: 8px;
+      margin-left: $spacing-half;
     }
   }
 }
@@ -145,7 +145,7 @@
   .date {
     color: $color-black-50;
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: $spacing-half;
   }
   .title {
     display: block;

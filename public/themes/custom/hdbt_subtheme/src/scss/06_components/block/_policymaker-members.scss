@@ -1,6 +1,6 @@
 .policymaker-members {
   h2 {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-double;
   }
 }
 
@@ -14,7 +14,7 @@
   select {
     border: 2px solid $color-black-50;
     height: 56px;
-    padding: 16px;
+    padding: $spacing;
     width: 100%;
   }
 
@@ -32,11 +32,11 @@
     width: 100%;
 
     .hel-icon {
-      bottom: 16px;
-      height: 24px;
+      bottom: $spacing;
+      height: $spacing-and-half;
       left: 20px;
       position: absolute;
-      width: 24px;
+      width: $spacing-and-half;
     }
 
     input {
@@ -57,12 +57,12 @@
     position: relative;
 
     .hel-icon {
-      bottom: 16px;
-      height: 24px;
+      bottom: $spacing;
+      height: $spacing-and-half;
       pointer-events: none;
       position: absolute;
       right: 20px;
-      width: 24px;
+      width: $spacing-and-half;
     }
   }
 
@@ -74,7 +74,7 @@
     }
 
     span {
-      padding-left: 12px;
+      padding-left: $spacing-three-quarters;
       white-space: nowrap;
     }
 
@@ -91,11 +91,11 @@
         content: '';
         display: flex;
         font-size: 20px;
-        height: 24px;
+        height: $spacing-and-half;
         justify-content: center;
-        max-height: 24px;
-        max-width: 24px;
-        width: 24px;
+        max-height: $spacing-and-half;
+        max-width: $spacing-and-half;
+        width: $spacing-and-half;
       }
 
       &:checked::before {
@@ -113,7 +113,7 @@
     border-bottom: 1px solid black;
     display: flex;
     justify-content: space-between;
-    padding: 32px 0;
+    padding: $spacing-double 0;
     text-decoration: none;
 
     &:link:hover {
@@ -138,14 +138,14 @@
     flex-direction: column;
 
     .deputy-of {
-      margin-top: 16px;
+      margin-top: $spacing;
     }
   }
 
   .member-image {
     border-radius: 50%;
     height: 75px;
-    margin-left: 8px;
+    margin-left: $spacing-half;
     min-height: 75px;
     min-width: 75px;
     overflow: hidden;
@@ -166,7 +166,7 @@
 
   .member-name {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     line-height: 29px;
     margin-bottom: 0;
     margin-top: 0;
@@ -180,7 +180,7 @@
   .member-party {
     color: $color-black-60;
     font-size: 16px;
-    line-height: 24px;
+    line-height: $spacing-and-half;
 
     @include breakpoint($breakpoint-s) {
       font-size: 18px;
@@ -191,7 +191,7 @@
   .member-role {
     &::after {
       content: ',';
-      margin-right: 4px;
+      margin-right: $spacing-quarter;
     }
 
     @include breakpoint($breakpoint-s) {
@@ -207,13 +207,13 @@
 
     @include breakpoint($breakpoint-s) {
       &::before {
-        background-color: black;
+        background-color: $color-black;
         border-radius: 50%;
         content: '';
         display: inline-block;
-        height: 4px;
-        margin: 0 8px;
-        width: 4px;
+        height: $spacing-quarter;
+        margin: 0 $spacing-half;
+        width: $spacing-quarter;
       }
     }
   }
@@ -222,6 +222,6 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    margin: 16px 0;
+    margin: $spacing 0;
   }
 }

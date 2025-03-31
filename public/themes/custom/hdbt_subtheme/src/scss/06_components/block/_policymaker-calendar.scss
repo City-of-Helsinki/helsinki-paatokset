@@ -12,7 +12,7 @@
   width: 100%;
 
   thead {
-    background-color: white;
+    background-color: $color-white;
   }
 
   th {
@@ -24,7 +24,7 @@
     background-color: $color-white;
     color: $color-black;
     font-size: $fontsize-body-l;
-    font-weight: 400;
+    font-weight: $font-weight-regular;
     padding: $spacing-and-half 0;
     padding-right: $spacing-and-half;
   }
@@ -38,7 +38,7 @@
 
 .policymaker-calendar__table-header {
   th {
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     padding-top: 0;
   }
 
@@ -67,7 +67,7 @@
   @media (max-width: $breakpoint-s) {
     display: flex;
     flex-wrap: wrap;
-    padding: 16px 0;
+    padding: $spacing 0;
     width: 100%;
 
     th {
@@ -79,7 +79,7 @@
       padding: $spacing-half;
 
       &:first-of-type {
-        font-weight: 500;
+        font-weight: $font-weight-medium;
       }
 
       &:last-of-type a {
@@ -89,8 +89,8 @@
         white-space: nowrap;
 
         .hel-icon--angle-right {
-          height: 16px;
-          width: 16px;
+          height: $spacing;
+          width: $spacing;
         }
       }
     }

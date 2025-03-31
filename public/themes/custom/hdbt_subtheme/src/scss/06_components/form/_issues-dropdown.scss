@@ -9,7 +9,7 @@
 }
 
 .issue__meetings-dropdown {
-  border: 2px solid #808080;
+  border: 2px solid $color-black-50;
   margin-bottom: $spacing-double;
 
   .hds-button {
@@ -37,7 +37,7 @@
 
     .hel-icon.hel-icon--angle-down,
     .hel-icon:last-of-type:not(:first-of-type) {
-      margin: 0 8px 0 auto;
+      margin: 0 $spacing-half 0 auto;
     }
 
     .hds-button__label {
@@ -67,7 +67,7 @@
 
   &.open .hds-button {
     border-bottom: 1px solid;
-    border-color: #808080;
+    border-color: $color-black-50;
 
     .hel-icon.hel-icon--angle-down {
       transform: rotate(180deg);
@@ -103,7 +103,7 @@
     cursor: pointer;
 
     &:not(.selected):hover {
-      background-color: #000;
+      background-color: $color-black;
       a {
         color: $color-white;
       }
@@ -120,8 +120,6 @@
 }
 
 .issue__meetings-select {
-  -ms-overflow-style: none;
-  background: #fff;
   display: none;
   list-style: none;
   margin-bottom: 0;
@@ -129,9 +127,11 @@
   overflow-x: scroll;
   padding-left: 0;
   padding-top: 0;
+  width: 100%;
+  -ms-overflow-style: none;
+  background: #fff;
   position: relative;
   scrollbar-width: none;
-  width: 100%;
   z-index: 2;
 
   .paatokset__link-plain:hover {
