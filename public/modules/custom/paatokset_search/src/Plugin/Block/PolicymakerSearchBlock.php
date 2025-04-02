@@ -6,9 +6,9 @@ namespace Drupal\paatokset_search\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_search\SearchManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,7 +28,7 @@ class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPlugin
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private ConfigFactoryInterface $configFactory,
+    private SearchManager $searchManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -41,7 +41,7 @@ class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPlugin
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get(ConfigFactoryInterface::class),
+      $container->get(SearchManager::class),
     );
   }
 
@@ -49,25 +49,18 @@ class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPlugin
    * {@inheritDoc}
    */
   public function build(): array {
-    $proxyConfig = $this->configFactory->get('elastic_proxy.settings');
-    $searchConfig = $this->configFactory->get('paatokset_search.settings');
-    $proxyUrl = $proxyConfig->get('elastic_proxy_url') ?: '';
-
     $build = [
-      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="policymakers" data-url="' . $proxyUrl . '"></div></div>',
       '#attributes' => [
         'class' => ['policymaker-search'],
       ],
-      '#attached' => [
-        'library' => [
-          'paatokset_search/paatokset-search',
+      'search_wrapper' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['paatokset-search-wrapper'],
         ],
+        'search' => $this->searchManager->build('policymakers'),
       ],
     ];
-
-    if ($sentryDsnReact = $searchConfig->get('sentry_dsn_react')) {
-      $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react'] = $sentryDsnReact;
-    }
 
     return $build;
   }

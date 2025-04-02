@@ -1,4 +1,8 @@
 services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
   Drupal\paatokset_search\EventSubscriber\PrepareIndex:
     tags:
       - { name: 'event_subscriber' }
@@ -6,3 +10,5 @@ services:
     arguments: ['@cache_tags.invalidator']
     tags:
       - { name: 'event_subscriber' }
+
+  Drupal\paatokset_search\SearchManager: ~

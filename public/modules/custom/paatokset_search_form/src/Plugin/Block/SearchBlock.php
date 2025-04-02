@@ -3,6 +3,9 @@
 namespace Drupal\paatokset_search_form\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\paatokset_search\SearchManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a block containing search form.
@@ -12,28 +15,46 @@ use Drupal\Core\Block\BlockBase;
  *  admin_label=@Translation("Search block")
  * )
  */
-class SearchBlock extends BlockBase {
+class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * {@inheritDoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private SearchManager $searchManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get(SearchManager::class),
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    if (getenv('REACT_APP_PROXY_URL')) {
-      $proxy_url = getenv('REACT_APP_PROXY_URL');
-    }
-    else {
-      $proxy_url = getenv('REACT_APP_ELASTIC_URL');
-    }
-
     $build = [
-      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="frontpage" data-url="' . $proxy_url . '"></div></div>',
       '#attributes' => [
         'class' => ['paatokset-search--frontpage'],
       ],
-      '#attached' => [
-        'library' => [
-          'paatokset_search/paatokset-search',
+      'search_wrapper' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['paatokset-search-wrapper'],
         ],
+        'search' => $this->searchManager->build('frontpage'),
       ],
     ];
 
