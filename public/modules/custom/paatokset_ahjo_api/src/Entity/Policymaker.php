@@ -57,19 +57,23 @@ class Policymaker extends Node {
   }
 
   /**
-   * Get organization name by ID.
+   * Get organization name.
    *
    * @param bool $get_ahjo_title
    *   Get Ahjo title instead of node title.
-   *
-   * @return string|null
-   *   Organization name or NULL if policymaker can't be found.
    */
   public function getPolicymakerName(bool $get_ahjo_title = FALSE): ?string {
     if ($get_ahjo_title) {
       return $this->get('field_ahjo_title')->value;
     }
     return $this->title->value;
+  }
+
+  /**
+   * Get policymaker ID.
+   */
+  public function getPolicymakerId(): ?string {
+    return $this->get('field_policymaker_id')->value;
   }
 
   /**
@@ -122,6 +126,26 @@ class Policymaker extends Node {
     $policymaker_url_bits = explode('/', $policymaker_url);
     $policymaker_org = array_pop($policymaker_url_bits);
     return strtolower($policymaker_org);
+  }
+
+  /**
+   * Get policymaker organization.
+   *
+   * @returns ?Organization
+   *    Organizations of the given policymaker. Null if the policymaker does not
+   *    belong to any organization (we get invalid data from API).
+   */
+  public function getOrganization(): ?Organization {
+    $organization = \Drupal::entityTypeManager()
+      ->getStorage('ahjo_organization')
+      ->load($this->getPolicymakerId());
+    assert($organization === NULL || $organization instanceof Organization);
+
+    if ($organization?->hasTranslation($this->language()->getId())) {
+      return $organization->getTranslation($this->language()->getId());
+    }
+
+    return $organization;
   }
 
 }

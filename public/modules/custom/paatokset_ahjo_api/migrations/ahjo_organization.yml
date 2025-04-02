@@ -13,41 +13,24 @@ migration_group: ahjo_api
 label: 'Ahjo API - Organizations'
 source:
   plugin: ahjo_api_organizations
-  root_org: '00001'
-  include_inactive: true
-  track_changes: true
-  languages:
-    - fi
-    - sv
 process:
   langcode: langcode
-  nid:
-    plugin: callback
-    callable: _paatokset_ahjo_api_lookup_organization_nid
-    source: response/ID
-  title: title
-  field_policymaker_id: response/ID
-  field_organization_data:
+  title: name
+  id: id
+  existing: existing
+  organization_above:
     -
-      plugin: single_value
-      source: response
+      plugin: skip_on_empty
+      method: process
+      # Root organization has empty parent.
+      source: organization_above
     -
-      plugin: callback
-      callable: json_encode
-  field_org_level_above_id:
-    -
-      plugin: sub_process
-      source: response/OrganizationLevelAbove/organizations
-      process:
-        value: ID
-  field_org_level_below_ids:
-    -
-      plugin: sub_process
-      source: response/OrganizationLevelBelow/organizations
-      process:
-        value: ID
+      plugin: migration_lookup
+      migration: ahjo_organizations
+      source:
+        - organization_above
+        - langcode
 destination:
-  plugin: 'entity:node'
+  plugin: 'entity:ahjo_organization'
   translations: true
-  default_bundle: organization
 migration_dependencies: {  }

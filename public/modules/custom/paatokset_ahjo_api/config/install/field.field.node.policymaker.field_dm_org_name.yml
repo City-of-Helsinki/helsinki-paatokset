@@ -1,0 +1,19 @@
+uuid: 174b520d-4a22-445a-a522-a367f9b49342
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dm_org_name
+    - node.type.policymaker
+id: node.policymaker.field_dm_org_name
+field_name: field_dm_org_name
+entity_type: node
+bundle: policymaker
+label: 'Organization name'
+description: 'Name of the organization level above this decisionmaker.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
