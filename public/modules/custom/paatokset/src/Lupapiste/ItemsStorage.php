@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset\Lupapiste;
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\State\StateInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\paatokset\Lupapiste\DTO\Collection;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -15,18 +15,21 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final readonly class ItemsStorage {
 
-  public const CACHE_TAGS = ['paatokset'];
+  public const PER_PAGE = 10;
 
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\State\StateInterface $storage
-   *   The state API.
+   * @param \Drupal\paatokset\Lupapiste\ItemsImporter $importer
+   *   The importer.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache.
    * @param \Symfony\Component\Serializer\SerializerInterface $serializer
    *   The serializer.
    */
   public function __construct(
-    private StateInterface $storage,
+    private ItemsImporter $importer,
+    #[Autowire('@cache.default')] private CacheBackendInterface $cache,
     #[Autowire('@serializer')] private SerializerInterface $serializer,
   ) {
   }
@@ -45,32 +48,24 @@ final readonly class ItemsStorage {
   }
 
   /**
-   * Gets the storage key for given language.
+   * Gets the data.
    *
    * @param string $langcode
    *   The langcode.
    *
-   * @return string
-   *   The storage key.
-   */
-  private function getStorageKey(string $langcode) : string {
-    return sprintf('lupapiste_data_%s', $langcode);
-  }
-
-  /**
-   * Saves the given items.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param array $data
+   * @return array
    *   The data.
    */
-  public function save(string $langcode, array $data) : void {
-    // Deserialize data to make sure it's valid.
-    $data = $this->deserialize(json_encode($data));
+  private function getData(string $langcode) : array {
+    $key = sprintf('lupapiste_data_%s', $langcode);
 
-    $this->storage->set($this->getStorageKey($langcode), $this->serializer->serialize($data, 'json'));
-    Cache::invalidateTags(self::CACHE_TAGS);
+    if ($data = $this->cache->get($key)) {
+      return $data->data;
+    }
+    $items = $this->importer->fetch($langcode);
+    $this->cache->set($key, $items);
+
+    return $items;
   }
 
   /**
@@ -78,15 +73,25 @@ final readonly class ItemsStorage {
    *
    * @param string $langcode
    *   The language.
+   * @param int $offset
+   *   The offset to load.
+   * @param int $length
+   *   The maximum number of items to load.
    *
-   * @return \Drupal\paatokset\Lupapiste\DTO\Item[]
+   * @return \Drupal\paatokset\Lupapiste\DTO\Collection
    *   The data.
    */
-  public function load(string $langcode) : array {
-    if (!$data = $this->storage->get($this->getStorageKey($langcode))) {
-      return [];
+  public function load(string $langcode, int $offset = 0, int $length = self::PER_PAGE) : Collection {
+    $data = $this->getData($langcode);
+    $total = count($data);
+
+    if ($length > 0) {
+      $data = array_slice($data, $offset, $length);
     }
-    return $this->deserialize($data);
+    return new Collection(
+      total: $total,
+      items: $this->deserialize(json_encode($data)),
+    );
   }
 
 }

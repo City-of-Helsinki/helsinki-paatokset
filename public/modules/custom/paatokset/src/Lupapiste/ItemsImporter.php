@@ -30,7 +30,7 @@ final class ItemsImporter {
    *   The data.
    */
   public function fetch(string $langcode) : array {
-    $uri = sprintf('https://kuulutukset-qa.lupapiste.fi/rss/kuulutus?organization=049-R&lang=%s', $langcode);
+    $uri = sprintf('https://kuulutukset.lupapiste.fi/rss/kuulutus?organization=091-R&lang=%s', $langcode);
 
     try {
       $data = $this->httpClient->request('GET', $uri)
@@ -53,7 +53,6 @@ final class ItemsImporter {
     };
 
     $items = [];
-
     $keys = get_class_vars(Item::class);
 
     foreach ($feed as $delta => $item) {

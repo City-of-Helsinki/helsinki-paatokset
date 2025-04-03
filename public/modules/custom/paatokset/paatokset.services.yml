@@ -5,6 +5,7 @@ services:
 
   Drupal\paatokset\Lupapiste\ItemsImporter: ~
   Drupal\paatokset\Lupapiste\ItemsStorage: ~
+  Drupal\paatokset\Lupapiste\ItemsLazyBuilder: ~
 
   paatokset.normalizer.array:
     class: Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
