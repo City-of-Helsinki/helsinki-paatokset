@@ -1,4 +1,6 @@
-<h2 class="rss-feed__count-container">
-  {{ title }}
-</h2>
+{% if title|length %}
+  <h2 class="rss-feed__count-container">
+    {{ title }}
+  </h2>
+{% endif %}
 {{ content }}

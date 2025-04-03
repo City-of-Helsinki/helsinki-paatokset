@@ -34,5 +34,5 @@ msgid "Publication ends"
 msgstr "Julkaisu päättyy"
 
 msgctxt "Lupapiste rss"
-msgid "proclamations"
-msgstr "kuulutusta"
+msgid "@count proclamations"
+msgstr "@count kuulutusta"
