@@ -41,7 +41,7 @@ final class ItemsLazyBuilder implements TrustedCallbackInterface {
       ],
       'items' => [
         '#theme' => 'lupapiste_rss_list',
-        '#title' => $this->formatPlural($collection->total, '1 proclamation', '@count proclamations', options: [
+        '#title' => $this->t('@count proclamations', ['@count' => $collection->total], [
           'context' => 'Lupapiste rss',
         ]),
         '#content' => [],
