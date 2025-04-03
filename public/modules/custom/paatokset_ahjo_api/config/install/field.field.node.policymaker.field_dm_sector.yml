@@ -1,0 +1,21 @@
+uuid: 818503c9-3f74-4658-aa7f-498d84efc62d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dm_sector
+    - node.type.policymaker
+  module:
+    - json_field
+id: node.policymaker.field_dm_sector
+field_name: field_dm_sector
+entity_type: node
+bundle: policymaker
+label: Sector
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json_native

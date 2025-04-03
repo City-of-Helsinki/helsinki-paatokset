@@ -72,6 +72,22 @@ class PolicymakerNodeViewController extends NodeViewController {
   }
 
   /**
+   * Apply custom logic for handling head links.
+   *
+   * @param array &$page
+   *   The page render array.
+   */
+  protected function handleHeadLinks(array &$page) {
+    // Remove canonical URL from the policymaker node that is being rendered to
+    // avoid duplicate canonical URLs.
+    array_walk($page['#attached']['html_head_link'], function ($item, $key) use (&$page) {
+      if ($item[0]['rel'] == 'canonical') {
+        unset($page['#attached']['html_head_link'][$key]);
+      }
+    });
+  }
+
+  /**
    * Return untranslated policymaker node on other languages.
    */
   public function policymaker(string $organization) {
@@ -83,7 +99,9 @@ class PolicymakerNodeViewController extends NodeViewController {
     }
 
     if ($node instanceof EntityInterface) {
-      return parent::view($node, 'full');
+      $page = parent::view($node, 'full');
+      $this->handleHeadLinks($page);
+      return $page;
     }
 
     throw new NotFoundHttpException();

@@ -51,6 +51,12 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'organization_path' => [
+      'variables' => [
+        'organizations' => [],
+      ],
+      'path' => $path . '/templates/component',
+    ],
     'decision_content' => [
       'variables' => [
         'selectedDecision' => NULL,
@@ -804,29 +810,6 @@ function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?
 }
 
 /**
- * Lookup organization nodes by ID.
- *
- * @param string $decisionmaker_id
- *   Policymaker ID.
- *
- * @return string|null
- *   Existing nid, if found.
- */
-function _paatokset_ahjo_api_lookup_organization_nid(string $decisionmaker_id): ?string {
-  $query = Drupal::entityQuery('node')
-    ->condition('type', 'organization')
-    ->condition('field_policymaker_id', $decisionmaker_id)
-    ->accessCheck(FALSE)
-    ->range(0, 1)
-    ->latestRevision();
-  $ids = $query->execute();
-  if (empty($ids)) {
-    return NULL;
-  }
-  return reset($ids);
-}
-
-/**
  * Truncate text value.
  *
  * @param string $value
@@ -876,12 +859,8 @@ function _paatokset_ahjo_api_true_if_empty($value): bool {
  * @return bool
  *   TRUE is value is "true", FALSE if it is not.
  */
-function _paatokset_ahjo_api_string_to_boolean($value): bool {
-  if (strtolower($value) === 'true') {
-    return TRUE;
-  }
-
-  return FALSE;
+function _paatokset_ahjo_api_string_to_boolean(mixed $value): bool {
+  return strtolower($value) === 'true';
 }
 
 /**
@@ -1093,55 +1072,6 @@ function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, En
       $build['meeting_link'] = $link->toRenderable();
     }
   }
-}
-
-/**
- * Update diary number and diary number label field max lengths.
- */
-function paatokset_ahjo_api_update_9001() {
-  // Update case diary number max length.
-  $database = \Drupal::database();
-  $database->query("ALTER TABLE node__field_diary_number MODIFY field_diary_number_value VARCHAR(255)");
-  $database->query("ALTER TABLE node_revision__field_diary_number MODIFY field_diary_number_value VARCHAR(255)");
-  $storage_key = 'node.field_schema_data.field_diary_number';
-  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
-  $field_schema = $storage_schema->get($storage_key);
-  $field_schema['node__field_diary_number']['fields']['field_diary_number_value']['length'] = 255;
-  $field_schema['node_revision__field_diary_number']['fields']['field_diary_number_value']['length'] = 255;
-  $storage_schema->set($storage_key, $field_schema);
-
-  // Update case diary label number max length.
-  $database = \Drupal::database();
-  $database->query("ALTER TABLE node__field_diary_number_label MODIFY field_diary_number_label_value VARCHAR(255)");
-  $database->query("ALTER TABLE node_revision__field_diary_number_label MODIFY field_diary_number_label_value VARCHAR(255)");
-  $storage_key = 'node.field_schema_data.field_diary_number_label';
-  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
-  $field_schema = $storage_schema->get($storage_key);
-  $field_schema['node__field_diary_number']['fields']['field_diary_number_label_value']['length'] = 255;
-  $field_schema['node_revision__field_diary_number']['fields']['field_diary_number_label_value']['length'] = 255;
-  $storage_schema->set($storage_key, $field_schema);
-}
-
-/**
- * Update diary number field max length in config.
- */
-function paatokset_ahjo_api_update_9002() {
-  $config = \Drupal::configFactory()->getEditable('field.storage.node.field_diary_number');
-  $settings = $config->get('settings');
-  $settings['max_length'] = 255;
-  $config->set('settings', $settings);
-  $config->save();
-}
-
-/**
- * Update diary number label field max length in config.
- */
-function paatokset_ahjo_api_update_9003() {
-  $config = \Drupal::configFactory()->getEditable('field.storage.node.field_diary_number_label');
-  $settings = $config->get('settings');
-  $settings['max_length'] = 255;
-  $config->set('settings', $settings);
-  $config->save();
 }
 
 /**

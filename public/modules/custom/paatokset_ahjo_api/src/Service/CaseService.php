@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile
+
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;

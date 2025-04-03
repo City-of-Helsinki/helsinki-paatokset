@@ -5,5 +5,9 @@ paatokset_helsinki_kanava.settings:
       type: boolean
     city_council_id:
       type: string
+    city_hall_id:
+      type: string
+    trustee_organization_type_id:
+      type: string
     all_recordings_link:
       type: string

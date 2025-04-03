@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for ahjo api module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function paatokset_ahjo_api_update_last_removed(): int {
+  return 9003;
+}
+
+/**
+ * Install ahjo_organizations entity.
+ */
+function paatokset_ahjo_api_update_9004(): void {
+  // Drop migrate map.
+  \Drupal::database()->schema()->dropTable('migrate_map_ahjo_organizations');
+
+  $entityType = \Drupal::entityTypeManager()->getDefinition('ahjo_organization');
+  $updateManager = \Drupal::entityDefinitionUpdateManager();
+  $updateManager->installEntityType($entityType);
+}

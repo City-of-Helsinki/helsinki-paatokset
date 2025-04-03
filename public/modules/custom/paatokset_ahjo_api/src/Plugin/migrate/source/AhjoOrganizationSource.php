@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
-use Webmozart\Assert\Assert;
+use Drupal\migrate\Plugin\MigrationInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Source plugin for retrieving organization hierarchy from Ahjo.
@@ -33,15 +37,36 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
   private const ALL_LANGCODES = ['fi', 'sv'];
 
   /**
+   * The entity type manager.
+   */
+  private EntityTypeManagerInterface $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
-  protected $skipCount = TRUE;
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    ?MigrationInterface $migration = NULL,
+  ): static {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition, $migration);
+    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
+    return $instance;
+  }
 
   /**
    * {@inheritDoc}
    */
   public function fields(): array {
-    return [];
+    return [
+      'id' => 'Organization ID',
+      'name' => 'Organization name',
+      'existing' => 'If the organisation is not dissolved',
+      'organization_above' => 'ID of the parent organization',
+      'langcode' => 'Langcode',
+    ];
   }
 
   /**
@@ -62,58 +87,125 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
    * {@inheritDoc}
    */
   protected function initializeIterator(): \Iterator {
-    // Using stack allows the iterator to keep track of much less information.
-    // The stack basically leads to Depth-first search instead of breadth-first.
-    $stack = new \SplStack();
+    if (!$this->ahjoProxy->isOperational()) {
+      $this->logger->error('Ahjo Proxy is not operational, exiting.');
+      throw new MigrateException('Ahjo Proxy is not operational, exiting.');
+    }
 
-    $root = $this->configuration['root_org'] ?? self::ROOT_ORGANIZATION_ID;
-    $langcodes = $this->configuration['languages'] ?? self::ALL_LANGCODES;
+    // Iterate all known organization IDs and fetch
+    // their details and child organizations from Ahjo.
+    $ids = $this->getOrganizationIds();
+    foreach ($ids as $id) {
+      $rows = [];
 
-    Assert::isArray($langcodes);
-
-    // Iterate the org chart using Depth-first search starting from the root.
-    $stack->push($root);
-
-    while (!$stack->isEmpty()) {
-      $id = $stack->pop();
-
-      // Traverse org char once for each langcode.
-      foreach ($langcodes as $langcode) {
-        $this->logger->info("Importing organization @id (@language)", [
+      // Get org chart for each langcode.
+      foreach (self::ALL_LANGCODES as $langcode) {
+        $this->logger->info("Processing organization @id (@language)", [
           "@id" => $id,
           "@language" => $langcode,
         ]);
 
-        $organization = $this->getOrganization($id, $langcode);
-        if ($organization === NULL) {
+        $response = $this->getOrganization($id, $langcode);
+        if (!$response) {
+          $this->logger->warning("Failed to fetch organization @id (@language)", [
+            "@id" => $id,
+            "@language" => $langcode,
+          ]);
+
           continue;
         }
 
-        $title = Unicode::truncate($organization['Name'], '255', TRUE, TRUE);
+        $parents = $response['OrganizationLevelAbove']['organizations'] ?? [];
 
-        // Some organizations don't have Name in Ahjo.
-        if (empty($title)) {
-          $title = $id;
-        }
-
-        // Add organizations below this one to the stack.
-        foreach ($organization['OrganizationLevelBelow']['organizations'] as $org_below) {
-          $include_inactive = $this->configuration['include_inactive'] ?? FALSE;
-          if ($include_inactive !== TRUE && $org_below['Existing'] !== 'true') {
+        // Root organization is allowed not to have a parent.
+        if (count($parents) !== 1 && $response['ID'] !== self::ROOT_ORGANIZATION_ID) {
+          // Skip if the organization is dissolved. Example 🐙:
+          // https://paatokset.hel.fi/fi/ahjo-proxy/organization/single/01101.
+          if ($this->isDissolved($response)) {
             continue;
           }
 
-          $stack->push($org_below['ID']);
+          // We assume that organization has a single parent.
+          // Fail loudly if this is not true.
+          throw new \LogicException("Organization should have a single parent");
         }
 
-        yield [
-          'id' => $id,
-          'response' => $organization,
-          'title' => $title,
-          'langcode' => $langcode,
-        ];
+        $parent = $parents[0] ?? NULL;
+
+        // Process current organization.
+        $rows[] = $this->formatOrganization(
+          $response,
+          $parent,
+          $langcode
+        );
+
+        // Process child organizations.
+        foreach ($response['OrganizationLevelBelow']['organizations'] ?? [] as $child) {
+          // This child is already known and will be processed later separately.
+          if (in_array($child['ID'], $ids)) {
+            continue;
+          }
+
+          $rows[] = $this->formatOrganization($child, $response, $langcode);
+        }
+      }
+
+      if ($rows) {
+        yield from $rows;
       }
     }
+  }
+
+  /**
+   * Formats Ahjo organization response to plugin format.
+   */
+  private function formatOrganization(array $current, ?array $parent, string $langcode): array {
+    $title = Unicode::truncate($current['Name'], '255', TRUE, TRUE);
+    if (empty($title)) {
+      $title = $current['ID'];
+    }
+
+    return [
+      'id' => $current['ID'],
+      'name' => $title,
+      'langcode' => $langcode,
+      'existing' => $this->isDissolved($current),
+      'organization_above' => $parent['ID'] ?? NULL,
+    ];
+  }
+
+  /**
+   * Gets list of known organization IDs.
+   */
+  private function getOrganizationIds(): array {
+    // Update & check child organizations of all known organizations.
+    $storage = $this
+      ->entityTypeManager
+      ->getStorage('ahjo_organization');
+
+    $ids = $storage
+      ->getQuery()
+      ->accessCheck(FALSE)
+      // Update oldest first.
+      ->sort('changed', 'ASC')
+      ->execute();
+
+    // Add the root organization so the import process can be bootstrapped.
+    if (empty($ids)) {
+      $ids[] = self::ROOT_ORGANIZATION_ID;
+    }
+
+    return $ids;
+  }
+
+  /**
+   * Returns true if given organization is dissolved.
+   *
+   * @param array $organization
+   *   Organization array from Ahjo.
+   */
+  private function isDissolved(array $organization): bool {
+    return $organization['Existing'] !== 'true' && $organization['Existing'] !== TRUE;
   }
 
   /**
@@ -123,42 +215,27 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
    *   NULL if received invalid data from Ahjo.
    */
   private function getOrganization(string $id, string $langcode): ?array {
-    if (!$this->ahjoProxy->isOperational()) {
-      $this->logger->error('Ahjo Proxy is not operational, exiting.');
-      throw new MigrateException('Ahjo Proxy is not operational, exiting.');
-    }
-
     if (!empty(getenv('AHJO_PROXY_BASE_URL'))) {
-      $url = 'organization/single/' . (string) $id . '?apireqlang=' . (string) $langcode;
+      $url = 'organization/single/' . $id . '?apireqlang=' . $langcode;
       $query_string = NULL;
     }
     else {
       $url = 'organization';
-      $query_string = 'orgid=' . (string) $id . '&apireqlang=' . (string) $langcode;
+      $query_string = 'orgid=' . $id . '&apireqlang=' . $langcode;
     }
 
     $organization = $this->ahjoProxy->getData($url, $query_string);
 
-    // Local organization is formatted a bit differently.
+    // Ahjo proxy responses are formatted a bit differently.
     if (!empty($organization['decisionMakers'][0]['Organization'])) {
       $organization = $organization['decisionMakers'][0]['Organization'];
     }
 
     if (empty($organization['ID'])) {
-      $this->logger->error('Data not found for @id', [
-        '@id' => $id,
-      ]);
       return NULL;
     }
 
     return $organization;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function __toString() {
-    return 'AhjoOrganizations';
   }
 
 }

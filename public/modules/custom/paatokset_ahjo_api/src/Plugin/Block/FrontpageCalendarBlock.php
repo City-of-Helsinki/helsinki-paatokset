@@ -2,17 +2,18 @@
 
 namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides Calendar Block.
- *
- * @Block(
- *    id = "frontpage_calendar",
- *    admin_label = @Translation("Paatokset frontpage calendar"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'frontpage_calendar',
+  admin_label: new TranslatableMarkup('Paatokset frontpage calendar'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class FrontpageCalendarBlock extends BlockBase {
 
   /**

@@ -48,9 +48,6 @@ do
     drush migrate-import ahjo_trustees:all --update
     drush migrate-reset-status ahjo_trustees:all_sv
     drush migrate-import ahjo_trustees:all_sv --update
-    echo "Migrating organization chart"
-    drush migrate-reset-status ahjo_organizations
-    drush migrate-import ahjo_organizations
     echo "Migrating data for decisionmakers: $(date)"
     drush migrate-reset-status ahjo_decisionmakers:latest
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
