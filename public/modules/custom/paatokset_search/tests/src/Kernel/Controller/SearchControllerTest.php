@@ -24,6 +24,8 @@ class SearchControllerTest extends KernelTestBase {
   /**
    * Tests block render.
    *
+   * @covers ::__construct
+   * @covers ::create
    * @covers ::decisions
    */
   public function testDecisions(): void {

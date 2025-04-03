@@ -44,7 +44,6 @@ class SearchManagerTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // $this->strictConfigSchema = FALSE;
     $this->installConfig(['system']);
     $this->installSchema('node', ['node_access']);
 
@@ -69,7 +68,9 @@ class SearchManagerTest extends EntityKernelTestBase {
   /**
    * Tests search manager build with defaults.
    *
+   * @covers ::__construct
    * @covers ::build
+   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithDefaults(): void {
     $this->setConfiguration([
@@ -79,19 +80,22 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $manager = $this->container->get(SearchManager::class);
 
-    $build = $manager->build('decisions');
+    $build = $manager->build('decisions', ['test-class']);
 
     $this->assertContains('paatokset_search/paatokset-search', $build['#attached']['library']);
     $this->assertEquals('https://sentry.example.com', $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react']);
     $this->assertEquals('decisions', $build['#attributes']['data-type']);
     $this->assertEquals('https://example.com', $build['#attributes']['data-url']);
+    $this->assertContains('test-class', $build['#attributes']['class']);
     $this->assertEmpty($build['#attributes']['data-operator-guide-url']);
   }
 
   /**
    * Tests search manager build with operator guide.
    *
+   * @covers ::__construct
    * @covers ::build
+   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithOperatorGuide(): void {
     $node = $this->drupalCreateNode([
@@ -113,7 +117,9 @@ class SearchManagerTest extends EntityKernelTestBase {
   /**
    * Tests search manager build with unpublished operator guide.
    *
+   * @covers ::__construct
    * @covers ::build
+   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithUnpublishedOperatorGuide(): void {
     $node = $this->drupalCreateNode([
