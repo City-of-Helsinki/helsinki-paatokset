@@ -41,12 +41,16 @@ final class ItemsLazyBuilder implements TrustedCallbackInterface {
       ],
       'items' => [
         '#theme' => 'lupapiste_rss_list',
-        '#title' => $this->t('@count proclamations', ['@count' => $collection->total], [
-          'context' => 'Lupapiste rss',
-        ]),
+        '#title' => '',
         '#content' => [],
       ],
     ];
+
+    if ($collection->total > 1) {
+      $build['items']['#title'] = $this->t('@count proclamations', ['@count' => $collection->total], [
+        'context' => 'Lupapiste rss',
+      ]);
+    }
     $this->pagerManager->createPager($collection->total, ItemsStorage::PER_PAGE);
 
     foreach ($collection->items as $item) {
