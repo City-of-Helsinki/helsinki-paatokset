@@ -4,10 +4,14 @@
  *  - item: Se Drupal\paatokset_rss\DTO\LupapisteItem for available variables.
  */
 #}
+{% set link_attributes = {
+  'class': [
+    'rss-item__link',
+  ]
+} %}
+
 <div class="rss-item__container">
-  <a href="{{ item.link }}">
-    <h3>{{ item.title }}</h3>
-  </a>
+  <h3>{{ link(item.title, item.link, link_attributes) }}</h3>
   <div>
     <div class="rss-item__row-container">
       <div class="rss-item__item">

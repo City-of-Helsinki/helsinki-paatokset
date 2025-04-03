@@ -1,11 +1,18 @@
 .rss-item__container {
   border-top: 1px solid $color-black-20;
   padding-block: $spacing-and-half;
+  position: relative;
 
   h3 {
     margin-bottom: $spacing;
     margin-top: 0;
   }
+}
+
+.rss-item__link::after {
+  content: '';
+  inset: 0;
+  position: absolute;
 }
 
 .rss-item__row-container {

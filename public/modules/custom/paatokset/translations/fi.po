@@ -36,3 +36,7 @@ msgstr "Julkaisu päättyy"
 msgctxt "Lupapiste rss"
 msgid "@count proclamations"
 msgstr "@count kuulutusta"
+
+msgctxt "Lupapiste rss"
+msgid "Building control permit decisions"
+msgstr "Rakennusvalvonnan lupapäätökset"
