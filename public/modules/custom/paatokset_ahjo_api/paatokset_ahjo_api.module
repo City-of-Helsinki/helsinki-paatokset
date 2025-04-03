@@ -269,6 +269,7 @@ function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array 
  */
 function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
@@ -290,7 +291,8 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 
   $meetings_with_color = [];
   foreach ($all_meetings as $meeting) {
-    $meeting['organization_color'] = $policymakerService->getPolicymakerClassById($meeting['policymaker']);
+    $policymaker = $policymakerService->getPolicyMaker($meeting['policymaker']);
+    $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-none');
     $meetings_with_color[] = $meeting;
   }
 

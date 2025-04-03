@@ -14,11 +14,6 @@ parameters:
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     -
-      message: "#^Call to an undefined method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getPolicymakerClassById\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-    -
       message: "#^Cannot access property \\$created on object\\|true\\.$#"
       count: 1
       path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
