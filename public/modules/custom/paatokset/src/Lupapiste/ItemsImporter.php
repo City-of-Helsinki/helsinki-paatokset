@@ -7,6 +7,7 @@ namespace Drupal\paatokset\Lupapiste;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Laminas\Feed\Exception\InvalidArgumentException;
 use Laminas\Feed\Reader\Feed\AbstractFeed;
 use Laminas\Feed\Reader\Reader;
 
@@ -36,11 +37,11 @@ final class ItemsImporter {
       $data = $this->httpClient->request('GET', $uri)
         ->getBody()
         ->getContents();
+      $feed = Reader::importString($data);
     }
-    catch (GuzzleException) {
+    catch (GuzzleException | InvalidArgumentException) {
       return [];
     }
-    $feed = Reader::importString($data);
     assert($feed instanceof AbstractFeed);
 
     $feed->getXpath()->registerNamespace('lupapiste', 'https://www.lupapiste.fi/rss/extensions');
