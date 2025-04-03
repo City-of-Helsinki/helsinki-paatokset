@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.policymaker.field_custom_organization_type
     - field.field.node.policymaker.field_decisions_description
     - field.field.node.policymaker.field_dm_org_name
-    - field.field.node.policymaker.field_dm_organization
     - field.field.node.policymaker.field_dm_sector
     - field.field.node.policymaker.field_documents_description
     - field.field.node.policymaker.field_first_name
@@ -172,7 +171,6 @@ content:
 hidden:
   field_contacts: true
   field_custom_menu_links: true
-  field_dm_organization: true
   field_dm_sector: true
   field_first_name: true
   field_is_decisionmaker: true

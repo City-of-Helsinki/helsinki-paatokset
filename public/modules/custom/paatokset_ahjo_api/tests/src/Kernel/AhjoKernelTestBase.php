@@ -6,6 +6,9 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Base class for Ahjo api kernel tests.
+ *
+ * This base class installs Ahjo related nodes and their configurations.
+ * For custom entity tests, extend KernelTestBase directly.
  */
 abstract class AhjoKernelTestBase extends KernelTestBase {
 
@@ -19,6 +22,10 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
     'node',
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
+    'token',
+    'pathauto',
+    'path_alias',
+    'paatokset_policymakers',
     'migrate',
     'file',
     'text',
@@ -31,11 +38,12 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
   /**
    * {@inheritDoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
+    $this->installEntitySchema('path_alias');
     $this->installSchema('node', 'node_access');
 
     // Install node types & fields.

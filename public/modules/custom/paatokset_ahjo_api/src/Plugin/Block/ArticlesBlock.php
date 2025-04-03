@@ -18,9 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides All Articles Block.
  */
 #[Block(
-  id: "all_articles",
-  admin_label: new TranslatableMarkup("Paatokset all articles"),
-  category: new TranslatableMarkup("Paatokset custom blocks")
+  id: 'all_articles',
+  admin_label: new TranslatableMarkup('Paatokset all articles'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
 )]
 final class ArticlesBlock extends BlockBase implements ContainerFactoryPluginInterface {
 

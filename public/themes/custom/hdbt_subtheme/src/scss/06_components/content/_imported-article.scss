@@ -16,9 +16,9 @@
       content: "";
       display: block;
       height: 2px;
-      margin-bottom: 32px;
-      margin-top: 32px;
-      width: 64px;
+      margin-bottom: $spacing-double;
+      margin-top: $spacing-double;
+      width: $spacing-quadruple;
     }
   }
 }

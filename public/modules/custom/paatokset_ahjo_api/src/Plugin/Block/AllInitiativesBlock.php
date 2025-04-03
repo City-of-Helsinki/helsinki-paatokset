@@ -2,17 +2,18 @@
 
 namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides All Initiatives Block.
- *
- * @Block(
- *    id = "all_initiatives",
- *    admin_label = @Translation("Paatokset all initiatives"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'all_initiatives',
+  admin_label: new TranslatableMarkup('Paatokset all initiatives'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class AllInitiativesBlock extends BlockBase {
 
   /**

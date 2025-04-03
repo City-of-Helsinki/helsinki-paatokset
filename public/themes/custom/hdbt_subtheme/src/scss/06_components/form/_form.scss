@@ -6,18 +6,18 @@
     @include font('h1');
   }
   h1, label, .container > p {
-    color: #000;
+    color: $color-black;
   }
   button + ul li {
     font-size: 16px;
     margin-top: 0;
   }
   button + ul li[class*='Select-module_highlighted'] {
-    color: #fff!important;
-    background-color: #000!important;
+    background-color: $color-black!important;
+    color: $color-white !important;
 
     span {
-      border-color: #fff!important;
+      border-color: $color-white !important;
       box-shadow: none!important;
     }
   }
@@ -25,19 +25,19 @@
     color: rgb(102, 102, 102);
   }
   .DateSelect__predefined-ranges-container + button {
-    border-top-color: #ccc;
+    border-top-color: $color-black-20;
   }
   .DateSelect__predefined-ranges-container + button:hover {
-    background-color: #000;
-    border-color: #000;
+    background-color: $color-black;
+    border-color: $color-black;
   }
 
   // Autocomplete styles.
   .search-autocomplete {
-    border-top-color: #ccc;
+    border-top-color: $color-black-20;
     border-top-width: 1px;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
   }
   .search-autocomplete__wrapper {
@@ -45,9 +45,9 @@
     z-index: 10;
   }
   .search-autocomplete__item {
+    cursor: pointer;
     font-size: 16px;
     padding: 0.75rem 1rem;
-    cursor: pointer;
   }
 }
 
