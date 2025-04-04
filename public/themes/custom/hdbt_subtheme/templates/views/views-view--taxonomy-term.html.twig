@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Theme override for main view template.
+ */
+#}
+{%
+  set classes = [
+    'views',
+    'views--' ~ id|clean_class,
+    'views--' ~ display_id|clean_class,
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+<div{{attributes.addClass(classes)}}>
+  {{ title_prefix }}
+  {{ title }}
+  {{ title_suffix }}
+
+  {% if header %}
+    <header>
+      {{ header }}
+    </header>
+  {% endif %}
+
+  {%- if total_rows > 1 -%}
+    <h2 class="rss-feed__count-container">
+        {{ total_rows }} {% trans with {'context': 'Lupapiste rss'} %}proclamations{% endtrans %}
+    </h2>
+  {%- endif -%}
+  {{ rows }}
+
+  {{ empty }}
+  {{ feed_icons }}
+  {{ pager }}
+</div>

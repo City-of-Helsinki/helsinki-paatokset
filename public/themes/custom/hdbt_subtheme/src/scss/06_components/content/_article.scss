@@ -22,6 +22,7 @@
 
     .hds-tag a {
       background: $color-black;
+      border: 2px solid transparent;
       border-radius: $spacing-and-half;
       color: $color-white;
       display: flex;
@@ -32,7 +33,6 @@
       --outline-gutter: 2px;
       --outline-width: 3px;
       --focus-outline-color: $color-black;
-      border: 2px solid transparent;
 
       &:hover, &:active, &:focus {
         transition-duration: 85ms;

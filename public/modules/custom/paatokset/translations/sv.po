@@ -1,0 +1,42 @@
+msgid ""
+msgstr ""
+
+msgctxt "Lupapiste rss"
+msgid "Building site"
+msgstr "Byggplats"
+
+msgctxt "Lupapiste rss"
+msgid "Permit ID"
+msgstr "Tillstånds-ID"
+
+msgctxt "Lupapiste rss"
+msgid "Property ID"
+msgstr "Fastighetsbeteckning"
+
+msgctxt "Lupapiste rss"
+msgid "Decicion date"
+msgstr "Beslutsdatum"
+
+msgctxt "Lupapiste rss"
+msgid "Decision section"
+msgstr "Beslutsparagraf"
+
+msgctxt "Lupapiste rss"
+msgid "Decision maker"
+msgstr "Beslutsfattare"
+
+msgctxt "Lupapiste rss"
+msgid "Publication starts"
+msgstr "Publiceringen börjar"
+
+msgctxt "Lupapiste rss"
+msgid "Publication ends"
+msgstr "Publiceringen slutar"
+
+msgctxt "Lupapiste rss"
+msgid "@count proclamations"
+msgstr "@count kungörelser"
+
+msgctxt "Lupapiste rss"
+msgid "Building control permit decisions"
+msgstr "Byggnadstillsynens tillståndsbeslut"

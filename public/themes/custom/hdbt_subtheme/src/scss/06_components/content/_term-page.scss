@@ -7,15 +7,22 @@
   .feed-icon {
     align-items: center;
     display: flex;
-    margin-top: $spacing-quadruple;
-    text-decoration: none;
+    margin-block-start: $spacing-double;
 
     i {
-      margin-right: $spacing-half;
+      margin-inline-end: $spacing-half;
     }
 
     &:hover, &:focus, &:active {
       text-decoration: underline;
+    }
+  }
+
+  header {
+    margin-block-start: $spacing-double;
+
+    div {
+      @include font('lead');
     }
   }
 }
