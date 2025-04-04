@@ -7,7 +7,7 @@
   .feed-icon {
     align-items: center;
     display: flex;
-    margin-top: $spacing-quadruple;
+    margin-top: $spacing-double;
 
     i {
       margin-right: $spacing-half;
@@ -20,5 +20,9 @@
 
   header {
     margin-top: $spacing-double;
+
+    div {
+      @include font('lead');
+    }
   }
 }

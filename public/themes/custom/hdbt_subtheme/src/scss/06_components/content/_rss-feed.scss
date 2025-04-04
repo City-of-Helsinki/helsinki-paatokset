@@ -1,11 +1,16 @@
 .rss-item__container {
-  border-top: 1px solid $color-black-20;
+  border-bottom: 1px solid $color-black-20;
   padding-block: $spacing-and-half;
   position: relative;
 
+  &:first-of-type {
+    border-top: 1px solid $color-black-20;
+  }
+
   h3 {
-    margin-bottom: $spacing;
-    margin-top: 0;
+    @include font('h4');
+
+    margin-block: 0 $spacing;
   }
 }
 
@@ -18,23 +23,20 @@
 .rss-item__row-container {
   display: flex;
   flex-direction: column;
-  gap: $spacing;
-  margin-bottom: $spacing-half;
+  gap: $spacing-half;
+  margin-block-end: $spacing-half;
 
   &:first-of-type {
-    margin-top: $spacing;
+    margin-block-start: $spacing;
   }
 
   @include breakpoint($breakpoint-s) {
     flex-direction: row;
+    gap: $spacing;
   }
 }
 
 .rss-item__item {
-  display: flex;
-  gap: $spacing-quarter;
- 
-
   span {
     font-weight: $font-weight-bold;
   }
@@ -47,11 +49,14 @@
 
 .rss-item__publication-date {
   color: $color-black-60;
-  margin-top: $spacing;
+  column-gap: $spacing-quarter;
+  display: flex;
+  flex-wrap: wrap;
+  margin-block-start: $spacing;
 }
 
 .rss-feed__count-container {
   @include font('h3');
 
-  margin-bottom: $spacing-and-half;
+  margin-block-end: $spacing-and-half;
 }
