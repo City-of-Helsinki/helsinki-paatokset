@@ -6,6 +6,7 @@ namespace Drupal\Tests\paatokset_search\Kernel\Controller;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_search\Controller\SearchController;
+use Drupal\paatokset_search\SearchManager;
 
 /**
  * Tests search controller.
@@ -25,11 +26,10 @@ class SearchControllerTest extends KernelTestBase {
    * Tests block render.
    *
    * @covers ::__construct
-   * @covers ::create
    * @covers ::decisions
    */
   public function testDecisions(): void {
-    $controller = SearchController::create($this->container);
+    $controller = new SearchController($this->container->get(SearchManager::class));
     $build = $controller->decisions();
 
     $this->assertNotEmpty($build);

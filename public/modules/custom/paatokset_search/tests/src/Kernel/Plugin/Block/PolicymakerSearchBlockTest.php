@@ -25,7 +25,6 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
   /**
    * Tests block render.
    *
-   * @covers ::__construct
    * @covers ::create
    * @covers ::build
    */

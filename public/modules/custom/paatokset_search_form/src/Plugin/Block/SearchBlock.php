@@ -15,30 +15,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  admin_label=@Translation("Search block")
  * )
  */
-class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritDoc}
+   * The search manager.
+   *
+   * @var \Drupal\paatokset_search\SearchManager
    */
-  final public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private SearchManager $searchManager,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
+  private SearchManager $searchManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get(SearchManager::class),
-    );
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->searchManager = $container->get(SearchManager::class);
+
+    return $instance;
   }
 
   /**

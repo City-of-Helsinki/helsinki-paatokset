@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_search;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -11,20 +13,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  * Search manager class.
  */
 class SearchManager {
-
-  /**
-   * The search config.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  private $proxyConfig;
-
-  /**
-   * The search config.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  private $searchConfig;
 
   /**
    * Constructor.
@@ -41,8 +29,6 @@ class SearchManager {
     private readonly LanguageManagerInterface $languageManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
-    $this->proxyConfig = $this->configFactory->get('elastic_proxy.settings');
-    $this->searchConfig = $this->configFactory->get('paatokset_search.settings');
   }
 
   /**
@@ -58,7 +44,7 @@ class SearchManager {
    *   The render array.
    */
   public function build($type, $classes = []): array {
-    $proxyUrl = $this->proxyConfig->get('elastic_proxy_url') ?: '';
+    $proxyUrl = $this->configFactory->get('elastic_proxy.settings')->get('elastic_proxy_url') ?: '';
     $operatorGuideUrl = $this->getOperatorGuideUrl();
 
     $build = [
@@ -81,7 +67,7 @@ class SearchManager {
       $build['#attributes']['class'] = $classes;
     }
 
-    if ($sentryDsnReact = $this->searchConfig->get('sentry_dsn_react')) {
+    if ($sentryDsnReact = $this->configFactory->get('paatokset_search.settings')->get('sentry_dsn_react')) {
       $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react'] = $sentryDsnReact;
     }
 
@@ -99,7 +85,7 @@ class SearchManager {
     $currentLanguage = $this->languageManager->getCurrentLanguage();
     // Operator guide node id is set in an environment variable
     // OPERATOR_GUIDE_NODE_ID.
-    $operatorGuideNodeId = $this->searchConfig->get('operator_guide_node_id');
+    $operatorGuideNodeId = $this->configFactory->get('paatokset_search.settings')->get('operator_guide_node_id');
     $operatorGuideNode = $operatorGuideNodeId
       ? $this->entityTypeManager->getStorage('node')->load($operatorGuideNodeId)
       : NULL;

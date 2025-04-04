@@ -4,7 +4,6 @@ namespace Drupal\paatokset_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\paatokset_search\SearchManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Controller class for decisions search page.
@@ -17,18 +16,9 @@ class SearchController extends ControllerBase {
    * @param \Drupal\paatokset_search\SearchManager $searchManager
    *   The search manager.
    */
-  final public function __construct(
-    private SearchManager $searchManager,
+  public function __construct(
+    private readonly SearchManager $searchManager,
   ) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get(SearchManager::class),
-    );
   }
 
   /**
