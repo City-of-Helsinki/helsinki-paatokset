@@ -32,7 +32,7 @@
 
   @include breakpoint($breakpoint-s) {
     flex-direction: row;
-    gap: $spacing;
+    gap: $spacing-and-half;
   }
 }
 
