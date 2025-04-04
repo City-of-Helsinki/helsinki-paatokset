@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset\Lupapiste;
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Url;
 use Drupal\paatokset\Lupapiste\DTO\Collection;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -69,7 +70,7 @@ final readonly class ItemsStorage {
   }
 
   /**
-   * Loads the data for given language.
+   * Loads the Lupapiste data for given language.
    *
    * @param string $langcode
    *   The language.
@@ -91,6 +92,7 @@ final readonly class ItemsStorage {
     return new Collection(
       total: $total,
       items: $this->deserialize(json_encode($data)),
+      url: Url::fromUri($this->importer->getUri($langcode)),
     );
   }
 

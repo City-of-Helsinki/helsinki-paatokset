@@ -16,6 +16,7 @@ function paatokset_theme() : array {
       'variables' => [
         'title' => NULL,
         'content' => NULL,
+        'feed_link' => NULL,
       ],
       'template' => 'lupapiste-rss-list',
     ],

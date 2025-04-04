@@ -4,8 +4,4 @@
   </h2>
 {% endif %}
 {{ content }}
-
-{% include '@hdbt_subtheme/misc/feed-icon.html.twig' with {
-  title: 'Building control permit decisions'|t({}, {'context': 'Lupapiste rss'}),
-  url: 'https://kuulutukset.lupapiste.fi/rss/kuulutus?organization=091-R&lang=fi',
-}%}
+{{ feed_link }}

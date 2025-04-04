@@ -22,6 +22,19 @@ final class ItemsImporter {
   }
 
   /**
+   * Gets the RSS uri for given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The uri.
+   */
+  public function getUri(string $langcode): string {
+    return sprintf('https://kuulutukset.lupapiste.fi/rss/kuulutus?organization=091-R&lang=%s', $langcode);
+  }
+
+  /**
    * Fetches the RSS items.
    *
    * @param string $langcode
@@ -31,10 +44,8 @@ final class ItemsImporter {
    *   The data.
    */
   public function fetch(string $langcode) : array {
-    $uri = sprintf('https://kuulutukset.lupapiste.fi/rss/kuulutus?organization=091-R&lang=%s', $langcode);
-
     try {
-      $data = $this->httpClient->request('GET', $uri)
+      $data = $this->httpClient->request('GET', $this->getUri($langcode))
         ->getBody()
         ->getContents();
       $feed = Reader::importString($data);

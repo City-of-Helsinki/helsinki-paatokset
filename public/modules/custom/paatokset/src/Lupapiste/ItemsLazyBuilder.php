@@ -41,6 +41,7 @@ final class ItemsLazyBuilder implements TrustedCallbackInterface {
       ],
       'items' => [
         '#theme' => 'lupapiste_rss_list',
+        '#feed_link' => $collection->url,
         '#title' => '',
         '#content' => [],
       ],
