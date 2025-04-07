@@ -1,1 +1,23 @@
-# Aggregated data&#10#&#10# Available datasets:&#10# - meetings_all&#10# - meetings_latest&#10# - decisions_all&#10# - decisions_latest&#10# - cases_all&#10# - cases_latest&#10# - trustees_fi&#10# - trustees_sv&#10# - decisionmakers&#10# - decisionmakers_sv&#10# - decisionmakers_latest&#10# - decisionmakers_latest_sv&#10&#10&#10### Get aggregated data with selected dataset&#10@dataset=decisions_latest&#10&#10GET {{ahjo_proxy}}/aggregated/{{dataset}}?&#10    api-key={{api_key}}&#10
+# Aggregated data
+#
+# Available datasets:
+# - meetings_all
+# - meetings_latest
+# - decisions_all
+# - decisions_latest
+# - cases_all
+# - cases_latest
+# - trustees_fi
+# - trustees_sv
+# - decisionmakers
+# - decisionmakers_sv
+# - decisionmakers_latest
+# - decisionmakers_latest_sv
+
+
+### Get aggregated data with selected dataset
+@dataset=decisions_latest
+
+GET {{ahjo_proxy}}/aggregated/{{dataset}}?
+    api-key={{api_key}}
+

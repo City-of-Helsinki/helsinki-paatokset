@@ -1,1 +1,41 @@
-# Meetings&#10&#10### Get meetings with default values&#10GET {{ahjo_proxy}}/meetings?&#10    api-key={{api_key}}&#10&#10### Get meetings with optional values&#10@start=2025-01-01T00:00:00&#10@end=2025-05-01T00:00:00&#10@size=30&#10@decisionmaker_id=02900&#10@angendaminutespublished=true&#10&#10GET {{ahjo_proxy}}/meetings?&#10    api-key={{api_key}}&&#10    start{{start}}&&#10    end={{end}}&&#10    size={{size}}&&#10    decisionmaker_id={{decisionmaker_id}}&&#10    angendaminutespublished={{angendaminutespublished}}&#10&#10### Get a single meeting by ID&#10@meeting_id=0290020254&#10&#10GET {{ahjo_proxy}}/meetings/single/{{meeting_id}}?&#10    api-key={{api_key}}&#10&#10### Get a single agenda item by meeting ID and agenda item native ID&#10@meeting_id_for_agenda=0290020254&#10@agenda_id=BFABE630-7DCA-43E0-A73F-ECA70D167F27&#10&#10GET {{ahjo_proxy}}/agenda-item/{{meeting_id_for_agenda}}/{{agenda_id}}?&#10    api-key={{api_key}}&#10&#10&#10# Ahjo API&#10### Get a single agenda item by meeting ID and agenda item native ID&#10@from=2025-01-15&#10&#10GET {{ahjo_api}}/meetings?from={{from}}&#10
+# Meetings
+
+### Get meetings with default values
+GET {{ahjo_proxy}}/meetings?
+    api-key={{api_key}}
+
+### Get meetings with optional values
+@start=2025-01-01T00:00:00
+@end=2025-05-01T00:00:00
+@size=30
+@decisionmaker_id=02900
+@angendaminutespublished=true
+
+GET {{ahjo_proxy}}/meetings?
+    api-key={{api_key}}&
+    start{{start}}&
+    end={{end}}&
+    size={{size}}&
+    decisionmaker_id={{decisionmaker_id}}&
+    angendaminutespublished={{angendaminutespublished}}
+
+### Get a single meeting by ID
+@meeting_id=0290020254
+
+GET {{ahjo_proxy}}/meetings/single/{{meeting_id}}?
+    api-key={{api_key}}
+
+### Get a single agenda item by meeting ID and agenda item native ID
+@meeting_id_for_agenda=0290020254
+@agenda_id=BFABE630-7DCA-43E0-A73F-ECA70D167F27
+
+GET {{ahjo_proxy}}/agenda-item/{{meeting_id_for_agenda}}/{{agenda_id}}?
+    api-key={{api_key}}
+
+
+# Ahjo API
+### Get a single agenda item by meeting ID and agenda item native ID
+@from=2025-01-15
+
+GET {{ahjo_api}}/meetings?from={{from}}
+

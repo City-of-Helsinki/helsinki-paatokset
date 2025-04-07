@@ -1,1 +1,24 @@
-# Cases&#10&#10### Get cases with default values&#10GET {{ahjo_proxy}}/cases?&#10    api-key={{api_key}}&#10&#10### Get cases with optional values&#10@handledsince=2025-01-01T00:00:00&#10@end=2025-05-01T00:00:00&#10@size=30&#10&#10GET {{ahjo_proxy}}/cases?&#10    api-key={{api_key}}&&#10    handledsince={{handledsince}}&&#10    end={{end}}&&#10    size={{size}}&#10&#10### Get a single case with case ID&#10@case_id=HEL-2022-005518&#10&#10GET {{ahjo_proxy}}/cases/single/&#10    {{case_id}}?&#10    api-key={{api_key}}&#10
+# Cases
+
+### Get cases with default values
+GET {{ahjo_proxy}}/cases?
+    api-key={{api_key}}
+
+### Get cases with optional values
+@handledsince=2025-01-01T00:00:00
+@end=2025-05-01T00:00:00
+@size=30
+
+GET {{ahjo_proxy}}/cases?
+    api-key={{api_key}}&
+    handledsince={{handledsince}}&
+    end={{end}}&
+    size={{size}}
+
+### Get a single case with case ID
+@case_id=HEL-2022-005518
+
+GET {{ahjo_proxy}}/cases/single/
+    {{case_id}}?
+    api-key={{api_key}}
+
