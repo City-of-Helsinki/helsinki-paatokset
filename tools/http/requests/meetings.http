@@ -1,0 +1,41 @@
+# Meetings
+
+### Get meetings with default values
+GET {{ahjo_proxy}}/meetings?
+    api-key={{api_key}}
+
+### Get meetings with optional values
+@start=2025-01-01T00:00:00
+@end=2025-05-01T00:00:00
+@size=30
+@decisionmaker_id=02900
+@angendaminutespublished=true
+
+GET {{ahjo_proxy}}/meetings?
+    api-key={{api_key}}&
+    start{{start}}&
+    end={{end}}&
+    size={{size}}&
+    decisionmaker_id={{decisionmaker_id}}&
+    angendaminutespublished={{angendaminutespublished}}
+
+### Get a single meeting by ID
+@meeting_id=0290020254
+
+GET {{ahjo_proxy}}/meetings/single/{{meeting_id}}?
+    api-key={{api_key}}
+
+### Get a single agenda item by meeting ID and agenda item native ID
+@meeting_id_for_agenda=0290020254
+@agenda_id=BFABE630-7DCA-43E0-A73F-ECA70D167F27
+
+GET {{ahjo_proxy}}/agenda-item/{{meeting_id_for_agenda}}/{{agenda_id}}?
+    api-key={{api_key}}
+
+
+# Ahjo API
+### Get a single agenda item by meeting ID and agenda item native ID
+@from=2025-01-15
+
+GET {{ahjo_api}}/meetings?from={{from}}
+

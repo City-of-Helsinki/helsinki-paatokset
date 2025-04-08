@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile
+
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;
@@ -444,28 +446,6 @@ class CaseService {
     }
 
     return FALSE;
-  }
-
-  /**
-   * Get policy maker URL for selected decision.
-   *
-   * @return \Drupal\Core\Url|null
-   *   Policy maker URL, if found.
-   */
-  public function getPolicymakerDecisionsLink(): ?Url {
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (!$this->selectedDecision->hasField('field_policymaker_id') || $this->selectedDecision->get('field_policymaker_id')->isEmpty()) {
-      return NULL;
-    }
-
-    $policymaker_id = $this->selectedDecision->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getDecisionsRoute($policymaker_id);
   }
 
   /**

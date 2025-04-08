@@ -7,6 +7,8 @@ namespace Drupal\Tests\paatokset\Kernel\Lupapiste;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use Drupal\paatokset\Lupapiste\ItemsStorage;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Tests items storage.
@@ -14,6 +16,8 @@ use Drupal\paatokset\Lupapiste\ItemsStorage;
  * @coversDefaultClass \Drupal\paatokset\Lupapiste\ItemsStorage
  */
 class ItemsStorageTest extends KernelTestBase {
+
+  use ApiTestTrait;
 
   /**
    * {@inheritdoc}
@@ -24,45 +28,21 @@ class ItemsStorageTest extends KernelTestBase {
   ];
 
   /**
-   * Make we can save and load data with missing fields.
-   */
-  public function testSaveMissingData(): void {
-    $storage = $this->container->get(ItemsStorage::class);
-    $storage->save('fi', [
-      'title' => 'dsadsa',
-    ]);
-    $this->assertContainsOnlyInstancesOf(Item::class, $storage->load('fi'));
-  }
-
-  /**
    * Make sure we can load and save data.
    */
   public function testCrud(): void {
+    $this->container->set('http_client', $this->setupMockHttpClient([
+      new Response(),
+      new Response(),
+      new Response(body: $this->getFixture('paatokset', 'rss_fi.xml')),
+      new Response(),
+    ]));
     $storage = $this->container->get(ItemsStorage::class);
-    $this->assertEmpty($storage->load('fi'));
-    $this->assertEmpty($storage->load('nonexistent'));
+    $this->assertEmpty($storage->load('fi')->items);
+    $this->assertEmpty($storage->load('nonexistent')->items);
 
-    $storage->save('fi', [
-      [
-        'title' => 'Test title',
-        'description' => 'Test Description',
-        'link' => 'https://example.com/',
-        'pubDate' => 'now',
-        'toimenpideteksti' => 'Toimenpidetekst',
-        'rakennuspaikka' => 'Testikatu 1',
-        'lupatunnus' => 'Lupatunnus',
-        'julkaisuAlkaa' => 'now',
-        'julkaisuPaattyy' => 'now',
-        'kiinteistotunnus' => 'Kiinteistotunnus',
-        'paatosPvm' => 'now',
-        'paatoksenPykala' => 'Paatoksenpykala',
-        'paattaja' => 'Paattaja',
-        'asiakirjaLink' => 'https://example.com/',
-      ],
-    ]);
-
-    $this->assertContainsOnlyInstancesOf(Item::class, $storage->load('fi'));
-    $this->assertEmpty($storage->load('nonexistent'));
+    $this->assertContainsOnlyInstancesOf(Item::class, $storage->load('fi')->items);
+    $this->assertEmpty($storage->load('nonexistent')->items);
   }
 
 }

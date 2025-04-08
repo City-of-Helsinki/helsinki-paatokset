@@ -34,6 +34,7 @@ class CallbackTest extends AhjoKernelTestBase {
    */
   public function setUp(): void {
     parent::setUp();
+
     putenv('AHJO_PROXY_BASE_URL=https://paatokset.hel.fi/');
   }
 

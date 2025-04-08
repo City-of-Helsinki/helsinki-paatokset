@@ -7,14 +7,14 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable func-names */
 /* eslint-disable object-shorthand */
-(function ($, Drupal) {
+(function($, Drupal) {
 
   Drupal.behaviors.AccordionLazyBuild = {
-    attach: function () {
-      $(document).ready(function () {
+    attach: function() {
+      $(document).ready(function() {
 
         function closeFold(folds) {
-          let closeButton = folds.content.querySelector(
+          const closeButton = folds.content.querySelector(
             '.handorgel__close'
           );
 
@@ -25,13 +25,13 @@
               .focus();
           }
 
-          closeButton.addEventListener('mousedown', function (e) {
+          closeButton.addEventListener('mousedown', function(e) {
             folds.close();
             e.preventDefault();
             moveFocus(this);
           });
 
-          closeButton.addEventListener('keypress', function (e) {
+          closeButton.addEventListener('keypress', function(e) {
             if (e.which === 13 || e.which === 32) {
               folds.close();
               e.preventDefault();
@@ -44,7 +44,8 @@
         const accordions = document.getElementsByClassName('handorgel-lazy');
         window.handorgel_accordions_lazy = [];
 
-        for (let singleAccordion of accordions) {
+        for (const singleAccordion of accordions) {
+          /* eslint-disable */
           /* global handorgel */
           const accordion = new handorgel(singleAccordion, {
             // whether multiple folds can be opened at once
@@ -82,12 +83,13 @@
             headerDisabledClass: 'handorgel__header--disabled',
             contentDisabledClass: 'handorgel__content--disabled',
           });
+          /* eslint-enable */
 
           // Add a global variable so that we can open accordions with anchor links where needed
           window.handorgel_accordions_lazy.push(accordion);
 
           // Get all the folds associated to the accordion.
-          let folds = accordion.folds;
+          const { folds } = accordion;
 
           // Go through each fold.
           if (folds) {

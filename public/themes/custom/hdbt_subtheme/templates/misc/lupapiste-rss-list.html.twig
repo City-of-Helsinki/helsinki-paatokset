@@ -1,0 +1,13 @@
+{% if title|length %}
+  <h2 class="rss-feed__count-container">
+    {{ title }}
+  </h2>
+{% endif %}
+{{ content }}
+
+
+{% include '@hdbt_subtheme/misc/feed-icon.html.twig' with {
+  title: 'Building control permit decisions'|t({}, {'context': 'Lupapiste rss'}),
+  url: feed_link,
+}%}
+

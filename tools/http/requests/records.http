@@ -1,0 +1,8 @@
+# Records
+
+### Get a single record by ID
+@record_id=0129BBEF-9DE9-4696-BB86-06299CF5AF41
+
+GET {{ahjo_proxy}}/records/{{record_id}}?
+    api-key={{api_key}}
+

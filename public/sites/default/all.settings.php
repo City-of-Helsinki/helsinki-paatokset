@@ -14,6 +14,9 @@ $config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_
 // Sentry DSN for React.
 $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
 
+// Search operator guide node id.
+$config['paatokset_search.settings']['operator_guide_node_id'] = getenv('OPERATOR_GUIDE_NODE_ID');
+
 // AD role mapping.
 $config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
   [
@@ -69,6 +72,7 @@ $additionalEnvVars = [
   'ELASTIC_USER',
   'ELASTIC_PASSWORD',
   'SENTRY_DSN_REACT',
+  'OPERATOR_GUIDE_NODE_ID',
 ];
 
 foreach ($additionalEnvVars as $var) {

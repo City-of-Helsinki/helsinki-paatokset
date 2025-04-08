@@ -1,0 +1,22 @@
+# Organization
+
+### Get a single organization by ID
+@organization_id=00400
+@steps=2
+
+GET {{ahjo_proxy}}/organization/single/{{organization_id}}?
+    api-key={{api_key}}
+
+### Get an organization chart in Finnish by organization ID
+GET {{ahjo_proxy}}/org-chart/{{organization_id}}/{{steps}}?
+    api-key={{api_key}}
+
+### Get an organization chart in Swedish by organization ID
+GET {{ahjo_proxy_sv}}/org-chart/{{organization_id}}/{{steps}}?
+    api-key={{api_key}}
+
+# Ahjo API
+### Get an organization composition by ID
+
+GET {{ahjo_api}}/org_composition/{{organization_id}}
+

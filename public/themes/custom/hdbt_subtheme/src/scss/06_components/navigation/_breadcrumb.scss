@@ -6,9 +6,9 @@
 .breadcrumb .breadcrumb__link:last-of-type {
   @media screen and (max-width: $breakpoint-m) {
     display: block;
-    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
   }
 }
 
@@ -18,8 +18,8 @@
   @include breakpoint($breakpoint-m) {
     display: block;
   }
+  overflow-x: hidden;
 
   text-overflow: ellipsis;
-  overflow-x: hidden;
   white-space: nowrap;
 }

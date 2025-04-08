@@ -1,21 +1,28 @@
 .views--taxonomy-term {
   .policymaker-list-item {
-    border-top: 0;
     border-color: $color-black-20;
+    border-top: 0;
   }
 
   .feed-icon {
-    display: flex;
     align-items: center;
-    margin-top: $spacing-quadruple;
-    text-decoration: none;
+    display: flex;
+    margin-block-start: $spacing-double;
 
     i {
-      margin-right: $spacing-half;
+      margin-inline-end: $spacing-half;
     }
 
     &:hover, &:focus, &:active {
       text-decoration: underline;
+    }
+  }
+
+  header {
+    margin-block-start: $spacing-double;
+
+    div {
+      @include font('lead');
     }
   }
 }

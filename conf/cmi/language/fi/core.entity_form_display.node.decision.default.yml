@@ -1,0 +1,10 @@
+third_party_settings:
+  field_group:
+    group_decision_data:
+      label: 'Päätöksen kaikki tiedot'
+    group_organization_data:
+      label: 'Organisaation tiedot'
+    group_meeting_data:
+      label: 'Kokouksen tiedot'
+    group_data_checks:
+      label: 'Automaattiset tarkistukset'

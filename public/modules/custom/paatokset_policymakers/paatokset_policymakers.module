@@ -7,32 +7,16 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
+use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Webmozart\Assert\Assert;
-
-/**
- * Implements hook_node_access().
- */
-function paatokset_policymakers_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  // Disable access to organization nodes from anonymous users.
-  // The organization nodes do not contain anything useful for now.
-  if ($account->isAnonymous() && $node->gettype() == 'organization') {
-    return AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
-  }
-
-  // No opinion.
-  return AccessResult::neutral();
-}
 
 /**
  * Implements hook_ENTITY_TYPE_update().
@@ -53,12 +37,6 @@ function paatokset_policymakers_node_delete(EntityInterface $entity) {
  */
 function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
   return [
-    'organization_path' => [
-      'variables' => [
-        'organizations' => [],
-      ],
-      'path' => $path . '/templates/component',
-    ],
     'policymaker_cards' => [
       'variables' => [
         'cards' => [],
@@ -234,7 +212,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       $recentDecisions = $policymakerService->getAgendasListFromElasticSearch(2, FALSE);
       if (!empty($recentDecisions)) {
         $variables['recent_decisions'] = $recentDecisions;
-        $variables['all_decisions_link'] = $policymakerService->getDecisionsRoute();
+        $variables['all_decisions_link'] = $policymaker->getDecisionsRoute(\Drupal::languageManager()->getCurrentLanguage()->getId());
         $no_content = FALSE;
       }
     }

@@ -1,0 +1,42 @@
+{
+  "decisionMakers": [
+    {
+      "Organization": {
+        "Name": "Kaupunginvaltuusto",
+        "ID": "02900",
+        "TypeId": "1",
+        "Existing": "true",
+        "Formed": "2009-01-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Valtuusto",
+        "Sector": null,
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "Name": "Helsingin kaupunki",
+              "ID": "00001",
+              "TypeId": "13",
+              "Existing": "true",
+              "Formed": "2009-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [
+            {
+              "Name": "Kaupunginhallitus",
+              "ID": "00400",
+              "TypeId": "2",
+              "Existing": "true",
+              "Formed": "2009-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1
+        }
+      }
+    }
+  ]
+}

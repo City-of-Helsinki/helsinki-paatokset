@@ -1,70 +1,59 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_search\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_search\SearchManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Block for policymaker search.
- *
- * @Block(
- *    id = "policymaker_search_block",
- *    admin_label = @Translation("Paatokset policymaker search"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
-class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
+#[Block(
+  id: 'policymaker_search_block',
+  admin_label: new TranslatableMarkup('Paatokset policymaker search'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
+final class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritDoc}
+   * The search manager.
+   *
+   * @var \Drupal\paatokset_search\SearchManager
    */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private ImmutableConfig $proxyConfig,
-    private ImmutableConfig $searchConfig,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
+  private SearchManager $searchManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('config.factory')->get('elastic_proxy.settings'),
-      $container->get('config.factory')->get('paatokset_search.settings')
-    );
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->searchManager = $container->get(SearchManager::class);
+
+    return $instance;
   }
 
   /**
    * {@inheritDoc}
    */
   public function build(): array {
-    $proxyUrl = $this->proxyConfig->get('elastic_proxy_url') ?: '';
-
     $build = [
-      '#markup' => '<div class="paatokset-search-wrapper"><div id="paatokset_search" data-type="policymakers" data-url="' . $proxyUrl . '"></div></div>',
       '#attributes' => [
         'class' => ['policymaker-search'],
       ],
-      '#attached' => [
-        'library' => [
-          'paatokset_search/paatokset-search',
+      'search_wrapper' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['paatokset-search-wrapper'],
         ],
+        'search' => $this->searchManager->build('policymakers'),
       ],
     ];
-
-    if ($sentryDsnReact = $this->searchConfig->get('sentry_dsn_react')) {
-      $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react'] = $sentryDsnReact;
-    }
 
     return $build;
   }

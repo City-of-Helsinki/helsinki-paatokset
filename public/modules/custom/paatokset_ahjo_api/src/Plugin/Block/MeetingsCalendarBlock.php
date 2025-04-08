@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides Calendar Block.
- *
- * @Block(
- *    id = "meetings_calendar",
- *    admin_label = @Translation("Paatokset meetings calendar"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: 'meetings_calendar',
+  admin_label: new TranslatableMarkup('Paatokset meetings calendar'),
+  category: new TranslatableMarkup('Paatokset custom blocks')
+)]
 class MeetingsCalendarBlock extends BlockBase {
 
   /**

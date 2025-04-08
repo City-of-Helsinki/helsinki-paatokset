@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\OrganizationPathBuilder;
+use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +28,7 @@ class PolicymakerController extends ControllerBase {
    *   The config.
    * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
    *   Policymaker service.
-   * @param \Drupal\paatokset_policymakers\Service\OrganizationPathBuilder $organizationPathBuilderService
+   * @param \Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder $organizationPathBuilderService
    *   Organization path builder service.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    *   The logger.

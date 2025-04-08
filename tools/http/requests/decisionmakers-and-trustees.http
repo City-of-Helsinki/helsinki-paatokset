@@ -1,0 +1,15 @@
+# Decision maker
+
+### Get a single decisionmaker with decisionmaker ID
+@decision_maker_id=02900
+
+GET {{ahjo_proxy}}/decisionmaker/single/
+    {{decision_maker_id}}?
+    api-key={{api_key}}
+
+### Get a single trustee by ID
+@trustee_id=change_me
+
+GET {{ahjo_proxy}}/trustees/single/{{trustee_id}}?
+    api-key={{api_key}}
+

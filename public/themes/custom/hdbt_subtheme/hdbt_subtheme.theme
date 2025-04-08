@@ -162,6 +162,20 @@ function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$su
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  $path = \Drupal::service('path.current')->getPath();
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath($path);
+
+  $lupapiste_url = \Drupal::state()->get('lupapiste_url', '/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset');
+
+  if ($variables['view']->id() === 'taxonomy_term' && $alias === $lupapiste_url) {
+    $suggestions[] = 'views_view__lupapiste';
+  }
+}
+
+/**
  * Implements hook_preprocess_container().
  */
 function hdbt_subtheme_preprocess_container(&$variables) {
@@ -476,4 +490,13 @@ function hdbt_subtheme_preprocess_node__article(&$variables) {
   if ($node->hasField('unpublish_on') && !$node->get('unpublish_on')->isEmpty()) {
     $variables['unpublish_on'] = $node->get('unpublish_on')->getString();
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_html(&$variables): void {
+  // @todo This should be removed if UHF-11699 is done.
+  // Set instance name manually to be used as a JS variable.
+  $variables['#attached']['drupalSettings']['helfi_instance_name'] = 'paatokset';
 }

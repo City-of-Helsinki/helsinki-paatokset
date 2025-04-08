@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\source;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -39,9 +41,16 @@ abstract class AhjoSourceBase extends SourcePluginBase implements ContainerFacto
     ?MigrationInterface $migration = NULL,
   ): static {
     $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
-    $instance->logger = $container->get('logger.factory')->get('paatokset_ahjo_api');
+    $instance->logger = $container->get('logger.channel.paatokset_ahjo_api');
     $instance->ahjoProxy = $container->get('paatokset_ahjo_proxy');
     return $instance;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function __toString() {
+    return get_class($this);
   }
 
 }

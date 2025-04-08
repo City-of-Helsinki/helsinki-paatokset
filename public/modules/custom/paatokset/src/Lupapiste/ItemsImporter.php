@@ -7,6 +7,7 @@ namespace Drupal\paatokset\Lupapiste;
 use Drupal\paatokset\Lupapiste\DTO\Item;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Laminas\Feed\Exception\InvalidArgumentException;
 use Laminas\Feed\Reader\Feed\AbstractFeed;
 use Laminas\Feed\Reader\Reader;
 
@@ -21,6 +22,19 @@ final class ItemsImporter {
   }
 
   /**
+   * Gets the RSS uri for given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The uri.
+   */
+  public function getUri(string $langcode): string {
+    return sprintf('https://kuulutukset.lupapiste.fi/rss/kuulutus?organization=091-R&lang=%s', $langcode);
+  }
+
+  /**
    * Fetches the RSS items.
    *
    * @param string $langcode
@@ -30,17 +44,15 @@ final class ItemsImporter {
    *   The data.
    */
   public function fetch(string $langcode) : array {
-    $uri = sprintf('https://kuulutukset-qa.lupapiste.fi/rss/kuulutus?organization=049-R&lang=%s', $langcode);
-
     try {
-      $data = $this->httpClient->request('GET', $uri)
+      $data = $this->httpClient->request('GET', $this->getUri($langcode))
         ->getBody()
         ->getContents();
+      $feed = Reader::importString($data);
     }
-    catch (GuzzleException) {
+    catch (GuzzleException | InvalidArgumentException) {
       return [];
     }
-    $feed = Reader::importString($data);
     assert($feed instanceof AbstractFeed);
 
     $feed->getXpath()->registerNamespace('lupapiste', 'https://www.lupapiste.fi/rss/extensions');
@@ -53,7 +65,6 @@ final class ItemsImporter {
     };
 
     $items = [];
-
     $keys = get_class_vars(Item::class);
 
     foreach ($feed as $delta => $item) {

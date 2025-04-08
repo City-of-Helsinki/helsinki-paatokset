@@ -1,31 +1,31 @@
 .container.frontpage-calendar__container {
+  margin-bottom: $spacing-quadruple;
+  margin-top: $spacing-quadruple;
   max-width: none;
   padding-left: 0;
   padding-right: 0;
-  margin-top: $spacing-quadruple;
-  margin-bottom: $spacing-quadruple;
 
   @include breakpoint($breakpoint-l) {
-    margin-top: $spacing-quadruple * 2;
     margin-bottom: $spacing-quadruple * 2;
+    margin-top: $spacing-quadruple * 2;
   }
 }
 
 .frontpage-calendar {
-  background-color: #f7f7f8;
-  position: relative;
+  background-color: $color-silver-light;
   margin-top: 50px;
+  position: relative;
 
   .hds-koros {
-    position: absolute;
-    top: -50px;
-    right: 0;
     left: 0;
+    position: absolute;
+    right: 0;
+    top: -50px;
   }
 
   h2 {
-    padding: $spacing-quadruple*2 0 0 0;
     margin-bottom: 36px;
+    padding: $spacing-quadruple*2 0 0 0;
 
     @include breakpoint($breakpoint-s) {
       margin-bottom: $spacing-triple;
@@ -54,11 +54,11 @@
   }
 
   a {
+    align-items: center;
     display: flex;
-    text-decoration: none;
     font-size: 18px;
     font-weight: $font-weight-medium;
-    align-items: center;
+    text-decoration: none;
 
     &:hover, &:focus, &:active {
       text-decoration: underline;
@@ -71,15 +71,15 @@
   flex-wrap: wrap;
 
   @include breakpoint($breakpoint-s) {
-    margin: 0 -12px 60px -12px;
+    margin: 0 -$spacing-three-quarters 60px -$spacing-three-quarters;
   }
 }
 
 .frontpage-calendar__item {
-  width: 100%;
   min-height: 282px;
-  padding: 8px 0;
+  padding: $spacing-half 0;
   text-decoration: none;
+  width: 100%;
 
   &:hover {
     .motions-link {
@@ -88,7 +88,7 @@
   }
 
   @include breakpoint($breakpoint-m) {
-    padding: 12px;
+    padding: $spacing-three-quarters;
     width: 50%;
   }
 
@@ -101,16 +101,16 @@
   }
 
   .motions-link {
-    font-size: 16px;
-    display: flex;
     align-items: center;
-    text-decoration: none;
+    display: flex;
+    font-size: 16px;
     font-weight: $font-weight-medium;
+    text-decoration: none;
 
     i {
       height: 18px;
+      margin-right: $spacing-three-quarters;
       width: 18px;
-      margin-right: 12px;
     }
 
     span {
@@ -119,14 +119,14 @@
   }
 
   .color-line {
-    height: 8px;
+    height: $spacing-half;
   }
 
   .content-container {
-    padding: $spacing-and-half;
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: $spacing-and-half;
   }
 
   .meeting-date {
@@ -137,7 +137,7 @@
   h3 {
     flex-grow: 1;
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     margin-top: 0;
 
     @include breakpoint($breakpoint-s) {
@@ -147,11 +147,11 @@
 }
 
 .frontpage-calendar__item-inner {
-  background-color: white;
+  background-color: $color-white;
   height: 100%;
 }
 
 .frontpage-calendar__notice {
-  margin-bottom: 24px;
-  margin-top: -24px;
+  margin-bottom: $spacing-and-half;
+  margin-top: -$spacing-and-half;
 }
