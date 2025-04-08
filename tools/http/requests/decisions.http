@@ -1,0 +1,28 @@
+# Decisions
+
+### Get decisions with default values
+GET {{ahjo_proxy}}/decisions?
+    api-key={{api_key}}
+
+### Get decisions with optional values
+@handledsince=2025-01-01T00:00:00
+@end=2025-05-01T00:00:00
+@size=30
+@decisionmaker_id=02900
+@meeting_id=0290020254
+
+GET {{ahjo_proxy}}/decisions?
+    api-key={{api_key}}&
+    handledsince={{handledsince}}&
+    end={{end}}&
+    size={{size}}&
+    decisionmaker_id={{decisionmaker_id}}&
+    meeting_id={{meeting_id}}
+
+### Get a single decision with decision ID
+@decision_id=0129BBEF-9DE9-4696-BB86-06299CF5AF41
+
+GET {{ahjo_proxy}}/decisions/single/
+    {{decision_id}}?
+    api-key={{api_key}}
+
