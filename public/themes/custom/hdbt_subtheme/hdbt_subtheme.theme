@@ -491,3 +491,12 @@ function hdbt_subtheme_preprocess_node__article(&$variables) {
     $variables['unpublish_on'] = $node->get('unpublish_on')->getString();
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_html(&$variables): void {
+  // @todo This should be removed if UHF-11699 is done.
+  // Set instance name manually to be used as a JS variable.
+  $variables['#attached']['drupalSettings']['helfi_instance_name'] = 'paatokset';
+}
