@@ -54,7 +54,7 @@ class ColorClass extends ProcessorPluginBase {
 
     $colorClass = NULL;
     if ($node instanceof Decision) {
-      $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass();
+      $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass() ?? 'color-sumu';
     }
     elseif ($node instanceof Policymaker) {
       $colorClass = $node->getPolicymakerClass();

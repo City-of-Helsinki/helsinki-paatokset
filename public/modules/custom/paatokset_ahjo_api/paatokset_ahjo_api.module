@@ -292,7 +292,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   $meetings_with_color = [];
   foreach ($all_meetings as $meeting) {
     $policymaker = $policymakerService->getPolicyMaker($meeting['policymaker']);
-    $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-none');
+    $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
     $meetings_with_color[] = $meeting;
   }
 
