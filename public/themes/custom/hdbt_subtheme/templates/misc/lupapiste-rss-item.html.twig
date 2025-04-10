@@ -7,10 +7,14 @@
 {% set link_attributes = {
   'class': [
     'rss-item__link',
-  ]
+  ],
+  'data-download-pdf': true,
 } %}
+
+{% set link_title = item.title ~ ' ' ~ '(download pdf)'|t({}, {'context': 'Lupapiste rss'}) %}
+
 <div class="rss-item__container">
-  <h3>{{ link(item.title, item.asiakirjaLink, link_attributes) }}</h3>
+  <h3>{{ link(link_title, item.asiakirjaLink, link_attributes) }}</h3>
   <div>
     <div class="rss-item__row-container">
       <div class="rss-item__item">

@@ -14,10 +14,25 @@
   }
 }
 
-.rss-item__link::after {
-  content: '';
-  inset: 0;
-  position: absolute;
+
+.rss-item__link {
+  // Overrides the default external link icon.
+  .link__type--external {
+    @include pseudo-icon('download', calc(var(--line-height) * 1em), currentColor, inline-block)
+  }
+
+  // Hides the external link text from screen readers since the link
+  // is not external but a download link.
+  .visually-hidden {
+    display: none;
+  }
+
+  // Make the whole card clickable.
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+  }
 }
 
 .rss-item__row-container {
