@@ -15,7 +15,7 @@
 }
 
 
-.rss-item__link {
+.rss-item__link--download {
   // Overrides the default external link icon.
   .link__type--external {
     @include pseudo-icon('download', calc(var(--line-height) * 1em), currentColor, inline-block)
