@@ -9,12 +9,12 @@ msgstr "Se röstningsresultatet i tabellform"
 msgid "Read motion (Opens in a new tab)"
 msgstr "Läs motionen (Öppnas i en ny flik)"
 
-msgid "Meeting moved, original time: @orig_time"
-msgstr "Möte flyttade, gammal tid: @orig_time"
+msgid "Meeting moved"
+msgstr "Möte flyttade"
 
 msgctxt "Meetings calendar"
-msgid "meeting moved, original time: @orig_time"
-msgstr "möte flyttade, gammal tid: @orig_time"
+msgid "meeting moved"
+msgstr "möte flyttade"
 
 msgid "There's an error with this attachment. We are resolving the issue as soon as possible."
 msgstr "Det finns ett fel i den publicerade bilagan. Vi rättar till felet så fort som möjligt."

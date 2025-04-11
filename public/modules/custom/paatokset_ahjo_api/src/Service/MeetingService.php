@@ -153,9 +153,7 @@ class MeetingService {
         $additional_info = $this->t('Meeting cancelled');
       }
       elseif ($orig_timestamp && $orig_timestamp !== $timestamp) {
-        $additional_info = $this->t('Meeting moved, original time: @orig_time', [
-          '@orig_time' => date('d.m. H:i', $orig_timestamp),
-        ]);
+        $additional_info = $this->t('Meeting moved');
         $meeting_moved = TRUE;
       }
 

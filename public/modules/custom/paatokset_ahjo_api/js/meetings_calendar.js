@@ -217,9 +217,7 @@
             return dayjs(date).weekday();
           },
           meetingMoved(orig_time) {
-            return window.Drupal.t('meeting moved, original time: @orig_time', {
-              '@orig_time': orig_time
-            }, {context: 'Meetings calendar'});
+            return window.Drupal.t('meeting moved', {}, {context: 'Meetings calendar'});
           },
         },
         computed: {
