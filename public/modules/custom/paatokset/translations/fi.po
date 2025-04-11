@@ -40,3 +40,7 @@ msgstr "@count kuulutusta"
 msgctxt "Lupapiste rss"
 msgid "Building control permit decisions"
 msgstr "Rakennusvalvonnan lupapäätökset"
+
+msgctxt "Lupapiste rss"
+msgid "(download pdf)"
+msgstr "(lataa pdf)"
