@@ -9,12 +9,12 @@ msgstr "Katso äänestystulos taulukkona"
 msgid "Read motion (Opens in a new tab)"
 msgstr "Lue esitys (Avautuu uuteen välilehteen)"
 
-msgid "Meeting moved, original time: @orig_time"
-msgstr "Kokousta siirretty, alkuperäinen ajankohta: @orig_time"
+msgid "Meeting moved"
+msgstr "Kokousta siirretty"
 
 msgctxt "Meetings calendar"
-msgid "meeting moved, original time: @orig_time"
-msgstr "kokousta siirretty, alkuperäinen ajankohta: @orig_time"
+msgid "meeting moved"
+msgstr "kokousta siirretty"
 
 msgid "There's an error with this attachment. We are resolving the issue as soon as possible."
 msgstr "Liitteen julkaisussa on virhe. Korjaamme virheen mahdollisimman pian."
