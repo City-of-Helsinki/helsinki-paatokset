@@ -11,7 +11,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -126,12 +128,14 @@ class CaseService {
       return $this->getDefaultDecision($caseId);
     }
 
-    /** @var \Drupal\node\NodeInterface $decision */
     if (!empty($decision = $this->getDecisionFromQuery($case))) {
+      /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
       return $decision;
     }
 
-    return $this->getDecisionFromRedirect($caseId);
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
+    $decision = $this->getDecisionFromRedirect($caseId);
+    return $decision;
   }
 
   /**
@@ -208,16 +212,6 @@ class CaseService {
       'limit' => 1,
     ]);
     $this->selectedDecision = array_shift($decision_nodes);
-  }
-
-  /**
-   * Get active case, if set.
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   Active case entity.
-   */
-  public function getSelectedCase(): ?NodeInterface {
-    return $this->case;
   }
 
   /**
@@ -410,51 +404,6 @@ class CaseService {
 
     assert(!$entity || $entity instanceof NodeInterface);
     return $entity;
-  }
-
-  /**
-   * Get page main heading either from case or decision node.
-   *
-   * @return string|null
-   *   Main heading or NULL if neither case nor decision have been set.
-   */
-  public function getDecisionHeading(): ?string {
-    if ($this->case instanceof NodeInterface && $this->case->hasField('field_full_title') && !$this->case->get('field_full_title')->isEmpty()) {
-      return $this->case->get('field_full_title')->value;
-    }
-
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if ($this->selectedDecision->hasField('field_decision_case_title') && !$this->selectedDecision->get('field_decision_case_title')->isEmpty()) {
-      return $this->selectedDecision->get('field_decision_case_title')->value;
-    }
-
-    if ($this->selectedDecision->hasField('field_full_title') && !$this->selectedDecision->get('field_full_title')->isEmpty()) {
-      return $this->selectedDecision->get('field_full_title')->value;
-    }
-
-    return $this->selectedDecision->title->value;
-  }
-
-  /**
-   * Check if selected case has no title.
-   *
-   * @return bool
-   *   TRUE if case is set but has no own title.
-   */
-  public function checkIfNoCaseTitle(): bool {
-    // If no case is set, return FALSE.
-    if (!$this->case instanceof NodeInterface) {
-      return FALSE;
-    }
-
-    if ($this->case->hasField('field_no_title_for_case') && $this->case->get('field_no_title_for_case')->value) {
-      return TRUE;
-    }
-
-    return FALSE;
   }
 
   /**
@@ -892,18 +841,18 @@ class CaseService {
    *
    * @param \Drupal\paatokset_ahjo_api\Entity\Decision $node
    *   Decision node.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker $policymaker
+   *   Policymaker used in the label.
    *
    * @return string
    *   Formatted label.
    */
-  public function formatDecisionLabel(Decision $node): string {
-    $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
-
+  public function formatDecisionLabel(Decision $node, ?Policymaker $policymaker): string {
     // If policymaker node cannot be found, use value from decision node.
     $org_label = $policymaker?->getPolicymakerName() ?? $node->getDecisionMakerOrgName();
 
     $meeting_number = $node->field_meeting_sequence_number->value;
-    if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
+    if (!$node->get('field_meeting_date')->isEmpty()) {
       $decision_timestamp = strtotime($node->field_meeting_date->value);
     }
     else {
@@ -920,214 +869,92 @@ class CaseService {
       $label = $org_label . ' ' . $decision_date;
     }
     else {
-      $label = $node->title->value . ' ' . $decision_date;
+      $label = $node->label() . ' ' . $decision_date;
     }
 
     return $label;
   }
 
   /**
-   * Get all decisions for case.
+   * Get policymakers for multiple decision.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
+   * This is an optimization to avoid N+1 queries when
+   * calling Decision::getPolicymaker() in a loop.
    *
-   * @return array
-   *   Array of decision nodes.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision[] $decisions
+   *   List of decisions.
+   *
+   * @return array<string, Policymaker>
+   *   Policymakers for given decisions keyed by policymaker ids.
    */
-  public function getAllDecisions(?string $case_id = NULL): array {
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
+  private function loadPolicymakers(array $decisions): array {
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
-    if ($case_id === NULL) {
+    // Load all policymakers in as few queries as possible.
+    $policymakerIds = array_unique(array_map(static fn (Decision $decision) => $decision->getPolicymakerId(), $decisions));
+
+    if (empty($policymakerIds)) {
       return [];
     }
 
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+    $storage = $this->entityTypeManager
+      ->getStorage('node');
 
-    $results = $this->decisionQuery([
-      'case_id' => $case_id,
-    ]);
+    $nids = $storage->getQuery()
+      ->accessCheck()
+      ->condition('type', 'policymaker')
+      ->condition('status', 1)
+      ->condition('field_policymaker_id', $policymakerIds, 'IN')
+      ->execute();
 
-    $native_results = [];
-    foreach ($results as $node) {
-      // Store all unique IDs for current language decisions.
-      if ($node->langcode->value === $currentLanguage) {
-        $native_results[] = $node->field_unique_id->value;
+    $policymakers = $storage->loadMultiple($nids);
+
+    $result = [];
+    foreach ($policymakers as $policymaker) {
+      assert($policymaker instanceof Policymaker);
+
+      if ($policymaker->hasTranslation($currentLanguage)) {
+        $policymaker = $policymaker->getTranslation($currentLanguage);
       }
+
+      $result[$policymaker->getPolicymakerId()] = $policymaker;
     }
 
-    // Loop through results again and remove any decisions where:
-    // - The language is not the currently active language.
-    // - Another decision with the same ID exists in the active language.
-    foreach ($results as $key => $node) {
-      if ($node->langcode->value !== $currentLanguage && in_array($node->field_unique_id->value, $native_results)) {
-        unset($results[$key]);
-      }
-    }
-
-    // Sort decisions by timestamp and then again by section numbering.
-    // Has to be done here because query sees sections as text, not numbers.
-    usort($results, function ($item1, $item2) {
-      if ($item1->get('field_meeting_date')->isEmpty()) {
-        $item1_timestamp = 0;
-        $item1_date = NULL;
-      }
-      else {
-        $item1_timestamp = strtotime($item1->get('field_meeting_date')->value);
-        $item1_date = date('d.m.Y', $item1_timestamp);
-      }
-      if ($item2->get('field_meeting_date')->isEmpty()) {
-        $item2_timestamp = 0;
-        $item2_date = NULL;
-      }
-      else {
-        $item2_timestamp = strtotime($item2->get('field_meeting_date')->value);
-        $item2_date = date('d.m.Y', $item2_timestamp);
-      }
-      if ($item1->get('field_decision_section')->isEmpty()) {
-        $item1_section = 0;
-      }
-      else {
-        $item1_section = (int) $item1->get('field_decision_section')->value;
-      }
-      if ($item2->get('field_decision_section')->isEmpty()) {
-        $item2_section = 0;
-      }
-      else {
-        $item2_section = (int) $item2->get('field_decision_section')->value;
-      }
-
-      if ($item1_date === $item2_date) {
-        return $item2_section - $item1_section;
-      }
-
-      return $item2_timestamp - $item1_timestamp;
-    });
-
-    return $results;
+    return $result;
   }
 
   /**
    * Get decisions list for dropdown.
    *
-   * @param string|null $case_id
+   * @param \Drupal\paatokset_ahjo_api\Entity\CaseBundle $case
    *   Case ID. Leave NULL to use active case.
    *
    * @return array
    *   Dropdown contents.
    */
-  public function getDecisionsList(?string $case_id = NULL): array {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'en') {
-      $currentLanguage = 'fi';
-    }
+  public function getDecisionsList(CaseBundle $case): array {
+    $decisions = $case->getAllDecisions();
+    $policymakers = $this->loadPolicymakers($decisions);
 
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
-    $decisions = $this->getAllDecisions($case_id);
-
-    $native_results = [];
     $results = [];
     foreach ($decisions as $node) {
-      assert($node instanceof Decision);
-      $label = $this->formatDecisionLabel($node);
-      $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
-      $class = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
-
-      // Store all unique IDs for current language decisions.
-      if ($node->langcode->value === $currentLanguage) {
-        $native_results[] = $node->field_unique_id->value;
-      }
+      // Policymakers are loaded beforehand to prevent N+1 query here.
+      $policymaker = $policymakers[$node->getPolicymakerId()] ?? NULL;
 
       $results[] = [
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
-        'langcode' => $node->langcode->value,
+        'langcode' => $node->language()->getId(),
         'native_id' => $this->normalizeNativeId($node->getNativeId()),
-        'title' => $node->title->value,
+        'title' => $node->label(),
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,
-        'label' => $label,
-        'class' => $class,
+        'label' => $this->formatDecisionLabel($node, $policymaker),
+        'class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       ];
     }
 
-    // Loop through results again and remove any decisions where:
-    // - The language is not the currently active language.
-    // - Another decision with the same ID exists in the active language.
-    foreach ($results as $key => $result) {
-      if ($result['langcode'] !== $currentLanguage && in_array($result['unique_id'], $native_results)) {
-        unset($results[$key]);
-      }
-    }
-
     return $results;
-  }
-
-  /**
-   * Get next decision in list, if one exists.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of next decision in list.
-   */
-  public function getNextDecision(Decision $decision): ?array {
-    return $this->getAdjacentDecision(-1, $decision);
-  }
-
-  /**
-   * Get previous decision in list, if one exists.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of previous decision in list.
-   */
-  public function getPrevDecision(Decision $decision): ?array {
-    return $this->getAdjacentDecision(1, $decision);
-  }
-
-  /**
-   * Get adjacent decision in list, if one exists.
-   *
-   * @param int $offset
-   *   Which offset to use (1 for previous, -1 for next, etc).
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of adjacent decision in list.
-   */
-  private function getAdjacentDecision(int $offset, Decision $decision): ?array {
-    $case_id = $decision->getDiaryNumber();
-
-    $all_decisions = array_values($this->getAllDecisions($case_id));
-    $found_node = NULL;
-    foreach ($all_decisions as $key => $value) {
-      if ((string) $value->id() !== $decision->id()) {
-        continue;
-      }
-
-      if (isset($all_decisions[$key + $offset])) {
-        $found_node = $all_decisions[$key + $offset];
-      }
-      break;
-    }
-
-    if (!$found_node instanceof Decision) {
-      return [];
-    }
-
-    return [
-      'title' => $found_node->title->value,
-      'id' => $this->normalizeNativeId($found_node->getNativeId()),
-    ];
   }
 
   /**

@@ -1,0 +1,23 @@
+uuid: 9715ed4c-3b0a-4dc8-9cd0-c028cd0f4d46
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_no_title_for_case
+    - node.type.case
+id: node.case.field_no_title_for_case
+field_name: field_no_title_for_case
+entity_type: node
+bundle: case
+label: 'No title for case'
+description: 'This is set if the case does not have a title, and uses the first decision title instead.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
