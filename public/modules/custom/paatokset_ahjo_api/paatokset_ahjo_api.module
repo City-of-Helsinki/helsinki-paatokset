@@ -389,45 +389,6 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
 }
 
 /**
- * Get english version of finnish sector name.
- *
- * @param string $sector
- *   Sector name.
- *
- * @return string
- *   English translation of sector, or original value.
- */
-function _paatokset_ahjo_api_get_sector_english_translation(string $sector): string {
-  switch ($sector) {
-    case 'Kasvatuksen ja koulutuksen toimiala':
-      $value = 'Education Division';
-      break;
-
-    case 'Kaupunkiympäristön toimiala':
-      $value = 'Urban Environment Division';
-      break;
-
-    case 'Keskushallinto':
-      $value = 'Central Administration';
-      break;
-
-    case 'Kulttuurin ja vapaa-ajan toimiala':
-      $value = 'Culture and Leisure Division';
-      break;
-
-    case 'Sosiaali- ja terveystoimiala':
-      $value = 'Social Services and Health Care Division';
-      break;
-
-    default:
-      $value = $sector;
-      break;
-  }
-
-  return $value;
-}
-
-/**
  * Preprocess all initiatives block.
  */
 function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables): void {
@@ -874,7 +835,7 @@ function _paatokset_ahjo_api_string_to_boolean(mixed $value): bool {
  *   An array of meeting documents.
  *
  * @return bool
- *   TRUE is thee minutes are found, FALSE if they are not.
+ *   TRUE is the minutes are found, FALSE if they are not.
  */
 function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   if (empty($documents) || !is_array($documents)) {

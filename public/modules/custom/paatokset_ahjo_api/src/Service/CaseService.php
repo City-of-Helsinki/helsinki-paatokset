@@ -1,12 +1,12 @@
 <?php
 
-// phpcs:ignoreFile
-
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
@@ -59,10 +59,16 @@ class CaseService {
    *   The language manager.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The route match.
    */
   public function __construct(
     private readonly LanguageManagerInterface $languageManager,
     private readonly RequestStack $requestStack,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly RouteMatchInterface $routeMatch,
   ) {
   }
 
@@ -132,8 +138,8 @@ class CaseService {
    * Set case and decision entities based on path. Only works on case paths!
    */
   public function setEntitiesByPath(): void {
-    $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
-    $case = \Drupal::routeMatch()->getParameter($entityTypeIndicator);
+    $entityTypeIndicator = $this->routeMatch->getParameters()->keys()[0];
+    $case = $this->routeMatch->getParameter($entityTypeIndicator);
 
     // For custom routes we just get the ID from the route parameter.
     if (!$case instanceof NodeInterface) {
@@ -278,18 +284,16 @@ class CaseService {
       return NULL;
     }
 
-    $decision = reset($nodes);
-
-    return $decision;
+    return reset($nodes);
   }
 
   /**
    * Get decision from query parameters.
    *
-   * @param \Drupal\node\Entity\NodeInterface $case
+   * @param \Drupal\node\NodeInterface $case
    *   Current case node.
    *
-   * @return \Drupal\node\Entity\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node or NULL if no decision is found from the query.
    */
   public function getDecisionFromQuery(NodeInterface $case): ?NodeInterface {
@@ -373,11 +377,11 @@ class CaseService {
    *   Source path to check.
    *
    * @return \Drupal\node\NodeInterface|null
-   *   Node, if a redirect is found and it points directly to entity.
+   *   Node, if a redirect is found, and it points directly to entity.
    */
   private function getNodeFromRedirectSource(string $source_path): ?NodeInterface {
     /** @var \Drupal\redirect\RedirectRepository $redirectRepository */
-    $redirectRepository = \Drupal::service('redirect.repository');
+    $redirectRepository = \Drupal::service('redirect.repository'); // phpcs:ignore
     $redirect_entity = $redirectRepository->findBySourcePath($source_path);
 
     if (empty($redirect_entity)) {
@@ -400,14 +404,19 @@ class CaseService {
       return NULL;
     }
 
-    return Node::load($parameters['node']);
+    $entity = $this->entityTypeManager
+      ->getStorage('node')
+      ->load($parameters['node']);
+
+    assert(!$entity || $entity instanceof NodeInterface);
+    return $entity;
   }
 
   /**
    * Get page main heading either from case or decision node.
    *
    * @return string|null
-   *   Main heading or NULL if neither case or decision have been set.
+   *   Main heading or NULL if neither case nor decision have been set.
    */
   public function getDecisionHeading(): ?string {
     if ($this->case instanceof NodeInterface && $this->case->hasField('field_full_title') && !$this->case->get('field_full_title')->isEmpty()) {
@@ -545,7 +554,7 @@ class CaseService {
     $id = $this->normalizeNativeId($id);
     $path .= '/' . $id;
 
-    $path_alias_repository = \Drupal::service('path_alias.repository');
+    $path_alias_repository = \Drupal::service('path_alias.repository'); // phpcs:ignore
 
     $decision_alias = $path_alias_repository->lookUpByAlias($path, $langcode);
     // Correct decision can't be found with this method if alias is null.
@@ -593,7 +602,7 @@ class CaseService {
    * @param string|null $section
    *   Decision section, if set, to differentiate between multiple same titles.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   Decision URL, if found.
    */
   public function getDecisionUrlByTitle(string $title, string $meeting_id, ?string $section = NULL): ?Url {
@@ -670,12 +679,12 @@ class CaseService {
   /**
    * Get localized decision URL from node.
    *
-   * @param Drupal\node\NodeInterface|null $decision
+   * @param \Drupal\node\NodeInterface|null $decision
    *   Decision node, or default.
    * @param string|null $langcode
    *   Langcode to get URL for. Defaults to current language.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
@@ -821,7 +830,8 @@ class CaseService {
       return FALSE;
     }
 
-    $nids = \Drupal::entityQuery('node')
+    $nids = $this->entityTypeManager->getStorage('node')
+      ->getQuery()
       ->condition('type', self::DECISION_NODE_TYPE)
       ->condition('status', 1)
       ->condition('field_unique_id', $decision->get('field_unique_id')->getString())
@@ -1218,133 +1228,39 @@ class CaseService {
     $code = array_shift($bits);
     $key = $code . '-' . $langcode;
 
-    switch ($key) {
-      case "00-fi":
-        $name = "Hallintoasiat";
-        break;
-
-      case "00-sv":
-        $name = "Förvaltningsärenden";
-        break;
-
-      case "01-fi":
-        $name = "Henkilöstöasiat";
-        break;
-
-      case "01-sv":
-        $name = "Personalärenden";
-        break;
-
-      case "02-fi":
-        $name = "Talousasiat, verotus ja omaisuuden hallinta";
-        break;
-
-      case "02-sv":
-        $name = "Ekonomi, beskattning och egendomsförvaltning";
-        break;
-
-      case "03-fi":
-        $name = "Lainsäädäntö ja lainsäädännön soveltaminen";
-        break;
-
-      case "03-sv":
-        $name = "Lagstiftning och dess tillämpning";
-        break;
-
-      case "04-fi":
-        $name = "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
-        break;
-
-      case "04-sv":
-        $name = "Internationell verksamhet och migrationspolitik";
-        break;
-
-      case "05-fi":
-        $name = "Sosiaalitoimi";
-        break;
-
-      case "05-sv":
-        $name = "Socialvård";
-        break;
-
-      case "06-fi":
-        $name = "Terveydenhuolto";
-        break;
-
-      case "06-sv":
-        $name = "Hälsovård";
-        break;
-
-      case "07-fi":
-        $name = "Tiedon hallinta";
-        break;
-
-      case "07-sv":
-        $name = "Informationshantering";
-        break;
-
-      case "08-fi":
-        $name = "Liikenne";
-        break;
-
-      case "08-sv":
-        $name = "Trafik";
-        break;
-
-      case "09-fi":
-        $name = "Turvallisuus ja yleinen järjestys";
-        break;
-
-      case "09-sv":
-        $name = "Säkerhet och allmän ordning";
-        break;
-
-      case "10-fi":
-        $name = "Maankäyttö, rakentaminen ja asuminen";
-        break;
-
-      case "10-sv":
-        $name = "Markanvändning, byggande och boende";
-        break;
-
-      case "11-fi":
-        $name = "Ympäristöasia";
-        break;
-
-      case "11-sv":
-        $name = "Miljöärenden";
-        break;
-
-      case "12-fi":
-        $name = "Opetus- ja sivistystoimi";
-        break;
-
-      case "12-sv":
-        $name = "Undervisnings- och bildningsväsende";
-        break;
-
-      case "13-fi":
-        $name = "Tutkimus- ja kehittämistoiminta";
-        break;
-
-      case "13-sv":
-        $name = "Forskning och utveckling";
-        break;
-
-      case "14-fi":
-        $name = "Elinkeino- ja työvoimapalvelut";
-        break;
-
-      case "14-sv":
-        $name = "Näringslivs- och arbetskraftstjänster";
-        break;
-
-      default:
-        $name = NULL;
-        break;
-    }
-
-    return $name;
+    return match ($key) {
+      "00-fi" => "Hallintoasiat",
+      "00-sv" => "Förvaltningsärenden",
+      "01-fi" => "Henkilöstöasiat",
+      "01-sv" => "Personalärenden",
+      "02-fi" => "Talousasiat, verotus ja omaisuuden hallinta",
+      "02-sv" => "Ekonomi, beskattning och egendomsförvaltning",
+      "03-fi" => "Lainsäädäntö ja lainsäädännön soveltaminen",
+      "03-sv" => "Lagstiftning och dess tillämpning",
+      "04-fi" => "Kansainvälinen toiminta ja maahanmuuttopolitiikka",
+      "04-sv" => "Internationell verksamhet och migrationspolitik",
+      "05-fi" => "Sosiaalitoimi",
+      "05-sv" => "Socialvård",
+      "06-fi" => "Terveydenhuolto",
+      "06-sv" => "Hälsovård",
+      "07-fi" => "Tiedon hallinta",
+      "07-sv" => "Informationshantering",
+      "08-fi" => "Liikenne",
+      "08-sv" => "Trafik",
+      "09-fi" => "Turvallisuus ja yleinen järjestys",
+      "09-sv" => "Säkerhet och allmän ordning",
+      "10-fi" => "Maankäyttö, rakentaminen ja asuminen",
+      "10-sv" => "Markanvändning, byggande och boende",
+      "11-fi" => "Ympäristöasia",
+      "11-sv" => "Miljöärenden",
+      "12-fi" => "Opetus- ja sivistystoimi",
+      "12-sv" => "Undervisnings- och bildningsväsende",
+      "13-fi" => "Tutkimus- ja kehittämistoiminta",
+      "13-sv" => "Forskning och utveckling",
+      "14-fi" => "Elinkeino- ja työvoimapalvelut",
+      "14-sv" => "Näringslivs- och arbetskraftstjänster",
+      default => NULL,
+    };
   }
 
   /**
@@ -1355,7 +1271,7 @@ class CaseService {
    * @param string $version_id
    *   VersionSeriesId for motion PDF document.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found.
    */
   public function findMotionById(string $native_id, string $version_id): ?NodeInterface {
@@ -1396,7 +1312,7 @@ class CaseService {
    * @param string $title
    *   Motion title (used in case there are multiple motions with same id).
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found.
    */
   public function findOrCreateMotionByMeetingData(?string $version_id, ?string $case_id, string $meeting_id, string $title): ?NodeInterface {
@@ -1482,7 +1398,11 @@ class CaseService {
     $sort = $params['sort'] ?? 'DESC';
     $sort_by = $params['sort_by'] ?? 'field_created';
 
-    $query = \Drupal::entityQuery('node')
+    $storage = $this->entityTypeManager
+      ->getStorage('node');
+
+    $query = $storage
+      ->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', $params['type'])
@@ -1553,7 +1473,7 @@ class CaseService {
       return $ids;
     }
 
-    return Node::loadMultiple($ids);
+    return $storage->loadMultiple($ids);
   }
 
   /**
