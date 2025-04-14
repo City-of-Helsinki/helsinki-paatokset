@@ -29,7 +29,7 @@ drush migrate:import allu_approvals
 
 Import historical data:
 ```shell
-drush allu:run-allu-migration allu_decisions --start="-5 year" --update
+drush allu:run-allu-migration allu_decisions --after="-5 year" --update
 ```
 Check all available parameters with `--help` option.
 

@@ -26,5 +26,9 @@ function paatokset_theme() : array {
       ],
       'template' => 'lupapiste-rss-item',
     ],
+    'allu_decisions_search_block' => [
+      'variables' => [],
+      'template' => 'allu-decisions-search-block',
+    ]
   ];
 }
