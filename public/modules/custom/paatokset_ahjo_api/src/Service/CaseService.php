@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
@@ -36,25 +35,6 @@ class CaseService {
   const DECISION_NODE_TYPE = 'decision';
 
   /**
-   * Case node.
-   *
-   * @var \Drupal\node\Entity\Node
-   */
-  private $case;
-
-  /**
-   * Decision node.
-   */
-  private Decision|null $selectedDecision = NULL;
-
-  /**
-   * Case diary number.
-   *
-   * @var string
-   */
-  private $caseId;
-
-  /**
    * Creates a new CaseService.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
@@ -63,14 +43,11 @@ class CaseService {
    *   The request stack.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The route match.
    */
   public function __construct(
     private readonly LanguageManagerInterface $languageManager,
     private readonly RequestStack $requestStack,
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly RouteMatchInterface $routeMatch,
   ) {
   }
 
@@ -139,82 +116,6 @@ class CaseService {
   }
 
   /**
-   * Set case and decision entities based on path. Only works on case paths!
-   */
-  public function setEntitiesByPath(): void {
-    $entityTypeIndicator = $this->routeMatch->getParameters()->keys()[0];
-    $case = $this->routeMatch->getParameter($entityTypeIndicator);
-
-    // For custom routes we just get the ID from the route parameter.
-    if (!$case instanceof NodeInterface) {
-      $node = $this->caseQuery([
-        'case_id' => $case,
-        'limit' => 1,
-      ]);
-
-      if (!empty($node)) {
-        $case = reset($node);
-      }
-    }
-
-    if ($case instanceof NodeInterface && $case->bundle() === self::CASE_NODE_TYPE) {
-      $this->case = $case;
-      $this->caseId = $case->get('field_diary_number')->value;
-      $this->selectedDecision = $this->guessDecisionFromPath($case);
-    }
-  }
-
-  /**
-   * Set entities from decision. Can be used if decision is found but not case.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Decision node.
-   */
-  public function setEntitiesFromDecision(Decision $decision): void {
-    $case_id = $decision->getDiaryNumber();
-
-    $cases = $this->caseQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-    ]);
-
-    // Set selected case, if found.
-    if (!empty($cases)) {
-      $this->case = reset($cases);
-    }
-
-    // Set case ID and decision based on decision node data.
-    $this->caseId = $case_id;
-    $this->selectedDecision = $decision;
-  }
-
-  /**
-   * Set case and decision entities based on IDs.
-   *
-   * @param string|null $case_id
-   *   Case diary number or NULL if decision doesn't have a case.
-   * @param string $decision_id
-   *   Decision native ID.
-   */
-  public function setEntitiesById(?string $case_id, string $decision_id): void {
-    if ($case_id !== NULL) {
-      $case_nodes = $this->caseQuery([
-        'case_id' => $case_id,
-        'limit' => 1,
-      ]);
-      $this->case = array_shift($case_nodes);
-      $this->caseId = $case_id;
-    }
-
-    $decision_nodes = $this->decisionQuery([
-      'case_id' => $case_id,
-      'decision_id' => $decision_id,
-      'limit' => 1,
-    ]);
-    $this->selectedDecision = array_shift($decision_nodes);
-  }
-
-  /**
    * Get default decision for case.
    *
    * @param string $case_id
@@ -239,16 +140,6 @@ class CaseService {
       ]);
     }
     return array_shift($nodes);
-  }
-
-  /**
-   * Get active decision, if set.
-   *
-   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
-   *   Active decision entity.
-   */
-  public function getSelectedDecision(): ?Decision {
-    return $this->selectedDecision;
   }
 
   /**
@@ -651,10 +542,6 @@ class CaseService {
       $language = $this->languageManager->getLanguage($langcode);
     }
 
-    if ($decision === NULL) {
-      $decision = $this->selectedDecision;
-    }
-
     if (!$decision instanceof NodeInterface) {
       return NULL;
     }
@@ -797,6 +684,8 @@ class CaseService {
 
   /**
    * Get translated version of decision by unique ID.
+   *
+   * @todo move decision translations to actual translation entities.
    *
    * @param \Drupal\node\NodeInterface $decision
    *   Decision node.
