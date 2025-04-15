@@ -1,17 +1,18 @@
 <?php
 
-// phpcs:ignoreFile
-
 namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -34,35 +35,19 @@ class CaseService {
   const DECISION_NODE_TYPE = 'decision';
 
   /**
-   * Case node.
-   *
-   * @var \Drupal\node\Entity\Node
-   */
-  private $case;
-
-  /**
-   * Decision node.
-   */
-  private Decision|null $selectedDecision = NULL;
-
-  /**
-   * Case diary number.
-   *
-   * @var string
-   */
-  private $caseId;
-
-  /**
    * Creates a new CaseService.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
     private readonly LanguageManagerInterface $languageManager,
     private readonly RequestStack $requestStack,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -120,98 +105,14 @@ class CaseService {
       return $this->getDefaultDecision($caseId);
     }
 
-    /** @var \Drupal\node\NodeInterface $decision */
     if (!empty($decision = $this->getDecisionFromQuery($case))) {
+      /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
       return $decision;
     }
 
-    return $this->getDecisionFromRedirect($caseId);
-  }
-
-  /**
-   * Set case and decision entities based on path. Only works on case paths!
-   */
-  public function setEntitiesByPath(): void {
-    $entityTypeIndicator = \Drupal::routeMatch()->getParameters()->keys()[0];
-    $case = \Drupal::routeMatch()->getParameter($entityTypeIndicator);
-
-    // For custom routes we just get the ID from the route parameter.
-    if (!$case instanceof NodeInterface) {
-      $node = $this->caseQuery([
-        'case_id' => $case,
-        'limit' => 1,
-      ]);
-
-      if (!empty($node)) {
-        $case = reset($node);
-      }
-    }
-
-    if ($case instanceof NodeInterface && $case->bundle() === self::CASE_NODE_TYPE) {
-      $this->case = $case;
-      $this->caseId = $case->get('field_diary_number')->value;
-      $this->selectedDecision = $this->guessDecisionFromPath($case);
-    }
-  }
-
-  /**
-   * Set entities from decision. Can be used if decision is found but not case.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Decision node.
-   */
-  public function setEntitiesFromDecision(Decision $decision): void {
-    $case_id = $decision->getDiaryNumber();
-
-    $cases = $this->caseQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-    ]);
-
-    // Set selected case, if found.
-    if (!empty($cases)) {
-      $this->case = reset($cases);
-    }
-
-    // Set case ID and decision based on decision node data.
-    $this->caseId = $case_id;
-    $this->selectedDecision = $decision;
-  }
-
-  /**
-   * Set case and decision entities based on IDs.
-   *
-   * @param string|null $case_id
-   *   Case diary number or NULL if decision doesn't have a case.
-   * @param string $decision_id
-   *   Decision native ID.
-   */
-  public function setEntitiesById(?string $case_id, string $decision_id): void {
-    if ($case_id !== NULL) {
-      $case_nodes = $this->caseQuery([
-        'case_id' => $case_id,
-        'limit' => 1,
-      ]);
-      $this->case = array_shift($case_nodes);
-      $this->caseId = $case_id;
-    }
-
-    $decision_nodes = $this->decisionQuery([
-      'case_id' => $case_id,
-      'decision_id' => $decision_id,
-      'limit' => 1,
-    ]);
-    $this->selectedDecision = array_shift($decision_nodes);
-  }
-
-  /**
-   * Get active case, if set.
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   Active case entity.
-   */
-  public function getSelectedCase(): ?NodeInterface {
-    return $this->case;
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
+    $decision = $this->getDecisionFromRedirect($caseId);
+    return $decision;
   }
 
   /**
@@ -242,16 +143,6 @@ class CaseService {
   }
 
   /**
-   * Get active decision, if set.
-   *
-   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
-   *   Active decision entity.
-   */
-  public function getSelectedDecision(): ?Decision {
-    return $this->selectedDecision;
-  }
-
-  /**
    * Get decision based on Native ID.
    *
    * @param string $decision_id
@@ -278,18 +169,16 @@ class CaseService {
       return NULL;
     }
 
-    $decision = reset($nodes);
-
-    return $decision;
+    return reset($nodes);
   }
 
   /**
    * Get decision from query parameters.
    *
-   * @param \Drupal\node\Entity\NodeInterface $case
+   * @param \Drupal\node\NodeInterface $case
    *   Current case node.
    *
-   * @return \Drupal\node\Entity\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node or NULL if no decision is found from the query.
    */
   public function getDecisionFromQuery(NodeInterface $case): ?NodeInterface {
@@ -373,11 +262,11 @@ class CaseService {
    *   Source path to check.
    *
    * @return \Drupal\node\NodeInterface|null
-   *   Node, if a redirect is found and it points directly to entity.
+   *   Node, if a redirect is found, and it points directly to entity.
    */
   private function getNodeFromRedirectSource(string $source_path): ?NodeInterface {
     /** @var \Drupal\redirect\RedirectRepository $redirectRepository */
-    $redirectRepository = \Drupal::service('redirect.repository');
+    $redirectRepository = \Drupal::service('redirect.repository'); // phpcs:ignore
     $redirect_entity = $redirectRepository->findBySourcePath($source_path);
 
     if (empty($redirect_entity)) {
@@ -400,52 +289,12 @@ class CaseService {
       return NULL;
     }
 
-    return Node::load($parameters['node']);
-  }
+    $entity = $this->entityTypeManager
+      ->getStorage('node')
+      ->load($parameters['node']);
 
-  /**
-   * Get page main heading either from case or decision node.
-   *
-   * @return string|null
-   *   Main heading or NULL if neither case or decision have been set.
-   */
-  public function getDecisionHeading(): ?string {
-    if ($this->case instanceof NodeInterface && $this->case->hasField('field_full_title') && !$this->case->get('field_full_title')->isEmpty()) {
-      return $this->case->get('field_full_title')->value;
-    }
-
-    if (!$this->selectedDecision instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if ($this->selectedDecision->hasField('field_decision_case_title') && !$this->selectedDecision->get('field_decision_case_title')->isEmpty()) {
-      return $this->selectedDecision->get('field_decision_case_title')->value;
-    }
-
-    if ($this->selectedDecision->hasField('field_full_title') && !$this->selectedDecision->get('field_full_title')->isEmpty()) {
-      return $this->selectedDecision->get('field_full_title')->value;
-    }
-
-    return $this->selectedDecision->title->value;
-  }
-
-  /**
-   * Check if selected case has no title.
-   *
-   * @return bool
-   *   TRUE if case is set but has no own title.
-   */
-  public function checkIfNoCaseTitle(): bool {
-    // If no case is set, return FALSE.
-    if (!$this->case instanceof NodeInterface) {
-      return FALSE;
-    }
-
-    if ($this->case->hasField('field_no_title_for_case') && $this->case->get('field_no_title_for_case')->value) {
-      return TRUE;
-    }
-
-    return FALSE;
+    assert(!$entity || $entity instanceof NodeInterface);
+    return $entity;
   }
 
   /**
@@ -545,7 +394,7 @@ class CaseService {
     $id = $this->normalizeNativeId($id);
     $path .= '/' . $id;
 
-    $path_alias_repository = \Drupal::service('path_alias.repository');
+    $path_alias_repository = \Drupal::service('path_alias.repository'); // phpcs:ignore
 
     $decision_alias = $path_alias_repository->lookUpByAlias($path, $langcode);
     // Correct decision can't be found with this method if alias is null.
@@ -593,7 +442,7 @@ class CaseService {
    * @param string|null $section
    *   Decision section, if set, to differentiate between multiple same titles.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   Decision URL, if found.
    */
   public function getDecisionUrlByTitle(string $title, string $meeting_id, ?string $section = NULL): ?Url {
@@ -670,12 +519,12 @@ class CaseService {
   /**
    * Get localized decision URL from node.
    *
-   * @param Drupal\node\NodeInterface|null $decision
+   * @param \Drupal\node\NodeInterface|null $decision
    *   Decision node, or default.
    * @param string|null $langcode
    *   Langcode to get URL for. Defaults to current language.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   URL for case node with decision ID as parameter, or decision URL.
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
@@ -691,10 +540,6 @@ class CaseService {
     }
     else {
       $language = $this->languageManager->getLanguage($langcode);
-    }
-
-    if ($decision === NULL) {
-      $decision = $this->selectedDecision;
     }
 
     if (!$decision instanceof NodeInterface) {
@@ -821,7 +666,8 @@ class CaseService {
       return FALSE;
     }
 
-    $nids = \Drupal::entityQuery('node')
+    $nids = $this->entityTypeManager->getStorage('node')
+      ->getQuery()
       ->condition('type', self::DECISION_NODE_TYPE)
       ->condition('status', 1)
       ->condition('field_unique_id', $decision->get('field_unique_id')->getString())
@@ -838,6 +684,8 @@ class CaseService {
 
   /**
    * Get translated version of decision by unique ID.
+   *
+   * @todo move decision translations to actual translation entities.
    *
    * @param \Drupal\node\NodeInterface $decision
    *   Decision node.
@@ -882,18 +730,18 @@ class CaseService {
    *
    * @param \Drupal\paatokset_ahjo_api\Entity\Decision $node
    *   Decision node.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker $policymaker
+   *   Policymaker used in the label.
    *
    * @return string
    *   Formatted label.
    */
-  public function formatDecisionLabel(Decision $node): string {
-    $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
-
+  public function formatDecisionLabel(Decision $node, ?Policymaker $policymaker): string {
     // If policymaker node cannot be found, use value from decision node.
     $org_label = $policymaker?->getPolicymakerName() ?? $node->getDecisionMakerOrgName();
 
     $meeting_number = $node->field_meeting_sequence_number->value;
-    if ($node->hasField('field_meeting_date') && !$node->get('field_meeting_date')->isEmpty()) {
+    if (!$node->get('field_meeting_date')->isEmpty()) {
       $decision_timestamp = strtotime($node->field_meeting_date->value);
     }
     else {
@@ -910,214 +758,92 @@ class CaseService {
       $label = $org_label . ' ' . $decision_date;
     }
     else {
-      $label = $node->title->value . ' ' . $decision_date;
+      $label = $node->label() . ' ' . $decision_date;
     }
 
     return $label;
   }
 
   /**
-   * Get all decisions for case.
+   * Get policymakers for multiple decision.
    *
-   * @param string|null $case_id
-   *   Case ID. Leave NULL to use active case.
+   * This is an optimization to avoid N+1 queries when
+   * calling Decision::getPolicymaker() in a loop.
    *
-   * @return array
-   *   Array of decision nodes.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Decision[] $decisions
+   *   List of decisions.
+   *
+   * @return array<string, Policymaker>
+   *   Policymakers for given decisions keyed by policymaker ids.
    */
-  public function getAllDecisions(?string $case_id = NULL): array {
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
+  private function loadPolicymakers(array $decisions): array {
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
-    if ($case_id === NULL) {
+    // Load all policymakers in as few queries as possible.
+    $policymakerIds = array_unique(array_map(static fn (Decision $decision) => $decision->getPolicymakerId(), $decisions));
+
+    if (empty($policymakerIds)) {
       return [];
     }
 
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+    $storage = $this->entityTypeManager
+      ->getStorage('node');
 
-    $results = $this->decisionQuery([
-      'case_id' => $case_id,
-    ]);
+    $nids = $storage->getQuery()
+      ->accessCheck()
+      ->condition('type', 'policymaker')
+      ->condition('status', 1)
+      ->condition('field_policymaker_id', $policymakerIds, 'IN')
+      ->execute();
 
-    $native_results = [];
-    foreach ($results as $node) {
-      // Store all unique IDs for current language decisions.
-      if ($node->langcode->value === $currentLanguage) {
-        $native_results[] = $node->field_unique_id->value;
+    $policymakers = $storage->loadMultiple($nids);
+
+    $result = [];
+    foreach ($policymakers as $policymaker) {
+      assert($policymaker instanceof Policymaker);
+
+      if ($policymaker->hasTranslation($currentLanguage)) {
+        $policymaker = $policymaker->getTranslation($currentLanguage);
       }
+
+      $result[$policymaker->getPolicymakerId()] = $policymaker;
     }
 
-    // Loop through results again and remove any decisions where:
-    // - The language is not the currently active language.
-    // - Another decision with the same ID exists in the active language.
-    foreach ($results as $key => $node) {
-      if ($node->langcode->value !== $currentLanguage && in_array($node->field_unique_id->value, $native_results)) {
-        unset($results[$key]);
-      }
-    }
-
-    // Sort decisions by timestamp and then again by section numbering.
-    // Has to be done here because query sees sections as text, not numbers.
-    usort($results, function ($item1, $item2) {
-      if ($item1->get('field_meeting_date')->isEmpty()) {
-        $item1_timestamp = 0;
-        $item1_date = NULL;
-      }
-      else {
-        $item1_timestamp = strtotime($item1->get('field_meeting_date')->value);
-        $item1_date = date('d.m.Y', $item1_timestamp);
-      }
-      if ($item2->get('field_meeting_date')->isEmpty()) {
-        $item2_timestamp = 0;
-        $item2_date = NULL;
-      }
-      else {
-        $item2_timestamp = strtotime($item2->get('field_meeting_date')->value);
-        $item2_date = date('d.m.Y', $item2_timestamp);
-      }
-      if ($item1->get('field_decision_section')->isEmpty()) {
-        $item1_section = 0;
-      }
-      else {
-        $item1_section = (int) $item1->get('field_decision_section')->value;
-      }
-      if ($item2->get('field_decision_section')->isEmpty()) {
-        $item2_section = 0;
-      }
-      else {
-        $item2_section = (int) $item2->get('field_decision_section')->value;
-      }
-
-      if ($item1_date === $item2_date) {
-        return $item2_section - $item1_section;
-      }
-
-      return $item2_timestamp - $item1_timestamp;
-    });
-
-    return $results;
+    return $result;
   }
 
   /**
    * Get decisions list for dropdown.
    *
-   * @param string|null $case_id
+   * @param \Drupal\paatokset_ahjo_api\Entity\CaseBundle $case
    *   Case ID. Leave NULL to use active case.
    *
    * @return array
    *   Dropdown contents.
    */
-  public function getDecisionsList(?string $case_id = NULL): array {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    if ($currentLanguage === 'en') {
-      $currentLanguage = 'fi';
-    }
+  public function getDecisionsList(CaseBundle $case): array {
+    $decisions = $case->getAllDecisions();
+    $policymakers = $this->loadPolicymakers($decisions);
 
-    if (!$case_id) {
-      $case_id = $this->caseId;
-    }
-    $decisions = $this->getAllDecisions($case_id);
-
-    $native_results = [];
     $results = [];
     foreach ($decisions as $node) {
-      assert($node instanceof Decision);
-      $label = $this->formatDecisionLabel($node);
-      $policymaker = $node->getPolicymaker($this->languageManager->getCurrentLanguage()->getId());
-      $class = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
-
-      // Store all unique IDs for current language decisions.
-      if ($node->langcode->value === $currentLanguage) {
-        $native_results[] = $node->field_unique_id->value;
-      }
+      // Policymakers are loaded beforehand to prevent N+1 query here.
+      $policymaker = $policymakers[$node->getPolicymakerId()] ?? NULL;
 
       $results[] = [
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
-        'langcode' => $node->langcode->value,
+        'langcode' => $node->language()->getId(),
         'native_id' => $this->normalizeNativeId($node->getNativeId()),
-        'title' => $node->title->value,
+        'title' => $node->label(),
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,
-        'label' => $label,
-        'class' => $class,
+        'label' => $this->formatDecisionLabel($node, $policymaker),
+        'class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       ];
     }
 
-    // Loop through results again and remove any decisions where:
-    // - The language is not the currently active language.
-    // - Another decision with the same ID exists in the active language.
-    foreach ($results as $key => $result) {
-      if ($result['langcode'] !== $currentLanguage && in_array($result['unique_id'], $native_results)) {
-        unset($results[$key]);
-      }
-    }
-
     return $results;
-  }
-
-  /**
-   * Get next decision in list, if one exists.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of next decision in list.
-   */
-  public function getNextDecision(Decision $decision): ?array {
-    return $this->getAdjacentDecision(-1, $decision);
-  }
-
-  /**
-   * Get previous decision in list, if one exists.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of previous decision in list.
-   */
-  public function getPrevDecision(Decision $decision): ?array {
-    return $this->getAdjacentDecision(1, $decision);
-  }
-
-  /**
-   * Get adjacent decision in list, if one exists.
-   *
-   * @param int $offset
-   *   Which offset to use (1 for previous, -1 for next, etc).
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $decision
-   *   Current decision.
-   *
-   * @return array|null
-   *   ID and title of adjacent decision in list.
-   */
-  private function getAdjacentDecision(int $offset, Decision $decision): ?array {
-    $case_id = $decision->getDiaryNumber();
-
-    $all_decisions = array_values($this->getAllDecisions($case_id));
-    $found_node = NULL;
-    foreach ($all_decisions as $key => $value) {
-      if ((string) $value->id() !== $decision->id()) {
-        continue;
-      }
-
-      if (isset($all_decisions[$key + $offset])) {
-        $found_node = $all_decisions[$key + $offset];
-      }
-      break;
-    }
-
-    if (!$found_node instanceof Decision) {
-      return [];
-    }
-
-    return [
-      'title' => $found_node->title->value,
-      'id' => $this->normalizeNativeId($found_node->getNativeId()),
-    ];
   }
 
   /**
@@ -1218,133 +944,39 @@ class CaseService {
     $code = array_shift($bits);
     $key = $code . '-' . $langcode;
 
-    switch ($key) {
-      case "00-fi":
-        $name = "Hallintoasiat";
-        break;
-
-      case "00-sv":
-        $name = "Förvaltningsärenden";
-        break;
-
-      case "01-fi":
-        $name = "Henkilöstöasiat";
-        break;
-
-      case "01-sv":
-        $name = "Personalärenden";
-        break;
-
-      case "02-fi":
-        $name = "Talousasiat, verotus ja omaisuuden hallinta";
-        break;
-
-      case "02-sv":
-        $name = "Ekonomi, beskattning och egendomsförvaltning";
-        break;
-
-      case "03-fi":
-        $name = "Lainsäädäntö ja lainsäädännön soveltaminen";
-        break;
-
-      case "03-sv":
-        $name = "Lagstiftning och dess tillämpning";
-        break;
-
-      case "04-fi":
-        $name = "Kansainvälinen toiminta ja maahanmuuttopolitiikka";
-        break;
-
-      case "04-sv":
-        $name = "Internationell verksamhet och migrationspolitik";
-        break;
-
-      case "05-fi":
-        $name = "Sosiaalitoimi";
-        break;
-
-      case "05-sv":
-        $name = "Socialvård";
-        break;
-
-      case "06-fi":
-        $name = "Terveydenhuolto";
-        break;
-
-      case "06-sv":
-        $name = "Hälsovård";
-        break;
-
-      case "07-fi":
-        $name = "Tiedon hallinta";
-        break;
-
-      case "07-sv":
-        $name = "Informationshantering";
-        break;
-
-      case "08-fi":
-        $name = "Liikenne";
-        break;
-
-      case "08-sv":
-        $name = "Trafik";
-        break;
-
-      case "09-fi":
-        $name = "Turvallisuus ja yleinen järjestys";
-        break;
-
-      case "09-sv":
-        $name = "Säkerhet och allmän ordning";
-        break;
-
-      case "10-fi":
-        $name = "Maankäyttö, rakentaminen ja asuminen";
-        break;
-
-      case "10-sv":
-        $name = "Markanvändning, byggande och boende";
-        break;
-
-      case "11-fi":
-        $name = "Ympäristöasia";
-        break;
-
-      case "11-sv":
-        $name = "Miljöärenden";
-        break;
-
-      case "12-fi":
-        $name = "Opetus- ja sivistystoimi";
-        break;
-
-      case "12-sv":
-        $name = "Undervisnings- och bildningsväsende";
-        break;
-
-      case "13-fi":
-        $name = "Tutkimus- ja kehittämistoiminta";
-        break;
-
-      case "13-sv":
-        $name = "Forskning och utveckling";
-        break;
-
-      case "14-fi":
-        $name = "Elinkeino- ja työvoimapalvelut";
-        break;
-
-      case "14-sv":
-        $name = "Näringslivs- och arbetskraftstjänster";
-        break;
-
-      default:
-        $name = NULL;
-        break;
-    }
-
-    return $name;
+    return match ($key) {
+      "00-fi" => "Hallintoasiat",
+      "00-sv" => "Förvaltningsärenden",
+      "01-fi" => "Henkilöstöasiat",
+      "01-sv" => "Personalärenden",
+      "02-fi" => "Talousasiat, verotus ja omaisuuden hallinta",
+      "02-sv" => "Ekonomi, beskattning och egendomsförvaltning",
+      "03-fi" => "Lainsäädäntö ja lainsäädännön soveltaminen",
+      "03-sv" => "Lagstiftning och dess tillämpning",
+      "04-fi" => "Kansainvälinen toiminta ja maahanmuuttopolitiikka",
+      "04-sv" => "Internationell verksamhet och migrationspolitik",
+      "05-fi" => "Sosiaalitoimi",
+      "05-sv" => "Socialvård",
+      "06-fi" => "Terveydenhuolto",
+      "06-sv" => "Hälsovård",
+      "07-fi" => "Tiedon hallinta",
+      "07-sv" => "Informationshantering",
+      "08-fi" => "Liikenne",
+      "08-sv" => "Trafik",
+      "09-fi" => "Turvallisuus ja yleinen järjestys",
+      "09-sv" => "Säkerhet och allmän ordning",
+      "10-fi" => "Maankäyttö, rakentaminen ja asuminen",
+      "10-sv" => "Markanvändning, byggande och boende",
+      "11-fi" => "Ympäristöasia",
+      "11-sv" => "Miljöärenden",
+      "12-fi" => "Opetus- ja sivistystoimi",
+      "12-sv" => "Undervisnings- och bildningsväsende",
+      "13-fi" => "Tutkimus- ja kehittämistoiminta",
+      "13-sv" => "Forskning och utveckling",
+      "14-fi" => "Elinkeino- ja työvoimapalvelut",
+      "14-sv" => "Näringslivs- och arbetskraftstjänster",
+      default => NULL,
+    };
   }
 
   /**
@@ -1355,7 +987,7 @@ class CaseService {
    * @param string $version_id
    *   VersionSeriesId for motion PDF document.
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found.
    */
   public function findMotionById(string $native_id, string $version_id): ?NodeInterface {
@@ -1396,7 +1028,7 @@ class CaseService {
    * @param string $title
    *   Motion title (used in case there are multiple motions with same id).
    *
-   * @return Drupal\node\NodeInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   Decision node as motion. NULL if not found.
    */
   public function findOrCreateMotionByMeetingData(?string $version_id, ?string $case_id, string $meeting_id, string $title): ?NodeInterface {
@@ -1482,7 +1114,11 @@ class CaseService {
     $sort = $params['sort'] ?? 'DESC';
     $sort_by = $params['sort_by'] ?? 'field_created';
 
-    $query = \Drupal::entityQuery('node')
+    $storage = $this->entityTypeManager
+      ->getStorage('node');
+
+    $query = $storage
+      ->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
       ->condition('type', $params['type'])
@@ -1553,7 +1189,7 @@ class CaseService {
       return $ids;
     }
 
-    return Node::loadMultiple($ids);
+    return $storage->loadMultiple($ids);
   }
 
   /**

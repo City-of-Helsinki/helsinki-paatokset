@@ -158,12 +158,7 @@ class PolicymakerService {
    *   of policymakers.
    */
   public function query(array $params = []) : array {
-    if (isset($params['sort'])) {
-      $sort = $params['sort'];
-    }
-    else {
-      $sort = 'ASC';
-    }
+    $sort = $params['sort'] ?? 'ASC';
 
     $query = $this->nodeStorage
       ->getQuery()

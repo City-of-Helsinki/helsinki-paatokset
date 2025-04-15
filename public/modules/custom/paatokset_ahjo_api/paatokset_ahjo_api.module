@@ -389,45 +389,6 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
 }
 
 /**
- * Get english version of finnish sector name.
- *
- * @param string $sector
- *   Sector name.
- *
- * @return string
- *   English translation of sector, or original value.
- */
-function _paatokset_ahjo_api_get_sector_english_translation(string $sector): string {
-  switch ($sector) {
-    case 'Kasvatuksen ja koulutuksen toimiala':
-      $value = 'Education Division';
-      break;
-
-    case 'Kaupunkiympäristön toimiala':
-      $value = 'Urban Environment Division';
-      break;
-
-    case 'Keskushallinto':
-      $value = 'Central Administration';
-      break;
-
-    case 'Kulttuurin ja vapaa-ajan toimiala':
-      $value = 'Culture and Leisure Division';
-      break;
-
-    case 'Sosiaali- ja terveystoimiala':
-      $value = 'Social Services and Health Care Division';
-      break;
-
-    default:
-      $value = $sector;
-      break;
-  }
-
-  return $value;
-}
-
-/**
  * Preprocess all initiatives block.
  */
 function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables): void {
@@ -544,23 +505,37 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
 /**
  * Preprocess variables for case and decision pages.
  */
-function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $caseService): void {
-  $decision = $caseService->getSelectedDecision();
+function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $case, ?Decision $decision): void {
+  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+  $caseService = \Drupal::service('paatokset_ahjo_cases');
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
 
-  $variables['no_title_for_case'] = $caseService->checkIfNoCaseTitle();
+  $variables['no_title_for_case'] = $case?->checkIfNoCaseTitle() ?? FALSE;
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
-  $variables['selectedDecision'] = $caseService->getSelectedDecision();
+  $variables['selectedDecision'] = $decision;
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
   $variables['decision_org_name'] = $policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName();
-  $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision) : NULL;
+  $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
   $variables['attachments'] = $decision?->getAttachments() ?? [];
-  $variables['all_decisions'] = $caseService->getDecisionsList();
-  $variables['next_decision'] = $decision ? $caseService->getNextDecision($decision) : NULL;
-  $variables['previous_decision'] = $decision ? $caseService->getPrevDecision($decision) : NULL;
+  $variables['all_decisions'] = $case ? $caseService->getDecisionsList($case) : NULL;
+
+  if ($decision && $adjacent = $case?->getNextDecision($decision)) {
+    $variables['next_decision'] = [
+      'title' => $adjacent->label(),
+      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+    ];
+  }
+
+  if ($decision && $adjacent = $case?->getPrevDecision($decision)) {
+    $variables['previous_decision'] = [
+      'title' => $adjacent->label(),
+      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+    ];
+  }
+
   $variables['decision_content'] = $decision?->parseContent() ?? [];
   $variables['all_decisions_link'] = $decision?->getDecisionMeetingLink();
   $variables['other_decisions_link'] = $policymaker?->getDecisionsRoute($langcode);
@@ -571,12 +546,17 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, CaseService $ca
  * Preprocess Case nodes.
  */
 function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
+  $case = $variables['node'];
+  assert($case instanceof CaseBundle);
+
   /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
   $caseService = \Drupal::service('paatokset_ahjo_cases');
-  $caseService->setEntitiesByPath();
 
-  _paatokset_ahjo_api_get_decision_variables($variables, $caseService);
+  $decision = $caseService->guessDecisionFromPath($case);
 
+  _paatokset_ahjo_api_get_decision_variables($variables, $case, $decision);
+
+  // @fixme should not case all cases with node_list:decision.
   $variables['#cache'] = [
     'tags' => ['node_list:decision'],
     'contexts' => [
@@ -592,18 +572,13 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
  * Preprocess Decision nodes.
  */
 function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
-  $node = $variables['node'];
-  if (!$node instanceof NodeInterface) {
-    return;
-  }
+  $decision = $variables['node'];
+  assert($decision instanceof Decision);
 
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
-  $caseService->setEntitiesFromDecision($node);
+  $variables['main_heading'] = $decision->getDecisionHeading();
+  _paatokset_ahjo_api_get_decision_variables($variables, $decision->getCase(), $decision);
 
-  $variables['main_heading'] = $caseService->getDecisionHeading();
-  _paatokset_ahjo_api_get_decision_variables($variables, $caseService);
-
+  // @fixme should not case all decisions with node_list:decision & node_list:case.
   $variables['#cache'] = [
     'tags' => [
       'node_list:decision',
@@ -874,7 +849,7 @@ function _paatokset_ahjo_api_string_to_boolean(mixed $value): bool {
  *   An array of meeting documents.
  *
  * @return bool
- *   TRUE is thee minutes are found, FALSE if they are not.
+ *   TRUE is the minutes are found, FALSE if they are not.
  */
 function _paatokset_ahjo_api_meeting_minutes_published($documents): bool {
   if (empty($documents) || !is_array($documents)) {

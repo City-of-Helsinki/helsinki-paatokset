@@ -55,13 +55,23 @@ final class CaseController extends ControllerBase {
 
     $langcode = $this->languageManager()->getCurrentLanguage()->getId();
     $policymaker = $decision->getPolicyMaker($langcode);
+    $case = $decision->getCase();
 
     $content = $this->renderDecisionContent($decision, $policymaker);
     $attachments = $this->renderCaseAttachments($decision);
+    $next = $case?->getNextDecision($decision);
+    $prev = $case?->getPrevDecision($decision);
+
     $navigation = [
       '#theme' => 'decision_navigation',
-      '#next_decision' => $this->caseService->getNextDecision($decision),
-      '#previous_decision' => $this->caseService->getPrevDecision($decision),
+      '#next_decision' => $next ? [
+        'title' => $next->label(),
+        'id' => $this->caseService->normalizeNativeId($next->getNativeId()),
+      ] : NULL,
+      '#previous_decision' => $prev ? [
+        'title' => $prev->label(),
+        'id' => $this->caseService->normalizeNativeId($prev->getNativeId()),
+      ] : NULL,
     ];
 
     $response = new CacheableJsonResponse([
