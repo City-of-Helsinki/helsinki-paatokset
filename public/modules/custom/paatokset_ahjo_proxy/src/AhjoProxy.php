@@ -118,6 +118,7 @@ class AhjoProxy {
       $base_url = getenv('AHJO_PROXY_BASE_URL');
       if (
           str_starts_with($url, 'records')
+          || str_starts_with($url, 'cases')
           || str_starts_with($url, 'meetings')
           || str_starts_with($url, 'decisions')
           || str_starts_with($url, 'agenda-items')
