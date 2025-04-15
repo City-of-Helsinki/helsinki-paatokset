@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for paatokset_lang_switcher.
+ *
+ * @todo remove this module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Extension\ModuleInstallerInterface;
+
+/**
+ * Uninstall paatokset_lang_switcher module.
+ */
+function paatokset_lang_switcher_update_9000(): void {
+  // Content of this module was moved to paatokset_ahjo_api.
+  \Drupal::service(ModuleInstallerInterface::class)->uninstall(['paatokset_lang_switcher']);
+}
