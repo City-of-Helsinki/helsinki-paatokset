@@ -69,11 +69,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_api/src/Routing/DecisionConverterBase.php
 
     -
-      message: "#^Property Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:\\$case \\(Drupal\\\\node\\\\Entity\\\\Node\\) does not accept Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-    -
       message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
       count: 2
       path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
