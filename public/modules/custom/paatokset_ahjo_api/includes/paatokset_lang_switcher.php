@@ -135,7 +135,7 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
     /** @var \Drupal\paatokset_ahjo_api\Entity\CaseBundle|\Drupal\paatokset_ahjo_api\Entity\Decision $caseOrDecision */
     $caseOrDecision = $route->getParameter('case');
 
-    $diaryNumber = $caseOrDecision->getDiaryNumber();
+    $diaryNumber = $caseOrDecision->get('field_diary_number')->value;
 
     // Optimization: Cache guessing so we save on DB queries. This
     // function will be called multiple time for different languages.
