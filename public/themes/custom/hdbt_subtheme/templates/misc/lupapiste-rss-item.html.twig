@@ -41,8 +41,8 @@
     </div>    
   </div>
   <div class="rss-item__publication-date">
-  
     <span>{{ 'Publication starts'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuAlkaa.date|date('U')|format_date('publication_date_format')}}.</span>
     <span>{{ 'Publication ends'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuPaattyy.date|date('U')|format_date('publication_date_format')}}.</span>
   </div>
+  <div class="rss-item__additional-info">{{ 'Service of notice is considered to have taken place on the seventh day from the date of publication of the announcement.'|t({}, {'context': 'Lupapiste rss'}) }}</div>
 </div>
