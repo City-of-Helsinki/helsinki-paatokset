@@ -40,3 +40,11 @@ msgstr "@count kuulutusta"
 msgctxt "Lupapiste rss"
 msgid "Building control permit decisions"
 msgstr "Rakennusvalvonnan lupapäätökset"
+
+msgctxt "Lupapiste rss"
+msgid "(download pdf)"
+msgstr "(lataa pdf)"
+
+msgctxt "Lupapiste rss"
+msgid "Service of notice is considered to have taken place on the seventh day from the date of publication of the announcement."
+msgstr "Tiedoksisaannin katsotaan tapahtuneen seitsemäntenä päivänä kuulutuksen julkaisemisajankohdasta."

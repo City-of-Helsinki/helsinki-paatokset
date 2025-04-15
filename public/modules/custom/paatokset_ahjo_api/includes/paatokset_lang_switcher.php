@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Primary module hooks for Päätökser language switcher module.
+ * Hooks for Päätökset language switcher.
  */
 
 declare(strict_types=1);
@@ -10,11 +10,13 @@ declare(strict_types=1);
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 
 /**
  * Implements hook_language_switch_links_alter().
  */
-function paatokset_lang_switcher_language_switch_links_alter(array &$links, $type, Url $url): void {
+function paatokset_ahjo_api_language_switch_links_alter(array &$links, $type, Url $url): void {
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $route = \Drupal::routeMatch();
   $route_name = $route->getRouteName();
@@ -115,6 +117,8 @@ function _paatokset_lang_switcher_get_alt_urls_for_node(NodeInterface $node, str
  *   Localized URL, if found.
  */
 function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $route, string $langCode, string $currentLanguage): ?Url {
+  static $decisions = [];
+
   $route_name = $route->getRouteName();
 
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
@@ -126,12 +130,31 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
   // Special case for getting case URLs.
   // This is because we might want to get translated decision IDs.
   if (str_starts_with($route_name, 'paatokset_case.')) {
-    $decision = $caseService->getSelectedDecision();
-    $url = $caseService->getCaseUrlFromNode($decision->getDiaryNumber(), $decision, $langCode);
-    if ($url === NULL) {
-      $url = $caseService->getDecisionUrlFromNode(NULL, $langCode);
+    // Case route item can be case or decision node.
+    // See paatokest_ahjo_api.routing.yml.
+    /** @var \Drupal\paatokset_ahjo_api\Entity\CaseBundle|\Drupal\paatokset_ahjo_api\Entity\Decision $caseOrDecision */
+    $caseOrDecision = $route->getParameter('case');
+
+    $diaryNumber = $caseOrDecision->getDiaryNumber();
+
+    // Optimization: Cache guessing so we save on DB queries. This
+    // function will be called multiple time for different languages.
+    if (!($decision = $decisions[$caseOrDecision->id()] ?? NULL)) {
+      $decision = NULL;
+
+      if ($caseOrDecision instanceof Decision) {
+        $decision = $caseOrDecision;
+      }
+      elseif ($caseOrDecision instanceof CaseBundle) {
+        $decision = $caseService->guessDecisionFromPath($caseOrDecision);
+      }
+
+      // Save for later.
+      $decisions[$caseOrDecision->id()] = $decision;
     }
-    return $url;
+
+    return $caseService->getCaseUrlFromNode($diaryNumber, $decision, $langCode)
+      ?: $caseService->getDecisionUrlFromNode(NULL, $langCode);
   }
 
   $localized_route = str_replace('.' . $currentLanguage, '.' . $langCode, $route_name);

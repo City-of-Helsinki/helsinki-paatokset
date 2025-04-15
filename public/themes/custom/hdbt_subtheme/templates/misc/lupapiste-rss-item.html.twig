@@ -6,12 +6,14 @@
 #}
 {% set link_attributes = {
   'class': [
-    'rss-item__link',
+    'rss-item__link--download',
   ]
 } %}
 
+{% set link_title = item.title ~ ' ' ~ '(download pdf)'|t({}, {'context': 'Lupapiste rss'}) %}
+
 <div class="rss-item__container">
-  <h3>{{ link(item.title, item.link, link_attributes) }}</h3>
+  <h3>{{ link(link_title, item.asiakirjaLink, link_attributes) }}</h3>
   <div>
     <div class="rss-item__row-container">
       <div class="rss-item__item">
@@ -39,8 +41,8 @@
     </div>    
   </div>
   <div class="rss-item__publication-date">
-  
     <span>{{ 'Publication starts'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuAlkaa.date|date('U')|format_date('publication_date_format')}}.</span>
     <span>{{ 'Publication ends'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuPaattyy.date|date('U')|format_date('publication_date_format')}}.</span>
   </div>
+  <div class="rss-item__additional-info">{{ 'Service of notice is considered to have taken place on the seventh day from the date of publication of the announcement.'|t({}, {'context': 'Lupapiste rss'}) }}</div>
 </div>
