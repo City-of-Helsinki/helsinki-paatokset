@@ -69,6 +69,11 @@
   margin-block-start: $spacing;
 }
 
+.rss-item__additional-info {
+  color: $color-black-60;
+  margin-block-start: $spacing-half;
+}
+
 .rss-feed__count-container {
   @include font('h3');
 
