@@ -15,6 +15,11 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 class Decision extends Node {
 
   /**
+   * Memoized result for self::getAllDecisions().
+   */
+  private ?CaseBundle $case = NULL;
+
+  /**
    * Get diary (case) number.
    */
   public function getDiaryNumber(): string {
@@ -266,21 +271,80 @@ class Decision extends Node {
   }
 
   /**
-   * Get policymaker.
+   * Get related case.
    */
-  public function getPolicymaker(string $langcode): ?Policymaker {
-    if ($this->get('field_policymaker_id')->isEmpty()) {
+  public function getCase(): ?CaseBundle {
+    if (isset($this->case)) {
+      return $this->case;
+    }
+
+    $diaryNumber = $this->getDiaryNumber();
+
+    if (!$diaryNumber) {
       return NULL;
     }
 
-    $policymaker_id = $this->get('field_policymaker_id')->value;
+    $cases = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'status' => 1,
+        'type' => 'case',
+        'field_diary_number' => $diaryNumber,
+      ]);
+
+    if (empty($cases)) {
+      return NULL;
+    }
+
+    $case = reset($cases);
+    assert($case instanceof CaseBundle);
+
+    return $this->case = $case;
+  }
+
+  /**
+   * Get main heading either from case or decision node.
+   *
+   * @return string|null
+   *   Main heading or NULL if neither case nor decision have been set.
+   */
+  public function getDecisionHeading(): ?string {
+    if ($case = $this->getCase()) {
+      return $case->get('field_full_title')->value;
+    }
+
+    if (!$this->get('field_decision_case_title')->isEmpty()) {
+      return $this->get('field_decision_case_title')->value;
+    }
+
+    if (!$this->get('field_full_title')->isEmpty()) {
+      return $this->get('field_full_title')->value;
+    }
+
+    return $this->label();
+  }
+
+  /**
+   * Gets policymaker id.
+   */
+  public function getPolicymakerId(): ?string {
+    return $this->get('field_policymaker_id')->value;
+  }
+
+  /**
+   * Get policymaker.
+   */
+  public function getPolicymaker(string $langcode): ?Policymaker {
+    $policymaker_id = $this->getPolicymakerId();
+    if (!$policymaker_id) {
+      return NULL;
+    }
 
     $policymakers = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties([
         'status' => 1,
         'type' => 'policymaker',
-        // @todo this query is most likely pretty inefficient.
         'field_policymaker_id' => $policymaker_id,
       ]);
 

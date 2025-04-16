@@ -1,23 +1,21 @@
-uuid: 2517017b-f33e-4b40-922a-ff6b807a588c
+uuid: 4aa3e565-d8de-45ec-aedc-3832c9b1f058
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_diary_number
-field_name: field_diary_number
+id: node.field_decision_case_title
+field_name: field_decision_case_title
 entity_type: node
 type: string
 settings:
-  max_length: 255
+  max_length: 800
   case_sensitive: false
   is_ascii: false
 module: core
 locked: false
 cardinality: 1
 translatable: true
-indexes:
-  field_diary_number__value:
-    - value
+indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

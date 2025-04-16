@@ -27,12 +27,12 @@ class DecisionTest extends AhjoKernelTestBase {
       'title' => 'Test decision',
       'field_diary_number' => 'test-diary-number',
       'field_decision_native_id' => 'test-native-id',
+      'field_decision_case_title' => 'test-case-title',
       'field_dm_org_name' => 'test-dm-org-name',
       'field_policymaker_id' => '123',
     ]);
     $this->assertInstanceOf(Decision::class, $decision);
 
-    $this->assertEquals('test-diary-number', $decision->getDiaryNumber());
     $this->assertEquals('test-native-id', $decision->getNativeId());
     $this->assertEquals('test-dm-org-name', $decision->getDecisionMakerOrgName());
 
@@ -46,7 +46,24 @@ class DecisionTest extends AhjoKernelTestBase {
       'field_policymaker_id' => '123',
     ])->save();
 
+    $this->assertEquals('123', $decision->getPolicymakerId());
     $this->assertNotEmpty($decision->getPolicymaker('en'));
+
+    $this->assertEmpty($decision->getCase());
+    $this->assertEquals('test-case-title', $decision->getDecisionHeading());
+
+    $storage->create([
+      'type' => 'case',
+      'status' => '1',
+      'langcode' => 'en',
+      'title' => 'Test case',
+      'field_full_title' => 'test-full-title',
+      'field_diary_number' => 'test-diary-number',
+    ])->save();
+
+    $this->assertEquals('test-diary-number', $decision->getDiaryNumber());
+    $this->assertNotEmpty($decision->getCase());
+    $this->assertEquals('test-full-title', $decision->getDecisionHeading());
   }
 
   /**
