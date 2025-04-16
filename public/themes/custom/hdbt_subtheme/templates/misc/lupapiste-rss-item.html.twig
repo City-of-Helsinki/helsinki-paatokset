@@ -28,7 +28,7 @@
         <span>{{ 'Property ID'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.kiinteistotunnus }}
       </div>
       <div class="rss-item__item">
-        <span>{{ 'Decicion date'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paatosPvm|date('m.d.Y') }}
+        <span>{{ 'Decicion date'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paatosPvm|date('d.m.Y') }}
       </div>
     </div>
     <div class="rss-item__row-container">
