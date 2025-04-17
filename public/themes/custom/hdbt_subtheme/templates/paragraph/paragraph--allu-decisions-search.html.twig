@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Template for Allu decisions block.
+ * 
+ * @see template_preprocess_block()
+ */
+#}
+{{ attach_library('hdbt_subtheme/allu-decisions-search') }}
+{% block paragraph %}
+  {% set component_title = 'Find decisions concerning temporary usage of streets and parks'|t({}, {'context': 'Allu decision search'}) %}
+  {% embed "@hdbt/misc/component.twig" with
+    {
+      component_title: component_title,
+      component_description: 'You can search decisions based on area name, or filter the list based on decision type or date. If you make no selections at all, results are listed based on decision date, newest first.'|t({}, {'context': 'Allu decision search'})
+    }
+  %}
+    {% block component_content %}
+      <div class='allu-decisions-search-block'>
+        {# React app hooks here #}
+        <div id="allu-decisions-search"></div>
+      </div>
+    {% endblock component_content %}
+  {% endembed %}
+{% endblock paragraph %}

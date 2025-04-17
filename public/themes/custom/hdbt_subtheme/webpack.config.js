@@ -12,6 +12,7 @@ const { merge } = require('webpack-merge');
 const Entries = () => {
   let entries = {
     styles: ['./src/scss/styles.scss'],
+    'allu-decisions-search': ['./src/js/react/apps/allu-decisions-search/index.tsx'],
     // Special handling for some javascript or scss.
     // 'some-component': [
     //   './src/scss/some-component.scss',
@@ -65,6 +66,16 @@ module.exports = (env, argv) => {
           type: 'javascript/auto',
         },
         {
+          test: /\.jsx$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+        },
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ['ts-loader'],
+        },
+        {
           test: /\.(css|sass|scss)$/,
           use: [
             {
@@ -100,10 +111,12 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      modules: [
-        path.join(__dirname, 'node_modules'),
-      ],
-      extensions: ['.js', '.json'],
+      modules: [path.join(__dirname, 'node_modules')],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      alias: {
+        '@/react/common': path.resolve(__dirname, '../../contrib/hdbt/src/js/react/common/'),
+        '@/types/': path.resolve(__dirname, '../../contrib/hdbt/src/js/types/'),
+      },
     },
     plugins: [
       // Uncomment following lines to create svg icon sprite.
@@ -133,6 +146,7 @@ module.exports = (env, argv) => {
     ],
     watchOptions: {
       aggregateTimeout: 300,
+      ignored: ['**/node_modules','**/templates','**/translations/','**/modules', '**/dist/','**/config'],
     },
     // Tell us only about the errors.
     stats: 'errors-only',
@@ -155,7 +169,7 @@ module.exports = (env, argv) => {
         minimizer: [
           new TerserPlugin({
             terserOptions: {
-              ecma: 2015,
+              ecma: 2020,
               mangle: {
                 reserved:[
                   'Drupal',
@@ -174,7 +188,9 @@ module.exports = (env, argv) => {
 
     return full_config;
 
-  } else if (argv.mode === 'development') {
+  }
+  
+  if (argv.mode === 'development') {
     const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
     const full_config = merge(config, {

@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    // Paths need to be added also into webpack.config.js resolve.alias.
+    "paths": {
+      "@/react/common/*": ["../../contrib/hdbt/src/js/react/common/*"],
+      "@/common/types/*": ["../../contrib/hdbt/src/js/types/*"],
+      "@/types/*": ["../../contrib/hdbt/src/js/types/*"],
+      // Fix mismatch from deps
+      "react": [ "./node_modules/@types/react" ]
+    },
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "typeRoots": ["./node_modules/@types"],
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ],
+}

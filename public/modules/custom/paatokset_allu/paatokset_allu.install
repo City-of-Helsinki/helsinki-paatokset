@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for paatokset_allu module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ */
+function paatokset_allu_update_9001(): void {
+  helfi_platform_config_update_paragraph_target_types();
+}
