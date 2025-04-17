@@ -29,6 +29,6 @@ function paatokset_theme() : array {
     'allu_decisions_search_block' => [
       'variables' => [],
       'template' => 'allu-decisions-search-block',
-    ]
+    ],
   ];
 }

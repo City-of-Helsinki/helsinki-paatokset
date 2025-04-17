@@ -8,6 +8,9 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
+/**
+ *
+ */
 #[Block(
   id: "allu_decisions_search_block",
   admin_label: new TranslatableMarkup("Allu decisions search block"),
@@ -29,4 +32,5 @@ class AlluDecisionsSearchBlock extends BlockBase {
       '#theme' => 'allu_decisions_search_block',
     ];
   }
+
 }
