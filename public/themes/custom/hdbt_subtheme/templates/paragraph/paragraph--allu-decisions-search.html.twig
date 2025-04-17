@@ -7,7 +7,7 @@
  */
 #}
 {{ attach_library('hdbt_subtheme/allu-decisions-search') }}
-<div class="paragraph-content components components--upper">
+{% block paragraph %}
   {% set component_title = 'Find decisions concerning temporary usage of streets and parks'|t({}, {'context': 'Allu decision search'}) %}
   {% embed "@hdbt/misc/component.twig" with
     {
@@ -22,4 +22,4 @@
       </div>
     {% endblock component_content %}
   {% endembed %}
-</div>
+{% endblock paragraph %}

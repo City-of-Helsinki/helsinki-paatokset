@@ -1,0 +1,10 @@
+uuid: 90aff01f-3231-4f4e-a93c-11c505afd3a6
+langcode: en
+status: true
+dependencies: {  }
+id: allu_decisions_search
+label: 'Allu decisions search'
+icon_uuid: null
+icon_default: null
+description: 'Renders UI for listing and filtering Allu decisions.'
+behavior_plugins: {  }
