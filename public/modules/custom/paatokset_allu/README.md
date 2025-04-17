@@ -21,6 +21,11 @@ Allu documents are imported with a Drupal migration. The migration imports docum
 and older content can be imported with a Drush command. Under the hood, the Drush command just runs the same migration with
 different parameters.
 
+Add following to your .env file:
+```
+ALLU_BASE_URL=https://staging.allu.kaupunkiymparisto.fi
+```
+
 Import most recent documents:
 ```shell
 drush migrate:import allu_decisions
