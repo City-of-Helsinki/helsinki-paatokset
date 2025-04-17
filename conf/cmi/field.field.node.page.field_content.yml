@@ -6,7 +6,6 @@ dependencies:
     - field.storage.node.field_content
     - node.type.page
     - paragraphs.paragraphs_type.accordion
-    - paragraphs.paragraphs_type.allu_decisions_search
     - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
@@ -60,19 +59,12 @@ settings:
       news_list: news_list
       service_list_search: service_list_search
       unit_search: unit_search
-      pdf_listing: pdf_listing
       unit_contact_card: unit_contact_card
-      allu_decisions_search: allu_decisions_search
+      pdf_listing: pdf_listing
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: 1
-        enabled: true
-      accordion_item:
-        weight: 42
-        enabled: false
-      allu_decisions_search:
-        weight: 43
         enabled: true
       banner:
         weight: 2
@@ -83,57 +75,27 @@ settings:
       columns:
         weight: 6
         enabled: true
-      contact_card:
-        weight: 47
-        enabled: false
       contact_card_listing:
         weight: 14
         enabled: true
       content_cards:
         weight: 5
         enabled: true
-      curated_event_list:
-        weight: 50
-        enabled: false
-      custom_content_links:
-        weight: 51
-        enabled: false
       event_list:
         weight: 13
         enabled: true
       from_library:
         weight: 8
         enabled: true
-      gallery:
-        weight: 54
-        enabled: false
-      gallery_slide:
-        weight: 55
-        enabled: false
-      hearings:
-        weight: 56
-        enabled: false
-      hero:
-        weight: 57
-        enabled: false
       image:
         weight: 3
         enabled: true
-      liftup_with_image:
-        weight: 59
-        enabled: false
       list_of_links:
         weight: 4
         enabled: true
-      list_of_links_item:
-        weight: 61
-        enabled: false
       map:
         weight: 9
         enabled: true
-      meetings_calendar:
-        weight: 63
-        enabled: false
       news_list:
         weight: 15
         enabled: true
@@ -143,42 +105,15 @@ settings:
       phasing:
         weight: 7
         enabled: true
-      phasing_item:
-        weight: 67
-        enabled: false
-      popular_service_item:
-        weight: 68
-        enabled: false
-      popular_services:
-        weight: 69
-        enabled: false
       remote_video:
         weight: 10
         enabled: true
-      service_list:
-        weight: 71
-        enabled: false
       service_list_search:
         weight: 16
         enabled: true
-      sidebar_text:
-        weight: 73
-        enabled: false
-      social_media_link:
-        weight: 74
-        enabled: false
-      target_group_link_item:
-        weight: 75
-        enabled: false
-      target_group_links:
-        weight: 76
-        enabled: false
       text:
         weight: 0
         enabled: true
-      unit_accessibility_information:
-        weight: 78
-        enabled: false
       unit_contact_card:
         weight: 18
         enabled: true
