@@ -9,5 +9,4 @@ ignored_config_entities:
   - paatokset_ahjo_openid.settings
   - paatokset_ahjo_proxy.blacklist
   - paatokset_ahjo_proxy.settings
-  - paatokset_allu.settings
   - 'system.site:page.front'
