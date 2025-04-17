@@ -38,7 +38,8 @@ field_settings:
     type: string
     configuration:
       type: union
-      separator: |+
+      separator: |
+
       fields: {  }
   approval_created:
     label: 'Authored on'
