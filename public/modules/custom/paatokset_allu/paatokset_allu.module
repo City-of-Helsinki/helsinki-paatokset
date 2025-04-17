@@ -8,18 +8,6 @@
 declare(strict_types=1);
 
 /**
- * Implements hook_theme().
- */
-function paatokset_allu_theme() : array {
-  return [
-    'allu_decisions_search_block' => [
-      'variables' => [],
-      'template' => 'allu-decisions-search-block',
-    ],
-  ];
-}
-
-/**
  * Implements hook_preprocess_paragraph__HOOK().
  */
 function paatokset_allu_preprocess_paragraph__allu_decisions_search(array &$variables) {
