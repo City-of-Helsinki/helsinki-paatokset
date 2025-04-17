@@ -39,9 +39,6 @@ field_settings:
     configuration:
       type: union
       separator: |+
-
-
-
       fields: {  }
   approval_created:
     label: 'Authored on'
