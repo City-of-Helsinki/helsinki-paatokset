@@ -70,3 +70,16 @@ matomo:
         preprocess: false
       }
     }
+
+allu-decisions-search:
+  version: 1.0.0
+  js:
+    dist/js/allu-decisions-search.min.js: {
+      attributes: {
+        preprocess: false,
+        minified: true
+      }
+    }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal

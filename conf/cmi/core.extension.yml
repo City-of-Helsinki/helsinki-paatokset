@@ -127,6 +127,7 @@ module:
   paatokset_ahjo_api: 0
   paatokset_ahjo_openid: 0
   paatokset_ahjo_proxy: 0
+  paatokset_allu: 0
   paatokset_config: 0
   paatokset_council_info: 0
   paatokset_datapumppu: 0

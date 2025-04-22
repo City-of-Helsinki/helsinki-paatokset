@@ -1,0 +1,10 @@
+uuid: ac56f68c-4b56-4af9-843b-7811742b3da4
+langcode: en
+status: true
+dependencies: {  }
+id: paatokset_allu
+label: paatokset_allu
+description: ''
+source_type: null
+module: null
+shared_configuration: null
