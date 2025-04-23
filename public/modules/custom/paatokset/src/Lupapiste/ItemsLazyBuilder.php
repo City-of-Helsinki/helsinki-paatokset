@@ -38,6 +38,7 @@ final class ItemsLazyBuilder implements TrustedCallbackInterface {
     $build = [
       '#cache' => [
         'contexts' => ['languages:language_content', 'url.query_args.pagers'],
+        'tags' => [ItemsStorage::CACHE_TAG],
       ],
       'items' => [
         '#theme' => 'lupapiste_rss_list',
