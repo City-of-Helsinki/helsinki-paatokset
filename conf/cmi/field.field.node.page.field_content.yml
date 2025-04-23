@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_content
     - node.type.page
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.allu_decisions_search
     - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
@@ -61,10 +62,14 @@ settings:
       unit_search: unit_search
       unit_contact_card: unit_contact_card
       pdf_listing: pdf_listing
+      allu_decisions_search: allu_decisions_search
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: 1
+        enabled: true
+      allu_decisions_search:
+        weight: 19
         enabled: true
       banner:
         weight: 2
