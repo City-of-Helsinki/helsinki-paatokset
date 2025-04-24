@@ -19,13 +19,7 @@
       <lupapiste:paatoksenPykala xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">13</lupapiste:paatoksenPykala>
       <lupapiste:paattaja xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">Rakennustarkastaja</lupapiste:paattaja>
       <lupapiste:asiakirjaLink xmlns:lupapiste="https://www.lupapiste.fi/rss/extensions">https://www-qa.lupapiste.fi/api/raw/download-bulletin-doc?bulletinId=LP-049-2025-90341_67d12f9be5770069ee7a654c</lupapiste:asiakirjaLink>
-      <description>Rakennuslupa:
-        Pientalo
-
-        (tarvittaessa:)
-        Aloittamisoikeus
-
-        *****</description>
+      <description>en Rakennuslupa: Pientalo (tarvittaessa:) Aloittamisoikeus *****</description>
       <guid isPermaLink="false">LP-049-2025-90341_67d12f9be5770069ee7a654c</guid>
       <link>https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90341_67d12f9be5770069ee7a654c</link>
       <pubDate>Wed, 12 Mar 2025 08:54:15 +0200</pubDate>

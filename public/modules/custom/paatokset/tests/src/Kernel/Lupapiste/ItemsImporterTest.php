@@ -66,21 +66,18 @@ class ItemsImporterTest extends KernelTestBase {
       'paatoksenPykala' => '13',
       'paattaja' => 'Rakennustarkastaja',
       'asiakirjaLink' => 'https://www-qa.lupapiste.fi/api/raw/download-bulletin-doc?bulletinId=LP-049-2025-90341_67d12f9be5770069ee7a654c',
-      'description' => 'Rakennuslupa:
-        Pientalo
-
-        (tarvittaessa:)
-        Aloittamisoikeus
-
-        *****',
+      'description' => 'fi Rakennuslupa: Pientalo (tarvittaessa:) Aloittamisoikeus *****',
       'link' => 'https://www-qa.lupapiste.fi/app/fi/local-bulletins?organization=049-R#!/r-bulletin/LP-049-2025-90341_67d12f9be5770069ee7a654c',
       'pubDate' => 'Wed, 12 Mar 2025 08:54:15 +0200',
       'title' => 'fi Asuinkerrostalon tai rivitalon rakentaminen',
     ];
 
     $data = $importer->fetch('fi');
-    $this->assertCount(2, $data);
-    $this->assertEquals($expected, $data[0]);
+    $items = $data['items'];
+    $pubDate = $data['pubDate'];
+    $this->assertCount(2, $items);
+    $this->assertEquals($expected, $items[0]);
+    $this->assertEquals('Wed, 12 Mar 2025 08:54:15 +0200', $pubDate);
   }
 
 }

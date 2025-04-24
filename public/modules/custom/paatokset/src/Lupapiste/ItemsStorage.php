@@ -93,7 +93,7 @@ final readonly class ItemsStorage {
 
     $data = $this->importer->fetch($langcode);
     $items = $data['items'] ?? [];
-    $pubDate = $data['pubDate'] ? strtotime($data['pubDate']) : 0;
+    $pubDate = isset($data['pubDate']) ? strtotime($data['pubDate']) : 0;
 
     // Save fetched items to cache.
     $to_cache = $from_cache ? $from_cache->data : [];
