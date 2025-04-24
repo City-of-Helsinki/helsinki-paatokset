@@ -23,6 +23,7 @@ final readonly class ItemsStorage {
   public const CACHE_KEY = 'paatokset.lupapiste_data';
   public const CACHE_TAG = 'paatokset.lupapiste_data';
   public const LAST_FETCH_TIMESTAMP = 'paatokset.lupapiste_rss_last_fetch';
+  public const LAST_PUBDATE_TIMESTAMP = 'paatokset.lupapiste_rss_last_pubdate';
 
   /**
    * Constructs a new instance.
@@ -92,11 +93,18 @@ final readonly class ItemsStorage {
 
     $data = $this->importer->fetch($langcode);
     $items = $data['items'] ?? [];
+    $pubDate = $data['pubDate'] ? strtotime($data['pubDate']) : 0;
 
+    // Save fetched items to cache.
     $to_cache = $from_cache ? $from_cache->data : [];
     $to_cache[$langcode] = $items;
     $this->cache->set(self::CACHE_KEY, $to_cache);
+
+    // Save timestamps for cache clearing.
     $this->state->set(self::LAST_FETCH_TIMESTAMP, $this->time->getRequestTime());
+    if ($pubDate) {
+      $this->state->set(self::LAST_PUBDATE_TIMESTAMP, $pubDate);
+    }
 
     return $items;
   }
@@ -138,11 +146,13 @@ final readonly class ItemsStorage {
    *   TRUE if cache was purged, FALSE otherwise.
    */
   public function purgeCacheIfNeeded(int $max_age_seconds = 86400) : bool {
-    $last_fetched = $this->state->get(self::LAST_FETCH_TIMESTAMP);
+    $last_fetched = $this->state->get(self::LAST_FETCH_TIMESTAMP, 0);
+    $last_pubdate = $this->state->get(self::LAST_PUBDATE_TIMESTAMP, 0);
 
+    // Purge cache if it's older than max age or if the RSS feed has updated.
     if (
       $last_fetched < $this->time->getRequestTime() - $max_age_seconds
-      || $last_fetched < $this->getCurrentPublishedTimestamp()
+      || $last_pubdate < $this->getCurrentPublishedTimestamp()
     ) {
       $this->cache->delete(self::CACHE_KEY);
       $this->cacheTagsInvalidator->invalidateTags([self::CACHE_TAG]);
