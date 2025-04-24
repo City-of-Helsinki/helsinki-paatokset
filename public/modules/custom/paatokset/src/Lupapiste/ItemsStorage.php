@@ -100,10 +100,14 @@ final readonly class ItemsStorage {
     $to_cache[$langcode] = $items;
     $this->cache->set(self::CACHE_KEY, $to_cache);
 
-    // Save timestamps for cache clearing.
-    $this->state->set(self::LAST_FETCH_TIMESTAMP, $this->time->getRequestTime());
-    if ($pubDate) {
-      $this->state->set(self::LAST_PUBDATE_TIMESTAMP, $pubDate);
+    // Save timestamps for cache clearing. Only do this if the cache was
+    // totally empty, to make sure the values reflect the first generated
+    // language version.
+    if (!$from_cache) {
+      $this->state->set(self::LAST_FETCH_TIMESTAMP, $this->time->getRequestTime());
+      if ($pubDate) {
+        $this->state->set(self::LAST_PUBDATE_TIMESTAMP, $pubDate);
+      }
     }
 
     return $items;
