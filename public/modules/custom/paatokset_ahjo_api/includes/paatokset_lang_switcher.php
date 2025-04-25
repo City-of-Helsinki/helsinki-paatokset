@@ -161,6 +161,13 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
       $decisions[$caseOrDecision->id()] = $decision;
     }
 
+    // Some decisions do not have diary number (nor case).
+    // For example, "pöytäkirjan tarkastajien valinta".
+    // getDecisionUrlFromNode() has fallback logic for this case.
+    if (!$diaryNumber) {
+      return $caseService->getDecisionUrlFromNode($decision, $langCode);
+    }
+
     return $caseService->getCaseUrlFromNode($diaryNumber, $decision, $langCode)
       ?: $caseService->getDecisionUrlFromNode(NULL, $langCode);
   }
