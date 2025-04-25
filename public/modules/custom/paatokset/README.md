@@ -13,3 +13,15 @@ To check what value is set
 ``
 drush state:get lupapiste
 ``
+
+## Cache purging
+
+Caches are cleared via cron when the last cache clear was over 24 hours ago (failsafe) or the RSS-feed has updated.
+
+### Manual cache purging
+
+The values for latest fetch time and the latest RSS-feed published date are tracked in state variables, which allows a manual purge by running:
+
+``
+drush state:set paatokset.lupapiste_rss_last_fetch 0 && drush cron
+``

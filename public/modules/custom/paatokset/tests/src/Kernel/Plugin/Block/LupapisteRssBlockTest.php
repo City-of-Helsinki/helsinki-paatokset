@@ -69,7 +69,7 @@ class LupapisteRssBlockTest extends KernelTestBase {
       $block = LupapisteRssBlock::create($this->container, [], '', ['provider' => 'paatokset']);
       $build = $block->build();
       $rendered = $renderer->renderInIsolation($build);
-      $this->assertStringContainsString($expected . ' Asuinkerrostalon tai rivitalon rakentaminen', (string) $rendered);
+      $this->assertStringContainsString($expected . ' Rakennuslupa: Pientalo (tarvittaessa:) Aloittamisoikeus *****', (string) $rendered);
     }
   }
 

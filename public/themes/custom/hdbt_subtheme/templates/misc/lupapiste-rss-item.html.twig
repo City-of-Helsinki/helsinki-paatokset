@@ -10,7 +10,7 @@
   ]
 } %}
 
-{% set link_title = item.title ~ ' ' ~ '(download pdf)'|t({}, {'context': 'Lupapiste rss'}) %}
+{% set link_title = item.description ?? item.title ~ ' ' ~ '(download pdf)'|t({}, {'context': 'Lupapiste rss'}) %}
 
 <div class="rss-item__container">
   <h3>{{ link(link_title, item.asiakirjaLink, link_attributes) }}</h3>
