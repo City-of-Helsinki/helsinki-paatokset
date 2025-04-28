@@ -1,0 +1,167 @@
+uuid: 95470af7-7fe8-41b4-8120-ee3762a4b8b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.default
+  module:
+    - elasticsearch_connector
+    - helfi_react_search
+    - paatokset_ahjo_api
+    - paatokset_allu
+_core:
+  default_config_hash: LEVvRwYra-3k3BWe32IR_Wlrt8OHT0CPudBXaQY1inA
+id: allu
+name: Allu
+description: ''
+read_only: false
+field_settings:
+  address:
+    label: Address
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: address
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  address_fulltext:
+    label: Osoite
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: address
+    type: text
+    dependencies:
+      module:
+        - paatokset_allu
+  aggregated_field:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      separator: |
+
+      fields: {  }
+  approval_created:
+    label: 'Authored on'
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - paatokset_allu
+  approval_type:
+    label: 'Reverse reference: <em class="placeholder">Approval</em> using <em class="placeholder">Document</em> » Document type'
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: 'search_api_reverse_entity_references_paatokset_allu_approval__document:type'
+    type: string
+  custom_value:
+    label: 'Custom value'
+    property_path: custom_value
+    type: string
+    configuration:
+      value: ''
+  document:
+    label: Document
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: document
+    type: integer
+    dependencies:
+      module:
+        - paatokset_allu
+  document_created:
+    label: 'Authored on'
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - paatokset_allu
+  document_type:
+    label: 'Document type'
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  label:
+    label: Label
+    datasource_id: 'entity:paatokset_allu_document'
+    property_path: label
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  type:
+    label: 'Document type'
+    datasource_id: 'entity:paatokset_allu_approval'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - paatokset_allu
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
+    configuration:
+      absolute: false
+datasource_settings:
+  'entity:paatokset_allu_approval': {  }
+  'entity:paatokset_allu_document': {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  color_class: {  }
+  custom_value: {  }
+  decision_url: {  }
+  decisionmaker_combined_title: {  }
+  district_image_absolute_url: {  }
+  elasticsearch_highlight:
+    weights:
+      postprocess_query: 0
+      preprocess_query: 0
+    boundary_scanner: sentence
+    boundary_scanner_locale: system
+    encoder: default
+    fields:
+      - address_fulltext
+    fragment_size: 60
+    fragmenter: span
+    no_match_size: 0
+    number_of_fragments: 5
+    order: none
+    pre_tag: '<em class="placeholder">'
+    require_field_match: true
+    snippet_joiner: ' … '
+    type: unified
+  entity_type: {  }
+  has_translation: {  }
+  ignorecase:
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+    all_fields: false
+    fields:
+      - address_fulltext
+  language_with_fallback: {  }
+  project_execution_schedule: {  }
+  project_image_absolute_url: {  }
+  project_plan_schedule: {  }
+  rendered_item: {  }
+  reverse_entity_references: {  }
+  sector_id: {  }
+  special_status: {  }
+  top_category_id: {  }
+  trustee_name: {  }
+  trustee_title: {  }
+  unique_issue_id: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 100
+  delete_on_fail: true
+  index_directly: false
+  track_changes_in_references: true
+server: default

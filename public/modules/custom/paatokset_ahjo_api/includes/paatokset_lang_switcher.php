@@ -83,11 +83,19 @@ function _paatokset_lang_switcher_get_alt_urls_for_node(NodeInterface $node, str
     $policymakerService = \Drupal::service('paatokset_policymakers');
     return $policymakerService->getPolicymakerRoute($node, $langCode);
   }
-  elseif ($node->bundle() === 'case') {
-    $diaryNumber = $node->get('field_diary_number')->value;
+  elseif ($node instanceof CaseBundle) {
+    static $decisions = [];
+
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
-    return $caseService->getCaseUrlFromNode($diaryNumber, $caseService->getSelectedDecision(), $langCode);
+
+    // Optimization: cache guess results. This should avoid few database
+    // queries when this function is called for each language.
+    if (!($decision = $decisions[$node->id()] ?? NULL)) {
+      $decisions[$node->id()] = $decision = $caseService->guessDecisionFromPath($node);
+    }
+
+    return $caseService->getCaseUrlFromNode($node->getDiaryNumber(), $decision, $langCode);
   }
   elseif ($node->bundle() === 'decision') {
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
@@ -151,6 +159,13 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
 
       // Save for later.
       $decisions[$caseOrDecision->id()] = $decision;
+    }
+
+    // Some decisions do not have diary number (nor case).
+    // For example, "pöytäkirjan tarkastajien valinta".
+    // getDecisionUrlFromNode() has fallback logic for this case.
+    if (!$diaryNumber) {
+      return $caseService->getDecisionUrlFromNode($decision, $langCode);
     }
 
     return $caseService->getCaseUrlFromNode($diaryNumber, $decision, $langCode)

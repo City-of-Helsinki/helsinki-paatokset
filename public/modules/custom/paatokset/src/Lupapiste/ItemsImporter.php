@@ -64,6 +64,7 @@ final class ItemsImporter {
       return $feed->getXpath()->evaluate(sprintf('string(%s/lupapiste:%s)', $prefix, $field));
     };
 
+    $pubDate = $feed->getXpath()->evaluate('string(//channel/pubDate)');
     $items = [];
     $keys = get_class_vars(Item::class);
 
@@ -75,7 +76,10 @@ final class ItemsImporter {
         $items[$delta][$k] = $evaluateXpath($k, $item->getXpathPrefix());
       }
     }
-    return $items;
+    return [
+      'pubDate' => $pubDate,
+      'items' => $items,
+    ];
   }
 
 }
