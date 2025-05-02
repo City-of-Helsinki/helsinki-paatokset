@@ -10,7 +10,10 @@
   *   - class: HTML classes to be applied to the feed link.
   */
 #}
-<a href="{{ url }}"{{ attributes.addClass('feed-icon') }}>
-  <i class="hel-icon hel-icon--rss"></i>
-  <span>{{ 'Subscribe to @title'|t({'@title': title}) }}</span>
-</a>
+{% set link_attributes = {
+  'class': [
+    'feed-icon',
+  ],
+} %}
+{% set link_title = 'Subscribe to @title'|t({'@title': title}) %}
+{{ link(link_title, url, link_attributes) }}

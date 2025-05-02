@@ -9,7 +9,9 @@
     display: flex;
     margin-block-start: $spacing-double;
 
-    i {
+    &::before {
+      @include pseudo-icon('rss', $spacing-and-half, $color-black);
+
       margin-inline-end: $spacing-half;
     }
 
