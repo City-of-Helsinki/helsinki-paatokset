@@ -12,6 +12,7 @@
     &::before {
       @include pseudo-icon('rss', $spacing-and-half, $color-black);
 
+      flex-shrink: 0;
       margin-inline-end: $spacing-half;
     }
 
