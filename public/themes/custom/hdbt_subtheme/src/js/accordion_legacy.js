@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', function accordionListeners() {
   function closeFold(folds) {
     const closeButton = folds.content.querySelector('.accordion-item__button--close');
 
+    if (!closeButton) {
+      return;
+    }
+
     function moveFocus(element) {
       element.closest('.accordion-legacy__wrapper').querySelector('.accordion-item__button--toggle').focus();
     }
@@ -19,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function accordionListeners() {
 
     closeButton.addEventListener('keypress', function closeFoldsOnKey(e) {
       if (e.which === 13 || e.which === 32) {
-        closeFolds(e);
+        folds.close();
+        e.preventDefault();
+        moveFocus(this);
       }
     });
   }
@@ -34,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function accordionListeners() {
     // eslint-disable-next-line new-cap
     const accordion = new handorgel(singleAccordion, {
       // whether multiple folds can be opened at once
-      multiSelectable: false,
+      multiSelectable: true,
       // whether the folds are collapsible
       collapsible: true,
 
