@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Controller;
 
 use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
@@ -20,8 +21,15 @@ class AhjoApiController extends ControllerBase {
    * Get org chart.
    */
   public function getOrgChart(Organization $ahjo_organization, int $steps): Response {
+    $language = $this->languageManager()->getCurrentLanguage()->getId();
+
     $response = new CacheableJsonResponse();
-    $response->setData($this->buildOrgCharg($ahjo_organization, $response, $steps));
+    $response->setData($this->buildOrgCharg($ahjo_organization, $response, $steps, $language));
+
+    // Cache by current language.
+    $cacheMetadata = new CacheableMetadata();
+    $cacheMetadata->addCacheContexts(['languages:language_content']);
+    $response->addCacheableDependency($cacheMetadata);
 
     return $response;
   }
@@ -29,7 +37,7 @@ class AhjoApiController extends ControllerBase {
   /**
    * Build org chart.
    */
-  private function buildOrgCharg(Organization $organization, CacheableResponseInterface $response, int $steps): array {
+  private function buildOrgCharg(Organization $organization, CacheableResponseInterface $response, int $steps, string $langcode): array {
     // Do not allow too expensive requests.
     if ($steps > 5) {
       throw new BadRequestHttpException();
@@ -44,7 +52,11 @@ class AhjoApiController extends ControllerBase {
 
     if ($steps > 1) {
       foreach ($organization->getChildOrganizations() as $child) {
-        $data['children'][] = $this->buildOrgCharg($child, $response, $steps - 1);
+        if ($child->hasTranslation($langcode)) {
+          $child = $child->getTranslation($langcode);
+        }
+
+        $data['children'][] = $this->buildOrgCharg($child, $response, $steps - 1, $langcode);
       };
     }
 
