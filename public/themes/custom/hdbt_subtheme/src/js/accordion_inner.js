@@ -12,6 +12,10 @@
         '.accordion-item__button--close-inner'
       );
 
+      if (!closeButton) {
+        return;
+      }
+
       function moveFocus(element) {
         element
           .closest('.accordion-inner__wrapper')
