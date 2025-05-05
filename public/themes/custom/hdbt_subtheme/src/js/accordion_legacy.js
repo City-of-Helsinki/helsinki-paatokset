@@ -23,9 +23,7 @@ document.addEventListener('DOMContentLoaded', function accordionListeners() {
 
     closeButton.addEventListener('keypress', function closeFoldsOnKey(e) {
       if (e.which === 13 || e.which === 32) {
-        folds.close();
-        e.preventDefault();
-        moveFocus(this);
+        closeFolds(e);
       }
     });
   }
