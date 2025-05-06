@@ -38,6 +38,10 @@ msgid "@count proclamations"
 msgstr "@count kungörelser"
 
 msgctxt "Lupapiste rss"
+msgid "proclamations"
+msgstr "kungörelser"
+
+msgctxt "Lupapiste rss"
 msgid "Building control permit decisions"
 msgstr "Byggnadstillsynens tillståndsbeslut"
 

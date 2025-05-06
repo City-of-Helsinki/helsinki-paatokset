@@ -43,8 +43,15 @@ class OrganizationTest extends RemoteEntityAccessTestBase {
       'id' => '00400',
       'label' => 'Kaupunginhallitus',
       'organization_above' => $root,
+      'existing' => 1,
     ]);
     $child->save();
+    Organization::create([
+      'id' => '900',
+      'label' => 'Puheenjohtaja',
+      'organization_above' => $child,
+      'existing' => 0,
+    ])->save();
 
     $this->assertInstanceOf(Organization::class, $root);
     $this->assertEquals($root->id(), $child->getParentOrganization()?->id());
@@ -53,6 +60,7 @@ class OrganizationTest extends RemoteEntityAccessTestBase {
     $this->assertOrganizationHierarchyIds([$root->id()], $root->getOrganizationHierarchy());
     $this->assertOrganizationHierarchyIds([$root->id(), $child->id()], $child->getOrganizationHierarchy());
 
+    // Dissolved organizations (existing = 0) should not be visible.
     $this->assertEmpty($child->getChildOrganizations());
     $this->assertNotEmpty($root->getChildOrganizations());
   }

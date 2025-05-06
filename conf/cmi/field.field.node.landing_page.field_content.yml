@@ -21,6 +21,7 @@ dependencies:
     - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.meetings_calendar
     - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.number_highlights
     - paragraphs.paragraphs_type.pdf_listing
     - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.popular_services
@@ -63,6 +64,7 @@ settings:
       target_group_links: target_group_links
       event_list: event_list
       news_list: news_list
+      number_highlights: number_highlights
       curated_event_list: curated_event_list
       hearings: hearings
       service_list: service_list
@@ -124,6 +126,9 @@ settings:
         enabled: true
       news_list:
         weight: 14
+        enabled: true
+      number_highlights:
+        weight: 16
         enabled: true
       pdf_listing:
         weight: 21
