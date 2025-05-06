@@ -169,7 +169,7 @@ final class AhjoOrganizationSource extends AhjoSourceBase implements ContainerFa
       'id' => $current['ID'],
       'name' => $title,
       'langcode' => $langcode,
-      'existing' => $this->isDissolved($current),
+      'existing' => !$this->isDissolved($current),
       'organization_above' => $parent['ID'] ?? NULL,
     ];
   }
