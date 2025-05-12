@@ -24,14 +24,11 @@
   }
 
   h2 {
-    margin-bottom: 36px;
-    padding: $spacing-quadruple*2 0 0 0;
+    margin-bottom: $spacing-and-half;
+    padding-top: $spacing-double;
 
-    @include breakpoint($breakpoint-s) {
-      margin-bottom: $spacing-triple;
-    }
-    @include breakpoint($breakpoint-m) {
-      padding: 60px 0 0;
+    @include breakpoint($breakpoint-l) {
+      padding-top: $spacing-triple;
     }
   }
 
@@ -43,11 +40,7 @@
 .frontpage-calendar__link-container {
   display: flex;
   justify-content: right;
-  padding: 0 $spacing;
-
-  @include breakpoint($breakpoint-s) {
-    padding: 0;
-  }
+  margin-top: $spacing;
 
   i {
     width: 36px;
@@ -67,38 +60,27 @@
 }
 
 .frontpage-calendar__item-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  gap: $spacing-and-half;
+  grid-template-columns: repeat(1, 1fr);
 
-  @include breakpoint($breakpoint-s) {
-    margin: 0 -$spacing-three-quarters 60px -$spacing-three-quarters;
+  @include breakpoint($breakpoint-m) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint($breakpoint-l) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint($breakpoint-xl) {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .frontpage-calendar__item {
   min-height: 282px;
-  padding: $spacing-half 0;
-  text-decoration: none;
+  position: relative;
   width: 100%;
-
-  &:hover {
-    .motions-link {
-      text-decoration: underline;
-    }
-  }
-
-  @include breakpoint($breakpoint-m) {
-    padding: $spacing-three-quarters;
-    width: 50%;
-  }
-
-  @include breakpoint($breakpoint-l) {
-    width: 33.3%;
-  }
-
-  @include breakpoint($breakpoint-xl) {
-    width: 25%;
-  }
 
   .motions-link {
     align-items: center;
@@ -109,12 +91,21 @@
 
     i {
       height: 18px;
-      margin-right: $spacing-three-quarters;
       width: 18px;
     }
 
     span {
       width: auto;
+    }
+
+    &::after {
+      content: "";
+      inset: 0;
+      position: absolute;
+    }
+
+    &:hover, &:focus, &:active {
+      text-decoration: underline;
     }
   }
 
@@ -153,5 +144,8 @@
 
 .frontpage-calendar__notice {
   margin-bottom: $spacing-and-half;
-  margin-top: -$spacing-and-half;
+
+  p {
+    margin: 0;
+  }
 }
