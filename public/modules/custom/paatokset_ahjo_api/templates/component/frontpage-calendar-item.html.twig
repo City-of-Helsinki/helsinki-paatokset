@@ -7,16 +7,19 @@
       {% if motions_link %}
         <a class="motions-link" href="{{motions_link}}">
           <span>{{ open_motions }}</span>
+          <span class="visually-hidden">: {{ policymaker }}</span>
           <i class="hel-icon hel-icon--angle-right"></i>
         </a>
       {% elseif decision_link %}
         <a class="motions-link" href="{{decision_link}}">
           <span>{{ open_decisions }}</span>
+          <span class="visually-hidden">: {{ policymaker }}</span>
           <i class="hel-icon hel-icon--angle-right"></i>
         </a>
       {% elseif minutes_link %}
         <a class="motions-link" href="{{minutes_link}}">
           <span>{{ open_minutes }}</span>
+          <span class="visually-hidden">: {{ policymaker }}</span>
           <i class="hel-icon hel-icon--angle-right"></i>
         </a>
       {% endif %}
