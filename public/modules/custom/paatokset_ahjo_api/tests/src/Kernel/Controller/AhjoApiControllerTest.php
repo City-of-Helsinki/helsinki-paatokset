@@ -6,15 +6,15 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests case controller.
  */
-class AhjoApiControllerTest extends KernelTestBase {
+class AhjoApiControllerTest extends AhjoKernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;
@@ -67,12 +67,13 @@ class AhjoApiControllerTest extends KernelTestBase {
       'organization_above' => '02900',
     ])->save();
 
+    // Test invalid permissions.
     $this->assertEquals(403, $this->getOrgChartResponse('00001', 1)->getStatusCode());
 
     // Setup permissions.
     $this->setUpCurrentUser(permissions: ['view remote entities']);
 
-    // Correct permissions.
+    // Test correct permissions.
     $response = $this->getOrgChartResponse('00001', 1);
     $this->assertEquals(200, $response->getStatusCode());
     $this->assertEquals([
@@ -105,6 +106,41 @@ class AhjoApiControllerTest extends KernelTestBase {
         ],
       ],
     ], json_decode($response->getContent(), TRUE));
+
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $nodeStorage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('node');
+
+    // Create policymaker node.
+    $policymaker = $nodeStorage->create([
+      'type' => 'policymaker',
+      'status' => '1',
+      'langcode' => 'en',
+      'title' => 'Test policymaker',
+      'field_policymaker_id' => '02900',
+    ]);
+    $policymaker->save();
+
+    // Test with policymaker.
+    $response = $this->getOrgChartResponse('00001', 3);
+    $this->assertEquals(200, $response->getStatusCode());
+    $this->assertEquals([
+      'id' => '00001',
+      'title' => 'Helsingin kaupunki',
+      'children' => [
+        [
+          'id' => '02900',
+          'title' => 'Kaupunginvaltuusto',
+          'url' => $policymaker->toUrl('canonical', ['absolute' => TRUE])->toString(),
+          'children' => [
+            [
+              'id' => '00400',
+              'title' => 'Kaupunginhallitus',
+            ],
+          ],
+        ],
+      ],
+    ], json_decode($response->getContent(), TRUE));
   }
 
   /**
@@ -116,7 +152,6 @@ class AhjoApiControllerTest extends KernelTestBase {
       'steps' => $steps,
     ]);
 
-    // Test invalid permissions.
     $request = $this->getMockedRequest($url->toString());
     return $this->processRequest($request);
   }
