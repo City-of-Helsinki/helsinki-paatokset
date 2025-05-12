@@ -1,24 +1,26 @@
+{% set link = null %}
+{% set label = null %}
+
+{% if motions_link %}
+  {% set link = motions_link %}
+  {% set label = open_motions %}
+{% elseif decision_link %}
+  {% set link = decision_link %}
+  {% set label = open_decisions %}
+{% elseif minutes_link %}
+  {% set link = minutes_link %}
+  {% set label = open_minutes %}
+{% endif %}
+
 <div class="frontpage-calendar__item">
   <div class="frontpage-calendar__item-inner">
     <div class="color-line {{ line_color }}"></div>
     <div class="content-container">
       <span class="meeting-date">{{ date|date("d.m.Y — H:i") }}</span>
       <h3>{{ policymaker }}</h3>
-      {% if motions_link %}
-        <a class="motions-link" href="{{motions_link}}">
-          <span>{{ open_motions }}</span>
-          <span class="visually-hidden">: {{ policymaker }}</span>
-          <i class="hel-icon hel-icon--angle-right"></i>
-        </a>
-      {% elseif decision_link %}
-        <a class="motions-link" href="{{decision_link}}">
-          <span>{{ open_decisions }}</span>
-          <span class="visually-hidden">: {{ policymaker }}</span>
-          <i class="hel-icon hel-icon--angle-right"></i>
-        </a>
-      {% elseif minutes_link %}
-        <a class="motions-link" href="{{minutes_link}}">
-          <span>{{ open_minutes }}</span>
+      {% if link %}
+        <a class="motions-link" href="{{ link }}">
+          <span>{{ label }}</span>
           <span class="visually-hidden">: {{ policymaker }}</span>
           <i class="hel-icon hel-icon--angle-right"></i>
         </a>
