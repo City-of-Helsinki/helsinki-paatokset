@@ -17,11 +17,9 @@
 
     .hds-tag {
       background: $color-black;
-      border: 2px solid transparent;
       color: $color-white;
       margin: $spacing;
       margin-left: 0;
-      padding: 6px $spacing;
       text-decoration: none;
       --outline-gutter: 2px;
       --outline-width: 3px;
@@ -43,11 +41,6 @@
         outline: var(--outline-width) solid var(--focus-outline-color);
         outline-offset: var(--outline-gutter);
         outline-offset: 2px;
-      }
-      
-      a {
-        color: inherit;
-        text-decoration: none;
       }
     }
   }
