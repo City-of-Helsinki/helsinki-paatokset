@@ -18,8 +18,8 @@
     .hds-tag {
       background: $color-black;
       color: $color-white;
-      margin: $spacing;
-      margin-left: 0;
+      margin-block: $spacing;
+      margin-inline-end: $spacing;
       text-decoration: none;
       --outline-gutter: 2px;
       --outline-width: 3px;

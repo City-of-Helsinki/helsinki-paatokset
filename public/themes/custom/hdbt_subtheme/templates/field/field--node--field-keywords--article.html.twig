@@ -52,7 +52,9 @@
         'class': 'hds-tag hds-tag--action',
       } %}
 
-      {{link(link_title, url, link_attributes)}}
+      {% if url %}
+        {{link(link_title, url, link_attributes)}}
+      {% endif %}
     {% endfor %}
   </div>
 {% endif %}
