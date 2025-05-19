@@ -21,9 +21,6 @@
       margin-block: $spacing;
       margin-inline-end: $spacing;
       text-decoration: none;
-      --outline-gutter: 2px;
-      --outline-width: 3px;
-      --focus-outline-color: $color-black;
 
       &:hover, &:active, &:focus {
         transition-duration: 85ms;
@@ -38,8 +35,8 @@
       }
 
       &:focus, &:active {
-        outline: var(--outline-width) solid var(--focus-outline-color);
-        outline-offset: var(--outline-gutter);
+        outline: 3px solid $color-black;
+        outline-offset: 2px;
         outline-offset: 2px;
       }
     }
