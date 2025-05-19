@@ -56,13 +56,7 @@
 
   .hds-tag {
     background: $color-black;
-    border-radius: $spacing-and-half;
     color: $color-white;
-    display: flex;
-    font-size: 16px;
-    margin-right: $spacing-three-quarters;
-    padding: 6px $spacing;
-    width: fit-content;
   }
   .hds-tag--confidential {
     background: var(--color-brick);

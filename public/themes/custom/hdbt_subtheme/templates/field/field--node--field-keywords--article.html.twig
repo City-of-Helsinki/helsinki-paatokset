@@ -46,18 +46,15 @@
 {% if label_hidden %}
   <div class="keywords">
     {% for item in items %}
-      <div class="hds-tag">
-        {{ item.content }}
-      </div>
-    {% endfor %}
-  </div>
-{% else %}
-  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-  <div class="keywords">
-    {% for item in items %}
-      <div class="hds-tag">
-        {{ item.content }}
-      </div>
+      {% set url = item.content['#url'] %}
+      {% set link_title = item.content['#title']%}
+      {% set link_attributes = {
+        'class': 'hds-tag hds-tag--action',
+      } %}
+
+      {% if url %}
+        {{link(link_title, url, link_attributes)}}
+      {% endif %}
     {% endfor %}
   </div>
 {% endif %}
