@@ -35,6 +35,7 @@
       }
 
       &:focus, &:active {
+        border-color: $color-black;
         outline: 3px solid $color-black;
         outline-offset: 2px;
         outline-offset: 2px;
