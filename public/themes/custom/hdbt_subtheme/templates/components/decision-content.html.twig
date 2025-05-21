@@ -66,25 +66,25 @@
     {% if vote_results %}
       {% include '@hdbt_subtheme/components/decision-voting-results.html.twig' %}
     {% endif %}
-    <div class="paatokset-accordion">
-      {% for accordion in decision_content.accordions %}
-        <div class="paatokset-accordion__wrapper handorgel">
-          <h3 class="paatokset-accordion-item__header handorgel__header">
-            <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-              <span>{{ accordion.heading }}</span>
-            </button>
-          </h3>
-          <div class="paatokset-accordion-item__content handorgel__content">
-            <div class="paatokset-accordion-item__content__inner handorgel__content__inner">
-              {{ accordion.content }}
-              <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-                {{ 'Close'|t }}
-              </span>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+
+    {% embed "@hdbt/misc/component.twig" with {
+      component_classes: [
+        'component--accordion',
+        'component--accordion-bg-white',
+        'component--hardcoded'
+      ],
+      component_content_class: 'accordion',
+    } %}
+      {% block component_content %}
+        {% for accordion in decision_content.accordions %}
+          {% include '@hdbt/component/accordion.twig' ignore missing with {
+            heading_level: 'h3',
+            heading: accordion.heading,
+            content: accordion.content,
+          } %}
+        {% endfor %}
+      {% endblock component_content %}
+    {% endembed %}
 
     {% if decision_content.presenter_info %}
       <div class="issue__more-info">
