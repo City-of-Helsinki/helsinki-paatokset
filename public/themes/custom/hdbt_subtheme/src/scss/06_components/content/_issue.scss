@@ -93,16 +93,6 @@
     margin-bottom: $spacing-double;
   }
 
-  .paatokset-accordion {
-    border-bottom: 2px solid $color-black-20;
-    margin-bottom: $spacing-double;
-
-    .handorgel__header__button,
-    .handorgel__content {
-      background: transparent;
-    }
-  }
-
   .voting-results-accordion {
     margin-bottom: -2px;
   }
@@ -426,28 +416,6 @@ h4.decision-history-title + h5.decision-history-title {
         background-color: $color-silver-medium-light;
       }
     }
-  }
-
-  .accordion-inner-item__content {
-    border: 1px solid $color-black;
-    margin-top: $spacing;
-  }
-
-  .accordion-inner-item__content__inner {
-    margin-top: 0;
-    padding: 0;
-
-    .results-table {
-      margin-top: 0;
-    }
-
-    .handorgel__content--open & {
-      padding-bottom: $spacing-double;
-    }
-  }
-
-  .accordion-item__button--close-inner {
-    font-size: 16px;
   }
 }
 

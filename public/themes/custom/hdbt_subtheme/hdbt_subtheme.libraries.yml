@@ -12,45 +12,6 @@ global-scripting:
   dependencies:
     - core/drupal
 
-handorgel:
-  version: 0.5.0
-  js:
-    dist/js/handorgel/handorgel.min.js: {}
-  css:
-    theme:
-      dist/css/handorgel/handorgel.min.css: {}
-
-accordion_legacy:
-  version: 1.x
-  js:
-    dist/js/accordion_legacy.min.js: {}
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - hdbt_subtheme/handorgel
-
-accordion_inner:
-  version: 1.x
-  js:
-    dist/js/accordion_inner.min.js: {
-      attributes: {
-        defer: true
-      }
-    }
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - hdbt_subtheme/handorgel
-
-accordion_lazy:
-  version: 1.1
-  js:
-    dist/js/accordion_lazybuild.min.js: {}
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - hdbt_subtheme/handorgel
-
 paatokset_submenu:
   version: 1.x
   js:

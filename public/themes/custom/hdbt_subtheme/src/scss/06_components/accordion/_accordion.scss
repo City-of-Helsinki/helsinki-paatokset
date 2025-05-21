@@ -1,66 +1,38 @@
-.paatokset-accordion {
-  .paatokset-accordion-item__header {
-    .handorgel__header__button {
-      background-color: $color-silver-light;
-      border: none;
-      border-top: 2px solid $color-black-20;
-      color: $color-black;
-      display: flex;
-      font-size: inherit;
-      font-weight: normal;
-      justify-content: space-between;
-      padding: $spacing-double;
-      padding-left: $spacing-half;
+// The policymakers accordion is a white accordion but it is placed on a gray background
+// so to make the close button blend with the background we need to change its background color to transparent.
+.component--accordion-bg-white.component--accordion-policymakers .accordion-item__button--close {
+  background-color: transparent;
+}
 
-      span {
-        padding-right: $spacing-double;
-      }
+// The minutes accordion needs to have some space around it so that the additional information above and
+// below won't touch the element.
+.component--accordion-minutes {
+  margin-block: $spacing-double;
+}
 
-      &::after {
-        right: $spacing-double;
-      }
-    }
-  }
-  .handorgel__header--focus .handorgel__header__button {
-    outline: 3px solid $color-black;
-    outline-offset: -3px;
-    position: relative;
-  }
-  .paatokset-accordion-item__header--novotes .handorgel__header__button::after {
-    display: none;
-  }
+// The trustees accordion needs some spacing and minor adjustments for the contents it holds.
+.component--accordion-trustee {
+  .speaking-turn__group__title,
+  .speaking-turn,
+  .initiative,
+  .resolution,
+  .membership {
+    margin-block-end: $spacing;
 
-  .handorgel__content {
-    background-color: $color-silver-light;
-    border: none;
-  }
-
-  .paatokset-accordion-item__content__inner {
-    max-width: 90vw;
-    padding: 0;
-
-    @include breakpoint($breakpoint-s) {
-      max-width: 95vw;
-    }
-    @include breakpoint($breakpoint-m) {
-      max-width: 100vw;
+    &:last-child {
+      margin-block-end: 0;
     }
   }
 
-  .handorgel__content--open .paatokset-accordion-item__content__inner {
-    padding-bottom: $spacing-quadruple;
+  .speaking-turn__group__title {
+    font-size: 1.5rem;
   }
 
-  .paatokset-accordion__wrapper {
-    border: none;
-  }
-
-  .accordion-item__button--close,
-  .accordion-item__button--close-inner {
-    cursor: pointer;
-    display: flex;
-    justify-content: right;
-    margin-bottom: -$spacing;
-    padding: $spacing-and-half;
+  .initiative,
+  .resolution {
+    .date {
+      color: $color-black-50;
+      margin-bottom: $spacing-quarter;
+    }
   }
 }
