@@ -120,18 +120,6 @@
   }
 }
 
-.policymaker-listing .paatokset-accordion-item__content__inner {
-  h4 {
-    font-weight: $font-weight-medium;
-    margin-bottom: $spacing;
-    margin-top: $spacing;
-  }
-
-  .policymaker-row__link + h4 {
-    margin-top: $spacing-quadruple;
-  }
-}
-
 .hds-button.load-more-btn {
   display: none;
 }
