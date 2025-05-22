@@ -321,6 +321,7 @@ h4.decision-history-title + h5.decision-history-title {
   .accordion__wrapper,
   .voting-result--no-votes {
     border: 1px solid $color-black;
+    font-weight: 400;
     margin-block-start: $spacing;
 
     &:first-child {
@@ -357,6 +358,7 @@ h4.decision-history-title + h5.decision-history-title {
 
 .voting-result__opinion__color,
 .voting-result__opinion__key {
+  font-size: 18px;
   padding: $spacing;
 }
 
