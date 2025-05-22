@@ -1,4 +1,5 @@
 {% set voting_results_content %}
+  <span id="voting-results-accordion"></span>
   {% for results in vote_results %}
     {% embed "@hdbt/misc/component.twig" with {
       component_classes: [
