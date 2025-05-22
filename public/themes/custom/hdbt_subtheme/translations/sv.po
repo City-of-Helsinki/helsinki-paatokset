@@ -1,3 +1,11 @@
 # Swedish translations
 msgid ""
 msgstr ""
+
+msgctxt "Voting results"
+msgid "Voting"
+msgstr "Omröstning"
+
+msgctxt "Voting results"
+msgid "Voting results"
+msgstr "Omröstningsresultat"
