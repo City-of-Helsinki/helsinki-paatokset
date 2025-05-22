@@ -55,7 +55,6 @@
     "eslint-plugin-react": "^7.37.4",
     "expose-loader": "^4.0.0",
     "glob": "^10.0.0",
-    "handorgel": "^1.0.0",
     "hds-core": "^2.17.0",
     "hds-design-tokens": "^2.0.0",
     "hds-react": "^4.2.0",
