@@ -1,6 +1,7 @@
 .page-type--trustee .page-title__container {
   max-width: unset;
 }
+
 .page-title + .node--type-trustee.node--view-mode-full {
   @include breakpoint($breakpoint-m) {
     margin-top: $spacing-and-half;
@@ -67,113 +68,4 @@
   }
 }
 
-.node--type-trustee {
-  .accordion-legacy-item__header {
 
-    .handorgel__header__button {
-      align-items: center;
-      border: none;
-      border-top: 2px solid $color-black-20;
-      color: $color-black;
-      display: flex;
-      font-size: 1.5rem;
-      justify-content: space-between;
-      padding: $spacing-and-half;
-
-      span {
-        font-weight: normal;
-        padding-right: $spacing-double;
-      }
-    }
-
-    .icon {
-      height: 30px;
-      min-height: 30px;
-      min-width: 30px;
-      transition: all 0.1s ease-in-out;
-      width: 30px;
-    }
-
-  }
-
-  .handorgel__header--open {
-    .icon {
-      transform: rotate(180deg)
-    }
-  }
-
-  .handorgel__header--open,
-  .handorgel__header--opened {
-    .handorgel__header__button {
-      background-color: $color-white;
-    }
-  }
-
-
-
-  .handorgel__content {
-    border: none;
-    padding: 0;
-  }
-
-  .accordion-legacy-item__content__inner {
-    padding: $spacing-and-half;
-  }
-
-  .accordion-legacy__wrapper.handorgel {
-    border: none;
-  }
-
-  .accordion-item__button--close {
-    cursor: pointer;
-    display: flex;
-    justify-content: right;
-    padding: $spacing-and-half;
-
-    .icon {
-      margin-left: $spacing-half;
-    }
-  }
-}
-
-.accordion_initiatives,
-.accordion_resolutions {
-  .accordion-legacy-item__content__inner > div {
-    margin-bottom: $spacing;
-  }
-
-  .date {
-    color: $color-black-50;
-    font-size: 16px;
-    margin-bottom: $spacing-half;
-  }
-  .title {
-    display: block;
-    margin-bottom: $spacing-and-half;
-  }
-}
-
-.accordion_speaking-turn {
-  .accordion-legacy-item__content__inner > div {
-    margin-bottom: $spacing;
-  }
-
-  .speaking-turn__group__title {
-    font-size: 1.5rem;
-    margin-bottom: $spacing;
-    margin-top: 0;
-
-    &:not(:first-of-type) {
-      margin-top: $spacing-double;
-    }
-  }
-
-  .speaking-turn__link-container {
-    align-items: center;
-    display: flex;
-
-    .icon {
-      margin-right: $spacing;
-    }
-  }
-}
