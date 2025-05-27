@@ -83,8 +83,6 @@
 ]
 %}
 
-{{ attach_library('hdbt_subtheme/accordion_legacy') }}
-
 <article{{ attributes.addClass(classes) }}>
 
   {{ title_prefix }}
@@ -158,98 +156,80 @@
     </div>
   {% endif %}
 
-  {% if speaking_turns.content is not empty %}
-  <div class="accordion-legacy__wrapper handorgel accordion_speaking-turn">
-    <h2 class="accordion-legacy-item__header handorgel__header">
-      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-        <span>{{ speaking_turns.title }}</span>
-      </button>
-    </h2>
-    <div class="accordion-legacy-item__content handorgel__content">
-      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
-        {% for year, statements in speaking_turns.content %}
-          <h3 class="speaking-turn__group__title">{{ year }}</h3>
-          {% for row in statements %}
-            <div>
-              <div class="speaking-turn__link-container">
+  {% embed "@hdbt/misc/component.twig" with {
+    component_classes: [
+      'component--accordion',
+      'component--accordion-bg-white',
+      'component--accordion-trustee',
+      'component--hardcoded'
+    ],
+    component_content_class: 'accordion',
+  } %}
+    {% block component_content %}
+
+      {% if speaking_turns.content is not empty %}
+        {% set speaking_turns_content %}
+          {% for year, statements in speaking_turns.content %}
+            <h3 class="speaking-turn__group__title">{{ year }}</h3>
+            {% for row in statements %}
+              <div class="speaking-turn">
                 <a class="speaking-turn__link" href="{{ row.link }}">{{ row.speaking_turn }}</a>
               </div>
+            {% endfor %}
+          {% endfor %}
+        {% endset %}
+        {% include '@hdbt/component/accordion.twig' ignore missing with {
+          heading_level: 'h2',
+          heading: speaking_turns.title,
+          content: speaking_turns_content,
+        } %}
+      {% endif %}
+
+      {% if initiatives.content is not empty %}
+        {% set initiatives_content %}
+          {% for row in initiatives.content %}
+            <div class="initiative">
+              <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+              <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
             </div>
           {% endfor %}
-        {% endfor %}
-        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-          {{ 'Close'|t }}
-        </span>
-      </div>
-    </div>
-  </div>
-  {% endif %}
+        {% endset %}
+        {% include '@hdbt/component/accordion.twig' ignore missing with {
+          heading_level: 'h2',
+          heading: initiatives.title,
+          content: initiatives_content,
+        } %}
+      {% endif %}
 
-  {% if initiatives.content is not empty %}
-  <div class="accordion-legacy__wrapper handorgel accordion_initiatives">
-    <h2 class="accordion-legacy-item__header handorgel__header">
-      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-        <span>{{ initiatives.title }}</span>
-      </button>
-    </h2>
-    <div class="accordion-legacy-item__content handorgel__content">
-      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
-        {% for row in initiatives.content %}
-        <div>
-          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
-          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
-        </div>
-        {% endfor %}
-        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-          {{ 'Close'|t }}
-        </span>
-      </div>
-    </div>
-  </div>
-  {% endif %}
+      {% if resolutions.content is not empty %}
+        {% set resolutions_content %}
+          {% for row in resolutions.content %}
+            <div class="resolution">
+              <div class="date">{{ row.Date|date("d.m.Y") }}</div>
+              <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
+            </div>
+          {% endfor %}
+        {% endset %}
+        {% include '@hdbt/component/accordion.twig' ignore missing with {
+          heading_level: 'h2',
+          heading: resolutions.title,
+          content: resolutions_content,
+        } %}
+      {% endif %}
 
-  {% if resolutions.content is not empty %}
-  <div class="accordion-legacy__wrapper handorgel accordion_resolutions">
-    <h2 class="accordion-legacy-item__header handorgel__header">
-      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-        <span>{{ resolutions.title }}</span>
-      </button>
-    </h2>
-    <div class="accordion-legacy-item__content handorgel__content">
-      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
-        {% for row in resolutions.content %}
-        <div>
-          <div class="date">{{ row.Date|date("d.m.Y") }}</div>
-          <a class="title" href="{{ row.FileURI }}">{{row.Title}}</a>
-        </div>
-        {% endfor %}
-        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-          {{ 'Close'|t }}
-        </span>
-      </div>
-    </div>
-  </div>
-  {% endif %}
+      {% if memberships.content is not empty %}
+        {% set memberships_content %}
+          {% for row in memberships.content %}
+            <div class="membership">{{ row }}</div>
+          {% endfor %}
+        {% endset %}
+        {% include '@hdbt/component/accordion.twig' ignore missing with {
+          heading_level: 'h2',
+          heading: memberships.title,
+          content: memberships_content,
+        } %}
+      {% endif %}
 
-  {% if memberships.content is not empty %}
-  <div class="accordion-legacy__wrapper handorgel accordion_speaking-turn">
-    <h2 class="accordion-legacy-item__header handorgel__header">
-      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-        <span>{{ memberships.title }}</span>
-      </button>
-    </h2>
-    <div class="accordion-legacy-item__content handorgel__content">
-      <div class="accordion-legacy-item__content__inner handorgel__content__inner">
-        {% for row in memberships.content %}
-        <div>
-          {{ row }}
-        </div>
-        {% endfor %}
-        <span class="accordion-legacy-item__button accordion-item__button--close" role="button" tabindex="0">
-          {{ 'Close'|t }}
-        </span>
-      </div>
-    </div>
-  </div>
-  {% endif %}
+    {% endblock component_content %}
+  {% endembed %}
 </article>

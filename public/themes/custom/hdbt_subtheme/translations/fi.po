@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 
-msgctxt "Allu decision search" 
+msgctxt "Allu decision search"
 msgid "Find decisions concerning temporary usage of streets and parks"
 msgstr "Etsi katu- ja puistoalueiden tilapäiseen käyttöön liittyviä päätöksiä"
 
@@ -10,11 +10,11 @@ msgctxt "Allu decision search"
 msgid "You can search decisions based on area name, or filter the list based on decision type or date. If you make no selections at all, results are listed based on decision date, newest first."
 msgstr "Voit etsiä päätöksiä aluetta koskevan kadun nimen mukaan, tai suodattaa listaa päätöksen tyypin tai ajankohdan mukaan. Jos et tee lainkaan suodatusta, tulokset on listattu päätöksen päiväyksen mukaan aikajärjestyksessä, uusin ensin."
 
-msgctxt "Allu decision search" 
+msgctxt "Allu decision search"
 msgid "Street name"
 msgstr "Kadun nimi"
 
-msgctxt "Allu decision search" 
+msgctxt "Allu decision search"
 msgid "Eg. Mannerheimintie"
 msgstr "Esim. Mannerheimintie"
 
@@ -79,3 +79,11 @@ msgstr "Tapahtuma"
 msgctxt "Allu decision search"
 msgid "Short term rental"
 msgstr "Lyhytaikainen vuokraus"
+
+msgctxt "Voting results"
+msgid "Voting"
+msgstr "Äänestys"
+
+msgctxt "Voting results"
+msgid "Voting results"
+msgstr "Äänestystulokset"

@@ -1,108 +1,116 @@
-<div class="paatokset-accordion voting-results-accordion" id="voting-results-accordion">
-  <div class="paatokset-accordion__wrapper handorgel">
-    <h3 class="paatokset-accordion-item__header handorgel__header">
-      <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button">
-        <span>{{ 'Voting results'|t }}</span>
-      </button>
-    </h3>
-    <div class="paatokset-accordion-item__content handorgel__content">
-      <div class="paatokset-accordion-item__content__inner handorgel__content__inner">
+{% set voting_results_content %}
+  <span id="voting-results-accordion"></span>
+  {% for results in vote_results %}
+    {% embed "@hdbt/misc/component.twig" with {
+      component_classes: [
+        'component--accordion',
+        'component--accordion-bg-white',
+        'component--accordion--voting-result',
+        'component--hardcoded',
+      ],
+      component_content_class: 'accordion',
+      component_title_level: 'h4',
+      component_title: 'Voting'|t({}, {'context': 'Voting results'}) ~ ' ' ~ loop.index,
+    } %}
+      {% block component_content %}
+        {% if results.accordions.Ayes.Content %}
+          <p><strong>{{ 'Ayes'|t }}:</strong> {{ results.accordions.Ayes.Content }}</p>
+        {% endif %}
+        {% if results.accordions.Noes.Content %}
+          <p><b>{{ 'Noes'|t }}:</b> {{ results.accordions.Noes.Content }}</p>
+        {% endif %}
 
-        {% for results in vote_results %}
-          <h4>{{ 'Äänestys'|t }} {{ loop.index }}</h4>
-          {% if results.accordions.Ayes.Content %}
-            <p><strong>{{ 'Ayes'|t }}:</strong> {{ results.accordions.Ayes.Content }}</p>
-          {% endif %}
-          {% if results.accordions.Noes.Content %}
-            <p><b>{{ 'Noes'|t }}:</b> {{ results.accordions.Noes.Content }}</p>
-          {% endif %}
-
-          {% for key, accordion in results.accordions %}
-            <div class="voting-results-accordion__inner">
-              <div class="accordion-inner__wrapper handorgel-inner">
-                <div class="accordion-inner-item__header handorgel__header {% if accordion.NumberOfVotes == 0 %} accordion-item__header--novotes {% endif %}">
-                  <button class="accordion-item__button accordion-item__button--toggle handorgel__header__button" {% if accordion.NumberOfVotes == 0 %} disabled {% endif %}>
-                    <div class="result-type {{ key|lower }}">
-                      <span class="result-color">{{ accordion.NumberOfVotes }}</span>
-                      <span class="result-key">{{ key|t }}</span>
-                    </div>
-                  </button>
-                </div>
-                <div class="accordion-inner-item__content handorgel__content">
-                  <div class="accordion-inner-item__content__inner handorgel__content__inner">
-                    <table class="results-table">
-                      <thead>
-                        <tr class="results-table__row">
-                          <th>{{ 'Member'|t }}</th>
-                          <th>{{ 'Political group'|t }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {% for voter in accordion.Voters %}
-                        <tr class="results-table__row">
-                          <td>{{ voter.Name }}</td>
-                          <td>{{ voter.CouncilGroup }}</td>
-                        </tr>
-                      {% endfor %}
-                      </tbody>
-                    </table>
-                    <span class="accordion-item__button accordion-item__button--close-inner" role="button" tabindex="0">
-                      {{ 'Close'|t }}
-                    </span>
-                  </div>
-                </div>
-              </div>
+        {% for key, accordion in results.accordions %}
+          {% set voting_option_title %}
+            <div class="voting-result__opinion voting-result__opinion--{{ key|lower }}">
+              <span class="voting-result__opinion__color">{{ accordion.NumberOfVotes }}</span>
+              <span class="voting-result__opinion__key">{{ key|t }}</span>
             </div>
-          {% endfor %}
+          {% endset %}
 
-          <div class="results-by-party">
-            <h5>{{ 'By political group'|t }}</h5>
-            <table class="results-table">
+          {% set voting_option_content %}
+            <table class="voting-result__opinion__table">
               <thead>
-                <tr class="results-table__row">
-                  <th>{{ 'Political group'|t }}</th>
-                  <th>{{ 'Ayes'|t }}</th>
-                  <th>{{ 'Noes'|t }}</th>
-                  <th>{{ 'Blank'|t }}</th>
-                  <th>{{ 'Absent'|t }}</th>
+                <tr class="voting-result__opinion__table__header__row">
+                  <th class="voting-result__opinion__table__header__cell">{{ 'Member'|t }}</th>
+                  <th class="voting-result__opinion__table__header__cell">{{ 'Political group'|t }}</th>
                 </tr>
               </thead>
               <tbody>
-                {% for row in results.by_party %}
-                  <tr class="results-table__row">
-                    <td>{{ row.Name }}</td>
-                    {% if row.Ayes %}
-                      <td class="color-kupari">{{ row.Ayes }}</td>
-                    {% else %}
-                      <td class="color-kupari">0</td>
-                    {% endif %}
-                    {% if row.Noes %}
-                      <td class="color-tiili">{{ row.Noes }}</td>
-                    {% else %}
-                      <td class="color-tiili">0</td>
-                    {% endif %}
-                    {% if row.Blank %}
-                      <td class="color-sumu">{{ row.Blank }}</td>
-                    {% else %}
-                      <td class="color-sumu">0</td>
-                    {% endif %}
-                    {% if row.Absent %}
-                      <td class="color-gray-light">{{ row.Absent }}</td>
-                    {% else %}
-                      <td class="color-gray-light">0</td>
-                    {% endif %}
+                {% for voter in accordion.Voters %}
+                  <tr class="voting-result__opinion__table__row">
+                    <td class="voting-result__opinion__table__cell">{{ voter.Name }}</td>
+                    <td class="voting-result__opinion__table__cell">{{ voter.CouncilGroup }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
             </table>
-          </div>
+          {% endset %}
+
+          {% if accordion.NumberOfVotes > 0 %}
+            {% include '@hdbt/component/accordion.twig' ignore missing with {
+              heading_level: 'h5',
+              heading: voting_option_title,
+              content: voting_option_content,
+            } %}
+          {% else %}
+            <h5 class="voting-result--no-votes">
+              <div class="voting-result__opinion voting-result__opinion--{{ key|lower }}">
+                <span class="voting-result__opinion__color">{{ accordion.NumberOfVotes }}</span>
+                <span class="voting-result__opinion__key">{{ key|t }}</span>
+              </div>
+            </h5>
+          {% endif %}
         {% endfor %}
 
+        <div class="voting-results-by-party">
+          <h5>{{ 'By political group'|t }}</h5>
+          <table class="voting-results-by-party__table">
+            <thead>
+              <tr class="voting-results-by-party__table__header__row">
+                <th class="voting-results-by-party__table__header__cell">{{ 'Political group'|t }}</th>
+                <th class="voting-results-by-party__table__header__cell">{{ 'Ayes'|t }}</th>
+                <th class="voting-results-by-party__table__header__cell">{{ 'Noes'|t }}</th>
+                <th class="voting-results-by-party__table__header__cell">{{ 'Blank'|t }}</th>
+                <th class="voting-results-by-party__table__header__cell">{{ 'Absent'|t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in results.by_party %}
+                <tr class="voting-results-by-party__table__row">
+                  <td class="voting-results-by-party__table__cell">{{ row.Name }}</td>
+                  {% if row.Ayes %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--kupari">{{ row.Ayes }}</td>
+                  {% else %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--kupari">0</td>
+                  {% endif %}
+                  {% if row.Noes %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--tiili">{{ row.Noes }}</td>
+                  {% else %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--tiili">0</td>
+                  {% endif %}
+                  {% if row.Blank %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--sumu">{{ row.Blank }}</td>
+                  {% else %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--sumu">0</td>
+                  {% endif %}
+                  {% if row.Absent %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--gray-light">{{ row.Absent }}</td>
+                  {% else %}
+                    <td class="voting-results-by-party__table__cell voting-results-by-party__table__cell--gray-light">0</td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endblock component_content %}
+    {% endembed %}
+  {% endfor %}
+{% endset %}
 
-        <span class="accordion-item__button accordion-item__button--close" role="button" tabindex="0">
-          {{ 'Close'|t }}
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
+{% include '@hdbt/component/accordion.twig' ignore missing with {
+  heading_level: 'h3',
+  heading: 'Voting results'|t({}, {'context': 'Voting results'}),
+  content: voting_results_content,
+} %}

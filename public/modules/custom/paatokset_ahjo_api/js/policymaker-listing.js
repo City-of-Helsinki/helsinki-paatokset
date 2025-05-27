@@ -10,11 +10,10 @@
   Drupal.behaviors.PolicymakerListing = {
     attach: function (context) {
         $(document).ready(function () {
-          const accordions = $('.paatokset-accordion-item__content__inner', context)
+          const accordions = $('.helfi-accordion__content__inner', context)
 
           accordions.each(function () {
             if ($(this).children().length > 50) {
-
               let children = $(this).children()
               $(this).find('.load-more-btn', context).css( 'display', 'inline-flex' );
 

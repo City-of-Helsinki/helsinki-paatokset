@@ -56,13 +56,7 @@
 
   .hds-tag {
     background: $color-black;
-    border-radius: $spacing-and-half;
     color: $color-white;
-    display: flex;
-    font-size: 16px;
-    margin-right: $spacing-three-quarters;
-    padding: 6px $spacing;
-    width: fit-content;
   }
   .hds-tag--confidential {
     background: var(--color-brick);
@@ -97,16 +91,6 @@
 
   &.issue__container--navigation {
     margin-bottom: $spacing-double;
-  }
-
-  .paatokset-accordion {
-    border-bottom: 2px solid $color-black-20;
-    margin-bottom: $spacing-double;
-
-    .handorgel__header__button,
-    .handorgel__content {
-      background: transparent;
-    }
   }
 
   .voting-results-accordion {
@@ -316,11 +300,7 @@
     width: 100%;
   }
 
-  .paatokset-accordion-item__content__inner {
-    padding: $spacing-and-half 0 0 $spacing-half;
-  }
-
-  .SisaltoSektio, .paatokset-accordion-item__content__inner {
+  .SisaltoSektio {
     ul, ol {
       padding-left: 1rem;
       padding-top: 0;
@@ -339,16 +319,6 @@
       }
     }
   }
-
-  .accordion-item__content__inner > h3 {
-    font-size: 30px;
-    line-height: 1.1;
-    margin-top: $spacing-triple;
-
-    &:first-child {
-      margin-top: 0;
-    }
-  }
 }
 
 // Decision history adjustments.
@@ -356,108 +326,95 @@ h4.decision-history-title + h5.decision-history-title {
   margin-top: 1rem;
 }
 
-.voting-results-accordion {
-  .color-kupari {
-    background-color: $color-copper !important;
-  }
-
-  .color-tiili {
-    background-color: $color-brick !important;
-    color: $color-white;
-  }
-
-  .color-sumu {
-    background-color: $color-fog !important;
-  }
-
-  .color-gray-light {
-    background-color: $color-silver-medium-light !important;
-  }
-
-  .accordion-item__content__inner > h3 {
-    font-size: 24px;
-    line-height: 1.1;
-  }
-}
-
-.voting-results-accordion__inner {
-  margin-top: $spacing;
-
-  &:first-of-type {
-    margin-top: $spacing-and-half;
-  }
-
-  .accordion-inner-item__header {
-    .accordion-item__button {
-      align-items: center;
-      border: 1px solid $color-black;
-      padding: 0;
-
-      &::after {
-        padding-right: $spacing;
-      }
-
-      .result-key,
-      .result-color {
-        font-size: 18px;
-        line-height: 1.5;
-        margin: 0;
-        padding: $spacing;
-      }
-
-      .result-color {
-        min-width: 54px;
-        text-align: center;
-      }
-    }
-
-    .result-type {
-      display: flex;
-      margin: 0;
-
-      &.ayes .result-color {
-        background-color: $color-copper;
-      }
-
-      &.noes .result-color {
-        background-color: $color-brick;
-        color: $color-white;
-      }
-
-      &.blank .result-color {
-        background-color: $color-fog;
-      }
-
-      &.absent .result-color {
-        background-color: $color-silver-medium-light;
-      }
-    }
-  }
-
-  .accordion-inner-item__content {
+// Accordion style overrides for the voting section on issues.
+.component--accordion--voting-result .accordion {
+  .accordion__wrapper,
+  .voting-result--no-votes {
     border: 1px solid $color-black;
-    margin-top: $spacing;
+    font-weight: 400;
+    margin-block-start: $spacing;
+
+    &:first-child {
+      margin-block-start: 0;
+    }
   }
 
-  .accordion-inner-item__content__inner {
-    margin-top: 0;
+  .accordion-item__header {
+    border: none;
+  }
+
+  .accordion-item__button--toggle {
+    padding: 0 $spacing 0 0;
+
+    &[aria-expanded="true"] {
+      border-block-end: 1px solid $color-black;
+    }
+  }
+
+  .accordion-item__content__inner {
     padding: 0;
-
-    .results-table {
-      margin-top: 0;
-    }
-
-    .handorgel__content--open & {
-      padding-bottom: $spacing-double;
-    }
   }
 
-  .accordion-item__button--close-inner {
-    font-size: 16px;
+  .accordion-item__button--close {
+    margin-block-end: $spacing-half;
+    margin-inline-end: $spacing-half;
   }
 }
 
-.results-table {
+.voting-result__opinion {
+  display: flex;
+  margin: 0;
+}
+
+.voting-result__opinion__color,
+.voting-result__opinion__key {
+  font-size: 18px;
+  padding: $spacing;
+}
+
+.voting-result__opinion__color {
+  min-width: 54px;
+  text-align: center;
+}
+
+.voting-result__opinion--ayes .voting-result__opinion__color {
+  background-color: $color-copper;
+}
+
+.voting-result__opinion--noes .voting-result__opinion__color {
+  background-color: $color-brick;
+  color: $color-white;
+}
+
+.voting-result__opinion--blank .voting-result__opinion__color {
+  background-color: $color-fog;
+}
+
+.voting-result__opinion--absent .voting-result__opinion__color {
+  background-color: $color-silver-medium-light;
+}
+
+// List of people who voted for the specific opinion.
+.voting-result__opinion__table {
+  border-spacing: 0;
+  width: 100%;
+
+  .voting-result__opinion__table__header__row {
+    background-color: $color-silver-medium-light;
+    text-align: left;
+  }
+
+  .voting-result__opinion__table__header__cell,
+  .voting-result__opinion__table__cell {
+    font-size: 16px;
+    padding: 16px;
+    text-align: left;
+    width: 50%;
+  }
+}
+
+// Voting results ordered by political party.
+.voting-results-by-party__table {
   border-spacing: 0;
   margin: $spacing-double 0;
   max-width: unset;
@@ -466,81 +423,66 @@ h4.decision-history-title + h5.decision-history-title {
   thead,
   tbody {
     width: 100%;
+  }
 
-    th {
-      font-weight: $font-weight-medium;
-    }
+  .voting-results-by-party__table__header__row {
+    background-color: $color-silver-medium-light;
+  }
 
-    th,
-    td {
+  .voting-results-by-party__table__row {
+    background-color: $color-white;
+  }
+
+  .voting-results-by-party__table__header__cell,
+  .voting-results-by-party__table__cell {
+    max-width: 56px;
+    min-width: 56px;
+    padding: $spacing 6px;
+    text-align: center;
+    width: 56px;
+  }
+
+  .voting-results-by-party__table__header__cell {
+    background-color: $color-black;
+    color: $color-white;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+
+    &:first-of-type {
       font-size: 16px;
-      padding: $spacing;
+      font-weight: 600;
+      padding-inline: $spacing;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .voting-results-by-party__table__cell {
+    background-color: $color-white;
+    font-size: 16px;
+    min-width: unset;
+
+    &:first-of-type {
+      padding-inline: $spacing;
       text-align: left;
     }
   }
 
-  thead .results-table__row {
+  .voting-results-by-party__table__cell.voting-results-by-party__table__cell--kupari {
+    background-color: $color-copper;
+  }
+
+  .voting-results-by-party__table__cell.voting-results-by-party__table__cell--tiili {
+    background-color: $color-brick;
+    color: $color-white;
+  }
+
+  .voting-results-by-party__table__cell.voting-results-by-party__table__cell--sumu {
+    background-color: $color-fog;
+  }
+
+  .voting-results-by-party__table__cell.voting-results-by-party__table__cell--gray-light {
     background-color: $color-silver-medium-light;
-
-    th {
-      color: $color-black;
-    }
-  }
-
-  tbody .results-table__row {
-    background-color: $color-white;
-
-    td {
-      background-color: $color-white;
-      display: table-cell;
-    }
-  }
-
-  .results-table__row th {
-    width: 40%;
-  }
-}
-
-.results-by-party {
-
-  .results-table {
-
-    thead .results-table__row {
-      th {
-        background-color: $color-black;
-        color: $color-white;
-        min-width: unset;
-
-        &:first-of-type {
-          font-weight: 600;
-          width: 100%;
-        }
-
-        &:not(:first-of-type) {
-          font-size: 14px;
-          max-width: 56px;
-          min-width: 56px;
-          padding: 6px;
-          text-align: center;
-          width: 56px;
-        }
-      }
-    }
-
-    tbody .results-table__row {
-      td {
-        background-color: $color-white;
-        min-width: unset;
-
-        &:not(:first-of-type) {
-          max-width: 56px;
-          min-width: 56px;
-          padding: 10px;
-          text-align: center;
-          width: 56px;
-        }
-      }
-    }
   }
 }
 

@@ -308,24 +308,6 @@ h2.minutes-list__header {
 
 .minutes-decision__container {
   margin-top: $spacing-quadruple;
-
-  .paatokset-accordion {
-    border-bottom: 2px solid $color-black-20;
-    margin-bottom: $spacing-double;
-    margin-top: $spacing-double;
-
-    .handorgel__header__button,
-    .handorgel__content {
-      background: transparent;
-    }
-    .accordion-item__button {
-      padding-bottom: 20px;
-      padding-top: 20px;
-    }
-    .accordion-item__header {
-      font-size: 1.5rem;
-    }
-  }
 }
 
 .minutes-decision__meta {
