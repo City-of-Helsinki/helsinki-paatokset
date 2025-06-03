@@ -5,6 +5,7 @@ dependencies:
   config:
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.contact_card_listing
     - paragraphs.paragraphs_type.content_cards
@@ -41,6 +42,7 @@ settings:
     target_bundles:
       accordion: accordion
       banner: banner
+      chart: chart
       columns: columns
       contact_card_listing: contact_card_listing
       content_cards: content_cards
@@ -59,6 +61,9 @@ settings:
         weight: 0
         enabled: true
       banner:
+        weight: 0
+        enabled: true
+      chart:
         weight: 0
         enabled: true
       columns:
