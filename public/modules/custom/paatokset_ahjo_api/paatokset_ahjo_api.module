@@ -511,7 +511,9 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
 
-  $variables['no_title_for_case'] = $case?->checkIfNoCaseTitle() ?? FALSE;
+  // Case migration sets 'NO TITLE' as a default
+  // value, if the case has no title in Ahjo.
+  $variables['no_title_for_case'] = $case instanceof CaseBundle && (empty($case->getTitle()) || $case->getTitle() === 'NO TITLE');
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['selectedDecision'] = $decision;
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
@@ -554,6 +556,7 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
 
   $decision = $caseService->guessDecisionFromPath($case);
 
+  $variables['main_heading'] = $decision?->getDecisionHeading();
   _paatokset_ahjo_api_get_decision_variables($variables, $case, $decision);
 
   // @fixme should not case all cases with node_list:decision.
@@ -814,19 +817,6 @@ function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): s
  */
 function _paatokset_ahjo_api_true_if_not_empty(mixed $value): bool {
   return !empty($value);
-}
-
-/**
- * Callback to check if array or text value is empty.
- *
- * @param mixed $value
- *   The value to work with.
- *
- * @return bool
- *   TRUE is value is empty, FALSE if it isn't.
- */
-function _paatokset_ahjo_api_true_if_empty($value): bool {
-  return empty($value);
 }
 
 /**
