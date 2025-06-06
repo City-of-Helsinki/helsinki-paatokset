@@ -36,3 +36,11 @@ services:
     arguments: [ "@paatokset_ahjo_cases" ]
 
   Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder: ~
+
+  Drupal\paatokset_ahjo_api\EventSubscriber\RequestLoggerEventSubscriber:
+    tags:
+        - { name: event_subscriber }
+
+  Drupal\paatokset_ahjo_api\AhjoRequestLoggerMiddleware:
+    tags:
+      - { name: http_client_middleware }
