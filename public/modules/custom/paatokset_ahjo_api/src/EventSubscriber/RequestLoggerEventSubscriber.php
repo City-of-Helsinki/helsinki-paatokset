@@ -44,7 +44,6 @@ class RequestLoggerEventSubscriber implements EventSubscriberInterface {
         str_contains($url, 'ahjo')
       ) {
         $this->logger->debug('Sending Ahjo migration request to ' . $url);
-        break;
       }
     }
   }
