@@ -19,6 +19,7 @@ class RequestLoggerEventSubscriber implements EventSubscriberInterface {
    * The constructor.
    *
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
