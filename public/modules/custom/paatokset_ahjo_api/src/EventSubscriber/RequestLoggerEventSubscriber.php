@@ -10,10 +10,14 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Ahjo api eventsubscriber.
+ */
 class RequestLoggerEventSubscriber implements EventSubscriberInterface {
 
   /**
    * The constructor.
+   *
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    */
   public function __construct(
