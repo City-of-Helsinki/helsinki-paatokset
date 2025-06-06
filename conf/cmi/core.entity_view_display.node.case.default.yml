@@ -13,7 +13,6 @@ dependencies:
     - field.field.node.case.field_diary_number
     - field.field.node.case.field_diary_number_label
     - field.field.node.case.field_full_title
-    - field.field.node.case.field_no_title_for_case
     - field.field.node.case.field_publicity_class
     - field.field.node.case.field_security_reasons
     - field.field.node.case.field_status
@@ -108,16 +107,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 114
-    region: content
-  field_no_title_for_case:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 121
     region: content
   field_publicity_class:
     type: string

@@ -87,9 +87,7 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% include '@hdbt_subtheme/components/case-header.html.twig' with {
-    main_heading: node.field_full_title.value,
-  }%}
+  {% include '@hdbt_subtheme/components/case-header.html.twig' %}
 
   <div class="issue__wrapper">
     <div class="ajax-progress-throbber"></div>

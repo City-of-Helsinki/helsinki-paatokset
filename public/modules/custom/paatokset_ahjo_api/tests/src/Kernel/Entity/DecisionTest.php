@@ -63,7 +63,7 @@ class DecisionTest extends AhjoKernelTestBase {
 
     $this->assertEquals('test-diary-number', $decision->getDiaryNumber());
     $this->assertNotEmpty($decision->getCase());
-    $this->assertEquals('test-full-title', $decision->getDecisionHeading());
+    $this->assertEquals('test-case-title', $decision->getDecisionHeading());
   }
 
   /**

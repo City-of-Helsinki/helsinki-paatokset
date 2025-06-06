@@ -33,7 +33,6 @@ class CaseTest extends AhjoKernelTestBase {
     $this->assertInstanceOf(CaseBundle::class, $case);
 
     $this->assertEquals('123', $case->getDiaryNumber());
-    $this->assertTrue($case->checkIfNoCaseTitle());
 
     // Create a bunch of decisions.
     $middle = $storage->create([
