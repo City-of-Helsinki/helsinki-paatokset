@@ -41,3 +41,6 @@ services:
     tags:
         - { name: event_subscriber }
 
+  Drupal\paatokset_ahjo_api\AhjoRequestLoggerMiddleware:
+    tags:
+      - { name: http_client_middleware }
