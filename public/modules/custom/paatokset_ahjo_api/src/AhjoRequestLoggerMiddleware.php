@@ -28,9 +28,6 @@ class AhjoRequestLoggerMiddleware {
   /**
    * The invoke-method.
    *
-   * @param callable $handler
-   *   The handler.
-   *
    * @return callable
    *   The callable
    */
