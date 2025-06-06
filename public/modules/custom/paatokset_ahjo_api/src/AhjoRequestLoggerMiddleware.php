@@ -28,18 +28,25 @@ class AhjoRequestLoggerMiddleware {
   /**
    * The invoke-method.
    *
+   * @param callable $handler
+   *   The handler.
+   *
    * @return callable
    *   The callable
    */
   public function __invoke(): callable {
-    return function (RequestInterface $request) {
-      $uri = $request->getUri();
-      if (
-        !str_contains($uri->getHost(), 'proxy') &&
-        str_contains($uri->getHost(), 'ahjo')
-      ) {
-        $this->logger->debug('Sending Ahjo migration request to ' . $uri);
-      }
+    $logger = $this->logger;
+    return function (callable $handler) use ($logger) {
+      return function (RequestInterface $request, array $options) use ($handler, $logger) {
+        $uri = $request->getUri();
+        if (
+          !str_contains($uri->getHost(), 'proxy') &&
+          str_contains($uri->getHost(), 'ahjo')
+        ) {
+          $logger->debug('Sending Ahjo migration request to ' . $uri);
+        }
+        return $handler($request, $options);
+      };
     };
   }
 
