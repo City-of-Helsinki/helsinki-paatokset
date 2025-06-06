@@ -309,10 +309,6 @@ class Decision extends Node {
    *   Main heading or NULL if neither case nor decision have been set.
    */
   public function getDecisionHeading(): ?string {
-    if ($case = $this->getCase()) {
-      return $case->get('field_full_title')->value;
-    }
-
     if (!$this->get('field_decision_case_title')->isEmpty()) {
       return $this->get('field_decision_case_title')->value;
     }

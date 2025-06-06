@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -513,7 +514,9 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
 
   // Case migration sets 'NO TITLE' as a default
   // value, if the case has no title in Ahjo.
+  $variables['main_heading'] = $case?->get('field_full_title')?->getString() ?: $decision?->getDecisionHeading() ?: '';
   $variables['no_title_for_case'] = $case instanceof CaseBundle && (empty($case->getTitle()) || $case->getTitle() === 'NO TITLE');
+
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['selectedDecision'] = $decision;
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
@@ -556,7 +559,6 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
 
   $decision = $caseService->guessDecisionFromPath($case);
 
-  $variables['main_heading'] = $decision?->getDecisionHeading();
   _paatokset_ahjo_api_get_decision_variables($variables, $case, $decision);
 
   // @fixme should not case all cases with node_list:decision.
@@ -578,7 +580,6 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $decision = $variables['node'];
   assert($decision instanceof Decision);
 
-  $variables['main_heading'] = $decision->getDecisionHeading();
   _paatokset_ahjo_api_get_decision_variables($variables, $decision->getCase(), $decision);
 
   // @fixme should not case all decisions with node_list:decision & node_list:case.
@@ -1117,4 +1118,55 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
       }
     }
   }
+}
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ */
+function paatokset_ahjo_api_system_breadcrumb_alter(
+  Breadcrumb &$breadcrumb,
+  RouteMatchInterface $route_match,
+  array $context,
+): void {
+  // Skip admin routes.
+  if ($route_match->getRouteObject()?->getOption('_admin_route')) {
+    return;
+  }
+
+  $links = $breadcrumb->getLinks();
+
+  // Case migration sets 'NO TITLE' as a default
+  // value, if the case has no title in Ahjo.
+  if (end($links)?->getText() === 'NO TITLE') {
+    $cases = array_filter($route_match->getParameters()->all(), function ($value) {
+      return $value instanceof CaseBundle;
+    });
+
+    if (empty($case = reset($cases))) {
+      return;
+    }
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $decision = $caseService->guessDecisionFromPath($case);
+
+    // Replace the link text if current route entity is case, the case service
+    // has found a decision, and the decision has custom title field set.
+    if ($heading = $decision?->getDecisionHeading()) {
+      end($links)->setText($heading);
+
+      // We have to recreate entire breadcrumb trail here, because breadcrumb
+      // class forbids setting links after they've been set once.
+      // @see \Drupal\Core\Breadcrumb\Breadcrumb::setLinks().
+      $newBreadcrumb = new Breadcrumb();
+      $newBreadcrumb->setLinks($links);
+      // Merge cacheable metadata.
+      $newBreadcrumb->addCacheTags($breadcrumb->getCacheTags())
+        ->addCacheContexts($breadcrumb->getCacheContexts());
+
+      $breadcrumb = $newBreadcrumb;
+    }
+  }
+
+  $breadcrumb->addCacheContexts(['url.query_args']);
 }
