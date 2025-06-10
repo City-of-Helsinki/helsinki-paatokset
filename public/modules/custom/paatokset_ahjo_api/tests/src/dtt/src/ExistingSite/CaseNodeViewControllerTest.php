@@ -45,6 +45,18 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
           'title' => 'Test case',
           'field_diary_number' => '004',
         ],
+        // Case with no decisions, NO TITLE.
+        [
+          'langcode' => 'fi',
+          'title' => 'NO TITLE',
+          'field_diary_number' => '005',
+        ],
+        // Case with a decision, NO TITLE.
+        [
+          'langcode' => 'fi',
+          'title' => 'NO TITLE',
+          'field_diary_number' => '006',
+        ],
       ],
       'decision' => [
         [
@@ -71,6 +83,12 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
           'field_diary_number' => '003',
           'field_decision_native_id' => '{003-decision-sv}',
         ],
+        [
+          'langcode' => 'fi',
+          'title' => 'Decision title',
+          'field_diary_number' => '006',
+          'field_decision_native_id' => '{006-decision-fi}',
+        ],
       ],
     ];
 
@@ -89,7 +107,9 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
    * Assert that page has expected `<link rel="canonical" href="..." />` tag.
    */
   private function assertCanonicalTag(string $expected): void {
-    $element = $this->assertSession()->elementAttributeExists('xpath', "//link[@rel='canonical']", 'href');
+    $element = $this
+      ->assertSession()
+      ->elementAttributeExists('xpath', "//link[@rel='canonical']", 'href');
     $actual = (string) $element->getAttribute('href');
     $this->assertStringEndsWith($expected, $actual);
   }
@@ -131,12 +151,49 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
   }
 
   /**
+   * Asserts title tag.
+   */
+  private function assertTitleTag(string $expected): void {
+    $element = $this
+      ->assertSession()
+      ->elementExists('xpath', "//title");
+
+    $this->assertStringContainsString($expected, $element->getText());
+  }
+
+  /**
+   * Tests title tags.
+   *
+   * Some ahjo cases are imported without title, and
+   * paatokset_ahjo_api contains custom logic for fixing
+   * title tags.
+   */
+  public function testNodeTitle(): void {
+    // Case does not have decision, nothing is changed.
+    $this->drupalGetWithLanguage('/asia/005', 'fi');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertTitleTag('NO TITLE');
+
+    // Decision title is used.
+    $this->drupalGetWithLanguage('/asia/006', 'fi', [
+      'query' => [
+        'paatos' => '006-decision-fi',
+      ],
+    ]);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertTitleTag('Decision title');
+
+    // Default decision title is used.
+    $this->drupalGetWithLanguage('/asia/006', 'fi');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertTitleTag('Decision title');
+  }
+
+  /**
    * Data provider for canonical url tests.
    *
    * @return array
    *   Test data.
-   *
-   * phpcs:disable DrupalPractice.Objects.UnusedPrivateMethod.UnusedMethod
    */
   private function canonicalUrlData(): array {
     // Format ['url', 'expected canonical url'].
@@ -167,7 +224,6 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
       // Untranslated decision should use actual language of the decision.
       ['/en/case/001/001-decision-sv', '/sv/arende/001/001-decision-sv'],
     ];
-    // phpcs:enable
   }
 
 }

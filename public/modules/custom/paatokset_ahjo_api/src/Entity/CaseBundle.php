@@ -26,16 +26,6 @@ class CaseBundle extends Node {
   }
 
   /**
-   * Check if selected case has no title.
-   *
-   * @return bool
-   *   TRUE if case is set but has no own title.
-   */
-  public function checkIfNoCaseTitle(): bool {
-    return (bool) $this->get('field_no_title_for_case')->value;
-  }
-
-  /**
    * Get all decisions for this case.
    *
    * @return \Drupal\paatokset_ahjo_api\Entity\Decision[]

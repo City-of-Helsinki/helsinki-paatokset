@@ -846,10 +846,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query->condition($or);
       $query->condition('field_publicity_class', 'Julkinen', '<>');
     }
-    elseif ($logic === 'title') {
-      $query->condition('title', 'NO TITLE');
-      $query->condition('field_no_title_for_case', 1);
-    }
 
     if ($limit) {
       $query->range('0', $limit);
