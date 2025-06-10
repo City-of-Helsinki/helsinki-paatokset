@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: "paatokset_helsinki_kanava_announcements",
   admin_label: new TranslatableMarkup("Helsinki Kanava announcements"),
-  category: new TranslatableMarkup("Paatokset custom blocks")
 )]
 final class AnnouncementsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 

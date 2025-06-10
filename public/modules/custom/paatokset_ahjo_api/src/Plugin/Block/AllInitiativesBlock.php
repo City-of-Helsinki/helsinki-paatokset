@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
@@ -12,14 +14,13 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'all_initiatives',
   admin_label: new TranslatableMarkup('Paatokset all initiatives'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
 )]
 class AllInitiativesBlock extends BlockBase {
 
   /**
    * Build the attributes.
    */
-  public function build() {
+  public function build(): array {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       'label' => $this->t('All initiatives'),
@@ -32,14 +33,14 @@ class AllInitiativesBlock extends BlockBase {
   /**
    * Get cache tags.
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['node_list:trustee'];
   }
 
   /**
    * Get cache contexts.
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 
