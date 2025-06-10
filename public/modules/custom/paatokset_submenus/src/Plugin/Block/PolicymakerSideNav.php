@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: 'policymaker_side_nav',
   admin_label: new TranslatableMarkup('Policymaker side navigation'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInterface {
 

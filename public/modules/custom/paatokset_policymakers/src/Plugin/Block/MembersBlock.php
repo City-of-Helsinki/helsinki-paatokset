@@ -13,7 +13,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  */
 #[Block(
   id: "policymaker_members",
-  admin_label: new TranslatableMarkup("Paatokset policymaker members")
+  admin_label: new TranslatableMarkup("Paatokset policymaker members"),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class MembersBlock extends BlockBase {
 

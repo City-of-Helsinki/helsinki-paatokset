@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'dictionary_banner',
   admin_label: new TranslatableMarkup('Paatokset decisions dictionary banner'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class DictionaryBannerBlock extends BlockBase {
 

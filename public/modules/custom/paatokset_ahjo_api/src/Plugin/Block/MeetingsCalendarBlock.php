@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'meetings_calendar',
   admin_label: new TranslatableMarkup('Paatokset meetings calendar'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class MeetingsCalendarBlock extends BlockBase {
 

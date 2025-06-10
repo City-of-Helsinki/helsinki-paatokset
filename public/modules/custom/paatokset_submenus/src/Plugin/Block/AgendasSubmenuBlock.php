@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: 'agendas_submenu',
   admin_label: new TranslatableMarkup('Agendas Submenu'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 

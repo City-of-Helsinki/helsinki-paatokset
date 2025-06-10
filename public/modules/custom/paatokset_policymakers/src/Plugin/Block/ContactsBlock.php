@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: "policymaker_contacts",
   admin_label: new TranslatableMarkup("Paatokset policymaker contacts"),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class ContactsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 

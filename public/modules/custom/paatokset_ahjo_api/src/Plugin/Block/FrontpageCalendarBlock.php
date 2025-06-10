@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'frontpage_calendar',
   admin_label: new TranslatableMarkup('Paatokset frontpage calendar'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class FrontpageCalendarBlock extends BlockBase {
 

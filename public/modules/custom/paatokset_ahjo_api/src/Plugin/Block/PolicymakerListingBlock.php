@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'policymaker_listing',
   admin_label: new TranslatableMarkup('Paatokset policymaker listing'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class PolicymakerListingBlock extends BlockBase {
 

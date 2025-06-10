@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'decision_tree',
   admin_label: new TranslatableMarkup('Paatokset decision tree'),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class DecisionTreeBlock extends BlockBase {
 
