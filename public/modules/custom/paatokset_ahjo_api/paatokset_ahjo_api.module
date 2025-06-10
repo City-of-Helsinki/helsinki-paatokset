@@ -24,7 +24,6 @@ use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 
 require_once __DIR__ . '/includes/paatokset_lang_switcher.php';
 
@@ -1097,13 +1096,15 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
   if (str_starts_with($currentRoute, 'entity.node.canonical')) {
     $node = \Drupal::routeMatch()->getParameter('node');
 
-    if ($node->bundle() !== CaseService::CASE_NODE_TYPE) {
+    if (!$node instanceof CaseBundle) {
       return;
     }
 
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
-    $decision = $caseService->getDecisionFromQuery($node);
+
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
+    $decision = $caseService->guessDecisionFromPath($node);
 
     // Alter if decision was found from query parameters.
     if (!empty($decision)) {
@@ -1111,9 +1112,23 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
         ->toUrl('canonical', ['absolute' => TRUE])
         ->toString();
 
-      foreach ($metatag_attachments['#attached']['html_head'] as $id => $attachment) {
-        if ($attachment[1] == 'canonical_url') {
+      foreach ($metatag_attachments['#attached']['html_head'] as $id => [$options, $tag]) {
+        if (
+          $tag === 'canonical_url' &&
+          !empty($caseService->getDecisionQuery())
+        ) {
           $metatag_attachments['#attached']['html_head'][$id][0]['#attributes']['href'] = $canonical_url;
+        }
+        // Case migration sets 'NO TITLE' as a default
+        // value, if the case has no title in Ahjo.
+        // @fixme https://helsinkisolutionoffice.atlassian.net/browse/UHF-11625
+        elseif (
+          ($tag === 'title' || $tag === 'og_title') &&
+          str_contains($options['#attributes']['content'], 'NO TITLE') &&
+          $heading = $decision->getDecisionHeading()
+        ) {
+          $metatag_attachments['#attached']['html_head'][$id][0]['#attributes']['content'] =
+            str_replace('NO TITLE', $heading, $options['#attributes']['content']);
         }
       }
     }

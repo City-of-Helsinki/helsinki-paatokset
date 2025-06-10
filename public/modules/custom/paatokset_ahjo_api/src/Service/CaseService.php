@@ -78,7 +78,7 @@ class CaseService {
    * @return string|false
    *   Decision query value, FALSE if decision id is not set.
    */
-  private function getDecisionQuery(): string|FALSE {
+  public function getDecisionQuery(): string|FALSE {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
     $decisionId = $this->requestStack
       ->getCurrentRequest()
