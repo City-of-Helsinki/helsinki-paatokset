@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -23,7 +24,6 @@ use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 
 require_once __DIR__ . '/includes/paatokset_lang_switcher.php';
 
@@ -511,7 +511,11 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
 
-  $variables['no_title_for_case'] = $case?->checkIfNoCaseTitle() ?? FALSE;
+  // Case migration sets 'NO TITLE' as a default
+  // value, if the case has no title in Ahjo.
+  $variables['main_heading'] = $case?->get('field_full_title')?->getString() ?: $decision?->getDecisionHeading() ?: '';
+  $variables['no_title_for_case'] = $case instanceof CaseBundle && (empty($case->getTitle()) || $case->getTitle() === 'NO TITLE');
+
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['selectedDecision'] = $decision;
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
@@ -575,7 +579,6 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $decision = $variables['node'];
   assert($decision instanceof Decision);
 
-  $variables['main_heading'] = $decision->getDecisionHeading();
   _paatokset_ahjo_api_get_decision_variables($variables, $decision->getCase(), $decision);
 
   // @fixme should not case all decisions with node_list:decision & node_list:case.
@@ -814,19 +817,6 @@ function _paatokset_ahjo_api_truncate_value(string $value, int $length = 255): s
  */
 function _paatokset_ahjo_api_true_if_not_empty(mixed $value): bool {
   return !empty($value);
-}
-
-/**
- * Callback to check if array or text value is empty.
- *
- * @param mixed $value
- *   The value to work with.
- *
- * @return bool
- *   TRUE is value is empty, FALSE if it isn't.
- */
-function _paatokset_ahjo_api_true_if_empty($value): bool {
-  return empty($value);
 }
 
 /**
@@ -1106,13 +1096,15 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
   if (str_starts_with($currentRoute, 'entity.node.canonical')) {
     $node = \Drupal::routeMatch()->getParameter('node');
 
-    if ($node->bundle() !== CaseService::CASE_NODE_TYPE) {
+    if (!$node instanceof CaseBundle) {
       return;
     }
 
     /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
     $caseService = \Drupal::service('paatokset_ahjo_cases');
-    $decision = $caseService->getDecisionFromQuery($node);
+
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
+    $decision = $caseService->guessDecisionFromPath($node);
 
     // Alter if decision was found from query parameters.
     if (!empty($decision)) {
@@ -1120,11 +1112,76 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
         ->toUrl('canonical', ['absolute' => TRUE])
         ->toString();
 
-      foreach ($metatag_attachments['#attached']['html_head'] as $id => $attachment) {
-        if ($attachment[1] == 'canonical_url') {
+      foreach ($metatag_attachments['#attached']['html_head'] as $id => [$options, $tag]) {
+        if (
+          $tag === 'canonical_url' &&
+          !empty($caseService->getDecisionQuery())
+        ) {
           $metatag_attachments['#attached']['html_head'][$id][0]['#attributes']['href'] = $canonical_url;
+        }
+        // Case migration sets 'NO TITLE' as a default
+        // value, if the case has no title in Ahjo.
+        // @fixme https://helsinkisolutionoffice.atlassian.net/browse/UHF-11625
+        elseif (
+          ($tag === 'title' || $tag === 'og_title') &&
+          str_contains($options['#attributes']['content'], 'NO TITLE') &&
+          $heading = $decision->getDecisionHeading()
+        ) {
+          $metatag_attachments['#attached']['html_head'][$id][0]['#attributes']['content'] =
+            str_replace('NO TITLE', $heading, $options['#attributes']['content']);
         }
       }
     }
   }
+}
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ */
+function paatokset_ahjo_api_system_breadcrumb_alter(
+  Breadcrumb &$breadcrumb,
+  RouteMatchInterface $route_match,
+  array $context,
+): void {
+  // Skip admin routes.
+  if ($route_match->getRouteObject()?->getOption('_admin_route')) {
+    return;
+  }
+
+  $links = $breadcrumb->getLinks();
+
+  // Case migration sets 'NO TITLE' as a default
+  // value, if the case has no title in Ahjo.
+  if (end($links)?->getText() === 'NO TITLE') {
+    $cases = array_filter($route_match->getParameters()->all(), function ($value) {
+      return $value instanceof CaseBundle;
+    });
+
+    if (empty($case = reset($cases))) {
+      return;
+    }
+
+    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
+    $caseService = \Drupal::service('paatokset_ahjo_cases');
+    $decision = $caseService->guessDecisionFromPath($case);
+
+    // Replace the link text if current route entity is case, the case service
+    // has found a decision, and the decision has custom title field set.
+    if ($heading = $decision?->getDecisionHeading()) {
+      end($links)->setText($heading);
+
+      // We have to recreate entire breadcrumb trail here, because breadcrumb
+      // class forbids setting links after they've been set once.
+      // @see \Drupal\Core\Breadcrumb\Breadcrumb::setLinks().
+      $newBreadcrumb = new Breadcrumb();
+      $newBreadcrumb->setLinks($links);
+      // Merge cacheable metadata.
+      $newBreadcrumb->addCacheTags($breadcrumb->getCacheTags())
+        ->addCacheContexts($breadcrumb->getCacheContexts());
+
+      $breadcrumb = $newBreadcrumb;
+    }
+  }
+
+  $breadcrumb->addCacheContexts(['url.query_args']);
 }

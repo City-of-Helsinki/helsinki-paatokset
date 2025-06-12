@@ -1,12 +1,14 @@
 vue-js:
+  version: 2.3.4
   js:
-    https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js: {type: external, minified: true}
+    js/vue.min.js: {minified: true}
 
 days-js:
+  version: 1.8.21
   js:
-    https://unpkg.com/dayjs@1.8.21/dayjs.min.js: {type: external, minified: true}
-    https://unpkg.com/dayjs@1.8.21/plugin/weekday.js: {type: external, minified: true}
-    https://unpkg.com/dayjs@1.8.21/plugin/weekOfYear.js: {type: external, minified: true}
+    js/dayjs.min.js: {minified: true}
+    js/weekday.js: {minified: true}
+    js/weekOfYear.js: {minified: true}
 
 meetings_calendar:
   js:

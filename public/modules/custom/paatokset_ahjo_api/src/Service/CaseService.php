@@ -78,7 +78,7 @@ class CaseService {
    * @return string|false
    *   Decision query value, FALSE if decision id is not set.
    */
-  private function getDecisionQuery(): string|FALSE {
+  public function getDecisionQuery(): string|FALSE {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
     $decisionId = $this->requestStack
       ->getCurrentRequest()
@@ -98,21 +98,27 @@ class CaseService {
    *   Decision node or NULL if unable to guess.
    */
   public function guessDecisionFromPath(NodeInterface $case): ?Decision {
+    /** @var array<string,\Drupal\paatokset_ahjo_api\Entity\Decision> $cache */
+    static $cache = [];
+    if (!empty($cache[$case->id()])) {
+      return $cache[$case->id()];
+    }
+
     $caseId = $case->get('field_diary_number')->getString();
 
     // Search for default decisions if query parameter is not set.
     if (!$this->getDecisionQuery()) {
-      return $this->getDefaultDecision($caseId);
+      return $cache[$case->id()] = $this->getDefaultDecision($caseId);
     }
 
     if (!empty($decision = $this->getDecisionFromQuery($case))) {
       /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
-      return $decision;
+      return $cache[$case->id()] = $decision;
     }
 
     /** @var \Drupal\paatokset_ahjo_api\Entity\Decision $decision */
     $decision = $this->getDecisionFromRedirect($caseId);
-    return $decision;
+    return $cache[$case->id()] = $decision;
   }
 
   /**
