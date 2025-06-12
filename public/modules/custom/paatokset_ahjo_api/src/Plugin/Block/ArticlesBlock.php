@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: 'all_articles',
   admin_label: new TranslatableMarkup('Paatokset all articles'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 final class ArticlesBlock extends BlockBase implements ContainerFactoryPluginInterface {
 

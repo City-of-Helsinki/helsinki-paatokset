@@ -14,7 +14,7 @@ use Drupal\Core\Url;
 #[Block(
   id: 'policymaker_side_nav_mobile',
   admin_label: new TranslatableMarkup('Policymaker mobile navigation'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class PolicymakerMobileNav extends PolicymakerSideNav {
 
