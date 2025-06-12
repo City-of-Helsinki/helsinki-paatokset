@@ -14,14 +14,14 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'meetings_calendar',
   admin_label: new TranslatableMarkup('Paatokset meetings calendar'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class MeetingsCalendarBlock extends BlockBase {
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       'label' => $this->t('Upcoming meetings'),
@@ -34,14 +34,14 @@ class MeetingsCalendarBlock extends BlockBase {
   /**
    * Get cache tags.
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['node_list:meeting'];
   }
 
   /**
    * Get cache contexts.
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 

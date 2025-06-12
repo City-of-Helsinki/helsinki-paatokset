@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
@@ -12,14 +14,14 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 #[Block(
   id: 'frontpage_calendar',
   admin_label: new TranslatableMarkup('Paatokset frontpage calendar'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class FrontpageCalendarBlock extends BlockBase {
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       'label' => $this->t('Upcoming meetings'),
@@ -30,16 +32,16 @@ class FrontpageCalendarBlock extends BlockBase {
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['search_api_list:meetings'];
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 

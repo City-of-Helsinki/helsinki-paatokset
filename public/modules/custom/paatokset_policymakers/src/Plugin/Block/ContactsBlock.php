@@ -2,22 +2,23 @@
 
 namespace Drupal\paatokset_policymakers\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Contacts Block.
- *
- * @Block(
- *    id = "policymaker_contacts",
- *    admin_label = @Translation("Paatokset policymaker contacts"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: "policymaker_contacts",
+  admin_label: new TranslatableMarkup("Paatokset policymaker contacts"),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
+)]
 class ContactsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -48,7 +49,7 @@ class ContactsBlock extends BlockBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
   public function build() {
     $contacts = $this->getContacts();
@@ -109,16 +110,16 @@ class ContactsBlock extends BlockBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['tpr_unit_list'];
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 

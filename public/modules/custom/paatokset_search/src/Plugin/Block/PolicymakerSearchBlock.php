@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: 'policymaker_search_block',
   admin_label: new TranslatableMarkup('Paatokset policymaker search'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 final class PolicymakerSearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
