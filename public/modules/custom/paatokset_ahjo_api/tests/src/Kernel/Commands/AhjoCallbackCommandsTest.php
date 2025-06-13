@@ -40,7 +40,6 @@ class AhjoCallbackCommandsTest extends KernelTestBase {
     $queueFactory = $this->container->get(QueueFactory::class);
     $sut = new AhjoCallbackCommands(
       $this->container->get(QueueFactory::class),
-      $this->container->get('logger.channel.paatokset_ahjo_api'),
       $this->container->get(Connection::class),
     );
 
