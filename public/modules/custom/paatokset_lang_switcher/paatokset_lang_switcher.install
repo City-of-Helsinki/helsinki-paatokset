@@ -18,3 +18,10 @@ function paatokset_lang_switcher_update_9000(): void {
   // Content of this module was moved to paatokset_ahjo_api.
   \Drupal::service(ModuleInstallerInterface::class)->uninstall(['paatokset_lang_switcher']);
 }
+
+/**
+ * Rerun: Uninstall paatokset_lang_switcher module.
+ */
+function paatokset_lang_switcher_update_9001(): void {
+  paatokset_lang_switcher_update_9000();
+}
