@@ -12,6 +12,8 @@ parameters:
   level: 3
   checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false
+  scanFiles:
+    - vendor/drush/drush/src-symfony-compatibility/v6/Style/DrushStyle.php
   ignoreErrors:
     -
       message: "#^Cannot access property \\$created on object\\|true\\.$#"
