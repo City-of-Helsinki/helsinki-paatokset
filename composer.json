@@ -44,6 +44,12 @@
     "conflict": {
         "drupal/drupal": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "Drush\\Style\\": "vendor/drush/drush/src-symfony-compatibility/v6/Style",
+            "Drush\\Symfony\\": "vendor/drush/drush/src-symfony-compatibility/v6/Symfony"
+        }
+    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true,

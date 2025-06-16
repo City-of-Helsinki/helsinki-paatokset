@@ -8,10 +8,10 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\Drush\Commands\AhjoCallbackCommands;
+use Drush\Style\DrushStyle;
 use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 
 /**
@@ -34,8 +34,9 @@ class AhjoCallbackCommandsTest extends KernelTestBase {
   public function testDeleteCommands(): void {
     $output = $this->prophesize(OutputInterface::class);
     $input = $this->prophesize(InputInterface::class);
-    $style = $this->prophesize(SymfonyStyle::class);
+    $style = $this->prophesize(DrushStyle::class);
     $style->confirm(Argument::any())->willReturn(TRUE);
+    $style->info(Argument::any())->willReturn();
 
     $queueFactory = $this->container->get(QueueFactory::class);
     $sut = new AhjoCallbackCommands(
