@@ -23,6 +23,7 @@
         "drupal/key_auth": "^2.0",
         "drupal/migrate_plus": "^6.0",
         "drupal/purge": "^3.0",
+        "drupal/redis": "^1.9",
         "drupal/varnish_purge": "^2.1",
         "drush/drush": "^12",
         "josdejong/jsoneditor": "^5.29",
