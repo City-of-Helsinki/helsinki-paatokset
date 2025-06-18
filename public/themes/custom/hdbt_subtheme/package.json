@@ -16,7 +16,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@babel/core": "^7.23.2",
+    "@babel/core": "^7.27.4",
     "@babel/eslint-parser": "^7.26.8",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
     "@babel/preset-env": "^7.23.2",
