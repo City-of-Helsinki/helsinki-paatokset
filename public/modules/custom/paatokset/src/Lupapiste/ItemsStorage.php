@@ -60,7 +60,7 @@ final readonly class ItemsStorage {
    * @return \Drupal\paatokset\Lupapiste\DTO\Item[]
    *   The deserialized data.
    */
-  private function deserialize(string $data) : array {
+  public function deserialize(string $data) : array {
     return $this->serializer->deserialize($data, Item::class . '[]', 'json');
   }
 
