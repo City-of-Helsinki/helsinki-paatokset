@@ -329,10 +329,8 @@ class InfoImportForm extends FormBase {
       count($results['items']),
       count($results['failed']),
     );
-    $logger = \Drupal::logger('paatokset_council_info');
-    $logger->info($message);
-    $messenger = \Drupal::messenger();
-    $messenger->addMessage($message);
+    \Drupal::logger('paatokset_council_info')->info($message);
+    \Drupal::messenger()->addMessage($message);
   }
 
 }
