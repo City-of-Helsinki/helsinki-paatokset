@@ -25,7 +25,6 @@
         "drupal/purge": "^3.0",
         "drupal/redis": "^1.9",
         "drupal/varnish_purge": "^2.1",
-        "drush/drush": "^13",
         "josdejong/jsoneditor": "^5.29",
         "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
