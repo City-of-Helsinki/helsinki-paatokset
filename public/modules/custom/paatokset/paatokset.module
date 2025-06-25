@@ -38,7 +38,5 @@ function paatokset_cron() : void {
   // Clear lupapiste RSS-feed cache if it's over 24 hours old (failsafe) or if
   // the RSS feed was updated since the last fetch.
   $lupapiste_storage = \Drupal::getContainer()->get(ItemsStorage::class);
-  if ($lupapiste_storage->purgeCacheIfNeeded()) {
-    \Drupal::logger('paatokset')->notice('Cleared caches for Lupapiste RSS feed.');
-  }
+  $lupapiste_storage->purgeCacheIfNeeded();
 }
