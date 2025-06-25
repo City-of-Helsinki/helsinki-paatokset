@@ -6,6 +6,7 @@ namespace Drupal\Tests\paatokset\Kernel\Lupapiste;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset\Lupapiste\DTO\Item;
+use Drupal\paatokset\Lupapiste\ItemsImporter;
 use Drupal\paatokset\Lupapiste\ItemsStorage;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response;
@@ -102,7 +103,7 @@ class ItemsStorageTest extends KernelTestBase {
       new Response(body: $this->getFixture('paatokset', 'rss_fi.xml')),
     ]));
 
-    // Last fetched timestamp is less than treshold, and latest published
+    // Last fetched timestamp is less than threshold, and latest published
     // date is the same as latest feed; should not clear cache.
     $this->state->set(ItemsStorage::LAST_FETCH_TIMESTAMP, $this->time->getRequestTime() - self::CACHE_MAX_AGE + 1);
     $this->state->set(ItemsStorage::LAST_PUBDATE_TIMESTAMP, strtotime('Wed, 12 Mar 2025 08:54:15 +0200'));
@@ -155,6 +156,29 @@ class ItemsStorageTest extends KernelTestBase {
     $itemStorage = $this->container->get(ItemsStorage::class);
     $is_cleared = $itemStorage->purgeCacheIfNeeded(self::CACHE_MAX_AGE);
     $this->assertTrue($is_cleared);
+  }
+
+  /**
+   * Test deserialize method.
+   */
+  public function testDeserialize(): void {
+    $httpClient = $this->createMockHttpClient([
+      new Response(body: $this->getFixture('paatokset', 'rss_fi.xml')),
+    ]);
+    $importer = new ItemsImporter($httpClient);
+    $data = $importer->fetch('fi');
+
+    /** @var \Drupal\paatokset\Lupapiste\ItemsStorage $storage */
+    $storage = $this->container->get(ItemsStorage::class);
+    $items = $storage->deserialize(json_encode($data['items']));
+
+    $this->assertContainsOnlyInstancesOf(Item::class, $items);
+    $publicationStart = new \DateTime('2025-03-13 00:00:00', new \DateTimeZone('+2'));
+    $publicationEnd = new \DateTime('2025-04-22 23:59:59', new \DateTimeZone('+3'));
+    $this->assertEquals($publicationStart, $items[0]->julkaisuAlkaa);
+    $this->assertEquals($publicationEnd, $items[0]->julkaisuPaattyy);
+    $this->assertEquals('Rakennustarkastaja', $items[0]->paattaja);
+    $this->assertEquals('fi Asuinkerrostalon tai rivitalon rakentaminen', $items[0]->title);
   }
 
 }
