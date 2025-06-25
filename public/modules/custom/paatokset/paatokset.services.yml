@@ -13,6 +13,9 @@ services:
     tags:
       - { name: normalizer }
 
+  # Ensure this normalizer is applied early by setting priority: 1.
+  # Without priority, another normalizer might handle DateTime objects first,
+  # preventing DateTimeNormalizer from formatting dates correctly.
   paatokset.normalizer.datetime:
     class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
     public: false

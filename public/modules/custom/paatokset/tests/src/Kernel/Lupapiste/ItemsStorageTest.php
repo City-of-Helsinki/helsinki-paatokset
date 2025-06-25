@@ -160,8 +160,6 @@ class ItemsStorageTest extends KernelTestBase {
 
   /**
    * Test deserialize method.
-   *
-   * We should also test the priority of paatokset.normalizer.datetime.
    */
   public function testDeserialize(): void {
     $httpClient = $this->createMockHttpClient([
