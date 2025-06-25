@@ -301,32 +301,14 @@ class InfoImportForm extends FormBase {
    *   Mapped field ID or NULL.
    */
   public static function getFieldKey(string $header): ?string {
-    switch ($header) {
-      case "Kotikaupunginosa":
-        $key = 'field_trustee_home_district';
-        break;
-
-      case "Puhelinnumero verkossa":
-        $key = 'field_trustee_phone';
-        break;
-
-      case "Sähköposti verkossa":
-        $key = 'field_trustee_email';
-        break;
-
-      case "Kotisivu":
-        $key = 'field_trustee_homepage';
-        break;
-
-      case "Ammatti":
-        $key = 'field_trustee_profession';
-        break;
-
-      default:
-        $key = NULL;
-        break;
-    }
-    return $key;
+    return match($header) {
+      'Kotikaupunginosa' => 'field_trustee_home_district',
+      'Puhelinnumero verkossa' => 'field_trustee_phone',
+      'Sähköposti verkossa' => 'field_trustee_email',
+      'Kotisivu' => 'field_trustee_homepage',
+      'Ammatti' => 'field_trustee_profession',
+      default => NULL,
+    };
   }
 
   /**
@@ -340,7 +322,13 @@ class InfoImportForm extends FormBase {
    *   Operations with errors.
    */
   public static function finishedCallback($success, array $results, array $operations) {
-    $message = 'Processed ' . count($results['items']) . ' items with ' . count($results['failed']) . ' items failed.';
+    $total = count($results['items']) + count($results['failed']);
+    $message = sprintf(
+      'Total items: %d. Updated %d items and %d items failed',
+      $total,
+      count($results['items']),
+      count($results['failed']),
+    );
     $logger = \Drupal::logger('paatokset_council_info');
     $logger->info($message);
     $messenger = \Drupal::messenger();
