@@ -17,7 +17,7 @@ use Drupal\user\Entity\User;
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+function hdbt_subtheme_theme_suggestions_page_alter(array &$suggestions): void {
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
     // Retrieve the node object for revisions.
     $node = (is_numeric($node) && !$node instanceof Node) ? Node::load($node) : $node;
@@ -41,11 +41,7 @@ function hdbt_subtheme_theme_suggestions_page_alter(array &$suggestions, array $
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_block(&$variables) {
-  if (isset($variables['elements']['#id'])) {
-    $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
-  }
-
+function hdbt_subtheme_preprocess_block(array &$variables): void {
   if (
     $variables['base_plugin_id'] === 'menu_block_current_language' &&
     str_contains($variables['elements']['#id'], 'main_navigation_level_2')
@@ -57,7 +53,7 @@ function hdbt_subtheme_preprocess_block(&$variables) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables) {
+function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables): void {
   // Load theme suggestions for blocks from parent theme.
   foreach ($suggestions as &$suggestion) {
     $suggestion = str_replace('hdbt_subtheme_', '', $suggestion);
@@ -88,7 +84,7 @@ function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables) 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
+function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables): void {
   if (isset($variables['attributes']['block_id'])) {
     $block_id = str_replace('hdbt_subtheme_', '', $variables['attributes']['block_id']);
 
@@ -114,7 +110,7 @@ function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
  *
  * {@inheritdoc}
  */
-function hdbt_subtheme_preprocess_links__language_block(&$variables) {
+function hdbt_subtheme_preprocess_links__language_block(array &$variables): void {
   foreach ($variables['links'] as $langCode => &$link) {
     switch ($langCode) {
       case 'en':
@@ -137,7 +133,7 @@ function hdbt_subtheme_preprocess_links__language_block(&$variables) {
  *
  * {@inheritdoc}
  */
-function hdbt_subtheme_preprocess_region(&$variables) {
+function hdbt_subtheme_preprocess_region(array &$variables): void {
   $user = User::load(\Drupal::currentUser()->id());
   $variables['username'] = $user->getAccountName();
   $variables['logged_in'] = \Drupal::currentUser()->isAuthenticated();
@@ -146,7 +142,7 @@ function hdbt_subtheme_preprocess_region(&$variables) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_region_alter(array &$suggestions, array $variables) {
+function hdbt_subtheme_theme_suggestions_region_alter(array &$suggestions, array $variables): void {
   if ($variables['elements']['#region'] === 'header_top') {
     $suggestions[] = 'region__header_top__non_core';
   }
@@ -155,7 +151,7 @@ function hdbt_subtheme_theme_suggestions_region_alter(array &$suggestions, array
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables): void {
   if ($variables['view']->id() === 'news') {
     $suggestions[] = 'views_view_unformatted__news__latest_news';
   }
@@ -164,7 +160,7 @@ function hdbt_subtheme_theme_suggestions_views_view_unformatted_alter(array &$su
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function hdbt_subtheme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+function hdbt_subtheme_theme_suggestions_views_view_alter(array &$suggestions, array $variables): void {
   $path = \Drupal::service('path.current')->getPath();
   $alias = \Drupal::service('path_alias.manager')->getAliasByPath($path);
 
@@ -178,8 +174,11 @@ function hdbt_subtheme_theme_suggestions_views_view_alter(array &$suggestions, a
 /**
  * Implements hook_preprocess_container().
  */
-function hdbt_subtheme_preprocess_container(&$variables) {
-  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])) {
+function hdbt_subtheme_preprocess_container(array &$variables): void {
+  if (
+    isset($variables['element']['#attributes']['class']) &&
+    in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])
+  ) {
     $variables['tags'] = $variables['element']['#tags'];
   }
 }
@@ -187,14 +186,20 @@ function hdbt_subtheme_preprocess_container(&$variables) {
 /**
  * Implements hook_theme_suggestions_container_alter().
  */
-function hdbt_subtheme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
-  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])) {
+function hdbt_subtheme_theme_suggestions_container_alter(array &$suggestions, array $variables): void {
+  if (isset($variables['element']['#attributes']['class']) &&
+    in_array('advanced-search__tags-container', $variables['element']['#attributes']['class'])
+  ) {
     $suggestions[] = 'advanced_search__tags_container';
   }
-  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-fields-container', $variables['element']['#attributes']['class'])) {
+  if (isset($variables['element']['#attributes']['class']) &&
+    in_array('advanced-fields-container', $variables['element']['#attributes']['class'])
+  ) {
     $suggestions[] = 'advanced_search__advanced_fields_container';
   }
-  if (isset($variables['element']['#attributes']['class']) && in_array('advanced-search-link-container', $variables['element']['#attributes']['class'])) {
+  if (isset($variables['element']['#attributes']['class']) &&
+    in_array('advanced-search-link-container', $variables['element']['#attributes']['class'])
+  ) {
     $suggestions[] = 'advanced_search_link_container';
   }
 }
@@ -202,7 +207,7 @@ function hdbt_subtheme_theme_suggestions_container_alter(array &$suggestions, ar
 /**
  * Implements hook_theme().
  */
-function hdbt_subtheme_theme($existing, $type, $theme, $path) {
+function hdbt_subtheme_theme(): array {
   return [
     'advanced_search__advanced_fields_container' => [
       'base hook' => 'container',
@@ -242,7 +247,7 @@ function hdbt_subtheme_get_trustee_content(FieldItemListInterface $references): 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_node__trustee(&$variables) {
+function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   $node = $variables['node'];
 
   if (!$node instanceof NodeInterface) {
@@ -317,7 +322,7 @@ function hdbt_subtheme_preprocess_node__trustee(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
+function hdbt_subtheme_preprocess_field__node__title__trustee(array &$variables): void {
   $title = $variables['items'][0]['content']['#context']['value'];
   $variables['items'][0]['content']['#context']['value'] = TrusteeService::transformTrusteeName($title);
 }
@@ -325,7 +330,7 @@ function hdbt_subtheme_preprocess_field__node__title__trustee(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
+function hdbt_subtheme_preprocess_paragraph__news_liftups(array &$variables): void {
   $main_article_id = NULL;
   $main_article_query = \Drupal::entityQuery('node')
     ->accessCheck(TRUE)
@@ -384,11 +389,9 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_html() for HTML document templates.
- *
- * {@inheritdoc}
+ * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_menu(&$variables) {
+function hdbt_subtheme_preprocess_menu(array &$variables): void {
   $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
 
   if (isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
@@ -406,7 +409,7 @@ function hdbt_subtheme_preprocess_menu(&$variables) {
 /**
  * Implements hook_preprocess_page().
  */
-function hdbt_subtheme_preprocess_page(&$variables) {
+function hdbt_subtheme_preprocess_page(array &$variables): void {
   $route_name = \Drupal::routeMatch()->getRouteName();
 
   // Page class for alternate decision and case routes.
@@ -423,8 +426,11 @@ function hdbt_subtheme_preprocess_page(&$variables) {
   }
 
   // Set a variable to always show sidebar in policymaker pages.
-  // Check by dictionary block appearing to handle unstranslated nodes on sv.
-  if (isset($variables['page']['content']) && array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])) {
+  // Check by dictionary block appearing to handle untranslated nodes on sv.
+  if (
+    isset($variables['page']['content']) &&
+    array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])
+  ) {
     $variables['main_container'] = TRUE;
   }
 
@@ -440,7 +446,11 @@ function hdbt_subtheme_preprocess_page(&$variables) {
 
   // Display navigation side under specific conditions.
   // Only on node routes and if the second level navi block is present.
-  if ($route_name === 'entity.node.canonical' && isset($variables['node']) && isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2'])) {
+  if (
+    isset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']) &&
+    isset($variables['node']) &&
+    $route_name === 'entity.node.canonical'
+  ) {
     $node_id = $variables['node']->id();
     $display_sidebar_nav = FALSE;
 
@@ -484,7 +494,7 @@ function hdbt_subtheme_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_node__article(&$variables) {
+function hdbt_subtheme_preprocess_node__article(array &$variables): void {
   $node = $variables['node'];
 
   if ($node->hasField('unpublish_on') && !$node->get('unpublish_on')->isEmpty()) {
@@ -495,7 +505,7 @@ function hdbt_subtheme_preprocess_node__article(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hdbt_subtheme_preprocess_html(&$variables): void {
+function hdbt_subtheme_preprocess_html(array &$variables): void {
   // @todo This should be removed if UHF-11699 is done.
   // Set instance name manually to be used as a JS variable.
   $variables['#attached']['drupalSettings']['helfi_instance_name'] = 'paatokset';
