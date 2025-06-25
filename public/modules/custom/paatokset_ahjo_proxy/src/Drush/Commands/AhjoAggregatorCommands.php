@@ -9,7 +9,6 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -38,8 +37,6 @@ class AhjoAggregatorCommands extends DrushCommands {
   /**
    * Constructor for Ahjo Aggregator Commands.
    *
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   Logger service.
    * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
    *   Ahjo Proxy service.
    * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjoOpenId
@@ -56,7 +53,6 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Batch builder for meetings.
    */
   public function __construct(
-    LoggerChannelFactoryInterface $logger_factory,
     private AhjoProxy $ahjoProxy,
     private AhjoOpenId $ahjoOpenId,
     private EntityTypeManagerInterface $entityTypeManager,
@@ -66,7 +62,6 @@ class AhjoAggregatorCommands extends DrushCommands {
     private AhjoBatchBuilder $ahjoBatchBuilder,
   ) {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
-    $this->setLogger($logger_factory->get('paatokset_ahjo_proxy'));
   }
 
   /**

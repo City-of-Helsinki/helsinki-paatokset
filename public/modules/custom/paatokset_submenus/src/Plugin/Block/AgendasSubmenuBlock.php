@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[Block(
   id: 'agendas_submenu',
   admin_label: new TranslatableMarkup('Agendas Submenu'),
-  category: new TranslatableMarkup('Paatokset custom blocks')
+  category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
 class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
@@ -48,7 +48,7 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
   }
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
   public function build(): array {
     $list = $this->policymakerService->getAgendasListFromElasticSearch(NULL, TRUE);
@@ -62,7 +62,7 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
   public function getCacheTags(): array {
     $policymaker = $this->policymakerService->getPolicyMaker();
@@ -74,7 +74,7 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
   public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];

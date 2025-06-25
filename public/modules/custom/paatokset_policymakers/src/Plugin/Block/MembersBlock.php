@@ -1,24 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_policymakers\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides Calendar Block.
- *
- * @Block(
- *    id = "policymaker_members",
- *    admin_label = @Translation("Paatokset policymaker members"),
- *    category = @Translation("Paatokset custom blocks")
- * )
  */
+#[Block(
+  id: "policymaker_members",
+  admin_label: new TranslatableMarkup("Paatokset policymaker members"),
+  category: new TranslatableMarkup('Paatokset custom blocks'),
+)]
 class MembersBlock extends BlockBase {
 
   /**
-   * Build the attributes.
+   * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
       '#title' => $this->t('Members'),
@@ -29,16 +32,16 @@ class MembersBlock extends BlockBase {
   }
 
   /**
-   * Get cache tags.
+   * {@inheritDoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return ['node_list:trustee'];
   }
 
   /**
-   * Get cache contexts.
+   * {@inheritDoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return ['url.path', 'url.query_args'];
   }
 

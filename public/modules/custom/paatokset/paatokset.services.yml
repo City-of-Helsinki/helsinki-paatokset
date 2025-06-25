@@ -13,14 +13,17 @@ services:
     tags:
       - { name: normalizer }
 
+  # Ensure this normalizer is applied early by setting priority: 1.
+  # Without priority, another normalizer might handle DateTime objects first,
+  # preventing DateTimeNormalizer from formatting dates correctly.
   paatokset.normalizer.datetime:
     class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
     public: false
     arguments:
       $defaultContext:
-        datetime_format: 'D, d M Y H:i:s T'
+        datetime_format: 'D, d M Y H:i:s O'
     tags:
-      - { name: normalizer }
+      - { name: normalizer, priority: 1 }
 
   paatokset.normalizer.object:
     class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer

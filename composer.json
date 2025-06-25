@@ -19,12 +19,12 @@
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_platform_config": "^4.0",
         "drupal/helfi_tunnistamo": "^3.0",
-        "drupal/json_field": "^1.0@RC",
+        "drupal/json_field": "^1.0",
         "drupal/key_auth": "^2.0",
         "drupal/migrate_plus": "^6.0",
         "drupal/purge": "^3.0",
+        "drupal/redis": "^1.9",
         "drupal/varnish_purge": "^2.1",
-        "drush/drush": "^12",
         "josdejong/jsoneditor": "^5.29",
         "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
@@ -43,6 +43,12 @@
     },
     "conflict": {
         "drupal/drupal": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Drush\\Style\\": "vendor/drush/drush/src-symfony-compatibility/v6/Style",
+            "Drush\\Symfony\\": "vendor/drush/drush/src-symfony-compatibility/v6/Symfony"
+        }
     },
     "config": {
         "optimize-autoloader": true,

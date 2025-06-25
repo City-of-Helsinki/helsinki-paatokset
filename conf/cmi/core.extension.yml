@@ -43,7 +43,6 @@ module:
   gin_toolbar: 0
   hdbt_admin_tools: 0
   hdbt_cookie_banner: 0
-  hds_web_components: 0
   health_check: 0
   helfi_api_base: 0
   helfi_azure_fs: 0
@@ -154,6 +153,7 @@ module:
   readonly_field_widget: 0
   real_aes: 0
   redirect: 0
+  redis: 0
   responsive_image: 0
   role_delegation: 0
   scheduler: 0
