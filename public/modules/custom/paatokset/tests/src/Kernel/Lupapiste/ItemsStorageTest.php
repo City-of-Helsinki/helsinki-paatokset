@@ -159,27 +159,9 @@ class ItemsStorageTest extends KernelTestBase {
   }
 
   /**
-   * Test the custom DateTimeNormalizer.
-   */
-  public function testDateTimeNormalizer(): void {
-    /** @var \Symfony\Component\Serializer\Serializer $serializer */
-    $serializer = $this->container->get('serializer');
-
-    $dateString = 'Wed, 12 Mar 2025 08:54:15 +0200';
-
-    // Deserialize to a \DateTimeInterface using the custom format.
-    $date = $serializer->denormalize($dateString, \DateTimeInterface::class, 'json');
-
-    $this->assertInstanceOf(\DateTimeInterface::class, $date);
-    $this->assertEquals('2025-03-12 08:54:15', $date->format('Y-m-d H:i:s'));
-
-    // Serialize back — it should use the custom format.
-    $normalized = $serializer->normalize($date);
-    $this->assertEquals($dateString, $normalized);
-  }
-
-  /**
    * Test deserialize method.
+   *
+   * We should also test the priority of paatokset.normalizer.datetime.
    */
   public function testDeserialize(): void {
     $httpClient = $this->createMockHttpClient([
