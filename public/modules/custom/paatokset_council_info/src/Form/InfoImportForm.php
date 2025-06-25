@@ -191,6 +191,14 @@ class InfoImportForm extends FormBase {
    */
   protected function getCsvReader(FileInterface $file): Reader {
     $contents = file_get_contents($file->getFileUri());
+
+    // #UHF-12020 Contents would not contain scandics.
+    $contents = mb_convert_encoding(
+      $contents,
+      'UTF-8',
+      mb_detect_encoding($contents, 'UTF-8, ISO-8859-1', TRUE)
+    );
+
     $reader = Reader::createFromString($contents);
     $reader->setDelimiter(';');
     $reader->setHeaderOffset(0);
@@ -257,7 +265,7 @@ class InfoImportForm extends FormBase {
       }
 
       // Trim whitespace.
-      if ($value instanceof string) {
+      if (is_string($value)) {
         $value = trim($value);
       }
 
