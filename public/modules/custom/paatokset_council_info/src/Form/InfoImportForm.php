@@ -114,7 +114,7 @@ class InfoImportForm extends FormBase {
       $file_id = $form_state->getValue('existing_info_file');
     }
     else {
-      $this->messenger->addError('File missing.');
+      $this->messenger()->addError('File missing.');
       return;
     }
 
@@ -122,12 +122,12 @@ class InfoImportForm extends FormBase {
     $file = $file_storage->load($file_id);
 
     if (!$file instanceof FileInterface) {
-      $this->messenger->addError('File could not be loaded.');
+      $this->messenger()->addError('File could not be loaded.');
       return;
     }
 
     if ($file->get('filemime')->value !== 'text/csv') {
-      $this->messenger->addError('File must be a CSV file.');
+      $this->messenger()->addError('File must be a CSV file.');
       return;
     }
 
@@ -135,19 +135,19 @@ class InfoImportForm extends FormBase {
     if ($file_setting === 'permanent') {
       $file->setPermanent();
       $file->save();
-      $this->messenger->addMessage('File is now stored permanently.');
+      $this->messenger()->addMessage('File is now stored permanently.');
     }
     elseif ($file_setting === 'temporary') {
       $file->setTemporary();
       $file->save();
-      $this->messenger->addMessage('File storage set to temporary.');
+      $this->messenger()->addMessage('File storage set to temporary.');
     }
 
     try {
       $csv_reader = $this->getCsvReader($file);
     }
     catch (\Exception $e) {
-      $this->messenger->addMessage($e->getMessage(), 'error');
+      $this->messenger()->addMessage($e->getMessage(), 'error');
       return;
     }
 
@@ -164,7 +164,7 @@ class InfoImportForm extends FormBase {
     }
 
     if (empty($operations)) {
-      $this->messenger->addWarning('Nothing to import');
+      $this->messenger()->addWarning('Nothing to import');
       return;
     }
 
