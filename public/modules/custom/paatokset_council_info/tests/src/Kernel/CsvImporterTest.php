@@ -56,6 +56,10 @@ class CsvImporterTest extends EntityKernelTestBase {
    * Test the form functionality.
    */
   public function testFormFunctionality(): void {
+    $form = InfoImportForm::create($this->container);
+    $id = $form->getFormId();
+    $this->assertEquals('council_info_import', $id);
+
     $this->assertNull(InfoImportForm::getFieldKey('SHOULD-RETURN-NULL'));
     $this->assertEquals('field_trustee_home_district', InfoImportForm::getFieldKey('Kotikaupunginosa'));
     $this->assertEquals('field_trustee_phone', InfoImportForm::getFieldKey('Puhelinnumero verkossa'));
