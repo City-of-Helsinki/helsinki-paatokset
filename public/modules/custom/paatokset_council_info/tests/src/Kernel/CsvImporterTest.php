@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_council_info\Kernel;
 
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -59,6 +60,9 @@ class CsvImporterTest extends EntityKernelTestBase {
     $form = InfoImportForm::create($this->container);
     $id = $form->getFormId();
     $this->assertEquals('council_info_import', $id);
+    $form = $form->buildForm([], new FormState());
+
+    $this->assertTrue(isset($form['file']));
 
     $this->assertNull(InfoImportForm::getFieldKey('SHOULD-RETURN-NULL'));
     $this->assertEquals('field_trustee_home_district', InfoImportForm::getFieldKey('Kotikaupunginosa'));
