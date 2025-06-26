@@ -107,22 +107,6 @@ class CsvImporterTest extends EntityKernelTestBase {
    * Create nodes & bundle fields.
    */
   private function sut(): void {
-    Node::create([
-      'title' => 'title',
-      'type' => 'trustee',
-      'field_first_name' => 'test',
-      'field_last_name' => 'testlastname',
-    ])
-      ->save();
-
-    Node::create([
-      'title' => 'title',
-      'type' => 'trustee',
-      'field_first_name' => 'test',
-      'field_last_name' => 'testlastname2',
-    ])
-      ->save();
-
     // Create a node type.
     NodeType::create([
       'type' => 'trustee',
@@ -154,6 +138,22 @@ class CsvImporterTest extends EntityKernelTestBase {
         'settings' => [],
       ])->save();
     }
+
+    Node::create([
+      'title' => 'title',
+      'type' => 'trustee',
+      'field_first_name' => 'test',
+      'field_last_name' => 'testlastname',
+    ])
+      ->save();
+
+    Node::create([
+      'title' => 'title',
+      'type' => 'trustee',
+      'field_first_name' => 'test',
+      'field_last_name' => 'testlastname2',
+    ])
+      ->save();
   }
 
 }
