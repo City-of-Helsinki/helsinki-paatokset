@@ -302,11 +302,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_proxy/tests/src/Kernel/MeetingAggregatorsTest.php
 
     -
-      message: "#^Method App\\\\Commands\\\\ListFetchCommand\\:\\:doRequest\\(\\) should return GuzzleHttp\\\\Psr7\\\\Response but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_cmdline_poc/src/Commands/ListFetchCommand.php
-
-    -
       message: "#^Class Drupal\\\\paatokset_council_info\\\\Form\\\\string not found\\.$#"
       count: 1
       path: public/modules/custom/paatokset_council_info/src/Form/InfoImportForm.php
