@@ -30,7 +30,6 @@ class InfoImportForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
     $instance = parent::create($container);
     $instance->entityTypeManager = $container->get('entity_type.manager');
     return $instance;
@@ -259,17 +258,14 @@ class InfoImportForm extends FormBase {
     foreach ($data as $key => $value) {
       $field = self::getFieldKey($key);
 
-      // Do nothing if field can't be found or if field is empty.
       if (!$field || empty($value)) {
         continue;
       }
 
-      // Trim whitespace.
       if (is_string($value)) {
         $value = trim($value);
       }
 
-      // Validation for homepage links.
       if ($field === 'field_trustee_homepage' && !UrlHelper::isValid($value, TRUE)) {
         continue;
       }
