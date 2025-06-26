@@ -19,6 +19,11 @@ use Drupal\paatokset_council_info\Form\InfoImportForm;
  */
 class CsvImporterTest extends EntityKernelTestBase {
 
+  /**
+   * The messenger inteface.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
   protected MessengerInterface $messenger;
 
   /**
