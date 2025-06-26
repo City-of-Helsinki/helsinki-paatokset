@@ -38,6 +38,9 @@ class CsvImporterTest extends EntityKernelTestBase {
     'paatokset_council_info',
   ];
 
+  /**
+   * {@inheritDoc}
+   */
   protected function setUp(): void {
     parent::setUp();
     $this->installEntitySchema('node');
