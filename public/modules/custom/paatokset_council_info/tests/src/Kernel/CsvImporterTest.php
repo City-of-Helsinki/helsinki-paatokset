@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_council_info\Kernel;
 
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -31,6 +34,7 @@ class CsvImporterTest extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'file',
     'system',
     'node',
     'user',
@@ -46,8 +50,9 @@ class CsvImporterTest extends EntityKernelTestBase {
     parent::setUp();
     $this->installEntitySchema('node');
     $this->installEntitySchema('user');
+    $this->installEntitySchema('file');
     $this->installSchema('node', ['node_access']);
-    $this->installConfig(['field', 'node', 'user']);
+    $this->installConfig(['field', 'node', 'user', 'file']);
 
     $this->sut();
     $this->messenger = $this->container->get('messenger');
@@ -58,11 +63,13 @@ class CsvImporterTest extends EntityKernelTestBase {
    */
   public function testFormFunctionality(): void {
     $form = InfoImportForm::create($this->container);
-    $id = $form->getFormId();
-    $this->assertEquals('council_info_import', $id);
-    $form = $form->buildForm([], new FormState());
+    $form_state = new FormState();
 
-    $this->assertTrue(isset($form['file']));
+    $id = $form->getFormId();
+    $formArray = $form->buildForm([], $form_state);
+
+    $this->assertEquals('council_info_import', $id);
+    $this->assertTrue(isset($formArray['file']));
 
     $this->assertNull(InfoImportForm::getFieldKey('SHOULD-RETURN-NULL'));
     $this->assertEquals('field_trustee_home_district', InfoImportForm::getFieldKey('Kotikaupunginosa'));
@@ -71,29 +78,13 @@ class CsvImporterTest extends EntityKernelTestBase {
     $this->assertEquals('field_trustee_homepage', InfoImportForm::getFieldKey('Kotisivu'));
     $this->assertEquals('field_trustee_profession', InfoImportForm::getFieldKey('Ammatti'));
 
-    $data = [
-      'items' => [
-        [
-          'count' => 1,
-          'Etunimet' => 'test',
-          'Sukunimi' => 'testlastname',
-          'Sähköposti verkossa' => 'changed_email@email.com',
-        ],
-        [
-          'count' => 2,
-          'Etunimet' => 'test',
-          'Sukunimi' => 'testlastname2',
-          'Sähköposti verkossa' => 'changed_email222@email.com',
-        ],
-        [
-          'count' => 3,
-          'Etunimet' => 'doesnotexist',
-          'Sukunimi' => 'testlastname3',
-          'Sähköposti verkossa' => 'changed_email333@email.com',
-        ],
-      ],
-    ];
+    $file_id = $this->createFile();
+    $form_state->setValue('info_file', [$file_id]);
 
+    $formdata = [];
+    $form->submitForm($formdata, $form_state);
+
+    $data = $this->getData();
     $context['results'] = [
       'items' => [],
       'failed' => [],
@@ -162,6 +153,55 @@ class CsvImporterTest extends EntityKernelTestBase {
       'field_last_name' => 'testlastname2',
     ])
       ->save();
+  }
+
+  /**
+   * Import data.
+   *
+   * @return array[]
+   *   Array of data to process.
+   */
+  private function getData(): array {
+    return [
+      'items' => [
+        [
+          'count' => 1,
+          'Etunimet' => 'test',
+          'Sukunimi' => 'testlastname',
+          'Sähköposti verkossa' => 'changed_email@email.com',
+        ],
+        [
+          'count' => 2,
+          'Etunimet' => 'test',
+          'Sukunimi' => 'testlastname2',
+          'Sähköposti verkossa' => 'changed_email222@email.com',
+        ],
+        [
+          'count' => 3,
+          'Etunimet' => 'doesnotexist',
+          'Sukunimi' => 'testlastname3',
+          'Sähköposti verkossa' => 'changed_email333@email.com',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Create a csv file.
+   *
+   * @return int
+   *   The file id.
+   */
+  private function createFile(): int {
+    $file = File::create([
+      'filename' => basename('test.csv'),
+      'uri' => \Drupal::root() . '/modules/custom/paatokset_council_info/tests/fixtures/test.csv',
+      'status' => 1,
+      'uid' => 1,
+    ]);
+    $file->setTemporary();
+    $file->save();
+    return (int) $file->id();
   }
 
 }
