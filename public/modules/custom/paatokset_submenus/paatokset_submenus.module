@@ -116,8 +116,8 @@ function paatokset_submenus_preprocess_block(&$variables) {
 /**
  * Helper function to check if the current option is in active trail.
  */
-function paatokset_submenus_is_active_trail($currentOption, $option) {
-  return $currentOption->value === $option->value;
+function paatokset_submenus_is_active_trail($currentOption, $option): bool {
+  return $currentOption?->value === $option?->value;
 }
 
 /**
