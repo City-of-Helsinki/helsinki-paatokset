@@ -118,7 +118,7 @@ function paatokset_submenus_preprocess_block(&$variables) {
  */
 function paatokset_submenus_is_active_trail($currentOption, $option): bool {
   if (!$currentOption && !$option) {
-    return false;
+    return FALSE;
   }
 
   return $currentOption?->value === $option?->value;
