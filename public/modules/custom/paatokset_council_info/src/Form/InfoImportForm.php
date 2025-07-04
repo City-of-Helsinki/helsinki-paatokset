@@ -30,7 +30,6 @@ class InfoImportForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
     $instance = parent::create($container);
     $instance->entityTypeManager = $container->get('entity_type.manager');
     return $instance;
@@ -114,7 +113,7 @@ class InfoImportForm extends FormBase {
       $file_id = $form_state->getValue('existing_info_file');
     }
     else {
-      $this->messenger->addError('File missing.');
+      $this->messenger()->addError('File missing.');
       return;
     }
 
@@ -122,12 +121,12 @@ class InfoImportForm extends FormBase {
     $file = $file_storage->load($file_id);
 
     if (!$file instanceof FileInterface) {
-      $this->messenger->addError('File could not be loaded.');
+      $this->messenger()->addError('File could not be loaded.');
       return;
     }
 
     if ($file->get('filemime')->value !== 'text/csv') {
-      $this->messenger->addError('File must be a CSV file.');
+      $this->messenger()->addError('File must be a CSV file.');
       return;
     }
 
@@ -135,19 +134,19 @@ class InfoImportForm extends FormBase {
     if ($file_setting === 'permanent') {
       $file->setPermanent();
       $file->save();
-      $this->messenger->addMessage('File is now stored permanently.');
+      $this->messenger()->addMessage('File is now stored permanently.');
     }
     elseif ($file_setting === 'temporary') {
       $file->setTemporary();
       $file->save();
-      $this->messenger->addMessage('File storage set to temporary.');
+      $this->messenger()->addMessage('File storage set to temporary.');
     }
 
     try {
       $csv_reader = $this->getCsvReader($file);
     }
     catch (\Exception $e) {
-      $this->messenger->addMessage($e->getMessage(), 'error');
+      $this->messenger()->addMessage($e->getMessage(), 'error');
       return;
     }
 
@@ -164,7 +163,7 @@ class InfoImportForm extends FormBase {
     }
 
     if (empty($operations)) {
-      $this->messenger->addWarning('Nothing to import');
+      $this->messenger()->addWarning('Nothing to import');
       return;
     }
 
@@ -191,6 +190,14 @@ class InfoImportForm extends FormBase {
    */
   protected function getCsvReader(FileInterface $file): Reader {
     $contents = file_get_contents($file->getFileUri());
+
+    // #UHF-12020 Contents would not contain scandics.
+    $contents = mb_convert_encoding(
+      $contents,
+      'UTF-8',
+      mb_detect_encoding($contents, 'UTF-8, ISO-8859-1', TRUE)
+    );
+
     $reader = Reader::createFromString($contents);
     $reader->setDelimiter(';');
     $reader->setHeaderOffset(0);
@@ -251,17 +258,14 @@ class InfoImportForm extends FormBase {
     foreach ($data as $key => $value) {
       $field = self::getFieldKey($key);
 
-      // Do nothing if field can't be found or if field is empty.
       if (!$field || empty($value)) {
         continue;
       }
 
-      // Trim whitespace.
-      if ($value instanceof string) {
+      if (is_string($value)) {
         $value = trim($value);
       }
 
-      // Validation for homepage links.
       if ($field === 'field_trustee_homepage' && !UrlHelper::isValid($value, TRUE)) {
         continue;
       }
@@ -293,32 +297,14 @@ class InfoImportForm extends FormBase {
    *   Mapped field ID or NULL.
    */
   public static function getFieldKey(string $header): ?string {
-    switch ($header) {
-      case "Kotikaupunginosa":
-        $key = 'field_trustee_home_district';
-        break;
-
-      case "Puhelinnumero verkossa":
-        $key = 'field_trustee_phone';
-        break;
-
-      case "Sähköposti verkossa":
-        $key = 'field_trustee_email';
-        break;
-
-      case "Kotisivu":
-        $key = 'field_trustee_homepage';
-        break;
-
-      case "Ammatti":
-        $key = 'field_trustee_profession';
-        break;
-
-      default:
-        $key = NULL;
-        break;
-    }
-    return $key;
+    return match($header) {
+      'Kotikaupunginosa' => 'field_trustee_home_district',
+      'Puhelinnumero verkossa' => 'field_trustee_phone',
+      'Sähköposti verkossa' => 'field_trustee_email',
+      'Kotisivu' => 'field_trustee_homepage',
+      'Ammatti' => 'field_trustee_profession',
+      default => NULL,
+    };
   }
 
   /**
@@ -332,11 +318,15 @@ class InfoImportForm extends FormBase {
    *   Operations with errors.
    */
   public static function finishedCallback($success, array $results, array $operations) {
-    $message = 'Processed ' . count($results['items']) . ' items with ' . count($results['failed']) . ' items failed.';
-    $logger = \Drupal::logger('paatokset_council_info');
-    $logger->info($message);
-    $messenger = \Drupal::messenger();
-    $messenger->addMessage($message);
+    $total = count($results['items']) + count($results['failed']);
+    $message = sprintf(
+      'Total items: %d. Updated %d items and %d items failed',
+      $total,
+      count($results['items']),
+      count($results['failed']),
+    );
+    \Drupal::logger('paatokset_council_info')->info($message);
+    \Drupal::messenger()->addMessage($message);
   }
 
 }
