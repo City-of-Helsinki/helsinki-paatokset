@@ -602,8 +602,9 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
  */
 function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
   $config = \Drupal::config('paatokset_ahjo_api.default_texts');
+  $processor = \Drupal::service('paatokset_ahjo_default_text_processor');
   $title = $config->get('banner_heading');
-  $text = $config->get('banner_text.value');
+  $text = $processor->process($config->get('banner_text'));
   $label = $config->get('banner_label');
   $url = $config->get('banner_url');
 

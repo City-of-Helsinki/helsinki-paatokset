@@ -11,6 +11,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\DefaultTextProcessor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -37,6 +38,7 @@ class PolicymakerController extends ControllerBase {
     private readonly ImmutableConfig $config,
     private readonly PolicymakerService $policymakerService,
     private readonly OrganizationPathBuilder $organizationPathBuilderService,
+    private readonly DefaultTextProcessor $defaultTextProcessor,
     private readonly LoggerChannelInterface $logger,
   ) {
     $this->policymakerService->setPolicyMakerByPath();
@@ -50,6 +52,7 @@ class PolicymakerController extends ControllerBase {
       $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
       $container->get('paatokset_policymakers'),
       $container->get(OrganizationPathBuilder::class),
+      $container->get('paatokset_ahjo_default_text_processor'),
       $container->get('logger.channel.paatokset_policymakers')
     );
   }
@@ -207,15 +210,16 @@ class PolicymakerController extends ControllerBase {
 
     if ($meetingData) {
       $policymaker = $this->policymakerService->getPolicymaker();
-      $documentsDescription = $policymaker->get('field_documents_description')->value;
+      $processor = $this->defaultTextProcessor;
+      $documentsDescription = $processor->process(['value' => $policymaker->get('field_documents_description')->value]);
       if (empty($documentsDescription)) {
-        $documentsDescription = $this->config->get('documents_description.value');
+        $documentsDescription = $processor->process($this->config->get('documents_description'));
       }
 
       $build['meeting'] = $meetingData['meeting'];
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
-      $build['#documents_description'] = '<div>' . $documentsDescription . '</div>';
+      $build['#documents_description'] = $documentsDescription;
 
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
