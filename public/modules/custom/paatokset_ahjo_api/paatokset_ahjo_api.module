@@ -353,6 +353,13 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
     $all_meetings = array_slice($all_meetings, 0, 8);
   }
 
+  $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
+  $meeting_calendar_description = $defaults_config->get('meeting_calendar_description');
+  if ($meeting_calendar_description !== NULL) {
+    $processor = \Drupal::service('paatokset_ahjo_default_text_processor');
+    $variables['meeting_calendar_description'] =  $processor->process($meeting_calendar_description);
+  }
+
   $variables['open_motions'] = t('Open agenda');
   $variables['open_minutes'] = t('Open minutes');
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
