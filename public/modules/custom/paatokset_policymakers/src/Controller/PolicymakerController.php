@@ -31,6 +31,8 @@ class PolicymakerController extends ControllerBase {
    *   Policymaker service.
    * @param \Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder $organizationPathBuilderService
    *   Organization path builder service.
+   * @param \Drupal\paatokset_ahjo_api\Service\DefaultTextProcessor $defaultTextProcessor
+   *   Default text processor service.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    *   The logger.
    */

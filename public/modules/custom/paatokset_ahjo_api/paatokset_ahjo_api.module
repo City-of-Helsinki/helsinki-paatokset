@@ -357,7 +357,7 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
   $meeting_calendar_description = $defaults_config->get('meeting_calendar_description');
   if ($meeting_calendar_description !== NULL) {
     $processor = \Drupal::service('paatokset_ahjo_default_text_processor');
-    $variables['meeting_calendar_description'] =  $processor->process($meeting_calendar_description);
+    $variables['meeting_calendar_description'] = $processor->process($meeting_calendar_description);
   }
 
   $variables['open_motions'] = t('Open agenda');
