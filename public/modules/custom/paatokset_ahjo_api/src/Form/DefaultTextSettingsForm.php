@@ -131,6 +131,26 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('meeting_calendar_description.value'),
     ];
 
+    $form['search'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Search texts'),
+      '#open' => TRUE,
+    ];
+
+    $form['search']['decision_search_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Decision search description'),
+      '#format' => $config->get('decision_search_description.format'),
+      '#default_value' => $config->get('decision_search_description.value'),
+    ];
+
+    $form['search']['policymakers_search_description'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Policymakers search description'),
+      '#format' => $config->get('policymakers_search_description.format'),
+      '#default_value' => $config->get('policymakers_search_description.value'),
+    ];
+
     $form['banner'] = [
       '#type' => 'details',
       '#title' => $this->t('Decision banner'),
@@ -189,6 +209,10 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       ->set('decisions_description.format', $form_state->getValue('decisions_description')['format'])
       ->set('meeting_calendar_description.value', $form_state->getValue('meeting_calendar_description')['value'])
       ->set('meeting_calendar_description.format', $form_state->getValue('meeting_calendar_description')['format'])
+      ->set('decision_search_description.value', $form_state->getValue('decision_search_description')['value'])
+      ->set('decision_search_description.format', $form_state->getValue('decision_search_description')['format'])
+      ->set('policymakers_search_description.value', $form_state->getValue('policymakers_search_description')['value'])
+      ->set('policymakers_search_description.format', $form_state->getValue('policymakers_search_description')['format'])
       ->set('banner_heading', $form_state->getValue('banner_heading'))
       ->set('banner_text.value', $form_state->getValue('banner_text')['value'])
       ->set('banner_text.format', $form_state->getValue('banner_text')['format'])

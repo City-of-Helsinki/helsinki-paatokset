@@ -15,3 +15,17 @@ function paatokset_search_preprocess_html(array &$variables) {
     $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paatokset_search_theme() {
+  return [
+    'policymaker_search_block' => [
+      'variables' => [
+        'lead_in' => [],
+        'search' => [],
+      ],
+    ],
+  ];
+}

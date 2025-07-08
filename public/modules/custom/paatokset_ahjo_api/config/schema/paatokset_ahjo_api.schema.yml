@@ -77,6 +77,26 @@ paatokset_ahjo_api.default_texts:
         format:
           type: string
           label: 'Meeting calendar description - Format'
+    decision_search_description:
+      type: mapping
+      label: 'Decision search description'
+      mapping:
+        value:
+          type: text
+          label: 'Decision search description - Value'
+        format:
+          type: string
+          label: 'Decision search description - Format'
+    policymakers_search_description:
+      type: mapping
+      label: 'Policymakers search description'
+      mapping:
+        value:
+          type: text
+          label: 'Policymakers search description - Value'
+        format:
+          type: string
+          label: 'Policymakers search description - Format'
     banner_text:
       type: mapping
       label: 'Banner content'
