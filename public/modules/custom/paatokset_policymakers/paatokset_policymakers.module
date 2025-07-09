@@ -112,12 +112,11 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
   $variables['open_minutes'] = t('Open minutes');
   $variables['meetings'] = $meetingService->elasticQuery($params);
 
-  $processor = \Drupal::service('paatokset_ahjo_default_text_processor');
   if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
-    $variables['meetings_description'] = $processor->process(['value' => $node->get('field_meetings_description')->value]);
+    $variables['meetings_description'] = _paatokset_ahjo_api_render_default_text(['value' => $node->get('field_meetings_description')->value]);
   }
   else {
-    $variables['meetings_description'] = $processor->process(\Drupal::config('paatokset_ahjo_api.default_texts')->get('meetings_description'));
+    $variables['meetings_description'] = _paatokset_ahjo_api_render_default_text(\Drupal::config('paatokset_ahjo_api.default_texts')->get('meetings_description'));
   }
 }
 
@@ -245,27 +244,25 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $node = $variables['node'];
 
-  $processor = \Drupal::service('paatokset_ahjo_default_text_processor');
-
   if ($node->hasField('field_documents_description') && !$node->get('field_documents_description')->isEmpty()) {
-    $variables['documents_description'] = $processor->process(['value' => $node->get('field_documents_description')->value]);
+    $variables['documents_description'] = _paatokset_ahjo_api_render_default_text(['value' => $node->get('field_documents_description')->value]);
   }
   else {
-    $variables['documents_description'] = $processor->process(\Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description'));
+    $variables['documents_description'] = _paatokset_ahjo_api_render_default_text(\Drupal::config('paatokset_ahjo_api.default_texts')->get('documents_description'));
   }
 
   if ($node->hasField('field_decisions_description') && !$node->get('field_decisions_description')->isEmpty()) {
-    $variables['decisions_description'] = $processor->process(['value' => $node->get('field_decisions_description')->value]);
+    $variables['decisions_description'] = _paatokset_ahjo_api_render_default_text(['value' => $node->get('field_decisions_description')->value]);
   }
   else {
-    $variables['decisions_description'] = $processor->process(\Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description'));
+    $variables['decisions_description'] = _paatokset_ahjo_api_render_default_text(\Drupal::config('paatokset_ahjo_api.default_texts')->get('decisions_description'));
   }
 
   if ($node->hasField('field_recording_description') && !$node->get('field_recording_description')->isEmpty()) {
-    $variables['recording_description'] = $processor->process(['value' => $node->get('field_meetings_description')->value]);
+    $variables['recording_description'] = _paatokset_ahjo_api_render_default_text(['value' => $node->get('field_meetings_description')->value]);
   }
   else {
-    $variables['recording_description'] = $processor->process(\Drupal::config('paatokset_ahjo_api.default_texts')->get('recording_description'));
+    $variables['recording_description'] = _paatokset_ahjo_api_render_default_text(\Drupal::config('paatokset_ahjo_api.default_texts')->get('recording_description'));
   }
 }
 
