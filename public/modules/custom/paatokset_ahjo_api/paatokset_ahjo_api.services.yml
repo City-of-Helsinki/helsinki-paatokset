@@ -35,10 +35,6 @@ services:
       - { name: paramconverter }
     arguments: [ "@paatokset_ahjo_cases" ]
 
-  paatokset_ahjo_default_text_processor:
-    class: Drupal\paatokset_ahjo_api\Service\DefaultTextProcessor
-  Drupal\paatokset_ahjo_api\Service\DefaultTextProcessor: ~
-
   Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder: ~
 
   Drupal\paatokset_ahjo_api\EventSubscriber\RequestLoggerEventSubscriber:

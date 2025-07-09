@@ -55,7 +55,7 @@ final class PolicymakerSearchBlock extends BlockBase implements ContainerFactory
       '#lead_in' => _paatokset_ahjo_api_render_default_text(
         $this->configFactory
           ->get('paatokset_ahjo_api.default_texts')
-          ->get('policymakers_search_description')
+          ->get('policymakers_search_description') ?? []
       ),
       '#search' => $this->searchManager->build('policymakers'),
     ];

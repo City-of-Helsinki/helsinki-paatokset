@@ -1201,7 +1201,8 @@ function paatokset_ahjo_api_system_breadcrumb_alter(
  * @return array
  *   Returns render_array.
  */
-function _paatokset_ahjo_api_render_default_text(array $configuration_array): array {
+function _paatokset_ahjo_api_render_default_text(?array $configuration_array): array {
+  $configuration_array = $configuration_array ?? [];
   return [
     '#type' => 'processed_text',
     '#text' => $configuration_array['value'] ?? '',
