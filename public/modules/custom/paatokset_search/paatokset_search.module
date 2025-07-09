@@ -19,7 +19,7 @@ function paatokset_search_preprocess_html(array &$variables) {
 /**
  * Implements hook_theme().
  */
-function paatokset_search_theme() {
+function paatokset_search_theme(): array {
   return [
     'policymaker_search_block' => [
       'variables' => [
