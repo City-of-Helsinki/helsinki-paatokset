@@ -6,7 +6,7 @@ namespace Drupal\paatokset_search\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_search\SearchManager;
@@ -30,11 +30,11 @@ final class PolicymakerSearchBlock extends BlockBase implements ContainerFactory
   private SearchManager $searchManager;
 
   /**
-   * The config manager.
+   * The config factory.
    *
-   * @var \Drupal\Core\Config\ImmutableConfig
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private ImmutableConfig $configManager;
+  private ConfigFactoryInterface $configFactory;
 
   /**
    * {@inheritdoc}
@@ -42,8 +42,7 @@ final class PolicymakerSearchBlock extends BlockBase implements ContainerFactory
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->searchManager = $container->get(SearchManager::class);
-    $instance->configManager = $container->get('config.factory')->get('paatokset_ahjo_api.default_texts');
-
+    $instance->configFactory = $container->get('config.factory');
     return $instance;
   }
 
@@ -53,7 +52,11 @@ final class PolicymakerSearchBlock extends BlockBase implements ContainerFactory
   public function build(): array {
     return [
       '#theme' => 'policymaker_search_block',
-      '#lead_in' => _paatokset_ahjo_api_render_default_text($this->configManager->get('policymakers_search_description')),
+      '#lead_in' => _paatokset_ahjo_api_render_default_text(
+        $this->configFactory
+          ->get('paatokset_ahjo_api.default_texts')
+          ->get('policymakers_search_description')
+      ),
       '#search' => $this->searchManager->build('policymakers'),
     ];
   }
