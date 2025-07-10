@@ -14,6 +14,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DefaultTextSettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   */
+  public const SETTINGS = 'paatokset_ahjo_api.default_texts';
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -34,7 +39,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
    */
   public function getEditableConfigNames() {
     return [
-      'paatokset_ahjo_api.default_texts',
+      self::SETTINGS,
     ];
   }
 
@@ -42,7 +47,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config = $this->config(self::SETTINGS);
 
     $form['links'] = [
       '#type' => 'details',
