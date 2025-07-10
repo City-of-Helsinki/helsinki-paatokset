@@ -196,7 +196,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $this->config('paatokset_ahjo_api.default_texts')
+    $this->config(self::SETTINGS)
       ->set('calendar_notice_text', $form_state->getValue('calendar_notice_text'))
       ->set('committees_boards_url', $form_state->getValue('committees_boards_url'))
       ->set('office_holders_url', $form_state->getValue('office_holders_url'))
