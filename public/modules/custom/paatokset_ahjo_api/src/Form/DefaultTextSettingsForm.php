@@ -14,6 +14,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DefaultTextSettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   */
+  public const SETTINGS = 'paatokset_ahjo_api.default_texts';
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -34,7 +39,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
    */
   public function getEditableConfigNames() {
     return [
-      'paatokset_ahjo_api.default_texts',
+      self::SETTINGS,
     ];
   }
 
@@ -42,7 +47,7 @@ class DefaultTextSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config = $this->config(self::SETTINGS);
 
     $form['links'] = [
       '#type' => 'details',
@@ -70,20 +75,6 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#open' => TRUE,
     ];
 
-    $form['alerts']['hidden_decisions_text'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Hidden decisions text'),
-      '#format' => $config->get('hidden_decisions_text.format'),
-      '#default_value' => $config->get('hidden_decisions_text.value'),
-    ];
-
-    $form['alerts']['non_public_attachments_text'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Non public decision attachments text'),
-      '#format' => $config->get('non_public_attachments_text.format'),
-      '#default_value' => $config->get('non_public_attachments_text.value'),
-    ];
-
     $form['defaults'] = [
       '#type' => 'details',
       '#title' => $this->t('Default fields'),
@@ -96,32 +87,10 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('calendar_notice_text'),
     ];
 
-    $form['defaults']['documents_description'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Documents description'),
-      '#format' => $config->get('documents_description.format'),
-      '#default_value' => $config->get('documents_description.value'),
-    ];
-
-    $form['defaults']['meetings_description'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Meetings description'),
-      '#format' => $config->get('meetings_description.format'),
-      '#default_value' => $config->get('meetings_description.value'),
-    ];
-
-    $form['defaults']['recording_description'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Recording description'),
-      '#format' => $config->get('recording_description.format'),
-      '#default_value' => $config->get('recording_description.value'),
-    ];
-
-    $form['defaults']['decisions_description'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Decisions description'),
-      '#format' => $config->get('decisions_description.format'),
-      '#default_value' => $config->get('decisions_description.value'),
+    $form['search'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Search texts'),
+      '#open' => TRUE,
     ];
 
     $form['banner'] = [
@@ -136,12 +105,37 @@ class DefaultTextSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Banner heading'),
     ];
 
-    $form['banner']['banner_text'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Banner content'),
-      '#format' => $config->get('banner_text.format'),
-      '#default_value' => $config->get('banner_text.value'),
+    $form_defaults = [
+      'alerts' => [
+        'hidden_decisions_text' => $this->t('Hidden decisions text'),
+        'non_public_attachments_text' => $this->t('Non public decision attachments text'),
+      ],
+      'defaults' => [
+        'documents_description' => $this->t('Documents description'),
+        'meetings_description' => $this->t('Meetings description'),
+        'recording_description' => $this->t('Recording description'),
+        'decisions_description' => $this->t('Decisions description'),
+        'meeting_calendar_description' => $this->t('Meeting calendar description'),
+      ],
+      'search' => [
+        'decision_search_description' => $this->t('Decision search description'),
+        'policymakers_search_description' => $this->t('Policy makers search description'),
+      ],
+      'banner' => [
+        'banner_text' => $this->t('Banner content'),
+      ],
     ];
+
+    foreach ($form_defaults as $section => $defaults) {
+      foreach ($defaults as $key => $title) {
+        $form[$section][$key] = [
+          '#type' => 'text_format',
+          '#title' => $title,
+          '#format' => $config->get($key . '.format'),
+          '#default_value' => $config->get($key . '.value'),
+        ];
+      }
+    }
 
     $form['banner']['banner_label'] = [
       '#type' => 'textfield',
@@ -163,29 +157,42 @@ class DefaultTextSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+    $default_texts = [
+      'calendar_notice_text' => $form_state->getValue('calendar_notice_text'),
+      'committees_boards_url' => $form_state->getValue('committees_boards_url'),
+      'office_holders_url' => $form_state->getValue('office_holders_url'),
+      'hidden_decisions_text.value' => $form_state->getValue('hidden_decisions_text')['value'],
+      'hidden_decisions_text.format' => $form_state->getValue('hidden_decisions_text')['format'],
+      'non_public_attachments_text.value' => $form_state->getValue('non_public_attachments_text')['value'],
+      'non_public_attachments_text.format' => $form_state->getValue('non_public_attachments_text')['format'],
+      'documents_description.value' => $form_state->getValue('documents_description')['value'],
+      'documents_description.format' => $form_state->getValue('documents_description')['format'],
+      'meetings_description.value' => $form_state->getValue('meetings_description')['value'],
+      'meetings_description.format' => $form_state->getValue('meetings_description')['format'],
+      'recording_description.value' => $form_state->getValue('recording_description')['value'],
+      'recording_description.format' => $form_state->getValue('recording_description')['format'],
+      'decisions_description.value' => $form_state->getValue('decisions_description')['value'],
+      'decisions_description.format' => $form_state->getValue('decisions_description')['format'],
+      'meeting_calendar_description.value' => $form_state->getValue('meeting_calendar_description')['value'],
+      'meeting_calendar_description.format' => $form_state->getValue('meeting_calendar_description')['format'],
+      'decision_search_description.value' => $form_state->getValue('decision_search_description')['value'],
+      'decision_search_description.format' => $form_state->getValue('decision_search_description')['format'],
+      'policymakers_search_description.value' => $form_state->getValue('policymakers_search_description')['value'],
+      'policymakers_search_description.format' => $form_state->getValue('policymakers_search_description')['format'],
+      'banner_heading' => $form_state->getValue('banner_heading'),
+      'banner_text.value' => $form_state->getValue('banner_text')['value'],
+      'banner_text.format' => $form_state->getValue('banner_text')['format'],
+      'banner_label' => $form_state->getValue('banner_label'),
+      'banner_url' => $form_state->getValue('banner_url'),
+    ];
 
-    $this->config('paatokset_ahjo_api.default_texts')
-      ->set('calendar_notice_text', $form_state->getValue('calendar_notice_text'))
-      ->set('committees_boards_url', $form_state->getValue('committees_boards_url'))
-      ->set('office_holders_url', $form_state->getValue('office_holders_url'))
-      ->set('hidden_decisions_text.value', $form_state->getValue('hidden_decisions_text')['value'])
-      ->set('hidden_decisions_text.format', $form_state->getValue('hidden_decisions_text')['format'])
-      ->set('non_public_attachments_text.value', $form_state->getValue('non_public_attachments_text')['value'])
-      ->set('non_public_attachments_text.format', $form_state->getValue('non_public_attachments_text')['format'])
-      ->set('documents_description.value', $form_state->getValue('documents_description')['value'])
-      ->set('documents_description.format', $form_state->getValue('documents_description')['format'])
-      ->set('meetings_description.value', $form_state->getValue('meetings_description')['value'])
-      ->set('meetings_description.format', $form_state->getValue('meetings_description')['format'])
-      ->set('recording_description.value', $form_state->getValue('recording_description')['value'])
-      ->set('recording_description.format', $form_state->getValue('recording_description')['format'])
-      ->set('decisions_description.value', $form_state->getValue('decisions_description')['value'])
-      ->set('decisions_description.format', $form_state->getValue('decisions_description')['format'])
-      ->set('banner_heading', $form_state->getValue('banner_heading'))
-      ->set('banner_text.value', $form_state->getValue('banner_text')['value'])
-      ->set('banner_text.format', $form_state->getValue('banner_text')['format'])
-      ->set('banner_label', $form_state->getValue('banner_label'))
-      ->set('banner_url', $form_state->getValue('banner_url'))
-      ->save();
+    $config = $this->config(self::SETTINGS);
+
+    foreach ($default_texts as $key => $value) {
+      $config->set($key, $value);
+    }
+
+    $config->save();
   }
 
 }

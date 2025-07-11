@@ -11,3 +11,6 @@ paatokset-search:
   css:
     theme:
       assets/paatokset-search-main.css: { }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal
