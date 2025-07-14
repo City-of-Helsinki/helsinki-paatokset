@@ -207,15 +207,15 @@ class PolicymakerController extends ControllerBase {
 
     if ($meetingData) {
       $policymaker = $this->policymakerService->getPolicymaker();
-      $documentsDescription = $policymaker->get('field_documents_description')->value;
+      $documentsDescription = _paatokset_ahjo_api_render_default_text(['value' => $policymaker->get('field_documents_description')->value]);
       if (empty($documentsDescription)) {
-        $documentsDescription = $this->config->get('documents_description.value');
+        $documentsDescription = _paatokset_ahjo_api_render_default_text($this->config->get('documents_description'));
       }
 
       $build['meeting'] = $meetingData['meeting'];
       $build['list'] = $meetingData['list'];
       $build['file'] = $meetingData['file'];
-      $build['#documents_description'] = '<div>' . $documentsDescription . '</div>';
+      $build['#documents_description'] = $documentsDescription;
 
       // Add cache context for current node.
       $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
