@@ -27,55 +27,55 @@ class DefaultTextSettingsFormTest extends AhjoKernelTestBase {
     $this->assertArrayHasKey('defaults', $form_array);
     $this->assertArrayHasKey('banner', $form_array);
 
-    // Simulate form submission values.
-    $form_state->setValues([
-      'calendar_notice_text' => 'Test content: calendar_notice_text',
-      'committees_boards_url' => 'https://www.test.hel.ninja',
-      'office_holders_url' => 'https://www.test.hel.ninja',
-      'hidden_decisions_text' => [
-        'value' => 'Test content: hidden_decisions_text',
+    // Fields with 'value' and 'format' structure.
+    $rich_text_fields = [
+      'hidden_decisions_text',
+      'non_public_attachments_text',
+      'documents_description',
+      'meetings_description',
+      'recording_description',
+      'decisions_description',
+      'meeting_calendar_description',
+      'decision_search_description',
+      'policymakers_search_description',
+      'banner_text',
+    ];
+
+    // Fields with simple text values.
+    $simple_text_fields = [
+      'calendar_notice_text',
+      'banner_heading',
+      'banner_label',
+    ];
+
+    // Fields with URL values.
+    $url_fields = [
+      'committees_boards_url',
+      'office_holders_url',
+      'banner_url',
+    ];
+
+    $form_values = [];
+
+    // Create rich text fields.
+    foreach ($rich_text_fields as $field) {
+      $form_values[$field] = [
+        'value' => "Test content: $field",
         'format' => 'full_html',
-      ],
-      'non_public_attachments_text' => [
-        'value' => 'Test content: non_public_attachments_text',
-        'format' => 'full_html',
-      ],
-      'documents_description' => [
-        'value' => 'Test content: documents_description',
-        'format' => 'full_html',
-      ],
-      'meetings_description' => [
-        'value' => 'Test content: meetings_description',
-        'format' => 'full_html',
-      ],
-      'recording_description' => [
-        'value' => 'Test content: recording_description',
-        'format' => 'full_html',
-      ],
-      'decisions_description' => [
-        'value' => 'Test content: decisions_description',
-        'format' => 'full_html',
-      ],
-      'meeting_calendar_description' => [
-        'value' => 'Test content: meeting_calendar_description',
-        'format' => 'full_html',
-      ],
-      'decision_search_description' => [
-        'value' => 'Test content: decision_search_description',
-        'format' => 'full_html',
-      ],
-      'policymakers_search_description' => [
-        'value' => 'Test content: policymakers_search_description',
-        'format' => 'full_html',
-      ],
-      'banner_heading' => 'Test content: banner_heading',
-      'banner_text' => [
-        'value' => 'Test content: banner_text',
-        'format' => 'full_html',
-      ],
-      'banner_label' => 'Test content: banner_label',
-      'banner_url' => 'https://www.test.hel.ninja',
-    ]);
+      ];
+    }
+
+    // Create simple text fields.
+    foreach ($simple_text_fields as $field) {
+      $form_values[$field] = "Test content: $field";
+    }
+
+    // Create URL fields.
+    foreach ($url_fields as $field) {
+      $form_values[$field] = 'https://www.test.hel.ninja';
+    }
+
+    $form_state->setValues($form_values);
 
     // Perform submit (assuming submit handler uses config saving).
     $form_object->submitForm($form_array, $form_state);
@@ -85,33 +85,46 @@ class DefaultTextSettingsFormTest extends AhjoKernelTestBase {
     $config = $config_factory->getEditable(DefaultTextSettingsForm::SETTINGS);
 
     // Assert that the config values are correctly saved.
+    $assertions = [
+      'calendar_notice_text' => ['calendar_notice_text'],
+      'committees_boards_url' => ['committees_boards_url'],
+      'office_holders_url' => ['office_holders_url'],
+      'hidden_decisions_text.value' => ['hidden_decisions_text', 'value'],
+      'hidden_decisions_text.format' => ['hidden_decisions_text', 'format'],
+      'non_public_attachments_text.value' => ['non_public_attachments_text', 'value'],
+      'non_public_attachments_text.format' => ['non_public_attachments_text', 'format'],
+      'documents_description.value' => ['documents_description', 'value'],
+      'documents_description.format' => ['documents_description', 'format'],
+      'meetings_description.value' => ['meetings_description', 'value'],
+      'meetings_description.format' => ['meetings_description', 'format'],
+      'recording_description.value' => ['recording_description', 'value'],
+      'recording_description.format' => ['recording_description', 'format'],
+      'decisions_description.value' => ['decisions_description', 'value'],
+      'decisions_description.format' => ['decisions_description', 'format'],
+      'meeting_calendar_description.value' => ['meeting_calendar_description', 'value'],
+      'meeting_calendar_description.format' => ['meeting_calendar_description', 'format'],
+      'decision_search_description.value' => ['decision_search_description', 'value'],
+      'decision_search_description.format' => ['decision_search_description', 'format'],
+      'policymakers_search_description.value' => ['policymakers_search_description', 'value'],
+      'policymakers_search_description.format' => ['policymakers_search_description', 'format'],
+      'banner_heading' => ['banner_heading'],
+      'banner_text.value' => ['banner_text', 'value'],
+      'banner_text.format' => ['banner_text', 'format'],
+      'banner_label' => ['banner_label'],
+      'banner_url' => ['banner_url'],
+    ];
+
     $values = $form_state->getValues();
-    $this->assertEquals($config->get('calendar_notice_text'), $values['calendar_notice_text']);
-    $this->assertEquals($config->get('committees_boards_url'), $values['committees_boards_url']);
-    $this->assertEquals($config->get('office_holders_url'), $values['office_holders_url']);
-    $this->assertEquals($config->get('hidden_decisions_text.value'), $values['hidden_decisions_text']['value']);
-    $this->assertEquals($config->get('hidden_decisions_text.format'), $values['hidden_decisions_text']['format']);
-    $this->assertEquals($config->get('non_public_attachments_text.value'), $values['non_public_attachments_text']['value']);
-    $this->assertEquals($config->get('non_public_attachments_text.format'), $values['non_public_attachments_text']['format']);
-    $this->assertEquals($config->get('documents_description.value'), $values['documents_description']['value']);
-    $this->assertEquals($config->get('documents_description.format'), $values['documents_description']['format']);
-    $this->assertEquals($config->get('meetings_description.value'), $values['meetings_description']['value']);
-    $this->assertEquals($config->get('meetings_description.format'), $values['meetings_description']['format']);
-    $this->assertEquals($config->get('recording_description.value'), $values['recording_description']['value']);
-    $this->assertEquals($config->get('recording_description.format'), $values['recording_description']['format']);
-    $this->assertEquals($config->get('decisions_description.value'), $values['decisions_description']['value']);
-    $this->assertEquals($config->get('decisions_description.format'), $values['decisions_description']['format']);
-    $this->assertEquals($config->get('meeting_calendar_description.value'), $values['meeting_calendar_description']['value']);
-    $this->assertEquals($config->get('meeting_calendar_description.format'), $values['meeting_calendar_description']['format']);
-    $this->assertEquals($config->get('decision_search_description.value'), $values['decision_search_description']['value']);
-    $this->assertEquals($config->get('decision_search_description.format'), $values['decision_search_description']['format']);
-    $this->assertEquals($config->get('policymakers_search_description.value'), $values['policymakers_search_description']['value']);
-    $this->assertEquals($config->get('policymakers_search_description.format'), $values['policymakers_search_description']['format']);
-    $this->assertEquals($config->get('banner_heading'), $values['banner_heading']);
-    $this->assertEquals($config->get('banner_text.value'), $values['banner_text']['value']);
-    $this->assertEquals($config->get('banner_text.format'), $values['banner_text']['format']);
-    $this->assertEquals($config->get('banner_label'), $values['banner_label']);
-    $this->assertEquals($config->get('banner_url'), $values['banner_url']);
+    foreach ($assertions as $config_key => $value) {
+      $expected = $config->get($config_key);
+      $actual = $values;
+
+      foreach ($value as $key) {
+        $actual = $actual[$key];
+      }
+
+      $this->assertEquals($expected, $actual, "Failed asserting for config key: $config_key");
+    }
   }
 
 }
