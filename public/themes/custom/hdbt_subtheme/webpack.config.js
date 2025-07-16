@@ -101,6 +101,10 @@ module.exports = (env, argv) => {
               options: {
                 sourceMap: isDev,
                 additionalData: "$debug_mode: " + isDev + ";",
+                sassOptions: {
+                  quietDeps: true,
+                  silenceDeprecations: ['import','mixed-decls'],
+                },
               },
             },
           ],

@@ -172,7 +172,7 @@
       <section class="recent-decisions policymaker-content" id="recent-decisions">
         <h2>{{ 'Recent decisions'|t }}</h2>
         <div class="section-description">
-          {{ decisions_description|raw }}
+          {{ decisions_description }}
         </div>
         <div class="policymaker-decisions-container">
         {% for decision in recent_decisions %}
@@ -194,7 +194,7 @@
       <section class="recent-documents policymaker-documents policymaker-content" id="recent-documents">
         <h2>{{ 'Recent documents'|trans }}</h2>
         <div class="section-description">
-          {{ documents_description|raw }}
+          {{ documents_description }}
         </div>
         <div class="policymaker-documents-container">
           {% for document in recent_documents %}
@@ -222,7 +222,7 @@
         </div>
         {% endif %}
         <div class="section-description">
-          {{ recording_description|raw }}
+          {{ recording_description }}
         </div>
        {{ most_recent_meeting }}
         {% if all_recordings_link %}

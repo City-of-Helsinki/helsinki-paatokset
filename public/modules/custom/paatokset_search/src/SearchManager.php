@@ -46,6 +46,11 @@ class SearchManager {
   public function build($type, $classes = []): array {
     $proxyUrl = $this->configFactory->get('elastic_proxy.settings')->get('elastic_proxy_url') ?: '';
     $operatorGuideUrl = $this->getOperatorGuideUrl();
+    $defaultTexts = $this->configFactory->get('paatokset_ahjo_api.default_texts');
+
+    $defaultTexts = [
+      'description' => $defaultTexts->get('decision_search_description.value'),
+    ];
 
     $build = [
       '#type' => 'html_tag',
@@ -59,6 +64,11 @@ class SearchManager {
       '#attached' => [
         'library' => [
           'paatokset_search/paatokset-search',
+        ],
+        'drupalSettings' => [
+          'paatokset_search' => [
+            'default_texts' => $defaultTexts,
+          ],
         ],
       ],
     ];

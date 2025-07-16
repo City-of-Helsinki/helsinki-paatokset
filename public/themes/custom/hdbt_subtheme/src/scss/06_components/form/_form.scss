@@ -5,7 +5,7 @@
   h1 {
     @include font('h1');
   }
-  h1, label, .container > p {
+  h1, label, .container > p, .container--search-description p {
     color: $color-black;
   }
   button + ul li {
@@ -51,8 +51,33 @@
   }
 }
 
+.paatokset-search--decisions {
+  .container--search-title {
+    margin-top: $spacing-and-half;
+    overflow: hidden;
+
+    h1 {
+      margin-bottom: 0;
+      margin-top: $spacing-double;
+    }
+  }
+
+  .container--search-description {
+    margin-bottom: $spacing-triple;
+  }
+}
+
 .paatokset-search--frontpage {
   div[class*='SearchBarWrapper_SearchBarWrapper'] {
     max-width: 100%;
   }
+}
+
+.container--search-frontpage {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.paatokset-search--policymaker {
+  margin-top: $spacing-triple;
 }

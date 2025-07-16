@@ -19,14 +19,6 @@
 
 }
 
-.paatokset-search--frontpage .paatokset-search-wrapper {
-  margin-left: $spacing * -1;
-
-  @include breakpoint($breakpoint-s) {
-    margin-left: $spacing * -2;
-  }
-}
-
 .paatokset-search--decisions {
   margin-bottom: $spacing-double;
 }
