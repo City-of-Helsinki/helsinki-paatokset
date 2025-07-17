@@ -20,7 +20,22 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
   protected static $modules = [
     'block',
     'paatokset_search',
+    'paatokset_ahjo_api',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    // Set up the default texts.
+    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config->set('policymakers_search_description', [
+      'value' => 'Policymakers search description',
+      'format' => 'plain_text',
+    ]);
+    $config->save();
+  }
 
   /**
    * Tests block render.
@@ -32,9 +47,10 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
     $block = PolicymakerSearchBlock::create($this->container, [], '', ['provider' => 'paatokset_search']);
     $build = $block->build();
 
-    $this->assertContains('paatokset-search-wrapper', $build['search_wrapper']['#attributes']['class']);
-    $this->assertContains('policymaker-search', $build['#attributes']['class']);
-    $this->assertArrayHasKey('search', $build['search_wrapper']);
+    $this->assertSame('policymakers', $build['#search']['#attributes']['data-type']);
+    $this->assertSame('Policymakers search description', $build['#lead_in']['#text']);
+    $this->assertSame('processed_text', $build['#lead_in']['#type']);
+    $this->assertSame('plain_text', $build['#lead_in']['#format']);
   }
 
 }

@@ -353,6 +353,12 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
     $all_meetings = array_slice($all_meetings, 0, 8);
   }
 
+  $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
+  $meeting_calendar_description = $defaults_config->get('meeting_calendar_description');
+  if ($meeting_calendar_description !== NULL) {
+    $variables['meeting_calendar_description'] = _paatokset_ahjo_api_render_default_text($meeting_calendar_description);
+  }
+
   $variables['open_motions'] = t('Open agenda');
   $variables['open_minutes'] = t('Open minutes');
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
@@ -596,7 +602,7 @@ function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
 function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
   $config = \Drupal::config('paatokset_ahjo_api.default_texts');
   $title = $config->get('banner_heading');
-  $text = $config->get('banner_text.value');
+  $text = _paatokset_ahjo_api_render_default_text($config->get('banner_text'));
   $label = $config->get('banner_label');
   $url = $config->get('banner_url');
 
@@ -1184,4 +1190,22 @@ function paatokset_ahjo_api_system_breadcrumb_alter(
   }
 
   $breadcrumb->addCacheContexts(['url.query_args']);
+}
+
+/**
+ * Change the default text array to render_array.
+ *
+ * @param array $configuration_array
+ *   The default text as an array.
+ *
+ * @return array
+ *   Returns render_array.
+ */
+function _paatokset_ahjo_api_render_default_text(?array $configuration_array): array {
+  $configuration_array = $configuration_array ?? [];
+  return [
+    '#type' => 'processed_text',
+    '#text' => $configuration_array['value'] ?? '',
+    '#format' => $configuration_array['format'] ?? 'full_html',
+  ];
 }

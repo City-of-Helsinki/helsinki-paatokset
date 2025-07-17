@@ -4,6 +4,6 @@ description: Functionality, templates and hooks for decisionmakers
 package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
-  - drupal:paatokset_ahjo_api
+  - paatokset_ahjo_api:paatokset_ahjo_api
 'interface translation project': paatokset_policymakers
 'interface translation server pattern': modules/custom/paatokset_policymakers/translations/%language.po
