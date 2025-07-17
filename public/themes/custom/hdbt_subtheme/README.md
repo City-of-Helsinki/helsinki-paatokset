@@ -4,8 +4,7 @@
 
 HDBT Subtheme is a so called "starterkit" which you can start using by enabling it in `/admin/appearance`.
 
-HDBT Subtheme uses webpack module bundler to compile the JS and SCSS files. Also, the SVG icons are combined in to a
-sprite.svg via webpack.
+HDBT Subtheme uses HDBT theme builder to compile the JS and SCSS files. Also, the SVG icons are combined in to a sprite.svg via the theme builder.
 
 As the HDBT Subtheme is only distributed via the [HELfi Platform](https://github.com/City-of-Helsinki/drupal-helfi-platform),
 it doesn't have an upgrade path per se. In case there is a demand for upgrade-ability for existing projects then of
@@ -50,13 +49,8 @@ Explanations for commands.
 Related files.
 - `.nvmrc` : Defines the node version used to compile the theme.
 - `package.json and package-lock.json` : Defines the node modules for compiling the theme.
-- `postcss.config.js and postcss.plugins.js` : Configurations for the postcss-tool that is run when the theme is built.
-  You can read more about the tool here: https://postcss.org/
-- `webpack.config.js` : Configuration file for the webpack-tool that is used to actually build the theme. Similar tool
-  to Gulp or Grunt. Usually if there is something wrong with the compiled theme files the culprit can be found here.
-- `webpack.svgToSprite.js` : This file is used to create a sprite of all the icons used on the site. It gets all the
-  icons from the `./src`, compiles them into a sprite under `./dist/icons` and also creates a css-file where the icons are
-  referenced called `./dist/css/hdbt-icons.css`.
+- `theme-builder/` : The theme builder tools.
+- `theme-builder.mjs` : Configuration file for the theme builder tool that is used to build the theme.
 
 Start SCSS/JS watcher by running
 
@@ -72,23 +66,6 @@ The structure follows the same rules as in the hdbt-theme so you should read abo
 [hdbt documentation](https://github.com/City-of-helsinki/drupal-hdbt).
 
 ## How tos
-
-### How can I add a new SVG icon and then use it on my site.
-
-You can add your custom icons to `./src/icons/`. F.e. `my-awesome-icon.svg`.
-Running `nvm use && npm i && npm run build` will collect the icon to the sprite.svg and it should then be available for
-use on your site by calling `my-awesome-icon`. Just remember to clear caches.
-The icons can be used in twig like so:
-
-    {# HDBT Subtheme specific icons #}
-    {% include "@hdbt_subtheme/misc/icon.twig" with {icon: 'my-awesome-icon'} %}
-
-    {# HDBT specific icons #}
-    {% include "@hdbt/misc/icon.twig" with {icon: 'google-view'} %}
-
-To use the icon in SCSS, you can call it like so:
-
-    background-image: url('../icons/my-awesome-icon.svg');
 
 ### My javascript has unexpected errors when loading a page in Drupal.
 
