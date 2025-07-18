@@ -22,7 +22,7 @@ display:
       exposed_form:
         options:
           submit_button: Etsi
-          reset_button_label: Palauta
+          reset_button_label: Reset
           exposed_sorts_label: Järjestä
           sort_asc_label: Nouseva
           sort_desc_label: Laskeva

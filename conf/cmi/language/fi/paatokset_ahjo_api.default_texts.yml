@@ -12,11 +12,11 @@ recording_description:
 decisions_description:
   value: "<div class=\"section-description\">\r\n<p>Viranhaltija on kaupungilla töissä virkasuhteessa. Kun työtehtävät sisältävät merkittävää julkisen vallan käyttöä, niitä hoidetaan virkasuhteessa.</p>\r\n</div>"
 meeting_calendar_description:
-  value: ""
+  value: ''
 decision_search_description:
-  value: "<p>Voit suodattaa hakua ajalla, aiheella ja mm. päättäjän toimialalla. Jos samasta asiasta on useita päätöksiä, näytetään vain hakuasi parhaiten vastaava päätös. Voit siirtyä muihin asian käsittelyihin avaamalla päätöksen.</p>"
+  value: '<p>Voit suodattaa hakua ajalla, aiheella ja mm. päättäjän toimialalla. Jos samasta asiasta on useita päätöksiä, näytetään vain hakuasi parhaiten vastaava päätös. Voit siirtyä muihin asian käsittelyihin avaamalla päätöksen.</p>'
 policymakers_search_description:
-  value: "<p>Voit hakea kaikkia nykyisiä toimielimiä, viranhaltijoita ja valtuutettuja. Löydät samat päättäjät alempaa sivulta myös listamuodossa.</p>"
+  value: '<p>Voit hakea kaikkia nykyisiä toimielimiä, viranhaltijoita ja valtuutettuja. Löydät samat päättäjät alempaa sivulta myös listamuodossa.</p>'
 banner_text:
   value: "<p>Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä.</p>\r\n\r\n<p><a data-hds-component=\"button\" data-hds-icon-start=\"info\" href=\"/fi/tietoa-paatoksenteosta/paatoksenteon-sanakirja\">Siirry sanakirjaan</a></p>\r\n\r\n<p>Jos kaipaat yhteystietoa, mutta et löytänyt sitä yltä, kokeile yhteystietohakua.</p>\r\n\r\n<p><a data-hds-component=\"button\" data-hds-icon-start=\"mobile\" href=\"https://numerot.hel.fi\">Kaupungin yhteystietohaku</a> </p>"
 banner_heading: 'Sanat tai yhteystieto  hukassa?'
