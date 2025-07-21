@@ -34,5 +34,4 @@ libraries:
 # Libraries override
 libraries-override:
   hdbt/hyphenopoly: false
-  hdbt/matomo: hdbt_subtheme/matomo
   eu_cookie_compliance/eu_cookie_compliance_cookie_values: hdbt_subtheme/cookie_compliance_block
