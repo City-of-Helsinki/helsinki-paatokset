@@ -26,8 +26,9 @@ display:
         options:
           submit_button: Search
           reset_button_label: Сбросить
-          sort_asc_label: Ascending
-          sort_desc_label: Descending
+          sort_asc_label: 'По возрастанию'
+          sort_desc_label: 'По убыванию'
+          exposed_sorts_label: 'Сортировать по'
       empty:
         area:
           content:

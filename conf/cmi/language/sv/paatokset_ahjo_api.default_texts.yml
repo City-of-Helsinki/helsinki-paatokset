@@ -12,11 +12,11 @@ recording_description:
 decisions_description:
   value: "<div class=\"section-description\">\r\n<p>En tjänsteinnehavare arbetar för kommunen i tjänsteförhållande. Tjänsteinnehavare fattar beslut med tjänsteansvar.</p>\r\n</div>"
 meeting_calendar_description:
-  value: ""
+  value: ''
 decision_search_description:
-  value: "<p>Du kan filtrera sökningen med tidpunkt, ämne och bland annat beslutsfattarens sektor. Om det finns flera beslut om samma ärende, visas endast det beslut som bäst motsvarar din sökning. Du kan gå till övriga handläggningar som gäller ärendet genom att öppna beslutet.</p>"
+  value: '<p>Du kan filtrera sökningen med tidpunkt, ämne och bland annat beslutsfattarens sektor. Om det finns flera beslut om samma ärende, visas endast det beslut som bäst motsvarar din sökning. Du kan gå till övriga handläggningar som gäller ärendet genom att öppna beslutet.</p>'
 policymakers_search_description:
-  value: "<p>Du kan söka alla nuvarande organ, tjänsteinnehavare och fullmäktigeledamöter. Du hittar samma beslutsfattare även på en lista nedan på sidan.</p>"
+  value: '<p>Du kan söka alla nuvarande organ, tjänsteinnehavare och fullmäktigeledamöter. Du hittar samma beslutsfattare även på en lista nedan på sidan.</p>'
 banner_text:
   value: "<p>Ordboken för beslutsfattande öppnar upp centrala termer om beslutsfattande inom Helsingfors stad.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"f111778f-5566-4723-946f-233a2ee952af\" data-link-text=\"Till ordboken\" data-protocol=\"false\" href=\"/node/4589\"><span class=\"hds-button__label\">Till ordboken</span></a></p>\r\n\r\n<p>Ytterligare kontaktuppgifter finns på stadens kontaktuppgiftssökning.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"f111778f-5566-4723-946f-233a2ee952af\" data-link-text=\"kontaktuppgiftssökning\" data-protocol=\"false\" href=\"https://numerot.hel.fi/fi\"><span class=\"hds-button__label\">Kontaktuppgiftssökning</span></a></p>"
 banner_heading: 'Letar du efter en term eller kontaktinformation?'
