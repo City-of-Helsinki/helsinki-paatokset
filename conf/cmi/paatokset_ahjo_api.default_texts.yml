@@ -18,13 +18,13 @@ decisions_description:
   value: "<div class=\"section-description\">\r\n<p>Office holders work for the municipality under a public-service employment relationship.</p>\r\n</div>\r\n"
   format: full_html
 meeting_calendar_description:
-  value: ""
+  value: ''
   format: full_html
 decision_search_description:
-  value: "<p>You can filter the search by time range, subject and the division of the decisionmaker, for example. If multiple decisions have been made on the same issue, only the decision that best matches your search will be displayed. You can move on to other handlings of the issue by opening the decision.</p>"
+  value: '<p>You can filter the search by time range, subject and the division of the decisionmaker, for example. If multiple decisions have been made on the same issue, only the decision that best matches your search will be displayed. You can move on to other handlings of the issue by opening the decision.</p>'
   format: full_html
 policymakers_search_description:
-  value: "<p>You can search for any existing body, office holder or councillor. The same decisionmakers have also been listed below on this page.</p>"
+  value: '<p>You can search for any existing body, office holder or councillor. The same decisionmakers have also been listed below on this page.</p>'
   format: full_html
 banner_text:
   value: "<p>The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-link-text=\"To the Vocabulary\" href=\"/node/690\"><span class=\"hds-button__label\">To the Vocabulary</span></a></p>\r\n\r\n<p>If you didn't find the contact information you were looking for above, try the City's Contacts-service.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-is-external=\"true\" data-link-text=\"Helsinki City Contacts\" data-protocol=\"https\" href=\"https://numerot.hel.fi\"><span class=\"hds-button__label\">Helsinki City Contacts</span></a></p>\r\n"
