@@ -22,16 +22,6 @@ cookie_compliance_block:
   js:
     dist/js/cookie_compliance_block.min.js: {}
 
-matomo:
-  version: 1.0.0
-  js:
-    dist/js/matomo.min.js: {
-      attributes: {
-        defer: true,
-        preprocess: false
-      }
-    }
-
 allu-decisions-search:
   version: 1.0.1
   js:
