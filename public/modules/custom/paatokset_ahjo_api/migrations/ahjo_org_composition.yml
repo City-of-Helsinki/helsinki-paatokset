@@ -18,6 +18,7 @@ source:
   orgs: active
   # Some url is required by HttpSourcePluginBase.
   url: 'https://ahjo.hel.fi:9802/ahjorest/v1/organization/decisionmakingorganizations'
+  track_changes: true
 process:
   type:
     plugin: default_value
