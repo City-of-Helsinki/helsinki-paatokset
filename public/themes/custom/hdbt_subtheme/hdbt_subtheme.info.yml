@@ -34,4 +34,3 @@ libraries:
 # Libraries override
 libraries-override:
   hdbt/hyphenopoly: false
-  eu_cookie_compliance/eu_cookie_compliance_cookie_values: hdbt_subtheme/cookie_compliance_block
