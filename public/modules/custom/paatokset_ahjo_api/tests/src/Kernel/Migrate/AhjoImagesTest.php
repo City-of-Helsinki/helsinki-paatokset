@@ -25,11 +25,6 @@ class AhjoImagesTest extends FileTestBase {
   protected static $modules = ['migrate', 'system', 'file', 'user'];
 
   /**
-   * The file system service.
-   */
-  protected FileSystemInterface $fileSystem;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -38,6 +33,11 @@ class AhjoImagesTest extends FileTestBase {
     $this->installEntitySchema('file');
 
     $this->container->get('stream_wrapper_manager')->registerWrapper('temporary', 'Drupal\Core\StreamWrapper\TemporaryStream', StreamWrapperInterface::LOCAL_NORMAL);
+
+    $directory = 'temporary://ahjo-images';
+    $this->container
+      ->get(FileSystemInterface::class)
+      ->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
   }
 
   /**
@@ -69,7 +69,6 @@ class AhjoImagesTest extends FileTestBase {
     ]);
 
     // File already exists.
-    $this->createDirectory('temporary://ahjo-images');
     $this->createUri('ahjo-images/761523e5d2ef1e871b506467348fa22c24d9bf3d7466f7138712b15c5d9310bb.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg=='), scheme: 'temporary');
 
     foreach ($data_sets as $data) {
