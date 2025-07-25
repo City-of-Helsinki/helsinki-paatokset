@@ -208,6 +208,12 @@ class DecisionTest extends AhjoKernelTestBase {
 
     $this->assertStringContainsString('Jane Doe', $content['more_info']['content']['#markup'] ?? '');
     $this->assertStringContainsString('John Doe', $content['presenter_info']['content']['#markup'] ?? '');
+
+    // Empty <p> tags are stripped from accordions.
+    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    foreach ($content['accordions'] as $accordion) {
+      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
+    }
   }
 
 }
