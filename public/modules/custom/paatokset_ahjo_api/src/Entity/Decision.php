@@ -627,8 +627,8 @@ class Decision extends Node {
         break;
       }
 
-      // Skip over any empty elements.
-      if (empty($current_item->nodeValue)) {
+      // Strip empty nodes. Ahjo HTML seems to contain a lot of <p></p> tags.
+      if (empty($current_item->nodeValue) && $current_item->nodeName !== 'img') {
         continue;
       }
 
