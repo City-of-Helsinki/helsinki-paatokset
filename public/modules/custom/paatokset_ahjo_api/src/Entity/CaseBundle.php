@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 
 /**
  * Bundle class for decisions.
  */
-class CaseBundle extends Node {
+class CaseBundle extends Node implements AhjoUpdatableInterface {
 
   /**
    * Memoized result for self::getCase().
@@ -23,6 +24,29 @@ class CaseBundle extends Node {
    */
   public function getDiaryNumber(): string {
     return $this->get('field_diary_number')->getString();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getProxyUrl(): Url {
+    return Url::fromRoute('paatokset_ahjo_proxy.cases_single', [
+      'id' => $this->getDiaryNumber(),
+    ]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAhjoId(): string {
+    return $this->getDiaryNumber();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function getAhjoEndpoint(): string {
+    return 'cases';
   }
 
   /**

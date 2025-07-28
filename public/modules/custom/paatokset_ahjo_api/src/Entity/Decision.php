@@ -12,7 +12,7 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 /**
  * Bundle class for decisions.
  */
-class Decision extends Node {
+class Decision extends Node implements AhjoUpdatableInterface {
 
   /**
    * Memoized result for self::getAllDecisions().
@@ -49,6 +49,29 @@ class Decision extends Node {
     }
 
     return NULL;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAhjoId(): string {
+    return $this->getNormalizedNativeId();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getProxyUrl(): Url {
+    return Url::fromRoute('paatokset_ahjo_proxy.decisions_single', [
+      'id' => $this->getNormalizedNativeId(),
+    ]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function getAhjoEndpoint(): string {
+    return 'decisions';
   }
 
   /**

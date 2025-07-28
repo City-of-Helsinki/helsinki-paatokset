@@ -24,6 +24,7 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
    */
   protected static $modules = [
     'paatokset_ahjo_api',
+    'helfi_api_base',
   ];
 
   /**
