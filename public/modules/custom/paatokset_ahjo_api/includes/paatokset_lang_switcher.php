@@ -197,7 +197,8 @@ function _paatokset_lang_switcher_get_alt_urls_for_routes(RouteMatchInterface $r
       }
     }
     elseif ($key === 'decision') {
-      $nativeId = $caseService->normalizeNativeId($value->get('field_decision_native_id')->getString());
+      assert($value instanceof Decision);
+      $nativeId = $value->getNormalizedNativeId();
       $parameters[$key] = $nativeId;
     }
     else {

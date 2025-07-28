@@ -535,14 +535,14 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   if ($decision && $adjacent = $case?->getNextDecision($decision)) {
     $variables['next_decision'] = [
       'title' => $adjacent->label(),
-      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+      'id' => $adjacent->getNormalizedNativeId(),
     ];
   }
 
   if ($decision && $adjacent = $case?->getPrevDecision($decision)) {
     $variables['previous_decision'] = [
       'title' => $adjacent->label(),
-      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+      'id' => $adjacent->getNormalizedNativeId(),
     ];
   }
 

@@ -27,10 +27,28 @@ class Decision extends Node {
   }
 
   /**
-   * Get normalized decision native id.
+   * Get decision native id.
    */
   public function getNativeId(): ?string {
     return $this->get('field_decision_native_id')->value;
+  }
+
+  /**
+   * Get normalized decision native id.
+   *
+   * Removes brackets from native ID and converts to lowercase.
+   * Maybe the migration should do this, since only the UUID looking
+   * parts are used, and we are doing a bunch of conversions all over
+   * the place?
+   */
+  public function getNormalizedNativeId(): ?string {
+    $nativeId = $this->getNativeId();
+
+    if ($nativeId) {
+      return strtolower(str_replace(['{', '}'], '', $nativeId));
+    }
+
+    return NULL;
   }
 
   /**
