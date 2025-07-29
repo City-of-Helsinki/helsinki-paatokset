@@ -1,0 +1,18 @@
+.FormContainer {
+  background-color: var(--color-gold);
+}
+
+.FormContainer__koro-wrapper {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  background: #f7f7f8;
+}
+
+.FormContainer__koro {
+  position: relative;
+  top: -1px;
+  transform: rotate(180deg);
+  fill: var(--color-gold);
+  width: 100%;
+}

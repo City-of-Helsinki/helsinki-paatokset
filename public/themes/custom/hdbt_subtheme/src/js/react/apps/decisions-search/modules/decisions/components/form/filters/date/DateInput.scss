@@ -1,0 +1,20 @@
+.DateInput {
+  margin-bottom: var(--spacing-xs);
+
+  &.DateInput-wrapper {
+    position: relative;
+  }
+
+  svg {
+    margin-left: 18px;
+    position: absolute;
+    top: calc(50% - 12px);
+    z-index: 1;
+  }
+
+  &:focus-within, &.has-input {
+    svg {
+      display: none;
+    }
+  }
+}

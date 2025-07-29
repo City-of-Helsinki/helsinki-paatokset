@@ -1,0 +1,9 @@
+.SortSelect {
+  margin-bottom: 48px;
+
+  @media (min-width: 768px) {
+    width: 328px;
+    display: inline-block;
+    margin-left: auto;
+  }
+}

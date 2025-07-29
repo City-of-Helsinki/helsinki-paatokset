@@ -1,0 +1,152 @@
+.ResultCard,
+.ResultCard__link {
+  display: flex;
+  flex-direction: column;
+  min-height: 378px;
+}
+.ResultCard {
+  cursor: pointer;
+  background-color: #fff;
+  margin-bottom: 24px;
+  width: 100%;
+
+  &:hover {
+    .ResultCard__title h2 {
+      text-decoration: underline;
+    }
+    .ResultCard__issue-link {
+      transform: translate(10px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: calc(50% - 24px);
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 384px;
+  }
+}
+.ResultCard__link {
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.MultipleResults {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  box-shadow:
+    inset -4px -4px 0 0 #f4f4f4,
+    inset -5px -5px 0 0 #ccc,
+    inset -10px -10px 0 0 #f6f6f6,
+    inset -11px -11px 0 0 #ccc;
+  margin-bottom: 24px;
+  position: relative;
+
+  &:after, &:before  {
+    border-style: solid;
+    content: "";
+    height: 0px;
+    position: absolute;    
+    transform: rotate(0deg);
+    width: 0px;
+  }
+
+  &:after {
+    border-color: transparent #f7f7f8 transparent transparent;
+    border-width: 0 12px 12px 0;    
+    right: -1px;
+    top: 0;    
+  }
+
+  &:before {
+    border-color: transparent transparent transparent #F7F7F8;
+    border-width: 12px 0 0 12px;    
+    bottom: -1px;
+    left: 0;
+  }
+
+  .ResultCard__label {
+    width: calc(100% - 11px);
+  }
+}
+
+.PhantomCard {
+  display: none;
+  background-color: transparent;
+  cursor: unset;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.ResultCard__label {
+  padding: 11px 14px;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
+  text-transform: uppercase;
+  line-height: 26px;
+  background: #00d7a7;
+}
+
+.ResultCard__container {
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: 100%;
+}
+
+.ResultCard__date{
+  margin-top: 21px;
+}
+
+.ResultCard__title {
+  width: 100%;
+}
+
+.ResultCard__title h2 {
+  margin-top: 21px;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: 500;
+  margin-bottom: 36px;
+}
+
+.ResultCard__amount {
+  margin-top: 0;
+  margin-bottom: 36px;
+
+  p {
+    line-height: 1.5;
+  }
+}
+
+.ResultCard__footer {
+  padding: 0 16px;
+  margin-bottom: 18px;
+}
+
+.ResultCard__tags {
+  margin-bottom: 24px;
+}
+
+.ResultCard__issue-link {
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 10px;
+}
+
+.search-tag {
+  background: #000;
+  color: #fff;
+  border-radius: 24px;
+  font-size: 14px;
+  padding: 6px 16px;
+  display: inline-block;
+}

@@ -1,0 +1,27 @@
+.SizeSelect {
+  margin-right: 5px;
+
+  button {
+    padding: 2px;
+    width: 56px;
+    --menu-item-height: 32px;
+
+    svg {
+      right: 0;
+      top: calc(50% - var(--icons-size))
+    }
+
+    span {
+      font-size: 18px;
+    }
+  }
+
+  > div {
+    border: none;
+    --dropdown-height: 32px;
+
+    :focus, :hover {
+      border: initial;
+    }
+  }
+}

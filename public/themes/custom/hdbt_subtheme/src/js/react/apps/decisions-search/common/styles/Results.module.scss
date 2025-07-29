@@ -1,0 +1,53 @@
+.ResultsContainer {
+  background: #f7f7f8;
+
+  .ResultsContainer__container {
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      > div:first-child {
+        width: auto;  
+        display: inline-flex;
+      }
+    }
+  }
+}
+
+.ResultCarsWrapper {
+  display :none;
+}
+
+.ResultsContainer__stats {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+
+  .stats__count {
+    font-size: 20px;
+
+    @media (min-width: 768px) {
+      margin-right: 24px;
+    }
+  }
+
+  .stats__count strong {
+    margin-right: 5px;
+  }
+
+  .stats__size {
+    display: flex;
+    align-items: center;
+  }
+
+  .SizeSelect {
+    padding: 2px;
+  }
+}

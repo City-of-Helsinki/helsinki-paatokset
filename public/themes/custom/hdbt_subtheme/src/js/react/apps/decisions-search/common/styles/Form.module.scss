@@ -1,0 +1,62 @@
+@import '../../index.scss';
+
+.FormContainer {
+  position: relative;
+
+  @media(min-width: var(--breakpoint-xl)) {
+    margin-top: 80px;
+  }
+}
+
+.FormContainer__form {
+  label {
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: var(--spacing-3-xs);
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  padding-bottom: 6px;
+}
+
+.form-element {
+  margin-bottom: 16px;
+
+  label {
+    font-weight: bold;
+  }
+
+  > input, > button {
+    @include input;
+  }
+}
+
+.FormContainer__lower-fields {
+  @media (min-width: 1248px) {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+
+    .form-element {
+      flex-basis: 282px;
+      margin-bottom: 0;
+
+      &:not(:first-child) {
+        margin-left: 24px;
+      }
+      &:last-of-type {
+        flex-grow:2;
+      }
+    }
+  }  
+}
+
+.FormContainer__description {
+  font-size: 18px;
+  margin-bottom: 1.2rem;
+  max-width: 894px
+}

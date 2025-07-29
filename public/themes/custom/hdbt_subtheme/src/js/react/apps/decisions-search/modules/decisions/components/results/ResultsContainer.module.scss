@@ -1,0 +1,13 @@
+.ResultsContainer__container {
+  min-height: 250px;
+  padding-top: 16px;
+  position: relative;
+
+  @media (min-width: 1248px) {
+    padding-top: 0;
+  }
+}
+.ResultsContainer__status {
+  margin-bottom: 24px;
+  width: 100%;
+}
