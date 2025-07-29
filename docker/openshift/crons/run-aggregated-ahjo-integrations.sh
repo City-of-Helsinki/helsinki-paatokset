@@ -45,16 +45,16 @@ do
     fi
     echo "Migrating data for council members: $(date)"
     drush migrate-reset-status ahjo_trustees:all
-    drush migrate-import ahjo_trustees:all --update
+    drush migrate-import ahjo_trustees:all --update --no-progress
     drush migrate-reset-status ahjo_trustees:all_sv
-    drush migrate-import ahjo_trustees:all_sv --update
+    drush migrate-import ahjo_trustees:all_sv --update --no-progress
     echo "Migrating data for decisionmakers: $(date)"
     drush migrate-reset-status ahjo_decisionmakers:latest
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
-    drush migrate-import ahjo_decisionmakers:latest --update
-    drush migrate-import ahjo_decisionmakers:latest_sv --update
+    drush migrate-import ahjo_decisionmakers:latest --update --no-progress
+    drush migrate-import ahjo_decisionmakers:latest_sv --update --no-progress
     drush migrate-reset-status ahjo_org_composition
-    drush migrate-import ahjo_org_composition
+    drush migrate-import ahjo_org_composition --no-progress
     echo "Checking for inactive decisionmakers: $(date)"
     drush ahjo-proxy:check-dm-status -v
 
