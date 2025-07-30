@@ -56,7 +56,7 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
       '#theme' => 'agendas_submenu',
       '#years' => array_keys($minutes),
       '#list' => $minutes,
-      '#type' => 'documents'
+      '#type' => 'documents',
     ];
   }
 

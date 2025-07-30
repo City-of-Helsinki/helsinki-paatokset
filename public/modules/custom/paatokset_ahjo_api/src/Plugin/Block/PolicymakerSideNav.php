@@ -139,10 +139,8 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       return $items;
     }
 
-    $policymaker_url = $policymaker->toUrl()->toString();
-
     $dynamic_links = $this->getDynamicLinks($policymaker);
-    $menu_links = $this->getMenuLinks($policymaker_url);
+    $menu_links = $this->getMenuLinks($policymaker);
     $custom_links = $this->getCustomlinks($policymaker);
     $items = array_merge($dynamic_links, $menu_links, $custom_links);
 
@@ -224,13 +222,15 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Get menu links for policymaker side navigation.
    *
-   * @param string $policymaker_url
+   * @param \Drupal\node\NodeInterface $policymaker
    *   Policymaker URL.
    *
    * @return array
    *   Menu links under current policymaker.
    */
-  protected function getMenuLinks(string $policymaker_url): array {
+  protected function getMenuLinks(NodeInterface $policymaker): array {
+    $policymaker_url = $policymaker->toUrl()->toString();
+
     $localizedDmRoute = 'policymakers.' . $this->currentLang;
     if (!$this->policymakerService->routeExists($localizedDmRoute)) {
       return [];

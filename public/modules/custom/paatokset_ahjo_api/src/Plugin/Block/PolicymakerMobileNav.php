@@ -29,6 +29,7 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
     $variables = [
       '#theme' => 'policymaker_side_navigation_mobile',
       '#current_option' => $currentOption,
+      '#items' => [],
       '#attached' => [
         'library' => [
           'hdbt/sidebar-menu-toggle',
@@ -39,8 +40,8 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
     // Create fake menu items for mobile navigation.
     foreach ($options['options'] as $option) {
       $variables['#items'][] = [
-        'title' => $option->label,
-        'url' => Url::fromUserInput($option->value),
+        'title' => $option['label'],
+        'url' => Url::fromUserInput($option['value']),
         'attributes' => new Attribute(),
         'in_active_trail' => $this->isActiveTrail($currentOption, $option),
         'is_currentPage' => $this->isActiveTrail($currentOption, $option),
@@ -86,12 +87,12 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
   /**
    * Helper function to check if the current option is in active trail.
    */
-  private function isActiveTrail($currentOption, $option): bool {
+  private function isActiveTrail(?array $currentOption, array $option): bool {
     if (!$currentOption || !$option) {
       return FALSE;
     }
 
-    return $currentOption->value === $option->value;
+    return $currentOption['value'] === $option['value'];
   }
 
 }
