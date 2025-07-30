@@ -117,6 +117,26 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       ],
       'template' => 'block/all-articles',
     ],
+    'policymaker_side_navigation' => [
+      'variables' => [
+        'items' => [],
+        'menu_attributes' => NULL,
+        'menu_link_parent' => NULL,
+      ],
+    ],
+    'policymaker_side_navigation_mobile' => [
+      'variables' => [
+        'items' => [],
+        'current_option' => NULL,
+      ],
+    ],
+    'agendas_submenu' => [
+      'variables' => [
+        'years' => [],
+        'list' => [],
+        'type' => NULL,
+      ],
+    ],
   ];
 }
 

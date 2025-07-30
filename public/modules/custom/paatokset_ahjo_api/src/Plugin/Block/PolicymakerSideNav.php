@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
@@ -80,14 +80,13 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       '#items' => $this->items,
       '#currentPath' => $this->currentPath,
       '#menu_attributes' => new Attribute(['class' => 'menu']),
-      //'#attributes' => new Attribute(['class' => ['sidebar-navigation']]),
       '#menu_link_parent' => [
         'title' => $this->t('Decisionmakers'),
         'url' => match ($this->currentLang) {
           'fi' => Url::fromRoute('policymakers.fi'),
           'sv' => Url::fromRoute('policymakers.sv'),
           'en' => Url::fromRoute('policymakers.en'),
-        }
+        },
       ],
       '#attached' => [
         'library' => [

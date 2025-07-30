@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
@@ -13,52 +13,42 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides Agendas Submenu Documents Block.
+ * Provides Agendas Submenu Block.
  */
 #[Block(
-  id: 'agendas_submenu_documents',
-  admin_label: new TranslatableMarkup('Paatokset policymaker documents'),
+  id: 'agendas_submenu',
+  admin_label: new TranslatableMarkup('Agendas Submenu'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritDoc}
+   * The policymaker service.
    */
-  final public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private readonly PolicymakerService $policymakerService,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService->setPolicyMakerByPath();
-  }
+  private PolicymakerService $policymakerService;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('paatokset_policymakers')
-    );
+    $plugin = new self($configuration, $plugin_id, $plugin_definition);
+    $plugin->policymakerService = $container->get('paatokset_policymakers');
+    return $plugin;
   }
 
   /**
    * {@inheritDoc}
    */
   public function build(): array {
-    $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
+    $list = $this->policymakerService->getAgendasListFromElasticSearch(NULL, TRUE);
+    $years = array_keys($list);
 
     return [
       '#theme' => 'agendas_submenu',
-      '#title' => $this->t('Office holder decisions'),
-      '#years' => array_keys($list),
+      '#title' => 'Viranhaltijapäätökset',
+      '#years' => $years,
       '#list' => $list,
-      '#type' => 'documents',
+      '#type' => 'decisions',
     ];
   }
 
@@ -69,7 +59,7 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $policymaker = $this->policymakerService->getPolicyMaker();
     if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
       $policymaker_id = $policymaker->get('field_policymaker_id')->value;
-      return ['meeting_pm:' . $policymaker_id];
+      return ['decision_pm:' . $policymaker_id];
     }
     return [];
   }

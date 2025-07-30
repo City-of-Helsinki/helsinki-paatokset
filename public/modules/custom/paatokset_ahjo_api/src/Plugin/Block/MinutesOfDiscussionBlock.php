@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
@@ -53,8 +53,10 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
     $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
 
     return [
+      '#theme' => 'agendas_submenu',
       '#years' => array_keys($minutes),
       '#list' => $minutes,
+      '#type' => 'documents'
     ];
   }
 
