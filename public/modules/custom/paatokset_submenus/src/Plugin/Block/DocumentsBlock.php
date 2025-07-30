@@ -54,9 +54,11 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
 
     return [
+      '#theme' => 'agendas_submenu',
       '#title' => $this->t('Office holder decisions'),
       '#years' => array_keys($list),
       '#list' => $list,
+      '#type' => 'documents',
     ];
   }
 

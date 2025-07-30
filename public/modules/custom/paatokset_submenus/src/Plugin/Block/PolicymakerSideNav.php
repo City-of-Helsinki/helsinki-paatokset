@@ -76,8 +76,24 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    */
   public function build(): array {
     return [
+      '#theme' => 'policymaker_side_navigation',
       '#items' => $this->items,
       '#currentPath' => $this->currentPath,
+      '#menu_attributes' => new Attribute(['class' => 'menu']),
+      //'#attributes' => new Attribute(['class' => ['sidebar-navigation']]),
+      '#menu_link_parent' => [
+        'title' => $this->t('Decisionmakers'),
+        'url' => match ($this->currentLang) {
+          'fi' => Url::fromRoute('policymakers.fi'),
+          'sv' => Url::fromRoute('policymakers.sv'),
+          'en' => Url::fromRoute('policymakers.en'),
+        }
+      ],
+      '#attached' => [
+        'library' => [
+          'hdbt/sidebar-menu-toggle',
+        ],
+      ],
     ];
   }
 
@@ -189,18 +205,12 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
 
       $route = $this->routeProvider->getRouteByName($localizedRoute);
 
-      if ($key === 'documents') {
-        $title = $this->t('Documents');
-      }
-      elseif ($key === 'decisions') {
-        $title = $this->t('Decisions');
-      }
-      elseif ($key === 'discussion_minutes') {
-        $title = $this->t('Discussion minutes');
-      }
-      else {
-        $title = call_user_func($route->getDefault('_title_callback'))->render();
-      }
+      $title = match ($key) {
+        'documents' => $this->t('Documents'),
+        'decisions' => $this->t('Decisions'),
+        'discussion_minutes' => $this->t('Discussion minutes'),
+        default => call_user_func($route->getDefault('_title_callback'))->render(),
+      };
 
       $items[] = [
         'title' => $title,
@@ -271,7 +281,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     $subtree = $this->menuTree->transform($subtree, $manipulators);
     $build = $this->menuTree->build($subtree);
 
-    if (!isset($build['#items']) || empty($build['#items'])) {
+    if (empty($build['#items'])) {
       return [];
     }
     return $build['#items'];

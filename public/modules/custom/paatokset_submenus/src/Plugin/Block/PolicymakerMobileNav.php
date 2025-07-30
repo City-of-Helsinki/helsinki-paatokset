@@ -6,6 +6,7 @@ namespace Drupal\paatokset_submenus\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 
 /**
@@ -23,11 +24,30 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
    */
   public function build(): array {
     $options = $this->itemsToOptions();
+    $currentOption = json_decode($options['current_option']);
 
-    return [
-      '#options' => $options['options'],
-      '#current_option' => $options['current_option'],
+    $variables = [
+      '#theme' => 'policymaker_side_navigation_mobile',
+      '#current_option' => $currentOption,
+      '#attached' => [
+        'library' => [
+          'hdbt/sidebar-menu-toggle',
+        ],
+      ],
     ];
+
+    // Create fake menu items for mobile navigation.
+    foreach (json_decode($options['options']) as $option) {
+      $variables['#items'][] = [
+        'title' => $option->label,
+        'url' => Url::fromUserInput($option->value),
+        'attributes' => new Attribute(),
+        'in_active_trail' => paatokset_submenus_is_active_trail($currentOption, $option),
+        'is_currentPage' => paatokset_submenus_is_active_trail($currentOption, $option),
+      ];
+    }
+
+    return $variables;
   }
 
   /**
