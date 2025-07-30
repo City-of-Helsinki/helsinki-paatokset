@@ -79,7 +79,7 @@
     %}
       {% if content.field_hero_image|render %}
         <div class="hero__image-container">
-          {% include '@hdbt/misc/koro.twig' with { flip: true, extraContainer: true } %}
+          {% include '@hdbt/misc/koro.twig' with { flip: true, diagonal: true } %}
           {{ content.field_hero_image }}
         </div>
       {% endif %}
