@@ -1,3 +1,16 @@
+paatokset_ahjo_api.ahjo_update_form:
+  path: 'admin/ahjo/update-entity/{node}'
+  defaults:
+    _title: 'Update ahjo entity'
+    _form: '\Drupal\paatokset_ahjo_api\AhjoAdmin\UpdateForm'
+  requirements:
+    _permission: 'administer paatokset'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+
 paatokset_ahjo_api.default_texts:
   path: '/admin/config/system/default-texts'
   defaults:

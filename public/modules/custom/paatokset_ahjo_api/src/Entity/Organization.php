@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\helfi_api_base\Entity\RemoteEntityInterface;
 
 /**
@@ -59,7 +60,7 @@ use Drupal\helfi_api_base\Entity\RemoteEntityInterface;
  *   },
  * )
  */
-class Organization extends ContentEntityBase implements EntityPublishedInterface, EntityChangedInterface, RemoteEntityInterface {
+class Organization extends ContentEntityBase implements EntityPublishedInterface, EntityChangedInterface, RemoteEntityInterface, AhjoEntityInterface {
 
   use EntityPublishedTrait;
   use EntityChangedTrait;
@@ -143,6 +144,22 @@ class Organization extends ContentEntityBase implements EntityPublishedInterface
     }
 
     return array_reverse($hierarchy);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getProxyUrl(): Url {
+    return Url::fromRoute('paatokset_ahjo_proxy.organization_single', [
+      'id' => $this->getAhjoId(),
+    ]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAhjoId(): string {
+    return $this->id();
   }
 
 }

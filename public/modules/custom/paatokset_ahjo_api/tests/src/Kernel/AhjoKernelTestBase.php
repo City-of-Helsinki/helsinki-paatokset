@@ -20,6 +20,7 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
     'user',
     'options',
     'node',
+    'helfi_api_base',
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
     'token',

@@ -12,7 +12,7 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 /**
  * Bundle class for decisions.
  */
-class Decision extends Node {
+class Decision extends Node implements AhjoUpdatableInterface {
 
   /**
    * Memoized result for self::getAllDecisions().
@@ -27,10 +27,51 @@ class Decision extends Node {
   }
 
   /**
-   * Get normalized decision native id.
+   * Get decision native id.
    */
   public function getNativeId(): ?string {
     return $this->get('field_decision_native_id')->value;
+  }
+
+  /**
+   * Get normalized decision native id.
+   *
+   * Removes brackets from native ID and converts to lowercase.
+   * Maybe the migration should do this, since only the UUID looking
+   * parts are used, and we are doing a bunch of conversions all over
+   * the place?
+   */
+  public function getNormalizedNativeId(): ?string {
+    $nativeId = $this->getNativeId();
+
+    if ($nativeId) {
+      return strtolower(str_replace(['{', '}'], '', $nativeId));
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAhjoId(): string {
+    return $this->getNormalizedNativeId();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getProxyUrl(): Url {
+    return Url::fromRoute('paatokset_ahjo_proxy.decisions_single', [
+      'id' => $this->getNormalizedNativeId(),
+    ]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function getAhjoEndpoint(): string {
+    return 'decisions';
   }
 
   /**

@@ -12,7 +12,7 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 /**
  * Bundle class for policymaker.
  */
-class Policymaker extends Node {
+class Policymaker extends Node implements AhjoEntityInterface {
 
   /**
    * Check if policymaker is currently active.
@@ -146,6 +146,22 @@ class Policymaker extends Node {
     }
 
     return $organization;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getProxyUrl(): Url {
+    return Url::fromRoute('paatokset_ahjo_proxy.decisionmaker_single', [
+      'id' => $this->getAhjoId(),
+    ]);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAhjoId(): string {
+    return $this->get('field_policymaker_id')->getString();
   }
 
 }
