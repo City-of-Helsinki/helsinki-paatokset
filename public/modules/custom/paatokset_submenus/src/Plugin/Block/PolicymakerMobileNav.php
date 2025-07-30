@@ -24,7 +24,7 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
    */
   public function build(): array {
     $options = $this->itemsToOptions();
-    $currentOption = json_decode($options['current_option']);
+    $currentOption = $options['current_option'];
 
     $variables = [
       '#theme' => 'policymaker_side_navigation_mobile',
@@ -37,13 +37,13 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
     ];
 
     // Create fake menu items for mobile navigation.
-    foreach (json_decode($options['options']) as $option) {
+    foreach ($options['options'] as $option) {
       $variables['#items'][] = [
         'title' => $option->label,
         'url' => Url::fromUserInput($option->value),
         'attributes' => new Attribute(),
-        'in_active_trail' => paatokset_submenus_is_active_trail($currentOption, $option),
-        'is_currentPage' => paatokset_submenus_is_active_trail($currentOption, $option),
+        'in_active_trail' => $this->isActiveTrail($currentOption, $option),
+        'is_currentPage' => $this->isActiveTrail($currentOption, $option),
       ];
     }
 
@@ -78,9 +78,20 @@ class PolicymakerMobileNav extends PolicymakerSideNav {
     }
 
     return [
-      'options' => json_encode($options),
-      'current_option' => json_encode($currentOption),
+      'options' => $options,
+      'current_option' => $currentOption,
     ];
+  }
+
+  /**
+   * Helper function to check if the current option is in active trail.
+   */
+  private function isActiveTrail($currentOption, $option): bool {
+    if (!$currentOption || !$option) {
+      return FALSE;
+    }
+
+    return $currentOption->value === $option->value;
   }
 
 }

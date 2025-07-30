@@ -34,14 +34,3 @@ function paatokset_submenus_theme($existing, $type, $theme, $path): array {
     ],
   ];
 }
-
-/**
- * Helper function to check if the current option is in active trail.
- */
-function paatokset_submenus_is_active_trail($currentOption, $option): bool {
-  if (!$currentOption && !$option) {
-    return FALSE;
-  }
-
-  return $currentOption?->value === $option?->value;
-}
