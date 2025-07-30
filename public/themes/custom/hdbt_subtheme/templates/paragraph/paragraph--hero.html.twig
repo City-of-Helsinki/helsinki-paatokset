@@ -79,11 +79,15 @@
     %}
       {% if content.field_hero_image|render %}
         <div class="hero__image-container">
-          {% include '@hdbt/misc/koro.twig' with { flip: true, diagonal: true } %}
+          {% if design == "diagonal" %}
+            {% include '@hdbt/misc/koro.twig' with { flip: true, diagonal: true } %}
+          {% else %}
+            {% include '@hdbt/misc/koro.twig' with { flip: true } %}
+          {% endif %}
           {{ content.field_hero_image }}
         </div>
       {% endif %}
     {% endif %}
-    {% include '@hdbt/misc/koro.twig' with { flip: false } %}
+    {% include '@hdbt/misc/koro.twig' with { flip: true } %}
   </div>
 {% endblock paragraph %}
