@@ -1,7 +1,6 @@
 import React from 'react';
 import { IconCalendarPlus, DateInput as Input } from 'hds-react';
 import classNames from 'classnames';
-import './DateInput.scss';
 
 type Props = {
   autoFocus?: boolean,
@@ -23,8 +22,8 @@ const DateInput = ({ autoFocus, defaultValue, label, setDate, error, name, onCha
   return (
     <div
       className={classNames(
-        'DateInput',
-        'DateInput-wrapper',
+        'decisions-search-date-input',
+        'decisions-search-date-input__wrapper',
         {'has-input': defaultValue && defaultValue.length > 0}
       )}
     >

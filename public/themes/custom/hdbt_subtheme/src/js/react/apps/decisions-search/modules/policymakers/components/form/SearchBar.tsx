@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { DataSearch } from '@appbaseio/reactivesearch';
-import { DataSearchProps } from '@appbaseio/reactivesearch/lib/components/search/DataSearch';
+import { SearchBox } from '@appbaseio/reactivesearch';
 import { useTranslation } from 'react-i18next';
 
 import SearchBarWrapper from '../../../../common/components/form/SearchBarWrapper';
@@ -13,57 +12,58 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
   const { t } = useTranslation();
 
   const dataSearch = (
-    <DataSearch
-      ref={ref}
-      componentId={SearchComponents.SEARCH_BAR}
-      dataField={[
-        IndexFields.TITLE,
-        IndexFields.COMBINED_TITLE,
-        IndexFields.TRUSTEE_NAME,
-        IndexFields.DM_FIRST_NAME,
-        IndexFields.DM_LAST_NAME
-      ]}
-      placeholder={t('POLICYMAKERS:search-bar-placeholder')}
-      autosuggest={true}
-      value={value}
-      defaultValue={value}
-      onValueSelected={function(value:any) {
-        //...
-      }}
-      onChange={setValue}
-      URLParams={true}
-      render={function ({data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem }}) {
-        const parsedData = [];
-        for (let i = 0; i < data.length; i++) {
-          let subject = data[i].value;
-          if (
-            typeof data[i].source[IndexFields.TRUSTEE_NAME] === 'undefined' &&
-            data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
-            data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
-          ) {
-            continue;
-          }
+    null
+    // <DataSearch
+    //   ref={ref}
+    //   componentId={SearchComponents.SEARCH_BAR}
+    //   dataField={[
+    //     IndexFields.TITLE,
+    //     IndexFields.COMBINED_TITLE,
+    //     IndexFields.TRUSTEE_NAME,
+    //     IndexFields.DM_FIRST_NAME,
+    //     IndexFields.DM_LAST_NAME
+    //   ]}
+    //   placeholder={t('POLICYMAKERS:search-bar-placeholder')}
+    //   autosuggest={true}
+    //   value={value}
+    //   defaultValue={value}
+    //   onValueSelected={function(value:any) {
+    //     //...
+    //   }}
+    //   onChange={setValue}
+    //   URLParams={true}
+    //   render={function ({data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem }}) {
+    //     const parsedData = [];
+    //     for (let i = 0; i < data.length; i++) {
+    //       let subject = data[i].value;
+    //       if (
+    //         typeof data[i].source[IndexFields.TRUSTEE_NAME] === 'undefined' &&
+    //         data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
+    //         data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
+    //       ) {
+    //         continue;
+    //       }
 
-          if (data[i].source[IndexFields.POLICYMAKER_EXISTING] === undefined || data[i].source[IndexFields.POLICYMAKER_EXISTING][0] === false) {
-            continue;
-          }
+    //       if (data[i].source[IndexFields.POLICYMAKER_EXISTING] === undefined || data[i].source[IndexFields.POLICYMAKER_EXISTING][0] === false) {
+    //         continue;
+    //       }
 
-          // Always show combined title if one exists.
-          if (data[i].source[IndexFields.COMBINED_TITLE] && data[i].source[IndexFields.COMBINED_TITLE][0]) {
-            subject = data[i].source[IndexFields.COMBINED_TITLE][0];
-          }
+    //       // Always show combined title if one exists.
+    //       if (data[i].source[IndexFields.COMBINED_TITLE] && data[i].source[IndexFields.COMBINED_TITLE][0]) {
+    //         subject = data[i].source[IndexFields.COMBINED_TITLE][0];
+    //       }
 
-          parsedData.push({
-            label: subject,
-            value: subject
-          });
-        }
-        return isOpen && parsedData.length > 0 && (
-          <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
-        );
-      }}
+    //       parsedData.push({
+    //         label: subject,
+    //         value: subject
+    //       });
+    //     }
+    //     return isOpen && parsedData.length > 0 && (
+    //       <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
+    //     );
+    //   }}
 
-    />
+    // />
   );
 
   const label = t('POLICYMAKERS:search-bar-label');

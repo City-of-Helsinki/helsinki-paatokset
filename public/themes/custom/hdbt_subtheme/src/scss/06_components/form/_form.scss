@@ -81,3 +81,163 @@
 .paatokset-search--policymaker {
   margin-top: $spacing-triple;
 }
+
+#paatokset_search {
+  .wrapper {
+    padding: 16px 0;
+  }
+}
+
+.decisions-search-multiselect {
+  > div {
+    border-radius: 2px;
+  }
+
+  div[role="link"] {
+    background: #000;
+    color: #fff;
+    border-radius: 24px;
+    font-size: 14px;
+    padding: 2px 10px;
+  }
+
+  li[role="option"] {
+    --multiselect-checkbox-background-selected: #000;
+  }
+}
+
+.decisions-search-multidropdown__item {
+  height: $input-height;
+  font-size: $input-font-size;
+}
+
+.decisions-search-dateselect__collapsible-element label {
+  display: block;
+}
+
+.decisions-search-form-container {
+  position: relative;
+
+  @media(min-width: var(--breakpoint-xl)) {
+    margin-top: 80px;
+  }
+}
+
+.decisions-search-form-container--gold {
+  background-color: var(--color-gold);
+}
+
+.decisions-search-form-container__koro-wrapper {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  background: #f7f7f8;
+}
+
+.decisions-search-form-container__koro {
+  position: relative;
+  top: -1px;
+  transform: rotate(180deg);
+  fill: var(--color-gold);
+  width: 100%;
+}
+
+.decisions-search-form {
+  padding-bottom: 6px;
+}
+
+.decisions-search-form label {
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: var(--spacing-3-xs);
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+}
+
+.decisions-search-form-element {
+  margin-bottom: 16px;
+
+  label {
+    font-weight: bold;
+  }
+
+  > input, > button {
+    @include input;
+  }
+}
+
+.decisions-search-form-container__lower-fields {
+  @media (min-width: 1248px) {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  } 
+}
+
+.decisions-search-form-container__lower-fields .decisions-search-form-element {
+  @media (min-width: 1248px) {
+    flex-basis: 282px;
+    margin-bottom: 0;
+
+    &:not(:first-child) {
+      margin-left: 24px;
+    }
+    &:last-of-type {
+      flex-grow:2;
+    }
+  }
+}
+
+.decisions-search-form-container__description {
+  font-size: 18px;
+  margin-bottom: 1.2rem;
+  max-width: 894px
+}
+
+// Needs specific selector to override HDS button styles
+.decisions-search-submit-button[type="submit"] {
+  --background-color-focus: #fff;
+  --background-color-hover: #fff;
+  --background-color: #000;
+  --color-focus: #000;
+  --color-hover: #000;
+  height: 56px;
+  width: 100%;
+}
+
+.decisions-search-submit-button--policymakers[type="submit"] {
+  --background-color-focus: --color-gold;
+  --background-color-hover: --color-gold;
+}
+
+.decisions-search-submit-button--desktop {
+  max-width: 258px;
+}
+
+.decisions-search-submit-button--mobile {
+  margin-bottom: 34.5px;
+}
+
+.decisions-search-date-input {
+  margin-bottom: var(--spacing-xs);
+
+  svg {
+    margin-left: 18px;
+    position: absolute;
+    top: calc(50% - 12px);
+    z-index: 1;
+  }
+
+  &:focus-within, &.has-input {
+    svg {
+      display: none;
+    }
+  }
+}
+
+.decisions-search-date-input.decisions-search-date-input__wrapper {
+  position: relative;
+}

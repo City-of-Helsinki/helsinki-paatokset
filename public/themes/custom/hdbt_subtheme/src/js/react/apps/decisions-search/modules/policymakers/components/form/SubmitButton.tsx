@@ -6,13 +6,10 @@ import classNames from 'classnames';
 
 import SearchComponents from '../../enum/SearchComponents';
 
-import formStyles from '../../../../common/styles/Form.module.scss';
-import styles from './SubmitButton.module.scss';
-
 const SubmitButton = () => {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
-  const customClass = width >= 1248 ? styles.SubmitButton__desktop : styles.SubmitButton__mobile;
+  const customClass = width >= 1248 ? 'decisions-search-submit-button--desktop' : 'decisions-search-submit-button--mobile';
 
   return (
     <ReactiveComponent
@@ -22,8 +19,9 @@ const SubmitButton = () => {
           type='submit'
           tabIndex={0}
           className={classNames(
-            styles.SubmitButton,
-            formStyles['form-element'],
+            'decisions-search-submit-button',
+            'decisions-search-submit-button--policymakers',
+            'decisions-search-form-element',
             customClass
           )}
         >

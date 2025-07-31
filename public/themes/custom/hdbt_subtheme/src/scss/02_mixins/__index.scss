@@ -1,0 +1,19 @@
+$input-height: 56px;
+$input-font-size: 18px;
+
+@mixin input {
+  border: 2px solid #808080;
+  border-radius: 2px;
+  height: $input-height;
+  font-size: $input-font-size;
+
+  &:focus, &:focus-within, &:hover {
+    border-color: #1a1a1a;
+  }
+}
+
+@mixin focus-outline {
+  border-color: #000;
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}

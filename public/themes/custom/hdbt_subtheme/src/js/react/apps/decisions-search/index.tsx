@@ -7,9 +7,6 @@ import FrontpageContainer from './modules/frontpage/SearchContainer';
 import * as serviceWorker from './serviceWorker';
 import initSentry from "./common/Sentry";
 
-// Global styles
-import './index.scss';
-
 // Determine which data source we use once policymakers search is implemented
 const rootElement = document.getElementById('paatokset_search');
 let searchContainer;

@@ -9,7 +9,6 @@ import SelectedFilters from '../../../../common/components/form/SelectedFilters'
 import { getQueryParam } from '../../../../utils/QueryString';
 
 import SectorSelect from './filters/SectorSelect';
-import formStyles from '../../../../common/styles/Form.module.scss';
 import classNames from 'classnames';
 
 type Props = {
@@ -155,25 +154,25 @@ class FormContainer extends Component<Props> {
 
     return (
       <div className={classNames(
-          formStyles.FormContainer,
+          'decisions-search-form-container',
           'wrapper'
         )}
       >
         <form
           className={classNames(
-            formStyles.FormContainer__form,
+            'decisions-search-form',
             'container'
           )}
           onSubmit={this.handleSubmit}
         >
-          <div className={formStyles['FormContainer__upper-fields']}>
+          <div>
             <SearchBar
               ref={this.searchBar}
               value={phrase}
               setValue={this.setPhrase}
             />
           </div>
-          <div className={formStyles['FormContainer__lower-fields']}>
+          <div className='decisions-search-form-container__lower-fields'>
             <ReactiveComponent
               componentId={SearchComponents.SECTOR}
               defaultQuery={() => (

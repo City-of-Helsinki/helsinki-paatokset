@@ -1,0 +1,88 @@
+.decisions-search-results {
+  background: #f7f7f8;
+}
+
+.decisions-search-results__container {
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    > div:first-child {
+      width: auto;  
+      display: inline-flex;
+    }
+  }
+}
+
+.decisions-search-results__container--decisions-module {
+  min-height: 250px;
+  padding-top: 16px;
+  position: relative;
+
+  @media (min-width: 1248px) {
+    padding-top: 0;
+  }
+}
+
+.decisions-search-results__container--decisions-module .decisions-search-results__status {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.decisions-search-results__cars-wrapper {
+  display :none;
+}
+
+.decisions-search-results__stats {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.decisions-search-results__stats-count {
+  font-size: 20px;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+}
+
+.decisions-search-results__stats-count strong {
+  margin-right: 5px;
+}
+
+.decisions-search-results__stats-size {
+  display: flex;
+  align-items: center;
+}
+
+.decisions-search-results__size-select {
+  padding: 2px;
+}
+
+.policymaker-search-results {
+  min-height: 250px;
+  position: relative;
+
+  @media (min-width: 1248px) {
+    padding-top: 100px;
+  }
+}
+
+.policymaker-search-results__container {
+  >div:first-child {
+    width: 100%;
+  }
+}
+
+.policymaker-search-results__stats-count {
+  margin-bottom: 22px;
+  width: 100%;
+}

@@ -16,8 +16,6 @@ import SearchLoader from '../../../../common/components/results/SearchLoader';
 import { Notification } from 'hds-react';
 import { OperatorGuideContext } from '../../../../index';
 
-import resultsStyles from '../../../../common/styles/Results.module.scss';
-import styles from './ResultsContainer.module.scss';
 import classNames from 'classnames';
 
 const ResultsContainer = () => {
@@ -108,11 +106,11 @@ const ResultsContainer = () => {
   };
 
   return (
-    <div className={resultsStyles.ResultsContainer} ref={resultsContainer}>
+    <div className='decisions-search-results__container' ref={resultsContainer}>
       <ReactiveList
         className={classNames(
-          resultsStyles.ResultsContainer__container,
-          styles.ResultsContainer__container,
+          'decisions-search-results__container',
+          'decisions-search-results__container--decisions-module',
           'container'
         )}
         onQueryChange={
@@ -149,11 +147,11 @@ const ResultsContainer = () => {
         }}
         renderResultStats={(stats) => (
           <StateProvider includeKeys={['aggregations', 'hits', 'took']} render={({ searchState }) => (
-            <div className={resultsStyles.ResultsContainer__stats}>
-              <span className={resultsStyles.stats__count}>
+            <div className='decisions-search-results__stats'>
+              <span className='decisions-search-results__stats-count'>
                 {t('DECISIONS:results-count')} <strong>{getRealResultsAmount(searchState)}</strong>
               </span>
-              <span className={resultsStyles.stats__size}>
+              <span className='decisions-search-results__stats-size'>
                 <SizeSelect setSize={setSize} />
                 {t('SEARCH:per-page')}
               </span>
@@ -179,8 +177,8 @@ const ResultsContainer = () => {
           )} />
         )}
         renderNoResults={() => (
-          <div className={resultsStyles.ResultsContainer__stats}>
-            <span className={resultsStyles.stats__count}>
+          <div className='decisions-search-results__stats'>
+            <span className='decisions-search-results__stats-count'>
               <strong>0</strong>
               {t('SEARCH:results-count')}
             </span>
@@ -199,7 +197,7 @@ const ResultsContainer = () => {
                     label={t('SEARCH:operators-enabled-label')}
                     notificationAriaLabel={t('SEARCH:operators-enabled-label')}
                     size="small"
-                    className={styles.ResultsContainer__status}
+                    className='decisions-search-results__status'
                   >
                     {t('SEARCH:operators-enabled')} {operatorGuideUrl && (
                       <>

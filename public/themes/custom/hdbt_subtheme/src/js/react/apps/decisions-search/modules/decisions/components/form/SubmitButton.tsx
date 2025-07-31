@@ -5,8 +5,6 @@ import { Button } from 'hds-react';
 import classNames from 'classnames';
 
 import useWindowDimensions from '../../../../hooks/useWindowDimensions';
-import formStyles from '../../../../common/styles/Form.module.scss';
-import styles from './SubmitButton.module.scss';
 
 type Props = {
   disabled: boolean
@@ -15,17 +13,19 @@ type Props = {
 const SubmitButton = ({ disabled }: Props) => {
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
-  const customClass= width > 1248 ? styles.SubmitButton__desktop : styles.SubmitButton__mobile;
+  const customClass= width > 1248 ?
+    'decisions-search-submit-button--desktop' :
+    'decisions-search-submit-button--mobile';
 
   return (
     <ReactiveComponent
-      componentId={'submit-button'}
+      componentId='submit-button'
       render={() => (
         <Button
           type='submit'
           className={classNames(
-            formStyles['form-element'],
-            styles.SubmitButton,
+            'decisions-search-form-element',
+            'decisions-search-submit-button',
             customClass
           )}
           disabled={disabled}

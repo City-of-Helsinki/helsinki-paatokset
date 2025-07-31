@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next';
 import SearchBar from '../../../decisions/components/form/SearchBar';
 import SubmitButton from '../../../decisions/components/form/SubmitButton';
 
-import formStyles from '../../../../common/styles/Form.module.scss';
 import classNames from 'classnames';
 
 type FormContainerProps = {
@@ -55,19 +54,19 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
       <div>
         <div
           className={classNames(
-            formStyles.FormContainer,
+            'decisions-search-form-container',
             'wrapper'
           )}
           style={containerStyle}
         >
           <form className={classNames(
-              formStyles.FormContainer__form,
+              'decisions-search-form',
               'container',
               'container--search-frontpage'
             )}
             onSubmit={this.handleSubmit}
           >
-            <div className={formStyles['FormContainer__upper-fields']}>
+            <div>
               <SearchBar
                 ref={this.searchBar}
                 value={phrase}

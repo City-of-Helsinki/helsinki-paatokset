@@ -6,8 +6,6 @@ import classNames from 'classnames';
 
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 
-import style from './SelectedFiltersContainer.module.scss';
-
 type SelectedFilter = {
   value: string,
   type: string,
@@ -28,13 +26,12 @@ const SelectedFiltersContainer = ({ filters, clearAll }: Props) => {
   }
 
   return (
-    <div className={style.SelectedFilters}>
+    <div className='decisions-search-selected-filters'>
       <SelectedFilters
-        className={style.SelectedFilters__wrapper}
         render={() => {
           const filterButtons = filters.map(filter => (
             <button
-              className={style.SelectedFilters__filter}
+              className='decisions-search-selected-filters__filter'
               key={filter.value}
               type='button'
               onClick={() => filter.deleteFilter(filter.value, filter.type)}
@@ -45,18 +42,18 @@ const SelectedFiltersContainer = ({ filters, clearAll }: Props) => {
           ));
 
           return (
-            <div className={style.SelectedFilters__container}>
+            <div className='decisions-search-selected-filters__container'>
               {
                 width >= 1200 &&
-                <span className={style['SelectedFilters__filter-label']}>
+                <span className='decisions-search-selected-filters__filter-label'>
                   {t('SEARCH:filters') + ':'}
                 </span>
               }
               {filterButtons}
               <button
                 className={classNames(
-                  style.SelectedFilters__filter,
-                  style['SelectedFilters__clear-filters']
+                  'decisions-search-selected-filters__filter',
+                  'decisions-search-selected-filters__clear-filters'
                 )}
                 onClick={() => clearAll()}
                 type='button'

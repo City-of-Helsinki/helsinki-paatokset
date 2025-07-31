@@ -3,8 +3,6 @@ import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import { Option } from '../../../types/types';
 
-import formStyles from '../../../../../common/styles/Form.module.scss';
-import multiselectStyle from './Multiselect.module.scss';
 import classNames from 'classnames';
 
 type Props = {
@@ -68,8 +66,8 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
     <Select
       multiselect
       className={classNames(
-        multiselectStyle.Multiselect,
-        formStyles['form-element']
+        'decisions-search-multiselect',
+        'decisions-search-form-element',
       )}
       label={t('DECISIONS:topic')}
       placeholder={t('DECISIONS:choose-topic')}

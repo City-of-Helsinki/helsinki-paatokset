@@ -3,8 +3,6 @@ import { IconArrowRight, IconAngleRight } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
 
-import style from './ResultCard.module.scss';
-
 type Props = {
   color_class: string[],
   title: string,
@@ -62,22 +60,22 @@ const ResultCard: FC<Props> = ({color_class, title, trustee_name, trustee_title,
   }
 
   return (
-    <article className={style.ResultCard}>
+    <article className='policymaker-search-result-card'>
       <a
         href={url}
         data-color-class={colorClass}
-        className={style.ResultCard__container}
+        className='policymaker-search-result-card__container'
       >
-        <span className={style.departmentHighlight} style={{backgroundColor: colorClass}}></span>
-        <div className={style.titleContainer}>
-          <h2 className={style.ResultCard__title}>{trustee_name ?? title}</h2>
+        <span className='policymaker-search-result-card__department-highlight' style={{backgroundColor: colorClass}}></span>
+        <div className='policymaker-search-result-card__title-container'>
+          <h2 className='policymaker-search-result-card__title'>{trustee_name ?? title}</h2>
           {
             trustee_title &&
-            <div className={style['ResultCard__sub-title']}>{ translatedTrusteeTitle(trustee_title) }</div>
+            <div className='policymaker-search-result-card__sub-title'>{ translatedTrusteeTitle(trustee_title) }</div>
           }
           {
             organization_hierarchy &&
-            <div className={style['ResultCard__sub-title']}>{ formattedOrganizations(organization_hierarchy) }</div>
+            <div className='policymaker-search-result-card__sub-title'>{ formattedOrganizations(organization_hierarchy) }</div>
           }
         </div>
         <IconArrowRight size='m' />

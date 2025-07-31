@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Option, Options } from '../../../types/types';
 
-import './SelectedFiltersContainer.scss';
-
 type Props = {
   categories: Array<Option>,
   setCategories: Function,
@@ -40,7 +38,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
 
     return categories.map(category => (
       <button
-        className='SelectedFilters__filter'
+        className='decisions-search-selected-filters-container__filter'
         key={category.value}
         onClick={() => deleteCategory(category.value)}
       >
@@ -61,7 +59,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
 
     return dms.map((dm: Option) => (
         <button
-          className="SelectedFilters__filter"
+          className="decisions-search-selected-filters-container__filter"
           key={dm.value}
           onClick={() => deleteSingleDm(dm.value)}
         >
@@ -88,8 +86,8 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
 
     return (
       <button
-        className='SelectedFilters__filter'
-        key="{{ dateLabel }}"
+        className='decisions-search-selected-filters-container__filter'
+        key={dateLabel}
         onClick={() => deleteDateQuery()}
       >
         { from } - { to }
@@ -99,18 +97,17 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
   }
   
   return (
-    <div className='SelectedFilters form-element container'>
+    <div className='decisions-search-selected-filters-container form-element container'>
       <SelectedFilters
-        className='SelectedFilters__wrapper'
         render={() => {
           return (
-            <div className='SelectedFilters__container'>
+            <div className='decisions-search-selected-filters-container__container'>
               {getDateFilter()}
               {getCategoryFilters()}
               {getDmFilters()}
               {dms && dms.length > 0 &&
                 <button
-                  className='SelectedFilters__filter SelectedFilters__clear-filters'
+                  className='decisions-search-selected-filters-container__clear-filters'
                   onClick={() => {
                     setCategories([], true);
                     clearDms();

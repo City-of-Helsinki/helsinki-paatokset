@@ -9,9 +9,6 @@ import ResultCard from './ResultCard';
 import Pagination from '../../../../common/components/results/Pagination';
 import SearchLoader from '../../../../common/components/results/SearchLoader';
 
-import resultsStyles from '../../../../common/styles/Results.module.scss';
-import styles from './ResultsContainer.module.scss';
-
 type Props = {
   getLastRefreshed: Function,
 }
@@ -30,13 +27,13 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
     <div
       ref={resultsContainer}
       className={classNames(
-        resultsStyles.ResultsContainer,
-        styles.ResultsContainer,
+        'decisions-search-results',
+        'policymaker-search-results',
     )}>
       <ReactiveList
         className={classNames(
-          resultsStyles.ResultsContainer__container,
-          styles.ResultsContainer__container,
+          'decisions-search-results__container',
+          'policymaker-search-results__container',
           'container'
         )}
         componentId={SearchComponents.RESULTS}
@@ -89,10 +86,10 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
           ]
         }}
         renderResultStats={(stats) => (
-          <div className={resultsStyles.ResultsContainer__stats}>
+          <div className='decisions-search-results__stats'>
             <span className={classNames(
-              resultsStyles.stats__count,
-              styles['stats__count--policymakers']
+              'decisions-search-results__stats-count',
+              'policymaker-search-results__stats-count'
             )}>
               <strong>{stats.numberOfResults}</strong>
               {t('SEARCH:results-count')}
@@ -109,8 +106,8 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
           />
         )}
         renderNoResults={() => (
-          <div className={resultsStyles.ResultsContainer__stats}>
-            <span className={resultsStyles.stats__count}>
+          <div className='decisions-search-results__stats'>
+            <span className='decisions-search-results__stats-count'>
               <strong>0</strong>
               {t('SEARCH:results-count')}
             </span>
@@ -135,6 +132,6 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
       />
     </div>
   );
-}
+};
 
 export default ResultsContainer;

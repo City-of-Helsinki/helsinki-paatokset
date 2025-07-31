@@ -1,10 +1,9 @@
-import { Combobox } from 'hds-react';
+import { Select } from 'hds-react';
 import { Option, Options } from '../../../types/types';
 import { useTranslation } from 'react-i18next';
 import SpecialCases from '../../../enum/SpecialCases';
 
 import { useEffect, useCallback, useState } from 'react';
-import formStyles from '../../../../../common/styles/Form.module.scss';
 import sectorMap, { SectorMap } from '../../../enum/SectorMap';
 
 type Props = {
@@ -103,9 +102,9 @@ const DecisionmakerSelect = ({setQuery, setValues, values, opts, queryValues, la
   }
 
   return (
-    <div className={formStyles['form-element']}>
-      <Combobox
-        multiselect
+    <div className='decisions-search-form-element'>
+      <Select
+        multiSelect
         id="decisionmakerselect"
         value={selected}
         onChange={onChange}

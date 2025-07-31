@@ -1,6 +1,5 @@
 import React, { Component, useContext } from 'react';
-import { DataSearch } from '@appbaseio/reactivesearch';
-import { DataSearchProps } from '@appbaseio/reactivesearch/lib/components/search/DataSearch';
+import { SearchBox } from '@appbaseio/reactivesearch';
 import { useTranslation } from 'react-i18next';
 
 import SearchBarWrapper from '../../../../common/components/form/SearchBarWrapper';
@@ -66,65 +65,66 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
   };
 
   const dataSearch = (
-    <DataSearch
-      ref={ref}
-      componentId={SearchComponents.SEARCH_BAR}
-      placeholder={t('DECISIONS:search-bar-placeholder')}
-      autosuggest={true}
-      dataField={[
-        IndexFields.SUBJECT,
-        IndexFields.ISSUE_SUBJECT,
-        IndexFields.DECISION_CONTENT,
-        IndexFields.DECISION_MOTION,
-        IndexFields.ISSUE_ID,
-      ]}
-      defaultQuery={(value) => {
-        return {
-          "query": query(value),
-          "size": 10,
-          "_source": { "includes": ['*'], "excludes": [] },
-        };
-      }}
-      customQuery={(value) => {
-        return {
-          "query": query(value),
-        };
-      }}
-      value={value}
-      onChange={setValue}
-      onValueSelected={function(value:any) {
-        setValue(value);
-        triggerSearch(value);
-      }}
-      URLParams={URLParams}
-      render={function ({data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem }}) {
-        const uniqueSuggestions:string[] = [];
-        const parsedData = [];
-        for (let i = 0; i < data.length; i++) {
-          let subject:string = data[i].source[IndexFields.SUBJECT][0];
-          if (uniqueSuggestions.includes(subject)) {
-            continue;
-          }
+    null
+    // <DataSearch
+    //   ref={ref}
+    //   componentId={SearchComponents.SEARCH_BAR}
+    //   placeholder={t('DECISIONS:search-bar-placeholder')}
+    //   autosuggest={true}
+    //   dataField={[
+    //     IndexFields.SUBJECT,
+    //     IndexFields.ISSUE_SUBJECT,
+    //     IndexFields.DECISION_CONTENT,
+    //     IndexFields.DECISION_MOTION,
+    //     IndexFields.ISSUE_ID,
+    //   ]}
+    //   defaultQuery={(value) => {
+    //     return {
+    //       "query": query(value),
+    //       "size": 10,
+    //       "_source": { "includes": ['*'], "excludes": [] },
+    //     };
+    //   }}
+    //   customQuery={(value) => {
+    //     return {
+    //       "query": query(value),
+    //     };
+    //   }}
+    //   value={value}
+    //   onChange={setValue}
+    //   onValueSelected={function(value:any) {
+    //     setValue(value);
+    //     triggerSearch(value);
+    //   }}
+    //   URLParams={URLParams}
+    //   render={function ({data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem }}) {
+    //     const uniqueSuggestions:string[] = [];
+    //     const parsedData = [];
+    //     for (let i = 0; i < data.length; i++) {
+    //       let subject:string = data[i].source[IndexFields.SUBJECT][0];
+    //       if (uniqueSuggestions.includes(subject)) {
+    //         continue;
+    //       }
 
-          if (
-            typeof data[i].source[IndexFields.HAS_TRANSLATION] !== 'undefined' &&
-            data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
-            data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
-          ) {
-            continue;
-          }
+    //       if (
+    //         typeof data[i].source[IndexFields.HAS_TRANSLATION] !== 'undefined' &&
+    //         data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
+    //         data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
+    //       ) {
+    //         continue;
+    //       }
 
-          uniqueSuggestions.push(subject);
-          parsedData.push({
-            label: subject,
-            value: subject
-          });
-        }
-        return isOpen && parsedData.length > 0 && (
-          <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
-        );
-      }}
-    />
+    //       uniqueSuggestions.push(subject);
+    //       parsedData.push({
+    //         label: subject,
+    //         value: subject
+    //       });
+    //     }
+    //     return isOpen && parsedData.length > 0 && (
+    //       <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
+    //     );
+    //   }}
+    // />
   );
 
   const label = searchLabel ? searchLabel : t('DECISIONS:search-bar-label');

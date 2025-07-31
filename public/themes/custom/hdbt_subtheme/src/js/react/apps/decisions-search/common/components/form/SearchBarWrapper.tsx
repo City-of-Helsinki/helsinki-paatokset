@@ -1,8 +1,6 @@
 import React from 'react';
 import { IconSearch, Notification } from 'hds-react';
 
-import formStyles from '../../../common/styles/Form.module.scss';
-import styles from './SearchBarWrapper.module.scss'
 import classNames from 'classnames';
 
 type Props = {
@@ -22,18 +20,18 @@ const SearchBarWrapper = ({label, dataSearch, status = null}: Props) => {
       iconPosition: 'right',
       icon: <IconSearch />,
       className: classNames(
-        styles.SearchBar__input,
-        formStyles['form-element']
+        'decisions-search-bar-wrapper__input',
+        'decisions-search-form-element',
       )
     }
   );
 
   return (
-    <div className={styles.SearchBarWrapper}>
-      <div className={styles.SearchBarWrapper__label}>
+    <div className='decisions-search-bar-wrapper'>
+      <div className='decisions-search-bar-wrapper__label'>
         <label>{label}</label>
         {status && (
-          <div className={styles.SearchBarWrapper__label__status}>
+          <div className='decisions-search-bar-wrapper__label-status'>
             <span>{status.messageVisible}</span>
             <Notification
               label={status.label}

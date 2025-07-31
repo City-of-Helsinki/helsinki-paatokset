@@ -6,8 +6,6 @@ import { IconAngleLeft, IconAngleRight } from 'hds-react';
 import i18n from '../../../.././../../i18n';
 import { isValidDate } from '../../../../../../utils/Date';
 
-import './DatePicker.scss';
-
 type Props = {
   setTo: Function,
   setFrom: Function,
@@ -41,7 +39,7 @@ const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
   }
 
   return (
-    <div className='DatePicker'>
+    <div className='decision-search-date-picker'>
       <Calendar
         locale={i18n.language}
         value={value}

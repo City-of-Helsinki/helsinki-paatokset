@@ -1,0 +1,36 @@
+.decisions-search-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 48px;
+  font-weight: bold;
+}
+
+.decisions-search-pagination__control {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.decisions-search-pagination__item {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+
+  &.decisions-search-pagination__item--current {
+    background-color: #000;
+    color: #fff;
+    border-radius: 25px;
+  }
+
+  &.decisions-search-pagination__item--separator {
+    width: auto;
+    height: auto;
+  }
+}

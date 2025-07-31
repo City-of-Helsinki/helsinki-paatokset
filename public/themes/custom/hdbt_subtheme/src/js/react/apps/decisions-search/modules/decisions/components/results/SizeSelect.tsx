@@ -1,8 +1,6 @@
 import React from 'react';
 import { Select } from 'hds-react';
 
-import './SizeSelect.scss';
-
 type Props = {
   setSize: Function
 };
@@ -10,7 +8,7 @@ type Props = {
 const SortSelect = ({ setSize }: Props) => {
   return (
     <Select
-      className='SizeSelect'
+      className='decisions-search-size-select'
       style={{
         padding: '2px'
       }}

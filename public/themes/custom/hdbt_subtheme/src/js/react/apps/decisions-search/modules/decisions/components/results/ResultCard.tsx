@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
 
-import style from './ResultCard.module.scss';
 import classNames from 'classnames';
 
 type Props = {
@@ -47,48 +46,48 @@ const ResultCard = ({category, color_class, date, href, lang_prefix, url_prefix,
     formattedDate = format(new Date(date * 1000), 'dd.MM.yyyy');
   }
 
-  let cardClass = style.ResultCard;
+  let cardClass = 'decisions-search-result-card';
   if (doc_count > 1) {
-    cardClass += ' ' + style.MultipleResults;
+    cardClass += ' decisions-search-multiple-results';
   }
 
   return (
     <div className={cardClass}>
-      <a href={ url } className={style.ResultCard__link} tabIndex={0}>
-        <div className={style.ResultCard__label} style={{backgroundColor: colorClass}}>
+      <a href={ url } className='decisions-search-result-card__link' tabIndex={0}>
+        <div className='decisions-search-multiple-results__label' style={{backgroundColor: colorClass}}>
           { organization_name }
         </div>
-        <div className={style.ResultCard__container}>
+        <div className='decisions-search-result-card__container'>
           <div>
-            <div className={style.ResultCard__date}>
+            <div className='decisions-search-result-card__date'>
               { formattedDate }
             </div>
           </div>
-          <div className={style.ResultCard__title}>
+          <div className='decisions-search-result-card__title'>
             {process.env.REACT_APP_DEVELOPER_MODE &&
               <span style={{color: 'red'}}>Score: { _score }, Diary number: { issue_id }, Unique issue ID: { unique_issue_id }, Doc Count: { doc_count } <br /> URL: { href }</span>
             }
             <h2>{ subject }</h2>
             {
               doc_count > 1 && issue_subject &&
-                <div className={style.ResultCard__amount}>
+                <div className='decisions-search-result-card__amount'>
                   <p><strong>{amount_label}</strong>
                   <br />{ issue_subject }</p>
                 </div>
             }
           </div>
         </div>
-        <div className={style.ResultCard__footer}>
+        <div className='decisions-search-result-card__footer'>
           {
             category &&
               <div className={classNames(
-                style.ResultCard__tags,
+                'decisions-search-result-card__tags',
                 'paatokset-tag-container'
               )}>
-                <span className={style['search-tag']}>{ category }</span>
+                <span className='decisions-search-result-card__search-tag'>{ category }</span>
               </div>
           }
-          <div className={style['ResultCard__issue-link']}>
+          <div className='decisions-search-result-card__issue-link'>
               <IconArrowRight size={'l'}/>
           </div>
         </div>

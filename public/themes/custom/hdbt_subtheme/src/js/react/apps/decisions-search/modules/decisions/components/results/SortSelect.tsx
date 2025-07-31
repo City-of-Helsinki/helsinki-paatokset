@@ -3,7 +3,6 @@ import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
 import { Sort } from '../../enum/Sort';
-import './SortSelect.scss';
 
 type Props = {
   setSort: Function
@@ -14,7 +13,7 @@ const SortSelect = ({ setSort }: Props) => {
 
   return (
     <Select
-      className='SortSelect'
+      className='decisions-search-sort-select'
       label={t('SEARCH:sort')}
       defaultValue={{
         label: t('SEARCH:relevancy'),

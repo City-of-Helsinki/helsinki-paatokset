@@ -15,8 +15,6 @@ import SpecialCases from '../../enum/SpecialCases';
 import CategoryMap from '../../enum/CategoryMap';
 import SectorMap from '../../enum/SectorMap';
 import { Option, Options, combobox_item, FormErrors } from '../../types/types';
-import formStyles from '../../../../common/styles/Form.module.scss';
-import styles from './FormContainer.module.scss';
 import classNames from 'classnames';
 import DecisionmakerSelect from './filters/DecisionmakerSelect';
 import Indices from '../../../../Indices';
@@ -424,20 +422,20 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
     return (
       <div style={{ background: '#f7f7f8' }}>
-        <div className={classNames(formStyles.FormContainer, styles.FormContainer, 'wrapper')} style={containerStyle}>
+        <div className={classNames('decisions-search-form-container', 'decisions-search-form-container--gold', 'wrapper')} style={containerStyle}>
           <FormTitle />
           {this.props.formDescription && (
             <div className="container container--search-description">
               <div
-                className={formStyles['FormContainer__description']}
+                className='decisions-search-form-container__description'
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(this.props.formDescription, { USE_PROFILES: { html: true } }),
                 }}
               ></div>
             </div>
           )}
-          <form className={classNames(formStyles.FormContainer__form, 'container')} onSubmit={this.handleSubmit}>
-            <div className={formStyles['FormContainer__upper-fields']}>
+          <form className={classNames('decisions-search-form', 'container')} onSubmit={this.handleSubmit}>
+            <div>
               <SearchBar
                 ref={this.searchBar}
                 value={phrase}
@@ -447,7 +445,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
                 triggerSearch={this.props.triggerSearch}
               />
             </div>
-            <div className={formStyles['FormContainer__lower-fields']}>
+            <div className='decisions-search-form-container__lower-fields'>
               <ReactiveComponent
                 componentId={SearchComponents.MEETING_DATE}
                 defaultQuery={() => ({
@@ -549,14 +547,14 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
             <SubmitButton disabled={errors.to !== undefined || errors.from !== undefined} />
           </form>
           {isDesktop && (
-            <div className={styles['FormContainer__koro-wrapper']} ref={this.onRefChange} style={koroStyle}>
+            <div className='decisions-search-form-container__koro-wrapper' ref={this.onRefChange} style={koroStyle}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
                 width="100%"
                 height="50"
                 fill="currentColor"
-                className={styles.FormContainer__koro}
+                className='decisions-search-form-container__koro'
               >
                 <defs>
                   <pattern id="koros1164540240" x="0" y="0" width="67" height="51" patternUnits="userSpaceOnUse">

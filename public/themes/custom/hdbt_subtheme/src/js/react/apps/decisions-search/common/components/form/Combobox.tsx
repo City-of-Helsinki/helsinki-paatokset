@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
-import { Combobox as HDSCombobox } from 'hds-react';
+import { Select } from 'hds-react';
 import classNames from 'classnames';
-
-import styles from './Combobox.module.scss';
-import formStyles from '../../styles/Form.module.scss';
 
 type Props = {
   aggregations: any,
@@ -69,10 +66,10 @@ const Combobox = ({
   });
 
   return (
-    <HDSCombobox
+    <Select
       className={classNames(
-        styles.Combobox,
-        formStyles['form-element']
+        'decisions-search-combobox',
+        'decisions-search-form-element',
       )}
       label={label}
       placeholder={placeholder}
