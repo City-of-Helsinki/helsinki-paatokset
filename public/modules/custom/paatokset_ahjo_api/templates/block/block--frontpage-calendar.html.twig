@@ -7,7 +7,7 @@
 
 {% if meetings %}
 <div {{ attributes.addClass(classes) }}>
-  {% include '@hdbt/misc/koro.twig' with {koro: koro, flip: false, color: '#f7f7f8' } %}
+  {% include '@hdbt/misc/koro.twig' with { flip: false } %}
   <div class="container">
     <h2>{{ content.label }}</h2>
     <div class="frontpage-calendar__notice">

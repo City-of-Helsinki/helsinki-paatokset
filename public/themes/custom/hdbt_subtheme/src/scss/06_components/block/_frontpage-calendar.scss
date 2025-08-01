@@ -12,14 +12,13 @@
 }
 
 .frontpage-calendar {
-  background-color: $color-silver-light;
+  background-color: $color-black-5;
   margin-top: 50px;
   position: relative;
 
   .hds-koros {
-    left: 0;
+    color: $color-black-5;
     position: absolute;
-    right: 0;
     top: -50px;
   }
 
