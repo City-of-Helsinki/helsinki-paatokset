@@ -76,7 +76,7 @@ class AhjoOpenIdTest extends KernelTestBase {
       'headers' => [
         'Authorization' => 'Bearer 123',
       ],
-    ], $plugin->getAuthenticationOptions());
+    ], $plugin->getAuthenticationOptions(''));
 
     $this->assertEquals('321', $sut->getAuthToken(refresh: TRUE));
   }
@@ -132,7 +132,7 @@ class AhjoOpenIdTest extends KernelTestBase {
 
     // Failed to refresh token:
     $plugin = $this->container->get('plugin.manager.migrate_plus.authentication')->createInstance('ahjo_openid_token', []);
-    $this->assertEquals([], $plugin->getAuthenticationOptions());
+    $this->assertEquals([], $plugin->getAuthenticationOptions(''));
 
     $this->expectException(AhjoOpenIdException::class);
     $sut->getAuthToken(refresh: TRUE);
