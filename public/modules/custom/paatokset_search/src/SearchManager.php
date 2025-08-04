@@ -63,7 +63,7 @@ class SearchManager {
       ],
       '#attached' => [
         'library' => [
-          'paatokset_search/paatokset-search',
+          'hdbt_subtheme/decisions-search',
         ],
         'drupalSettings' => [
           'paatokset_search' => [

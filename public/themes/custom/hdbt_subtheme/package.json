@@ -18,11 +18,8 @@
   },
   "dependencies": {
     "@appbaseio/reactivesearch": "^4.3.0",
-    "@babel/core": "^7.27.4",
-    "@babel/eslint-parser": "^7.26.8",
-    "@babel/plugin-syntax-dynamic-import": "7.8.3",
-    "@babel/preset-react": "^7.26.3",
     "@elastic/elasticsearch": "^8.17.1",
+    "@emotion/styled-base": "^10.3.0",
     "@hdbt/theme-builder": "file:../../contrib/hdbt/theme-builder",
     "@react-aria/visually-hidden": "^3.8.22",
     "@sentry/react": "^9.1.0",
