@@ -9,6 +9,6 @@ const FormTitle = () => {
       <h1>{t('DECISIONS:form-title')}</h1>
     </div>
   );
-}
+};
 
 export default FormTitle;

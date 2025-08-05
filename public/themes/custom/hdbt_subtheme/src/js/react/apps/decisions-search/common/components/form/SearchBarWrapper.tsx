@@ -13,7 +13,7 @@ type Props = {
   }
 }
 
-const SearchBarWrapper = ({label, dataSearch, status = null}: Props) => {
+const SearchBarWrapper = ({ label, dataSearch, status = null }: Props) => {
   const searchElement = React.cloneElement(
     dataSearch,
     {
@@ -29,14 +29,14 @@ const SearchBarWrapper = ({label, dataSearch, status = null}: Props) => {
   return (
     <div className='decisions-search-bar-wrapper'>
       <div className='decisions-search-bar-wrapper__label'>
-        <label>{label}</label>
+        <span>{label}</span>
         {status && (
           <div className='decisions-search-bar-wrapper__label-status'>
             <span>{status.messageVisible}</span>
             <Notification
               label={status.label}
               notificationAriaLabel={status.label}
-              invisible={true}
+              invisible
             >
               {status.messageAnnounced}
             </Notification>
@@ -45,7 +45,7 @@ const SearchBarWrapper = ({label, dataSearch, status = null}: Props) => {
       </div>
       {searchElement}
     </div>
-  )
-}
+  );
+};
 
 export default SearchBarWrapper;

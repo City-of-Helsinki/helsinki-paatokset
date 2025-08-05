@@ -1,10 +1,10 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 
+import classNames from 'classnames';
 import SearchBar from '../../../decisions/components/form/SearchBar';
 import SubmitButton from '../../../decisions/components/form/SubmitButton';
 
-import classNames from 'classnames';
 
 type FormContainerProps = {
   langcode: string,
@@ -28,16 +28,16 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
   handleSubmit = (event: any) => {
     if(event) {
-      window.location.href = this.props.searchRedirect + '"' + encodeURIComponent(this.state.phrase) + '"';
+      window.location.href = `${this.props.searchRedirect  }"${  encodeURIComponent(this.state.phrase)  }"`;
       event.preventDefault();
     }
   };
 
   handleSelectedValue = (value: any) => {
     if (value) {
-      window.location.href = this.props.searchRedirect + '"' + encodeURIComponent(value) + '"';
+      window.location.href = `${this.props.searchRedirect  }"${  encodeURIComponent(value)  }"`;
     }
-  }
+  };
 
   changePhrase = (value: any) => {
     this.setState({
@@ -48,7 +48,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
   render() {
     const { phrase } = this.state;
 
-    let containerStyle: any = {};
+    const containerStyle: any = {};
 
     return(
       <div>

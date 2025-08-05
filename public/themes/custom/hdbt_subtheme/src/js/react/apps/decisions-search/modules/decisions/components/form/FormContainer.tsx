@@ -2,6 +2,8 @@ import React from 'react';
 import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import { withTranslation } from 'react-i18next';
 
+import classNames from 'classnames';
+import DOMPurify from 'dompurify';
 import FormTitle from './FormTitle';
 import SearchBar from './SearchBar';
 import SubmitButton from './SubmitButton';
@@ -15,11 +17,9 @@ import SpecialCases from '../../enum/SpecialCases';
 import CategoryMap from '../../enum/CategoryMap';
 import SectorMap from '../../enum/SectorMap';
 import { Option, Options, combobox_item, FormErrors } from '../../types/types';
-import classNames from 'classnames';
 import DecisionmakerSelect from './filters/DecisionmakerSelect';
 import Indices from '../../../../Indices';
 import { isOperatorSearch } from '../../../../utils/OperatorSearch';
-import DOMPurify from 'dompurify';
 
 type FormContainerProps = {
   langcode: string,
@@ -82,16 +82,16 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
       this.setState({
         queryFrom: from,
         selectedFrom: from,
-        from: from
-      })
+        from
+      });
     }
     const to = getQueryParam('to');
     if(to) {
       this.setState({
         queryTo: to,
         selectedTo: to,
-        to: to
-      })
+        to
+      });
     }
 
     const initialCategories = getQueryParam(SearchComponents.CATEGORY);
@@ -107,9 +107,9 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
         if (typeof foundCategory === 'undefined') {
           foundCategory = {
-            "label": category,
-            "value": "00"
-          }
+            'label': category,
+            'value': '00'
+          };
         }
         return foundCategory;
       });
@@ -124,19 +124,19 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
     if(initialDms) {
       const { t } = this.props;
-      let dmsString = JSON.parse(initialDms);
-      let dms = dmsString.split(',');
+      const dmsString = JSON.parse(initialDms);
+      const dms = dmsString.split(',');
 
-      const foundDms : {value: string, label: string, langcode: string}[] = []
+      const foundDms : {value: string, label: string, langcode: string}[] = [];
       dms.forEach((dm:string) => {
         let foundDm = SectorMap.find((element) => element.label === dm);
         if(typeof foundDm === 'undefined' && t) {
           switch(dm) {
             case SpecialCases.TRUSTEE:
-              foundDm = {label: t('DECISIONS:trustee'), value: SpecialCases.TRUSTEE, langcode: 'fi'};
+              foundDm = { label: t('DECISIONS:trustee'), value: SpecialCases.TRUSTEE, langcode: 'fi' };
               break;
             default:
-              foundDm = {label: dm, value: dm, langcode: 'fi'}
+              foundDm = { label: dm, value: dm, langcode: 'fi' };
               break;
           }
           foundDms.push(foundDm);
@@ -219,7 +219,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
   setCategories = (categories: Array<Option>, update?: Boolean) => {
     this.setState({
-      categories: categories
+      categories
     });
 
     if (update) {
@@ -228,11 +228,11 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
         queryCategories: categories
       });
     }
-  }
+  };
 
   setDms = (dms: Options, update?: Boolean) => {
     this.setState({
-      dms: dms,
+      dms,
     });
 
     if (update) {
@@ -241,39 +241,39 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
         queryDms: dms
       });
     }
-  }
+  };
 
   setFrom = (from: any, update ?: Boolean) => {
     this.setState({
-      from: from
+      from
     });
 
     if (update) {
       this.setState({
         selectedFrom: from,
         queryFrom: from
-      })
+      });
     }
-  }
+  };
 
   setTo = (to: any, update ?: Boolean) => {
     this.setState({
-      to: to
+      to
     });
 
     if (update) {
       this.setState({
         queryTo: to,
         selectedTo: to
-      })
+      });
     }
-  }
+  };
 
   setSelection = (date_selection: any) => {
     this.setState({
-      date_selection: date_selection
+      date_selection
     });
-  }
+  };
 
   updateFilters = () => {
     this.setState({
@@ -281,37 +281,35 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
       selectedTo: this.state.to,
       selectedDms: this.state.dms,
       selectedCategories: this.state.categories
-    })
-  }
+    });
+  };
 
-  setErrors = (errors: FormErrors) => this.setState({errors});
+  setErrors = (errors: FormErrors) => this.setState({ errors });
 
   onRefChange = (node: any) => {
     this.setState({
       koroRef: node
     });
-  }
+  };
 
   handleDecisionMakerLabels = (_data: any) => {
-    const data = _data.data;
+    const { data } = _data;
     
     if (data && data.length) {
-      const langcode = this.props.langcode;
+      const { langcode } = this.props;
 
       const decisionMakers = data.map((item: any) => {
         if (item.decisionmaker_searchfield_data) {
           return JSON.parse(item.decisionmaker_searchfield_data);
-        } else {
+        } 
           return {};
-        }
+        
       })
-      .filter((item: any)=>{
-        return item.id;
-      })
+      .filter((item: any) => item.id)
       .map((searchfield_data: any): combobox_item => {
-        const sector = searchfield_data.sector;
-        const organization = searchfield_data.organization;
-        const organization_above = searchfield_data.organization_above;
+        const { sector } = searchfield_data;
+        const { organization } = searchfield_data;
+        const { organization_above } = searchfield_data;
 
         let sort_label = '';
         let label = '';
@@ -340,20 +338,20 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
         return {
           key: searchfield_data.id,
           value: searchfield_data.id,
-          label: label,
-          sort_label: sort_label
-        }
+          label,
+          sort_label
+        };
       })
       .reduce((accumulator: combobox_item[], current: combobox_item) => {
           // Add ID to combobox label if the item label is duplicate.
           accumulator.forEach((item:combobox_item) => {
             if (item.label === current.label) {
-              current.label = `${current.label} (${current.key})`
+              current.label = `${current.label} (${current.key})`;
             }
           });
-          accumulator.push(current)
+          accumulator.push(current);
           return accumulator;
-      }, [])
+      }, []);
 
       // handle query parameters, select correct dropdown options for the query parameters
       if (this.state.dms) {
@@ -362,17 +360,13 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
             return option;
           }
 
-          const dmObject = decisionMakers.find((object: {key: string, value: string, label: string})=>{
-            return object.key === option.value
-          });
+          const dmObject = decisionMakers.find((object: {key: string, value: string, label: string}) => object.key === option.value);
 
           if (dmObject) {
             return dmObject;
           }
 
-          const sector = SectorMap.find((item: {label: string, value: string})=>{
-            return item.value === option.value;
-          });
+          const sector = SectorMap.find((item: {label: string, value: string}) => item.value === option.value);
 
           if (sector) {
             return sector;
@@ -388,7 +382,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
         decisionmakers: decisionMakers,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -411,8 +405,8 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
       koroRef
     } = this.state;
 
-    let containerStyle: any = {};
-    let koroStyle: any = {};
+    const containerStyle: any = {};
+    const koroStyle: any = {};
 
     if(koroRef && isDesktop) {
       containerStyle.marginBottom = `${koroRef.clientHeight}px`;
@@ -438,11 +432,11 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
             <div>
               <SearchBar
                 ref={this.searchBar}
-                value={phrase}
-                setValue={this.changePhrase}
-                URLParams={true}
                 searchLabel={undefined}
+                setValue={this.changePhrase}
                 triggerSearch={this.props.triggerSearch}
+                URLParams
+                value={phrase}
               />
             </div>
             <div className='decisions-search-form-container__lower-fields'>
@@ -470,7 +464,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
                     setSelection={this.setSelection}
                   />
                 )}
-                URLParams={true}
+                URLParams
               />
               <ReactiveComponent
                 componentId={SearchComponents.CATEGORY}
@@ -494,7 +488,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
                     queryValue={queryCategories}
                   />
                 )}
-                URLParams={true}
+                URLParams
               />
               <ReactiveComponent
                 componentId={SearchComponents.DM}
@@ -527,7 +521,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
                     langcode={this.props.langcode}
                   />
                 )}
-                URLParams={true}
+                URLParams
               />
               <ReactiveComponent
                 componentId={SearchComponents.WILDCARD}
@@ -543,7 +537,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
                   }
                 }}
               />
-            </div>
+            </div> 
             <SubmitButton disabled={errors.to !== undefined || errors.from !== undefined} />
           </form>
           {isDesktop && (
@@ -566,7 +560,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
             </div>
           )}
         </div>
-        <SelectedFiltersContainer
+        {/* <SelectedFiltersContainer
           categories={selectedCategories}
           setCategories={this.setCategories}
           dms={selectedDms}
@@ -576,7 +570,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
           to={selectedTo}
           setTo={this.setTo}
           setSelection={this.setSelection}
-        />
+        /> */}
       </div>
     );
   }

@@ -5,8 +5,7 @@ type Props = {
   setSize: Function
 };
 
-const SortSelect = ({ setSize }: Props) => {
-  return (
+const SortSelect = ({ setSize }: Props) => (
     <Select
       className='decisions-search-size-select'
       style={{
@@ -31,9 +30,8 @@ const SortSelect = ({ setSize }: Props) => {
           value: 96
         }
       ]}
-      onChange={({value}: any) => setSize(value)}
+      onChange={({ value }: any) => setSize(value)}
     />
   );
-}
 
 export default SortSelect;

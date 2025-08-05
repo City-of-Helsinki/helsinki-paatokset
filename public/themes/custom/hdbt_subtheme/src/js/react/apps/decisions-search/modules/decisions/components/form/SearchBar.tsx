@@ -1,5 +1,5 @@
 import React, { Component, useContext } from 'react';
-import { SearchBox } from '@appbaseio/reactivesearch';
+import { DataSearch } from '@appbaseio/reactivesearch';
 import { useTranslation } from 'react-i18next';
 
 import SearchBarWrapper from '../../../../common/components/form/SearchBarWrapper';
@@ -21,40 +21,40 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
       `${IndexFields.ISSUE_ID}^100`,
     ];
     const query = {
-      "bool": {
+      bool: {
         // Add simple query string filter if the value contains an operator.
         ...((value && isOperatorSearch(value)) ? {
-          "filter": {
-            "simple_query_string": {
-              "query": value,
-              "default_operator": 'or',
-              "analyze_wildcard": true,
+          filter: {
+            simple_query_string: {
+              query: value,
+              default_operator: 'or',
+              analyze_wildcard: true,
             }
-          }} : {}),
-        "should": [
+          } } : {}),
+        should: [
           {
-            "multi_match": {
-              "query": value,
-              "fields": dataFields,
-              "type": "best_fields",
-              "operator": "or",
-              "fuzziness": 0
-            }
-          },
-          {
-            "multi_match": {
-              "query": value,
-              "fields": dataFields,
-              "type": "phrase",
-              "operator": "or"
+            multi_match: {
+              query: value,
+              fields: dataFields,
+              type: 'best_fields',
+              operator: 'or',
+              fuzziness: 0
             }
           },
           {
-            "multi_match": {
-              "query": value,
-              "fields": dataFields,
-              "type": "phrase_prefix",
-              "operator": "or"
+            multi_match: {
+              query: value,
+              fields: dataFields,
+              type: 'phrase',
+              operator: 'or'
+            }
+          },
+          {
+            multi_match: {
+              query: value,
+              fields: dataFields,
+              type: 'phrase_prefix',
+              operator: 'or'
             }
           }
         ],
@@ -65,69 +65,67 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
   };
 
   const dataSearch = (
-    null
-    // <DataSearch
-    //   ref={ref}
-    //   componentId={SearchComponents.SEARCH_BAR}
-    //   placeholder={t('DECISIONS:search-bar-placeholder')}
-    //   autosuggest={true}
-    //   dataField={[
-    //     IndexFields.SUBJECT,
-    //     IndexFields.ISSUE_SUBJECT,
-    //     IndexFields.DECISION_CONTENT,
-    //     IndexFields.DECISION_MOTION,
-    //     IndexFields.ISSUE_ID,
-    //   ]}
-    //   defaultQuery={(value) => {
-    //     return {
-    //       "query": query(value),
-    //       "size": 10,
-    //       "_source": { "includes": ['*'], "excludes": [] },
-    //     };
-    //   }}
-    //   customQuery={(value) => {
-    //     return {
-    //       "query": query(value),
-    //     };
-    //   }}
-    //   value={value}
-    //   onChange={setValue}
-    //   onValueSelected={function(value:any) {
-    //     setValue(value);
-    //     triggerSearch(value);
-    //   }}
-    //   URLParams={URLParams}
-    //   render={function ({data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem }}) {
-    //     const uniqueSuggestions:string[] = [];
-    //     const parsedData = [];
-    //     for (let i = 0; i < data.length; i++) {
-    //       let subject:string = data[i].source[IndexFields.SUBJECT][0];
-    //       if (uniqueSuggestions.includes(subject)) {
-    //         continue;
-    //       }
+    <DataSearch
+      ref={ref}
+      componentId={SearchComponents.SEARCH_BAR}
+      placeholder={t('DECISIONS:search-bar-placeholder')}
+      autosuggest
+      dataField={[
+        IndexFields.SUBJECT,
+        IndexFields.ISSUE_SUBJECT,
+        IndexFields.DECISION_CONTENT,
+        IndexFields.DECISION_MOTION,
+        IndexFields.ISSUE_ID,
+      ]}
+      defaultQuery={(defaultValue) => ({
+        query: query(defaultValue),
+        size: 10,
+        _source: {
+          includes: ['*'],
+          excludes: [] 
+        },
+      })}
+      customQuery={(_value) => ({
+          query: query(_value),
+      })}
+      value={value}
+      onChange={setValue}
+      onValueSelected={(selectedValue: any) => {
+        setValue(selectedValue);
+        triggerSearch(selectedValue);
+      }}
+      URLParams={URLParams}
+      render={({ data, downshiftProps: { isOpen, getItemProps, highlightedIndex, selectedItem } }) => {
+        const uniqueSuggestions:string[] = [];
+        const parsedData = [];
+        for (let i = 0; i < data.length; i++) {
+          const subject: string = data[i].source[IndexFields.SUBJECT][0];
+          if (uniqueSuggestions.includes(subject)) {
+            continue;
+          }
 
-    //       if (
-    //         typeof data[i].source[IndexFields.HAS_TRANSLATION] !== 'undefined' &&
-    //         data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
-    //         data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
-    //       ) {
-    //         continue;
-    //       }
+          if (
+            typeof data[i].source[IndexFields.HAS_TRANSLATION] !== 'undefined' &&
+            data[i].source[IndexFields.HAS_TRANSLATION][0] === true &&
+            data[i].source[IndexFields.LANGUAGE].toString() !== t('SEARCH:langcode')
+          ) {
+            continue;
+          }
 
-    //       uniqueSuggestions.push(subject);
-    //       parsedData.push({
-    //         label: subject,
-    //         value: subject
-    //       });
-    //     }
-    //     return isOpen && parsedData.length > 0 && (
-    //       <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
-    //     );
-    //   }}
-    // />
+          uniqueSuggestions.push(subject);
+          parsedData.push({
+            label: subject,
+            value: subject
+          });
+        }
+        return isOpen && parsedData.length > 0 && (
+          <SearchBarAutocomplete parsedData={parsedData} getItemProps={getItemProps} highlightedIndex={highlightedIndex} selectedItem={selectedItem} />
+        );
+      }}
+    />
   );
 
-  const label = searchLabel ? searchLabel : t('DECISIONS:search-bar-label');
+  const label = searchLabel || t('DECISIONS:search-bar-label');
   const operatorGuideUrl = useContext(OperatorGuideContext);
   const status = {
     label: t('SEARCH:operators-enabled-label'),

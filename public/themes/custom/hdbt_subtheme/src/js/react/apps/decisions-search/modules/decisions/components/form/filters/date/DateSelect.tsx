@@ -3,13 +3,13 @@ import { Button, Checkbox, IconAngleUp, IconAngleDown, IconMinus, IconCalendar, 
 import { format, parse, subWeeks, subMonths, subYears } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
+import classNames from 'classnames';
 import useOutsideClick from '../../../../../../hooks/useOutsideClick';
 import DateInput from './DateInput';
 import { FormErrors } from '../../../../types/types';
 import { isValidDate } from '../../../../../../utils/Date';
 import DatePicker from './DatePicker';
 
-import classNames from 'classnames';
 
 type Props = {
   setQuery: Function,
@@ -65,12 +65,12 @@ const DateSelect = ({
   const setFromWithClear = (from: string) => {
     setSelection(undefined);
     setFrom(from);
-  }
+  };
 
   const setToWithClear = (to: string) => {
     setSelection(undefined);
     setTo(to);
-  }
+  };
 
   const handleSelectionClick = (selected: string) => {
     if(selection === selected) {
@@ -96,12 +96,10 @@ const DateSelect = ({
       break;
     }
 
-    setSelection(selected)
-  }
-
-  const transformDate = (date: string) => {
-    return format(parse(date, 'd.M.y', new Date()), 'yyyy-MM-dd');
+    setSelection(selected);
   };
+
+  const transformDate = (date: string) => format(parse(date, 'd.M.y', new Date()), 'yyyy-MM-dd');
 
   const validateValues = useCallback(() =>  {
     const validateTo = () => {
@@ -117,7 +115,7 @@ const DateSelect = ({
           return t('SEARCH:to-less-than-from');
         }
       }
-    }
+    };
 
     const validateFrom = () => {
       if(!from || !from.length) {
@@ -127,7 +125,7 @@ const DateSelect = ({
       if(!isValidDate(from)) {
         return t('SEARCH:invalid-date');
       }
-    }
+    };
 
     setErrors({
       from: validateFrom(),
@@ -137,7 +135,7 @@ const DateSelect = ({
 
   const triggerQuery = useCallback(() => {
     if(queryFrom || queryTo) {
-      let query: Query = {
+      const query: Query = {
         query: {
           range: {
             meeting_date: {}
@@ -154,23 +152,23 @@ const DateSelect = ({
       }
 
       setQuery({
-        query: query
+        query
       });
     }
     else {
       setQuery({
         query: null
-      })
+      });
     }
   }, [queryFrom, queryTo, errors.from, errors.to, setQuery]);
 
   useEffect(() => {
     validateValues();
-  }, [from, to, validateValues])
+  }, [from, to, validateValues]);
 
   useEffect(() => {
     triggerQuery();
-  }, [queryFrom, queryTo, triggerQuery])
+  }, [queryFrom, queryTo, triggerQuery]);
 
   useOutsideClick(ref, () => {
     setActive(false);
@@ -180,17 +178,17 @@ const DateSelect = ({
     if(calendarActive && isActive) {
       return <div className='DateSelect__title'><IconAngleLeft /><span>{t('DECISIONS:back')}</span></div>;
     }
-    else if((from && isValidDate(from)) || (to && isValidDate(to))) {
+    if((from && isValidDate(from)) || (to && isValidDate(to))) {
       let titleString = (from && isValidDate(from)) ? from : '';
       titleString += (to && isValidDate(to)) ? ` - ${to}` : ' -';
       return (
         <div className='DateSelect__title'>{titleString}</div>
       );
     }
-    else {
+    
       return <div className='DateSelect__title DateSelect__title--default'><IconCalendar /><span>{t('DECISIONS:choose-date')}</span></div>;
-    }
-  }
+    
+  };
 
   const getHandle = () => {
     if(!(calendarActive && isActive)) {
@@ -198,7 +196,7 @@ const DateSelect = ({
         <IconAngleUp /> :
         <IconAngleDown />;
     }
-  }
+  };
 
   const handleControlClick = () => {
     if(calendarActive && isActive) {
@@ -207,15 +205,15 @@ const DateSelect = ({
     else {
       setActive(!isActive);
     }
-  }
+  };
 
-  let collapsibleStyle: any = {};
+  const collapsibleStyle: any = {};
   if(ref && ref.current) {
-    collapsibleStyle.top = ref.current.clientHeight + 'px';
+    collapsibleStyle.top = `${ref.current.clientHeight  }px`;
   }
 
   const renderField = () => (
-    <React.Fragment>
+    <>
       {calendarActive ?
         <div className='DateSelect__datepicker-wrapper'>
           <div className='DateSelect__datepicker-container'>
@@ -227,7 +225,7 @@ const DateSelect = ({
                 setDate={setFromWithClear}
                 error={errors.from}
                 onChange={setFrom}
-                autoFocus={true}
+                autoFocus
               />
               <IconMinus className='DateSelect__date-fields-divider' />
               <DateInput
@@ -281,7 +279,7 @@ const DateSelect = ({
           </Button>
         </div>
       }
-    </React.Fragment>
+    </>
   );
 
   return (
@@ -298,7 +296,7 @@ const DateSelect = ({
         className={classNames(
           'DateSelect__collapsible-control',
           'collapsible-element',
-          {'is-open': isActive}
+          { 'is-open': isActive }
         )}
         aria-controls={ariaControls}
         aria-expanded={isActive}
@@ -317,6 +315,6 @@ const DateSelect = ({
       }
     </div>
   );
-}
+};
 
 export default DateSelect;

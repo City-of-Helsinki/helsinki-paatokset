@@ -13,7 +13,7 @@ const baseTheme = {
   colors: {
     backgroundColor: '#f7f7f8'
   }
-}
+};
 
 type Props = {
   url: string
@@ -28,9 +28,9 @@ const SearchContainer = ({ url }: Props) => {
 
   return (
     <ReactiveBase
-      url={url}
       app={`${Indices.PAATOKSET_DECISIONS},${Indices.PAATOKSET_POLICYMAKERS}`}
       theme={baseTheme}
+      url={url}
       >
         <FormContainer
           langcode={t('SEARCH:langcode')}
@@ -40,7 +40,7 @@ const SearchContainer = ({ url }: Props) => {
         />
         <ResultsContainer />
       </ReactiveBase>
-  )
-}
+  );
+};
 
 export default SearchContainer;

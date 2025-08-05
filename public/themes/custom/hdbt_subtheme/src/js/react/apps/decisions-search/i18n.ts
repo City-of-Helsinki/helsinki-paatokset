@@ -1,7 +1,7 @@
-import i18n from "i18next";
-import detector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
-import locales from './locales/locales.json'
+import i18n from 'i18next';
+import detector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
+import locales from './locales/locales.json';
 
 i18n
   .use(detector)

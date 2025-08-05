@@ -2,12 +2,12 @@ import { useEffect, useCallback } from 'react';
 import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
+import classNames from 'classnames';
 import SpecialCases from '../../../enum/SpecialCases';
 import { Option } from '../../../types/types';
 
 import formStyles from '../../../../../common/styles/Form.module.scss';
 import multiSelectStyles from './Multiselect.module.scss';
-import classNames from 'classnames';
 
 type Props = {
   aggregations: any
@@ -22,9 +22,9 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
   const { t } = useTranslation();
 
   const specialCases = [
-    {label: t('DECISIONS:city-council'), value: SpecialCases.CITY_COUNCIL},
-    {label: t('DECISIONS:city-hall'), value: SpecialCases.CITY_HALL},
-    {label: t('DECISIONS:trustee'), value: SpecialCases.TRUSTEE},
+    { label: t('DECISIONS:city-council'), value: SpecialCases.CITY_COUNCIL },
+    { label: t('DECISIONS:city-hall'), value: SpecialCases.CITY_HALL },
+    { label: t('DECISIONS:trustee'), value: SpecialCases.TRUSTEE },
   ];
 
   if(
@@ -33,14 +33,14 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
     aggregations.sector_id.buckets.length
   ) {
     sectors = aggregations.sector_id.buckets.map((sector: any) => ({
-      label: t('SECTORS:' + sector.key),
+      label: t(`SECTORS:${  sector.key}`),
       value: sector.key
     }));
   }
 
   const options = sectors.concat(specialCases).sort((a, b) => a.label.localeCompare(b.label));
 
-  options.unshift({label: t('DECISIONS:show-all'), value: null});
+  options.unshift({ label: t('DECISIONS:show-all'), value: null });
 
   const triggerQuery = useCallback(() => {
     if(queryValue) {
@@ -49,20 +49,20 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
         SpecialCases.CITY_HALL,
         SpecialCases.TRUSTEE
       ];
-      let finalQuery: any = {bool: {should: []}};
+      const finalQuery: any = { bool: { should: [] } };
       let value: string|null = null;
       if(specialCaseValues.includes(queryValue.value)) {
-        finalQuery.bool.should.push({ term: { special_status: queryValue.value }});
+        finalQuery.bool.should.push({ term: { special_status: queryValue.value } });
         value = queryValue.label;
       }
       else if (queryValue.value !== null) {
-        finalQuery.bool.should.push({ term: { sector_id: queryValue.value }});
+        finalQuery.bool.should.push({ term: { sector_id: queryValue.value } });
         value = queryValue.label;
       }
 
       setQuery({
         query: finalQuery,
-        value: value
+        value
       });
     }
     else {
@@ -75,7 +75,7 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
 
   useEffect(() => {
     triggerQuery();
-  }, [queryValue, setQuery, triggerQuery])
+  }, [queryValue, setQuery, triggerQuery]);
 
   const currentValue: Option|Option[] = value || [];
 
@@ -86,7 +86,7 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
     else {
       setValue(dm);
     }
-  }
+  };
 
   return (
     <Select
@@ -99,10 +99,10 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
       label={t('DECISIONS:decisionmaker')}
       placeholder={t('DECISIONS:choose-decisionmaker')}
       clearButtonAriaLabel='Clear all selections'
-      selectedItemRemoveButtonAriaLabel={`Remove value`}
+      selectedItemRemoveButtonAriaLabel="Remove value"
       onChange={onChange}
     />
-  )
-}
+  );
+};
 
 export default DMSelect;

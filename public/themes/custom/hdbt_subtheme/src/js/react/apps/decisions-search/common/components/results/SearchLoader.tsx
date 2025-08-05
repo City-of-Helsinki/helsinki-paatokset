@@ -9,6 +9,6 @@ const FormTitle = () => {
       <p>{t('SEARCH:loading')}</p>
     </div>
   );
-}
+};
 
 export default FormTitle;

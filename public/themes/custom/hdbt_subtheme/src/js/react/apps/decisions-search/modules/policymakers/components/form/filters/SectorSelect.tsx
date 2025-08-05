@@ -1,5 +1,5 @@
-import Combobox from '../../../../../common/components/form/Combobox';
 import { useTranslation } from 'react-i18next';
+import Combobox from '../../../../../common/components/form/Combobox';
 
 import IndexFields from '../../../enum/IndexFields';
 

@@ -1,11 +1,11 @@
 .decision-search-date-picker {
   .react-calendar__navigation {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    display: flex;
     font-weight: bold;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    width: 100%;
   }
 
   span.react-calendar__navigation__label__labelText {
@@ -20,8 +20,8 @@
     text-align: center;
 
     abbr[title] {
-      text-decoration: none;
       font-weight: bold;
+      text-decoration: none;
       text-transform: uppercase;
     }
   }

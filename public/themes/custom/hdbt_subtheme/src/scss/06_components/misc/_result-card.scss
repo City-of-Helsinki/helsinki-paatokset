@@ -76,9 +76,9 @@
 }
 
 .decisions-search-result-card__phantom-card {
-  display: none;
   background-color: transparent;
   cursor: unset;
+  display: none;
 
   @media (min-width: 768px) {
     display: block;
@@ -122,8 +122,8 @@
 }
 
 .decisions-search-result-card__amount {
-  margin-top: 0;
   margin-bottom: 36px;
+  margin-top: 0;
 
   p {
     line-height: 1.5;
@@ -131,8 +131,8 @@
 }
 
 .decisions-search-result-card__footer {
-  padding: 0 16px;
   margin-bottom: 18px;
+  padding: 0 16px;
 }
 
 .decisions-search-result-card__tags {

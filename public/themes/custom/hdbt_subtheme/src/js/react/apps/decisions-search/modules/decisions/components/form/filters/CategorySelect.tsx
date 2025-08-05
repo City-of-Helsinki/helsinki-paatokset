@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 import { Option } from '../../../types/types';
 
-import classNames from 'classnames';
 
 type Props = {
   aggregations: any,
@@ -23,7 +23,7 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
     aggregations.top_category_code.buckets.length
     ) {
     categories = aggregations.top_category_code.buckets.map((category: any) => ({
-      label: t("CATEGORIES:" + category.key),
+      label: t(`CATEGORIES:${  category.key}`),
       value: category.key
     }));
   }
@@ -49,35 +49,33 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
 
   useEffect(() => {
     triggerQuery();
-  }, [queryValue, setQuery, triggerQuery])
+  }, [queryValue, setQuery, triggerQuery]);
 
   const onChange = (categories: Array<any>) => {
-    const values = categories.map((category) => {
-      return {value: category.value, label: category.label};
-    });
+    const values = categories.map((category) => ({ value: category.value, label: category.label }));
     setValue(values);
-  }
+  };
 
-  const formattedValue: Array<any> = value.map((category) => {
-    return {value: category.value, label: category.label};
-  });
+  const formattedValue: Array<any> = value.map((category) => ({ value: category.value, label: category.label }));
 
   return (
     <Select
-      multiselect
+      multiSelect
       className={classNames(
         'decisions-search-multiselect',
         'decisions-search-form-element',
       )}
-      label={t('DECISIONS:topic')}
-      placeholder={t('DECISIONS:choose-topic')}
+      texts={{
+        clearButtonAriaLabel: 'Clear all selections',
+        label: t('DECISIONS:topic'),
+        placeholder: t('DECISIONS:choose-topic')
+      }}
       options={categories}
       value={formattedValue}
-      clearButtonAriaLabel='Clear all selections'
-      selectedItemRemoveButtonAriaLabel={`Remove value`}
+      // selectedItemRemoveButtonAriaLabel={`Remove value`}
       onChange={onChange}
     />
   );
-}
+};
 
 export default CategorySelect;

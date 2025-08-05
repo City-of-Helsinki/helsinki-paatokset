@@ -15,7 +15,7 @@ type Props = {
 const DateInput = ({ autoFocus, defaultValue, label, setDate, error, name, onChange }: Props) => {
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
     onChange(event.target.value);
-  }
+  };
 
   const invalid = !!error;
   
@@ -24,7 +24,7 @@ const DateInput = ({ autoFocus, defaultValue, label, setDate, error, name, onCha
       className={classNames(
         'decisions-search-date-input',
         'decisions-search-date-input__wrapper',
-        {'has-input': defaultValue && defaultValue.length > 0}
+        { 'has-input': defaultValue && defaultValue.length > 0 }
       )}
     >
       <IconCalendarPlus />
@@ -41,6 +41,6 @@ const DateInput = ({ autoFocus, defaultValue, label, setDate, error, name, onCha
       />
     </div>
   );
-}
+};
 
 export default DateInput;

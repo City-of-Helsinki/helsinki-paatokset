@@ -34,7 +34,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
         return true;
       });
       setCategories(current, true);
-    }
+    };
 
     return categories.map(category => (
       <button
@@ -46,7 +46,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
         <IconCross />
       </button>
     ));
-  }
+  };
 
   const getDmFilters = () => {
     if(!dms) {
@@ -54,8 +54,8 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
     }
 
     const deleteSingleDm = (dm: any) => {
-      setDms(dms.filter(_dm => _dm.value !== dm ), true);
-    }
+      setDms(dms.filter(_dm => _dm.value !== dm), true);
+    };
 
     return dms.map((dm: Option) => (
         <button
@@ -67,11 +67,11 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
           <IconCross />
         </button>
       ));
-  }
+  };
 
   const clearDms = () => {
     setDms(null, true);
-  }
+  };
 
   const getDateFilter = () => {
     if(!to && !from) {
@@ -82,7 +82,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
       setTo(null, true);
       setFrom(null, true);
       setSelection(null);
-    }
+    };
 
     return (
       <button
@@ -94,13 +94,12 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
         <IconCross />
       </button>
     );
-  }
+  };
   
   return (
     <div className='decisions-search-selected-filters-container form-element container'>
       <SelectedFilters
-        render={() => {
-          return (
+        render={() => (
             <div className='decisions-search-selected-filters-container__container'>
               {getDateFilter()}
               {getCategoryFilters()}
@@ -113,7 +112,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
                     clearDms();
                     setFrom(null, true);
                     setTo(null, true);
-                    setSelection(null)
+                    setSelection(null);
                   }}
                 >
                   <IconCross />
@@ -122,8 +121,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
               }
 
             </div>
-          )
-        }}
+          )}
       />
     </div>
   );

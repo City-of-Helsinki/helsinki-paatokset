@@ -33,9 +33,9 @@ const SortSelect = ({ setSort }: Props) => {
           value: Sort.DATE_ASC
         }
       ]}
-      onChange={({value}: any) => setSort(value)}
+      onChange={({ value }: any) => setSort(value)}
     />
   );
-}
+};
 
 export default SortSelect;

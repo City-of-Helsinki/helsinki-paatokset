@@ -33,13 +33,13 @@ const Combobox = ({
           }
         },
         value: queryValue
-      })
+      });
     }
     else {
       setQuery({
         query: null,
         values: []
-      })
+      });
     }
   }, [queryValue, aggregationKey, setQuery]);
 
@@ -61,9 +61,7 @@ const Combobox = ({
     setValue(values);
   };
 
-  const formattedValue: Array<any> = value.map((field) => {
-    return {value: field, label: field}
-  });
+  const formattedValue: Array<any> = value.map((field) => ({ value: field, label: field }));
 
   return (
     <Select
@@ -75,13 +73,13 @@ const Combobox = ({
       placeholder={placeholder}
       options={options}
       value={formattedValue}
-      multiselect={true}
+      multiSelect
       clearButtonAriaLabel='Clear all selections'
-      selectedItemRemoveButtonAriaLabel={`Remove value`}
+      selectedItemRemoveButtonAriaLabel="Remove value"
       toggleButtonAriaLabel='Toggle menu'
       onChange={onChange}
     />
-  )
-}
+  );
+};
 
 export default Combobox;

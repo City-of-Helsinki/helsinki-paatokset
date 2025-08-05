@@ -5,12 +5,12 @@
 .decisions-search-results__container {
   @media (min-width: 768px) {
     display: flex;
-    justify-content: flex-start;
     flex-wrap: wrap;
+    justify-content: flex-start;
 
-    > div:first-child {
-      width: auto;  
+    > div:first-child {  
       display: inline-flex;
+      width: auto;
     }
   }
 }
@@ -35,11 +35,11 @@
 }
 
 .decisions-search-results__stats {
-  width: 100%;
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 32px;
+  width: 100%;
 
   @media (min-width: 768px) {
     margin-bottom: 0;
@@ -59,8 +59,8 @@
 }
 
 .decisions-search-results__stats-size {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .decisions-search-results__size-select {

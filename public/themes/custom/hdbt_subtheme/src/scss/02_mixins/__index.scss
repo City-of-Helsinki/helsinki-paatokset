@@ -4,8 +4,8 @@ $input-font-size: 18px;
 @mixin input {
   border: 2px solid #808080;
   border-radius: 2px;
-  height: $input-height;
   font-size: $input-font-size;
+  height: $input-height;
 
   &:focus, &:focus-within, &:hover {
     border-color: #1a1a1a;

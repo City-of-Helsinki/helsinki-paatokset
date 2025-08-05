@@ -46,7 +46,7 @@ const SelectedFiltersContainer = ({ filters, clearAll }: Props) => {
               {
                 width >= 1200 &&
                 <span className='decisions-search-selected-filters__filter-label'>
-                  {t('SEARCH:filters') + ':'}
+                  {`${t('SEARCH:filters')  }:`}
                 </span>
               }
               {filterButtons}
@@ -62,7 +62,7 @@ const SelectedFiltersContainer = ({ filters, clearAll }: Props) => {
                 {t('SEARCH:clear-all')}
               </button>
             </div>
-          )
+          );
         }}
       />
     </div>

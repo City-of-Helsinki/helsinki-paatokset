@@ -1,7 +1,7 @@
 .decisions-search-selected-filters-container {
-  padding: 28px 0;
-  overflow: visible;
   background: #f7f7f8;
+  overflow: visible;
+  padding: 28px 0;
 }
 
 .decisions-search-selected-filters-container__container {
@@ -10,18 +10,18 @@
 }
 
 .decisions-search-selected-filters-container__filter {
-  font-size: 14px;
-  color: #121212;
-  background: transparent;
-  display: inline-flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 48px;
-  padding: 12px 0px 12px 20px;
-  margin-right: 20px;
-  margin-bottom: 12px;
+  background: transparent;
   border: solid 1px #000;
+  border-radius: 48px;
+  color: #121212;
   cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  justify-content: center;
+  margin-bottom: 12px;
+  margin-right: 20px;
+  padding: 12px 0px 12px 20px;
 
   svg {
     margin-left: var(--spacing-2-xs);
@@ -39,32 +39,32 @@
 }
 
 .decisions-search-selected-filters-container__clear-filters {
-  border: none;
   background: transparent;
-  color: #000;
+  border: none;
+  border: 2px solid transparent;
   border-radius: 0;
+  color: #000;
+  cursor: pointer;
   font-size: 16px;
   font-weight: 500;
-  padding-right: 20px;
   padding-left: 12px;
-  border: 2px solid transparent;
-  cursor: pointer;
+  padding-right: 20px;
 
   svg {
     margin-left: 0;
   }
 
   &:hover {
-    color: #121212;
     background-color: transparent;
     border-color: #000;
+    color: #121212;
   }
 }
 
 .decisions-search-selected-filters-container__filter-label {
-  margin-right: 13px;
-  margin-bottom: 12px;
-  display: flex;
   align-items: center;
+  display: flex;
   font-size: 20px;
+  margin-bottom: 12px;
+  margin-right: 13px;
 }

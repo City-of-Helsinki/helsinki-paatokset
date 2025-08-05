@@ -10,7 +10,7 @@ const baseTheme = {
   colors: {
     backgroundColor: '#f7f7f8'
   }
-}
+};
 
 type Props = {
   url: string
@@ -27,13 +27,13 @@ const SearchContainer = ({ url }: Props) => {
       >
         <FormContainer
           langcode={t('SEARCH:langcode')}
-          searchTriggered={true}
+          searchTriggered
           triggerSearch={function(){}}
           searchLabel={t('DECISIONS:frontpage-search-label')}
           searchRedirect={t('DECISIONS:redirect-uri')}
         />
       </ReactiveBase>
-  )
-}
+  );
+};
 
 export default SearchContainer;

@@ -13,7 +13,7 @@ type Props = {
   getLastRefreshed: Function,
 }
 
-const ResultsContainer = ({getLastRefreshed}: Props) => {
+const ResultsContainer = ({ getLastRefreshed }: Props) => {
   const { t } = useTranslation();
   const resultsContainer = useRef<HTMLDivElement|null>(null);
 
@@ -21,7 +21,7 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
     if(resultsContainer.current) {
       resultsContainer.current.scrollIntoView();
     }
-  }
+  };
 
   return (
     <div
@@ -40,36 +40,36 @@ const ResultsContainer = ({getLastRefreshed}: Props) => {
         size={10}
         pages={3}
         loader={<SearchLoader />}
-        pagination={true}
+        pagination
         dataField={IndexFields.TITLE}
         onPageChange={scrollToResults}
-        URLParams={true}
+        URLParams
         defaultQuery={() => (
           {
             query: {
-              "bool": {
-                "must": [
+              'bool': {
+                'must': [
                   {
-                    "match": {
+                    'match': {
                       [IndexFields.POLICYMAKER_EXISTING]: true
                     }
                   },
                   {
-                    "bool": {
-                      "should": [
+                    'bool': {
+                      'should': [
                         {
-                          "match": {[IndexFields.LANGUAGE]: t('SEARCH:langcode')}
+                          'match': { [IndexFields.LANGUAGE]: t('SEARCH:langcode') }
                         },
                         {
-                          "match": {[IndexFields.HAS_TRANSLATION]: false}
+                          'match': { [IndexFields.HAS_TRANSLATION]: false }
                         }
                       ]
                     },
                   }
                 ],
-                "must_not": {
-                  "term": {
-                    "force_refresh": getLastRefreshed()
+                'must_not': {
+                  'term': {
+                    'force_refresh': getLastRefreshed()
                   }
                 }
               }

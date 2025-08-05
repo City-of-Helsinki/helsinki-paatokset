@@ -3,7 +3,7 @@ import { format, parse } from 'date-fns';
 import Calendar from 'react-calendar';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
 
-import i18n from '../../../.././../../i18n';
+import i18n from '../../../../../../i18n';
 import { isValidDate } from '../../../../../../utils/Date';
 
 type Props = {
@@ -22,9 +22,9 @@ const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
       setTo(format(value[1], 'd.M.y'));
     }
     else {
-      setTo(undefined)
+      setTo(undefined);
     }
-  }
+  };
   let value: Array<Date>|null;
 
   if(isValidDate(from)) {
@@ -44,15 +44,15 @@ const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
         locale={i18n.language}
         value={value}
         onChange={onSelect}
-        selectRange={true}
-        allowPartialRange={true}
+        selectRange
+        allowPartialRange
         nextLabel={<IconAngleRight />}
         next2Label={null}
         prevLabel={<IconAngleLeft />}
         prev2Label={null}
       />
     </div>
-  )
-}
+  );
+};
 
 export default DatePicker;

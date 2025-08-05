@@ -24,6 +24,6 @@ const SearchBarAutocomplete = ({ parsedData, getItemProps, highlightedIndex, sel
       ))}
     </div>
   </div>
-)
+);
 
-export default SearchBarAutocomplete
+export default SearchBarAutocomplete;

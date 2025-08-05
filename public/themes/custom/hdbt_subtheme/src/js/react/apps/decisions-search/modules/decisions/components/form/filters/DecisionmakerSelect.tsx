@@ -1,9 +1,9 @@
 import { Select } from 'hds-react';
-import { Option, Options } from '../../../types/types';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useCallback, useState } from 'react';
+import { Option, Options } from '../../../types/types';
 import SpecialCases from '../../../enum/SpecialCases';
 
-import { useEffect, useCallback, useState } from 'react';
 import sectorMap, { SectorMap } from '../../../enum/SectorMap';
 
 type Props = {
@@ -15,28 +15,24 @@ type Props = {
   langcode: string
 };
 
-const DecisionmakerSelect = ({setQuery, setValues, values, opts, queryValues, langcode}: Props) => {
+const DecisionmakerSelect = ({ setQuery, setValues, values, opts, queryValues, langcode }: Props) => {
   const { t } = useTranslation();
   const specialCases = [{
     label: t('DECISIONS:trustee'),
-    sort_label: '0 - ' + t('DECISIONS:trustee'),
+    sort_label: `0 - ${  t('DECISIONS:trustee')}`,
     value: SpecialCases.TRUSTEE,
     key: SpecialCases.TRUSTEE,
   }];
 
   const [selected, setSelected] = useState(queryValues);
 
-  let sectors: Options = SectorMap.filter((sector) => {
-    return sector.langcode === langcode;
-  })
-  .map((sector:any) => {
-    return {
-      label: t('SECTORS:' + sector.value),
-      sort_label: t('SECTORS:' + sector.value),
+  const sectors: Options = SectorMap.filter((sector) => sector.langcode === langcode)
+  .map((sector:any) => ({
+      label: t(`SECTORS:${  sector.value}`),
+      sort_label: t(`SECTORS:${  sector.value}`),
       value: sector.value,
-    };
-  })
-  .filter((sector)=>{ return sector });
+    }))
+  .filter((sector) => sector);
 
   let options: any[] = [];
   options = sectors.concat(specialCases, opts);
@@ -47,28 +43,26 @@ const DecisionmakerSelect = ({setQuery, setValues, values, opts, queryValues, la
       const specialCaseValues = [
         SpecialCases.TRUSTEE
       ];
-      let finalQuery: any = {bool: {should: []}};
+      const finalQuery: any = { bool: { should: [] } };
       let value: string|null = null;
 
       const values: string[] = [];
       queryValues.forEach((queryValue) => {
 
-        const sector = sectorMap.find((item)=>{
-          return item.value === queryValue.value;
-        });
+        const sector = sectorMap.find((item) => item.value === queryValue.value);
 
         if (sector) {
-          finalQuery.bool.should.push({ term: { sector_id: queryValue.value }});
+          finalQuery.bool.should.push({ term: { sector_id: queryValue.value } });
           value = queryValue.value;
           values.push(value);
         }
         else if(specialCaseValues.includes(queryValue.value)) {
-          finalQuery.bool.should.push({ term: { special_status: queryValue.value }});
+          finalQuery.bool.should.push({ term: { special_status: queryValue.value } });
           value = queryValue.value;
           values.push(value);
         }
-        else if(queryValues?.find((option: Option) => option.value === queryValue.value )) {
-          finalQuery.bool.should.push({ term: { field_policymaker_id: queryValue.value }});
+        else if(queryValues?.find((option: Option) => option.value === queryValue.value)) {
+          finalQuery.bool.should.push({ term: { field_policymaker_id: queryValue.value } });
           value = queryValue.value;
           values.push(value);
         }
@@ -89,7 +83,7 @@ const DecisionmakerSelect = ({setQuery, setValues, values, opts, queryValues, la
 
   useEffect(() => {
     setSelected(queryValues);
-    triggerQuery()
+    triggerQuery();
   }, [queryValues, setQuery, triggerQuery]);
 
   const onChange = (selected: any) => {
@@ -99,28 +93,30 @@ const DecisionmakerSelect = ({setQuery, setValues, values, opts, queryValues, la
     } else {
       setValues(null);
     }
-  }
+  };
 
   return (
     <div className='decisions-search-form-element'>
       <Select
-        multiSelect
         id="decisionmakerselect"
-        value={selected}
+        multiSelect
         onChange={onChange}
-        label={t('DECISIONS:decisionmaker')}
-        placeholder={t('DECISIONS:choose-decisionmaker')}
-        clearButtonAriaLabel='Clear all selections'
-        selectedItemRemoveButtonAriaLabel={`Remove value`}
-        toggleButtonAriaLabel={'Toggle'}
+        options={options}
+        selectedItemRemoveButtonAriaLabel="Remove value"
+        texts={{
+          clearButtonAriaLabel: 'Clear all selections',
+          label: t('DECISIONS:decisionmaker'),
+          placeholder: t('DECISIONS:choose-decisionmaker'),
+        }}
         theme={{
           '--focus-outline-color': 'var(--hdbt-color-black)',
           '--multiselect-checkbox-background-selected': 'black',
         }}
-        options={options}
+        // toggleButtonAriaLabel={'Toggle'}
+        value={selected}
       />
     </div>
   );
-}
+};
 
 export default DecisionmakerSelect;

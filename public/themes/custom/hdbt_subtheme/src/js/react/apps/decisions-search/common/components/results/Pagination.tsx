@@ -1,4 +1,4 @@
-import {Pagination as HDBTPagination} from '@/react/common/Pagination';
+import { Pagination as HDBTPagination } from '@/react/common/Pagination';
 
 type Props = {
   pages: number,

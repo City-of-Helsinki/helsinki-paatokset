@@ -14,7 +14,7 @@ const baseTheme = {
   colors: {
     backgroundColor: '#f7f7f8'
   }
-}
+};
 
 type Props = {
   url: string
@@ -27,15 +27,13 @@ const SearchContainer = ({ url }: Props) => {
 
   const triggerSearch = () => {
     setSearchStatus(true);
-  }
+  };
 
   const setLastRefreshed = () => {
     setLastRefreshTime(String(Date.now()));
-  }
+  };
 
-  const getLastRefreshed = () => {
-    return lastRefreshTime;
-  }
+  const getLastRefreshed = () => lastRefreshTime;
 
   return (
     <ReactiveBase
@@ -53,7 +51,7 @@ const SearchContainer = ({ url }: Props) => {
             getLastRefreshed={getLastRefreshed} />
         }
       </ReactiveBase>
-  )
-}
+  );
+};
 
 export default SearchContainer;

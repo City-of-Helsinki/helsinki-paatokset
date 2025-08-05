@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
+import { ReactiveComponent } from '@appbaseio/reactivesearch';
+import classNames from 'classnames';
 import SearchBar from './SearchBar';
 import SubmitButton from './SubmitButton';
-import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import SearchComponents from '../../enum/SearchComponents';
 import IndexFields from '../../enum/IndexFields';
 import SelectedFilters from '../../../../common/components/form/SelectedFilters';
 import { getQueryParam } from '../../../../utils/QueryString';
 
 import SectorSelect from './filters/SectorSelect';
-import classNames from 'classnames';
 
 type Props = {
   langcode: string,
@@ -33,7 +33,7 @@ const getInitialValue = (key: string) => {
     return JSON.parse(queryParam);
   }
   return [];
-}
+};
 
 class FormContainer extends Component<Props> {
   state: FormContainerState = {
@@ -66,7 +66,7 @@ class FormContainer extends Component<Props> {
     if(initialPhrase) {
       this.setState({
         wildcardPhrase: initialPhrase
-      })
+      });
     }
 
     const initialPage = getQueryParam('results');
@@ -81,45 +81,45 @@ class FormContainer extends Component<Props> {
     this.setState({
       phrase: value
     });
-  }
+  };
 
   setWildCardPhrase = (value: string) => {
     this.setState({
       wildcardPhrase: value
     });
-  }
+  };
 
   setSectors = (sectors: string[]) => {
     this.setState({
-      sectors: sectors
+      sectors
     });
-  }
+  };
 
   searchBar = React.createRef<any>();
 
   getFilters = () => {
     const { sectorsSelected } = this.state;
-    const sectorFilters = sectorsSelected.map(sector => ({value: sector, type: SearchComponents.SECTOR, deleteFilter: this.deleteFilter}));
+    const sectorFilters = sectorsSelected.map(sector => ({ value: sector, type: SearchComponents.SECTOR, deleteFilter: this.deleteFilter }));
     return sectorFilters;
-  }
+  };
 
   updateFilters = () => {
     this.setState({
       querySectors: this.state.sectors,
       sectorsSelected: this.state.sectors
     });
-  }
+  };
 
   deleteFilter = (value: string, type: string) => {
-    let values = [...this.state.sectors];
+    const values = [...this.state.sectors];
     values.splice(values.indexOf(value), 1);
     this.setSectors(values);
     this.setState({
       sectors: values,
       sectorsSelected: values,
       querySectors: values
-    })
-  }
+    });
+  };
 
   clearAllFilters = () => {
     this.setState({
@@ -127,7 +127,7 @@ class FormContainer extends Component<Props> {
       querySectors: [],
       sectorsSelected: []
     });
-  }
+  };
 
   handleSubmit = (event: any) => {
     if(event) {
@@ -147,7 +147,7 @@ class FormContainer extends Component<Props> {
     });
 
     this.updateFilters();
-  }
+  };
 
   render() {
     const { phrase, sectors, querySectors, wildcardPhrase } = this.state;
@@ -172,7 +172,7 @@ class FormContainer extends Component<Props> {
               setValue={this.setPhrase}
             />
           </div>
-          <div className='decisions-search-form-container__lower-fields'>
+          {/* <div className='decisions-search-form-container__lower-fields'>
             <ReactiveComponent
               componentId={SearchComponents.SECTOR}
               defaultQuery={() => (
@@ -225,7 +225,7 @@ class FormContainer extends Component<Props> {
                 }
               })}
             />
-          </div>
+          </div> */}
           <SubmitButton />
           <SelectedFilters
             filters={this.getFilters()}

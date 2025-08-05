@@ -2,9 +2,9 @@ import React from 'react';
 import { IconArrowRight } from 'hds-react';
 import { format } from 'date-fns';
 
+import classNames from 'classnames';
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
 
-import classNames from 'classnames';
 
 type Props = {
   category: string,
@@ -24,7 +24,7 @@ type Props = {
   organization_name: string
 };
 
-const ResultCard = ({category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, subject, issue_subject, _score}: Props) => {
+const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, subject, issue_subject, _score }: Props) => {
   const colorClass = useDepartmentClasses(color_class);
 
   let url = '';
@@ -54,7 +54,7 @@ const ResultCard = ({category, color_class, date, href, lang_prefix, url_prefix,
   return (
     <div className={cardClass}>
       <a href={ url } className='decisions-search-result-card__link' tabIndex={0}>
-        <div className='decisions-search-multiple-results__label' style={{backgroundColor: colorClass}}>
+        <div className='decisions-search-multiple-results__label' style={{ backgroundColor: colorClass }}>
           { organization_name }
         </div>
         <div className='decisions-search-result-card__container'>
@@ -64,8 +64,8 @@ const ResultCard = ({category, color_class, date, href, lang_prefix, url_prefix,
             </div>
           </div>
           <div className='decisions-search-result-card__title'>
-            {process.env.REACT_APP_DEVELOPER_MODE &&
-              <span style={{color: 'red'}}>Score: { _score }, Diary number: { issue_id }, Unique issue ID: { unique_issue_id }, Doc Count: { doc_count } <br /> URL: { href }</span>
+            {_DEBUG_MODE_ &&
+              <span style={{ color: 'red' }}>Score: { _score }, Diary number: { issue_id }, Unique issue ID: { unique_issue_id }, Doc Count: { doc_count } <br /> URL: { href }</span>
             }
             <h2>{ subject }</h2>
             {
@@ -88,12 +88,12 @@ const ResultCard = ({category, color_class, date, href, lang_prefix, url_prefix,
               </div>
           }
           <div className='decisions-search-result-card__issue-link'>
-              <IconArrowRight size={'l'}/>
+              <IconArrowRight size="l"/>
           </div>
         </div>
       </a>
     </div>
   );
-}
+};
 
 export default ResultCard;

@@ -5,7 +5,7 @@ const FormTitle = () => {
 
   return (
     <h2>{t('POLICYMAKERS:form-title')}</h2>
-  )
-}
+  );
+};
 
 export default FormTitle;

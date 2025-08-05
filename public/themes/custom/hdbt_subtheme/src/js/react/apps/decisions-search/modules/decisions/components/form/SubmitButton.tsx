@@ -38,6 +38,6 @@ const SubmitButton = ({ disabled }: Props) => {
       )}
     />
   );
-}
+};
 
 export default SubmitButton;

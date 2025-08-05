@@ -1,6 +1,8 @@
 import React, { useContext, useRef, useState } from 'react';
 import { ReactiveList, StateProvider } from '@appbaseio/reactivesearch';
 import { useTranslation } from 'react-i18next';
+import { Notification } from 'hds-react';
+import classNames from 'classnames';
 import { isOperatorSearch } from '../../../../utils/OperatorSearch';
 
 import ResultCard from './ResultCard';
@@ -13,10 +15,8 @@ import { Sort } from '../../enum/Sort';
 import Pagination from '../../../../common/components/results/PaginationBundled';
 import PhantomCard from './PhantomCard';
 import SearchLoader from '../../../../common/components/results/SearchLoader';
-import { Notification } from 'hds-react';
 import { OperatorGuideContext } from '../../../../index';
 
-import classNames from 'classnames';
 
 const ResultsContainer = () => {
   const [sort, setSort] = useState<string|undefined>(Sort.SCORE);
@@ -34,7 +34,7 @@ const ResultsContainer = () => {
       resultsContainer.current.scrollIntoView();
     }
     pageLoads++;
-  }
+  };
 
   const cardWrapperStyles: any = {
     margin: 0,
@@ -42,7 +42,7 @@ const ResultsContainer = () => {
     width: '100%'
   };
   if(width > 1281) {
-    cardWrapperStyles.justifyContent = 'space-between'
+    cardWrapperStyles.justifyContent = 'space-between';
   }
 
   const getRealResultsAmount = (searchState:any) => {
@@ -53,26 +53,25 @@ const ResultsContainer = () => {
       return searchState.results.aggregations.unique_issue_id.buckets.length;
     }
     return searchState.results.hits?.total || 0;
-  }
+  };
 
   const dataField = sort === Sort.SCORE ? IndexFields.SCORE : IndexFields.MEETING_DATE;
   const sortBy = (sort === Sort.SCORE || sort === Sort.DATE_DESC) ? 'desc' : 'asc';
-  const customQuery = () => {
-    return {
+  const customQuery = () => ({
       query: {
         function_score: {
           boost: 10,
           query: {
             bool: {
               must: [
-                {"exists": {"field": IndexFields.MEETING_DATE}},
+                { 'exists': { 'field': IndexFields.MEETING_DATE } },
                 {
                   // Query for documents that are translated to current
                   // language, or they are not translated at all.
                   bool: {
                     should: [
-                      {"term": {[IndexFields.LANGUAGE]: t('SEARCH:langcode')}},
-                      {"term": {[IndexFields.HAS_TRANSLATION]: false}}
+                      { 'term': { [IndexFields.LANGUAGE]: t('SEARCH:langcode') } },
+                      { 'term': { [IndexFields.HAS_TRANSLATION]: false } }
                     ]
                   }
                 }
@@ -80,7 +79,7 @@ const ResultsContainer = () => {
             }
           },
           functions: [
-            {gauss:
+            { gauss:
               {
                 [IndexFields.MEETING_DATE]: {
                   scale: '30d'
@@ -102,8 +101,7 @@ const ResultsContainer = () => {
       collapse: {
         field: IndexFields.UNIQUE_ISSUE_ID
       }
-    }
-  };
+    });
 
   return (
     <div className='decisions-search-results__container' ref={resultsContainer}>
@@ -116,10 +114,10 @@ const ResultsContainer = () => {
         onQueryChange={
           function(prevQuery, nextQuery) {
             const query = customQuery();
-            if (typeof nextQuery.aggs === "undefined") {
+            if (typeof nextQuery.aggs === 'undefined') {
               nextQuery.aggs = query.aggs;
             }
-            if (typeof nextQuery.collapse === "undefined") {
+            if (typeof nextQuery.collapse === 'undefined') {
               nextQuery.collapse = query.collapse;
             }
           }
@@ -127,12 +125,12 @@ const ResultsContainer = () => {
         scrollOnChange={false}
         componentId={SearchComponents.RESULTS}
         size={size}
-        pagination={true}
+        pagination
         pages={pages}
         dataField={dataField}
         sortBy={sortBy}
         onPageChange={scrollToResults}
-        URLParams={true}
+        URLParams
         loader={<SearchLoader />}
         react={{
           or: [
@@ -155,10 +153,10 @@ const ResultsContainer = () => {
                 <SizeSelect setSize={setSize} />
                 {t('SEARCH:per-page')}
               </span>
-              {process.env.REACT_APP_DEVELOPER_MODE &&
+              {_DEBUG_MODE_ &&
                 <span>
-                  <span style={{color: 'red', paddingLeft: '15px'}}>Total hits: {stats.numberOfResults}</span>
-                  <span style={{color: 'red', paddingLeft: '15px'}}>Time: {stats.time} ms</span>
+                  <span style={{ color: 'red', paddingLeft: '15px' }}>Total hits: {stats.numberOfResults}</span>
+                  <span style={{ color: 'red', paddingLeft: '15px' }}>Time: {stats.time} ms</span>
                 </span>
               }
             </div>
@@ -214,13 +212,13 @@ const ResultsContainer = () => {
               {
                 data.map((item: any) => {
                   // Item mapping.
-                  const {id} = item;
+                  const { id } = item;
                   // Check document count for collapsed search results.
-                  const aggregations = rawData.aggregations;
+                  const { aggregations } = rawData;
                   let doc_count = 1;
 
                   if (item.unique_issue_id && item.unique_issue_id[0] && aggregations && aggregations.unique_issue_id && aggregations.unique_issue_id.buckets.length) {
-                    const buckets = aggregations.unique_issue_id.buckets;
+                    const { buckets } = aggregations.unique_issue_id;
                     for (let i = 0; i < buckets.length; i++) {
                       if (buckets[i].key === item.unique_issue_id[0]) {
                         doc_count = buckets[i].doc_count;
@@ -240,7 +238,7 @@ const ResultsContainer = () => {
                     amount_label: t('DECISIONS:amount-label'),
                     issue_id: item.issue_id,
                     unique_issue_id: item.unique_issue_id,
-                    doc_count: doc_count,
+                    doc_count,
                     policymaker: '',
                     subject: item.subject,
                     issue_subject: item.issue_subject,
@@ -249,7 +247,7 @@ const ResultsContainer = () => {
                   return <ResultCard
                     key={id.toString()}
                     {...resultProps}
-                  />
+                  />;
                 })
               }
               {data.length % 3 !== 0 &&

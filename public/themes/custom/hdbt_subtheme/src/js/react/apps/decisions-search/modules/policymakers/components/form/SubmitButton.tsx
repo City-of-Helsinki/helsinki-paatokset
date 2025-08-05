@@ -1,8 +1,8 @@
 import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import { Button } from 'hds-react';
 import { useTranslation } from 'react-i18next';
-import useWindowDimensions from '../../../../hooks/useWindowDimensions';
 import classNames from 'classnames';
+import useWindowDimensions from '../../../../hooks/useWindowDimensions';
 
 import SearchComponents from '../../enum/SearchComponents';
 
@@ -29,7 +29,7 @@ const SubmitButton = () => {
         </Button>
       )}
     />
-  )
-}
+  );
+};
 
 export default SubmitButton;

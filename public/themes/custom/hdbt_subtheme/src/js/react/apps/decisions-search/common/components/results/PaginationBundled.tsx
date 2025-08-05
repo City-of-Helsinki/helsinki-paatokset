@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
-import {Pagination as HDBTPagination} from '@/react/common/Pagination';
 import classNames from 'classnames';
+import { Pagination as HDBTPagination } from '@/react/common/Pagination';
 
 type Props = {
   pages: number,
@@ -45,8 +45,8 @@ const Pagination = ({
           totalPages={realTotalPages}
           updatePage={setPage}
         />
-        {process.env.REACT_APP_DEVELOPER_MODE &&
-          <div style={{color: 'red'}}>Original amount of pages: {totalPages}</div>
+        {_DEBUG_MODE_ &&
+          <div style={{ color: 'red' }}>Original amount of pages: {totalPages}</div>
         }
       </>
   ) : null;

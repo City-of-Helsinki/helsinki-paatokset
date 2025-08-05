@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import { IconArrowRight, IconAngleRight } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
@@ -12,20 +12,20 @@ type Props = {
   organization_hierarchy: string[]
 }
 
-const ResultCard: FC<Props> = ({color_class, title, trustee_name, trustee_title, url, organization_hierarchy}) => {
+const ResultCard: FC<Props> = ({ color_class, title, trustee_name, trustee_title, url, organization_hierarchy }) => {
   const { t } = useTranslation();
   const colorClass = useDepartmentClasses(color_class);
   const translatedTrusteeTitle = (trustee_title:string) => {
     if (trustee_title.toString() === 'Councillor') {
       return t('POLICYMAKERS:councillor');
     }
-    else if (trustee_title.toString() === 'Deputy councillor') {
+    if (trustee_title.toString() === 'Deputy councillor') {
       return t('POLICYMAKERS:deputy-councillor');
     }
-    else {
+    
       return trustee_title;
-    }
-  }
+    
+  };
 
   const formattedOrganizations = (organization_hierarchy:string[]) => (
     organization_hierarchy.map(
@@ -33,7 +33,7 @@ const ResultCard: FC<Props> = ({color_class, title, trustee_name, trustee_title,
         <span key={index}>{index !== 0 ? <IconAngleRight /> : ''}{organization}</span>
       )
     )
-  )
+  );
 
   if (typeof url !== 'undefined') {
     url = url.toString();
@@ -66,7 +66,7 @@ const ResultCard: FC<Props> = ({color_class, title, trustee_name, trustee_title,
         data-color-class={colorClass}
         className='policymaker-search-result-card__container'
       >
-        <span className='policymaker-search-result-card__department-highlight' style={{backgroundColor: colorClass}}></span>
+        <span className='policymaker-search-result-card__department-highlight' style={{ backgroundColor: colorClass }}></span>
         <div className='policymaker-search-result-card__title-container'>
           <h2 className='policymaker-search-result-card__title'>{trustee_name ?? title}</h2>
           {
@@ -81,7 +81,7 @@ const ResultCard: FC<Props> = ({color_class, title, trustee_name, trustee_title,
         <IconArrowRight size='m' />
       </a>
     </article>
-  )
-}
+  );
+};
 
 export default ResultCard;
