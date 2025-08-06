@@ -1,7 +1,8 @@
-{% set section_menu_title_link = attributes.id ~ '-menu-link'|clean_id %}
-{% set section_menu_aria_controls = attributes.id ~ '-menu'|clean_id %}
+{% set id = 'paatokset-side-navigation-mobile' %}
+{% set section_menu_title_link = id ~ '-menu-link'|clean_id %}
+{% set section_menu_aria_controls = id ~ '-menu'|clean_id %}
 
-{% set heading_id = attributes.id ~ '-menu'|clean_id %}
+{% set heading_id = id ~ '-title'|clean_id %}
 {% set wrapper_attributes = {
   'class': [
     'sidebar-navigation',
@@ -11,7 +12,6 @@
   ],
   'role': 'navigation',
   'aria-labelledby': heading_id,
-  'id': attributes.id,
 } %}
 
 <nav {{ create_attribute(wrapper_attributes) }} >
