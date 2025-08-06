@@ -66,11 +66,11 @@ final class CaseController extends ControllerBase {
       '#theme' => 'decision_navigation',
       '#next_decision' => $next ? [
         'title' => $next->label(),
-        'id' => $this->caseService->normalizeNativeId($next->getNativeId()),
+        'id' => $next->getNormalizedNativeId(),
       ] : NULL,
       '#previous_decision' => $prev ? [
         'title' => $prev->label(),
-        'id' => $this->caseService->normalizeNativeId($prev->getNativeId()),
+        'id' => $prev->getNormalizedNativeId(),
       ] : NULL,
     ];
 

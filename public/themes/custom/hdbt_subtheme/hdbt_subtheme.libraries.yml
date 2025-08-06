@@ -17,11 +17,6 @@ paatokset_submenu:
   js:
     dist/js/paatokset_submenus.min.js: {}
 
-cookie_compliance_block:
-  version: 1.x
-  js:
-    dist/js/cookie_compliance_block.min.js: {}
-
 allu-decisions-search:
   version: 1.0.1
   js:

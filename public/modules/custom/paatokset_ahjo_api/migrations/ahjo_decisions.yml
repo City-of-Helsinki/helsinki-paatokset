@@ -185,7 +185,9 @@ process:
   field_decision_content/format:
     plugin: default_value
     default_value: plain_text
-  field_decision_content/value: content
+  field_decision_content/value:
+    - plugin: ahjo_images
+      source: content
   field_decision_content_parsed/value:
     callable: _paatokset_ahjo_api_parse_decision_content
     plugin: callback
