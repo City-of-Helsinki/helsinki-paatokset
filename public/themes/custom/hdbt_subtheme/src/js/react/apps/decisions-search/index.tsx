@@ -10,10 +10,10 @@ import initSentry from './common/Sentry';
 const rootElement = document.getElementById('paatokset_search');
 let searchContainer;
 
-// eslint-disable-next-line
+// Set to true for some additional info.
 window._DEBUG_MODE_ = false;
+// Need to instantiate this or reactivesearch dies.
 window.process = { env: {} };
-
 
 initSentry();
 
@@ -21,8 +21,7 @@ export const OperatorGuideContext = createContext(rootElement?.dataset.operatorG
 
 if(rootElement) {
   const type = rootElement.dataset.type || 'decisions';
-  // https://paatokset-search.api.hel.fi
-  const elasticUrl = 'https://paatokset-search.api.hel.fi' || rootElement.dataset.url || 'http://localhost:9200';
+  const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
   switch(type) {
     case 'decisions':
