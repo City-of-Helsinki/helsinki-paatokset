@@ -69,14 +69,15 @@ const Combobox = ({
         'decisions-search-combobox',
         'decisions-search-form-element',
       )}
-      label={label}
-      placeholder={placeholder}
-      options={options}
-      value={formattedValue}
-      multiSelect
       clearButtonAriaLabel='Clear all selections'
-      toggleButtonAriaLabel='Toggle menu'
+      label={label}
+      multiSelect
+      noTags
       onChange={onChange}
+      options={options}
+      placeholder={placeholder}
+      toggleButtonAriaLabel='Toggle menu'
+      value={formattedValue}
     />
   );
 };

@@ -87,6 +87,7 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
   return (
     <Select
       className='decisions-search-form-element'
+      noTags
       onChange={onChange}
       options={options}
       texts={{
