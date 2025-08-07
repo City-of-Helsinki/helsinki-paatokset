@@ -1,0 +1,77 @@
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
+.decisions-search-selected-filters {
+  border-top: 1px solid black;
+  margin-top: 37.5px;
+  overflow: hidden;
+  padding-top: 28px;
+
+  @media (min-width: 1200px) {
+    margin-top: 55px;
+  }
+}
+
+.decisions-search-selected-filters__container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.decisions-search-selected-filters__filter {
+  align-items: center;
+  background: transparent;
+  border: solid 1px #000;
+  border-radius: 48px;
+  color: #121212;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  justify-content: center;
+  margin-bottom: 12px;
+  margin-right: 20px;
+  padding: 12px 0px 12px 20px;
+
+  svg {
+    margin-left: var(--spacing-2-xs);
+    margin-right: var(--spacing-xs);
+  }
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &:focus {
+    @include focus-outline;
+  }
+}
+
+.decisions-search-selected-filters__filter-label {
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+  margin-bottom: 12px;
+  margin-right: 20px;
+}
+
+.decisions-search-selected-filters__clear-filters {
+  background: transparent;
+  border: none;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  padding-left: 12px;
+  padding-right: 20px;
+
+  svg {
+    margin-left: 0;
+  }
+
+  &:hover {
+    background-color: transparent;
+    border-color: #000;
+    color: #121212;
+  }
+}

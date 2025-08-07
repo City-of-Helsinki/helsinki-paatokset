@@ -29,3 +29,16 @@ allu-decisions-search:
   dependencies:
     - core/drupalSettings
     - core/drupal
+
+decisions-search:
+  version: 1.0.1
+  js:
+    dist/js/decisions-search.min.js: {
+      attributes: {
+        preprocess: false,
+        minified: true
+      }
+    }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal

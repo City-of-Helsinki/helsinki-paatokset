@@ -1,0 +1,23 @@
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
+.decisions-search-combobox {
+  > div {
+    border-radius: 2px;
+  }
+
+  div[role="link"] {
+    background: #000;
+    border-radius: 24px;
+    color: #fff;
+    font-size: 14px;
+    padding: 2px 10px;
+  }
+
+  ul {
+    overflow-y: scroll;
+  }
+
+  li[role="option"] {
+    --multiselect-checkbox-background-selected: #000;
+  }
+}
