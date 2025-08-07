@@ -27,22 +27,25 @@ const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
   };
   let value: Array<Date>|null;
 
-  if(isValidDate(from)) {
-    value = [parse(from, 'd.M.y', new Date())];
+  const getValue = () => {
+    let value = [null, null];
 
-    if(isValidDate(to)) {
+    if (from && isValidDate(from)) {
+      value[0] = parse(from, 'd.M.y', new Date());
+    }
+
+    if (to && isValidDate(to)) {
       value[1] = parse(to, 'd.M.y', new Date());
     }
-  }
-  else {
-    value = null;
-  }
+
+    return value;
+  };
 
   return (
     <div className='decision-search-date-picker'>
       <Calendar
         locale={i18n.language}
-        value={value}
+        value={getValue()}
         onChange={onSelect}
         selectRange
         allowPartialRange

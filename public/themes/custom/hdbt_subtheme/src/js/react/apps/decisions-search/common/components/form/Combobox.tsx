@@ -75,7 +75,6 @@ const Combobox = ({
       value={formattedValue}
       multiSelect
       clearButtonAriaLabel='Clear all selections'
-      selectedItemRemoveButtonAriaLabel="Remove value"
       toggleButtonAriaLabel='Toggle menu'
       onChange={onChange}
     />

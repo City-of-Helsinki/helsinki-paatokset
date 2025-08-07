@@ -212,75 +212,70 @@ const DateSelect = ({
     collapsibleStyle.top = `${ref.current.clientHeight  }px`;
   }
 
-  const renderField = () => (
-    <>
-      {calendarActive ?
-        <div className='DateSelect__datepicker-wrapper'>
-          <div className='DateSelect__datepicker-container'>
-            <div className='DateSelect__date-fields-container'>
-              <DateInput
-                name='from'
-                label={t('DECISIONS:start-date')}
-                defaultValue={from}
-                setDate={setFromWithClear}
-                error={errors.from}
-                onChange={setFrom}
-                autoFocus
-              />
-              <IconMinus className='DateSelect__date-fields-divider' />
-              <DateInput
-                name='to'
-                label={t('DECISIONS:end-date')}
-                defaultValue={to}
-                setDate={setToWithClear}
-                error={errors.to}
-                onChange={setTo}
-              />
-            </div>
-            <DatePicker
-              from={from}
-              to={to}
-              setTo={setToWithClear}
-              setFrom={setFromWithClear}
-            />
-          </div>
-          <Button className='DateSelect__inner-control' onClick={() => setActive (false)}>
-            {t('DECISIONS:close')}
-          </Button>
-        </div> :
-        <div className="DateSelect__predefined-ranges-wrapper">
-          <div className='DateSelect__predefined-ranges-container'>
-            <SelectionGroup>
-              <Checkbox
-                id='past_week'
-                label={t('DECISIONS:past-week')}
-                name='past_week'
-                checked={selection === selections.PAST_WEEK}
-                onClick={() => handleSelectionClick(selections.PAST_WEEK)}
-              />
-              <Checkbox
-                id='past_month'
-                label={t('DECISIONS:past-month')}
-                name='past_month'
-                checked={selection === selections.PAST_MONTH}
-                onClick={() => handleSelectionClick(selections.PAST_MONTH)}
-              />
-              <Checkbox
-                id='past_year'
-                label={t('DECISIONS:past-year')}
-                name='past_year'
-                checked={selection === selections.PAST_YEAR}
-                onClick={() => handleSelectionClick(selections.PAST_YEAR)}
-              />
-            </SelectionGroup>
-          </div>
-          <Button className='DateSelect__inner-control' onClick={() => setCalendarActive(true)}>
-            {t('DECISIONS:choose-range')}
-          </Button>
+  const renderField = () => calendarActive ?
+    <div className='DateSelect__datepicker-wrapper'>
+      <div className='DateSelect__datepicker-container'>
+        <div className='DateSelect__date-fields-container'>
+          <DateInput
+            name='from'
+            label={t('DECISIONS:start-date')}
+            defaultValue={from}
+            setDate={setFromWithClear}
+            error={errors.from}
+            onChange={setFrom}
+            autoFocus
+          />
+          <IconMinus className='DateSelect__date-fields-divider' />
+          <DateInput
+            name='to'
+            label={t('DECISIONS:end-date')}
+            defaultValue={to}
+            setDate={setToWithClear}
+            error={errors.to}
+            onChange={setTo}
+          />
         </div>
-      }
-    </>
-  );
+        <DatePicker
+          from={from}
+          to={to}
+          setTo={setToWithClear}
+          setFrom={setFromWithClear}
+        />
+      </div>
+      <Button className='DateSelect__inner-control' onClick={() => setActive (false)}>
+        {t('DECISIONS:close')}
+      </Button>
+    </div> :
+    <div className="DateSelect__predefined-ranges-wrapper">
+      <div className='DateSelect__predefined-ranges-container'>
+        <SelectionGroup>
+          <Checkbox
+            id='past_week'
+            label={t('DECISIONS:past-week')}
+            name='past_week'
+            checked={selection === selections.PAST_WEEK}
+            onClick={() => handleSelectionClick(selections.PAST_WEEK)}
+          />
+          <Checkbox
+            id='past_month'
+            label={t('DECISIONS:past-month')}
+            name='past_month'
+            checked={selection === selections.PAST_MONTH}
+            onClick={() => handleSelectionClick(selections.PAST_MONTH)}
+          />
+          <Checkbox
+            id='past_year'
+            label={t('DECISIONS:past-year')}
+            name='past_year'
+            checked={selection === selections.PAST_YEAR}
+            onClick={() => handleSelectionClick(selections.PAST_YEAR)}
+          />
+        </SelectionGroup>
+      </div>
+      <Button className='DateSelect__inner-control' onClick={() => setCalendarActive(true)}>
+        {t('DECISIONS:choose-range')}
+      </Button>
+    </div>;
 
   return (
     <div className={classNames(

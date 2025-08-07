@@ -87,7 +87,7 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
     return (
       <button
         className='decisions-search-selected-filters-container__filter'
-        key={dateLabel}
+        key='date'
         onClick={() => deleteDateQuery()}
       >
         { from } - { to }

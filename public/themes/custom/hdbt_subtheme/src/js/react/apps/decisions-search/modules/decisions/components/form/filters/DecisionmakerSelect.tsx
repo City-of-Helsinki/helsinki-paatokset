@@ -103,7 +103,6 @@ const DecisionmakerSelect = ({ setQuery, setValues, values, opts, queryValues, l
       noTags
       onChange={onChange}
       options={options}
-      selectedItemRemoveButtonAriaLabel="Remove value"
       texts={{
         clearButtonAriaLabel: 'Clear all selections',
         label: t('DECISIONS:decisionmaker'),

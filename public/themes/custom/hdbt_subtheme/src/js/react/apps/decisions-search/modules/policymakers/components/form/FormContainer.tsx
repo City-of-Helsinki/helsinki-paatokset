@@ -172,7 +172,7 @@ class FormContainer extends Component<Props> {
               setValue={this.setPhrase}
             />
           </div>
-          {/* <div className='decisions-search-form-container__lower-fields'>
+          <div className='decisions-search-form-container__lower-fields'>
             <ReactiveComponent
               componentId={SearchComponents.SECTOR}
               defaultQuery={() => (
@@ -225,7 +225,7 @@ class FormContainer extends Component<Props> {
                 }
               })}
             />
-          </div> */}
+          </div>
           <SubmitButton />
           <SelectedFilters
             filters={this.getFilters()}
