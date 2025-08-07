@@ -145,17 +145,6 @@
                     "reference": "v5.29.1"
                 }
             }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "paatokset/paatokset_search",
-                "version": "1.4.0",
-                "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.4.0/paatokset_search.zip",
-                    "type": "zip"
-                }
-            }
         }
     ],
     "scripts": {

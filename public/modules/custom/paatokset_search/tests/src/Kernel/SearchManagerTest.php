@@ -82,7 +82,7 @@ class SearchManagerTest extends EntityKernelTestBase {
 
     $build = $manager->build('decisions', ['test-class']);
 
-    $this->assertContains('paatokset_search/paatokset-search', $build['#attached']['library']);
+    $this->assertContains('hdbt_subtheme/decisions-search', $build['#attached']['library']);
     $this->assertEquals('https://sentry.example.com', $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react']);
     $this->assertEquals('decisions', $build['#attributes']['data-type']);
     $this->assertEquals('https://example.com', $build['#attributes']['data-url']);
