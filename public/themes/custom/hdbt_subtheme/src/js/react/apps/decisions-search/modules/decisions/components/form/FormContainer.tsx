@@ -1,25 +1,25 @@
-import React from 'react';
 import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import { withTranslation } from 'react-i18next';
-
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import FormTitle from './FormTitle';
-import SearchBar from './SearchBar';
-import SubmitButton from './SubmitButton';
-import SelectedFiltersContainer from './filters/SelectedFiltersContainer';
-import DateSelect from './filters/date/DateSelect';
-import CategorySelect from './filters/CategorySelect';
-import { updateQueryParam, getQueryParam, deleteQueryParam } from '../../../../utils/QueryString';
-import SearchComponents from '../../enum/SearchComponents';
-import IndexFields from '../../enum/IndexFields';
-import SpecialCases from '../../enum/SpecialCases';
-import CategoryMap from '../../enum/CategoryMap';
-import SectorMap from '../../enum/SectorMap';
-import { Option, Options, combobox_item, FormErrors } from '../../types/types';
-import DecisionmakerSelect from './filters/DecisionmakerSelect';
-import Indices from '../../../../Indices';
+import React from 'react';
+
 import { isOperatorSearch } from '../../../../utils/OperatorSearch';
+import { Option, Options, combobox_item, FormErrors } from '../../types/types';
+import { updateQueryParam, getQueryParam, deleteQueryParam } from '../../../../utils/QueryString';
+import CategoryMap from '../../enum/CategoryMap';
+import CategorySelect from './filters/CategorySelect';
+import DateSelect from './filters/date/DateSelect';
+import DecisionmakerSelect from './filters/DecisionmakerSelect';
+import FormTitle from './FormTitle';
+import IndexFields from '../../enum/IndexFields';
+import Indices from '../../../../Indices';
+import SearchBar from './SearchBar';
+import SearchComponents from '../../enum/SearchComponents';
+import SectorMap from '../../enum/SectorMap';
+import SelectedFiltersContainer from './filters/SelectedFiltersContainer';
+import SpecialCases from '../../enum/SpecialCases';
+import SubmitButton from './SubmitButton';
 
 type FormContainerProps = {
   langcode: string,
@@ -53,27 +53,28 @@ type FormContainerState = {
 
 class FormContainer extends React.Component<FormContainerProps, FormContainerState> {
   state: FormContainerState = {
-    phrase: '',
     categories: [],
-    queryCategories: [],
-    selectedCategories: [],
+    date_selection: undefined,
+    decisionmakers: [],
     dms: [],
-    queryDms: [],
-    selectedDms: [],
     errors: {},
     from: undefined,
-    to: undefined,
-    date_selection: undefined,
+    isDesktop: window.matchMedia('(min-width: 1248px)').matches,
+    koroRef: null,
+    phrase: '',
+    queryCategories: [],
+    queryDms: [],
     queryFrom: undefined,
     queryTo: undefined,
+    selectedCategories: [],
+    selectedDms: [],
     selectedFrom: undefined,
     selectedTo: undefined,
-    isDesktop: window.matchMedia('(min-width: 1248px)').matches,
+    to: undefined,
     wildcardPhrase: '',
-    koroRef: null,
-    decisionmakers: [],
   };
-
+  
+  searchBar = React.createRef<any>();
   componentDidMount() {
     const handler = (e: MediaQueryListEvent) => this.setState({ isDesktop: e.matches });
     window.matchMedia('(min-width: 1248px)').addEventListener('change', handler);
@@ -189,7 +190,6 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
     }
   }
 
-  searchBar = React.createRef<any>();
 
   handleSubmit = (event: any) => {
     if(event) {
@@ -420,12 +420,12 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
           <FormTitle />
           {this.props.formDescription && (
             <div className="container container--search-description">
-              <div
+              <p
                 className='decisions-search-form-container__description'
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(this.props.formDescription, { USE_PROFILES: { html: true } }),
                 }}
-              ></div>
+              />
             </div>
           )}
           <form className={classNames('decisions-search-form', 'container')} onSubmit={this.handleSubmit}>
@@ -560,7 +560,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
             </div>
           )}
         </div>
-        {/* <SelectedFiltersContainer
+        <SelectedFiltersContainer
           categories={selectedCategories}
           setCategories={this.setCategories}
           dms={selectedDms}
@@ -570,7 +570,7 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
           to={selectedTo}
           setTo={this.setTo}
           setSelection={this.setSelection}
-        /> */}
+        />
       </div>
     );
   }

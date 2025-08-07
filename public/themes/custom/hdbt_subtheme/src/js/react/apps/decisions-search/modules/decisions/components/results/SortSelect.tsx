@@ -14,15 +14,12 @@ const SortSelect = ({ setSort }: Props) => {
   return (
     <Select
       className='decisions-search-sort-select'
-      label={t('SEARCH:sort')}
-      defaultValue={{
-        label: t('SEARCH:relevancy'),
-        value: Sort.SCORE
-      }}
+      onChange={({ value }: any) => setSort(value)}
       options={[
         {
           label: t('SEARCH:relevancy'),
-          value: Sort.SCORE
+          value: Sort.SCORE,
+          selected: true,
         },
         {
           label: t('SEARCH:most-recent-first'),
@@ -33,7 +30,9 @@ const SortSelect = ({ setSort }: Props) => {
           value: Sort.DATE_ASC
         }
       ]}
-      onChange={({ value }: any) => setSort(value)}
+      texts={{
+        label: t('SEARCH:sort')
+      }}
     />
   );
 };

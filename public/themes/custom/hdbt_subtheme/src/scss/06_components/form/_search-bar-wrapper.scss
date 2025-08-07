@@ -1,11 +1,6 @@
 .decisions-search-bar-wrapper {
   flex: 1;
 
-  label {
-    display: inline-block;
-    font-weight: bold;
-  }
-
   input {
     @include input;
     line-height: $input-height;
@@ -14,13 +9,16 @@
 
 .decisions-search-bar-wrapper__label {
   align-items: center;
+  color: $color-black;
   display: flex;
+  display: inline-block;
   flex-wrap: wrap;
+  font-weight: bold;
   gap: var(--spacing-3-xs);
   justify-content: space-between;
   margin-bottom: var(--spacing-3-xs);
 
-  label {
+  span {
     flex: 0 0 auto;
     margin-bottom: 0;
   }

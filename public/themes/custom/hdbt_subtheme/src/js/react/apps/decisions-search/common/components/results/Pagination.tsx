@@ -19,9 +19,12 @@ const Pagination = ({
     {...{
       pages,
       totalPages,
-      currentPage,
     }}
-    updatePage={setPage}
+    currentPage={currentPage + 1}
+    updatePage={(e, i) => {
+      e.preventDefault();
+      setPage(i - 1);
+    }}
   />
 );
 

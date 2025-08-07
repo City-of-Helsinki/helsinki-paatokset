@@ -152,11 +152,11 @@ $collapsible_height: 56px;
         }
 
         & > div label:after {
-          --background-selected: #000000;
-          --background-hover: #000000;
-          --border-color-selected: #000000;
-          --border-color-selected-focus: #000000;
-          --border-color-selected-hover: #000000;
+          --background-selected: $color-black;
+          --background-hover: $color-black;
+          --border-color-selected: $color-black;
+          --border-color-selected-focus: $color-black;
+          --border-color-selected-hover: $color-black;
         }
       }
     }

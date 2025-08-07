@@ -38,12 +38,13 @@ const Pagination = ({
   return Number.isFinite(realTotalPages) ? (
       <>
         <HDBTPagination
-          {...{
-            pages,
-            currentPage
-          }}
+          pages={pages}
+          currentPage={currentPage + 1}
           totalPages={realTotalPages}
-          updatePage={setPage}
+          updatePage={(e, i) => {
+            e.preventDefault();
+            setPage(i - 1);
+          }}
         />
         {_DEBUG_MODE_ &&
           <div style={{ color: 'red' }}>Original amount of pages: {totalPages}</div>

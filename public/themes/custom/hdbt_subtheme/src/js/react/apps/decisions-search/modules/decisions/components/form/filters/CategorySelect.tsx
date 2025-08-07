@@ -60,20 +60,20 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
 
   return (
     <Select
-      multiSelect
       className={classNames(
         'decisions-search-multiselect',
         'decisions-search-form-element',
       )}
+      multiSelect
+      noTags
+      onChange={onChange}
+      options={categories}
       texts={{
         clearButtonAriaLabel: 'Clear all selections',
         label: t('DECISIONS:topic'),
         placeholder: t('DECISIONS:choose-topic')
       }}
-      options={categories}
       value={formattedValue}
-      // selectedItemRemoveButtonAriaLabel={`Remove value`}
-      onChange={onChange}
     />
   );
 };

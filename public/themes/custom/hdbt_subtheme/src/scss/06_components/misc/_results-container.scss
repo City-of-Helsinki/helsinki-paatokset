@@ -15,6 +15,11 @@
   }
 }
 
+.decisions-search-results__container .hds-pagination-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .decisions-search-results__container--decisions-module {
   min-height: 250px;
   padding-top: 16px;
@@ -63,8 +68,8 @@
   display: flex;
 }
 
-.decisions-search-results__size-select {
-  padding: 2px;
+.decisions-search-size-select {
+  margin-right: $spacing-half;
 }
 
 .policymaker-search-results {

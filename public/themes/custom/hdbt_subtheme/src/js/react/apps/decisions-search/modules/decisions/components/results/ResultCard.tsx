@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconArrowRight } from 'hds-react';
+import { IconArrowRight, IconSize } from 'hds-react';
 import { format } from 'date-fns';
 
 import classNames from 'classnames';
@@ -88,7 +88,7 @@ const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix
               </div>
           }
           <div className='decisions-search-result-card__issue-link'>
-              <IconArrowRight size="l"/>
+              <IconArrowRight size={IconSize.Large}/>
           </div>
         </div>
       </a>

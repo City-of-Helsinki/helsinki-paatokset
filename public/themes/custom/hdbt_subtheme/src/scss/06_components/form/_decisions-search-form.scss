@@ -5,13 +5,16 @@
   h1 {
     @include font('h1');
   }
+
   h1, label, .container > p, .container--search-description p {
     color: $color-black;
   }
+
   button + ul li {
     font-size: 16px;
     margin-top: 0;
   }
+
   button + ul li[class*='Select-module_highlighted'] {
     background-color: $color-black!important;
     color: $color-white !important;
@@ -21,9 +24,11 @@
       box-shadow: none!important;
     }
   }
+
   button > span[class*='Select-module_buttonLabel'] {
     color: rgb(102, 102, 102);
   }
+  
   .DateSelect__predefined-ranges-container + button {
     border-top-color: $color-black-20;
   }
@@ -102,7 +107,7 @@
   }
 
   li[role="option"] {
-    --multiselect-checkbox-background-selected: #000;
+    --multiselect-checkbox-background-selected: $color-black;
   }
 }
 
@@ -146,10 +151,17 @@
   padding-bottom: 6px;
 }
 
-.decisions-search-form label {
+.decisions-search-form-element {
+  margin-bottom: 16px;
+
+  > input, > button {
+    @include input;
+  }
+}
+
+  .decisions-search-form-element > label {
     display: block;
-    font-size: 16px;
-    font-weight: 500;
+    font-weight: $font-weight-bold;
     margin-bottom: var(--spacing-3-xs);
 
     @media (max-width: 768px) {
@@ -157,16 +169,8 @@
     }
 }
 
-.decisions-search-form-element {
-  margin-bottom: 16px;
-
-  label {
-    font-weight: bold;
-  }
-
-  > input, > button {
-    @include input;
-  }
+.decisions-search-form-element label {
+  font-size: 16px;
 }
 
 .decisions-search-form-container__lower-fields {
@@ -186,7 +190,9 @@
       margin-left: 24px;
     }
     &:last-of-type {
-      flex-grow:2;
+      flex-basis: unset;
+      flex-grow: 2;
+      max-width: unset;
     }
   }
 }

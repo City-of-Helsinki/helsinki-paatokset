@@ -96,26 +96,25 @@ const DecisionmakerSelect = ({ setQuery, setValues, values, opts, queryValues, l
   };
 
   return (
-    <div className='decisions-search-form-element'>
-      <Select
-        id="decisionmakerselect"
-        multiSelect
-        onChange={onChange}
-        options={options}
-        selectedItemRemoveButtonAriaLabel="Remove value"
-        texts={{
-          clearButtonAriaLabel: 'Clear all selections',
-          label: t('DECISIONS:decisionmaker'),
-          placeholder: t('DECISIONS:choose-decisionmaker'),
-        }}
-        theme={{
-          '--focus-outline-color': 'var(--hdbt-color-black)',
-          '--multiselect-checkbox-background-selected': 'black',
-        }}
-        // toggleButtonAriaLabel={'Toggle'}
-        value={selected}
-      />
-    </div>
+    <Select
+      className='decisions-search-form-element'
+      id="decisionmakerselect"
+      multiSelect
+      noTags
+      onChange={onChange}
+      options={options}
+      selectedItemRemoveButtonAriaLabel="Remove value"
+      texts={{
+        clearButtonAriaLabel: 'Clear all selections',
+        label: t('DECISIONS:decisionmaker'),
+        placeholder: t('DECISIONS:choose-decisionmaker'),
+      }}
+      theme={{
+        '--focus-outline-color': 'var(--hdbt-color-black)',
+        '--multiselect-checkbox-background-selected': 'black',
+      }}
+      value={selected}
+    />
   );
 };
 

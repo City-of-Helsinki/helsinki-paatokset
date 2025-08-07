@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IconArrowRight, IconAngleRight } from 'hds-react';
+import { IconArrowRight, IconAngleRight, IconSize } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
 
@@ -78,7 +78,7 @@ const ResultCard: FC<Props> = ({ color_class, title, trustee_name, trustee_title
             <div className='policymaker-search-result-card__sub-title'>{ formattedOrganizations(organization_hierarchy) }</div>
           }
         </div>
-        <IconArrowRight size='m' />
+        <IconArrowRight size={IconSize.Medium} />
       </a>
     </article>
   );

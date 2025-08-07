@@ -2,12 +2,8 @@ import { useEffect, useCallback } from 'react';
 import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import classNames from 'classnames';
 import SpecialCases from '../../../enum/SpecialCases';
 import { Option } from '../../../types/types';
-
-import formStyles from '../../../../../common/styles/Form.module.scss';
-import multiSelectStyles from './Multiselect.module.scss';
 
 type Props = {
   aggregations: any
@@ -90,17 +86,14 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
 
   return (
     <Select
-      className={classNames(
-          formStyles['form-element'],
-          multiSelectStyles.Multiselect
-      )}
-      value={currentValue}
-      options={options}
-      label={t('DECISIONS:decisionmaker')}
-      placeholder={t('DECISIONS:choose-decisionmaker')}
-      clearButtonAriaLabel='Clear all selections'
-      selectedItemRemoveButtonAriaLabel="Remove value"
+      className='decisions-search-form-element'
       onChange={onChange}
+      options={options}
+      texts={{
+        label: t('DECISIONS:decisionmaker'),
+        placeholder: t('DECISIONS:choose-decisionmaker')
+      }}
+      value={currentValue}
     />
   );
 };

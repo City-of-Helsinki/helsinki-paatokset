@@ -8,18 +8,12 @@ type Props = {
 const SortSelect = ({ setSize }: Props) => (
     <Select
       className='decisions-search-size-select'
-      style={{
-        padding: '2px'
-      }}
       label={null}
-      defaultValue={{
-        label: '12',
-        value: 12
-      }}
       options={[
         {
           label: '12',
-          value: 12
+          value: 12,
+          selected: true,
         },
         {
           label: '48',
@@ -30,6 +24,7 @@ const SortSelect = ({ setSize }: Props) => (
           value: 96
         }
       ]}
+      required
       onChange={({ value }: any) => setSize(value)}
     />
   );

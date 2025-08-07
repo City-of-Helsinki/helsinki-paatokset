@@ -20,7 +20,7 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
       `${IndexFields.DECISION_MOTION}^1`,
       `${IndexFields.ISSUE_ID}^100`,
     ];
-    const query = {
+    return {
       bool: {
         // Add simple query string filter if the value contains an operator.
         ...((value && isOperatorSearch(value)) ? {
@@ -60,8 +60,6 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
         ],
       },
     };
-
-    return query;
   };
 
   const dataSearch = (
