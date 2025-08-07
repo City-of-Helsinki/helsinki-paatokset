@@ -22,6 +22,7 @@ class MigrationDeriverTest extends KernelTestBase {
     'paatokset_ahjo_openid',
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
+    'helfi_api_base',
   ];
 
   /**

@@ -27,7 +27,7 @@ class PaatoksetLocalKeyAuth extends AuthenticationPluginBase implements Containe
    *
    * @inheritdoc
    */
-  public function getAuthenticationOptions(): array {
+  public function getAuthenticationOptions($url): array {
     if (!empty(getenv(self::ENV_API_KEY))) {
       return [
         'headers' => [

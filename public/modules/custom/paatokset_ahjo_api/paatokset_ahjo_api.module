@@ -13,15 +13,18 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks;
 use Drupal\paatokset_ahjo_api\Entity\Article;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 
@@ -46,6 +49,18 @@ function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['case'])) {
     $bundles['node']['case']['class'] = CaseBundle::class;
   }
+  if (isset($bundles['node']['meeting'])) {
+    $bundles['node']['meeting']['class'] = Meeting::class;
+  }
+}
+
+/**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function paatokset_ahjo_api_grant_permissions() : array {
+  return [
+    'admin' => 'access ahjo proxy',
+  ];
 }
 
 /**
@@ -116,6 +131,26 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'articles_by_year' => [],
       ],
       'template' => 'block/all-articles',
+    ],
+    'policymaker_side_navigation' => [
+      'variables' => [
+        'items' => [],
+        'menu_attributes' => NULL,
+        'menu_link_parent' => NULL,
+      ],
+    ],
+    'policymaker_side_navigation_mobile' => [
+      'variables' => [
+        'items' => [],
+        'current_option' => NULL,
+      ],
+    ],
+    'agendas_submenu' => [
+      'variables' => [
+        'years' => [],
+        'list' => [],
+        'type' => NULL,
+      ],
     ],
   ];
 }
@@ -535,14 +570,14 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   if ($decision && $adjacent = $case?->getNextDecision($decision)) {
     $variables['next_decision'] = [
       'title' => $adjacent->label(),
-      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+      'id' => $adjacent->getNormalizedNativeId(),
     ];
   }
 
   if ($decision && $adjacent = $case?->getPrevDecision($decision)) {
     $variables['previous_decision'] = [
       'title' => $adjacent->label(),
-      'id' => $caseService->normalizeNativeId($adjacent->getNativeId()),
+      'id' => $adjacent->getNormalizedNativeId(),
     ];
   }
 
@@ -1208,4 +1243,11 @@ function _paatokset_ahjo_api_render_default_text(?array $configuration_array): a
     '#text' => $configuration_array['value'] ?? '',
     '#format' => $configuration_array['format'] ?? 'full_html',
   ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function paatokset_ahjo_api_form_node_form_alter(array &$form, FormStateInterface $form_state): void {
+  \Drupal::service(AdminHooks::class)->alterForm($form, $form_state);
 }

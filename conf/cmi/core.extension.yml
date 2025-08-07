@@ -16,8 +16,8 @@ module:
   config_rewrite: 0
   config_translation: 0
   content_lock: 0
-  content_lock_timeout: 0
   crop: 0
+  csp: 0
   ctools: 0
   datetime: 0
   default_content: 0
@@ -137,7 +137,6 @@ module:
   paatokset_policymakers: 0
   paatokset_search: 0
   paatokset_search_form: 0
-  paatokset_submenus: 0
   page_cache: 0
   paragraphs_asymmetric_translation_widgets: 0
   paragraphs_library: 0

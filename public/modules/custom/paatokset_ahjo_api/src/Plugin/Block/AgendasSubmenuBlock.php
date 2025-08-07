@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
@@ -20,31 +20,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   admin_label: new TranslatableMarkup('Agendas Submenu'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritDoc}
+   * The policymaker service.
    */
-  final public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    private readonly PolicymakerService $policymakerService,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->policymakerService->setPolicyMakerByPath();
-  }
+  private PolicymakerService $policymakerService;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('paatokset_policymakers')
-    );
+    $plugin = new self($configuration, $plugin_id, $plugin_definition);
+    $plugin->policymakerService = $container->get('paatokset_policymakers');
+    return $plugin;
   }
 
   /**
@@ -55,9 +44,11 @@ class AgendasSubmenuBlock extends BlockBase implements ContainerFactoryPluginInt
     $years = array_keys($list);
 
     return [
+      '#theme' => 'agendas_submenu',
       '#title' => 'Viranhaltijapäätökset',
       '#years' => $years,
       '#list' => $list,
+      '#type' => 'decisions',
     ];
   }
 

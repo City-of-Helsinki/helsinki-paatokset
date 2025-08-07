@@ -19,6 +19,7 @@ class RenderDefaultTextTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'paatokset_ahjo_api',
+    'helfi_api_base',
   ];
 
   /**

@@ -7,6 +7,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "ext-dom": "*",
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6.7",
         "drupal/big_pipe_sessionless": "^2.0",
@@ -29,8 +30,7 @@
         "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
         "paatokset/paatokset_search": "^1.4.0",
-        "symfony/property-access": "^7.2",
-        "ext-dom": "*"
+        "symfony/property-access": "^7.2"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",

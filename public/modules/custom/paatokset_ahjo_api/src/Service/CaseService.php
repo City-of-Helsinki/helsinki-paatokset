@@ -397,7 +397,9 @@ class CaseService {
       $case_path = '/asia/' . $case_id;
     }
 
-    $id = $this->normalizeNativeId($id);
+    // Remove brackets and convert to lowercase.
+    // See Decision::getNormalizedNativeId.
+    $id = strtolower(str_replace(['{', '}'], '', $id));
     $path .= '/' . $id;
 
     $path_alias_repository = \Drupal::service('path_alias.repository'); // phpcs:ignore
@@ -512,7 +514,7 @@ class CaseService {
       }
 
       assert($decision instanceof Decision);
-      $decision_id = $this->normalizeNativeId($decision->getNativeId());
+      $decision_id = $decision->getNormalizedNativeId();
     }
 
     if ($decision_id !== NULL) {
@@ -566,8 +568,8 @@ class CaseService {
       // requested and the translation does not exist.
     }
 
-    $decision_id = $decision->get('field_decision_native_id')->getString();
-    $decision_id = $this->normalizeNativeId($decision_id);
+    assert($decision instanceof Decision);
+    $decision_id = $decision->getNormalizedNativeId();
 
     // Special fallback for decisions without diary numbers.
     if (!$decision->hasField('field_diary_number') || $decision->get('field_diary_number')->isEmpty()) {
@@ -632,29 +634,6 @@ class CaseService {
 
     // If route isn't localized for current language return decision's URL.
     return $decision->toUrl();
-  }
-
-  /**
-   * Normalize decision native ID for URL purposes.
-   *
-   * @param string|null $native_id
-   *   Native ID or NULL if field is empty.
-   *
-   * @return string|null
-   *   Normalized ID or NULL.
-   */
-  public function normalizeNativeId(?string $native_id): ?string {
-    if ($native_id === NULL) {
-      return NULL;
-    }
-
-    // Remove brackets / special characters.
-    $native_id = str_replace(['{', '}'], '', $native_id);
-
-    // Convert to lowercase.
-    $native_id = strtolower($native_id);
-
-    return $native_id;
   }
 
   /**
@@ -840,7 +819,7 @@ class CaseService {
         'id' => $node->id(),
         'unique_id' => $node->field_unique_id->value,
         'langcode' => $node->language()->getId(),
-        'native_id' => $this->normalizeNativeId($node->getNativeId()),
+        'native_id' => $node->getNormalizedNativeId(),
         'title' => $node->label(),
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,

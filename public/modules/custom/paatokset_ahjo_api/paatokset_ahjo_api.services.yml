@@ -44,3 +44,5 @@ services:
   Drupal\paatokset_ahjo_api\AhjoRequestLoggerMiddleware:
     tags:
       - { name: http_client_middleware }
+
+  Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks: ~
