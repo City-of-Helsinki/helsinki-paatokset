@@ -1,6 +1,6 @@
-name: Päätökset language switcher
+name: Päätökset language switcher (DEPRECATED)
 type: module
-description: Language switcher overrides for Päätökset palvelu (DEPRECATED).
+description: Language switcher overrides for Päätökset palvelu.
 package: Custom
 core_version_requirement: ^10
 dependencies:

@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,11 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides Agendas Submenu Documents Block.
  */
 #[Block(
-  id: 'agendas_submenu_documents',
-  admin_label: new TranslatableMarkup('Paatokset policymaker documents'),
+  id: 'paatokset_minutes_of_discussion',
+  admin_label: new TranslatableMarkup('Paatokset minutes of discussion block'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritDoc}
@@ -51,12 +50,13 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritDoc}
    */
   public function build(): array {
-    $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
+    $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
 
     return [
-      '#title' => $this->t('Office holder decisions'),
-      '#years' => array_keys($list),
-      '#list' => $list,
+      '#theme' => 'agendas_submenu',
+      '#years' => array_keys($minutes),
+      '#list' => $minutes,
+      '#type' => 'documents',
     ];
   }
 
@@ -64,12 +64,10 @@ class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritDoc}
    */
   public function getCacheTags(): array {
-    $policymaker = $this->policymakerService->getPolicyMaker();
-    if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
-      $policymaker_id = $policymaker->get('field_policymaker_id')->value;
-      return ['meeting_pm:' . $policymaker_id];
-    }
-    return [];
+    return [
+      'media_list:minutes_of_the_discussion',
+      'node_list:meeting',
+    ];
   }
 
   /**

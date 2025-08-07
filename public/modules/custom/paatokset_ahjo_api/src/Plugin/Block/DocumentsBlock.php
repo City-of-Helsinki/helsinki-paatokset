@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_submenus\Plugin\Block;
+namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\NodeInterface;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides Agendas Submenu Documents Block.
  */
 #[Block(
-  id: 'paatokset_minutes_of_discussion',
-  admin_label: new TranslatableMarkup('Paatokset minutes of discussion block'),
+  id: 'agendas_submenu_documents',
+  admin_label: new TranslatableMarkup('Paatokset policymaker documents'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class DocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritDoc}
@@ -50,11 +51,14 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
    * {@inheritDoc}
    */
   public function build(): array {
-    $minutes = $this->policymakerService->getMinutesOfDiscussion(NULL, TRUE);
+    $list = $this->policymakerService->getApiMinutesFromElasticSearch(NULL, TRUE);
 
     return [
-      '#years' => array_keys($minutes),
-      '#list' => $minutes,
+      '#theme' => 'agendas_submenu',
+      '#title' => $this->t('Office holder decisions'),
+      '#years' => array_keys($list),
+      '#list' => $list,
+      '#type' => 'documents',
     ];
   }
 
@@ -62,10 +66,12 @@ class MinutesOfDiscussionBlock extends BlockBase implements ContainerFactoryPlug
    * {@inheritDoc}
    */
   public function getCacheTags(): array {
-    return [
-      'media_list:minutes_of_the_discussion',
-      'node_list:meeting',
-    ];
+    $policymaker = $this->policymakerService->getPolicyMaker();
+    if ($policymaker instanceof NodeInterface && $policymaker->hasField('field_policymaker_id')) {
+      $policymaker_id = $policymaker->get('field_policymaker_id')->value;
+      return ['meeting_pm:' . $policymaker_id];
+    }
+    return [];
   }
 
   /**
