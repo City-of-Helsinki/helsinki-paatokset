@@ -145,29 +145,10 @@
                     "reference": "v5.29.1"
                 }
             }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "paatokset/paatokset_search",
-                "version": "1.4.0",
-                "dist": {
-                    "url": "https://github.com/City-of-Helsinki/paatokset-search/releases/download/1.4.0/paatokset_search.zip",
-                    "type": "zip"
-                }
-            }
         }
     ],
     "scripts": {
         "copy-commit-message-script": "make copy-commit-message-script",
-        "post-install-cmd": [
-            "rm -rf public/modules/custom/paatokset_search/assets && rsync -a vendor/paatokset/paatokset_search/ public/modules/custom/paatokset_search/assets || true",
-            "@copy-commit-message-script"
-        ],
-        "post-update-cmd": [
-            "rm -rf public/modules/custom/paatokset_search/assets && rsync -a vendor/paatokset/paatokset_search/ public/modules/custom/paatokset_search/assets || true",
-            "@copy-commit-message-script"
-        ],
         "test": [
             "@lint-php",
             "@test-php",
