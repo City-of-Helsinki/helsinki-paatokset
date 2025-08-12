@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Select } from 'hds-react';
 import classNames from 'classnames';
+import { SelectTheme } from '../../../themes/SelectTheme';
 
 type Props = {
   aggregations: any,
@@ -73,6 +74,7 @@ const Combobox = ({
       noTags
       onChange={onChange}
       options={options}
+      theme={SelectTheme}
       texts={{
         label,
         placeholder,
