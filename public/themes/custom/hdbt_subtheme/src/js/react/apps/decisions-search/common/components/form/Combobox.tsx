@@ -69,14 +69,12 @@ const Combobox = ({
         'decisions-search-combobox',
         'decisions-search-form-element',
       )}
-      clearButtonAriaLabel='Clear all selections'
       label={label}
       multiSelect
       noTags
       onChange={onChange}
       options={options}
       placeholder={placeholder}
-      toggleButtonAriaLabel='Toggle menu'
       value={formattedValue}
     />
   );

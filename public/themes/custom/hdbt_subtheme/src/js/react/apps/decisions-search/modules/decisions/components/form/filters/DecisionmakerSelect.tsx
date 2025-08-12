@@ -5,6 +5,7 @@ import { Option, Options } from '../../../types/types';
 import SpecialCases from '../../../enum/SpecialCases';
 
 import sectorMap, { SectorMap } from '../../../enum/SectorMap';
+import classNames from 'classnames';
 
 type Props = {
   setQuery: Function,
@@ -96,24 +97,34 @@ const DecisionmakerSelect = ({ setQuery, setValues, values, opts, queryValues, l
   };
 
   return (
-    <Select
-      className='decisions-search-form-element'
-      id="decisionmakerselect"
-      multiSelect
-      noTags
-      onChange={onChange}
-      options={options}
-      texts={{
-        clearButtonAriaLabel: 'Clear all selections',
-        label: t('DECISIONS:decisionmaker'),
-        placeholder: t('DECISIONS:choose-decisionmaker'),
-      }}
-      theme={{
-        '--focus-outline-color': 'var(--hdbt-color-black)',
-        '--multiselect-checkbox-background-selected': 'black',
-      }}
-      value={selected}
-    />
+    <div className={classNames(
+      'decisions-search-multiselect',
+      'decisions-search-form-element',
+    )}>
+      <Select
+        className='decisions-search-form-element__select'
+        clearable
+        id="decisionmakerselect"
+        multiSelect
+        noTags
+        onChange={onChange}
+        options={options}
+        style={{
+          maxWidth: '100%',
+          width: '100%',
+        }}
+        texts={{
+          clearButtonAriaLabel: 'Clear all selections',
+          label: t('DECISIONS:decisionmaker'),
+          placeholder: t('DECISIONS:choose-decisionmaker'),
+        }}
+        theme={{
+          '--focus-outline-color': 'var(--hdbt-color-black)',
+          '--multiselect-checkbox-background-selected': 'black',
+        }}
+        value={selected}
+      />
+    </div>
   );
 };
 

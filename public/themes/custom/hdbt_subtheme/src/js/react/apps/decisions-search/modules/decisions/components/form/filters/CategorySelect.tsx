@@ -3,6 +3,7 @@ import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { Option } from '../../../types/types';
+import { SelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
 
 
 type Props = {
@@ -59,22 +60,26 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
   const formattedValue: Array<any> = value.map((category) => ({ value: category.value, label: category.label }));
 
   return (
-    <Select
-      className={classNames(
-        'decisions-search-multiselect',
-        'decisions-search-form-element',
-      )}
-      multiSelect
-      noTags
-      onChange={onChange}
-      options={categories}
-      texts={{
-        clearButtonAriaLabel: 'Clear all selections',
-        label: t('DECISIONS:topic'),
-        placeholder: t('DECISIONS:choose-topic')
-      }}
-      value={formattedValue}
-    />
+    <div className={classNames(
+      'decisions-search-multiselect',
+      'decisions-search-form-element',
+    )}>
+      <Select
+        className='decisions-search-form-element__select'
+        clearable
+        multiSelect
+        noTags
+        onChange={onChange}
+        options={categories}
+        texts={{
+          clearButtonAriaLabel: 'Clear all selections',
+          label: t('DECISIONS:topic'),
+          placeholder: t('DECISIONS:choose-topic')
+        }}
+        theme={SelectTheme}
+        value={formattedValue}
+      />
+    </div>
   );
 };
 

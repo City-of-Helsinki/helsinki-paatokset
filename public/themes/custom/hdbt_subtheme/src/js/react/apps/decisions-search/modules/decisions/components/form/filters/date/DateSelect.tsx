@@ -9,6 +9,7 @@ import DateInput from './DateInput';
 import { FormErrors } from '../../../../types/types';
 import { isValidDate } from '../../../../../../utils/Date';
 import DatePicker from './DatePicker';
+import { CheckboxTheme } from 'src/js/react/apps/decisions-search/themes/CheckBox';
 
 
 type Props = {
@@ -255,6 +256,7 @@ const DateSelect = ({
             name='past_week'
             checked={selection === selections.PAST_WEEK}
             onClick={() => handleSelectionClick(selections.PAST_WEEK)}
+            style={CheckboxTheme}
           />
           <Checkbox
             id='past_month'
@@ -262,6 +264,7 @@ const DateSelect = ({
             name='past_month'
             checked={selection === selections.PAST_MONTH}
             onClick={() => handleSelectionClick(selections.PAST_MONTH)}
+            style={CheckboxTheme}
           />
           <Checkbox
             id='past_year'
@@ -269,6 +272,7 @@ const DateSelect = ({
             name='past_year'
             checked={selection === selections.PAST_YEAR}
             onClick={() => handleSelectionClick(selections.PAST_YEAR)}
+            style={CheckboxTheme}
           />
         </SelectionGroup>
       </div>

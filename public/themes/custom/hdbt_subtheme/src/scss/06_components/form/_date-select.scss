@@ -3,6 +3,10 @@
 $collapsible_height: 56px;
 
 .decisions-search-date-select {
+  > label {
+    color: $color-black;
+  }
+
   &.dateselect-wrapper {
     position: relative;
   }
@@ -128,6 +132,10 @@ $collapsible_height: 56px;
   }
 
   .DateSelect__predefined-ranges-container {
+    label {
+      font-weight: $font-weight-bold;
+    }
+
     fieldset {
       --spacing-row: 0;
       --spacing-gap: 0;
@@ -137,7 +145,7 @@ $collapsible_height: 56px;
     fieldset > div {
       display: block;
 
-      & > div {
+      > div {
         align-items: center;
         display: flex;
         height: $collapsible_height;
@@ -145,20 +153,12 @@ $collapsible_height: 56px;
         padding-right: 16px;
         width: 100%;
 
-        & > div {
+        > div {
           width: 100%;
         }
         
-        & > div label {
+        > div label {
           width: 100%;
-        }
-
-        & > div label:after {
-          --background-selected: $color-black;
-          --background-hover: $color-black;
-          --border-color-selected: $color-black;
-          --border-color-selected-focus: $color-black;
-          --border-color-selected-hover: $color-black;
         }
       }
     }

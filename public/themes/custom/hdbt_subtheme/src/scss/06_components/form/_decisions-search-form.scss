@@ -7,7 +7,7 @@
     @include font('h1');
   }
 
-  h1, label, .container > p, .container--search-description p {
+  h1, .container > p, .container--search-description p {
     color: $color-black;
   }
 
@@ -160,7 +160,12 @@
   }
 }
 
-  .decisions-search-form-element > label {
+.decisions-search-form-element label {
+  font-size: 16px;
+}
+
+.decisions-search-form-element > label,
+.decisions-search-form-element__select > label {
     display: block;
     font-weight: $font-weight-bold;
     margin-bottom: var(--spacing-3-xs);
@@ -168,10 +173,6 @@
     @media (max-width: 768px) {
       display: none;
     }
-}
-
-.decisions-search-form-element label {
-  font-size: 16px;
 }
 
 .decisions-search-form-container__lower-fields {
@@ -183,17 +184,17 @@
 }
 
 .decisions-search-form-container__lower-fields .decisions-search-form-element {
+  max-width: 100%;
+
   @media (min-width: 1248px) {
-    flex-basis: 282px;
     margin-bottom: 0;
+    width: 282px;
 
     &:not(:first-child) {
       margin-left: 24px;
     }
     &:last-of-type {
-      flex-basis: unset;
-      flex-grow: 2;
-      max-width: unset;
+      flex-grow: 1;
     }
   }
 }

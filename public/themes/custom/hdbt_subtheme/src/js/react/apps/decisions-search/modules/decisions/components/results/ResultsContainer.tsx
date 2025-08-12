@@ -150,7 +150,7 @@ const ResultsContainer = () => {
                 {t('DECISIONS:results-count')} <strong>{getRealResultsAmount(searchState)}</strong>
               </span>
               <span className='decisions-search-results__stats-size'>
-                <SizeSelect setSize={setSize} />
+                <SizeSelect setSize={setSize} selectedSize={size} />
                 {t('SEARCH:per-page')}
               </span>
               {_DEBUG_MODE_ &&
@@ -187,6 +187,7 @@ const ResultsContainer = () => {
           <>
             <SortSelect
               setSort={setSort}
+              selectedSort={sort}
             />
             <StateProvider includeKeys={['value']} render={({ searchState }) => (
               <>
