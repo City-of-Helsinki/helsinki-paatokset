@@ -4,6 +4,7 @@ import { IconCross } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
 import { Option, Options } from '../../../types/types';
+import classNames from 'classnames';
 
 type Props = {
   categories: Array<Option>,
@@ -20,7 +21,7 @@ type Props = {
 const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from, setFrom, to, setTo, setSelection }: Props) => {
   const { t } = useTranslation();
 
-  if(categories.length <= 0 && !dms && !to && !from) {
+  if(!categories.length && !dms?.length && !to && !from) {
     return null;
   }
 
@@ -104,22 +105,22 @@ const SelectedFiltersContainer = ({ categories, setCategories, dms, setDms, from
               {getDateFilter()}
               {getCategoryFilters()}
               {getDmFilters()}
-              {dms && dms.length > 0 &&
-                <button
-                  className='decisions-search-selected-filters-container__clear-filters'
-                  onClick={() => {
-                    setCategories([], true);
-                    clearDms();
-                    setFrom(null, true);
-                    setTo(null, true);
-                    setSelection(null);
-                  }}
-                >
-                  <IconCross />
-                  {t('SEARCH:clear-all')}
-                </button>
-              }
-
+              <button
+                className={classNames(
+                  'decisions-search-selected-filters-container__clear-filters',
+                  'decisions-search-selected-filters-container__filter'
+                )}
+                onClick={() => {
+                  setCategories([], true);
+                  clearDms();
+                  setFrom(null, true);
+                  setTo(null, true);
+                  setSelection(null);
+                }}
+              >
+                <IconCross />
+                {t('SEARCH:clear-all')}
+              </button>
             </div>
           )}
       />
