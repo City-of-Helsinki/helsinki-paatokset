@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import SpecialCases from '../../../enum/SpecialCases';
 import { Option } from '../../../types/types';
+import { SelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
 
 type Props = {
   aggregations: any
@@ -95,6 +96,7 @@ const DMSelect = ({ aggregations, setQuery, setValue, value, queryValue }: Props
         label: t('DECISIONS:decisionmaker'),
         placeholder: t('DECISIONS:choose-decisionmaker')
       }}
+      theme={SelectTheme}
       value={currentValue}
     />
   );

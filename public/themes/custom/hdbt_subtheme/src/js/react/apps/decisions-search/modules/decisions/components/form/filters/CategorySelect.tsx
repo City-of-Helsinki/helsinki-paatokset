@@ -71,6 +71,10 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
         noTags
         onChange={onChange}
         options={categories}
+        style={{
+          maxWidth: '100%',
+          width: '100%',
+        }}
         texts={{
           clearButtonAriaLabel: 'Clear all selections',
           label: t('DECISIONS:topic'),
