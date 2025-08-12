@@ -69,12 +69,14 @@ const Combobox = ({
         'decisions-search-combobox',
         'decisions-search-form-element',
       )}
-      label={label}
       multiSelect
       noTags
       onChange={onChange}
       options={options}
-      placeholder={placeholder}
+      texts={{
+        label,
+        placeholder,
+      }}
       value={formattedValue}
     />
   );
