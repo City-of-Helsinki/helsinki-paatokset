@@ -3,7 +3,7 @@ import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { Option } from '../../../types/types';
-import { SelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
+import { MultiSelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
 
 
 type Props = {
@@ -80,7 +80,7 @@ const CategorySelect = ({ aggregations, setQuery, setValue, value, queryValue }:
           label: t('DECISIONS:topic'),
           placeholder: t('DECISIONS:choose-topic')
         }}
-        theme={SelectTheme}
+        theme={MultiSelectTheme}
         value={formattedValue}
       />
     </div>
