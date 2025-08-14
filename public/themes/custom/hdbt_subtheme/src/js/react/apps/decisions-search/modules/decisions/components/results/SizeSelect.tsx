@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select } from 'hds-react';
+import { SelectTheme } from '../../../../themes/SelectTheme';
 
 type Props = {
   setSize: Function;
@@ -34,6 +35,7 @@ const SortSelect = ({ setSize, selectedSize }: Props) => {
           setSize(selectedOptions[0].value);
         }
       }}
+      theme={SelectTheme}
     />
   );
 };

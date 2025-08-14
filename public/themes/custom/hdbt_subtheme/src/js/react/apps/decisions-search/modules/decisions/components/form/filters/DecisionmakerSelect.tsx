@@ -6,7 +6,7 @@ import SpecialCases from '../../../enum/SpecialCases';
 
 import sectorMap, { SectorMap } from '../../../enum/SectorMap';
 import classNames from 'classnames';
-import { SelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
+import { MultiSelectTheme } from 'src/js/react/apps/decisions-search/themes/SelectTheme';
 
 type Props = {
   setQuery: Function,
@@ -119,7 +119,7 @@ const DecisionmakerSelect = ({ setQuery, setValues, values, opts, queryValues, l
           label: t('DECISIONS:decisionmaker'),
           placeholder: t('DECISIONS:choose-decisionmaker'),
         }}
-        theme={SelectTheme}
+        theme={MultiSelectTheme}
         value={selected}
       />
     </div>

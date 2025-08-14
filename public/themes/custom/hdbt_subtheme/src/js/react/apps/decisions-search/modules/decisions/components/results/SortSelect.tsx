@@ -3,6 +3,7 @@ import { Select } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
 import { Sort } from '../../enum/Sort';
+import { SelectTheme } from '../../../../themes/SelectTheme';
 
 type Props = {
   setSort: Function;
@@ -42,6 +43,7 @@ const SortSelect = ({ setSort, selectedSort }: Props) => {
       texts={{
         label: t('SEARCH:sort')
       }}
+      theme={SelectTheme}
     />
   );
 };
