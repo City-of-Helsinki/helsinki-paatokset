@@ -1,0 +1,224 @@
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
+.decisions-search-result-card,
+.decisions-search-result-card__link {
+  display: flex;
+  flex-direction: column;
+  min-height: 378px;
+}
+
+.decisions-search-result-card {
+  background-color: #fff;
+  cursor: pointer;
+  margin-bottom: 24px;
+  width: 100%;
+
+  &:hover {
+    .ResultCard__title h2 {
+      text-decoration: underline;
+    }
+    .ResultCard__issue-link {
+      transform: translate(10px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: calc(50% - 24px);
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 384px;
+  }
+}
+
+.decisions-search-result-card__link {
+  color: inherit;
+  flex-grow: 1;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.decisions-search-multiple-results {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  box-shadow:
+    inset -4px -4px 0 0 #f4f4f4,
+    inset -5px -5px 0 0 #ccc,
+    inset -10px -10px 0 0 #f6f6f6,
+    inset -11px -11px 0 0 #ccc;
+  margin-bottom: 24px;
+  position: relative;
+
+  &:after, &:before  {
+    border-style: solid;
+    content: "";
+    height: 0px;
+    position: absolute;    
+    transform: rotate(0deg);
+    width: 0px;
+  }
+
+  &:after {
+    border-color: transparent #f7f7f8 transparent transparent;
+    border-width: 0 12px 12px 0;    
+    right: -1px;
+    top: 0;    
+  }
+
+  &:before {
+    border-color: transparent transparent transparent #F7F7F8;
+    border-width: 12px 0 0 12px;    
+    bottom: -1px;
+    left: 0;
+  }
+
+  .decisions-search-multiple-results__label {
+    width: calc(100% - 11px);
+  }
+}
+
+.decisions-search-result-card__phantom-card {
+  background-color: transparent;
+  cursor: unset;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.decisions-search-multiple-results__label {
+  background: #00d7a7;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 26px;
+  margin-bottom: 0;
+  padding: 11px 14px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.decisions-search-result-card__container {
+  align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.decisions-search-result-card__date {
+  margin-top: 21px;
+}
+
+.decisions-search-result-card__title {
+  width: 100%;
+}
+
+.decisions-search-result-card__title h2 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 24px;
+  margin-bottom: 36px;
+  margin-top: 21px;
+}
+
+.decisions-search-result-card__amount {
+  margin-bottom: 36px;
+  margin-top: 0;
+
+  p {
+    line-height: 1.5;
+  }
+}
+
+.decisions-search-result-card__footer {
+  margin-bottom: 18px;
+  padding: 0 16px;
+}
+
+.decisions-search-result-card__tags {
+  margin-bottom: 24px;
+}
+
+.decisions-search-result-card__issue-link {
+  margin-bottom: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.decisions-search-result-card__search-tag {
+  background: #000;
+  border-radius: 24px;
+  color: #fff;
+  display: inline-block;
+  font-size: 14px;
+  padding: 6px 16px;
+}
+
+.policymaker-search-result-card {
+  background: #fff;
+  width: 100%;
+
+  svg {
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.policymaker-search-result-card__container {
+  align-items: center;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+  padding: 34px 30px 34px 40px;
+  position: relative;
+  text-decoration: none;
+  width: 100%;
+}
+
+.policymaker-search-result-card__container:hover {
+  .policymaker-search-result-card__title {
+    text-decoration: underline;
+  }
+
+  svg {
+    transform: translate(10px);
+  }
+
+  .policymaker-search-result-card__sub-title svg {
+    transform: none;
+  }
+}
+
+.policymaker-search-result-card__title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 2.25rem;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.policymaker-search-result-card__sub-title {
+  color: #707070;
+  font-size: 1.25rem;
+  line-height: 2.25rem;
+}
+
+.policymaker-search-result-card__title-container {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+}
+
+.policymaker-search-result-card__department-highlight {
+  display: inline-block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 16px;
+}
+
+.policymaker-search-result-card__sub-title svg {
+  --icon-size: 18px;
+  margin-top: 6px;
+}

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paatokset_submenus
+    - paatokset_ahjo_api
     - system
   theme:
     - hdbt_subtheme
@@ -16,7 +16,7 @@ plugin: policymaker_side_nav
 settings:
   id: policymaker_side_nav
   label: 'Policymaker side navigation'
-  label_display: visible
+  label_display: '0'
   provider: paatokset_submenus
 visibility:
   request_path:
