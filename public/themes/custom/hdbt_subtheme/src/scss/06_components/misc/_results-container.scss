@@ -1,0 +1,95 @@
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
+.decisions-search-results {
+  background: #f7f7f8;
+}
+
+.decisions-search-results__container {
+  @media (min-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    > div:first-child {  
+      display: inline-flex;
+      width: auto;
+    }
+  }
+}
+
+.decisions-search-results__container .hds-pagination-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.decisions-search-results__container--decisions-module {
+  min-height: 250px;
+  padding-top: 16px;
+  position: relative;
+
+  @media (min-width: 1248px) {
+    padding-top: 0;
+  }
+}
+
+.decisions-search-results__container--decisions-module .decisions-search-results__status {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.decisions-search-results__cars-wrapper {
+  display :none;
+}
+
+.decisions-search-results__stats {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.decisions-search-results__stats-count {
+  font-size: 20px;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+}
+
+.decisions-search-results__stats-count strong {
+  margin-right: 5px;
+}
+
+.decisions-search-results__stats-size {
+  align-items: center;
+  display: flex;
+}
+
+.decisions-search-size-select {
+  margin-right: $spacing-half;
+}
+
+.policymaker-search-results {
+  min-height: 250px;
+  position: relative;
+
+  @media (min-width: 1248px) {
+    padding-top: 100px;
+  }
+}
+
+.policymaker-search-results__container {
+  >div:first-child {
+    width: 100%;
+  }
+}
+
+.policymaker-search-results__stats-count {
+  margin-bottom: 22px;
+  width: 100%;
+}

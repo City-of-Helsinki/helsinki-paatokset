@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paatokset_submenus
+    - paatokset_ahjo_api
     - system
   theme:
     - hdbt_subtheme
@@ -16,7 +16,7 @@ plugin: paatokset_minutes_of_discussion
 settings:
   id: paatokset_minutes_of_discussion
   label: 'Paatokset minutes of discussion block'
-  label_display: visible
+  label_display: '0'
   provider: paatokset_submenus
 visibility:
   request_path:

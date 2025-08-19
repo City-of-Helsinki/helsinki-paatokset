@@ -1,2 +1,34 @@
-@import 'form';
+@import 'combobox';
+@import 'date-picker';
+@import 'date-select';
+@import 'decisions-search-form';
 @import 'issues-dropdown';
+@import 'search-bar-wrapper';
+@import 'selected-filters-container';
+@import 'selected-filters';
+
+$council-green: #00d7a7;
+$board-grey: #dedfe1;
+$traffic-yellow: #ffe977;
+$committee-blue: #9fc9eb;
+$trustee-pink: #f5a3c7;
+
+.department--council:before {
+  background-color: $council-green;
+}
+
+.department--board-division:before, .department--board:before {
+  background-color: $board-grey;
+}
+
+.department--traffic:before {
+  background-color: $traffic-yellow;
+}
+
+.department--committee:before {
+  background-color: $committee-blue;
+}
+
+.department--trustee:before {
+  background-color: $trustee-pink;
+}
