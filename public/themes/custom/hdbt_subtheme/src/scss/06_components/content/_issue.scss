@@ -53,6 +53,7 @@
 
 .issue__category {
   display: flex;
+  gap: $spacing-half;
 
   .hds-tag {
     background: $color-black;
@@ -510,16 +511,7 @@ h4.decision-history-title + h5.decision-history-title {
 
 .info-label,
 .warning-label {
-  display: inline-block;
-  margin-bottom: 5px;
   margin-bottom: $spacing-and-half;
-  padding: 5px;
-  padding-right: 10px;
-
-  span {
-    font-size: $fontsize-body-m;
-    font-weight: $font-weight-bold;
-  }
 
   &.visible {
     visibility: visible;
@@ -528,22 +520,13 @@ h4.decision-history-title + h5.decision-history-title {
   @include breakpoint($breakpoint-l) {
     margin-bottom: 7px;
   }
-
-  span {
-    margin-left: 5px;
-  }
 }
 
 .info-label {
   background-color: $color-fog-light;
 }
 
-.warning-label {
-  background-color: $color-engel;
-}
-
-.info-label__container,
-.warning-label__container {
+.info-label__container {
   align-items: center;
   display: flex;
 }
