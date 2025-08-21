@@ -5,7 +5,7 @@ Lupapiste RSS block shows the RSS feed from lupapiste. It's set to be visible in
 As a default the block is shown on /kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset but it can be changed with drush command
 
 ``
-drush state:set lupapiste '/new-value-here'
+drush state:set lupapiste_url '/new-value-here'
 ``
 
 To check what value is set
