@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\Plugin\Block;
+namespace Drupal\paatokset\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
@@ -11,7 +11,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Entity\Article;
+use Drupal\paatokset\Entity\Article;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
