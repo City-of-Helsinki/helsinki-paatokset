@@ -13,7 +13,11 @@
 {% set link_title = item.description ?? item.title ~ ' ' ~ '(download pdf)'|t({}, {'context': 'Lupapiste rss'}) %}
 
 <div class="rss-item__container">
+  {% if item.asiakirjaLink %}
   <h3>{{ link(link_title, item.asiakirjaLink, link_attributes) }}</h3>
+  {% else %}
+  <h3>{{ item.title }}</h3>
+  {% endif %}
   <div>
     <div class="rss-item__row-container">
       <div class="rss-item__item">
@@ -38,7 +42,7 @@
       <div class="rss-item__item">
         <span>{{ 'Decision maker'|t({}, {'context': 'Lupapiste rss'}) }}:</span> {{ item.paattaja }}
       </div>
-    </div>    
+    </div>
   </div>
   <div class="rss-item__publication-date">
     <span>{{ 'Publication starts'|t({}, {'context': 'Lupapiste rss'}) }} {{ item.julkaisuAlkaa.date|date('U')|format_date('publication_date_format')}}.</span>
