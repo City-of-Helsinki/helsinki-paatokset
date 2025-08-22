@@ -8,7 +8,7 @@
 
     {% if selectedDecision and not policymaker_is_active %}
     <div class="motion-tag">
-       <div class="hds-tag hds-tag__alert">
+       <div class="hds-tag hds-tag--alert">
         <span>{{ 'This decisionmaker is no longer active'|t }}</span>
       </div>
     </div>
@@ -16,7 +16,7 @@
 
     {% if selectedDecision and not selectedDecision.field_is_decision.value %}
     <div class="motion-tag">
-      <div class="hds-tag hds-tag__alert">
+      <div class="hds-tag hds-tag--alert">
         <span>{{ 'This is a motion'|t }}</span>
       </div>
     </div>

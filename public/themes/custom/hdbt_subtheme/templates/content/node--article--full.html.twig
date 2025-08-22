@@ -28,7 +28,7 @@
     {% if unpublish_on %}
       {% set html_unpublish_on = unpublish_on|format_date('custom', 'Y-m-d') ~ 'T' ~ unpublish_on|format_date('custom', 'H:i') %}
       <div class="news-content">
-        <div class="hds-tag hds-tag__alert">
+        <div class="hds-tag hds-tag--alert">
           <span>{{ 'This publication is public until @scheduled_unpublish_date'|t({'@scheduled_unpublish_date': unpublish_on|format_date('publication_date_format') }) }}</span>
         </div>
       </div>
