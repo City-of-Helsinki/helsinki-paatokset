@@ -25,40 +25,28 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class ArticlesBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Constructs a new instance.
-   *
-   * @param array $configuration
-   *   Plugin configuration.
-   * @param string $plugin_id
-   *   Plugin id.
-   * @param mixed $plugin_definition
-   *   Plugin definition.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
+   * The language manager.
    */
-  public function __construct(
-    array $configuration,
-    string $plugin_id,
-    mixed $plugin_definition,
-    private readonly LanguageManagerInterface $languageManager,
-    private readonly EntityTypeManagerInterface $entityTypeManager,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
+  private LanguageManagerInterface $languageManager;
+
+  /**
+   * The entity type manager.
+   */
+  private EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritDoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new self(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get(LanguageManagerInterface::class),
-      $container->get(EntityTypeManagerInterface::class),
-    );
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+  ): self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    $instance->languageManager = $container->get(LanguageManagerInterface::class);
+    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
+    return $instance;
   }
 
   /**
