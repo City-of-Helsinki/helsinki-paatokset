@@ -7,39 +7,15 @@
     font-size: 1rem;
   }
 
-  .warning-label {
+  .hds-tag--alert {
     margin-bottom: $spacing-double;
   }
 
   .keywords {
     display: flex;
-    margin-bottom: $spacing-half;
-
-    .hds-tag {
-      background: $color-black;
-      color: $color-white;
-      margin-block: $spacing;
-      margin-inline-end: $spacing;
-      text-decoration: none;
-
-      &:hover, &:active, &:focus {
-        transition-duration: 85ms;
-        transition-property: background-color,border-color,color;
-        transition-timing-function: ease-out;
-      }
-
-      &:hover {
-        background-color: transparent;
-        border-color: $color-black;
-        color: $color-black;
-      }
-
-      &:focus, &:active {
-        border-color: $color-black;
-        outline: 3px solid $color-black;
-        outline-offset: 2px;
-      }
-    }
+    flex-wrap: wrap;
+    gap: $spacing-half;
+    margin-block: $spacing;
   }
 }
 
