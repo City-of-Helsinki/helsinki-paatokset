@@ -10,8 +10,10 @@
     flex-wrap: wrap;
     justify-content: flex-start;
 
-    > div:first-child {  
+    > div:first-child {
+      align-items: flex-end;
       display: inline-flex;
+      margin-bottom: $spacing-and-half;
       width: auto;
     }
   }

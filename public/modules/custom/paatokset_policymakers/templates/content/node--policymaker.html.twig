@@ -94,8 +94,7 @@
     {{  organization_hierarchy }}
     {% if not is_active %}
       <div class="warning-label">
-        <div class="warning-label__container">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'This decisionmaker is no longer active'|t } %}
+        <div class="hds-tag hds-tag--alert">
           <span>{{ 'This decisionmaker is no longer active'|t }}</span>
         </div>
       </div>
@@ -215,11 +214,11 @@
         <h2>{{ 'Recent meeting recording'|trans }}</h2>
         {% if next_meeting_time %}
         <div class="warning-label">
-          <div class="warning-label__container">
-            {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'Next meeting'|t } %}
+          <div class="hds-tag hds-tag--alert">
             <span>{{ 'The next meeting will be held at @next_meeting_time'|t({'@next_meeting_time': next_meeting_time}) }}</span>
           </div>
         </div>
+
         {% endif %}
         <div class="section-description">
           {{ recording_description }}

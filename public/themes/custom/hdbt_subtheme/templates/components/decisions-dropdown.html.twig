@@ -18,8 +18,7 @@
         ]
       %}
       <div{{ attributes.addClass(warning_classes) }}>
-        <div class="warning-label__container new-handlings-warning__container">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', label: 'More recent handlings'|t } %}
+        <div class="hds-tag hds-tag--alert">
           <span>{{ warning_label }}</span>
         </div>
       </div>
