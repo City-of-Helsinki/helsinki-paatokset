@@ -38,6 +38,7 @@ const ResultsContainer = () => {
 
   const cardWrapperStyles: any = {
     margin: 0,
+    marginTop: '32px',
     gap: '24px',
     width: '100%'
   };
