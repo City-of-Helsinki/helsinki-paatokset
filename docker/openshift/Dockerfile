@@ -7,11 +7,10 @@ RUN composer install --no-progress --profile --prefer-dist --no-interaction --no
 
 # Copy custom entrypoints.
 # @see https://github.com/City-of-Helsinki/drupal-docker-images/tree/main/openshift/drupal
-RUN mkdir -p /crons /entrypoints /hooks/deploy /hooks/post-db-replace
+RUN mkdir -p /crons /entrypoints /hooks
 COPY docker/openshift/entrypoints/ /entrypoints
 COPY docker/openshift/crons/ /crons
-COPY docker/openshift/deploy /hooks/deploy
-COPY docker/openshift/post-db-replace /hooks/post-db-replace
-RUN chmod +x /entrypoints/* /hooks/deploy/* /crons/* /hooks/post-db-replace/*
+COPY docker/openshift/hooks/ /hooks
+RUN chmod -R +x /entrypoints/* /hooks/* /crons/*
 
 COPY docker/openshift/init.sh /
