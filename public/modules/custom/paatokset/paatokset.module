@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\paatokset\Lupapiste\ItemsStorage;
+use Drupal\paatokset\Entity\Article;
 
 /**
  * Implements hook_theme().
@@ -28,7 +29,22 @@ function paatokset_theme() : array {
       ],
       'template' => 'lupapiste-rss-item',
     ],
+    'all_articles' => [
+      'variables' => [
+        'articles_by_year' => [],
+      ],
+      'template' => 'block/all-articles',
+    ],
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function paatokset_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['node']['article'])) {
+    $bundles['node']['article']['class'] = Article::class;
+  }
 }
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\Entity;
+namespace Drupal\paatokset\Entity;
 
 use Drupal\node\Entity\Node;
 

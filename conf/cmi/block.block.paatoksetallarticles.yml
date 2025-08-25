@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paatokset_ahjo_api
+    - paatokset
     - system
   theme:
     - hdbt_subtheme
