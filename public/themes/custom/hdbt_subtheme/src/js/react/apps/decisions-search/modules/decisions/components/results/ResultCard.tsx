@@ -1,9 +1,10 @@
 import React from 'react';
 import { IconArrowRight, IconSize } from 'hds-react';
 import { format } from 'date-fns';
-
+import CardItem from '@/react/common/Card';
 import classNames from 'classnames';
 import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
+import MetadataType from "@/types/MetadataType";
 
 
 type Props = {
@@ -25,7 +26,7 @@ type Props = {
 };
 
 const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, subject, issue_subject, _score }: Props) => {
-  const colorClass = useDepartmentClasses(color_class);
+  // const colorClass = useDepartmentClasses(color_class);
 
   let url = '';
   if (typeof href !== 'undefined') {
@@ -40,59 +41,34 @@ const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix
       url = url.replace('/fi/', lang_prefix).replace('asia', url_prefix).replace('paatos', url_query);
     }
   }
-  
+
   let formattedDate;
-  if(date) {
+  if (date) {
     formattedDate = format(new Date(date * 1000), 'dd.MM.yyyy');
   }
 
-  let cardClass = 'decisions-search-result-card';
-  if (doc_count > 1) {
-    cardClass += ' decisions-search-multiple-results';
-  }
-
   return (
-    <div className={cardClass}>
-      <a href={ url } className='decisions-search-result-card__link' tabIndex={0}>
-        <div className='decisions-search-multiple-results__label' style={{ backgroundColor: colorClass }}>
-          { organization_name }
-        </div>
-        <div className='decisions-search-result-card__container'>
-          <div>
-            <div className='decisions-search-result-card__date'>
-              { formattedDate }
-            </div>
-          </div>
-          <div className='decisions-search-result-card__title'>
-            {_DEBUG_MODE_ &&
-              <span style={{ color: 'red' }}>Score: { _score }, Diary number: { issue_id }, Unique issue ID: { unique_issue_id }, Doc Count: { doc_count } <br /> URL: { href }</span>
-            }
-            <h2>{ subject }</h2>
-            {
-              doc_count > 1 && issue_subject &&
-                <div className='decisions-search-result-card__amount'>
-                  <p><strong>{amount_label}</strong>
-                  <br />{ issue_subject }</p>
-                </div>
-            }
-          </div>
-        </div>
-        <div className='decisions-search-result-card__footer'>
-          {
-            category &&
-              <div className={classNames(
-                'decisions-search-result-card__tags',
-                'paatokset-tag-container'
-              )}>
-                <span className='decisions-search-result-card__search-tag'>{ category }</span>
-              </div>
-          }
-          <div className='decisions-search-result-card__issue-link'>
-              <IconArrowRight size={IconSize.Large}/>
-          </div>
-        </div>
-      </a>
-    </div>
+    <CardItem
+      cardTitle={subject}
+      cardUrl={url}
+      cardMetas={[
+        organization_name && {
+          icon: 'user',
+          label: Drupal.t('Decision maker', {}, { context: 'React search'}),
+          content: organization_name,
+        },
+        formattedDate && {
+          icon: 'calendar',
+          label: Drupal.t('Date', {}, { context: 'React search'}),
+          content: formattedDate,
+        },
+        issue_subject && {
+          icon: 'layers',
+          label: Drupal.t('Decision case with multiple decisions', {}, { context: 'React search'}),
+          content: issue_subject,
+        },
+      ].filter(Boolean) as MetadataType[]}
+    />
   );
 };
 
