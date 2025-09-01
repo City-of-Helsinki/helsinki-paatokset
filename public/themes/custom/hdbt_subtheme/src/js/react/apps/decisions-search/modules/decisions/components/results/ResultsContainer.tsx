@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { ReactiveList, StateProvider } from '@appbaseio/reactivesearch';
 import { useTranslation } from 'react-i18next';
-import { Notification } from 'hds-react';
+import { Notification, NotificationSize } from 'hds-react';
 import classNames from 'classnames';
 import { isOperatorSearch } from '../../../../utils/OperatorSearch';
 
@@ -35,16 +35,6 @@ const ResultsContainer = () => {
     }
     pageLoads++;
   };
-
-  const cardWrapperStyles: any = {
-    margin: 0,
-    marginTop: '32px',
-    gap: '24px',
-    width: '100%'
-  };
-  if(width > 1281) {
-    cardWrapperStyles.justifyContent = 'space-between';
-  }
 
   const getRealResultsAmount = (searchState:any) => {
     if (!searchState.results) {
@@ -163,7 +153,7 @@ const ResultsContainer = () => {
             </div>
           )} />
         )}
-        renderPagination={({ pages, totalPages, currentPage, setPage, setSize }) => (
+        renderPagination={({ pages, totalPages, currentPage, setPage }) => (
           <StateProvider includeKeys={['aggregations', 'hits']} render={({ searchState }) => (
             <Pagination
               pages={pages}
@@ -184,7 +174,7 @@ const ResultsContainer = () => {
           </div>
         )}
         defaultQuery={customQuery}
-        render={({ data, rawData, resultStats }) => (
+        render={({ data, rawData }) => (
           <>
             <SortSelect
               setSort={setSort}
@@ -196,7 +186,7 @@ const ResultsContainer = () => {
                   <Notification
                     label={t('SEARCH:operators-enabled-label')}
                     notificationAriaLabel={t('SEARCH:operators-enabled-label')}
-                    size="small"
+                    size={NotificationSize.Small}
                     className='decisions-search-results__status'
                   >
                     {t('SEARCH:operators-enabled')} {operatorGuideUrl && (
@@ -208,9 +198,7 @@ const ResultsContainer = () => {
                 }
               </>
             )} />
-            <ReactiveList.ResultCardsWrapper
-              style={cardWrapperStyles}
-            >
+            <div className={'hdbt-search__results-container'}>
               {
                 data.map((item: any) => {
                   // Item mapping.
@@ -229,23 +217,20 @@ const ResultsContainer = () => {
                   }
 
                   const resultProps = {
-                    category: item.top_category_name,
-                    color_class: item.color_class,
-                    organization_name: item.organization_name,
-                    organization_type: item.organization_type,
                     date: item.meeting_date,
                     href: item.decision_url,
                     lang_prefix: t('SEARCH:prefix'),
                     url_prefix: t('DECISIONS:url-prefix'),
                     url_query: t('DECISIONS:url-query'),
-                    amount_label: t('DECISIONS:amount-label'),
                     issue_id: item.issue_id,
                     unique_issue_id: item.unique_issue_id,
                     doc_count,
-                    policymaker: '',
                     subject: item.subject,
                     issue_subject: item.issue_subject,
-                    _score: item._score
+                    _score: item._score,
+                    organization_name: item.organization_name,
+                    organization_type: item.organization_type,
+                    field_is_decision: item.field_is_decision,
                   };
                   return <ResultCard
                     key={id.toString()}
@@ -256,7 +241,7 @@ const ResultsContainer = () => {
               {data.length % 3 !== 0 &&
                 <PhantomCard />
               }
-            </ReactiveList.ResultCardsWrapper>
+            </div>
           </>
         )}
       />

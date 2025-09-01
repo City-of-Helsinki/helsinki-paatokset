@@ -87,3 +87,19 @@ msgstr "Äänestys"
 msgctxt "Voting results"
 msgid "Voting results"
 msgstr "Äänestystulokset"
+
+msgctxt "Decision search"
+msgid "Decision maker"
+msgstr "Päättäjä"
+
+msgctxt "Decision search"
+msgid "Date"
+msgstr "Ajankohta"
+
+msgctxt "Decision search"
+msgid "Decision case with multiple decisions"
+msgstr "Päätöksen asia, jossa on useita päätöksiä"
+
+msgctxt "Decision search"
+msgid "This is a motion"
+msgstr "Tämä on esitys"
