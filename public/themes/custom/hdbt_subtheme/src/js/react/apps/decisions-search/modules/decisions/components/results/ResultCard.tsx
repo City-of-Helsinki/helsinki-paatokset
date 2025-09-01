@@ -23,10 +23,13 @@ type Props = {
   issue_subject: string,
   _score: number,
   organization_name: string
+  organization_type: string
 };
 
-const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, subject, issue_subject, _score }: Props) => {
+const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, organization_type, subject, issue_subject, _score }: Props) => {
   // const colorClass = useDepartmentClasses(color_class);
+
+  console.log(organization_type);
 
   let url = '';
   if (typeof href !== 'undefined') {

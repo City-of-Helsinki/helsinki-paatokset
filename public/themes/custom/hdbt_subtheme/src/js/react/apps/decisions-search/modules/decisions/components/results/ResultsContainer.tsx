@@ -25,7 +25,7 @@ const ResultsContainer = () => {
   const { width } = useWindowDimensions();
   const resultsContainer = useRef<HTMLDivElement|null>(null);
   const operatorGuideUrl = useContext(OperatorGuideContext);
-  
+
   const pages = width < 768 ? 3 : 5;
   let pageLoads = 0;
   const scrollToResults = () => {
@@ -232,6 +232,7 @@ const ResultsContainer = () => {
                     category: item.top_category_name,
                     color_class: item.color_class,
                     organization_name: item.organization_name,
+                    organization_type: item.organization_type,
                     date: item.meeting_date,
                     href: item.decision_url,
                     lang_prefix: t('SEARCH:prefix'),
