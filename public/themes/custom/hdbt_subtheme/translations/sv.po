@@ -9,3 +9,19 @@ msgstr "Omröstning"
 msgctxt "Voting results"
 msgid "Voting results"
 msgstr "Omröstningsresultat"
+
+msgctxt "Decision search"
+msgid "Decision maker"
+msgstr "Beslutsfattare"
+
+msgctxt "Decision search"
+msgid "Date"
+msgstr "Datumn"
+
+msgctxt "Decision search"
+msgid "Decision case with multiple decisions"
+msgstr "Ärende med flera beslut"
+
+msgctxt "Decision search"
+msgid "This is a motion"
+msgstr "Detta är en motion"

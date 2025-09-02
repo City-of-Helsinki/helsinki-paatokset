@@ -1,32 +1,43 @@
 import React from 'react';
-import { IconArrowRight, IconSize } from 'hds-react';
+import { IconAlertCircle } from 'hds-react';
 import { format } from 'date-fns';
-
-import classNames from 'classnames';
-import useDepartmentClasses from '../../../../hooks/useDepartmentClasses';
-
+import CardItem from '@/react/common/Card';
+import MetadataType from "@/types/MetadataType";
 
 type Props = {
-  category: string,
-  color_class: string[],
   date: number,
   href: string,
   lang_prefix: string,
   url_prefix: string,
   url_query: string,
-  amount_label: string,
   issue_id: string,
   unique_issue_id: string,
   doc_count: number,
   subject: string,
   issue_subject: string,
   _score: number,
-  organization_name: string
+  organization_name: string,
+  organization_type: string,
+  field_is_decision: string[],
 };
 
-const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix, url_query, amount_label, issue_id, unique_issue_id, doc_count, organization_name, subject, issue_subject, _score }: Props) => {
-  const colorClass = useDepartmentClasses(color_class);
+const ResultCard = ({ date, href, lang_prefix, url_prefix, url_query, issue_id, unique_issue_id, doc_count, organization_name, organization_type, field_is_decision, subject, issue_subject, _score }: Props) => {
 
+  // This is really nasty and needs some kind of real implementation and localization.
+  const cardCategoryColorMap: Record<string, string> = {
+    'Lautakunta': 'coat-of-arms',
+    'Luottamushenkilö': 'gold',
+    'Viranhaltija': 'bus',
+    'Kaupunginhallitus': 'silver',
+    'Kaupunginvaltuusto': 'copper',
+  };
+
+  // Get the organization color based on the mapping of names and colors.
+  function getColorForOrgType(organization_type?: string): string {
+    return cardCategoryColorMap[organization_type ?? ''] || 'engel';
+  }
+
+  // URL where the card should take the user.
   let url = '';
   if (typeof href !== 'undefined') {
     url = href.toString();
@@ -40,59 +51,67 @@ const ResultCard = ({ category, color_class, date, href, lang_prefix, url_prefix
       url = url.replace('/fi/', lang_prefix).replace('asia', url_prefix).replace('paatos', url_query);
     }
   }
-  
+
+  // Formatting the date of the case.
   let formattedDate;
-  if(date) {
+  if (date) {
     formattedDate = format(new Date(date * 1000), 'dd.MM.yyyy');
   }
 
-  let cardClass = 'decisions-search-result-card';
-  if (doc_count > 1) {
-    cardClass += ' decisions-search-multiple-results';
+  // Check if the field_is_decision is true. If yes, the case is no longer a motion.
+  let thisIsMotion = true;
+  if (field_is_decision[0]) {
+    thisIsMotion = false;
   }
 
+  // Debug information in readable format.
+  const debugInformation = `
+    <b>Score:</b> ${_score},<br/>
+    <b>Diary number:</b> ${issue_id},<br/>
+    <b>Unique issue ID:</b> ${unique_issue_id},<br/>
+    <b>Doc Count:</b> ${doc_count}<br/>
+    <b>URL:</b> ${href}
+  `;
+
   return (
-    <div className={cardClass}>
-      <a href={ url } className='decisions-search-result-card__link' tabIndex={0}>
-        <div className='decisions-search-multiple-results__label' style={{ backgroundColor: colorClass }}>
-          { organization_name }
-        </div>
-        <div className='decisions-search-result-card__container'>
-          <div>
-            <div className='decisions-search-result-card__date'>
-              { formattedDate }
-            </div>
-          </div>
-          <div className='decisions-search-result-card__title'>
-            {_DEBUG_MODE_ &&
-              <span style={{ color: 'red' }}>Score: { _score }, Diary number: { issue_id }, Unique issue ID: { unique_issue_id }, Doc Count: { doc_count } <br /> URL: { href }</span>
-            }
-            <h2>{ subject }</h2>
-            {
-              doc_count > 1 && issue_subject &&
-                <div className='decisions-search-result-card__amount'>
-                  <p><strong>{amount_label}</strong>
-                  <br />{ issue_subject }</p>
-                </div>
-            }
-          </div>
-        </div>
-        <div className='decisions-search-result-card__footer'>
+    <CardItem
+      cardTitle={subject}
+      cardUrl={url}
+      {...(organization_type && {
+        cardCategoryTag: {
+          tag: organization_type,
+          color: getColorForOrgType(organization_type),
+        }
+      })}
+      cardMetas={[
+        organization_name && {
+          icon: 'user',
+          label: Drupal.t('Decision maker', {}, { context: 'Decision search'}),
+          content: organization_name,
+        },
+        formattedDate && {
+          icon: 'calendar',
+          label: Drupal.t('Date', {}, { context: 'Decision search'}),
+          content: formattedDate,
+        },
+        issue_subject && {
+          icon: 'layers',
+          label: Drupal.t('Decision case with multiple decisions', {}, { context: 'Decision search'}),
+          content: issue_subject,
+        },
+      ].filter(Boolean) as MetadataType[]}
+      {...(thisIsMotion && {
+        cardTags: [
           {
-            category &&
-              <div className={classNames(
-                'decisions-search-result-card__tags',
-                'paatokset-tag-container'
-              )}>
-                <span className='decisions-search-result-card__search-tag'>{ category }</span>
-              </div>
-          }
-          <div className='decisions-search-result-card__issue-link'>
-              <IconArrowRight size={IconSize.Large}/>
-          </div>
-        </div>
-      </a>
-    </div>
+            tag: Drupal.t('This is a motion', {}, { context: 'Decision search'}),
+            color: 'alert',
+            icon: <IconAlertCircle />,
+          },
+        ],
+      })}
+      {...(_DEBUG_MODE_ && { cardDescription: debugInformation })}
+      {...(_DEBUG_MODE_ && { cardDescriptionHtml: true })}
+    />
   );
 };
 
