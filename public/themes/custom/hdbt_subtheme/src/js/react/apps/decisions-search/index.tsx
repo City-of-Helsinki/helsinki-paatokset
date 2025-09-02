@@ -21,7 +21,7 @@ export const OperatorGuideContext = createContext(rootElement?.dataset.operatorG
 
 if(rootElement) {
   const type = rootElement.dataset.type || 'decisions';
-  const elasticUrl = rootElement.dataset.url || 'http://localhost:9202';
+  const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
   switch(type) {
     case 'decisions':
