@@ -40,8 +40,8 @@
 
   // Autocomplete styles.
   .search-autocomplete {
-    border-top-color: $color-black-20;
-    border-top-width: 1px;
+    border: 2px solid $color-black;
+    border-top: none;
     left: 0;
     position: absolute;
     right: 0;

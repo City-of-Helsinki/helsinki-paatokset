@@ -21,7 +21,6 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks;
-use Drupal\paatokset_ahjo_api\Entity\Article;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
@@ -34,9 +33,6 @@ require_once __DIR__ . '/includes/paatokset_lang_switcher.php';
  * Implements hook_entity_bundle_info_alter().
  */
 function paatokset_ahjo_api_entity_bundle_info_alter(array &$bundles): void {
-  if (isset($bundles['node']['article'])) {
-    $bundles['node']['article']['class'] = Article::class;
-  }
   if (isset($bundles['node']['trustee'])) {
     $bundles['node']['trustee']['class'] = Trustee::class;
   }
@@ -125,12 +121,6 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
     'block__dictionary_banner' => [
       'base hook' => 'entity',
       'template' => 'block/block--dictionary-banner',
-    ],
-    'all_articles' => [
-      'variables' => [
-        'articles_by_year' => [],
-      ],
-      'template' => 'block/all-articles',
     ],
     'policymaker_side_navigation' => [
       'variables' => [

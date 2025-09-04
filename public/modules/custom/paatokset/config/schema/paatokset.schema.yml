@@ -1,0 +1,7 @@
+paatokset.settings:
+  type: config_object
+  label: 'Settings'
+  mapping:
+    redirect_403_page:
+      type: string
+      label: 'Redirect 403 page'

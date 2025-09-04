@@ -7,6 +7,8 @@ services:
   Drupal\paatokset\Lupapiste\ItemsStorage: ~
   Drupal\paatokset\Lupapiste\ItemsLazyBuilder: ~
 
+  Drupal\paatokset\EventSubscriber\ExceptionSubscriber: ~
+
   paatokset.normalizer.array:
     class: Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
     public: false
