@@ -1,0 +1,10 @@
+label: ''
+display:
+  default:
+    display_options:
+      title: 'Bläddra alla'
+      pager:
+        options:
+          tags:
+            next: Nästa
+            previous: Tidigare

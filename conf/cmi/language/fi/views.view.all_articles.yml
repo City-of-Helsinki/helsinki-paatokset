@@ -1,0 +1,10 @@
+label: ''
+display:
+  default:
+    display_options:
+      title: 'Kaikki kuulutukset ja ilmoitukset'
+      pager:
+        options:
+          tags:
+            next: Seuraava
+            previous: Edellinen
