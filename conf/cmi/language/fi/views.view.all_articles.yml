@@ -8,3 +8,19 @@ display:
           tags:
             next: Seuraava
             previous: Edellinen
+      header:
+        area:
+          content:
+            value: '<p>Huom! <a href="https://paatokset.hel.fi/fi/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset">Rakennusvalvonnan lupapäätösten kuulutukset</a> löytyvät vain omalta sivultaan.</p>'
+            format: minimal
+        area_1:
+          content:
+            value: '<h3>Rajaa kuulutuksia ja ilmoituksia</h3>'
+            format: full_html
+      exposed_form:
+        options:
+          submit_button: Etsi
+      filters:
+        year:
+          expose:
+            label: Vuosi

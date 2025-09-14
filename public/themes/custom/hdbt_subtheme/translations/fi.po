@@ -2,6 +2,16 @@
 msgid ""
 msgstr ""
 
+msgctxt "Announcements and notifications list"
+msgid "Announcement or notification"
+msgid_plural "Announcements and notifications"
+msgstr[0] "kuulutus tai ilmoitus"
+msgstr[1] "kuulutusta ja ilmoitusta"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Ei tuloksia"
+
 msgctxt "Allu decision search"
 msgid "Find decisions concerning temporary usage of streets and parks"
 msgstr "Etsi katu- ja puistoalueiden tilapäiseen käyttöön liittyviä päätöksiä"

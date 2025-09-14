@@ -2,6 +2,16 @@
 msgid ""
 msgstr ""
 
+msgctxt "Announcements and notifications list"
+msgid "Announcement or notification"
+msgid_plural "Announcements and notifications"
+msgstr[0] "kungörelse eller annons"
+msgstr[1] "kungörelser och annonser"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Inga resultat"
+
 msgctxt "Voting results"
 msgid "Voting"
 msgstr "Omröstning"

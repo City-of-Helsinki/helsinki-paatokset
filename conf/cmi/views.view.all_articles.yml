@@ -113,7 +113,7 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Find
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -273,8 +273,35 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      use_ajax: true
-      header: {  }
+      css_class: paatokset--all-articles-block
+      use_ajax: false
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: 'Notice! <a hreflang="fi" href="https://paatokset.hel.fi/fi/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset">Notices of building control permit decisions</a> can only be found on their own page.'
+            format: minimal
+          tokenize: false
+        area_1:
+          id: area_1
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<h3>Filter announcements and notifications</h3>'
+            format: full_html
+          tokenize: false
       footer: {  }
       display_extenders: {  }
     cache_metadata:

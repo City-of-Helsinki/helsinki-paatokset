@@ -39,9 +39,9 @@ final class YearFilter extends FilterPluginBase {
     $options = $this->getOptions();
 
     $form['value'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Year'),
-      '#placeholder' => $this->t('All years'),
+      '#type' => 'helfi_select',
+      '#placeholder' => $this->t('All years', [], ['context' => 'Year filter']),
+      '#empty_option' => $this->t('All years', [], ['context' => 'Year filter']),
       '#options' => $options,
       '#default_value' => $this->value,
     ];

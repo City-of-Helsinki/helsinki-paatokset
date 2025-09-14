@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Theme override for main view template.
+ */
+#}
+
+{% embed '@hdbt/component/content-list-with-count.twig' with {
+  modifier_class: [
+    'views--unit-search--large-volume',
+  ]
+}%}
+  {% block count_container%}
+    {%- if total_rows -%}
+      {{ total_rows }} {% trans with {'context': 'Announcements and notifications list'}%}Announcement or notification{% plural total_rows %}Announcements and notifications{% endtrans %}
+    {%- else -%}
+      {{ 'No results'|t({}, {'context' : 'Announcements and notifications list'}) }}
+    {%- endif -%}
+  {% endblock count_container %}
+{% endembed %}

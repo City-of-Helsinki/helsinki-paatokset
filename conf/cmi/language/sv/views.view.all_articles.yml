@@ -8,3 +8,19 @@ display:
           tags:
             next: Nästa
             previous: Tidigare
+      header:
+        area:
+          content:
+            value: '<p>Observera! <a hreflang="sv" href="https://paatokset.hel.fi/fi/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset">Kungörelser om byggnadstillståndsbeslutet</a> finns endast på deras egen sida.</p>'
+            format: minimal
+        area_1:
+          content:
+            value: '<h3>Filtrera kungörelser och annonser</h3>'
+            format: full_html
+      exposed_form:
+        options:
+          submit_button: Sök
+      filters:
+        year:
+          expose:
+            label: År
