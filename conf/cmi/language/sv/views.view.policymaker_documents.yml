@@ -1,0 +1,7 @@
+display:
+  default:
+    display_options:
+      filters:
+        year:
+          expose:
+            label: År

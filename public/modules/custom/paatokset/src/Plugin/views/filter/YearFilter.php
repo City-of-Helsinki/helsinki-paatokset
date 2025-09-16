@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset\Plugin\views\filter;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\views\Attribute\ViewsFilter;
@@ -48,7 +49,7 @@ final class YearFilter extends FilterPluginBase {
 
     $cache = new BubbleableMetadata();
 
-    $entityType = $this->options['entity_type'];
+    $entityType = $this->view->getBaseEntityType()->id();
     $allFilters = $this->displayHandler->getOption('filters');
 
     // Select element options must be invalidated when new
@@ -67,22 +68,30 @@ final class YearFilter extends FilterPluginBase {
   /**
    * {@inheritDoc}
    */
-  public function query() {
+  public function query(): void {
     [$year] = $this->value;
 
     if (empty($year)) {
       return;
     }
 
-    $startOfYear = mktime(0, 0, 0, 1, 1, (int) $year);
-    $endOfYear = mktime(23, 59, 59, 12, 31, (int) $year);
+    [$start, $end] = match ($this->getTimeFieldType()) {
+      'timestamp' => [
+        mktime(0, 0, 0, 1, 1, (int) $year),
+        mktime(23, 59, 59, 12, 31, (int) $year),
+      ],
+      'datetime' => [
+        sprintf('%d-01-01T00:00:00', (int) $year),
+        sprintf('%d-12-31T23:59:59', (int) $year),
+      ],
+    };
 
     $this->ensureMyTable();
     assert($this->query instanceof Sql);
     $this->query->addWhere(
       $this->options['group'],
       "$this->tableAlias.$this->realField",
-      [$startOfYear, $endOfYear],
+      [$start, $end],
       'BETWEEN'
     );
   }
@@ -93,11 +102,17 @@ final class YearFilter extends FilterPluginBase {
   private function getOptions(): array {
     $allFilters = $this->displayHandler->getOption('filters');
 
+    $alias = 'tbl';
+    $baseTable = $this->view->storage->get('base_table');
+    $baseField = $this->view->storage->get('base_field');
     $query = $this->connection
-      ->select($this->table, 'tbl')
-      ->isNotNull("tbl.$this->realField")
-      ->condition("tbl.status", 1)
+      ->select($baseTable, 'tbl')
       ->distinct();
+
+    // Filter published entities.
+    if ($this->view->getBaseEntityType()->entityClassImplements(EntityPublishedInterface::class)) {
+      $query->condition('tbl.status', 1);
+    }
 
     // To get accurate results, this query
     // should somewhat match the final view query.
@@ -115,16 +130,41 @@ final class YearFilter extends FilterPluginBase {
     // Note: this is very simplified implementation for
     // our needs. This will break on more complicated views.
     foreach ($this->view->argument as $key => $argument) {
-      $query->innerJoin($argument->table, $key, "tbl.nid = $key.entity_id");
+      $query->innerJoin($argument->table, $key, "tbl.$baseField = $key.entity_id");
       $query->condition("$key.$argument->field", $argument->getValue());
     }
 
-    $query->addExpression("FROM_UNIXTIME(tbl.$this->realField, '%Y')", 'year');
+    if ($this->table !== $baseTable) {
+      $alias = $query->innerJoin($this->table, 'tbl2', "tbl.$baseField = tbl2.entity_id");
+    }
+
+    if (isset($allFilters[$this->realField])) {
+      [
+        'value' => $value,
+        'operator' => $operator,
+      ] = $allFilters[$this->realField];
+
+      $query->condition("$alias.$this->realField", $value['value'], $operator);
+    }
+
+    match ($this->getTimeFieldType()) {
+      'timestamp' => $query->addExpression("FROM_UNIXTIME($alias.$this->realField, '%Y')", 'year'),
+      'datetime' => $query->addExpression("YEAR($alias.$this->realField)", 'year'),
+    };
+
+    $query->isNotNull("$alias.$this->realField");
     $query->orderBy('year', 'DESC');
 
     return $query
       ->execute()
       ->fetchAllKeyed(0, 0);
+  }
+
+  /**
+   * Get configured time type.
+   */
+  private function getTimeFieldType(): string {
+    return $this->definition['time_type'];
   }
 
 }

@@ -18,6 +18,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
@@ -1654,7 +1655,7 @@ class PolicymakerService {
     $nodes = $this->nodeStorage->loadMultiple($nids);
     $initiatives = [];
     foreach ($nodes as $node) {
-      if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
+      if (!$node instanceof Trustee) {
         continue;
       }
 
