@@ -99,8 +99,9 @@ final class YearFilter extends FilterPluginBase {
       ->condition("tbl.status", 1)
       ->distinct();
 
-    // Query only configured entity
-    // types if type filter is set.
+    // To get accurate results, this query
+    // should somewhat match the final view query.
+    // Query entity type if `type` filter is set.
     if (isset($allFilters['type'])) {
       [
         'field' => $field,
@@ -108,6 +109,14 @@ final class YearFilter extends FilterPluginBase {
       ] = $allFilters['type'];
 
       $query->condition("tbl.$field", array_keys($bundles), 'IN');
+    }
+
+    // Query with contextual filters.
+    // Note: this is very simplified implementation for
+    // our needs. This will break on more complicated views.
+    foreach ($this->view->argument as $key => $argument) {
+      $query->innerJoin($argument->table, $key, "tbl.nid = $key.entity_id");
+      $query->condition("$key.$argument->field", $argument->getValue());
     }
 
     $query->addExpression("FROM_UNIXTIME(tbl.$this->realField, '%Y')", 'year');
