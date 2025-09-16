@@ -34,3 +34,4 @@ libraries:
 # Libraries override
 libraries-override:
   hdbt/hyphenopoly: false
+  paatokset/helfi_select: hdbt_subtheme/helfi_select
