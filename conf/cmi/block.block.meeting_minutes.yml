@@ -7,17 +7,18 @@ dependencies:
     - system
   theme:
     - hdbt_subtheme
-id: paatoksetpolicymakerdocuments
+id: meeting_minutes
 theme: hdbt_subtheme
 region: content_lower
 weight: -17
 provider: null
-plugin: agendas_submenu_documents
+plugin: policymaker_documents
 settings:
-  id: agendas_submenu_documents
-  label: 'Paatokset policymaker documents'
+  id: policymaker_documents
+  label: 'Policymaker meeting minutes'
   label_display: '0'
-  provider: paatokset_submenus
+  provider: paatokset_ahjo_api
+  view: policymaker_minutes
 visibility:
   request_path:
     id: request_path
