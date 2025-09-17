@@ -18,6 +18,6 @@
   }
 
   li[role="option"] {
-    --multiselect-checkbox-background-selected: $color-black;
+    --multiselect-checkbox-background-selected: #{$color-black};
   }
 }

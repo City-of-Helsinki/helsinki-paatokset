@@ -206,11 +206,11 @@
 
 // Needs specific selector to override HDS button styles
 .decisions-search-submit-button[type="submit"] {
-  --background-color-focus: $color-white;
-  --background-color-hover: $color-white;
-  --background-color: $color-black;
-  --color-focus: $color-black;
-  --color-hover: $color-black;
+  --background-color-focus: #{$color-white};
+  --background-color-hover: #{$color-white};
+  --background-color: #{$color-black};
+  --color-focus: #{$color-black};
+  --color-hover: #{$color-black};
   height: 56px;
   width: 100%;
 }
