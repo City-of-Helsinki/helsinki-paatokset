@@ -89,7 +89,7 @@
 }
 
 .decision-tree__info-text {
-  font-size: 36px; // TODO: UHF-12259 change to a variable
+  @include font('h3');
   margin-bottom: 36px;
   text-align: center;
 }
