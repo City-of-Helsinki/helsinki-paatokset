@@ -19,12 +19,12 @@
 .decisions-search-selected-filters__filter {
   align-items: center;
   background: transparent;
-  border: solid 1px #000;
+  border: solid 1px $color-black;
   border-radius: 48px;
-  color: #121212;
+  color: $color-black;
   cursor: pointer;
   display: inline-flex;
-  font-size: 14px;
+  @include font('special.helper_text');;
   justify-content: center;
   margin-bottom: 12px;
   margin-right: 20px;
@@ -36,8 +36,8 @@
   }
 
   &:hover {
-    background-color: #000;
-    color: #fff;
+    background-color: $color-black;
+    color: $color-white;
   }
 
   &:focus {
@@ -48,7 +48,7 @@
 .decisions-search-selected-filters__filter-label {
   align-items: center;
   display: flex;
-  font-size: 20px;
+  @include font('lead');
   margin-bottom: 12px;
   margin-right: 20px;
 }
@@ -58,9 +58,9 @@
   border: none;
   border: 2px solid transparent;
   border-radius: 0;
-  color: #000;
+  color: $color-black;
   cursor: pointer;
-  font-size: 16px;
+  @include font('small');
   font-weight: 500;
   padding-left: 12px;
   padding-right: 20px;
@@ -71,7 +71,7 @@
 
   &:hover {
     background-color: transparent;
-    border-color: #000;
-    color: #121212;
+    border-color: $color-black;
+    color: $color-black;
   }
 }

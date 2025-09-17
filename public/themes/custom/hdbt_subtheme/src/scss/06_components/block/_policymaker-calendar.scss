@@ -23,7 +23,7 @@
   td {
     background-color: $color-white;
     color: $color-black;
-    font-size: $fontsize-body-l;
+    @include font('body');
     font-weight: $font-weight-regular;
     padding: $spacing-and-half 0;
     padding-right: $spacing-and-half;

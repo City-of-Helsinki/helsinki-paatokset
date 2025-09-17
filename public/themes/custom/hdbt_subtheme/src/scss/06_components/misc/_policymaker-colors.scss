@@ -1,8 +1,8 @@
 // Use old variable names for search app compatibility.
 :root {
-  --color-sumu: #9fc9eb;
-  --color-hopea: #dedfe1;
-  --color-kupari: #00d7a7;
+  --color-sumu: $color-fog;
+  --color-hopea: $color-silver;
+  --color-kupari: $color-copper;
 }
 
 .issue-content__policymaker-label,

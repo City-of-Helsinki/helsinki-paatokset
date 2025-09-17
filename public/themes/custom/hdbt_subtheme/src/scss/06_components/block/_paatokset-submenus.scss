@@ -41,7 +41,7 @@
 
   .decision-tree__title span {
     display: block;
-    font-size: 1.5rem;
+    font-size: 24px; // TODO: UHF-12259 change to a variable
     font-weight: $font-weight-medium;
     margin-bottom: $spacing;
     margin-top: $spacing-triple;
@@ -60,7 +60,7 @@
   }
   button.tabbed-list__header__button {
     color: rgb(26, 26, 26);
-    font-size: 18px;
+    @include font('body');
     font-weight: bold;
     height: $spacing-and-half;
     line-height: $spacing-and-half;
@@ -80,7 +80,7 @@
     border: none;
     color: rgb(6, 6, 6);
     cursor: pointer;
-    font-size: 20px;
+    @include font('lead');
     font-weight: normal;
     letter-spacing: 0;
     text-decoration: none;
@@ -96,9 +96,9 @@
 
     .item {
       border-bottom: 6px solid transparent;
-      color: #060606;
+      color: $color-black;
       display: inline-block;
-      font-size: 20px;
+      @include font('lead');
       font-weight: bold;
       letter-spacing: 0.29px;
       margin-right: 22px;
@@ -110,7 +110,7 @@
       }
     }
     .item.selected {
-      border-bottom: 6px solid #000;
+      border-bottom: 6px solid $color-black;
       padding-bottom: 19px;
     }
   }
@@ -144,9 +144,9 @@
   -ms-flex-pack: justify;
   background-color: unset;
   border: none;
-  color: #060606;
+  color: $color-black;
   cursor: pointer;
-  font-size: 18px;
+  @include font('body');
   font-weight: $font-weight-medium;
   letter-spacing: 0;
   margin: 0;
@@ -180,9 +180,9 @@
 }
 
 .custom-option {
-  color: #3b3b3b;
+  color: $color-black-80;
   cursor: pointer;
-  font-size: 22px;
+  @include font('lead');
   font-weight: 300;
   line-height: 60px;
   padding: 0 22px 0 22px;
@@ -191,12 +191,12 @@
 }
 
 .custom-option:hover {
-  background-color: #b2b2b2;
+  background-color: $color-black-30;
   cursor: pointer;
 }
 
 .custom-option.selected {
-  background-color: #305c91;
+  background-color: $color-coat-of-arms-dark;
   color: $color-white;
 }
 

@@ -9,7 +9,7 @@
 }
 
 .issue__title {
-  font-size: 32px;
+  @include font('h2');
   font-weight: normal;
   line-height: 1.1;
   margin-bottom: $spacing-and-half;
@@ -17,15 +17,10 @@
   .issue__header & {
     margin-top: 0;
   }
-
-  @include breakpoint($breakpoint-l) {
-    font-size: 52px;
-  }
 }
 
 .issue__diarynumber {
-
-  font-size: 16px;
+  @include font('small');
   margin-bottom: $spacing-double;
   label {
     display: block;
@@ -70,14 +65,6 @@
 }
 
 .issue__container {
-  h3 {
-    font-size: $fontsize-heading-m;
-
-    @include breakpoint($breakpoint-xl) {
-      font-size: $fontsize-heading-l;
-    }
-  }
-
   h3, h4 {
     margin-top: $spacing;
 
@@ -113,7 +100,7 @@
 .issue-right-column__container {
   .issue__attachment {
     border-bottom: 1px solid rgb(151, 151, 151);
-    font-size: 16px;
+    @include font('small');
     font-weight: 600;
     line-height: $spacing-and-half;
 
@@ -139,7 +126,7 @@
 }
 
 .issue__attachment__reason {
-  font-size: 16px;
+  @include font('small');
 }
 
 .issue__attachment__info {
@@ -147,26 +134,22 @@
 }
 
 .issue-content__title h2 {
-  font-size: 24px;
+  @include font('h3');
   font-weight: normal;
   line-height: 1.1;
   margin-bottom: $spacing-double;
   margin-top: $spacing;
 
-  @include breakpoint($breakpoint-l) {
-    font-size: 36px;
-  }
 }
 
 .issue-content__indices {
-  font-size: $fontsize-body-xl;
+  @include font('lead');
   margin-bottom: $spacing-half;
 }
 
 .issue-content__policymaker-label {
   display: inline-block;
-  font-size: $fontsize-body-s;
-  font-weight: bold;
+  @include font('special.helper_text');
   margin-bottom: 36px;
   max-width: 100%;
   padding: 10px $spacing-triple;
@@ -175,7 +158,7 @@
 
   &.policymaker-label--small {
     display: inline-block;
-    font-size: 14px;
+    @include font('special.helper_text');;
     padding: 10px 40px;
   }
 
@@ -212,7 +195,7 @@
   }
 
   @include breakpoint($breakpoint-xl) {
-    font-size: $fontsize-body-xl;
+    @include font('lead');
   }
 }
 
@@ -283,10 +266,10 @@
 // Styling from Ahjo API HTML content.
 .issue-content__container {
   td, div {
-    font-size: $fontsize-body-l;
+    @include font('body');
 
     @include breakpoint($breakpoint-l) {
-      font-size: $fontsize-body-xl;
+      @include font('lead');
     }
   }
 
@@ -308,7 +291,7 @@
     }
 
     table td {
-      background-color: #f1f1f1;
+      background-color: $color-black-5;
       display: block;
 
       div {
@@ -369,7 +352,7 @@ h4.decision-history-title + h5.decision-history-title {
 
 .voting-result__opinion__color,
 .voting-result__opinion__key {
-  font-size: 18px;
+  @include font('body');
   padding: $spacing;
 }
 
@@ -407,7 +390,7 @@ h4.decision-history-title + h5.decision-history-title {
 
   .voting-result__opinion__table__header__cell,
   .voting-result__opinion__table__cell {
-    font-size: 16px;
+    @include font('small');
     padding: 16px;
     text-align: left;
     width: 50%;
@@ -446,11 +429,11 @@ h4.decision-history-title + h5.decision-history-title {
   .voting-results-by-party__table__header__cell {
     background-color: $color-black;
     color: $color-white;
-    font-size: 14px;
+    @include font('special.helper_text');;
     font-weight: $font-weight-medium;
 
     &:first-of-type {
-      font-size: 16px;
+      @include font('small');
       font-weight: 600;
       padding-inline: $spacing;
       text-align: left;
@@ -460,7 +443,7 @@ h4.decision-history-title + h5.decision-history-title {
 
   .voting-results-by-party__table__cell {
     background-color: $color-white;
-    font-size: 16px;
+    @include font('small');
     min-width: unset;
 
     &:first-of-type {

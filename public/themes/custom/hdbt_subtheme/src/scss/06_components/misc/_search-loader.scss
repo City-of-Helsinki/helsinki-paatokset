@@ -20,7 +20,7 @@
   &:before {
     -webkit-animation: spin 0.8s infinite linear;
     animation: spin 0.8s infinite linear;
-    border-color: #4a4a49 transparent #4a4a49 transparent;
+    border-color: $color-black-70 transparent $color-black-70 transparent;
     border-radius: 120px;
     border-style: solid;
     border-width: 10px;

@@ -4,7 +4,7 @@
 
 .issue__meetings-container {
   label {
-    font-size: $fontsize-body-m;
+    @include font('small');
   }
 }
 
@@ -77,7 +77,7 @@
   .option {
     align-items: center;
     display: flex;
-    font-size: 16px;
+    @include font('small');
     height: 52px;
     margin-top:0;
     padding-left: 30px;
@@ -129,7 +129,7 @@
   padding-top: 0;
   width: 100%;
   -ms-overflow-style: none;
-  background: #fff;
+  background: $color-white;
   position: relative;
   scrollbar-width: none;
   z-index: 2;

@@ -106,7 +106,7 @@
   }
 
   .policymaker-row__title {
-    font-size: 24px;
+    font-size: 24px; // TODO: UHF-12259 change to a variable
     hyphens: auto;
     overflow-wrap: break-word;
     padding-right: $spacing;
@@ -116,7 +116,7 @@
 
   .policymaker-row__sub-title {
     color: $color-black-50;
-    font-size: 20px;
+    @include font('lead');
   }
 }
 

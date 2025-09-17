@@ -12,7 +12,7 @@
   }
 
   button + ul li {
-    font-size: 16px;
+    @include font('small');
     margin-top: 0;
   }
 
@@ -29,7 +29,7 @@
   button > span[class*='Select-module_buttonLabel'] {
     color: rgb(102, 102, 102);
   }
-  
+
   .DateSelect__predefined-ranges-container + button {
     border-top-color: $color-black-20;
   }
@@ -52,7 +52,7 @@
   }
   .search-autocomplete__item {
     cursor: pointer;
-    font-size: 16px;
+    @include font('small');
     padding: 0.75rem 1rem;
   }
 }
@@ -99,10 +99,10 @@
   }
 
   div[role="link"] {
-    background: #000;
+    background: $color-black;
     border-radius: 24px;
-    color: #fff;
-    font-size: 14px;
+    color: $color-white;
+    @include font('special.helper_text');;
     padding: 2px 10px;
   }
 
@@ -112,7 +112,7 @@
 }
 
 .decisions-search-multidropdown__item {
-  font-size: $input-font-size;
+  @include font('body');
   height: $input-height;
 }
 
@@ -133,7 +133,7 @@
 }
 
 .decisions-search-form-container__koro-wrapper {
-  background: #f7f7f8;
+  background: $color-black-5;
   left: 0;
   position: absolute;
   width: 100%;
@@ -160,7 +160,7 @@
 }
 
 .decisions-search-form-element label {
-  font-size: 16px;
+  @include font('small');
 }
 
 .decisions-search-form-element > label,
@@ -179,7 +179,7 @@
     align-items: flex-start;
     display: flex;
     margin-bottom: 16px;
-  } 
+  }
 }
 
 .decisions-search-form-container__lower-fields .decisions-search-form-element {
@@ -199,18 +199,18 @@
 }
 
 .decisions-search-form-container__description {
-  font-size: 18px;
+  @include font('body');
   margin-bottom: 1.2rem;
   max-width: 894px
 }
 
 // Needs specific selector to override HDS button styles
 .decisions-search-submit-button[type="submit"] {
-  --background-color-focus: #fff;
-  --background-color-hover: #fff;
-  --background-color: #000;
-  --color-focus: #000;
-  --color-hover: #000;
+  --background-color-focus: $color-white;
+  --background-color-hover: $color-white;
+  --background-color: $color-black;
+  --color-focus: $color-black;
+  --color-hover: $color-black;
   height: 56px;
   width: 100%;
 }

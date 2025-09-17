@@ -4,7 +4,7 @@
 
 .decision-tree__box {
   border: 2px solid $color-black-90;
-  font-size: 20px;
+  @include font('lead');
   font-weight: $font-weight-medium;
   hyphens: auto;
   overflow-wrap: break-word;
@@ -14,7 +14,6 @@
   word-wrap: break-word;
 
   @include breakpoint($breakpoint-s) {
-    font-size: 24px;
     padding: 28px;
   }
 
@@ -90,7 +89,7 @@
 }
 
 .decision-tree__info-text {
-  font-size: 36px;
+  font-size: 36px; // TODO: UHF-12259 change to a variable
   margin-bottom: 36px;
   text-align: center;
 }

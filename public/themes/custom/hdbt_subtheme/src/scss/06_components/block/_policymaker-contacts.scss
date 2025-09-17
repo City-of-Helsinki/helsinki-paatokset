@@ -1,6 +1,6 @@
 .policymaker-contacts {
 
-  font-size: 1.125rem;
+  @include font('body');
   width: 100%;
 
   h2 {

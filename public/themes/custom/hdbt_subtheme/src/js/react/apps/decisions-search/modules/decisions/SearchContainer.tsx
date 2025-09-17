@@ -11,7 +11,7 @@ const baseTheme = {
     fontFamily: 'var(--font-default)'
   },
   colors: {
-    backgroundColor: '#f7f7f8'
+    backgroundColor: 'var(--color-silver-light)'
   }
 };
 

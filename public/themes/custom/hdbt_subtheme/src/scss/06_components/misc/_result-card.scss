@@ -8,7 +8,7 @@
 }
 
 .decisions-search-result-card {
-  background-color: #fff;
+  background-color: $color-white;
   cursor: pointer;
   margin-bottom: 24px;
   width: 100%;
@@ -39,13 +39,13 @@
 }
 
 .decisions-search-multiple-results {
-  border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-bottom: 1px solid $color-black-30;
+  border-right: 1px solid $color-black-30;
   box-shadow:
-    inset -4px -4px 0 0 #f4f4f4,
-    inset -5px -5px 0 0 #ccc,
-    inset -10px -10px 0 0 #f6f6f6,
-    inset -11px -11px 0 0 #ccc;
+    inset -4px -4px 0 0 $color-black-5,
+    inset -5px -5px 0 0 $color-black-30,
+    inset -10px -10px 0 0 $color-black-5,
+    inset -11px -11px 0 0 $color-black-30;
   margin-bottom: 24px;
   position: relative;
 
@@ -53,21 +53,21 @@
     border-style: solid;
     content: "";
     height: 0px;
-    position: absolute;    
+    position: absolute;
     transform: rotate(0deg);
     width: 0px;
   }
 
   &:after {
-    border-color: transparent #f7f7f8 transparent transparent;
-    border-width: 0 12px 12px 0;    
+    border-color: transparent $color-silver-light transparent transparent;
+    border-width: 0 12px 12px 0;
     right: -1px;
-    top: 0;    
+    top: 0;
   }
 
   &:before {
-    border-color: transparent transparent transparent #F7F7F8;
-    border-width: 12px 0 0 12px;    
+    border-color: transparent transparent transparent $color-silver-light;
+    border-width: 12px 0 0 12px;
     bottom: -1px;
     left: 0;
   }
@@ -88,8 +88,8 @@
 }
 
 .decisions-search-multiple-results__label {
-  background: #00d7a7;
-  font-size: 14px;
+  background: $color-copper;
+  @include font('special.helper_text');;
   font-weight: bold;
   line-height: 26px;
   margin-bottom: 0;
@@ -116,7 +116,7 @@
 }
 
 .decisions-search-result-card__title h2 {
-  font-size: 24px;
+  font-size: 24px; // TODO: UHF-12259 change to a variable
   font-weight: 500;
   line-height: 24px;
   margin-bottom: 36px;
@@ -147,16 +147,16 @@
 }
 
 .decisions-search-result-card__search-tag {
-  background: #000;
+  background: $color-black;
   border-radius: 24px;
-  color: #fff;
+  color: $color-white;
   display: inline-block;
-  font-size: 14px;
+  @include font('special.helper_text');;
   padding: 6px 16px;
 }
 
 .policymaker-search-result-card {
-  background: #fff;
+  background: $color-white;
   width: 100%;
 
   svg {
@@ -166,7 +166,7 @@
 
 .policymaker-search-result-card__container {
   align-items: center;
-  color: #000;
+  color: $color-black;
   display: flex;
   justify-content: space-between;
   padding: 34px 30px 34px 40px;
@@ -190,7 +190,7 @@
 }
 
 .policymaker-search-result-card__title {
-  font-size: 24px;
+  font-size: 24px; // TODO: UHF-12259 change to a variable
   font-weight: 500;
   line-height: 2.25rem;
   margin-bottom: 0;
@@ -198,8 +198,8 @@
 }
 
 .policymaker-search-result-card__sub-title {
-  color: #707070;
-  font-size: 1.25rem;
+  color: $color-black-50;
+  @include font('lead');
   line-height: 2.25rem;
 }
 
