@@ -231,9 +231,8 @@ h1.minutes__header {
 }
 
 h2.minutes-list__header {
-font-size: 24px; // TODO: UHF-12259 change to a variable
+  font-size: 24px; // TODO: UHF-12259 change to a variable
   font-weight: $font-weight-medium;
-
   margin-bottom: $spacing-and-half;
 }
 
