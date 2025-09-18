@@ -103,6 +103,20 @@
     {% if render_announcement_block %}
       {{ drupal_block('paatokset_helsinki_kanava_announcements') }}
     {% endif %}
+
+    {% if content.field_policymaker_image|render %}
+      <section class="policymaker-image">
+        <figure>
+          {{ content.field_policymaker_image }}
+          {% if node.field_policymaker_image.title %}
+            <figcaption>
+              {{ node.field_policymaker_image.field_image_title }}
+            </figcaption>
+          {% endif %}
+        </figure>
+      </section>
+    {% endif %}
+
     <div>
       {% if node.field_policymaker_summary.value|render|striptags|trim is not empty %}
         {{ node.field_policymaker_summary.value | check_markup('full_html') }}
@@ -151,19 +165,6 @@
         </ul></nav>
       </section>
     </div>
-  {% endif %}
-
-  {% if content.field_policymaker_image|render %}
-    <section class="policymaker-image policymaker-content">
-      <figure>
-        {{ content.field_policymaker_image }}
-        {% if node.field_policymaker_image.title %}
-          <figcaption>
-            {{ node.field_policymaker_image.field_image_title }}
-          </figcaption>
-        {% endif %}
-      </figure>
-    </section>
   {% endif %}
 
   {% if not is_organization %}
