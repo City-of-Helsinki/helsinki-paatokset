@@ -22,7 +22,7 @@ if (rootElement) {
         <Select
           texts={{
             label: Drupal.t('Year'),
-            placeholder: Drupal.t('All years'),
+            placeholder: Drupal.t('All years', {}, { context: 'Year filter' }),
             language: drupalSettings.path.currentLanguage,
           }}
           options={selectOptions}

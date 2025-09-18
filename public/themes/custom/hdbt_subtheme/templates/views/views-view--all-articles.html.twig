@@ -1,3 +1,5 @@
+{#  #}
+{#  #}
 <div class="components components--computed">
   {% embed "@hdbt/misc/component.twig" with
     {
@@ -6,16 +8,16 @@
         'component--all-articles-block',
       ],
       component_title: 'All announcements and notifications'|t({}, {'context': 'Announcements and notifications list'}),
-      component_description: header,
+      component_description: 'Notice! <a hreflang="fi" href="@link">Notices of building control permit decisions</a> can only be found on their own page.'|t({'@link': '/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset' }, {'context': 'Announcements and notifications list'}),
     }
   %}
     {% block component_content %}
       <h3>{{ 'Filter announcements and notifications'|t({}, {'context': 'Announcements and notifications list'}) }}</h3>
 
-      {% embed '@hdbt/component/content-list-with-count.twig' with { header: '' } %}
+      {% embed '@hdbt/component/content-list-with-count.twig' %}
         {% block count_container %}
           {%- if total_rows -%}
-            {{ total_rows }} {% trans with {'context': 'Announcements and notifications list'}%}Announcement or notification{% plural total_rows %}Announcements and notifications{% endtrans %}
+            {{ total_rows }} {% trans with {'context': 'Announcements and notifications list'}%}announcement or notification{% plural total_rows %}announcements and notifications{% endtrans %}
           {%- else -%}
             {{ 'No results'|t({}, {'context' : 'Announcements and notifications list'}) }}
           {%- endif -%}
