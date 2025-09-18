@@ -38,7 +38,7 @@ class Select extends Hidden {
     // Options cause validation errors for the hidden element.
     unset($element['#options']);
 
-    $element['#prefix'] = '<div id="helfi-select">';
+    $element['#prefix'] = '<div id="helfi-select" class="form-item">';
     $element['#suffix'] = '</div>';
     return $element;
   }

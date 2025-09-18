@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@sentry/react';
 import { Select } from 'hds-react';
 
 import ResultsError from '@/react/common/ResultsError';
+import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
 
 const parent = document.getElementById('helfi-select');
 const element = parent?.querySelector('input[type="hidden"]') as HTMLInputElement;
@@ -25,13 +26,13 @@ if (rootElement) {
             placeholder: Drupal.t('All years', {}, { context: 'Year filter' }),
             language: drupalSettings.path.currentLanguage,
           }}
+          theme={defaultSelectTheme}
           options={selectOptions}
           onChange={element ? (options) => {
             let value = options?.find(item => item.selected)?.value ?? '';
             if (value === drupalSettings.helfi_select.empty_option) {
               value = '';
             }
-
             element.value = value;
           } : undefined}
         />
