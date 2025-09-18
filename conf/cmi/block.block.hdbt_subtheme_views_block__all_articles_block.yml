@@ -18,7 +18,7 @@ plugin: 'views_block:all_articles-all_articles_block'
 settings:
   id: 'views_block:all_articles-all_articles_block'
   label: ''
-  label_display: visible
+  label_display: '0'
   provider: views
   views_label: ''
   items_per_page: none

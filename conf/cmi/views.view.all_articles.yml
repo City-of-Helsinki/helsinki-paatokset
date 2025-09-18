@@ -289,19 +289,6 @@ display:
             value: 'Notice! <a hreflang="fi" href="https://paatokset.hel.fi/fi/kuulutukset-ja-ilmoitukset/rakennusvalvonnan-lupapaatokset">Notices of building control permit decisions</a> can only be found on their own page.'
             format: minimal
           tokenize: false
-        area_1:
-          id: area_1
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: '<h3>Filter announcements and notifications</h3>'
-            format: full_html
-          tokenize: false
       footer: {  }
       display_extenders: {  }
     cache_metadata:
