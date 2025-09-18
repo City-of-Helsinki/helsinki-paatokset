@@ -1,20 +1,27 @@
-{#
-/**
- * @file
- * Theme override for main view template.
- */
-#}
+<div class="components components--computed">
+  {% embed "@hdbt/misc/component.twig" with
+    {
+      component_classes: [
+        'component--full-width',
+        'component--all-articles-block',
+      ],
+      component_title: 'All announcements and notifications'|t({}, {'context': 'Announcements and notifications list'}),
+      component_description: header,
+    }
+  %}
+    {% block component_content %}
+      <h3>{{ 'Filter announcements and notifications'|t({}, {'context': 'Announcements and notifications list'}) }}</h3>
 
-{% embed '@hdbt/component/content-list-with-count.twig' with {
-  modifier_class: [
-    'views--unit-search--large-volume',
-  ]
-}%}
-  {% block count_container%}
-    {%- if total_rows -%}
-      {{ total_rows }} {% trans with {'context': 'Announcements and notifications list'}%}Announcement or notification{% plural total_rows %}Announcements and notifications{% endtrans %}
-    {%- else -%}
-      {{ 'No results'|t({}, {'context' : 'Announcements and notifications list'}) }}
-    {%- endif -%}
-  {% endblock count_container %}
-{% endembed %}
+      {% embed '@hdbt/component/content-list-with-count.twig' with { header: '' } %}
+        {% block count_container %}
+          {%- if total_rows -%}
+            {{ total_rows }} {% trans with {'context': 'Announcements and notifications list'}%}Announcement or notification{% plural total_rows %}Announcements and notifications{% endtrans %}
+          {%- else -%}
+            {{ 'No results'|t({}, {'context' : 'Announcements and notifications list'}) }}
+          {%- endif -%}
+        {% endblock count_container %}
+      {% endembed %}
+
+    {% endblock component_content %}
+  {% endembed %}
+</div>

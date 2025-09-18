@@ -9,14 +9,14 @@ dependencies:
     - views
   theme:
     - hdbt_subtheme
-id: hdbt_subtheme_views_block__all_articles_block_1
+id: hdbt_subtheme_views_block__all_articles_block
 theme: hdbt_subtheme
 region: content_lower
 weight: -14
 provider: null
-plugin: 'views_block:all_articles-block_1'
+plugin: 'views_block:all_articles-all_articles_block'
 settings:
-  id: 'views_block:all_articles-block_1'
+  id: 'views_block:all_articles-all_articles_block'
   label: ''
   label_display: visible
   provider: views
