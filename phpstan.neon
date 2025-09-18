@@ -387,11 +387,6 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
-      message: "#^PHPDoc tag @param for parameter \\$meeting with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
       message: "#^PHPDoc tag @param for parameter \\$node with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
