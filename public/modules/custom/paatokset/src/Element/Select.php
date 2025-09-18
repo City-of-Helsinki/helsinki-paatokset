@@ -39,7 +39,7 @@ class Select extends Hidden {
     unset($element['#options']);
 
     $element['#prefix'] = '<div id="helfi-select">';
-		$element['#suffix'] = '</div>';
+    $element['#suffix'] = '</div>';
     return $element;
   }
 
