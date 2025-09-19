@@ -41,17 +41,16 @@
 .decisions-search-multiple-results {
   border-bottom: 1px solid $color-black-30;
   border-right: 1px solid $color-black-30;
-  box-shadow:
-    inset -4px -4px 0 0 $color-black-5,
-    inset -5px -5px 0 0 $color-black-30,
-    inset -10px -10px 0 0 $color-black-5,
+  box-shadow: inset -4px -4px 0 0 $color-black-5,
+    inset -5px -5px 0 0 $color-black-30, inset -10px -10px 0 0 $color-black-5,
     inset -11px -11px 0 0 $color-black-30;
   margin-bottom: 24px;
   position: relative;
 
-  &:after, &:before  {
+  &:after,
+  &:before {
     border-style: solid;
-    content: "";
+    content: '';
     height: 0px;
     position: absolute;
     transform: rotate(0deg);
@@ -88,8 +87,8 @@
 }
 
 .decisions-search-multiple-results__label {
+  @include font('special.helper_text');
   background: $color-copper;
-  @include font('special.helper_text');;
   font-weight: bold;
   line-height: 26px;
   margin-bottom: 0;
@@ -147,11 +146,11 @@
 }
 
 .decisions-search-result-card__search-tag {
+  @include font('special.helper_text');
   background: $color-black;
   border-radius: 24px;
   color: $color-white;
   display: inline-block;
-  @include font('special.helper_text');;
   padding: 6px 16px;
 }
 
@@ -198,8 +197,8 @@
 }
 
 .policymaker-search-result-card__sub-title {
-  color: $color-black-50;
   @include font('lead');
+  color: $color-black-50;
   line-height: 2.25rem;
 }
 

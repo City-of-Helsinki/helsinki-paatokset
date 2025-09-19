@@ -78,8 +78,8 @@
 }
 
 .mmenu__back-wrapper {
-  color: $color-black;
   @include font('small');
+  color: $color-black;
   font-weight: $font-weight-medium;
   grid-area: label;
   justify-self: start;

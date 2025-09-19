@@ -87,7 +87,6 @@
     }
   }
 
-
   .hel-icon {
     height: 30px;
     min-height: 30px;
@@ -115,8 +114,8 @@
   }
 
   .policymaker-row__sub-title {
-    color: $color-black-50;
     @include font('lead');
+    color: $color-black-50;
   }
 }
 

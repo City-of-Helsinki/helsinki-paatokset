@@ -17,16 +17,16 @@
   padding: $spacing-and-half;
 
   .information-row {
+    @include font('body');
     display: flex;
     flex-wrap: wrap;
-    @include font('body');
 
     &:not(:last-of-type) {
       margin-bottom: $spacing;
     }
 
     &.information-row--pm-declaration a {
-      margin-left: .4rem;
+      margin-left: 0.4rem;
     }
 
     &.information-row--doa a {
@@ -49,11 +49,11 @@
   }
 
   span {
-    color: $color-black-50;
     @include font('body');
+    color: $color-black-50;
 
     &:first-of-type::after {
-      content: "•";
+      content: '•';
       margin: 0 $spacing;
     }
   }
@@ -67,5 +67,3 @@
     max-width: 100%;
   }
 }
-
-

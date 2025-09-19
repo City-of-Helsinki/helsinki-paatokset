@@ -13,6 +13,7 @@
 }
 
 .decisions-search-selected-filters-container__filter {
+  @include font('special.helper_text');
   align-items: center;
   background: transparent;
   border: solid 1px $color-black;
@@ -20,7 +21,6 @@
   color: $color-black;
   cursor: pointer;
   display: inline-flex;
-  @include font('special.helper_text');;
   justify-content: center;
   margin-bottom: 12px;
   margin-right: 20px;
@@ -42,13 +42,13 @@
 }
 
 .decisions-search-selected-filters-container__clear-filters {
+  @include font('small');
   background: transparent;
   border: none;
   border: 2px solid transparent;
   border-radius: 0;
   color: $color-black;
   cursor: pointer;
-  @include font('small');
   font-weight: 500;
   padding-left: 12px;
   padding-right: 20px;
@@ -65,9 +65,9 @@
 }
 
 .decisions-search-selected-filters-container__filter-label {
+  @include font('lead');
   align-items: center;
   display: flex;
-  @include font('lead');
   margin-bottom: 12px;
   margin-right: 13px;
 }

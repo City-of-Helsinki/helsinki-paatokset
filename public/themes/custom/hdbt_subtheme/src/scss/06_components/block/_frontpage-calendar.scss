@@ -46,13 +46,15 @@
   }
 
   a {
+    @include font('body');
     align-items: center;
     display: flex;
-    @include font('body');
     font-weight: $font-weight-medium;
     text-decoration: none;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       text-decoration: underline;
     }
   }
@@ -83,9 +85,9 @@
   width: 100%;
 
   .motions-link {
+    @include font('small');
     align-items: center;
     display: flex;
-    @include font('small');
     font-weight: $font-weight-medium;
     text-decoration: none;
 
@@ -99,12 +101,14 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       inset: 0;
       position: absolute;
     }
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       text-decoration: underline;
     }
   }
@@ -126,11 +130,10 @@
   }
 
   h3 {
-    flex-grow: 1;
     @include font('h4');
+    flex-grow: 1;
     font-weight: $font-weight-medium;
     margin-top: 0;
-
   }
 }
 

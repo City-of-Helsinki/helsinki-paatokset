@@ -3,8 +3,8 @@
 }
 
 .decision-tree__box {
-  border: 2px solid $color-black-90;
   @include font('lead');
+  border: 2px solid $color-black-90;
   font-weight: $font-weight-medium;
   hyphens: auto;
   overflow-wrap: break-word;

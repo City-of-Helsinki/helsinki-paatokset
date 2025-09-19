@@ -1,7 +1,7 @@
 // @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
 
 .decisions-search-selected-filters {
-  border-top: 1px solid black;
+  border-top: 1px solid $color-black;
   margin-top: 37.5px;
   overflow: hidden;
   padding-top: 28px;
@@ -17,6 +17,7 @@
 }
 
 .decisions-search-selected-filters__filter {
+  @include font('special.helper_text');
   align-items: center;
   background: transparent;
   border: solid 1px $color-black;
@@ -24,7 +25,6 @@
   color: $color-black;
   cursor: pointer;
   display: inline-flex;
-  @include font('special.helper_text');;
   justify-content: center;
   margin-bottom: 12px;
   margin-right: 20px;
@@ -54,13 +54,13 @@
 }
 
 .decisions-search-selected-filters__clear-filters {
+  @include font('small');
   background: transparent;
   border: none;
   border: 2px solid transparent;
   border-radius: 0;
   color: $color-black;
   cursor: pointer;
-  @include font('small');
   font-weight: 500;
   padding-left: 12px;
   padding-right: 20px;

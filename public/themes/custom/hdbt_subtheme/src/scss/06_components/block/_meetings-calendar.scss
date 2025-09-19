@@ -99,8 +99,8 @@
   }
 
   .meeting-row {
-    border-bottom: 1px dashed $color-black-60;
     @include font('small');
+    border-bottom: 1px dashed $color-black-60;
     padding: $spacing 0;
 
     a {
@@ -134,9 +134,9 @@
   }
 
   .date-header {
-    border-bottom: 2px solid black;
-    display: flex;
     @include font('lead');
+    border-bottom: 2px solid $color-black;
+    display: flex;
     font-weight: $font-weight-medium;
     justify-content: space-between;
     padding-bottom: $spacing-half;

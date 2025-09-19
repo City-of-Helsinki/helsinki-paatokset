@@ -81,7 +81,7 @@
 
   &:after {
     border-bottom: 2px solid $color-black;
-    content: "";
+    content: '';
     display: block;
     margin-top: $spacing-and-half;
     width: 90px;
@@ -166,7 +166,7 @@
 .policymaker-list-item {
   border-bottom: 1px solid $color-black-20;
   display: block;
-  padding:  $spacing-and-half 0;
+  padding: $spacing-and-half 0;
 
   &:first-child {
     border-top: 1px solid $color-black-20;
@@ -184,8 +184,8 @@
   }
 
   .list-item__date {
-    color: $color-black-50;
     @include font('small');
+    color: $color-black-50;
     margin-bottom: $spacing;
   }
 
@@ -208,7 +208,7 @@
 }
 
 h1.minutes__header {
-  @include font(h1);
+  @include font('h1');
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -248,7 +248,6 @@ h2.minutes-list__header {
   }
 
   .minutes__publish-date {
-
     margin-bottom: $spacing-double;
     padding-bottom: $spacing-and-half;
     position: relative;
@@ -256,7 +255,7 @@ h2.minutes-list__header {
     &:after {
       background: $color-black;
       bottom: 0;
-      content: "";
+      content: '';
       height: 2px;
       left: 0;
       position: absolute;
@@ -283,11 +282,11 @@ h2.minutes-list__header {
   margin-bottom: $spacing-double;
 
   .hds-tag {
+    @include font('small');
     background: $color-black;
     border-radius: $spacing-and-half;
     color: $color-white;
     display: flex;
-    @include font('small');
     margin-right: $spacing-three-quarters;
     padding: 6px $spacing;
     width: fit-content;
@@ -299,7 +298,7 @@ h2.minutes-list__header {
 
   &:after {
     border-bottom: 2px solid $color-black;
-    content: "";
+    content: '';
     display: block;
     margin-top: $spacing-and-half;
     width: 90px;

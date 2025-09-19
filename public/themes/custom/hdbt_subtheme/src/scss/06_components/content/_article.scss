@@ -3,8 +3,8 @@
 }
 .node--type-article {
   .content-author {
-    color: $color-black-60;
     @include font('small');
+    color: $color-black-60;
   }
 
   .hds-tag--alert {

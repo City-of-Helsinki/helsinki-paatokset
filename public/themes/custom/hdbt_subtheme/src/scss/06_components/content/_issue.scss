@@ -22,6 +22,7 @@
 .issue__diarynumber {
   @include font('small');
   margin-bottom: $spacing-double;
+
   label {
     display: block;
     font-weight: 600;
@@ -65,7 +66,8 @@
 }
 
 .issue__container {
-  h3, h4 {
+  h3,
+  h4 {
     margin-top: $spacing;
 
     &:first-child {
@@ -99,14 +101,15 @@
 
 .issue-right-column__container {
   .issue__attachment {
-    border-bottom: 1px solid rgb(151, 151, 151);
     @include font('small');
+    border-bottom: 1px solid $color-black-40;
     font-weight: 600;
     line-height: $spacing-and-half;
-
     padding: $spacing-and-half 0;
     vertical-align: top;
-    & > a, & > div {
+
+    & > a,
+    & > div {
       display: flex;
     }
 
@@ -139,7 +142,6 @@
   line-height: 1.1;
   margin-bottom: $spacing-double;
   margin-top: $spacing;
-
 }
 
 .issue-content__indices {
@@ -148,8 +150,8 @@
 }
 
 .issue-content__policymaker-label {
-  display: inline-block;
   @include font('special.helper_text');
+  display: inline-block;
   margin-bottom: 36px;
   max-width: 100%;
   padding: 10px $spacing-triple;
@@ -157,8 +159,8 @@
   text-transform: uppercase;
 
   &.policymaker-label--small {
+    @include font('special.helper_text');
     display: inline-block;
-    @include font('special.helper_text');;
     padding: 10px 40px;
   }
 
@@ -189,7 +191,8 @@
 
 .issue-content__section {
   margin-bottom: $spacing-double;
-  p, ul {
+  p,
+  ul {
     margin-top: 0;
     padding-top: 0;
   }
@@ -265,7 +268,8 @@
 
 // Styling from Ahjo API HTML content.
 .issue-content__container {
-  td, div {
+  td,
+  div {
     @include font('body');
 
     @include breakpoint($breakpoint-l) {
@@ -285,7 +289,8 @@
   }
 
   .SisaltoSektio {
-    ul, ol {
+    ul,
+    ol {
       padding-left: 1rem;
       padding-top: 0;
     }
@@ -295,7 +300,7 @@
       display: block;
 
       div {
-        margin:0;
+        margin: 0;
       }
 
       @include breakpoint($breakpoint-s) {
@@ -330,7 +335,7 @@ h4.decision-history-title + h5.decision-history-title {
   .accordion-item__button--toggle {
     padding: 0 $spacing 0 0;
 
-    &[aria-expanded="true"] {
+    &[aria-expanded='true'] {
       border-block-end: 1px solid $color-black;
     }
   }
@@ -427,9 +432,9 @@ h4.decision-history-title + h5.decision-history-title {
   }
 
   .voting-results-by-party__table__header__cell {
+    @include font('special.helper_text');
     background-color: $color-black;
     color: $color-white;
-    @include font('special.helper_text');;
     font-weight: $font-weight-medium;
 
     &:first-of-type {
@@ -442,8 +447,8 @@ h4.decision-history-title + h5.decision-history-title {
   }
 
   .voting-results-by-party__table__cell {
-    background-color: $color-white;
     @include font('small');
+    background-color: $color-white;
     min-width: unset;
 
     &:first-of-type {
@@ -474,7 +479,8 @@ h4.decision-history-title + h5.decision-history-title {
   margin-bottom: $spacing-double;
 }
 
-.page-type--case, .page-type--decision {
+.page-type--case,
+.page-type--decision {
   .component.component--banner {
     margin-top: $spacing-triple;
 

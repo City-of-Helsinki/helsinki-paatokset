@@ -20,7 +20,9 @@
     position: relative;
     width: 100%;
 
-    &:focus, &:hover, &[disabled] {
+    &:focus,
+    &:hover,
+    &[disabled] {
       background-color: transparent;
       color: $color-black;
     }
@@ -50,7 +52,7 @@
     border-bottom: 26px solid transparent;
     border-left: 20px solid;
     border-top: 26px solid transparent;
-    content: "";
+    content: '';
     height: 0;
     left: 0;
     position: absolute;
@@ -61,7 +63,8 @@
     content: none;
   }
 
-  &:focus, &:focus-within {
+  &:focus,
+  &:focus-within {
     border: 2px solid $color-black;
   }
 
@@ -75,11 +78,11 @@
   }
 
   .option {
+    @include font('small');
     align-items: center;
     display: flex;
-    @include font('small');
     height: 52px;
-    margin-top:0;
+    margin-top: 0;
     padding-left: 30px;
     position: relative;
 
@@ -92,7 +95,7 @@
     border-bottom: 26px solid transparent;
     border-left: 20px solid $color-black;
     border-top: 26px solid transparent;
-    content: "";
+    content: '';
     height: 0;
     left: 0;
     position: absolute;

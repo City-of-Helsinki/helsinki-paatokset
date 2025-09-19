@@ -27,15 +27,14 @@ $collapsible_height: 56px;
   }
 
   .DateSelect__collapsible-control {
+    @include font('body');
     align-items: center;
     background: $color-white;
-
     color: $color-black-50;
-    display:flex;
-    @include font('body');
+    display: flex;
     height: $collapsible_height;
     padding: 12px 16px;
-    width: 100% ;
+    width: 100%;
 
     &.is-open {
       border-bottom: 1px solid $color-black-30;
@@ -127,7 +126,7 @@ $collapsible_height: 56px;
     width: 100%;
 
     &:not(:disabled):hover {
-      border-color:$color-black-30;
+      border-color: $color-black-30;
     }
   }
 
@@ -168,8 +167,7 @@ $collapsible_height: 56px;
     pointer-events: none;
   }
 
-  &:focus-within .DateSelect__collapsible-control  {
+  &:focus-within .DateSelect__collapsible-control {
     @include focus-outline;
   }
 }
-

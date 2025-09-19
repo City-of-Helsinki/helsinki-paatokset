@@ -1,12 +1,14 @@
 // @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
 
 @mixin input {
+  @include font('body');
   border: 2px solid $color-black-50;
   border-radius: 2px;
-  @include font('body');
   height: $input-height;
 
-  &:focus, &:focus-within, &:hover {
+  &:focus,
+  &:focus-within,
+  &:hover {
     border-color: $color-black-90;
   }
 }

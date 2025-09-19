@@ -21,9 +21,9 @@
 
   th,
   td {
+    @include font('body');
     background-color: $color-white;
     color: $color-black;
-    @include font('body');
     font-weight: $font-weight-regular;
     padding: $spacing-and-half 0;
     padding-right: $spacing-and-half;
@@ -62,7 +62,6 @@
     align-items: center;
     display: flex;
   }
-
 
   @media (max-width: $breakpoint-s) {
     display: flex;
@@ -117,7 +116,8 @@
 }
 
 .policymaker-calendar__table-row--cancelled {
-  td:nth-child(1), td:nth-child(2) {
+  td:nth-child(1),
+  td:nth-child(2) {
     text-decoration: line-through;
   }
 }
