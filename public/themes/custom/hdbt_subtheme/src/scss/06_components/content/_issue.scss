@@ -50,14 +50,6 @@
 .issue__category {
   display: flex;
   gap: $spacing-half;
-
-  .hds-tag {
-    background: $color-black;
-    color: $color-white;
-  }
-  .hds-tag--confidential {
-    background: var(--color-brick);
-  }
 }
 
 .issue__in_this_meeting {
