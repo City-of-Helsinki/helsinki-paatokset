@@ -10,7 +10,7 @@
   justify-content: space-between;
   margin-bottom: 54px;
 
-  input:not(input[type=checkbox]),
+  input:not(input[type='checkbox']),
   select {
     border: 2px solid $color-black-50;
     height: 56px;
@@ -79,18 +79,18 @@
     }
 
     input {
-      -moz-appearance:none;
-      -webkit-appearance:none;
-      -o-appearance:none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -o-appearance: none;
       content: none;
       outline: none;
 
       &::before {
+        @include font('lead');
         align-items: center;
         border: 2px solid $color-black-50;
         content: '';
         display: flex;
-        font-size: 20px;
         height: $spacing-and-half;
         justify-content: center;
         max-height: $spacing-and-half;
@@ -99,18 +99,18 @@
       }
 
       &:checked::before {
-        content: '\2713'
+        content: '\2713';
       }
     }
   }
 }
 
 .policymaker-members__list {
-  border-top: 2px solid  black;
+  border-top: 2px solid $color-black;
 
   .member-row {
     align-items: center;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $color-black;
     display: flex;
     justify-content: space-between;
     padding: $spacing-double 0;
@@ -165,25 +165,21 @@
   }
 
   .member-name {
-    font-size: 20px;
+    @include font('lead');
     font-weight: $font-weight-medium;
     line-height: 29px;
     margin-bottom: 0;
     margin-top: 0;
-
-    @include breakpoint($breakpoint-s) {
-      font-size: 24px;
-    }
   }
 
   .member-role,
   .member-party {
+    @include font('small');
     color: $color-black-60;
-    font-size: 16px;
     line-height: $spacing-and-half;
 
     @include breakpoint($breakpoint-s) {
-      font-size: 18px;
+      @include font('body');
       line-height: 27px;
     }
   }

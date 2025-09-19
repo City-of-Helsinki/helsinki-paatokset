@@ -15,35 +15,34 @@ $collapsible_height: 56px;
     svg {
       margin-right: 10px;
     }
-  } 
+  }
 
   .DateSelect__collapsible-handle {
     margin-left: auto;
   }
 
   .DateSelect__collapsible-element {
-    border: 2px solid #808080;
+    border: 2px solid $color-black-50;
     border-radius: 2px;
   }
 
   .DateSelect__collapsible-control {
+    @include font('body');
     align-items: center;
-    background: #fff;
-
-    color: #808080;
-    display:flex;
-    font-size: 18px;
+    background: $color-white;
+    color: $color-black-50;
+    display: flex;
     height: $collapsible_height;
     padding: 12px 16px;
-    width: 100% ;
+    width: 100%;
 
     &.is-open {
-      border-bottom: 1px solid #cccccc;
-      color: #000000;
+      border-bottom: 1px solid $color-black-30;
+      color: $color-black;
     }
 
     svg {
-      color: #000000;
+      color: $color-black;
     }
 
     &:hover {
@@ -51,7 +50,7 @@ $collapsible_height: 56px;
     }
 
     &:focus:hover {
-      color: #000000;
+      color: $color-black;
     }
 
     &:focus-visible {
@@ -60,11 +59,11 @@ $collapsible_height: 56px;
   }
 
   .collapsible-element--children {
-    background-color: #fff;
+    background-color: $color-white;
     border-top: none;
     position: absolute;
     top: $collapsible_height;
-    width: 100%; 
+    width: 100%;
     z-index: 2;
   }
 
@@ -72,7 +71,7 @@ $collapsible_height: 56px;
     align-items: center;
     display: flex;
   }
-  
+
   .DateSelect__datepicker-container {
     padding: 16px;
     padding-top: 31px;
@@ -87,7 +86,7 @@ $collapsible_height: 56px;
       display: block;
     }
   }
-  
+
   .DateSelect__date-fields-container {
     margin-bottom: 31px;
 
@@ -121,13 +120,13 @@ $collapsible_height: 56px;
   .DateSelect__inner-control {
     background-color: transparent;
     border: none;
-    border-top: 1px solid #cccccc;
-    color: #000;
+    border-top: 1px solid $color-black-30;
+    color: $color-black;
     height: $collapsible_height;
     width: 100%;
 
     &:not(:disabled):hover {
-      border-color:#cccccc;
+      border-color: $color-black-30;
     }
   }
 
@@ -156,7 +155,7 @@ $collapsible_height: 56px;
         > div {
           width: 100%;
         }
-        
+
         > div label {
           width: 100%;
         }
@@ -168,8 +167,7 @@ $collapsible_height: 56px;
     pointer-events: none;
   }
 
-  &:focus-within .DateSelect__collapsible-control  {
+  &:focus-within .DateSelect__collapsible-control {
     @include focus-outline;
-  }  
+  }
 }
-

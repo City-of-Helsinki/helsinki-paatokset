@@ -27,7 +27,7 @@
 }
 
 .decisions-search-bar-wrapper__label-status {
-  font-size: 14px;
+  @include font('special.helper_text');;
 }
 
 .decisions-search-bar-wrapper__input {

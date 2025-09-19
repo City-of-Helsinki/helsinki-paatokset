@@ -39,12 +39,12 @@
     border: none;
 
     &.react-calendar__tile--active {
-      background: #cecece;
+      background: $color-black-10;
     }
 
     &.react-calendar__tile--rangeStart, &.react-calendar__tile--rangeEnd {
-      background: #000;
-      color: #fff;
+      background: $color-black;
+      color: $color-white;
     }
   }
 }

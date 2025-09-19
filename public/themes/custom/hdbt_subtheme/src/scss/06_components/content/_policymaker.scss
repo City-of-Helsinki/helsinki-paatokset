@@ -6,7 +6,7 @@
 .policymaker-no-content,
 .minutes-container,
 .policymaker-text {
-  font-size: $fontsize-body-l;
+  @include font('body');
 }
 .policymaker-text .announcement {
   padding-left: 0;
@@ -15,7 +15,7 @@
   margin-bottom: $spacing-and-half;
 
   p {
-    font-size: $fontsize-body-l;
+    @include font('body');
   }
 
   .issue-content__policymaker-label {
@@ -38,7 +38,7 @@
 
   .announcement {
     h2 {
-      font-size: 1.15rem;
+      @include font('body');
       font-weight: $font-weight-bold;
       margin-bottom: 1rem;
       margin-top: 1rem;
@@ -81,7 +81,7 @@
 
   &:after {
     border-bottom: 2px solid $color-black;
-    content: "";
+    content: '';
     display: block;
     margin-top: $spacing-and-half;
     width: 90px;
@@ -161,7 +161,7 @@
 .policymaker-list-item {
   border-bottom: 1px solid $color-black-20;
   display: block;
-  padding:  $spacing-and-half 0;
+  padding: $spacing-and-half 0;
 
   &:first-child {
     border-top: 1px solid $color-black-20;
@@ -179,8 +179,8 @@
   }
 
   .list-item__date {
+    @include font('small');
     color: $color-black-50;
-    font-size: $fontsize-body-m;
     margin-bottom: $spacing;
   }
 
@@ -189,7 +189,7 @@
   }
 
   .list-item__subject {
-    font-size: 24px;
+    font-size: 24px; // TODO: Change to a variable
     font-weight: $font-weight-medium;
 
     a {
@@ -203,7 +203,7 @@
 }
 
 h1.minutes__header {
-  @include font(h1);
+  @include font('h1');
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -216,24 +216,23 @@ h1.minutes__header {
   }
 
   .minutes__header-prefix {
-    font-size: 20px;
+    @include font('lead');
   }
 
   .minutes__header-suffix {
     color: $color-black-50;
-    font-size: $fontsize-body-m;
+    @include font('small');
   }
 }
 
 h2.minutes-list__header {
-  font-size: 24px;
+  @include font('h4');
   font-weight: $font-weight-medium;
-
   margin-bottom: $spacing-and-half;
 }
 
 .minutes-list__wrapper {
-  font-size: $fontsize-body-l;
+  @include font('body');
   margin-bottom: $spacing-double;
 }
 
@@ -244,7 +243,6 @@ h2.minutes-list__header {
   }
 
   .minutes__publish-date {
-
     margin-bottom: $spacing-double;
     padding-bottom: $spacing-and-half;
     position: relative;
@@ -252,7 +250,7 @@ h2.minutes-list__header {
     &:after {
       background: $color-black;
       bottom: 0;
-      content: "";
+      content: '';
       height: 2px;
       left: 0;
       position: absolute;
@@ -261,8 +259,7 @@ h2.minutes-list__header {
   }
 
   .publish-date__date {
-    font-size: $fontsize-heading-s;
-    font-weight: $font-weight-bold;
+    @include font('h5');
   }
 }
 
@@ -280,11 +277,11 @@ h2.minutes-list__header {
   margin-bottom: $spacing-double;
 
   .hds-tag {
+    @include font('small');
     background: $color-black;
     border-radius: $spacing-and-half;
     color: $color-white;
     display: flex;
-    font-size: 16px;
     margin-right: $spacing-three-quarters;
     padding: 6px $spacing;
     width: fit-content;
@@ -296,7 +293,7 @@ h2.minutes-list__header {
 
   &:after {
     border-bottom: 2px solid $color-black;
-    content: "";
+    content: '';
     display: block;
     margin-top: $spacing-and-half;
     width: 90px;
@@ -308,7 +305,7 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__meta {
-  font-size: $fontsize-body-l;
+  @include font('body');
 
   .Kokousaika {
     font-weight: $font-weight-bold;
@@ -316,12 +313,8 @@ h2.minutes-list__header {
 }
 
 .minutes-decision__heading {
-  font-size: $fontsize-heading-m;
+  @include font('h3');
   font-weight: normal;
   line-height: 1.1;
   margin-bottom: $spacing-double;
-
-  @include breakpoint($breakpoint-l) {
-    font-size: $fontsize-heading-l;
-  }
 }
