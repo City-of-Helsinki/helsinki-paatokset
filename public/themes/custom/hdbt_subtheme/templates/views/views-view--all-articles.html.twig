@@ -1,10 +1,9 @@
-{#  #}
-{#  #}
 <div class="components components--computed">
   {% embed "@hdbt/misc/component.twig" with
     {
       component_classes: [
         'component--full-width',
+        'component--no-side-padding',
         'component--all-articles-block',
       ],
       component_title: 'All announcements and notifications'|t({}, {'context': 'Announcements and notifications list'}),

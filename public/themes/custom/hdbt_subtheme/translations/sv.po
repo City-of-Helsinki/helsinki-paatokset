@@ -45,3 +45,17 @@ msgstr "Inga resultat"
 msgctxt "Announcements and notifications list"
 msgid "Published"
 msgstr "Publicerad"
+
+msgctxt "Policymaker documents list"
+msgid "document"
+msgid_plural "documents"
+msgstr[0] "dokument"
+msgstr[1] "dokument"
+
+msgctxt "Policymaker documents list"
+msgid "No results"
+msgstr "Inga resultat"
+
+msgctxt "Policymaker documents list"
+msgid "Published"
+msgstr "Publicerad"
