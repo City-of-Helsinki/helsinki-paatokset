@@ -27,14 +27,13 @@
     }
 
     h2 {
-      font-size: 26px;
+      @include font('special.card_title');
       margin: 0 15px;
       min-width: 190px;
       text-align: center;
       text-transform: capitalize;
 
       @include breakpoint($breakpoint-s) {
-        font-size: 32px;
         margin: 0 30px;
         min-width: 235px;
       }
@@ -100,8 +99,8 @@
   }
 
   .meeting-row {
+    @include font('small');
     border-bottom: 1px dashed $color-black-60;
-    font-size: $spacing;
     padding: $spacing 0;
 
     a {
@@ -116,7 +115,7 @@
   }
 
   .meeting-title {
-    font-size: $spacing;
+    @include font('small');
     font-weight: $font-weight-bold;
     line-height: 1.5;
     margin-bottom: $spacing-half;
@@ -135,9 +134,9 @@
   }
 
   .date-header {
-    border-bottom: 2px solid black;
+    @include font('lead');
+    border-bottom: 2px solid $color-black;
     display: flex;
-    font-size: 20px;
     font-weight: $font-weight-medium;
     justify-content: space-between;
     padding-bottom: $spacing-half;
@@ -158,8 +157,8 @@
 
   .calendar-day__no-meetings {
     .date-header {
-      border-color: #666666;
-      color: #666666;
+      border-color: $color-black-60;
+      color: $color-black-60;
     }
   }
 }

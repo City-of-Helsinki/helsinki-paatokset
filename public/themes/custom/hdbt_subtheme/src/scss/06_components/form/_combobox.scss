@@ -5,11 +5,11 @@
     border-radius: 2px;
   }
 
-  div[role="link"] {
-    background: #000;
+  div[role='link'] {
+    @include font('special.helper_text');
+    background: $color-black;
     border-radius: 24px;
-    color: #fff;
-    font-size: 14px;
+    color: $color-white;
     padding: 2px 10px;
   }
 
@@ -17,7 +17,7 @@
     overflow-y: scroll;
   }
 
-  li[role="option"] {
-    --multiselect-checkbox-background-selected: #000;
+  li[role='option'] {
+    --multiselect-checkbox-background-selected: #{$color-black};
   }
 }

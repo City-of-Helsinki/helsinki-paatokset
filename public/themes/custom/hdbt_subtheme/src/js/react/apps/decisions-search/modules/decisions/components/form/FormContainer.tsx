@@ -410,12 +410,12 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
     if(koroRef && isDesktop) {
       containerStyle.marginBottom = `${koroRef.clientHeight}px`;
-      koroStyle.backgroundColor = this.props.searchTriggered ? '#f7f7f8' : 'transparent';
+      koroStyle.backgroundColor = this.props.searchTriggered ? 'var(--color-silver-light)' : 'transparent';
       koroStyle.bottom = `-${koroRef.clientHeight}px`;
     }
 
     return (
-      <div style={{ background: '#f7f7f8' }}>
+      <div style={{ background: 'var(--color-silver-light)' }}>
         <div className={classNames('decisions-search-form-container', 'decisions-search-form-container--gold', 'wrapper')} style={containerStyle}>
           <FormTitle />
           {this.props.formDescription && (

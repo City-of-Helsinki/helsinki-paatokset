@@ -87,7 +87,6 @@
     }
   }
 
-
   .hel-icon {
     height: 30px;
     min-height: 30px;
@@ -106,7 +105,7 @@
   }
 
   .policymaker-row__title {
-    font-size: 24px;
+    font-size: 24px; // TODO: Change to a variable
     hyphens: auto;
     overflow-wrap: break-word;
     padding-right: $spacing;
@@ -115,8 +114,8 @@
   }
 
   .policymaker-row__sub-title {
+    @include font('lead');
     color: $color-black-50;
-    font-size: 20px;
   }
 }
 

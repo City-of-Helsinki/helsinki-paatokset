@@ -9,16 +9,19 @@
 
   h3 {
     @include font('h4');
-
     margin-block: 0 $spacing;
   }
 }
 
-
 .rss-item__link--download {
   // Overrides the default external link icon.
   .link__type--external {
-    @include pseudo-icon('download', calc(var(--line-height) * 1em), currentColor, inline-block)
+    @include pseudo-icon(
+      'download',
+      calc(var(--line-height) * 1em),
+      currentColor,
+      inline-block
+    );
   }
 
   // Hides the external link text from screen readers since the link
@@ -76,6 +79,5 @@
 
 .rss-feed__count-container {
   @include font('h3');
-
   margin-block-end: $spacing-and-half;
 }
