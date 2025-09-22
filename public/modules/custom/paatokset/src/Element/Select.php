@@ -28,11 +28,11 @@ class Select extends Hidden {
   public static function processHelfiSelect(array $element): array {
     $element['#attached']['library'][] = 'paatokset/helfi_select';
     $element['#attached']['drupalSettings']['helfi_select']['value'] = $element['#value'];
-    $element['#attached']['drupalSettings']['helfi_select']['empty_option'] = $element['#empty_option'];
     $element['#attached']['drupalSettings']['helfi_select']['options'] = $element['#options'];
     if (isset($element['#empty_option'])) {
       $key = $element['#empty_value'] ?? '';
       $element['#attached']['drupalSettings']['helfi_select']['options'][$key] = $element['#empty_option'];
+      $element['#attached']['drupalSettings']['helfi_select']['empty_option'] = $element['#empty_option'];
     }
 
     // Options cause validation errors for the hidden element.
