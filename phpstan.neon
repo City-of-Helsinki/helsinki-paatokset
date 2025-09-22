@@ -387,16 +387,6 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
-      message: "#^PHPDoc tag @param for parameter \\$node with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\|null is not subtype of native type Drupal\\\\Core\\\\Url\\|null\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
       message: "#^Property Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:\\$policymaker \\(Drupal\\\\paatokset_ahjo_api\\\\Entity\\\\Policymaker\\|null\\) does not accept Drupal\\\\node\\\\NodeInterface\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
