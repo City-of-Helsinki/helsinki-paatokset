@@ -240,8 +240,8 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        meeting_date_year:
-          id: meeting_date_year
+        year:
+          id: year 
           table: node__field_meeting_date
           field: meeting_date_year
           relationship: none
@@ -260,7 +260,7 @@ display:
             operator: meeting_date_year_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: meeting_date_year
+            identifier: year
             required: false
             remember: false
             multiple: false
