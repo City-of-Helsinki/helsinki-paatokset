@@ -377,47 +377,12 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
-      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDocumentsRoute\\(\\) has invalid return type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
       message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getMeetingNode\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
-      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getMinutesRoute\\(\\) has invalid return type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
       message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getTrusteeByPath\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^PHPDoc tag @param for parameter \\$meeting with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^PHPDoc tag @param for parameter \\$node with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\|null is not subtype of native type Drupal\\\\node\\\\NodeInterface\\|null\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\Core\\\\Url\\|null is not subtype of native type Drupal\\\\Core\\\\Url\\|null\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Parameter \\$meeting of method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getDecisionAnnouncement\\(\\) has invalid type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Parameter \\$node of method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getPolicymakerTypeFromNode\\(\\) has invalid type Drupal\\\\paatokset_policymakers\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 

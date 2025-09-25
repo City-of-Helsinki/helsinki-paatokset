@@ -18,6 +18,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
@@ -359,11 +360,11 @@ class PolicymakerService {
   /**
    * Return route for policymaker documents.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
   public function getDocumentsRoute(): ?Url {
-    if (!$this->policymaker instanceof NodeInterface || $this->policymaker->getType() !== 'policymaker') {
+    if (!$this->policymaker instanceof Policymaker) {
       return NULL;
     }
 
@@ -397,7 +398,7 @@ class PolicymakerService {
    * @param string|null $langcode
    *   Language for URL, defaults to current language. Supports fi, en, sv.
    *
-   * @return Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|null
    *   URL object, if route is valid.
    */
   public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE, ?string $langcode = NULL): ?Url {
@@ -474,7 +475,7 @@ class PolicymakerService {
   /**
    * Parse decision announcement HTML from meeting node.
    *
-   * @param Drupal\node\NodeInterface $meeting
+   * @param \Drupal\node\NodeInterface $meeting
    *   Meeting to get announcement from.
    * @param string $langcode
    *   Langcode used for motion link checking.
@@ -1654,7 +1655,7 @@ class PolicymakerService {
     $nodes = $this->nodeStorage->loadMultiple($nids);
     $initiatives = [];
     foreach ($nodes as $node) {
-      if (!$node instanceof NodeInterface || !$node->hasField('field_trustee_initiatives')) {
+      if (!$node instanceof Trustee) {
         continue;
       }
 
@@ -1673,7 +1674,7 @@ class PolicymakerService {
   /**
    * Get organization display type from node. Shouldn't be used for type checks.
    *
-   * @param Drupal\node\NodeInterface|null $node
+   * @param \Drupal\node\NodeInterface|null $node
    *   Policymaker node. Leave empty to use set policymaker.
    *
    * @return string|null

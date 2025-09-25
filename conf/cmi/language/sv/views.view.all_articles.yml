@@ -1,0 +1,17 @@
+label: ''
+display:
+  default:
+    display_options:
+      title: 'Bläddra alla'
+      pager:
+        options:
+          tags:
+            next: Nästa
+            previous: Tidigare
+      exposed_form:
+        options:
+          submit_button: Sök
+      filters:
+        year:
+          expose:
+            label: År

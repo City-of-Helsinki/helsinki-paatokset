@@ -1,0 +1,5 @@
+.component--policymaker-documents {
+  // Remove the top padding on this component since it doesn't have its own title or description but connects to
+  // the written content above.
+  padding-top: 0;
+}
