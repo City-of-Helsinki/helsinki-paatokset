@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94b8725e00520a5a900b09db468c0e48",
+    "content-hash": "e135613867e4c1561aea8873519b58c0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4172,16 +4172,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.14.10",
+            "version": "6.14.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "5cc7c97fcfbfe3deafa0ae3d2a3ba028bf41aa0b"
+                "reference": "0c6715f8fc22aed47b95a0d7c980b890a343be94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/5cc7c97fcfbfe3deafa0ae3d2a3ba028bf41aa0b",
-                "reference": "5cc7c97fcfbfe3deafa0ae3d2a3ba028bf41aa0b",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/0c6715f8fc22aed47b95a0d7c980b890a343be94",
+                "reference": "0c6715f8fc22aed47b95a0d7c980b890a343be94",
                 "shasum": ""
             },
             "require": {
@@ -4200,10 +4200,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.10",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.10.1",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2025-09-16T07:15:12+00:00"
+            "time": "2025-09-23T14:32:39+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -5094,17 +5094,17 @@
         },
         {
             "name": "drupal/json_field",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/json_field.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/json_field-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "422ec5a48bb0a36d6c506bc51a38e0b85ceba69d"
+                "url": "https://ftp.drupal.org/files/projects/json_field-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "ea1fa6c9a516ede9ea381489aaeaa50d65c5317c"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -5122,8 +5122,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1729185545",
+                    "version": "8.x-1.5",
+                    "datestamp": "1758734220",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
