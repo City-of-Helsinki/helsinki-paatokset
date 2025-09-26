@@ -4172,16 +4172,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.14.16",
+            "version": "6.14.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "6b63b38d73949bd63226176b66500cf1e6c60431"
+                "reference": "9f55c370e612a5708504a3606554db101f035767"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/6b63b38d73949bd63226176b66500cf1e6c60431",
-                "reference": "6b63b38d73949bd63226176b66500cf1e6c60431",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/9f55c370e612a5708504a3606554db101f035767",
+                "reference": "9f55c370e612a5708504a3606554db101f035767",
                 "shasum": ""
             },
             "require": {
@@ -4200,10 +4200,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.16",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.17",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2025-09-25T10:02:48+00:00"
+            "time": "2025-09-26T13:31:40+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4475,16 +4475,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "4.16.28",
+            "version": "4.16.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "3a229b15e4ee82faf3d56db57272b20ded9b4a51"
+                "reference": "824e7adfcf61e2807f0742e781312cd50a792aaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/3a229b15e4ee82faf3d56db57272b20ded9b4a51",
-                "reference": "3a229b15e4ee82faf3d56db57272b20ded9b4a51",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/824e7adfcf61e2807f0742e781312cd50a792aaf",
+                "reference": "824e7adfcf61e2807f0742e781312cd50a792aaf",
                 "shasum": ""
             },
             "require": {
@@ -4604,10 +4604,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.28",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.29",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2025-09-24T14:25:19+00:00"
+            "time": "2025-09-26T13:31:37+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -6870,17 +6870,17 @@
         },
         {
             "name": "drupal/siteimprove",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/siteimprove.git",
-                "reference": "2.0.4"
+                "reference": "2.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/siteimprove-2.0.4.zip",
-                "reference": "2.0.4",
-                "shasum": "c659b768910a4cc53ffb0054d1ea5f21f7a64065"
+                "url": "https://ftp.drupal.org/files/projects/siteimprove-2.0.5.zip",
+                "reference": "2.0.5",
+                "shasum": "be59f8e7754cff0a861d0a8cffcdb874ae5c648b"
             },
             "require": {
                 "drupal/core": "^9.2 || ^10",
@@ -6892,8 +6892,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.4",
-                    "datestamp": "1742904189",
+                    "version": "2.0.5",
+                    "datestamp": "1758886639",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6930,7 +6930,7 @@
                     "homepage": "https://www.drupal.org/user/3284851"
                 },
                 {
-                    "name": "Siteimprove",
+                    "name": "siteimprove",
                     "homepage": "https://www.drupal.org/user/3521441"
                 },
                 {
@@ -6938,7 +6938,7 @@
                     "homepage": "https://www.drupal.org/user/413139"
                 }
             ],
-            "description": "Integration with Siteimprove.",
+            "description": "Integration with Siteimprove.ai.",
             "homepage": "https://www.drupal.org/project/siteimprove",
             "keywords": [
                 "Drupal"
