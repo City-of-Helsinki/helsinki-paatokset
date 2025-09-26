@@ -1,0 +1,21 @@
+export type PolicyMaker = {
+  node_grants: string[];
+  url: string[];
+  _language: string[];
+  color_class: string[];
+  decisionmaker_combined_title: string[];
+  decisionmaker_searchfield_data: string[];
+  field_dm_org_name: string[];
+  field_organization_type: string[];
+  field_policymaker_existing: boolean[];
+  field_policymaker_id: string[];
+  field_sector_name: string[];
+  has_translation: boolean[];
+  organization_hierarchy: string[];
+  status: boolean[];
+  title: string[];
+  uid: number[];
+  search_api_id: string[];
+  search_api_datasource: string[];
+  search_api_language: string[];
+};

@@ -9,3 +9,145 @@ msgstr "Omröstning"
 msgctxt "Voting results"
 msgid "Voting results"
 msgstr "Omröstningsresultat"
+
+msgctxt "Decisions search"
+msgid "Finnish keyword"
+msgstr "Sökord"
+
+msgctxt "Decisions search"
+msgid "For example, Viikki"
+msgstr "T.ex. Vik"
+
+msgctxt "Decisions search"
+msgid "Date"
+msgstr "Tidpunkt"
+
+msgctxt "Decisions search"
+msgid "All dates"
+msgstr "Alla tidpunkter"
+
+msgctxt "Decisions search"
+msgid "Topic"
+msgstr "Ämne"
+
+msgctxt "Decisions search"
+msgid "All topics"
+msgstr "Alla ämnen"
+
+msgctxt "Decisions search"
+msgid "Decision-maker / Division"
+msgstr "Beslutsfattare / Sektor"
+
+msgctxt "Decisions search"
+msgid "All decision-makers and divisions"
+msgstr "Alla beslutsfattare och sektorer"
+
+msgctxt "Decisions search"
+msgid "Only show"
+msgstr "Visa endast"
+
+msgctxt "Decisions search"
+msgid "Decisions of decision-making bodies"
+msgstr "Organens beslut"
+
+msgctxt "Decisions search"
+msgid "Decisions of office holders"
+msgstr "Tjänsteinnehavares beslut"
+
+msgctxt "Decisions search"
+msgid "Search for a decision-maker or a division"
+msgstr "Sök beslutsfattare eller sektor"
+
+msgctxt "Decisions search"
+msgid "Search"
+msgstr "Sök"
+
+msgctxt "Decisions search"
+msgid "Sort search results"
+msgstr "Ordna sökresultaten"
+
+msgctxt "Decisions search"
+msgid "Newest first"
+msgstr "Nyaste först"
+
+msgctxt "Decisions search"
+msgid "Most relevant first"
+msgstr "Bästa träffar först"
+
+msgctxt "Decisions search"
+msgid "Oldest first"
+msgstr "Äldsta först"
+
+msgctxt "Decisions search"
+msgid "Issues with several decisions"
+msgstr "Ärende med flera beslut"
+
+msgctxt "Decisions search"
+msgid "Choose dates"
+msgstr "Välj tidpunkt"
+
+msgctxt "Decisions search"
+msgid "Choose range"
+msgstr "Välj datum"
+
+msgctxt "Decisions search"
+msgid "Past week"
+msgstr "Senaste veckan"
+
+msgctxt "Decisions search"
+msgid "Past month"
+msgstr "Senaste månaden"
+
+msgctxt "Decisions search"
+msgid "Past year"
+msgstr "Senaste året"
+
+msgctxt "Decisions search"
+msgid "Start date"
+msgstr "Från"
+
+msgctxt "Decisions search"
+msgid "End date"
+msgstr "Till"
+
+msgctxt "Decisions search"
+msgid "All dates"
+msgstr "Alla tidpunkter"
+
+msgctxt "Decisions search"
+msgid "For example, Viikki"
+msgstr "T.ex. Vik"
+
+msgctxt "Decisions search"
+msgid "The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
+msgstr "Du kan söka stadens beslut med ett sökord. Du kan begränsa resultaten enligt tidpunkt, ämne och beslutsfattare."
+
+msgctxt "Decisions search"
+msgid "Enter a keyword in the search field to find a specific decision. Results can be filtered by date, topic and decision-maker."
+msgstr "Om det finns flera beslut om samma ärende visas endast det beslut som bäst motsvarar din sökning. Du hittar hela beslutshistoriken för ärendet när du öppnar beslutet."
+
+msgctxt "Decisions search"
+msgid "If several decisions have been made on the same issue, the search result will initially show only the best match. To view the entire decision-making history associated with the issue, click to open the decision."
+msgstr " "
+
+msgctxt "Decisions search"
+msgid "Read the instructions for refining your search."
+msgstr "Läs anvisningar om hur du kan precisera sökningen."
+
+msgctxt "Decisions search"
+msgid "You can find the City of Helsinki\'s decision-making body and office holder decisions starting from 2017 in the search."
+msgstr "Du hittar i sökningen Helsingfors organs och tjänsteinnehavares beslut från och med år 2017."
+
+msgctxt "Decisions search"
+msgid "Search decisions"
+msgstr "Sök beslut"
+
+msgctxt "Decisions search"
+msgid "1 decision"
+msgid_plural "@count decisions"
+msgstr[0] "1 beslut"
+msgstr[1] "@count beslut"
+
+msgctxt "Decisions search"
+msgid "Filter search results"
+msgstr "Begränsa sökresultaten"
