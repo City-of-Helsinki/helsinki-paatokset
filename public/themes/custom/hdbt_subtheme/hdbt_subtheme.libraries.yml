@@ -31,9 +31,23 @@ allu-decisions-search:
     - core/drupal
 
 decisions-search:
-  version: 1.0.1
+  version: 2.0.0
   js:
     dist/js/decisions-search.min.js: {
+      attributes: {
+        preprocess: false,
+        minified: true
+      }
+    }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal
+
+# This lives for a while until all modules are rewritten
+decisions-search-old:
+  version: 1.0.0
+  js:
+    dist/js/decisions-search-old.min.js: {
       attributes: {
         preprocess: false,
         minified: true

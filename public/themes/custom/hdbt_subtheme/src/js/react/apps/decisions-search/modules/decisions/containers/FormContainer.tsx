@@ -1,0 +1,42 @@
+import { useSetAtom } from 'jotai';
+import { Button } from 'hds-react';
+
+import { SearchBar } from '../components/SearchBar';
+import { updateQueryAtom } from '../store';
+import { CategoryFilter } from '../components/CategoryFilter';
+import { DateFilter } from '../components/DateFilter';
+import { DMSelect } from '../components/DMSelect';
+import { SelectionsContainer } from './SelectionsContainer';
+
+export const FormContainer = ({
+  url,
+}: {
+  url: string;
+}) => {
+  const updateQuery = useSetAtom(updateQueryAtom);
+
+  return (
+    <form
+      className='hdbt-search--react__form-container'
+      onSubmit={(e) => {
+        e.preventDefault();
+        updateQuery();
+      }}
+      role='search'
+    >
+      <SearchBar url={url} />
+      <div className='hdbt-search--react__dropdown-filters'>
+        <DateFilter />
+        <CategoryFilter />
+        <DMSelect url={url} />
+      </div>
+      <Button
+        className='hdbt-search--react__submit-button'
+        type='submit'
+      >
+        {Drupal.t('Search', {}, {context: 'React search: submit button label'})}
+      </Button>
+      <SelectionsContainer />
+    </form>
+  );
+};

@@ -52,7 +52,27 @@ class SearchManager {
       'description' => $defaultTexts->get('decision_search_description.value'),
     ];
 
-    $build = [
+    $build = $type === 'decisions' ? [
+      '#search_element' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'id' => 'paatokset_search',
+            'data-type' => $type,
+            'data-url' => $proxyUrl,
+          ],
+      ],
+      '#attached' => [
+        'library' => [
+          'hdbt_subtheme/decisions-search',
+        ],
+        'drupalSettings' => [
+          'paatokset_search' => [
+            'default_texts' => $defaultTexts,
+          ],
+        ],
+      ],
+    ] : [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
@@ -63,7 +83,7 @@ class SearchManager {
       ],
       '#attached' => [
         'library' => [
-          'hdbt_subtheme/decisions-search',
+          'hdbt_subtheme/decisions-search-old',
         ],
         'drupalSettings' => [
           'paatokset_search' => [
@@ -91,7 +111,7 @@ class SearchManager {
    *   The operator guide URL or empty string if the node does not exist or
    *   user does not have access.
    */
-  private function getOperatorGuideUrl(): string {
+  public function getOperatorGuideUrl(): string {
     $currentLanguage = $this->languageManager->getCurrentLanguage();
     // Operator guide node id is set in an environment variable
     // OPERATOR_GUIDE_NODE_ID.

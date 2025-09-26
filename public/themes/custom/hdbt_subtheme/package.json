@@ -47,7 +47,7 @@
     "html-react-parser": "^5.0.11",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
-    "jotai": "^2.6.0",
+    "jotai": "^2.14.0",
     "jsdom": "^26.0.0",
     "luxon": "^3.6.1",
     "npm-run-all2": "^8.0.4",

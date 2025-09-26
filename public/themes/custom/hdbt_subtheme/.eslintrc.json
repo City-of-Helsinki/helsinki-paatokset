@@ -159,7 +159,8 @@
         // These rules are not needed with react 17 JSX transform.
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "object-curly-spacing": "off"
       }
     }
   ]

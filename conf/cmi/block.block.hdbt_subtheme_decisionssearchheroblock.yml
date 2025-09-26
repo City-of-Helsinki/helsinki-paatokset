@@ -1,0 +1,25 @@
+uuid: 884dc4ef-7fd1-4800-9602-11861dba6ecc
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paatokset_search
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_decisionssearchheroblock
+theme: hdbt_subtheme
+region: before_content
+weight: 0
+provider: null
+plugin: decisions_search_hero_block
+settings:
+  id: decisions_search_hero_block
+  label: 'Decisions Search Hero Block'
+  label_display: '0'
+  provider: paatokset_search
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/asia\r\n"

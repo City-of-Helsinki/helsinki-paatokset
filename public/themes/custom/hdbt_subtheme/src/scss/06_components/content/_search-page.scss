@@ -1,24 +1,6 @@
 .paatokset-search-page--decisions {
-  .layout-content {
-    margin: 0;
-  }
-
-  .main-content {
+  .main-content, .before-content {
     background-color: $color-silver-light;
-    margin-top: 0;
-    padding-bottom: calc(#{$footer-koro-height} + #{$spacing-triple}) auto 0;
-
-    @include breakpoint($breakpoint-l) {
-      padding-bottom: calc(#{$footer-koro-height} + #{$spacing-quadruple});
-    }
   }
-
-  .footer {
-    margin-top: 0;
-  }
-
 }
 
-.paatokset-search--decisions {
-  margin-bottom: $spacing-double;
-}
