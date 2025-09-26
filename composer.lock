@@ -4172,16 +4172,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.14.15",
+            "version": "6.14.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "045ed278c4bafa567a6e0b5f5e57a54db1b121cc"
+                "reference": "6b63b38d73949bd63226176b66500cf1e6c60431"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/045ed278c4bafa567a6e0b5f5e57a54db1b121cc",
-                "reference": "045ed278c4bafa567a6e0b5f5e57a54db1b121cc",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/6b63b38d73949bd63226176b66500cf1e6c60431",
+                "reference": "6b63b38d73949bd63226176b66500cf1e6c60431",
                 "shasum": ""
             },
             "require": {
@@ -4200,10 +4200,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.15",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.14.16",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2025-09-24T12:31:30+00:00"
+            "time": "2025-09-25T10:02:48+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4475,16 +4475,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "4.16.27",
+            "version": "4.16.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "fa9c8d494d2268ec20cc14804b4f6687cbee11ee"
+                "reference": "3a229b15e4ee82faf3d56db57272b20ded9b4a51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/fa9c8d494d2268ec20cc14804b4f6687cbee11ee",
-                "reference": "fa9c8d494d2268ec20cc14804b4f6687cbee11ee",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/3a229b15e4ee82faf3d56db57272b20ded9b4a51",
+                "reference": "3a229b15e4ee82faf3d56db57272b20ded9b4a51",
                 "shasum": ""
             },
             "require": {
@@ -4604,10 +4604,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.27",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.28",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2025-09-24T11:34:39+00:00"
+            "time": "2025-09-24T14:25:19+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -10426,16 +10426,16 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v2.8.1",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "e6352b9f43318821f148c1e8c2d9e944aa9accb5"
+                "reference": "e30811f7bc69e4b5b6d5783e712c06c8eabf0226"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/e6352b9f43318821f148c1e8c2d9e944aa9accb5",
-                "reference": "e6352b9f43318821f148c1e8c2d9e944aa9accb5",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/e30811f7bc69e4b5b6d5783e712c06c8eabf0226",
+                "reference": "e30811f7bc69e4b5b6d5783e712c06c8eabf0226",
                 "shasum": ""
             },
             "require": {
@@ -10489,7 +10489,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2025-09-24T01:40:13+00:00"
+            "time": "2025-09-24T15:12:37+00:00"
         },
         {
             "name": "paragonie/random_compat",
