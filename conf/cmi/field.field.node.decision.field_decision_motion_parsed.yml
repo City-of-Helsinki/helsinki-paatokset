@@ -6,16 +6,12 @@ dependencies:
     - field.storage.node.field_decision_motion_parsed
     - node.type.decision
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.decision.field_decision_motion_parsed
 field_name: field_decision_motion_parsed
 entity_type: node
 bundle: decision
-label: 'Decision motion'
+label: 'Päätöksen asia'
 description: ''
 required: false
 translatable: false
