@@ -241,7 +241,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
         year:
-          id: year 
+          id: year
           table: node__field_meeting_date
           field: meeting_date_year
           relationship: none
