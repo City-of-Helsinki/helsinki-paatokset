@@ -11,7 +11,7 @@ id: node.decision.field_decision_content_parsed
 field_name: field_decision_content_parsed
 entity_type: node
 bundle: decision
-label: 'Päätöksen sisältö'
+label: 'Decision content'
 description: ''
 required: false
 translatable: false
