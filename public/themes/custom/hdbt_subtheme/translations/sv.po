@@ -2,6 +2,16 @@
 msgid ""
 msgstr ""
 
+msgctxt "Announcements and notifications list"
+msgid "Announcement or notification"
+msgid_plural "Announcements and notifications"
+msgstr[0] "kungörelse eller annons"
+msgstr[1] "kungörelser och annonser"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Inga resultat"
+
 msgctxt "Voting results"
 msgid "Voting"
 msgstr "Omröstning"
@@ -9,3 +19,43 @@ msgstr "Omröstning"
 msgctxt "Voting results"
 msgid "Voting results"
 msgstr "Omröstningsresultat"
+
+msgctxt "Announcements and notifications list"
+msgid "All announcements and notifications"
+msgstr "Alla kungörelser och meddelanden"
+
+msgctxt "Announcements and notifications list"
+msgid "Notice! <a hreflang="fi" href="@link">Notices of building control permit decisions</a> can only be found on their own page."
+msgstr "Observera! <a hreflang="fi" href=@link">Kungörelser om byggnadstillståndsbeslutet</a> finns endast på deras egen sida."
+
+msgctxt "Announcements and notifications list"
+msgid "Filter announcements and notifications"
+msgstr "Filtrera kungörelser och meddelanden"
+
+msgctxt "Announcements and notifications list"
+msgid "announcement or notification"
+msgid_plural "announcements and notifications"
+msgstr[0] "kungörelse eller meddelande"
+msgstr[1] "kungörelser och meddelanden"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Inga resultat"
+
+msgctxt "Announcements and notifications list"
+msgid "Published"
+msgstr "Publicerad"
+
+msgctxt "Policymaker documents list"
+msgid "document"
+msgid_plural "documents"
+msgstr[0] "dokument"
+msgstr[1] "dokument"
+
+msgctxt "Policymaker documents list"
+msgid "No results"
+msgstr "Inga resultat"
+
+msgctxt "Policymaker documents list"
+msgid "Published"
+msgstr "Publicerad"

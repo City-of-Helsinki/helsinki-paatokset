@@ -3,8 +3,8 @@
 }
 .node--type-article {
   .content-author {
-    color: #666;
-    font-size: 1rem;
+    @include font('small');
+    color: $color-black-60;
   }
 
   .hds-tag--alert {
@@ -20,7 +20,7 @@
 }
 
 .latest-articles__list {
-  font-size: $fontsize-body-l;
+  @include font('body');
   width: 100%;
 
   .sidebar_block_heading {

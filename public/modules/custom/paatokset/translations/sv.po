@@ -1,6 +1,10 @@
 msgid ""
 msgstr ""
 
+msgctxt "Year filter"
+msgid "All years"
+msgstr "Alla år"
+
 msgctxt "Lupapiste rss"
 msgid "Building site"
 msgstr "Byggplats"

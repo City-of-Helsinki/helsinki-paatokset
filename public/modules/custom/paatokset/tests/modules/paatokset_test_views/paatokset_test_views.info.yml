@@ -1,0 +1,7 @@
+name: 'Paatokset Views Test Config'
+core_version_requirement: ^10 || ^11
+type: module
+description: 'Provides default views for tests.'
+package: Testing
+dependencies:
+  - drupal:views

@@ -121,31 +121,6 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
 }
 
 /**
- * Return TRUE if policymaker exists.
- *
- * @return bool
- *   True if policymaker is marked existing or the existing field is not set.
- */
-function _paatokset_policymakers_does_policymaker_exists(NodeInterface $policymaker): bool {
-  Assert::true($policymaker->hasField('field_policymaker_existing'));
-
-  $existing_field = $policymaker->get('field_policymaker_existing');
-
-  return !$existing_field->isEmpty() && $existing_field->value;
-}
-
-/**
- * Returns true if policymaker is an organization.
- *
- * @return bool
- *   True if policymaker is an organization.
- */
-function _paatokset_policymakers_is_policymaker_organization(NodeInterface $policymaker): bool {
-  $orgType = $policymaker->get('field_organization_type')->value;
-  return $orgType && !in_array($orgType, PolicymakerService::TRUSTEE_TYPES);
-}
-
-/**
  * Implements preprocess_node hook.
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
@@ -167,54 +142,48 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   $cache_tags = [];
 
-  $isOrganization = _paatokset_policymakers_is_policymaker_organization($policymaker);
-  $variables['is_organization'] = FALSE;
-  $variables['is_active'] = TRUE;
-  $variables['is_organization'] = $isOrganization;
+  // Policymaker is an organization if it is not trustee.
+  $variables['is_organization'] = !$policymaker->isTrustee();
+  $variables['is_active'] = $policymaker->isActive();
 
   // Hide all content if the policymaker does not exist.
-  if (!_paatokset_policymakers_does_policymaker_exists($policymaker)) {
-    $variables['is_active'] = FALSE;
+  if (!$variables['is_active']) {
     return;
   }
 
-  // fixme: is this check necessary?
-  if ($policymaker->get('field_organization_type')->value) {
-
-    if ($isOrganization) {
-      $members = $policymakerService->getComposition();
-      if ($members) {
-        $variables['has_members'] = TRUE;
-        $no_content = FALSE;
-      }
-
-      $documents = $policymakerService->getApiMinutesFromElasticSearch(2);
-
-      if ($documents) {
-        $variables['recent_documents'] = $documents;
-        $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
-        $no_content = FALSE;
-      }
-
-      $params = [
-        'policymaker' => $policymaker->get('field_policymaker_id')->value,
-        'from' => date("Y-m-d"),
-      ];
-      $upcomingMeetings = $meetingService->elasticQuery($params);
-
-      if (!empty($upcomingMeetings)) {
-        $variables['meeting_calendar'] = TRUE;
-        $no_content = FALSE;
-      }
+  if ($variables['is_organization']) {
+    $members = $policymakerService->getComposition();
+    if ($members) {
+      $variables['has_members'] = TRUE;
+      $no_content = FALSE;
     }
-    else {
-      // Get the two most recent decisions.
-      $recentDecisions = $policymakerService->getAgendasListFromElasticSearch(2, FALSE);
-      if (!empty($recentDecisions)) {
-        $variables['recent_decisions'] = $recentDecisions;
-        $variables['all_decisions_link'] = $policymaker->getDecisionsRoute(\Drupal::languageManager()->getCurrentLanguage()->getId());
-        $no_content = FALSE;
-      }
+
+    $documents = $policymakerService->getApiMinutesFromElasticSearch(2);
+
+    if ($documents) {
+      $variables['recent_documents'] = $documents;
+      $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
+      $no_content = FALSE;
+    }
+
+    $params = [
+      'policymaker' => $policymaker->get('field_policymaker_id')->value,
+      'from' => date("Y-m-d"),
+    ];
+    $upcomingMeetings = $meetingService->elasticQuery($params);
+
+    if (!empty($upcomingMeetings)) {
+      $variables['meeting_calendar'] = TRUE;
+      $no_content = FALSE;
+    }
+  }
+  else {
+    // Get the two most recent decisions.
+    $recentDecisions = $policymakerService->getAgendasListFromElasticSearch(2, FALSE);
+    if (!empty($recentDecisions)) {
+      $variables['recent_decisions'] = $recentDecisions;
+      $variables['all_decisions_link'] = $policymaker->getDecisionsRoute(\Drupal::languageManager()->getCurrentLanguage()->getId());
+      $no_content = FALSE;
     }
   }
 
@@ -227,7 +196,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   }
 
   // Add custom cache tags for meetings or decisions based on org type.
-  if ($isOrganization) {
+  if ($variables['is_organization']) {
     $cache_tags[] = 'meeting_pm:' . $policymaker->get('field_policymaker_id')->value;
   }
   else {

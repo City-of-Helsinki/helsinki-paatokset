@@ -51,16 +51,4 @@
   .active {
     font-weight: bold;
   }
-
-  #menu--level-0 li span.menu__link-wrapper {
-    border-bottom: 2px solid $color-black;
-    font-size: 24px;
-    padding-bottom: 26px;
-  }
-
-  #menu--level-1 li span.menu__link-wrapper {
-    border-bottom: 1px solid $color-black-20;
-    font-size: $fontsize-body-l;
-    padding: $spacing-and-half 0;
-  }
 }

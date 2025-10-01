@@ -46,13 +46,15 @@
   }
 
   a {
+    @include font('body');
     align-items: center;
     display: flex;
-    font-size: 18px;
     font-weight: $font-weight-medium;
     text-decoration: none;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       text-decoration: underline;
     }
   }
@@ -83,9 +85,9 @@
   width: 100%;
 
   .motions-link {
+    @include font('small');
     align-items: center;
     display: flex;
-    font-size: 16px;
     font-weight: $font-weight-medium;
     text-decoration: none;
 
@@ -99,12 +101,14 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       inset: 0;
       position: absolute;
     }
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       text-decoration: underline;
     }
   }
@@ -121,19 +125,15 @@
   }
 
   .meeting-date {
-    font-size: $fontsize-body-l;
+    @include font('body');
     margin-bottom: $gutter;
   }
 
   h3 {
+    @include font('h4');
     flex-grow: 1;
-    font-size: 1.25rem;
     font-weight: $font-weight-medium;
     margin-top: 0;
-
-    @include breakpoint($breakpoint-s) {
-      font-size: 1.5rem;
-    }
   }
 }
 

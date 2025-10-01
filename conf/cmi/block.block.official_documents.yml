@@ -7,17 +7,18 @@ dependencies:
     - system
   theme:
     - hdbt_subtheme
-id: agendassubmenu
+id: official_documents
 theme: hdbt_subtheme
 region: content_lower
 weight: -16
 provider: null
-plugin: agendas_submenu
+plugin: policymaker_documents
 settings:
-  id: agendas_submenu
-  label: 'Agendas Submenu'
+  id: policymaker_documents
+  label: 'Decision from officials'
   label_display: '0'
-  provider: paatokset_submenus
+  provider: paatokset_ahjo_api
+  view: policymaker_documents
 visibility:
   request_path:
     id: request_path

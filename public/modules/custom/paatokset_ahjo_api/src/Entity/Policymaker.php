@@ -15,6 +15,11 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 class Policymaker extends Node implements AhjoEntityInterface {
 
   /**
+   * Policymaker roles for trustees (not decisionmaker organizations).
+   */
+  const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
+
+  /**
    * Check if policymaker is currently active.
    *
    * @return bool
@@ -74,6 +79,17 @@ class Policymaker extends Node implements AhjoEntityInterface {
    */
   public function getPolicymakerId(): ?string {
     return $this->get('field_policymaker_id')->value;
+  }
+
+  /**
+   * Returns true if policymaker is trustee.
+   *
+   * @return bool
+   *   True if policymaker is trustee. If false, policymaker is an organization.
+   */
+  public function isTrustee(): bool {
+    $orgType = $this->get('field_organization_type')->value;
+    return !$orgType || in_array($orgType, PolicymakerService::TRUSTEE_TYPES);
   }
 
   /**

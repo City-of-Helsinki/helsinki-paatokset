@@ -1,5 +1,4 @@
 .paatokset__decision-tree-container {
-
   :not(.has-sidebar) & {
     margin-left: auto;
     margin-right: auto;
@@ -40,8 +39,8 @@
   }
 
   .decision-tree__title span {
+    @include font('h3');
     display: block;
-    font-size: 1.5rem;
     font-weight: $font-weight-medium;
     margin-bottom: $spacing;
     margin-top: $spacing-triple;
@@ -59,8 +58,8 @@
     padding-left: 14px;
   }
   button.tabbed-list__header__button {
-    color: rgb(26, 26, 26);
-    font-size: 18px;
+    @include font('body');
+    color: $color-black-90;
     font-weight: bold;
     height: $spacing-and-half;
     line-height: $spacing-and-half;
@@ -68,7 +67,7 @@
   }
 
   .tabbed-list__content__inner {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $color-black;
     display: flex;
     display: inline-flex;
     justify-content: space-between;
@@ -76,16 +75,16 @@
     width: 100%;
   }
   .tabbed-list__content__inner input {
+    @include font('lead');
     background: none;
     border: none;
-    color: rgb(6, 6, 6);
+    color: $color-black;
     cursor: pointer;
-    font-size: 20px;
     font-weight: normal;
     letter-spacing: 0;
     text-decoration: none;
   }
-  .menu	{
+  .menu {
     margin-bottom: 0;
     overflow: auto;
     padding-left: 0;
@@ -95,10 +94,10 @@
     }
 
     .item {
+      @include font('lead');
       border-bottom: 6px solid transparent;
-      color: #060606;
+      color: $color-black;
       display: inline-block;
-      font-size: 20px;
       font-weight: bold;
       letter-spacing: 0.29px;
       margin-right: 22px;
@@ -110,17 +109,18 @@
       }
     }
     .item.selected {
-      border-bottom: 6px solid #000;
+      border-bottom: 6px solid $color-black;
       padding-bottom: 19px;
     }
   }
 
   .container.tabbed-content__container {
-    padding:0;
+    padding: 0;
   }
 }
 
-.policymakers-documents, .policymakers-decisions {
+.policymakers-documents,
+.policymakers-decisions {
   display: none;
 
   &.selected-year {
@@ -134,6 +134,7 @@
 }
 
 .custom-select__trigger {
+  @include font('body');
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -144,9 +145,8 @@
   -ms-flex-pack: justify;
   background-color: unset;
   border: none;
-  color: #060606;
+  color: $color-black;
   cursor: pointer;
-  font-size: 18px;
   font-weight: $font-weight-medium;
   letter-spacing: 0;
   margin: 0;
@@ -170,7 +170,7 @@
 
 .custom-select.open .custom-options {
   background-color: $color-white;
-  border: 1px solid black;
+  border: 1px solid $color-black;
   margin-top: 56px;
   opacity: 1;
   pointer-events: all;
@@ -180,9 +180,9 @@
 }
 
 .custom-option {
-  color: #3b3b3b;
+  @include font('lead');
+  color: $color-black-80;
   cursor: pointer;
-  font-size: 22px;
   font-weight: 300;
   line-height: 60px;
   padding: 0 22px 0 22px;
@@ -191,24 +191,24 @@
 }
 
 .custom-option:hover {
-  background-color: #b2b2b2;
+  background-color: $color-black-30;
   cursor: pointer;
 }
 
 .custom-option.selected {
-  background-color: #305c91;
+  background-color: $color-coat-of-arms-dark;
   color: $color-white;
 }
 
 @media (max-width: $container-width-s) {
   .desktopTd {
-    display:none;
+    display: none;
   }
 }
 
 @media (min-width: $container-width-s) {
   .mobileTd {
-    display:none;
+    display: none;
   }
 }
 

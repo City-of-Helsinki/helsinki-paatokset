@@ -4,15 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_meeting_attachment_info
+    - filter.format.full_html
+    - filter.format.plain_text
     - node.type.meeting
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - full_html
-      - plain_text
 id: node.meeting.field_meeting_attachment_info
 field_name: field_meeting_attachment_info
 entity_type: node
@@ -24,5 +20,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - full_html
+    - plain_text
 field_type: text_long

@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.field_decision_content_parsed
     - node.type.decision
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.decision.field_decision_content_parsed
 field_name: field_decision_content_parsed
 entity_type: node
