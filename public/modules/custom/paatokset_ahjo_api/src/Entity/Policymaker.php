@@ -119,6 +119,17 @@ class Policymaker extends Node implements AhjoEntityInterface {
   /**
    * Get policymaker organization from URL.
    *
+   * Policymakers are available from two different URL structures:
+   *  - /fi/paattajat/kaupunginvaltuusto/*
+   *    Handles by "policymaker.page.$langcode" route.
+   *  - /fi/paattajat/02900/*
+   *    URL alias handles by Drupal.
+   *
+   * This is used when generating policymaker related URLs in
+   * attempt to preserve the currently used URL format.
+   *
+   * @todo could this just slugify Ahjo title? UHF-11726
+   *
    * @param string $langcode
    *   Langcode to get organization for.
    *
@@ -130,11 +141,11 @@ class Policymaker extends Node implements AhjoEntityInterface {
     $policymaker = $this->hasTranslation($langcode) ? $this->getTranslation($langcode) : $this;
 
     // If we can't get the actual translation, return just the policymaker ID.
-    if ($policymaker->get('langcode')->value !== $langcode && !$policymaker->get('field_policymaker_id')->isEmpty()) {
+    if ($policymaker->language()->getId() !== $langcode && !$policymaker->get('field_policymaker_id')->isEmpty()) {
       return strtolower($policymaker->get('field_policymaker_id')->value);
     }
 
-    $policymaker_url = $policymaker->toUrl()->toString(TRUE)->getGeneratedUrl();
+    $policymaker_url = $policymaker->toUrl()->toString();
     $policymaker_url_bits = explode('/', $policymaker_url);
     $policymaker_org = array_pop($policymaker_url_bits);
     return strtolower($policymaker_org);
