@@ -5,7 +5,7 @@ import { Decision } from '../../../common/types/Decision';
 import { DecisionIndex } from '../enum/IndexFields';
 
 export const useGetSuggestions = async(searchTerm: string, url: string) => {
-  const baseQuery = useDecisionsQuery(true);
+  const baseQuery = useDecisionsQuery(searchTerm);
 
   if (!searchTerm || !searchTerm.length || searchTerm.length < 2) {
     return [];

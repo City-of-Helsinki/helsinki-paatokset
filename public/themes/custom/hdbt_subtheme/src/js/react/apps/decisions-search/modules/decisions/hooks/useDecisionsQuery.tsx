@@ -31,7 +31,7 @@ const fields = [
   DecisionIndex.UNIQUE_ISSUE_ID,
 ];
 
-export const useDecisionsQuery = (returnObject: boolean = false): estypes.QueryDslQueryContainer => {
+export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQueryContainer => {
   const submittedState = useAtomValue(submittedStateAtom);
 
   const filter: estypes.QueryDslQueryContainer[] = [
@@ -43,7 +43,14 @@ export const useDecisionsQuery = (returnObject: boolean = false): estypes.QueryD
   ]; 
   const should: estypes.QueryDslQueryContainer[] = [];
 
-  const searchTerm = submittedState[Components.SEARCHBAR] && submittedState[Components.SEARCHBAR].trim();
+  const getSearchTerm = () => {
+    if (customSearchTerm) {
+      return customSearchTerm;
+    }
+    return submittedState[Components.SEARCHBAR] && submittedState[Components.SEARCHBAR].trim();
+  };
+
+  const searchTerm = getSearchTerm();
   if (searchTerm && searchTerm.length) {
     [
       {
@@ -207,7 +214,7 @@ export const useDecisionsQuery = (returnObject: boolean = false): estypes.QueryD
     track_total_hits: true,
   };
 
-  if (returnObject) {
+  if (customSearchTerm) {
     return result;
   }
 
