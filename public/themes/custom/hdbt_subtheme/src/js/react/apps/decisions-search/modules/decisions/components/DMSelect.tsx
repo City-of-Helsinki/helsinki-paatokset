@@ -19,7 +19,36 @@ const dataFields = [
   'field_first_name',
 ];
 
+const { currentLanguage } = drupalSettings.path;
+const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
+
 const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
+  _source: false,
+  collapse: {
+    field: PolicymakerIndex.FIELD_POLICYMAKER_ID,
+    inner_hits: {
+      _source: false,
+      fields: [
+        PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE,
+        PolicymakerIndex.FIELD_POLICYMAKER_ID,
+      ],
+      name: 'current_language',
+      sort: [
+        {
+          _script: {
+            type: 'number',
+            script: {
+              lang: 'painless',
+              source:
+                `doc['${PolicymakerIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`,
+            },
+            order: 'asc',
+          }
+        },
+        { _score: 'desc' }
+      ]
+    },
+  },
   query: {
     bool: {
       should: [
@@ -92,11 +121,14 @@ export const DMSelect = ({
     
     if (json?.hits?.hits) {
       result.options = json.hits.hits
-        .filter((hit: estypes.SearchHit<PolicyMaker>) => hit._source.field_policymaker_id?.[0])
-        .map(hit => ({
-          value: hit._source[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
-          label: hit._source[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE].toString(),
-        })
+        .filter((hit: estypes.SearchHit<PolicyMaker>) => hit.inner_hits?.current_language?.hits.hits?.[0].fields[PolicymakerIndex.FIELD_POLICYMAKER_ID])
+        .map(hit => {
+          const innerHit = hit.inner_hits.current_language.hits.hits[0]; 
+          return {
+            value: innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
+            label: innerHit.fields[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE].toString(),
+          };
+        }
       );
     }
     
