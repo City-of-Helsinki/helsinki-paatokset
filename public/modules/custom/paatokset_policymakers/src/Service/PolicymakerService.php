@@ -415,8 +415,7 @@ class PolicymakerService {
     }
 
     $policymaker = $this->getPolicymaker();
-
-    if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
+    if (!$policymaker instanceof Policymaker) {
       return NULL;
     }
 
@@ -457,7 +456,7 @@ class PolicymakerService {
    * @return bool
    *   TRUE if meeting has a decision announcement but no published minutes.
    */
-  public function checkDecisionAnnouncementById(string $id): bool {
+  private function checkDecisionAnnouncementById(string $id): bool {
     $query = $this->nodeStorage
       ->getQuery()
       ->accessCheck(TRUE)
@@ -625,7 +624,7 @@ class PolicymakerService {
    * @return string
    *   Element ID or URL fragment.
    */
-  public function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
+  private function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
     if (!$langcode) {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
