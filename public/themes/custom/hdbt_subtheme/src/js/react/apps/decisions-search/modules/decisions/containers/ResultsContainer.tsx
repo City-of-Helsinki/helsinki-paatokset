@@ -41,6 +41,7 @@ export const ResultsContainer = ({
 
     return <ResultCard
       key={preferred_version.fields.id.toString()}
+      has_multiple_decisions={item.inner_hits.preferred_version.hits.total.value > 1}
       {...item.inner_hits.preferred_version.hits.hits[0].fields}
     />;
   };

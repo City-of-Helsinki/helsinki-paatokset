@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { IconUser } from 'hds-react';
+import { IconLayers, IconUser } from 'hds-react';
 
 import { Decision } from '../../../common/types/Decision';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
@@ -10,15 +10,16 @@ import TagType from '@/common/types/TagType';
 export const ResultCard = ({
   category_name,
   decision_url,
+  has_multiple_decisions = false,
   issue_subject,
   meeting_date,
   organization_name,
   organization_type,
   subject,
   unique_issue_id,
-}: Decision) => {
-
-
+}: Decision & {
+  has_multiple_decisions: boolean;
+}) => {
   const getDate = () => {
     if (!meeting_date.toString().length) {
       return '';
@@ -70,19 +71,34 @@ export const ResultCard = ({
     return tag;
   };
 
+  const metaRows = {
+    top: [
+      <Metarow
+        key='0'
+        icon={<IconUser className='hel-icon' />}
+        label={Drupal.t('Decision maker')}
+        content={organization_name}
+      />
+    ],
+  };
+
+  if (has_multiple_decisions) {
+    metaRows.bottom = [
+      <Metarow
+        key='1'
+        icon={<IconLayers className='hel-icon' />}
+        label={Drupal.t('Issues with several decisions', {}, {context: 'Decisions search'})}
+        content={issue_subject}
+      />,
+    ];
+  }
+
   return (
     <CardItem
       cardCategoryTag={getCategoryTag()}
       cardTitle={issue_subject || subject}
       cardUrl={decision_url}
-      customMetaRows={[
-        <Metarow
-          key='0'
-          icon={<IconUser className='hel-icon' />}
-          label={Drupal.t('Decision maker')}
-          content={organization_name}
-        />
-      ]}
+      customMetaRows={metaRows}
       date={getDate()}
     />
   );

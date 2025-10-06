@@ -217,3 +217,7 @@ msgstr[1] "@count päätöstä"
 msgctxt "Decisions search"
 msgid "Filter search results"
 msgstr "Rajaa hakutuloksia"
+
+msgctxt "Decisions search"
+msgid "Issues with several decisions"
+msgstr "Asia, josta on useita päätöksiä"

@@ -176,7 +176,6 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         _source: false,
         fields,
         name: 'preferred_version',
-        size: 1,
         sort: [
           {
             _script: {

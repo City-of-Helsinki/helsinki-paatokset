@@ -151,3 +151,7 @@ msgstr[1] "@count beslut"
 msgctxt "Decisions search"
 msgid "Filter search results"
 msgstr "Begränsa sökresultaten"
+
+msgctxt "Decisions search"
+msgid "Issues with several decisions"
+msgstr "Ärende med flera beslut"
