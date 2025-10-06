@@ -35,4 +35,25 @@ class Meeting extends Node implements AhjoUpdatableInterface {
     return 'meetings';
   }
 
+  /**
+   * Get meeting phase enum from Ahjo document.
+   */
+  public function getMeetingPhase(): ?MeetingPhase {
+    foreach ($this->get('field_meeting_documents') as $field) {
+      $document = json_decode($field->value);
+
+      $phase = match ($document->Type) {
+        'pöytäkirja' => MeetingPhase::MINUTES,
+        'esityslista' => $this->get('field_meeting_decision')->isEmpty() ? MeetingPhase::AGENDA : MeetingPhase::DECISION,
+        default => NULL,
+      };
+
+      if ($phase) {
+        return $phase;
+      }
+    }
+
+    return NULL;
+  }
+
 }
