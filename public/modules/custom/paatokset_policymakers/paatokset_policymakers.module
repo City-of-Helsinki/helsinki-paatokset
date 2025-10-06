@@ -339,12 +339,12 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   }
 
   // Only act on policymaker nodes and make sure fields exist.
-  if (!$node->bundle() === 'policymaker' || !$node->hasField('field_ahjo_title') || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
+  if (!$node instanceof Policymaker) {
     return;
   }
 
   // Only act on Viranhaltija decisionmakers.
-  if (!in_array($node->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+  if (!$node->isTrustee()) {
     return;
   }
 
@@ -369,7 +369,6 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   // If org name exists, add it to the path.
   if (!$node->get('field_dm_org_name')->isEmpty()) {
     $pattern->setPattern($prefix . '/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
-    return;
   }
 }
 

@@ -47,11 +47,6 @@ class PolicymakerService {
   const MEETING_START_DATE = '2017-01-01';
 
   /**
-   * Policymaker roles for trustees (not decisionmaker organizations).
-   */
-  const TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
-
-  /**
    * Visible trustee roles.
    */
   const TRUSTEE_ROLES = [
@@ -368,7 +363,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
+    if ($this->policymaker->isTrustee()) {
       return NULL;
     }
 
@@ -406,11 +401,11 @@ class PolicymakerService {
       $this->setPolicyMaker($policymaker_id);
     }
 
-    if (!$this->policymaker instanceof NodeInterface) {
+    if (!$this->policymaker instanceof Policymaker) {
       return NULL;
     }
 
-    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
+    if ($this->policymaker->isTrustee()) {
       return NULL;
     }
 

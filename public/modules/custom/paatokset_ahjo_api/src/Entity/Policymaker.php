@@ -15,11 +15,6 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 class Policymaker extends Node implements AhjoEntityInterface {
 
   /**
-   * Policymaker roles for trustees (not decisionmaker organizations).
-   */
-  const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
-
-  /**
    * Check if policymaker is currently active.
    *
    * @return bool
@@ -45,18 +40,13 @@ class Policymaker extends Node implements AhjoEntityInterface {
       return 'color-hopea';
     }
 
-    // If type isn't set, return with no color.
-    if ($this->get('field_organization_type')->isEmpty()) {
-      return 'color-none';
-    }
-
     // Use org type to determine color coding.
-    return match (strtolower($this->get('field_organization_type')->value)) {
-      'valtuusto' => 'color-kupari',
-      'hallitus' => 'color-hopea',
-      'viranhaltija' => 'color-suomenlinna',
-      'luottamushenkilö' => 'color-engel',
-      'lautakunta', 'toimi-/neuvottelukunta', 'jaosto' => 'color-sumu',
+    return match ($this->getOrganizationType()) {
+      OrganizationType::COUNCIL => 'color-kupari',
+      OrganizationType::CABINET => 'color-hopea',
+      OrganizationType::OFFICE_HOLDER => 'color-suomenlinna',
+      OrganizationType::TRUSTEE => 'color-engel',
+      OrganizationType::BOARD => 'color-sumu',
       default => 'color-none',
     };
   }
@@ -82,14 +72,20 @@ class Policymaker extends Node implements AhjoEntityInterface {
   }
 
   /**
+   * Get organization type.
+   */
+  public function getOrganizationType(): ?OrganizationType {
+    return OrganizationType::tryFromOrganizationType($this->get('field_organization_type')->value);
+  }
+
+  /**
    * Returns true if policymaker is trustee.
    *
    * @return bool
    *   True if policymaker is trustee. If false, policymaker is an organization.
    */
   public function isTrustee(): bool {
-    $orgType = $this->get('field_organization_type')->value;
-    return !$orgType || in_array($orgType, PolicymakerService::TRUSTEE_TYPES);
+    return $this->getOrganizationType()?->isTrustee() ?: FALSE;
   }
 
   /**
@@ -104,7 +100,7 @@ class Policymaker extends Node implements AhjoEntityInterface {
    *   URL object, if route is valid.
    */
   public function getDecisionsRoute(string $langcode): ?Url {
-    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if (!$this->isTrustee()) {
       return NULL;
     }
 

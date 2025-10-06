@@ -7,7 +7,6 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
  * Bundle class for decisions.
@@ -296,7 +295,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
    */
   private function getMinutesPdf(): ?string {
     // Check decision org type first.
-    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if (!in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
       return NULL;
     }
 
@@ -524,7 +523,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
       $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
     }
 
-    if ($signature_info_content && in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if ($signature_info_content && in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
       $output['signature_info'] = [
         'heading' => new TranslatableMarkup('Decisionmaker'),
         'content' => ['#markup' => $signature_info_content],

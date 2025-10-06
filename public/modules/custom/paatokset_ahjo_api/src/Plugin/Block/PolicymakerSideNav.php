@@ -15,6 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
@@ -181,8 +182,8 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       'attributes' => new Attribute(),
     ];
 
-    $org_type = $policymaker->get('field_organization_type')->value;
-    if (in_array($org_type, PolicymakerService::TRUSTEE_TYPES)) {
+    $org_type = $policymaker->getOrganizationType();
+    if ($org_type->isTrustee()) {
       $routes = PolicymakerRoutes::getTrusteeRoutes();
     }
     else {
@@ -190,7 +191,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     }
 
     foreach ($routes as $key => $name) {
-      if ($key === 'discussion_minutes' && $org_type !== 'Valtuusto') {
+      if ($key === 'discussion_minutes' && $org_type !== OrganizationType::COUNCIL) {
         continue;
       }
 

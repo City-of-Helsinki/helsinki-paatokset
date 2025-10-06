@@ -11,8 +11,8 @@ use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -176,7 +176,7 @@ final class AhjoOrgCompositionSource extends HttpSourcePluginBase implements Con
       ->accessCheck(FALSE);
 
     $and = $query->andConditionGroup();
-    foreach (PolicymakerService::TRUSTEE_TYPES as $type) {
+    foreach (OrganizationType::TRUSTEE_TYPES as $type) {
       $and->condition('field_organization_type', $type, '<>');
     }
     $query->condition($and);
