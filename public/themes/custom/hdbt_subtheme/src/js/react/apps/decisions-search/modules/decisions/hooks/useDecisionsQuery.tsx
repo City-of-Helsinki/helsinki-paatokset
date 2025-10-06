@@ -22,6 +22,7 @@ const dataFields = [
 const fields = [
   DecisionIndex.CATEGORY_NAME,
   DecisionIndex.DECISION_URL,
+  DecisionIndex.IS_DECISION,
   DecisionIndex.ID,
   DecisionIndex.ISSUE_SUBJECT,
   DecisionIndex.MEETING_DATE,

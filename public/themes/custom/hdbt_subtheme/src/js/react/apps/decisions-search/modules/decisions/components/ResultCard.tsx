@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { IconLayers, IconUser } from 'hds-react';
+import { IconAlertCircle, IconLayers, IconUser } from 'hds-react';
 
 import { Decision } from '../../../common/types/Decision';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
@@ -10,6 +10,7 @@ import TagType from '@/common/types/TagType';
 export const ResultCard = ({
   category_name,
   decision_url,
+  field_is_decision,
   has_multiple_decisions = false,
   issue_subject,
   meeting_date,
@@ -93,9 +94,22 @@ export const ResultCard = ({
     ];
   }
 
+  const getMotionTag = () => {
+    if (field_is_decision?.[0]) {
+      return;
+    }
+
+    return [{
+      color: 'alert',
+      iconStart: <IconAlertCircle className='hel-icon' />,
+      tag: Drupal.t('This is a motion'),
+    }];
+  };
+
   return (
     <CardItem
       cardCategoryTag={getCategoryTag()}
+      cardTags={getMotionTag()}
       cardTitle={issue_subject || subject}
       cardUrl={decision_url}
       customMetaRows={metaRows}
