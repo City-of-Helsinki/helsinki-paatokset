@@ -221,3 +221,7 @@ msgstr "Rajaa hakutuloksia"
 msgctxt "Decisions search"
 msgid "Issues with several decisions"
 msgstr "Asia, josta on useita päätöksiä"
+
+msgctxt "Decisions search"
+msgid "Decision-maker"
+msgstr "Päättäjä"

@@ -77,7 +77,7 @@ export const ResultCard = ({
       <Metarow
         key='0'
         icon={<IconUser className='hel-icon' />}
-        label={Drupal.t('Decision maker')}
+        label={Drupal.t('Decision-maker', {}, {context: 'Decisions search'})}
         content={organization_name}
       />
     ],
