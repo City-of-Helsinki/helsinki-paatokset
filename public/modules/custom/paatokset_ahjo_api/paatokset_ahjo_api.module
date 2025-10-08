@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -1240,4 +1241,20 @@ function _paatokset_ahjo_api_render_default_text(?array $configuration_array): a
  */
 function paatokset_ahjo_api_form_node_form_alter(array &$form, FormStateInterface $form_state): void {
   \Drupal::service(AdminHooks::class)->alterForm($form, $form_state);
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function paatokset_ahjo_api_views_data_alter(&$data): void {
+  // Allow using paatokset_year filter on field_meeting_date.
+  $data['node__field_meeting_date']['meeting_date_year'] = [
+    'group' => new TranslatableMarkup('Content'),
+    'filter' => [
+      'title' => new TranslatableMarkup('Filter by meeting year'),
+      'field' => 'field_meeting_date_value',
+      'id' => 'paatokset_year',
+      'time_type' => 'datetime',
+    ],
+  ];
 }

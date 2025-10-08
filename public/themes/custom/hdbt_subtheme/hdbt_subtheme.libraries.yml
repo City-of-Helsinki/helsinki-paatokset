@@ -56,3 +56,17 @@ decisions-search-old:
   dependencies:
     - core/drupalSettings
     - core/drupal
+
+# Replace select elements with react apps.
+helfi_select:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/js/select.min.js: {
+      attributes: {
+        preprocess: false,
+        minified: true
+      }
+    }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal

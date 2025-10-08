@@ -47,16 +47,42 @@ dependencies:
     - field.field.node.decision.field_voting_results
     - node.type.decision
   module:
+    - datetime
     - user
 id: node.decision.teaser
 targetEntityType: node
 bundle: decision
 mode: teaser
 content:
+  field_decision_case_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_decision_section:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_meeting_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   field_attachments_checked: true
@@ -65,7 +91,6 @@ hidden:
   field_dates_checked: true
   field_decision_attachment_files: true
   field_decision_attachments: true
-  field_decision_case_title: true
   field_decision_content: true
   field_decision_content_parsed: true
   field_decision_date: true
@@ -79,7 +104,6 @@ hidden:
   field_decision_organization: true
   field_decision_previous: true
   field_decision_record: true
-  field_decision_section: true
   field_decision_series_id: true
   field_diary_number: true
   field_diary_number_label: true
@@ -88,7 +112,6 @@ hidden:
   field_full_title: true
   field_hide_decision_content: true
   field_is_decision: true
-  field_meeting_date: true
   field_meeting_id: true
   field_meeting_sequence_number: true
   field_minutes_checked: true

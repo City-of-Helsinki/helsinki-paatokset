@@ -4,15 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_decision_history
+    - filter.format.full_html
+    - filter.format.plain_text
     - node.type.decision
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - full_html
-      - plain_text
 id: node.decision.field_decision_history
 field_name: field_decision_history
 entity_type: node
@@ -24,5 +20,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - full_html
+    - plain_text
 field_type: text_long

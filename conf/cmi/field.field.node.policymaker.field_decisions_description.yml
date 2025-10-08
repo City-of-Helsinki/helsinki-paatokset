@@ -4,15 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_decisions_description
+    - filter.format.full_html
+    - filter.format.plain_text
     - node.type.policymaker
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - full_html
-      - plain_text
 id: node.policymaker.field_decisions_description
 field_name: field_decisions_description
 entity_type: node
@@ -24,5 +20,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - full_html
+    - plain_text
 field_type: text_long

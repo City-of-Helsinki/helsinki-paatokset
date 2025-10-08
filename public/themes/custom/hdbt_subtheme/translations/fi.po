@@ -2,6 +2,16 @@
 msgid ""
 msgstr ""
 
+msgctxt "Announcements and notifications list"
+msgid "Announcement or notification"
+msgid_plural "Announcements and notifications"
+msgstr[0] "kuulutus tai ilmoitus"
+msgstr[1] "kuulutusta ja ilmoitusta"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Ei tuloksia"
+
 msgctxt "Allu decision search"
 msgid "Find decisions concerning temporary usage of streets and parks"
 msgstr "Etsi katu- ja puistoalueiden tilapäiseen käyttöön liittyviä päätöksiä"
@@ -246,3 +256,42 @@ msgctxt "Decisions search"
 msgid "Trustees"
 msgstr "Viranhaltijat"
 
+msgctxt "Announcements and notifications list"
+msgid "All announcements and notifications"
+msgstr "Kaikki kuulutukset ja ilmoitukset"
+
+msgctxt "Announcements and notifications list"
+msgid "Notice! <a hreflang="fi" href="@link">Notices of building control permit decisions</a> can only be found on their own page."
+msgstr "Huom! <a href="@link">Rakennusvalvonnan lupapäätösten kuulutukset</a> löytyvät vain omalta sivultaan."
+
+msgctxt "Announcements and notifications list"
+msgid "Filter announcements and notifications"
+msgstr "Rajaa kuulutuksia ja ilmoituksia"
+
+msgctxt "Announcements and notifications list"
+msgid "announcement or notification"
+msgid_plural "announcements and notifications"
+msgstr[0] "kuulutus tai ilmoitus"
+msgstr[1] "kuulutusta ja ilmoitusta"
+
+msgctxt "Announcements and notifications list"
+msgid "No results"
+msgstr "Ei hakutuloksia"
+
+msgctxt "Announcements and notifications list"
+msgid "Published"
+msgstr "Julkaistu"
+
+msgctxt "Policymaker documents list"
+msgid "document"
+msgid_plural "documents"
+msgstr[0] "asiakirja"
+msgstr[1] "asiakirjaa"
+
+msgctxt "Policymaker documents list"
+msgid "No results"
+msgstr "Ei hakutuloksia"
+
+msgctxt "Policymaker documents list"
+msgid "Published"
+msgstr "Julkaistu"

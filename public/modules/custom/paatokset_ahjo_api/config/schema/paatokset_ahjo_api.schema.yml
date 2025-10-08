@@ -1,5 +1,13 @@
 # Schema for the default text configuration files.
-
+block.settings.policymaker_documents:
+  type: block_settings
+  label: 'Survey block settings'
+  mapping:
+    view:
+      type: string
+    view_display:
+      type: string
+      nullable: true
 paatokset_ahjo_api.default_texts:
   type: config_object
   label: 'Default text configuration'
