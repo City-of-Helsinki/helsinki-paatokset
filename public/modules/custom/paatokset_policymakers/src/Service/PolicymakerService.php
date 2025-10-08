@@ -367,15 +367,14 @@ class PolicymakerService {
       return NULL;
     }
 
-    $routes = PolicymakerRoutes::getOrganizationRoutes();
-    $baseRoute = $routes['documents'];
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    $localizedRoute = "$baseRoute.$currentLanguage";
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
-    $policymaker_org = $this->policymaker->getPolicymakerOrganizationFromUrl($currentLanguage);
+    ['documents' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->policymaker->getOrganizationType());
 
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
+    if ($this->routeExists($route)) {
+      return Url::fromRoute($route, [
+        'organization' => strtolower($this->policymaker->getPolicymakerOrganizationFromUrl($langcode)),
+      ]);
     }
 
     return NULL;
@@ -685,6 +684,8 @@ class PolicymakerService {
 
   /**
    * Get decision list for officials from ElasticSearch Index.
+   *
+   * @deprecated
    *
    * @param int|null $limit
    *   Limit results. Defaults to 10000 (maximum amount of results from index).
@@ -1133,6 +1134,8 @@ class PolicymakerService {
   /**
    * Get API-retrieved minutes and agendas from ElasticSearch Index.
    *
+   * @deprecated
+   *
    * @param int|null $limit
    *   Limit results. Defaults to 10000 (maximum amount of results from index).
    * @param bool $byYear
@@ -1503,6 +1506,8 @@ class PolicymakerService {
 
   /**
    * Get discussion minutes for meeting.
+   *
+   * @deprecated
    *
    * @param int|null $limit
    *   Limit query.

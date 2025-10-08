@@ -158,8 +158,8 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       $no_content = FALSE;
     }
 
+    // @todo remove this so getApiMinutesFromElasticSearch() can be removed.
     $documents = $policymakerService->getApiMinutesFromElasticSearch(2);
-
     if ($documents) {
       $variables['recent_documents'] = $documents;
       $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();

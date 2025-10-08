@@ -15,11 +15,11 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * Provides Agendas Submenu Block.
@@ -182,26 +182,15 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       'attributes' => new Attribute(),
     ];
 
-    $org_type = $policymaker->getOrganizationType();
-    if ($org_type->isTrustee()) {
-      $routes = PolicymakerRoutes::getTrusteeRoutes();
-    }
-    else {
-      $routes = PolicymakerRoutes::getOrganizationRoutes();
-    }
+    $routes = PolicymakerRoutes::getRoutes($this->currentLang, $policymaker->getOrganizationType());
 
     foreach ($routes as $key => $name) {
-      if ($key === 'discussion_minutes' && $org_type !== OrganizationType::COUNCIL) {
+      try {
+        $route = $this->routeProvider->getRouteByName($name);
+      }
+      catch (RouteNotFoundException) {
         continue;
       }
-
-      $localizedRoute = "$name.$this->currentLang";
-
-      if (!$this->policymakerService->routeExists($localizedRoute)) {
-        continue;
-      }
-
-      $route = $this->routeProvider->getRouteByName($localizedRoute);
 
       $title = match ($key) {
         'documents' => $this->t('Documents'),
@@ -212,7 +201,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
 
       $items[] = [
         'title' => $title,
-        'url' => Url::fromRoute($localizedRoute, ['organization' => $policymaker_org]),
+        'url' => Url::fromRoute($name, ['organization' => $policymaker_org]),
         'attributes' => new Attribute(),
       ];
     }

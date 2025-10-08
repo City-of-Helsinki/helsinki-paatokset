@@ -108,13 +108,12 @@ class Policymaker extends Node implements AhjoEntityInterface {
       return NULL;
     }
 
-    $routes = PolicymakerRoutes::getTrusteeRoutes();
-    $baseRoute = $routes['decisions'];
-    $localizedRoute = "$baseRoute.$langcode";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($langcode);
+    ['decision' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
 
-    if (PolicymakerService::routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
+    if (PolicymakerService::routeExists($route)) {
+      return Url::fromRoute($route, [
+        'organization' => strtolower($this->getPolicymakerOrganizationFromUrl($langcode)),
+      ]);
     }
 
     return NULL;
