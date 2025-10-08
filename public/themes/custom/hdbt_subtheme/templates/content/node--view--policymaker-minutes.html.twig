@@ -1,0 +1,37 @@
+{# Card title depends on JSON encoded string stored in node. #}
+{% set phase = node.getMeetingPhase() %}
+{% set card_title %}
+  {% if phase == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').MINUTES %}
+    {{ 'Minutes' | t }} {{ content.field_meeting_sequence_number }} - {{ node.field_meeting_date.value | date('Y') }}
+  {% else %}
+    {{ 'Agenda' | t }} {{ content.field_meeting_sequence_number }} - {{ node.field_meeting_date.value | date('Y') }}
+  {% endif %}
+{% endset %}
+
+{% set card_metas = [] %}
+{% if content.field_meeting_date|render %}
+  {% set card_metas = card_metas|merge([{
+    icon: 'clock',
+    label: 'Published'|t({}, {'context' : 'Policymaker documents list'}),
+    content: content.field_meeting_date,
+  }]) %}
+{% endif %}
+
+{% set card_url = node.getMinutesUrl() %}
+{% if phase == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').DECISION %}
+  {% set card_url = node.getDecisionAnnouncementUrl() %}
+  {% set card_metas = card_metas|merge([{
+    icon: 'document',
+    content: 'Read decision announcement'|t({}, {'context' : 'Policymaker documents list'})
+  }]) %}
+{% endif %}
+
+{% embed '@hdbt/component/card.twig' with {
+  card_modifier_class: 'card--border',
+  card_title_level: 'h4',
+  card_title: card_title,
+  card_url: card_url,
+  card_url_external: false,
+  card_metas: card_metas,
+} %}
+{% endembed %}

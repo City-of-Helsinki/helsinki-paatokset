@@ -77,14 +77,14 @@ display:
         options:
           offset: 0
           pagination_heading_level: h4
-          items_per_page: 50
+          items_per_page: 25
           total_pages: null
           id: 0
           tags:
-            next: ››
-            previous: ‹‹
-            first: '« First'
-            last: 'Last »'
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
           expose:
             items_per_page: false
             items_per_page_label: 'Merkintöjä sivua kohti'
@@ -113,22 +113,6 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-          order: DESC
-          expose:
-            label: ''
-            field_identifier: ''
-          exposed: false
-          granularity: second
         field_meeting_date_value:
           id: field_meeting_date_value
           table: node__field_meeting_date
@@ -288,6 +272,45 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_meeting_documents_value:
+          id: field_meeting_documents_value
+          table: node__field_meeting_documents
+          field: field_meeting_documents_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: 'not empty'
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         meeting_date_year:
           id: meeting_date_year
           table: node__field_meeting_date
@@ -308,7 +331,7 @@ display:
             operator: meeting_date_year_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: meeting_date_year
+            identifier: year
             required: false
             remember: false
             multiple: false
@@ -360,6 +383,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      group_by: true
       header: {  }
       footer: {  }
       display_extenders:

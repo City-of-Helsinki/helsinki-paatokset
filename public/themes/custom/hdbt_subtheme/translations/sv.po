@@ -59,3 +59,7 @@ msgstr "Inga resultat"
 msgctxt "Policymaker documents list"
 msgid "Published"
 msgstr "Publicerad"
+
+msgctxt "Policymaker documents list"
+msgid "Read decision announcement"
+msgstr "Läs beslutsmeddelandet"

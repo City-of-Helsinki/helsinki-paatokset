@@ -137,3 +137,7 @@ msgstr "Ei hakutuloksia"
 msgctxt "Policymaker documents list"
 msgid "Published"
 msgstr "Julkaistu"
+
+msgctxt "Policymaker documents list"
+msgid "Read decision announcement"
+msgstr "Lue päätöstiedote"
