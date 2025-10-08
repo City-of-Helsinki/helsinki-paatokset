@@ -31,8 +31,8 @@ class PrepareIndex implements EventSubscriberInterface {
   public function prepareIndices(AlterSettingsEvent $event): void {
     $indexName = $event->getIndex()->id();
     $finnishIndices = [
-      'paatokset_decisions',
-      'paatokset_policymakers',
+      'decisions',
+      'policymakers',
     ];
     if (in_array($indexName, $finnishIndices)) {
       $event->setSettings(NestedArray::mergeDeep(
@@ -45,6 +45,7 @@ class PrepareIndex implements EventSubscriberInterface {
               ],
             ],
           ],
+          'max_result_window' => 1000000,
         ],
       ));
     }

@@ -22,6 +22,7 @@ export const SearchBar = ({
       onChange={(inputValue) => setSearchTerm(inputValue)}
       onSubmit={onSubmit}
       placeholder={Drupal.t('For example, Viikki', {}, {context: 'Decisions search'})}
+      searchButtonAriaLabel={Drupal.t('Search', {}, {context: 'React search: submit button label'})}
       suggestionKeyField='value'
       suggestionLabelField='value'
       value={searchTerm || ''}

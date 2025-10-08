@@ -7,3 +7,5 @@ export const Components = {
   TO: 'to',
   SORT: 'sort',
 };
+
+export const DATE_SELECTION = 'date-selection';

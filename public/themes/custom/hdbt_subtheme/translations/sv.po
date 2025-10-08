@@ -159,3 +159,23 @@ msgstr "Ärende med flera beslut"
 msgctxt "Decisions search"
 msgid "Decision-maker"
 msgstr "Beslutsfattare"
+
+msgctxt "Decisions search"
+msgid "Committees and boards"
+msgstr "Nämnder och direktioner"
+
+msgctxt "Decisions search"
+msgid "City Council"
+msgstr "Stadsfullmäktige"
+
+msgctxt "Decisions search"
+msgid "Officials"
+msgstr "Förtroendevalda"
+
+msgctxt "Decisions search"
+msgid "City Hall"
+msgstr "Stadsstyrelsen"
+
+msgctxt "Decisions search"
+msgid "Trustees"
+msgstr "Tjänsteinnehavare"

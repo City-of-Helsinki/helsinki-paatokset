@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import FilterButton from '@/react/common/FilterButton';
 import { resetStateAtom, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
-import { Components } from '../enum/Components';
+import { Components, DATE_SELECTION } from '../enum/Components';
 import { Events } from '../enum/Events';
 
 const clearDMEvent = new Event(Events.DECISIONS_CLEAR_SINGLE_DM);
@@ -75,9 +75,12 @@ export const SelectionsContainer = () => {
       <FilterButton
         key={`date-${titleString}`}
         clearSelection={() => {
-          unsetStateItem(Components.FROM);
-          unsetStateItem(Components.TO);
-          unsetStateItem(Components.DATESELECTION);
+          const state = {...submittedState};
+          state[Components.FROM] = undefined;
+          state[Components.TO] = undefined;
+          state[DATE_SELECTION] = undefined;
+          setState(state);
+          upateQuery(state);
         }}
         value={titleString}
       />

@@ -4,7 +4,7 @@ export const OrganizationTypes = {
   DIVISION: 'Jaosto',
   GOVERNMENT: 'Hallitus',
   OPERATIONAL_BOARD: 'Toimi-/Neuvottelukunta',
-  POLICYMAKER: 'Viranhaltija',
+  OFFICIAL: 'Luottamushenkilö',
   TEAM: 'Tiimi',
-  TRUSTEE: 'Luottamushenkilö',
+  TRUSTEE: 'Viranhaltija',
 };

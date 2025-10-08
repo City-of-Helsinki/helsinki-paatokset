@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { type estypes } from '@elastic/elasticsearch';
 
-import { Components } from './enum/Components';
+import { Components, DATE_SELECTION } from './enum/Components';
 import { Events } from './enum/Events';
 import { SortOptions } from './enum/SortOptions';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
@@ -11,7 +11,7 @@ const clearEvent = new Event(Events.DECISIONS_CLEAR_ALL);
 
 const defaultState = {
   [Components.CATEGORY]: [],
-  [Components.DATESELECTION]: undefined,
+  [DATE_SELECTION]: undefined,
   [Components.DECISIONMAKER]: [],
   [Components.FROM]: undefined,
   [Components.PAGE]: 1,
@@ -155,12 +155,12 @@ export const setToAtom = atom(null, (get, set, value: string) => {
 
 export const getDateSelectionAtom = atom((get) => {
   const state = {...get(searchStateAtom)};
-  return state[Components.DATESELECTION];
+  return state[DATE_SELECTION];
 });
 
 export const setDateSelectionAtom = atom(null, (get, set, value: string) => {
   const state = {...get(searchStateAtom)};
-  state[Components.DATESELECTION] = value;
+  state[DATE_SELECTION] = value;
   set(searchStateAtom, state);
 });
 
@@ -185,3 +185,5 @@ export const setSortAtom = atom(null, (get, set, value: [{label: string, value: 
   state[Components.SORT] = value[0].value;
   set(submittedStateAtom, state);
 });
+
+export const initializedAtom = atom<boolean>(false);

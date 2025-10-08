@@ -1,13 +1,15 @@
 import { type estypes } from '@elastic/elasticsearch';
+import { useAtomCallback } from 'jotai/utils';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
-import { aggsAtom, getPageAtom, setPageAtom } from '../store';
+import { aggsAtom, getPageAtom, initializedAtom, setPageAtom } from '../store';
 import { ResultCard } from '../components/ResultCard';
+import { ResultsSort } from '../components/ResultsSort';
 import { ResultsWrapper } from '@/react/common/ResultsWrapper';
 import { type Decision } from '../../../common/types/Decision';
 import { useDecisionsQuery } from '../hooks/useDecisionsQuery';
-import { ResultsSort } from '../components/ResultsSort';
 
 export const ResultsContainer = ({
   url,
@@ -18,6 +20,10 @@ export const ResultsContainer = ({
   const currentPage = useAtomValue(getPageAtom);
   const setPage = useSetAtom(setPageAtom);
   const query = useDecisionsQuery();
+  const readInitialized = useAtomCallback(
+    useCallback((get) => get(initializedAtom), []),
+  );
+  const setInitialized = useSetAtom(initializedAtom);
 
   const fetcher = () => fetch(`${url}/paatokset_decisions/_search`, {
       method: 'POST',
@@ -27,9 +33,22 @@ export const ResultsContainer = ({
       body: query,
     }).then((res) => res.json());
 
-  const { data, error, isLoading } = useSWR(query, fetcher, {
+  const { data, error, isLoading, isValidating } = useSWR(query, fetcher, {
     revalidateOnFocus: false
   });
+  
+  const loading = isLoading || !aggs;
+
+  useEffect(() => {
+    if (!readInitialized() && !loading && !isValidating) {
+      setInitialized(true);
+    }
+  }, [
+    loading,
+    isValidating,
+    readInitialized,
+    setInitialized,
+  ]);
 
   const resultItemCallBack = (item: estypes.SearchHit<Decision>) => {
     if (!item.inner_hits?.preferred_version?.hits.hits[0]) {
@@ -47,7 +66,7 @@ export const ResultsContainer = ({
   };
 
   const customTotal = data?.aggregations?.total_issues.value;
-  const getHeaderText = () => data?.hits?.total?.value ? Drupal.formatPlural(customTotal, '1 decision', '@count decisions', { context: 'Decisions search' }) : ''; 
+  const getHeaderText = () => data?.hits?.total?.value ? Drupal.formatPlural(customTotal, '1 decision', '@count decisions', {}, { context: 'Decisions search' }) : ''; 
   const sortElement = customTotal && <ResultsSort />;
 
   return (
@@ -62,7 +81,8 @@ export const ResultsContainer = ({
         setPage,
         sortElement,
       }}
-      isLoading={isLoading || !aggs}
+      isLoading={loading}
+      shouldScroll={readInitialized()}
     />
   ); 
 };

@@ -6,11 +6,13 @@ import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import CardItem, { Metarow } from '@/react/common/Card';
 import { OrganizationTypes } from '../enum/OrganizationTypes';
 import TagType from '@/common/types/TagType';
+import { Policymakers } from '../enum/Policymakers';
 
 export const ResultCard = ({
   category_name,
   decision_url,
   field_is_decision,
+  field_policymaker_id,
   has_multiple_decisions = false,
   issue_subject,
   meeting_date,
@@ -39,31 +41,32 @@ export const ResultCard = ({
     const tag: TagType = {
     };
 
-    const type = organization_type?.[0];
-    if (
+    const policymakerId = field_policymaker_id?.toString();
+    const type = organization_type?.toString();
+    if (policymakerId === Policymakers.CITY_COUNCIL) {
+      tag.color = 'copper';
+      tag.tag = Drupal.t('City Council', {}, {context: 'Decisions search'});
+    }
+    else if (policymakerId === Policymakers.CITY_HALL) {
+      tag.color = undefined;
+      tag.tag = Drupal.t('City Hall', {}, {context: 'Decisions search'});
+    }
+    else if (
       type === OrganizationTypes.BOARD ||
       type === OrganizationTypes.DIVISION ||
       type === OrganizationTypes.OPERATIONAL_BOARD ||
       type === OrganizationTypes.TEAM
     ) {
       tag.color = 'coat-of-arms';
-      tag.tag = Drupal.t('Boards');
+      tag.tag = Drupal.t('Committees and boards', {}, {context: 'Decisions search'});
     }
-    else if (type === OrganizationTypes.COUNCIL) {
-      tag.color = 'copper';
-      tag.tag = Drupal.t('City council');
-    }
-    else if (type === OrganizationTypes.POLICYMAKER) {
-      tag.color = 'bus';
-      tag.tag = Drupal.t('Policy makers');
-    }
-    else if (type === OrganizationTypes.GOVERNMENT) {
-      tag.color = undefined;
-      tag.tag = Drupal.t('City Government');
+    else if (type === OrganizationTypes.OFFICIAL) {
+      tag.color = 'gold';
+      tag.tag = Drupal.t('Officials', {}, {context: 'Decisions search'});
     }
     else if (type === OrganizationTypes.TRUSTEE) {
-      tag.color = 'gold';
-      tag.tag = Drupal.t('Trustees');
+      tag.color = 'bus';
+      tag.tag = Drupal.t('Trustees', {}, {context: 'Decisions search'});
     }
     else {
       return undefined;
@@ -110,7 +113,7 @@ export const ResultCard = ({
     <CardItem
       cardCategoryTag={getCategoryTag()}
       cardTags={getMotionTag()}
-      cardTitle={issue_subject || subject}
+      cardTitle={subject || issue_subject}
       cardUrl={decision_url}
       customMetaRows={metaRows}
       date={getDate()}

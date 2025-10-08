@@ -225,3 +225,24 @@ msgstr "Asia, josta on useita päätöksiä"
 msgctxt "Decisions search"
 msgid "Decision-maker"
 msgstr "Päättäjä"
+
+msgctxt "Decisions search"
+msgid "Committees and boards"
+msgstr "Lautakunnat ja johtokunnat"
+
+msgctxt "Decisions search"
+msgid "City Council"
+msgstr "Kaupunginvaltuusto"
+
+msgctxt "Decisions search"
+msgid "Officials"
+msgstr "Luottamushenkilöpäättäjät"
+
+msgctxt "Decisions search"
+msgid "City Hall"
+msgstr "Kaupunginhallitus"
+
+msgctxt "Decisions search"
+msgid "Trustees"
+msgstr "Viranhaltijat"
+

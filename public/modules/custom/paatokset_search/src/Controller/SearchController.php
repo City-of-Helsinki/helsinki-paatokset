@@ -3,6 +3,7 @@
 namespace Drupal\paatokset_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Drupal\paatokset_search\SearchManager;
 
 /**
@@ -45,11 +46,11 @@ class SearchController extends ControllerBase {
     ]);
 
     $operatorGuideUrl = $this->searchManager->getOperatorGuideUrl();
-    if ($operatorGuideUrl) {
+    if (!empty($operatorGuideUrl)) {
       $build['#description']['#children'][] = [
         '#type' => 'link',
         '#title' => $this->t('Read the instructions for refining your search.', [], ['context' => 'Decisions search']),
-        '#url' => $operatorGuideUrl,
+        '#url' => Url::fromUserInput($operatorGuideUrl),
       ];
     }
 
