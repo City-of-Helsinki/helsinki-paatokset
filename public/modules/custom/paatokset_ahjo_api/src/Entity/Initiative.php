@@ -7,7 +7,9 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\InitiativeInterface;
 
 /**
@@ -89,6 +91,13 @@ final class Initiative extends ContentEntityBase implements InitiativeInterface 
       ->setDescription(new TranslatableMarkup('The URI to access the related document.'));
 
     return $fields;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getDocumentLink(): Link {
+    return Link::fromTextAndUrl($this->label(), Url::fromUri($this->get('uri')->value));
   }
 
 }

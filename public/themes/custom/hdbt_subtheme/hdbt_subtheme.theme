@@ -7,10 +7,13 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Initiative;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 use Drupal\user\Entity\User;
 
@@ -269,28 +272,32 @@ function hdbt_subtheme_get_trustee_content(FieldItemListInterface $references): 
  */
 function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   $node = $variables['node'];
-
-  if (!$node instanceof NodeInterface) {
+  if (!$node instanceof Trustee) {
     return;
   }
 
-  $variables['#cache'] = [
-    'tags' => [
-      'media_list:declaration_of_affiliation',
-      'trustee_statements:' . $node->id(),
-    ],
-  ];
+  $cache = new CacheableMetadata();
+  $cache->setCacheTags([
+    'trustee_statements:' . $node->id(),
+    'media_list:declaration_of_affiliation',
+    'ahjo_initiative_list',
+  ]);
 
   if ($node->hasField('field_trustee_id') && !$node->get('field_trustee_id')->isEmpty()) {
-    $variables['#cache']['tags'][] = 'trustee:' . $node->get('field_trustee_id')->value;
+    $cache->addCacheTags(['trustee:' . $node->get('field_trustee_id')->value]);
   }
 
-  if ($node->get('field_trustee_initiatives')) {
+  if ($initiatives = $node->getInitiatives()) {
     $variables['initiatives'] = [
-      'title' => t('Initiatives by the councillor'),
-      'content' => hdbt_subtheme_get_trustee_content($node->get('field_trustee_initiatives')),
+      'title' => new TranslatableMarkup('Initiatives by the councillor'),
+      'content' => array_map(
+        static fn (Initiative $initiative) => \Drupal::entityTypeManager()
+          ->getViewBuilder($initiative->getEntityTypeId())
+          ->view($initiative),
+        $initiatives
+      ),
     ];
-  };
+  }
 
   if ($node->get('field_trustee_resolutions')) {
     $variables['resolutions'] = [
@@ -337,6 +344,8 @@ function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
       ]
     );
   };
+
+  $cache->applyTo($variables);
 }
 
 /**

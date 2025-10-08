@@ -652,6 +652,8 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
  *   - elements: An array of elements to display in view mode.
  */
 function template_preprocess_ahjo_initiative(array &$variables) : void {
+  $variables['entity'] = $variables['elements']['#ahjo_initiative'];
+
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
