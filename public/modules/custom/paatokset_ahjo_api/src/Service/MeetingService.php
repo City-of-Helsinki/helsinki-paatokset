@@ -241,42 +241,6 @@ class MeetingService {
   }
 
   /**
-   * Get Meeting minutes Link.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   Meeting node.
-   *
-   * @return \Drupal\Core\Link|null
-   *   URL as string, if possible to get.
-   */
-  public function getMeetingLink(NodeInterface $node): ?Link {
-
-    if (!$node->hasField('field_meeting_id') || !$node->hasField('field_meeting_dm_id')) {
-      return NULL;
-    }
-
-    $meeting_id = $node->get('field_meeting_id')->value;
-    $policymaker_id = $node->get('field_meeting_dm_id')->value;
-
-    if (!$meeting_id || !$policymaker_id) {
-      return NULL;
-    }
-
-    // Leaving this \Drupal::service() call here temporarily,
-    // until this whole code block can be removed.
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    $url = $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
-    if (!$url instanceof Url) {
-      return NULL;
-    }
-
-    $text = $this->t('Meeting minutes.');
-
-    return Link::fromTextAndUrl($text, $url);
-  }
-
-  /**
    * Get meeting minutes URL from meeting node.
    *
    * @param \Drupal\node\NodeInterface $entity

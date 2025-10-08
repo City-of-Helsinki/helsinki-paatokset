@@ -384,6 +384,8 @@ class PolicymakerService {
   /**
    * Return minutes page route by meeting id.
    *
+   * @deprecated use \Drupal\paatokset_ahjo_api\Entity\Meeting::getMinutesUrl().
+   *
    * @param string $id
    *   Meeting ID.
    * @param string|null $policymaker_id
@@ -418,32 +420,28 @@ class PolicymakerService {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
 
-    $route = PolicymakerRoutes::getSubroutes()['minutes'];
-    $localizedRoute = "$route.$langcode";
     $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($langcode);
 
-    $routeSettings = [
-      'organization' => $policymaker_org,
-      'id' => $id,
-    ];
-
-    $routeOptions = [
-      'language' => $this->languageManager->getLanguage($langcode),
-    ];
+    $routeOptions = [];
     if ($include_anchor && $this->checkDecisionAnnouncementById($id)) {
-      $anchor = $this->getDecisionAnnouncementAnchor();
+      $anchor = static::decisionAnnouncementAnchor($langcode);
       $routeOptions['fragment'] = $anchor;
     }
 
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, $routeSettings, $routeOptions);
-    }
-
-    return NULL;
+    return PolicymakerRoutes::getMinutesRoute(
+      $langcode,
+      [
+        'organization' => $policymaker_org,
+        'id' => $id,
+      ],
+      $routeOptions
+    );
   }
 
   /**
    * Check decision announcement by ID.
+   *
+   * @deprecated
    *
    * @param string $id
    *   Meeting ID.
@@ -489,7 +487,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    $element_id = $this->getDecisionAnnouncementAnchor();
+    $element_id = static::decisionAnnouncementAnchor($langcode);
 
     $dom = new \DOMDocument();
     @$dom->loadHTML($meeting->get('field_meeting_decision')->value);
@@ -619,14 +617,11 @@ class PolicymakerService {
    * @return string
    *   Element ID or URL fragment.
    */
-  private function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
-    if (!$langcode) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    }
-    if ($langcode === 'sv') {
-      return 'beslutsmeddelanden';
-    }
-    return 'paatostiedote';
+  public static function decisionAnnouncementAnchor(string $langcode): string {
+    return match ($langcode) {
+      'sv' => 'beslutsmeddelanden',
+      default => 'paatostiedote',
+    };
   }
 
   /**

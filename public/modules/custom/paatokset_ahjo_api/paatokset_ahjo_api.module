@@ -1064,14 +1064,16 @@ function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, En
     return;
   }
 
-  /** @var \Drupal\node\NodeInterface $entity */
+  // @todo meeting canonical url should contain the actual content
+  // that the site wants to show, so we would have jump through less
+  // hoops to get links to the meeting page.
   if ($display->getComponent('meeting_link')) {
-    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
-    $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-    $link = $meetingService->getMeetingLink($entity);
-    if ($link instanceof Link) {
-      $build['meeting_link'] = $link->toRenderable();
-    }
+    assert($entity instanceof Meeting);
+
+    $build['meeting_link'] = Link::fromTextAndUrl(
+      new TranslatableMarkup('Meeting minutes.'),
+      $entity->getMinutesUrl()
+    )->toRenderable();
   }
 }
 

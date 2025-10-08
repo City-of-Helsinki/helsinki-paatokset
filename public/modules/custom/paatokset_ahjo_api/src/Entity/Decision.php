@@ -87,23 +87,27 @@ class Decision extends Node implements AhjoUpdatableInterface {
   /**
    * Get meeting URL for selected decision.
    *
+   * @todo This should use Drupal Links & Route Provider system.
+   * Revisit this if these are converted to custom entities.
+   * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
+   *
    * @return \Drupal\Core\Url|null
    *   Meeting URL, if found.
    */
   public function getDecisionMeetingLink(): ?Url {
-    if (
-      $this->get('field_meeting_id')->isEmpty() ||
-      $this->get('field_policymaker_id')->isEmpty()
-    ) {
-      return NULL;
+    $meetings = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'type' => 'meeting',
+        'field_meeting_id' => $this->get('field_meeting_id')->value,
+      ]);
+
+    if ($meeting = array_first($meetings)) {
+      assert($meeting instanceof Meeting);
+      return $meeting->getMinutesUrl();
     }
 
-    $meeting_id = $this->get('field_meeting_id')->value;
-    $policymaker_id = $this->get('field_policymaker_id')->value;
-
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+    return NULL;
   }
 
   /**

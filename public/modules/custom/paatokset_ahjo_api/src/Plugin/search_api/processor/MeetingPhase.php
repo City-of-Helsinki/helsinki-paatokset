@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
