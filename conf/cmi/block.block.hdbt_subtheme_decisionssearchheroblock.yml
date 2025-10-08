@@ -1,5 +1,5 @@
 uuid: 884dc4ef-7fd1-4800-9602-11861dba6ecc
-langcode: fi
+langcode: en
 status: true
 dependencies:
   module:
@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/asia\r\n"
+    pages: "/asia\r\n/case\r\n/arende"
