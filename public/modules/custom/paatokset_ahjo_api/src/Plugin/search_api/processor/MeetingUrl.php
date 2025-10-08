@@ -10,6 +10,8 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Computes the meeting URL for fi, sv and en languages.
@@ -23,7 +25,21 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *    }
  * )
  */
-class MeetingUrl extends ProcessorPluginBase {
+final class MeetingUrl extends ProcessorPluginBase {
+
+  /**
+   * Logger interface.
+   */
+  private LoggerInterface $logger;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $processor->logger = $container->get('logger.channel.paatokset_ahjo_api');
+    return $processor;
+  }
 
   /**
    * {@inheritdoc}
@@ -66,12 +82,16 @@ class MeetingUrl extends ProcessorPluginBase {
       'decision_link' => [],
     ];
 
+    // Maybe this should not index the field at all if this meeting does
+    // not support minutes URL. However, that would require testing that
+    // the frontend still works.
     foreach (['fi', 'sv', 'en'] as $langcode) {
-      // @todo check that these work correctly.
-      $data['meeting_link'][$langcode] = $node->getMinutesUrl($langcode)->toString();
+      if ($minutesUrl = $node->getMinutesUrl($langcode)?->toString()) {
+        $data['meeting_link'][$langcode] = $minutesUrl;
+      }
 
-      if ($node->getMeetingPhase() === MeetingPhase::DECISION) {
-        $data['decision_link'][$langcode] = $node->getDecisionAnnouncementUrl($langcode)->toString();
+      if ($node->getMeetingPhase() === MeetingPhase::DECISION && $decisionUrl = $node->getDecisionAnnouncementUrl($langcode)?->toString()) {
+        $data['decision_link'][$langcode] = $decisionUrl;
       }
     }
 

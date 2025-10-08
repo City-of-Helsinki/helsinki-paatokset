@@ -18,6 +18,12 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {
+    $id = $this->getAhjoId();
+
+    if (!$id) {
+      throw new \InvalidArgumentException("Meeting is missing Ahjo ID");
+    }
+
     return Url::fromRoute('paatokset_ahjo_proxy.meetings_single', [
       'id' => $this->getAhjoId(),
     ]);
@@ -44,6 +50,15 @@ class Meeting extends Node implements AhjoUpdatableInterface {
     foreach ($this->get('field_meeting_documents') as $field) {
       $document = json_decode($field->value);
 
+      if (empty($document)) {
+        \Drupal::service('logger.channel.paatokset_ahjo_api')
+          ->warning('Meeting document is empty for meeting id @meeting_id', [
+            '@meeting_id' => $this->id(),
+          ]);
+
+        continue;
+      }
+
       $phase = match ($document->Type) {
         'pöytäkirja' => MeetingPhase::MINUTES,
         'esityslista' => $this->get('field_meeting_decision')->isEmpty() ? MeetingPhase::AGENDA : MeetingPhase::DECISION,
@@ -68,7 +83,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getMinutesUrl(?string $langcode = NULL): Url {
+  public function getMinutesUrl(?string $langcode = NULL): ?Url {
     if (!$langcode) {
       $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
     }
@@ -86,7 +101,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
     ]));
 
     if (!$policymaker instanceof Policymaker || $policymaker->isTrustee()) {
-      throw new \InvalidArgumentException('Minutes route not available for this meeting.');
+      return NULL;
     }
 
     $routeOptions = [];
@@ -111,10 +126,14 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getDecisionAnnouncementUrl(?string $langcode = NULL): Url {
+  public function getDecisionAnnouncementUrl(?string $langcode = NULL): ?Url {
     $url = $this->getMinutesUrl($langcode);
-    $langcode = $langcode ?? $url->getOption('language')->getId();
-    $url->setOption('fragment', PolicymakerService::decisionAnnouncementAnchor($langcode));
+
+    if ($url) {
+      $langcode = $langcode ?? $url->getOption('language')->getId();
+      $url->setOption('fragment', PolicymakerService::decisionAnnouncementAnchor($langcode));
+    }
+
     return $url;
   }
 

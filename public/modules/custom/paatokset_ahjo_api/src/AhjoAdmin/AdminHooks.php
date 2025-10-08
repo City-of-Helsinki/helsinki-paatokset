@@ -85,15 +85,15 @@ class AdminHooks {
     }
 
     if ($this->currentUser->hasPermission('access ahjo proxy') && !$entity->isNew()) {
-      $form['actions']['#links']['view'] = [
-        'title' => new TranslatableMarkup('View on ahjo proxy'),
-        'url' => $entity->getProxyUrl(),
-        'attributes' => [
-          'target' => '_blank',
-        ],
-      ];
-
       try {
+        $form['actions']['#links']['view'] = [
+          'title' => new TranslatableMarkup('View on ahjo proxy'),
+          'url' => $entity->getProxyUrl(),
+          'attributes' => [
+            'target' => '_blank',
+          ],
+        ];
+
         $environment = $this->environmentResolver->getActiveEnvironment();
         if ($environment->getEnvironment() !== EnvironmentEnum::Prod) {
           $form['warning'] = [

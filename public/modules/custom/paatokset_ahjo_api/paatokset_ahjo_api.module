@@ -1087,10 +1087,11 @@ function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, En
   if ($display->getComponent('meeting_link')) {
     assert($entity instanceof Meeting);
 
-    $build['meeting_link'] = Link::fromTextAndUrl(
-      new TranslatableMarkup('Meeting minutes.'),
-      $entity->getMinutesUrl()
-    )->toRenderable();
+    // Url can be null in some cases, maybe in non-city-council meetings?
+    if ($url = $entity->getMinutesUrl()) {
+      $build['meeting_link'] = Link::fromTextAndUrl(new TranslatableMarkup('Meeting minutes.'), $url)
+        ->toRenderable();
+    }
   }
 }
 
