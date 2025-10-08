@@ -17,6 +17,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class AhjoSourceBase extends SourcePluginBase implements ContainerFactoryPluginInterface {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $skipCount = TRUE;
+
+  /**
    * The logger service.
    *
    * @var \Psr\Log\LoggerInterface

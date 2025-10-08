@@ -48,6 +48,8 @@ do
     drush migrate-import ahjo_trustees:all --update --no-progress
     drush migrate-reset-status ahjo_trustees:all_sv
     drush migrate-import ahjo_trustees:all_sv --update --no-progress
+    # Migrate trustee initiatives
+    drush migrate:import ahjo_initiatives --no-progress --reset-threshold 1 --interval 3600
     echo "Migrating data for decisionmakers: $(date)"
     drush migrate-reset-status ahjo_decisionmakers:latest
     drush migrate-reset-status ahjo_decisionmakers:latest_sv
