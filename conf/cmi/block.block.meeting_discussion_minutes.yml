@@ -7,17 +7,18 @@ dependencies:
     - system
   theme:
     - hdbt_subtheme
-id: paatoksetminutesofdiscussionblock
+id: meeting_discussion_minutes
 theme: hdbt_subtheme
 region: content_lower
 weight: -13
 provider: null
-plugin: paatokset_minutes_of_discussion
+plugin: policymaker_documents
 settings:
-  id: paatokset_minutes_of_discussion
+  id: meeting_discussion_minutes
   label: 'Paatokset minutes of discussion block'
   label_display: '0'
-  provider: paatokset_submenus
+  provider: paatokset_ahjo_api
+  view: policymaker_discussion_minutes
 visibility:
   request_path:
     id: request_path
