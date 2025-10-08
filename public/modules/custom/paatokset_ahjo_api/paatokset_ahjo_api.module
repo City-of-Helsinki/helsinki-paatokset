@@ -65,6 +65,10 @@ function paatokset_ahjo_api_grant_permissions() : array {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'ahjo_initiative' => [
+      'render element' => 'elements',
+      'template' => 'ahjo-initiative',
+    ],
     'organization_path' => [
       'variables' => [
         'organizations' => [],
@@ -638,6 +642,19 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
     'url' => $url,
     'label' => $label,
   ];
+}
+
+/**
+ * Prepares variables for ahjo_initiative templates.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function template_preprocess_ahjo_initiative(array &$variables) : void {
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
 }
 
 /**
