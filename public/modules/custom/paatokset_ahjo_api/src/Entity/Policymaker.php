@@ -75,7 +75,11 @@ class Policymaker extends Node implements AhjoEntityInterface {
    * Get organization type.
    */
   public function getOrganizationType(): ?OrganizationType {
-    return OrganizationType::tryFromOrganizationType($this->get('field_organization_type')->value);
+    if (!$this->get('field_organization_type')->isEmpty()) {
+      return OrganizationType::tryFromOrganizationType($this->get('field_organization_type')->value);
+    }
+
+    return NULL;
   }
 
   /**
