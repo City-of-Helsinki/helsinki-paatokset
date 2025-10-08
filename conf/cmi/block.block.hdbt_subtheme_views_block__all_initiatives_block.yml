@@ -2,22 +2,26 @@ uuid: 38ee9bb7-76db-46a4-b1d7-a587f928f513
 langcode: en
 status: true
 dependencies:
+  config:
+    - views.view.all_initiatives
   module:
-    - paatokset_ahjo_api
     - system
+    - views
   theme:
     - hdbt_subtheme
-id: paatoksetallinitiatives
+id: hdbt_subtheme_views_block__all_initiatives_block
 theme: hdbt_subtheme
 region: content_lower
-weight: -15
+weight: -14
 provider: null
-plugin: all_initiatives
+plugin: 'views_block:all_initiatives-block'
 settings:
-  id: all_initiatives
-  label: 'Paatokset all initiatives'
-  label_display: visible
-  provider: paatokset_ahjo_api
+  id: 'views_block:all_initiatives-block'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
 visibility:
   request_path:
     id: request_path
