@@ -136,13 +136,6 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'current_option' => NULL,
       ],
     ],
-    'agendas_submenu' => [
-      'variables' => [
-        'years' => [],
-        'list' => [],
-        'type' => NULL,
-      ],
-    ],
   ];
 }
 
