@@ -18,6 +18,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
@@ -48,10 +49,13 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly RouteProviderInterface $routeProvider,
     private readonly PolicymakerService $policymakerService,
+    private readonly LoggerInterface $logger,
     private readonly string $currentLang,
     private readonly string $currentPath,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    // Warning: these cause side effects:
     $this->policymakerService->setPolicyMakerByPath();
     $this->items = $this->getItems();
   }
@@ -67,6 +71,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       $container->get('menu.link_tree'),
       $container->get('router.route_provider'),
       $container->get('paatokset_policymakers'),
+      $container->get('logger.channel.paatokset_ahjo_api'),
       $container->get('language_manager')->getCurrentLanguage()->getId(),
       $container->get('path.current')->getPath()
     );
@@ -172,18 +177,27 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    *   Dynamic links.
    */
   protected function getDynamicLinks(NodeInterface $policymaker): array {
-    $items = [];
     assert($policymaker instanceof Policymaker);
-    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($this->currentLang);
-
-    $items[] = [
-      'title' => $policymaker->get('title')->value,
-      'url' => $this->policymakerService->getLocalizedUrl(),
-      'attributes' => new Attribute(),
+    $items = [
+      [
+        'title' => $policymaker->label(),
+        'url' => $this->policymakerService->getLocalizedUrl(),
+        'attributes' => new Attribute(),
+      ],
     ];
 
-    $routes = PolicymakerRoutes::getRoutes($this->currentLang, $policymaker->getOrganizationType());
+    // Skip other links if policymaker is missing links.
+    if (!$orgType = $policymaker->getOrganizationType()) {
+      $this->logger->warning('Policymaker organization type is missing for policymaker @name (@id).', [
+        '@name' => $policymaker->label(),
+        '@id' => $policymaker->id(),
+      ]);
 
+      return $items;
+    }
+
+    $routes = PolicymakerRoutes::getRoutes($this->currentLang, $orgType);
+    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($this->currentLang);
     foreach ($routes as $key => $name) {
       try {
         $route = $this->routeProvider->getRouteByName($name);

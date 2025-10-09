@@ -95,11 +95,19 @@ class Decision extends Node implements AhjoUpdatableInterface {
    *   Meeting URL, if found.
    */
   public function getDecisionMeetingLink(): ?Url {
+    if (!$meetingId = $this->get('field_meeting_id')->value) {
+      \Drupal::service('logger.channel.paatokset_ahjo_api')->warning('Decision @id has no meeting ID.', [
+        '@id' => $this->id(),
+      ]);
+
+      return NULL;
+    }
+
     $meetings = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties([
         'type' => 'meeting',
-        'field_meeting_id' => $this->get('field_meeting_id')->value,
+        'field_meeting_id' => $meetingId,
       ]);
 
     if ($meeting = array_first($meetings)) {

@@ -28,6 +28,7 @@ class CaseControllerTest extends AhjoKernelTestBase {
       'type' => 'decision',
       'title' => 'Test decision',
       'field_diary_number' => 'test-diary-number',
+      'field_meeting_id' => '123',
       // Decision query expects that native id is wrapped with { }.
       'field_decision_native_id' => '{test-native-id}',
       'field_dm_org_name' => 'test-dm-org-name',
