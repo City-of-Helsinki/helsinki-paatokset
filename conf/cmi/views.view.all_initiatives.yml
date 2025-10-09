@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - node
+    - paatokset
     - paatokset_ahjo_api
     - user
 id: all_initiatives
@@ -184,6 +185,54 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        date_year:
+          id: date_year
+          table: paatokset_ahjo_initiative
+          field: date_year
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: ahjo_initiative
+          plugin_id: paatokset_year
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Filter by year'
+            description: ''
+            use_operator: false
+            operator: date_year_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: year
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              content_producer: '0'
+              editor: '0'
+              admin: '0'
+              api_user: '0'
+              elevated_api_user: '0'
+              super_administrator: '0'
+              survey_editor: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: default
         options:
@@ -227,6 +276,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -247,6 +297,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }
