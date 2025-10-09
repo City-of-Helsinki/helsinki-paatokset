@@ -1632,40 +1632,6 @@ class PolicymakerService {
   }
 
   /**
-   * Gets all initiatives from trustee nodes.
-   *
-   * @return array
-   *   List of initiatives.
-   */
-  public function getAllInitiatives(): array {
-    $nids = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'trustee')
-      ->condition('status', 1)
-      ->condition('field_trustee_initiatives', '', '<>')
-      ->execute();
-
-    $nodes = $this->nodeStorage->loadMultiple($nids);
-    $initiatives = [];
-    foreach ($nodes as $node) {
-      if (!$node instanceof Trustee) {
-        continue;
-      }
-
-      $id = $node->get('field_trustee_id')->value;
-
-      foreach ($node->get('field_trustee_initiatives') as $field) {
-        $initiative = json_decode($field->value, TRUE);
-        $initiative['TrusteeID'] = $id;
-        $initiatives[] = $initiative;
-      }
-    }
-
-    return $initiatives;
-  }
-
-  /**
    * Get organization display type from node. Shouldn't be used for type checks.
    *
    * @param \Drupal\node\NodeInterface|null $node

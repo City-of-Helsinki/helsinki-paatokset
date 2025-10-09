@@ -115,10 +115,6 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'base hook' => 'entity',
       'template' => 'block/block--decision-tree',
     ],
-    'block__all_initiatives' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--all-initiatives',
-    ],
     'block__meetings_calendar' => [
       'base hook' => 'entity',
       'template' => 'block/block--meetings-calendar',
@@ -422,47 +418,6 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
     ],
     '#create_placeholder' => TRUE,
   ];
-}
-
-/**
- * Preprocess all initiatives block.
- */
-function paatokset_ahjo_api_preprocess_block__all_initiatives(array &$variables): void {
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
-  $initiatives = $policymakerService->getAllInitiatives();
-
-  $years = [];
-  usort($initiatives, function ($item1, $item2) {
-    return strtotime($item2['Date']) - strtotime($item1['Date']);
-  });
-
-  foreach ($initiatives as $initiative) {
-    $date = date_format(date_create($initiative['Date']), "Y");
-    if (!in_array($date, $years)) {
-      $years[] = $date;
-    }
-  }
-
-  $by_year = [];
-  foreach ($years as $year) {
-    $filtered = array_filter($initiatives, function ($var) use ($year) {
-      return (str_contains(date_format(date_create($var['Date']), "Y"), $year));
-    });
-    $by_year[$year] = $filtered;
-  };
-
-  $variables['initiatives'] = $by_year;
-  $variables['years'] = $years;
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-
-  if (isset($variables['elements']['#block__all_initiatives'])) {
-    $variables['entity'] = $variables['elements']['#block__all_initiatives'];
-  }
 }
 
 /**
