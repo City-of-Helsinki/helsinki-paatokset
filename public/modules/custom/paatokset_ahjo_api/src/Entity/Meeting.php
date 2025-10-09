@@ -56,7 +56,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    */
   public function getDocumentFromEntity(string $document_type, ?string $langcode = NULL): ?array {
     foreach ($this->get('field_meeting_documents') as $field) {
-      $document = json_decode($field->value, TRUE);
+      $document = json_decode($field->getString(), TRUE);
 
       if ($langcode && isset($document['Language']) && !str_contains($document['Language'], $langcode)) {
         continue;
@@ -75,7 +75,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    */
   public function getMeetingPhase(): ?MeetingPhase {
     foreach ($this->get('field_meeting_documents') as $field) {
-      $document = json_decode($field->value);
+      $document = json_decode($field->getString());
 
       if (empty($document)) {
         \Drupal::service('logger.channel.paatokset_ahjo_api')
