@@ -60,7 +60,7 @@ function paatokset_cron() : void {
 }
 
 /**
- * Implements hook_views_data().
+ * Implements hook_views_data_alter().
  */
 function paatokset_views_data_alter(&$data): void {
   $manager = \Drupal::entityTypeManager();
@@ -87,6 +87,7 @@ function paatokset_views_data_alter(&$data): void {
         'title' => new TranslatableMarkup('Filter by year'),
         'field' => $field_config->getName() . '_value',
         'id' => 'paatokset_year',
+        'entity_type' => $field_config->getTargetEntityTypeId(),
         'time_type' => 'datetime',
       ],
     ];
@@ -123,6 +124,7 @@ function paatokset_views_data_alter(&$data): void {
           'title' => new TranslatableMarkup('Filter by year'),
           'field' => $field_name,
           'id' => 'paatokset_year',
+          'entity_type' => $field->getTargetEntityTypeId(),
           'time_type' => 'timestamp',
         ],
       ];

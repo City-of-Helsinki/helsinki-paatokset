@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset\Plugin\views\filter;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -97,62 +98,78 @@ final class YearFilter extends FilterPluginBase {
   }
 
   /**
+   * Adds filter condition to the query.
+   */
+  private function processFilterDefinition(FilterPluginBase $filter, SelectInterface $query): bool {
+    return (bool) match ($filter->getPluginId()) {
+      'bundle' => $query->condition("$filter->table.$filter->realField", array_keys($filter->value), 'IN'),
+      // Boolean is most likely the status filter.
+      'boolean' => $query->condition("$filter->table.$filter->realField", $filter->value, $filter->operator),
+      // A specific filter in policymaker view that we must handle.
+      'datetime' => $query->condition("$filter->table.$filter->realField", $filter->value['value'], $filter->operator),
+      default => FALSE,
+    };
+  }
+
+  /**
    * Get options for year select.
    */
   private function getOptions(): array {
-    $allFilters = $this->displayHandler->getOption('filters');
-
-    $alias = 'tbl';
     $baseTable = $this->view->storage->get('base_table');
     $baseField = $this->view->storage->get('base_field');
     $query = $this->connection
-      ->select($baseTable, 'tbl')
+      ->select($baseTable, $baseTable)
       ->distinct();
 
-    // Filter published entities.
-    if ($this->view->getBaseEntityType()->entityClassImplements(EntityPublishedInterface::class)) {
-      $query->condition('tbl.status', 1);
+    $joins = [];
+
+    // To get accurate results, the query should somewhat match the final
+    // view query. Note: this implementation is very simplified and made
+    // only for our needs. This will break on more complicated views.
+    foreach ($this->view->filter as $filter) {
+      if ($this->processFilterDefinition($filter, $query)) {
+        if ($join = $filter->getJoin()) {
+          $joins[$join->table]["$baseTable.$baseField"][] = "$join->table.$join->field";
+        }
+      }
+
     }
 
-    // To get accurate results, this query
-    // should somewhat match the final view query.
-    // Query entity type if `type` filter is set.
-    if (isset($allFilters['type'])) {
-      [
-        'field' => $field,
-        'value' => $bundles,
-      ] = $allFilters['type'];
+    foreach ($this->view->argument as $argument) {
+      if ($join = $argument->getJoin()) {
+        $joins[$argument->table]["$baseTable.$baseField"][] = "$argument->table.$join->field";
+      }
 
-      $query->condition("tbl.$field", array_keys($bundles), 'IN');
+      // Filter with contextual filters.
+      $query->condition("$argument->table.$argument->realField", $argument->getValue());
     }
 
-    // Query with contextual filters.
-    // Note: this is very simplified implementation for
-    // our needs. This will break on more complicated views.
-    foreach ($this->view->argument as $key => $argument) {
-      $query->innerJoin($argument->table, $key, "tbl.$baseField = $key.entity_id");
-      $query->condition("$key.$argument->field", $argument->getValue());
+    foreach ($this->view->relationship as $relationship) {
+      if ($join = $relationship->getJoin()) {
+        $joins[$join->table]["$baseTable.$baseField"] = "$join->table.$join->field";
+        // Simplification: assume that the relationship links to realField.
+        $joins[$this->table]["$join->table.$relationship->realField"][] = "$this->table.entity_id";
+      }
     }
 
-    if ($this->table !== $baseTable) {
-      $alias = $query->innerJoin($this->table, 'tbl2', "tbl.$baseField = tbl2.entity_id");
+    if ($join = $this->getJoin()) {
+      $joins[$join->table]["$baseTable.$baseField"][] = "$join->table.$join->field";
     }
 
-    if (isset($allFilters[$this->realField])) {
-      [
-        'value' => $value,
-        'operator' => $operator,
-      ] = $allFilters[$this->realField];
-
-      $query->condition("$alias.$this->realField", $value['value'], $operator);
+    foreach ($joins as $table => $arguments) {
+      foreach ($arguments as $left => $conditions) {
+        foreach (array_unique($conditions) as $condition) {
+          $query->innerJoin($table, $table, "$left = $condition");
+        }
+      }
     }
 
     match ($this->getTimeFieldType()) {
-      'timestamp' => $query->addExpression("FROM_UNIXTIME($alias.$this->realField, '%Y')", 'year'),
-      'datetime' => $query->addExpression("YEAR($alias.$this->realField)", 'year'),
+      'timestamp' => $query->addExpression("FROM_UNIXTIME($this->table.$this->realField, '%Y')", 'year'),
+      'datetime' => $query->addExpression("YEAR($this->table.$this->realField)", 'year'),
     };
 
-    $query->isNotNull("$alias.$this->realField");
+    $query->isNotNull("$this->table.$this->realField");
     $query->orderBy('year', 'DESC');
 
     return $query
@@ -161,7 +178,7 @@ final class YearFilter extends FilterPluginBase {
   }
 
   /**
-   * Get configured time type.
+   * Get the configured time type.
    */
   private function getTimeFieldType(): string {
     return $this->definition['time_type'];
