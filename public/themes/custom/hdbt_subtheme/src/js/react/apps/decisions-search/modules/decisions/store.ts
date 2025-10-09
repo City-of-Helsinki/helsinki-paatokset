@@ -1,17 +1,19 @@
 import { atom } from 'jotai';
 import { type estypes } from '@elastic/elasticsearch';
 
-import { Components, DATE_SELECTION } from './enum/Components';
+import { DateTime } from 'luxon';
+import { Components } from './enum/Components';
 import { Events } from './enum/Events';
 import { SortOptions } from './enum/SortOptions';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
 import { PolicymakerIndex } from './enum/IndexFields';
+import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { DateSelection } from './enum/DateSelection';
 
 const clearEvent = new Event(Events.DECISIONS_CLEAR_ALL);
 
 const defaultState = {
   [Components.CATEGORY]: [],
-  [DATE_SELECTION]: undefined,
   [Components.DECISIONMAKER]: [],
   [Components.FROM]: undefined,
   [Components.PAGE]: 1,
@@ -154,14 +156,29 @@ export const setToAtom = atom(null, (get, set, value: string) => {
 });
 
 export const getDateSelectionAtom = atom((get) => {
-  const state = {...get(searchStateAtom)};
-  return state[DATE_SELECTION];
-});
+  const from = get(getFromAtom);
+  const to = get(getToAtom);
 
-export const setDateSelectionAtom = atom(null, (get, set, value: string) => {
-  const state = {...get(searchStateAtom)};
-  state[DATE_SELECTION] = value;
-  set(searchStateAtom, state);
+  if (!from && !to) {
+    return undefined;
+  }
+
+  const now = DateTime.now();
+
+  if (to !== now.toFormat(HDS_DATE_FORMAT)) {
+    return undefined;
+  }
+
+  switch (from) {
+    case now.minus({weeks: 1}).toFormat(HDS_DATE_FORMAT):
+      return DateSelection.PAST_WEEK;
+    case now.minus({months: 1}).toFormat(HDS_DATE_FORMAT):
+      return DateSelection.PAST_MONTH;
+    case now.minus({years: 1}).toFormat(HDS_DATE_FORMAT):
+      return DateSelection.PAST_YEAR;
+    default:
+      return undefined;
+  }
 });
 
 export const getDecisionMakersAtom = atom((get) => {

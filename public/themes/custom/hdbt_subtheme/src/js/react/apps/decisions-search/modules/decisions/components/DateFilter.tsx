@@ -4,15 +4,12 @@ import { useState } from 'react';
 import { DateTime } from 'luxon';
 
 import { Components } from '../enum/Components';
-import { getDateSelectionAtom, getFromAtom, getToAtom, setDateSelectionAtom, setFromAtom, setToAtom } from '../store';
+import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import Collapsible from '@/react/common/Collapsible';
 import { DatePicker } from './DatePicker';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
-
-const PAST_WEEK = Symbol('PAST_WEEK');
-const PAST_MONTH = Symbol('PAST_MONTH');
-const PAST_YEAR = Symbol('PAST_YEAR');
+import { DateSelection } from '../enum/DateSelection';
 
 export const DateFilter = () => {
   const from = useAtomValue(getFromAtom);
@@ -20,7 +17,6 @@ export const DateFilter = () => {
   const to = useAtomValue(getToAtom);
   const setTo = useSetAtom(setToAtom);
   const dateSelection = useAtomValue(getDateSelectionAtom);
-  const setDateSelection = useSetAtom(setDateSelectionAtom);
   const [calendarActive, setCalendarActive] = useState<boolean>(false);
 
   const getTitle = () => {
@@ -42,27 +38,31 @@ export const DateFilter = () => {
   };
 
   const handleDatePick = (value, callable) => {
-    setDateSelection(undefined);
     callable(value);
   };
 
-  const handleSelectionClick = (value: string) => {
+  const handleSelectionClick = (e: MouseEvent<HTMLInputElement>) => {
+    if (e.target.checked === false) {
+      setFrom(undefined);
+      setTo(undefined);
+      return;
+    }
+
+    const value = (e.target as HTMLInputElement).id;
     const now = DateTime.now();
     setTo(now.toFormat(HDS_DATE_FORMAT));
     
     switch (value) {
-      case PAST_WEEK:
+      case DateSelection.PAST_WEEK:
         setFrom(now.minus({weeks: 1}).toFormat(HDS_DATE_FORMAT));
         break;
-      case PAST_MONTH:
+      case DateSelection.PAST_MONTH:
         setFrom(now.minus({months: 1}).toFormat(HDS_DATE_FORMAT));
         break;
-      case PAST_YEAR:
+      case DateSelection.PAST_YEAR:
         setFrom(now.minus({years: 1}).toFormat(HDS_DATE_FORMAT));
         break;
     }
-
-    setDateSelection(value);
   };
 
   return (
@@ -105,27 +105,27 @@ export const DateFilter = () => {
             <div className='date-filter__predefined-ranges-container'>
               <SelectionGroup>
                 <Checkbox
-                  id='past_week'
+                  id={DateSelection.PAST_WEEK}
                   label={Drupal.t('Past week', {}, {context: 'Decisions search'})}
                   name='past_week' 
-                  checked={dateSelection === PAST_WEEK}
-                  onClick={() => handleSelectionClick(PAST_WEEK)}
+                  checked={dateSelection === DateSelection.PAST_WEEK}
+                  onClick={handleSelectionClick}
                   style={defaultCheckboxStyle}
                 />
                 <Checkbox
-                  id='past_month'
+                  id={DateSelection.PAST_MONTH}
                   label={Drupal.t('Past month', {}, {context: 'Decisions search'})}
                   name='past_month'
-                  checked={dateSelection === PAST_MONTH}
-                  onClick={() => handleSelectionClick(PAST_MONTH)}
+                  checked={dateSelection === DateSelection.PAST_MONTH}
+                  onClick={handleSelectionClick}
                   style={defaultCheckboxStyle}
                 />
                 <Checkbox
-                  id='past_year'
+                  id={DateSelection.PAST_YEAR}
                   label={Drupal.t('Past year', {}, {context: 'Decisions search'})}
                   name='past_year'
-                  checked={dateSelection === PAST_YEAR}
-                  onClick={() => handleSelectionClick(PAST_YEAR)}
+                  checked={dateSelection === DateSelection.PAST_YEAR}
+                  onClick={handleSelectionClick}
                   style={defaultCheckboxStyle}
                 />
               </SelectionGroup>
