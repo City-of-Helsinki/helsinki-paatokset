@@ -42,7 +42,7 @@ class InitiativesTest extends RemoteEntityAccessTestBase {
 
     return Initiative::create([
       'title' => 'test',
-      'date' => new \DateTimeImmutable()->getTimestamp(),
+      'date' => (new \DateTimeImmutable())->getTimestamp(),
       'uri' => 'https://example.com/file.pdf',
       'trustee_nid' => '1',
     ]);

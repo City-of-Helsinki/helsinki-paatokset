@@ -43,13 +43,13 @@ class TrusteeTest extends AhjoKernelTestBase {
 
     Initiative::create([
       'title' => 'Test 1',
-      'date' => new \DateTimeImmutable()->getTimestamp(),
+      'date' => (new \DateTimeImmutable())->getTimestamp(),
       'trustee_nid' => $trustee->id(),
       'uri' => 'https://example.com/file1.pdf',
     ])->save();
     Initiative::create([
       'title' => 'Test 2',
-      'date' => new \DateTimeImmutable()->getTimestamp(),
+      'date' => (new \DateTimeImmutable())->getTimestamp(),
       // The trustee ID is different from the one in the database.
       'trustee_nid' => $trustee->id() + 1,
       'uri' => 'https://example.com/file1.pdf',
