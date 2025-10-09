@@ -145,7 +145,7 @@ final class YearFilter extends FilterPluginBase {
 
     foreach ($this->view->relationship as $relationship) {
       if ($join = $relationship->getJoin()) {
-        $joins[$join->table]["$baseTable.$baseField"] = "$join->table.$join->field";
+        $joins[$join->table]["$baseTable.$baseField"][] = "$join->table.$join->field";
         // Simplification: assume that the relationship links to realField.
         $joins[$this->table]["$join->table.$relationship->realField"][] = "$this->table.entity_id";
       }
