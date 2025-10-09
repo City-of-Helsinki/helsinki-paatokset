@@ -59,7 +59,7 @@ final class Initiative extends ContentEntityBase implements InitiativeInterface 
 
     $fields['title'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Title'))
-      ->setSetting('max_length', 255)
+      ->setSetting('max_length', 512)
       ->setRequired(TRUE)
       ->setDisplayOptions('view', [
         'type' => 'string',
