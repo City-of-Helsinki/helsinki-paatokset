@@ -311,10 +311,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        meeting_date_year:
-          id: meeting_date_year
+        field_meeting_date_year:
+          id: field_meeting_date_year
           table: node__field_meeting_date
-          field: meeting_date_year
+          field: field_meeting_date_year
           relationship: none
           group_type: group
           admin_label: ''
@@ -328,7 +328,7 @@ display:
             label: 'Filter by year'
             description: ''
             use_operator: false
-            operator: meeting_date_year_op
+            operator: field_meeting_date_year_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: year

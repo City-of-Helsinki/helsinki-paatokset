@@ -149,10 +149,11 @@ display:
           plugin_id: bundle
           value:
             minutes_of_the_discussion: minutes_of_the_discussion
-        meeting_date_year:
-          id: meeting_date_year
+          group: 1
+        field_meeting_date_year:
+          id: field_meeting_date_year
           table: node__field_meeting_date
-          field: meeting_date_year
+          field: field_meeting_date_year
           relationship: field_meetings_reference
           group_type: group
           admin_label: ''
@@ -166,7 +167,7 @@ display:
             label: 'Filter by year'
             description: ''
             use_operator: false
-            operator: meeting_date_year_op
+            operator: field_meeting_date_year_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: year
@@ -196,6 +197,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: default
         options:
