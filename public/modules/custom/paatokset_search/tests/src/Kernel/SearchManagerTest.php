@@ -84,10 +84,9 @@ class SearchManagerTest extends EntityKernelTestBase {
 
     $this->assertContains('hdbt_subtheme/decisions-search', $build['#attached']['library']);
     $this->assertEquals('https://sentry.example.com', $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react']);
-    $this->assertEquals('decisions', $build['#attributes']['data-type']);
-    $this->assertEquals('https://example.com', $build['#attributes']['data-url']);
+    $this->assertEquals('decisions', $build['#search_element']['#attributes']['data-type']);
+    $this->assertEquals('https://example.com', $build['#search_element']['#attributes']['data-url']);
     $this->assertContains('test-class', $build['#attributes']['class']);
-    $this->assertEmpty($build['#attributes']['data-operator-guide-url']);
   }
 
   /**
@@ -109,7 +108,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $manager = $this->container->get(SearchManager::class);
 
-    $build = $manager->build('decisions');
+    $build = $manager->build('policymakers');
 
     $this->assertEquals('/node/' . $node->id(), $build['#attributes']['data-operator-guide-url']);
   }
@@ -135,7 +134,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $manager = $this->container->get(SearchManager::class);
 
-    $build = $manager->build('decisions');
+    $build = $manager->build('policymakers');
 
     $this->assertEmpty($build['#attributes']['data-operator-guide-url']);
   }
