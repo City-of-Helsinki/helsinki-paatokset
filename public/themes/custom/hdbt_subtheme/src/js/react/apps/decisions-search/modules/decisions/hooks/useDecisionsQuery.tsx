@@ -163,6 +163,29 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
 
   const { currentLanguage } = drupalSettings.path;
   const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
+  const innerHitSort = [{
+    _script: {
+      type: 'number',
+      script: {
+        lang: 'painless',
+        source: `doc['${DecisionIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`
+      },
+      order: 'asc',
+    },
+  }];
+  switch (sortSelection) {
+    case SortOptions.OLDEST:
+      innerHitSort.unshift({ [DecisionIndex.MEETING_DATE]: 'asc' });
+      break;
+    case SortOptions.NEWEST:
+      innerHitSort.unshift({ [DecisionIndex.MEETING_DATE]: 'desc' });
+      break;
+    default:
+      innerHitSort.unshift({ [DecisionIndex.MEETING_DATE]: 'desc' });
+      innerHitSort.unshift({ _score: 'desc' });
+      break;
+  }
+
   const result = {
     _source: false,
     aggs: {
@@ -178,20 +201,7 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         _source: false,
         fields,
         name: 'preferred_version',
-        sort: [
-          {
-            _script: {
-              type: 'number',
-              script: {
-                lang: 'painless',
-                source: `doc['${DecisionIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`
-              },
-              order: 'asc',
-            },
-          },
-          {_score: 'desc'},
-          {[DecisionIndex.MEETING_DATE]: 'desc'},
-        ],
+        sort: innerHitSort,
       },
     },
     from: size * (page - 1),
