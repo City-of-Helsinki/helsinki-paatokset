@@ -2,17 +2,23 @@
 
 namespace Drupal\paatokset_policymakers\Controller;
 
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Utility\Error;
+use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller class for policymaker custom routes.
@@ -20,38 +26,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PolicymakerController extends ControllerBase {
 
   use StringTranslationTrait;
+  use AutowireTrait;
 
   /**
-   * Controller for policymaker subpages.
-   *
-   * @param \Drupal\Core\Config\ImmutableConfig $config
-   *   The config.
-   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
-   *   Policymaker service.
-   * @param \Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder $organizationPathBuilderService
-   *   Organization path builder service.
-   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The logger.
+   * The config.
    */
+  private ImmutableConfig $config;
+
   public function __construct(
-    private readonly ImmutableConfig $config,
+    ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'paatokset_policymakers')]
     private readonly PolicymakerService $policymakerService,
     private readonly OrganizationPathBuilder $organizationPathBuilderService,
+    #[Autowire(service: 'logger.channel.paatokset_policymakers')]
     private readonly LoggerChannelInterface $logger,
+    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
-    $this->policymakerService->setPolicyMakerByPath();
-  }
+    $this->config = $configFactory->get('paatokset_ahjo_api.default_texts');
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('config.factory')->get('paatokset_ahjo_api.default_texts'),
-      $container->get('paatokset_policymakers'),
-      $container->get(OrganizationPathBuilder::class),
-      $container->get('logger.channel.paatokset_policymakers')
-    );
+    // Set magic values in policymaker service.
+    $this->policymakerService->setPolicyMakerByPath();
   }
 
   /**
@@ -75,7 +69,7 @@ class PolicymakerController extends ControllerBase {
       $documentsDescription = $this->config->get('documents_description.value');
     }
 
-    $build = [
+    return [
       '#type' => 'container',
       '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
       'content' => [
@@ -90,8 +84,6 @@ class PolicymakerController extends ControllerBase {
         ],
       ],
     ];
-
-    return $build;
   }
 
   /**
@@ -132,7 +124,8 @@ class PolicymakerController extends ControllerBase {
     if (empty($decisionsDescription)) {
       $decisionsDescription = $this->config->get('decisions_description.value');
     }
-    $build = [
+
+    return [
       '#type' => 'container',
       '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
       'content' => [
@@ -147,8 +140,6 @@ class PolicymakerController extends ControllerBase {
         ],
       ],
     ];
-
-    return $build;
   }
 
   /**
@@ -170,21 +161,24 @@ class PolicymakerController extends ControllerBase {
   }
 
   /**
-   * Policymaker dicussion minutes route.
+   * Policymaker discussion minutes route.
    *
    * @return array
    *   Render array.
    */
   public function discussionMinutes(): array {
     $policymaker = $this->policymakerService->getPolicymaker();
-    if (!$policymaker) {
-      return ['#title' => $this->t('Discussion minutes:')];
-    }
-    return ['#title' => $this->t('Discussion minutes: @title', ['@title' => $policymaker->get('title')->value])];
+    return [
+      '#title' => $this->t('Discussion minutes: @title', [
+        '@title' => $policymaker?->get('title')->value ?? '',
+      ]),
+    ];
   }
 
   /**
    * Return view for singular minutes.
+   *
+   * @todo get meeting & policymaker from route paramters.
    *
    * @param string $id
    *   Meeting ID.
@@ -193,20 +187,31 @@ class PolicymakerController extends ControllerBase {
    *   Render array.
    */
   public function minutes(string $id): array {
-    try {
-      $meetingData = $this->policymakerService->getMeetingAgenda($id);
-    }
-    catch (\Exception $e) {
-      Error::logException($this->logger, $e);
-      $meetingData = [];
+    // Load meeting:
+    $meetings = $this->entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'status' => 1,
+        'type' => 'meeting',
+        'field_meeting_id' => $id,
+      ]);
+
+    if (!$meeting = array_first($meetings)) {
+      throw new NotFoundHttpException();
     }
 
+    assert($meeting instanceof Meeting);
+    if (!$policymaker = $meeting->getPolicymaker()) {
+      throw new NotFoundHttpException();
+    }
+
+    $cache = new CacheableMetadata();
     $build = [
       '#theme' => 'policymaker_minutes',
     ];
 
+    $meetingData = $this->policymakerService->getMeetingAgenda($meeting) ?? [];
     if ($meetingData) {
-      $policymaker = $this->policymakerService->getPolicymaker();
       $documentsDescription = _paatokset_ahjo_api_render_default_text(['value' => $policymaker->get('field_documents_description')->value]);
       if (empty($documentsDescription)) {
         $documentsDescription = _paatokset_ahjo_api_render_default_text($this->config->get('documents_description'));
@@ -217,15 +222,12 @@ class PolicymakerController extends ControllerBase {
       $build['file'] = $meetingData['file'];
       $build['#documents_description'] = $documentsDescription;
 
-      // Add cache context for current node.
-      $build['#cache']['tags'][] = 'node:' . $meetingData['meeting']['nid'];
+      // Add cache context for the current node.
+      $cache->addCacheableDependency($meeting);
 
       // Add cache context for meeting ID.
-      $build['#cache']['tags'][] = 'meeting:' . $id;
+      $cache->addCacheTags(["meeting:$id"]);
     }
-
-    // Add cache context for minutes of the discussion for the link to show up.
-    $build['#cache']['tags'][] = 'media_list:minutes_of_the_discussion';
 
     if (isset($meetingData['decision_announcement'])) {
       $build['decision_announcement'] = $meetingData['decision_announcement'];
@@ -235,13 +237,58 @@ class PolicymakerController extends ControllerBase {
       $build['meeting_metadata'] = $meetingData['meeting_metadata'];
     }
 
-    // @todo check this.
-    $minutesOfDiscussion = $this->policymakerService->getMinutesOfDiscussion(1, FALSE, $id);
-    if ($minutesOfDiscussion) {
+    // Add cache context for minutes of the discussion for the link to show up.
+    $cache->addCacheTags(["media_list:minutes_of_the_discussion"]);
+    if ($minutesOfDiscussion = $this->getMinutesOfDiscussion($meeting)) {
       $build['minutes_of_discussion'] = $minutesOfDiscussion;
     }
 
+    $cache->applyTo($build);
+
     return $build;
+  }
+
+  /**
+   * Get discussion minutes for meeting.
+   *
+   * @return array
+   *   Meeting document data.
+   */
+  private function getMinutesOfDiscussion(Meeting $meeting) : array {
+    $mediaStorage = $this
+      ->entityTypeManager()
+      ->getStorage('media');
+
+    $meeting_minutes = $mediaStorage->loadByProperties([
+      'bundle' => 'minutes_of_the_discussion',
+      'field_meetings_reference' => $meeting->id(),
+    ]);
+
+    $transformedResults = [];
+    foreach ($meeting_minutes as $entity) {
+      /** @var \Drupal\file\Entity\File|null $file */
+      $file = $entity->get('field_document')->entity;
+      $download_link = $file?->createFileUrl(relative: FALSE);
+      if (!$download_link) {
+        continue;
+      }
+
+      $meeting_timestamp = $meeting->get('field_meeting_date')->date->getTimeStamp();
+
+      $transformedResults[] = [
+        'link' => $download_link,
+        'publish_date' => date('d.m.Y', $meeting_timestamp),
+        'title' => $entity->label() . ' (PDF)',
+        'type' => 'minutes-of-discussion',
+        'year' => date('Y', $meeting_timestamp),
+      ];
+    }
+
+    usort($transformedResults, function ($item1, $item2) {
+      return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
+    });
+
+    return $transformedResults;
   }
 
   /**

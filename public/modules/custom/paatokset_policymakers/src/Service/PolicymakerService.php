@@ -17,6 +17,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
@@ -476,7 +477,7 @@ class PolicymakerService {
    * @return array|null
    *   Render array with parsed HTML content, if found.
    */
-  public function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
+  private function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
     // If meeting minutes are published, do not display announcement.
     if ($meeting->hasField('field_meeting_minutes_published') && $meeting->get('field_meeting_minutes_published')->value) {
       return NULL;
@@ -1273,22 +1274,13 @@ class PolicymakerService {
   /**
    * Return all agenda items for a meeting. Only works on policymaker subpages.
    *
-   * @param string $meetingId
-   *   Meeting ID to get Agenda Items for.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Meeting $meeting
+   *   Meeting entity.
    *
    * @return array|null
    *   Agenda items for meeting.
    */
-  public function getMeetingAgenda(string $meetingId): ?array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      throw new \InvalidArgumentException("Missing policymaker");
-    }
-
-    $meeting = $this->getMeetingNode($meetingId);
-    if (!$meeting instanceof NodeInterface) {
-      throw new NotFoundHttpException();
-    }
-
+  public function getMeetingAgenda(Meeting $meeting): ?array {
     $publishDate = NULL;
     $fileUrl = NULL;
 
@@ -1316,17 +1308,17 @@ class PolicymakerService {
         $publishDate = date('d.m.Y', $document_timestamp);
       }
 
-      $fileUrl = $this->meetingService->getUrlFromAhjoDocument($document);
+      $fileUrl = $document['FileURI'] ?? NULL;
     }
 
     // Get items in both languages because all aren't translated.
-    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
+    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meeting->getAhjoId(), $currentLanguage);
 
     $fallbackLanguage = match ($currentLanguage) {
       'fi' => 'sv',
       default => 'fi',
     };
-    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
+    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meeting->getAhjoId(), $fallbackLanguage);
     // If the default language list is missing items, add them from fallback.
     if (count($agendaItems) < count($fallbackAgendaItems)) {
       // Initiate new list to keep correct ordering.
@@ -1344,10 +1336,10 @@ class PolicymakerService {
 
     // Meeting metadata.
     $metadata = [];
-    if ($meeting->hasField('field_meeting_date') && !$meeting->get('field_meeting_date')->isEmpty()) {
+    if (!$meeting->get('field_meeting_date')->isEmpty()) {
       $metadata['date'] = date('d.m.Y - H:i', $meeting->get('field_meeting_date')->date->getTimeStamp());
     }
-    if ($meeting->hasField('field_meeting_location') && !$meeting->get('field_meeting_location')->isEmpty()) {
+    if (!$meeting->get('field_meeting_location')->isEmpty()) {
       $metadata['location'] = $meeting->get('field_meeting_location')->value;
     }
 
@@ -1385,7 +1377,7 @@ class PolicymakerService {
    * @return null|array
    *   Null if no document is found.
    */
-  private function getMeetingDocumentWithLanguageFallback(NodeInterface $meeting, string $type, string $currentLanguage): ?array {
+  private function getMeetingDocumentWithLanguageFallback(Meeting $meeting, string $type, string $currentLanguage): ?array {
     $documentLanguages = [$currentLanguage, 'fi-sv'];
     $documentLanguages[] = match ($currentLanguage) {
       'fi' => 'sv',
@@ -1393,9 +1385,7 @@ class PolicymakerService {
     };
 
     foreach ($documentLanguages as $documentLanguage) {
-      $document = $this->meetingService->getDocumentFromEntity($meeting, $type, $documentLanguage);
-
-      if (!is_null($document)) {
+      if ($document = $meeting->getDocumentFromEntity($type, $documentLanguage)) {
         return $document;
       }
     }
@@ -1502,133 +1492,6 @@ class PolicymakerService {
     });
 
     return $agendaItems;
-  }
-
-  /**
-   * Get discussion minutes for meeting.
-   *
-   * @deprecated
-   *
-   * @param int|null $limit
-   *   Limit query.
-   * @param bool $byYear
-   *   Search by year.
-   * @param string $meetingId
-   *   Filter by meeting.
-   *
-   * @return array
-   *   Meeting document data.
-   */
-  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, ?string $meetingId = NULL) : array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
-    $query = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId)
-      ->sort('field_meeting_date', 'DESC');
-
-    if ($limit) {
-      $query->range('0', $limit);
-    }
-
-    if ($meetingId) {
-      $query->condition('field_meeting_id', $meetingId);
-    }
-
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return [];
-    }
-
-    $meeting_minutes = $this->getMeetingMediaEntities($ids);
-    $meeting_ids = array_keys($meeting_minutes);
-    $nodes = $this->nodeStorage->loadMultiple($meeting_ids);
-    $fileStorage = $this->entityTypeManager->getStorage('file');
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
-    $transformedResults = [];
-    foreach ($meeting_minutes as $meeting_id => $meeting) {
-      foreach ($meeting as $entity) {
-        $meeting_timestamp = $nodes[$meeting_id]->get('field_meeting_date')->date->getTimeStamp();
-        $meeting_year = date('Y', $meeting_timestamp);
-        $dateLong = date('d.m.Y', $meeting_timestamp);
-
-        $result = [
-          'publish_date' => $dateLong,
-          'title' => $entity->label() . ' (PDF)',
-          'type' => 'minutes-of-discussion',
-          'year' => $meeting_year,
-        ];
-
-        $download_link = NULL;
-        $file = NULL;
-        if ($entity->get('field_document')->target_id) {
-          $file_id = $entity->get('field_document')->target_id;
-          $file = $fileStorage->load($file_id);
-        }
-
-        if ($file instanceof FileInterface) {
-          $download_link = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
-        }
-
-        if (!$download_link) {
-          continue;
-        }
-
-        $result['link'] = $download_link;
-
-        $transformedResults[] = $result;
-      }
-    }
-
-    usort($transformedResults, function ($item1, $item2) {
-      return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
-    });
-
-    if ($byYear) {
-      $sorted_by_year = [];
-      foreach ($transformedResults as $result) {
-        $sorted_by_year[$result['year']][] = $result;
-      }
-
-      $transformedResults = $sorted_by_year;
-    }
-
-    return $transformedResults;
-  }
-
-  /**
-   * Get meeting-related documents.
-   *
-   * @return array
-   *   Array of resulting documents
-   */
-  private function getMeetingMediaEntities($meetingids) {
-    if (count($meetingids) === 0) {
-      return [];
-    }
-
-    $mediaStorage = $this->entityTypeManager->getStorage('media');
-    $ids = $mediaStorage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('bundle', 'minutes_of_the_discussion')
-      ->condition('field_meetings_reference', $meetingids, 'IN')
-      ->execute();
-
-    $entities = $mediaStorage->loadMultiple($ids);
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $entities */
-    $result = [];
-    foreach ($entities as $entity) {
-      $meeting_id = $entity->get('field_meetings_reference')->target_id;
-      $result[$meeting_id][] = $entity;
-    }
-
-    return $result;
   }
 
   /**

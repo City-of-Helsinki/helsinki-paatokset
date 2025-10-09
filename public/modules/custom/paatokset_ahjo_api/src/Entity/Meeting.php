@@ -44,6 +44,33 @@ class Meeting extends Node implements AhjoUpdatableInterface {
   }
 
   /**
+   * Get meeting minutes document from meeting node.
+   *
+   * @param string $document_type
+   *   Document type, for example, 'esityslista', 'pöytäkirja'.
+   * @param string|null $langcode
+   *   Document language.
+   *
+   * @return array|null
+   *   Meeting minutes JSON, if one exists for the meeting.
+   */
+  public function getDocumentFromEntity(string $document_type, ?string $langcode = NULL): ?array {
+    foreach ($this->get('field_meeting_documents') as $field) {
+      $document = json_decode($field->value, TRUE);
+
+      if ($langcode && isset($document['Language']) && !str_contains($document['Language'], $langcode)) {
+        continue;
+      }
+
+      if (isset($document['Type']) && isset($document['NativeId']) && $document['Type'] === $document_type) {
+        return $document;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get meeting phase enum from Ahjo document.
    */
   public function getMeetingPhase(): ?MeetingPhase {
@@ -74,6 +101,22 @@ class Meeting extends Node implements AhjoUpdatableInterface {
   }
 
   /**
+   * Gets related policymaker.
+   */
+  public function getPolicymaker(): ?Policymaker {
+    $policymakerId = $this->get('field_meeting_dm_id')->value;
+
+    // Load policymaker this meeting relates to
+    // (Paatokset does not use reference fields).
+    $entityStorage = \Drupal::entityTypeManager()->getStorage('node');
+
+    return array_first($entityStorage->loadByProperties([
+      'type' => 'policymaker',
+      'field_policymaker_id' => $policymakerId,
+    ]));
+  }
+
+  /**
    * Get minutes url from meeting.
    *
    * @param string|null $langcode
@@ -88,18 +131,9 @@ class Meeting extends Node implements AhjoUpdatableInterface {
       $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
     }
 
-    $policymakerId = $this->get('field_meeting_dm_id')->value;
-
     // Load policymaker this meeting relates to
     // (Paatokset does not use reference fields).
-    // @todo does this hit DB for every request, or
-    // is Drupal smart enough to cache loadByProperties?
-    $entityStorage = \Drupal::entityTypeManager()->getStorage('node');
-    $policymaker = array_first($entityStorage->loadByProperties([
-      'type' => 'policymaker',
-      'field_policymaker_id' => $policymakerId,
-    ]));
-
+    $policymaker = $this->getPolicymaker();
     if (!$policymaker instanceof Policymaker || $policymaker->isTrustee()) {
       return NULL;
     }
