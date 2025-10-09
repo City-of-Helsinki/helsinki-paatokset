@@ -54,13 +54,13 @@ class SearchManager {
 
     $build = $type === 'decisions' ? [
       '#search_element' => [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => [
-            'id' => 'paatokset_search',
-            'data-type' => $type,
-            'data-url' => $proxyUrl,
-          ],
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'id' => 'paatokset_search',
+          'data-type' => $type,
+          'data-url' => $proxyUrl,
+        ],
       ],
       '#attached' => [
         'library' => [

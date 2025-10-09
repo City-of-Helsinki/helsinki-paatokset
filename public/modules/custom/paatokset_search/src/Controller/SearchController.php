@@ -40,7 +40,7 @@ class SearchController extends ControllerBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $text,
-      ], $description),
+        ], $description),
       ],
       '#theme' => 'decisions_search',
     ]);
@@ -56,4 +56,5 @@ class SearchController extends ControllerBase {
 
     return $build;
   }
+
 }

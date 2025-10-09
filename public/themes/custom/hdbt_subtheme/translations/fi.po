@@ -211,7 +211,7 @@ msgid "Read the instructions for refining your search."
 msgstr "Lue ohjeita haun tarkentamiseen."
 
 msgctxt "Decisions search"
-msgid "You can find the City of Helsinki\'s decision-making body and office holder decisions starting from 2017 in the search."
+msgid "You can find the City of Helsinki's decision-making body and office holder decisions starting from 2017 in the search."
 msgstr "Löydät hausta Helsingin toimielinten ja viranhaltijoiden päätökset vuodesta 2017 alkaen."
 
 msgctxt "Decisions search"

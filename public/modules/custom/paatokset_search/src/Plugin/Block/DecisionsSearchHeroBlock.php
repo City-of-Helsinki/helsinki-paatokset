@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   admin_label: new TranslatableMarkup('Decisions Search Hero Block'),
 )]
 final class DecisionsSearchHeroBlock extends BlockBase {
+
   /**
    * {@inheritDoc}
    */
@@ -21,7 +22,8 @@ final class DecisionsSearchHeroBlock extends BlockBase {
     return [
       '#theme' => 'decisions_search_hero_block',
       '#hero_title' => $this->t('Search decisions', [], ['context' => 'Decisions search']),
-      '#hero_description' => $this->t('You can find the City of Helsinki\'s decision-making body and office holder decisions starting from 2017 in the search.', [], ['context' => 'Decisions search']),
+      '#hero_description' => $this->t("You can find the City of Helsinki's decision-making body and office holder decisions starting from 2017 in the search.", [], ['context' => 'Decisions search']),
     ];
   }
+
 }
