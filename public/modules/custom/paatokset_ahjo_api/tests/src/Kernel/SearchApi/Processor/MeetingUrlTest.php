@@ -11,7 +11,6 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\AhjoSearchApiKernelTestBase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -59,10 +58,6 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
   public function testProcessor() {
     $url = $this->prophesize(Url::class);
     $url->toString()->willReturn('test-url');
-
-    $this->policyMakerService
-      ->getMinutesRoute(Argument::any(), Argument::any(), Argument::any(), Argument::any())
-      ->willReturn($url->reveal());
 
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get(EntityTypeManagerInterface::class)

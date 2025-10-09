@@ -108,7 +108,7 @@ class Policymaker extends Node implements AhjoEntityInterface {
       return NULL;
     }
 
-    ['decision' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
+    ['decisions' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
 
     if (PolicymakerService::routeExists($route)) {
       return Url::fromRoute($route, [
@@ -188,6 +188,26 @@ class Policymaker extends Node implements AhjoEntityInterface {
    */
   public function getAhjoId(): string {
     return $this->get('field_policymaker_id')->getString();
+  }
+
+  /**
+   * Return route for policymaker documents.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL object, if route is valid.
+   */
+  public function getDocumentsRoute(): ?Url {
+    if ($this->isTrustee()) {
+      return NULL;
+    }
+
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    ['documents' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
+
+    return Url::fromRoute($route, [
+      'organization' => strtolower($this->getPolicymakerOrganizationFromUrl($langcode)),
+    ]);
   }
 
 }

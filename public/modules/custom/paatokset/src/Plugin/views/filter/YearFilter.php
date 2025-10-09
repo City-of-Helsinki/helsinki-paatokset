@@ -6,7 +6,6 @@ namespace Drupal\paatokset\Plugin\views\filter;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\SelectInterface;
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\views\Attribute\ViewsFilter;

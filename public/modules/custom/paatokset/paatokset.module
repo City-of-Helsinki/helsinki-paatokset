@@ -81,7 +81,7 @@ function paatokset_views_data_alter(&$data): void {
       'help' => new TranslatableMarkup('Field: @field (@entity:@bundle)', [
         '@field' => $field_config->getName(),
         '@entity' => $field_config->getTargetEntityTypeId(),
-        '@bundle' => $field_config->getTargetBundle()
+        '@bundle' => $field_config->getTargetBundle(),
       ]),
       'filter' => [
         'title' => new TranslatableMarkup('Filter by year'),

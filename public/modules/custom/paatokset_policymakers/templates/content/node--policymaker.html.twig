@@ -176,7 +176,7 @@
         </div>
         <div class="policymaker-decisions-container">
         {% for decision in recent_decisions %}
-          {% include '@paatokset_ahjo_api/component/decision--list-item.html.twig' %}
+          {{ decision }}
         {% endfor %}
         <div class="view-all view-all--decisions">
           <a class="paatokset-button-link" href="{{ all_decisions_link }}">
@@ -198,7 +198,7 @@
         </div>
         <div class="policymaker-documents-container">
           {% for document in recent_documents %}
-            {% include '@paatokset_ahjo_api/component/document.html.twig' %}
+            {{ document }}
           {% endfor %}
         </div>
         <div class="view-all view-all--documents">

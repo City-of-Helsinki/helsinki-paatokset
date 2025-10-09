@@ -11,7 +11,6 @@ use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
@@ -316,8 +315,16 @@ class PolicymakerController extends ControllerBase {
    *   Minutes title.
    */
   public function getMinutesTitle($id) {
-    $meeting = $this->policymakerService->getMeetingNode($id);
-    if ($meeting instanceof NodeInterface) {
+    // Load meeting:
+    $meetings = $this->entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'status' => 1,
+        'type' => 'meeting',
+        'field_meeting_id' => $id,
+      ]);
+
+    if ($meeting = array_first($meetings)) {
       return $this->policymakerService->getMeetingTitle($meeting);
     }
 
