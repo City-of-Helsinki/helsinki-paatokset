@@ -332,7 +332,7 @@ function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   if (isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
     $pmLink = Link::fromTextAndUrl(
-      $policymaker->title->value,
+      $policymaker->label(),
       $policymaker->toUrl()
     )->toString();
 

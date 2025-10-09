@@ -76,26 +76,6 @@ parameters:
     -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
       count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
-
-    -
-      message: "#^PHPDoc tag @param for parameter \\$entity with type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
-
-    -
-      message: "#^Parameter \\$entity of method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\MeetingService\\:\\:getDocumentFromEntity\\(\\) has invalid type Drupal\\\\paatokset_ahjo_api\\\\Service\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
-
-    -
-      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Service/MeetingService.php
-
-    -
-      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
-      count: 1
       path: public/modules/custom/paatokset_ahjo_api/src/Service/TrusteeService.php
 
     -
@@ -332,11 +312,6 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
 
     -
-      message: "#^Unsafe usage of new static\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerController.php
-
-    -
       message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$title\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
@@ -358,12 +333,12 @@ parameters:
 
     -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
-      count: 2
+      count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
-      count: 2
+      count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
     -
@@ -373,11 +348,6 @@ parameters:
 
     -
       message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlByNativeId\\(\\) invoked with 3 parameters, 1 required\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getMeetingNode\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
       count: 1
       path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
 
@@ -412,6 +382,6 @@ parameters:
       path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
 
     -
-      message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$field_trustee_council_group\\.$#"
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
       count: 1
-      path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
+      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerController.php
