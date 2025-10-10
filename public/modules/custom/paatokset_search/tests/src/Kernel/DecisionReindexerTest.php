@@ -36,6 +36,7 @@ class DecisionReindexerTest extends EntityKernelTestBase {
 
     $mock_index = $this->createMock(IndexInterface::class);
 
+    // @phpstan-ignore-next-line
     $mock_index->expects($this->exactly(2))
       ->method('trackItemsUpdated')
       ->withConsecutive(

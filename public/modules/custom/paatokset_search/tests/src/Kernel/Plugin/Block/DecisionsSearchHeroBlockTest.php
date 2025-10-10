@@ -9,7 +9,7 @@ use Drupal\paatokset_search\Plugin\Block\DecisionsSearchHeroBlock;
 
 /**
  * Tests decisions search hero block.
- * 
+ *
  * @coversDefaultClass \Drupal\paatokset_search\Plugin\Block\DecisionsSearchHeroBlock
  */
 class DecisionsSearchHeroBlockTest extends KernelTestBase {
@@ -22,7 +22,7 @@ class DecisionsSearchHeroBlockTest extends KernelTestBase {
     'paatokset_search',
     'paatokset_ahjo_api',
     'helfi_api_base',
-  ]; 
+  ];
 
   /**
    * Tests block render.
@@ -36,5 +36,5 @@ class DecisionsSearchHeroBlockTest extends KernelTestBase {
     $this->assertArrayHasKey('#hero_title', $build);
     $this->assertArrayHasKey('#hero_description', $build);
   }
-  
+
 }
