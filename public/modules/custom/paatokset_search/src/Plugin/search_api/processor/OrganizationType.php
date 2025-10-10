@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
-use Drupal\node\Entity\Node;
-use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
@@ -49,4 +49,5 @@ class OrganizationType extends ProcessorPluginBase {
       }
     }
   }
+
 }

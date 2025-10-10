@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -11,7 +12,7 @@ use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
  * Adds a field to indicate if there are more decisions for the same case.
- * 
+ *
  * @SearchApiProcessor(
  *   id = "more_decisions",
  *   label = @Translation("More decisions"),
@@ -79,4 +80,5 @@ class MoreDecisions extends ProcessorPluginBase {
       ->count()
       ->execute();
   }
+
 }

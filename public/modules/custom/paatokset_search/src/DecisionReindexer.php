@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_search;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\search_api\IndexInterface;
-
 
 /**
  * Reindexes decisions when their parent case is updated.
