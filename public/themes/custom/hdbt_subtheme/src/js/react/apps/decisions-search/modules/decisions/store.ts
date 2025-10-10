@@ -79,7 +79,13 @@ const stateToURLParams = (state: typeof defaultState) => {
     }
   });
   const url = new URL(window.location.href);
+  const oldUrlString = url.toString();
   url.search = params.toString();
+
+  if (oldUrlString === url.toString()) {
+    return;
+  }
+
   window.history.pushState({}, '', url.toString());
 };
 
