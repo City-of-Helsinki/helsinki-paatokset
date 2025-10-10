@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_search\Plugin\search_api\processor;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Adds a field to indicate if there are more decisions for the same case.
@@ -24,7 +26,31 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *   hidden = false,
  * )
  */
-class MoreDecisions extends ProcessorPluginBase {
+final class MoreDecisions extends ProcessorPluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    array $plugin_definition,
+    protected readonly EntityTypeManagerInterface $entityTypeManager
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -71,7 +97,7 @@ class MoreDecisions extends ProcessorPluginBase {
    * Query decisions count for the case.
    */
   protected function getDecisionsCount(string $diary_number): int {
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getStorage('node')
       ->getQuery()
       ->condition('type', 'decision')
