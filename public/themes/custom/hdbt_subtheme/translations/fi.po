@@ -98,6 +98,168 @@ msgctxt "Voting results"
 msgid "Voting results"
 msgstr "Äänestystulokset"
 
+msgctxt "Decisions search"
+msgid "Finnish keyword"
+msgstr "Hakusana"
+
+msgctxt "Decisions search"
+msgid "For example, Viikki"
+msgstr "Esim. Viikki"
+
+msgctxt "Decisions search"
+msgid "Date"
+msgstr "Ajankohta"
+
+msgctxt "Decisions search"
+msgid "All dates"
+msgstr "Kaikki ajankohdat"
+
+msgctxt "Decisions search"
+msgid "Decision-maker / Division"
+msgstr "Päättäjä / Toimiala"
+
+msgctxt "Decisions search"
+msgid "All decision-makers and divisions"
+msgstr "Kaikki päättäjät ja toimialat"
+
+msgctxt "Decisions search"
+msgid "Only show"
+msgstr "Näytä vain"
+
+msgctxt "Decisions search"
+msgid "Decisions of decision-making bodies"
+msgstr "Toimielinten päätökset"
+
+msgctxt "Decisions search"
+msgid "Decisions of office holders"
+msgstr "Viranhaltijoiden päätökset"
+
+msgctxt "Decisions search"
+msgid "Search for a decision-maker or a division"
+msgstr "Etsi päättäjää tai toimialaa"
+
+msgctxt "Decisions search"
+msgid "Sort search results"
+msgstr "Järjestä hakutulokset"
+
+msgctxt "Decisions search"
+msgid "Newest first"
+msgstr "Uusimmat ensin"
+
+msgctxt "Decisions search"
+msgid "Most relevant first"
+msgstr "Osuvimmat ensin"
+
+msgctxt "Decisions search"
+msgid "Oldest first"
+msgstr "Vanhimmat ensin"
+
+msgctxt "Decisions search"
+msgid "Issues with several decisions"
+msgstr "Asia, josta on useita päätöksiä"
+
+msgctxt "Decisions search"
+msgid "Choose dates"
+msgstr "Valitse ajankohta"
+
+msgctxt "Decisions search"
+msgid "Choose range"
+msgstr "Valitse päivämäärät"
+
+msgctxt "Decisions search"
+msgid "Back"
+msgstr "Takaisin"
+
+msgctxt "Decisions search"
+msgid "Past week"
+msgstr "Viime viikko"
+
+msgctxt "Decisions search"
+msgid "Past month"
+msgstr "Viime kuukausi"
+
+msgctxt "Decisions search"
+msgid "Past year"
+msgstr "Viime vuosi"
+
+msgctxt "Decisions search"
+msgid "Start date"
+msgstr "Alkamispäivä"
+
+msgctxt "Decisions search"
+msgid "End date"
+msgstr "Päättymispäivä"
+
+msgctxt "Decisions search"
+msgid "All dates"
+msgstr "Kaikki ajankohdat"
+
+msgctxt "Decisions search"
+msgid "For example, Viikki"
+msgstr "Esim. Viikki"
+
+msgctxt "Decisions search"
+msgid "The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
+msgstr "Voit etsiä kaupungin päätöksiä hakusanalla. Voit rajata tuloksia ajankohdan, aiheen ja päättäjän mukaan."
+
+msgctxt "Decisions search"
+msgid "Enter a keyword in the search field to find a specific decision. Results can be filtered by date, topic and decision-maker."
+msgstr "Jos samasta asiasta on useita päätöksiä, näytetään vain hakuasi parhaiten vastaava päätös. Löydät asian koko päätöshistorian, kun avaat päätöksen."
+
+msgctxt "Decisions search"
+msgid "If several decisions have been made on the same issue, the search result will initially show only the best match. To view the entire decision-making history associated with the issue, click to open the decision."
+msgstr " "
+
+msgctxt "Decisions search"
+msgid "Read the instructions for refining your search."
+msgstr "Lue ohjeita haun tarkentamiseen."
+
+msgctxt "Decisions search"
+msgid "You can find the City of Helsinki's decision-making body and office holder decisions starting from 2017 in the search."
+msgstr "Löydät hausta Helsingin toimielinten ja viranhaltijoiden päätökset vuodesta 2017 alkaen."
+
+msgctxt "Decisions search"
+msgid "Search decisions"
+msgstr "Etsi päätöksiä"
+
+msgctxt "Decisions search"
+msgid "1 decision"
+msgid_plural "@count decisions"
+msgstr[0] "1 päätös"
+msgstr[1] "@count päätöstä"
+
+msgctxt "Decisions search"
+msgid "Filter search results"
+msgstr "Rajaa hakutuloksia"
+
+msgctxt "Decisions search"
+msgid "Issues with several decisions"
+msgstr "Asia, josta on useita päätöksiä"
+
+msgctxt "Decisions search"
+msgid "Decision-maker"
+msgstr "Päättäjä"
+
+msgctxt "Decisions search"
+msgid "Committees and boards"
+msgstr "Lautakunnat ja johtokunnat"
+
+msgctxt "Decisions search"
+msgid "City Council"
+msgstr "Kaupunginvaltuusto"
+
+msgctxt "Decisions search"
+msgid "Officials"
+msgstr "Luottamushenkilöpäättäjät"
+
+msgctxt "Decisions search"
+msgid "City Hall"
+msgstr "Kaupunginhallitus"
+
+msgctxt "Decisions search"
+msgid "Trustees"
+msgstr "Viranhaltijat"
+
 msgctxt "Announcements and notifications list"
 msgid "All announcements and notifications"
 msgstr "Kaikki kuulutukset ja ilmoitukset"
