@@ -56,7 +56,7 @@ const SearchBar = React.forwardRef<Component<DataSearchProps, any, any>, {value:
               type: 'phrase_prefix',
               operator: 'or'
             }
-          }
+          },
         ],
       },
     };

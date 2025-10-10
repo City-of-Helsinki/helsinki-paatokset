@@ -8,6 +8,7 @@ import { DecisionIndex } from '../enum/IndexFields';
 import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { SortOptions } from '../enum/SortOptions';
+import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 
 // Boosted fields for full text search
 const dataFields = [
@@ -55,35 +56,16 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
 
   const searchTerm = getSearchTerm();
   if (searchTerm && searchTerm.length) {
-    [
-      {
-        multi_match: {
-          query: searchTerm,
-          fields: dataFields,
-          type: 'best_fields',
-          operator: 'or',
-          fuzziness: 0
+    getBaseSearchTermQuery(searchTerm, dataFields).forEach(item => should.push(item));
+    should.push({
+      wildcard: {
+        [DecisionIndex.SUBJECT]: {
+          value: `*${searchTerm.toLowerCase()}*`,
         }
-      },
-      {
-        multi_match: {
-          query: searchTerm,
-          fields: dataFields,
-          type: 'phrase',
-          operator: 'or'
-        }
-      },
-      {
-        multi_match: {
-          query: searchTerm,
-          fields: dataFields,
-          type: 'phrase_prefix',
-          operator: 'or'
-        }
-      },
-    ].forEach(item => should.push(item));
+      }
+    });
   }
-  
+
   if (searchTerm && isOperatorSearch(searchTerm))  {
     filter.push({
       simple_query_string: {

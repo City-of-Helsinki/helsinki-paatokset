@@ -11,6 +11,7 @@ import { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { getDecisionMakersAtom, setDecisionMakersAtom } from '../store';
 import { Events } from '../enum/Events';
 import { PolicymakerIndex } from '../enum/IndexFields';
+import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 
 const dataFields = [
   'title',
@@ -52,31 +53,14 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
   query: {
     bool: {
       should: [
+        ...getBaseSearchTermQuery(searchTerm, dataFields),
         {
-          multi_match: {
-            query: searchTerm,
-            fields: dataFields,
-            type: 'best_fields',
-            operator: 'or',
-            fuzziness: 0
+          wildcard: {
+            [PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE]: {
+              value: `*${searchTerm.toLowerCase()}*`,
+            }
           }
-        },
-        {
-          multi_match: {
-            query: searchTerm,
-            fields: dataFields,
-            type: 'phrase',
-            operator: 'or'
-          }
-        },
-        {
-          multi_match: {
-            query: searchTerm,
-            fields: dataFields,
-            type: 'phrase_prefix',
-            operator: 'or'
-          }
-        },
+        }
       ],
       minimum_should_match: 1,
     },
@@ -112,7 +96,7 @@ export const DMSelect = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        ...getQuery(searchTerm),
+        ...getQuery(searchTerm.trim()),
       }),
     });
     

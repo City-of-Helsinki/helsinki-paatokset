@@ -5,7 +5,6 @@ import { FormContainer } from './containers/FormContainer';
 import { ResultsContainer } from './containers/ResultsContainer';
 import { aggsAtom } from './store';
 import { useAggsQueryString } from './hooks/useAggsQueryString';
-import { GhostList } from '@/react/common/GhostList';
 
 export const DecisionsContainer = ({
   url,
@@ -50,7 +49,7 @@ export const DecisionsContainer = ({
   }
 
   if (!aggs) {
-    return <GhostList count={10} />;
+    return null;
   }
 
   return (
