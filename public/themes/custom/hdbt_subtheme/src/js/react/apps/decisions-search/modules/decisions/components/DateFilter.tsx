@@ -80,6 +80,7 @@ export const DateFilter = () => {
                 <DateInput
                   autoFocus
                   label={Drupal.t('Start date', {}, {context: 'Decisions search'})}
+                  language={drupalSettings.path.currentLanguage}
                   name={Components.FROM}
                   onChange={(value) => handleDatePick(value, setFrom)}
                   value={from}
@@ -87,6 +88,7 @@ export const DateFilter = () => {
                 <IconMinus className='date-filter__fields-divider' />
                 <DateInput
                   label={Drupal.t('End date', {}, {context: 'Decisions search'})}
+                  language={drupalSettings.path.currentLanguage}
                   name={Components.TO}
                   onChange={(value) => handleDatePick(value, setTo)}
                   value={to}
