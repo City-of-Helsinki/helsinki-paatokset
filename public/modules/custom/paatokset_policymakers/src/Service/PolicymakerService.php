@@ -9,7 +9,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -21,7 +20,6 @@ use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\pathauto\AliasCleanerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -110,10 +108,6 @@ class PolicymakerService {
    *   Path alias manager.
    * @param \Drupal\pathauto\AliasCleanerInterface $pathAliasCleaner
    *   Path alias cleaner.
-   * @param \Drupal\Core\File\FileUrlGenerator $fileUrlGenerator
-   *   File URL generator.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   Logger channel.
    */
   public function __construct(
     private LanguageManagerInterface $languageManager,
@@ -122,8 +116,6 @@ class PolicymakerService {
     private RouteMatchInterface $routeMatch,
     private AliasManagerInterface $pathAliasManager,
     private AliasCleanerInterface $pathAliasCleaner,
-    private FileUrlGeneratorInterface $fileUrlGenerator,
-    private LoggerInterface $logger,
   ) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
 

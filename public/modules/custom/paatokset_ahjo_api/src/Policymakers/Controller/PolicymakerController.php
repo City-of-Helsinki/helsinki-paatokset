@@ -1,18 +1,17 @@
 <?php
 
-namespace Drupal\paatokset_policymakers\Controller;
+declare(strict_types=1);
+
+namespace Drupal\paatokset_ahjo_api\Policymakers\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
-use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
+use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,24 +26,37 @@ class PolicymakerController extends ControllerBase {
   use StringTranslationTrait;
   use AutowireTrait;
 
-  /**
-   * The config.
-   */
-  private ImmutableConfig $config;
-
   public function __construct(
-    ConfigFactoryInterface $configFactory,
     #[Autowire(service: 'paatokset_policymakers')]
     private readonly PolicymakerService $policymakerService,
     private readonly OrganizationPathBuilder $organizationPathBuilderService,
-    #[Autowire(service: 'logger.channel.paatokset_policymakers')]
-    private readonly LoggerChannelInterface $logger,
-    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
-    $this->config = $configFactory->get('paatokset_ahjo_api.default_texts');
-
     // Set magic values in policymaker service.
     $this->policymakerService->setPolicyMakerByPath();
+  }
+
+  /**
+   * Build documents and decisions list.
+   */
+  private function buildDocumentPage(Policymaker $policymaker, string $description): array {
+    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
+    $organizationTag = $this->policymakerService->getPolicymakerTag($policymaker);
+
+    return [
+      '#type' => 'container',
+      '#title' => $this->t('Decisions: @title', ['@title' => $policymaker->label()]),
+      'content' => [
+        'organization' => [
+          '#prefix' => '<div class="policymaker-content policymaker-tags">',
+          '#suffix' => '</div>',
+          'tag' => $organizationTag,
+          'path' => $organizationPath,
+        ],
+        'description' => [
+          '#markup' => '<div class="policymaker-text">' . $description . '</div>',
+        ],
+      ],
+    ];
   }
 
   /**
@@ -55,34 +67,34 @@ class PolicymakerController extends ControllerBase {
    */
   public function documents(): array {
     $policymaker = $this->policymakerService->getPolicymaker();
-
     if (!$policymaker instanceof NodeInterface) {
       return [];
     }
 
-    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
-    $organizationTag = $this->policymakerService->getPolicymakerTag($policymaker);
+    $description = $policymaker->get('field_documents_description')->value
+      ?: $this->getDefaultText('documents_description.value')
+      ?: '';
 
-    $documentsDescription = $policymaker->get('field_documents_description')->value;
-    if (empty($documentsDescription)) {
-      $documentsDescription = $this->config->get('documents_description.value');
+    return $this->buildDocumentPage($policymaker, $description);
+  }
+
+  /**
+   * Policymaker decisions route.
+   *
+   * @return array
+   *   Render array.
+   */
+  public function decisions(): array {
+    $policymaker = $this->policymakerService->getPolicymaker();
+    if (!$policymaker instanceof NodeInterface) {
+      return [];
     }
 
-    return [
-      '#type' => 'container',
-      '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      'content' => [
-        'organization' => [
-          '#prefix' => '<div class="policymaker-content policymaker-tags">',
-          '#suffix' => '</div>',
-          'tag' => $organizationTag,
-          'path' => $organizationPath,
-        ],
-        'description' => [
-          '#markup' => '<div class="policymaker-text">' . $documentsDescription . '</div>',
-        ],
-      ],
-    ];
+    $description = $policymaker->get('field_decisions_description')->value
+      ?: $this->getDefaultText('decisions_description.value')
+      ?: '';
+
+    return $this->buildDocumentPage($policymaker, $description);
   }
 
   /**
@@ -100,45 +112,7 @@ class PolicymakerController extends ControllerBase {
       return t('Documents');
     }
 
-    return t('Documents: @name', ['@name' => $policymaker->get('title')->value]);
-  }
-
-  /**
-   * Policymaker decisions route.
-   *
-   * @return array
-   *   Render array.
-   */
-  public function decisions(): array {
-    $policymaker = $this->policymakerService->getPolicymaker();
-
-    if (!$policymaker instanceof NodeInterface) {
-      return [];
-    }
-
-    $organizationPath = $this->organizationPathBuilderService->build($policymaker);
-    $organizationTag = $this->policymakerService->getPolicymakerTag($policymaker);
-
-    $decisionsDescription = $policymaker->get('field_decisions_description')->value;
-    if (empty($decisionsDescription)) {
-      $decisionsDescription = $this->config->get('decisions_description.value');
-    }
-
-    return [
-      '#type' => 'container',
-      '#title' => $this->t('Decisions: @title', ['@title' => $this->policymakerService->getPolicymaker()->get('title')->value]),
-      'content' => [
-        'organization' => [
-          '#prefix' => '<div class="policymaker-content policymaker-tags">',
-          '#suffix' => '</div>',
-          'tag' => $organizationTag,
-          'path' => $organizationPath,
-        ],
-        'description' => [
-          '#markup' => '<div class="policymaker-text">' . $decisionsDescription . '</div>',
-        ],
-      ],
-    ];
+    return t('Documents: @name', ['@name' => $policymaker->label()]);
   }
 
   /**
@@ -156,7 +130,7 @@ class PolicymakerController extends ControllerBase {
       return t('Decisions');
     }
 
-    return t('Decisions: @name', ['@name' => $policymaker->get('title')->value]);
+    return t('Decisions: @name', ['@name' => $policymaker->label()]);
   }
 
   /**
@@ -169,7 +143,7 @@ class PolicymakerController extends ControllerBase {
     $policymaker = $this->policymakerService->getPolicymaker();
     return [
       '#title' => $this->t('Discussion minutes: @title', [
-        '@title' => $policymaker?->get('title')->value ?? '',
+        '@title' => $policymaker?->label() ?? '',
       ]),
     ];
   }
@@ -209,11 +183,12 @@ class PolicymakerController extends ControllerBase {
       '#theme' => 'policymaker_minutes',
     ];
 
-    $meetingData = $this->policymakerService->getMeetingAgenda($meeting) ?? [];
+    $meetingData = $this->policymakerService->getMeetingAgenda($meeting);
     if ($meetingData) {
       $documentsDescription = _paatokset_ahjo_api_render_default_text(['value' => $policymaker->get('field_documents_description')->value]);
       if (empty($documentsDescription)) {
-        $documentsDescription = _paatokset_ahjo_api_render_default_text($this->config->get('documents_description'));
+        // I don't think $documentsDescription can ever be empty.
+        $documentsDescription = _paatokset_ahjo_api_render_default_text($this->getDefaultText('documents_description'));
       }
 
       $build['meeting'] = $meetingData['meeting'];
@@ -226,14 +201,14 @@ class PolicymakerController extends ControllerBase {
 
       // Add cache context for meeting ID.
       $cache->addCacheTags(["meeting:$id"]);
-    }
 
-    if (isset($meetingData['decision_announcement'])) {
-      $build['decision_announcement'] = $meetingData['decision_announcement'];
-    }
+      if (isset($meetingData['decision_announcement'])) {
+        $build['decision_announcement'] = $meetingData['decision_announcement'];
+      }
 
-    if (isset($meetingData['meeting_metadata'])) {
-      $build['meeting_metadata'] = $meetingData['meeting_metadata'];
+      if (isset($meetingData['meeting_metadata'])) {
+        $build['meeting_metadata'] = $meetingData['meeting_metadata'];
+      }
     }
 
     // Add cache context for minutes of the discussion for the link to show up.
@@ -292,9 +267,6 @@ class PolicymakerController extends ControllerBase {
 
   /**
    * Return title as translatable string.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   Discussions title.
    */
   public static function getDiscussionMinutesTitle(): TranslatableMarkup {
     $policymakerService = \Drupal::service('paatokset_policymakers');
@@ -305,16 +277,13 @@ class PolicymakerController extends ControllerBase {
       return t('Discussion minutes');
     }
 
-    return t('Discussion minutes: @name', ['@name' => $policymaker->get('title')->value]);
+    return t('Discussion minutes: @name', ['@name' => $policymaker->label()]);
   }
 
   /**
    * Return translatable title for minutes.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
-   *   Minutes title.
    */
-  public function getMinutesTitle($id) {
+  public function getMinutesTitle($id): TranslatableMarkup|string {
     // Load meeting:
     $meetings = $this->entityTypeManager()
       ->getStorage('node')
@@ -344,6 +313,13 @@ class PolicymakerController extends ControllerBase {
     $this->policymakerService->setPolicyMaker($id);
     $data = $this->policymakerService->getComposition();
     return new JsonResponse($data);
+  }
+
+  /**
+   * Get default texts from config.
+   */
+  private function getDefaultText(string $key): ?string {
+    return $this->config('paatokset_ahjo_api.default_texts')->get($key);
   }
 
 }

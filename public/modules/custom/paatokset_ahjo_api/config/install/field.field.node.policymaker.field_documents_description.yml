@@ -1,0 +1,24 @@
+uuid: 3382baea-4eab-4352-a53c-b619ec7b9aaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_documents_description
+    - filter.format.plain_text
+    - node.type.policymaker
+  module:
+    - text
+id: node.policymaker.field_documents_description
+field_name: field_documents_description
+entity_type: node
+bundle: policymaker
+label: 'Asiakirjojen kuvaus'
+description: 'Teksti, joka näytetään asiakirjalistausten yläpuolella. Käytetään kuvaamaan listauksen sisältöä käyttäjille.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long

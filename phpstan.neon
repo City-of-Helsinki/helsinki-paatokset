@@ -384,4 +384,4 @@ parameters:
     -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
       count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerController.php
+      path: public/modules/custom/paatokset_ahjo_api/src/Policymakers/Controller/PolicymakerController.php

@@ -11,6 +11,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\node\Entity\NodeType;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
@@ -87,6 +88,27 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
     );
 
     $this->container->set(EnvironmentResolverInterface::class, $environmentResolver);
+  }
+
+  /**
+   * Tests migration configuration.
+   */
+  public function testMigration(): void {
+    $migration = $this->container
+      ->get(MigrationPluginManagerInterface::class)
+      ->createInstance('ahjo_initiatives', []);
+
+    $source = $migration->getSourcePlugin();
+    $this->assertInstanceOf($this->getPluginClass(), $source);
+
+    // Verify that this source defines all migration fields.
+    foreach ($migration->getProcess() as $process) {
+      foreach ($process as $definition) {
+        if (isset($definition['source'])) {
+          $this->assertArrayHasKey($definition['source'], $source->fields());
+        }
+      }
+    }
   }
 
   /**
