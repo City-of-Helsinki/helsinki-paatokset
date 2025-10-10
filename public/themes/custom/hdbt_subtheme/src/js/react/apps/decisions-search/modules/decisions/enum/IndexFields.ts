@@ -19,6 +19,7 @@ export const DecisionIndex = {
   LANGUAGE: '_language',
   MEETING_DATE: 'meeting_date',
   MEETING_POLICYMAKER_LINK: 'meeting_policymaker_link',
+  MORE_DECISIONS: 'more_decisions',
   ORG_ABOVE: 'organization_above_name',
   ORG_NAME: 'organization_name',
   ORG_TYPE: 'organization_type',

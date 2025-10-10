@@ -27,6 +27,7 @@ const fields = [
   DecisionIndex.ID,
   DecisionIndex.ISSUE_SUBJECT,
   DecisionIndex.MEETING_DATE,
+  DecisionIndex.MORE_DECISIONS,
   DecisionIndex.ORG_NAME,
   DecisionIndex.ORG_TYPE,
   DecisionIndex.SUBJECT,

@@ -16,13 +16,12 @@ export const ResultCard = ({
   has_multiple_decisions = false,
   issue_subject,
   meeting_date,
+  more_decisions,
   organization_name,
   organization_type,
   subject,
   unique_issue_id,
-}: Decision & {
-  has_multiple_decisions: boolean;
-}) => {
+}: Decision) => {
   const getDate = () => {
     if (!meeting_date.toString().length) {
       return '';
@@ -86,7 +85,7 @@ export const ResultCard = ({
     ],
   };
 
-  if (has_multiple_decisions) {
+  if (more_decisions?.[0] === true) {
     metaRows.bottom = [
       <Metarow
         key='1'

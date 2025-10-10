@@ -11,6 +11,7 @@ export type Decision = {
   issue_id: string[];
   issue_subject: string[];
   meeting_date: number[];
+  more_decisions: boolean[];
   node_grants: string[];
   organization_above_name: string[];
   organization_name: string[];
