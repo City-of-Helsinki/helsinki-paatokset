@@ -35,7 +35,7 @@ final class MoreDecisions extends ProcessorPluginBase {
     array $configuration,
     $plugin_id,
     array $plugin_definition,
-    protected readonly EntityTypeManagerInterface $entityTypeManager
+    protected readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
