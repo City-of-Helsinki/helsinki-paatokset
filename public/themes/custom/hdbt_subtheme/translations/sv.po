@@ -101,6 +101,10 @@ msgid "Choose range"
 msgstr "Välj datum"
 
 msgctxt "Decisions search"
+msgid "Back"
+msgstr "Tillbaka"
+
+msgctxt "Decisions search"
 msgid "Past week"
 msgstr "Senaste veckan"
 
