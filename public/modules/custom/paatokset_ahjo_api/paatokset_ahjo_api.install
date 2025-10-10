@@ -25,3 +25,12 @@ function paatokset_ahjo_api_update_9004(): void {
   $updateManager = \Drupal::entityDefinitionUpdateManager();
   $updateManager->installEntityType($entityType);
 }
+
+/**
+ * Install ahjo_initiative entity.
+ */
+function paatokset_ahjo_api_update_9005(): void {
+  $entityType = \Drupal::entityTypeManager()->getDefinition('ahjo_initiative');
+  $updateManager = \Drupal::entityDefinitionUpdateManager();
+  $updateManager->installEntityType($entityType);
+}

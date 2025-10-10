@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
-use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
+use Drupal\paatokset_ahjo_api\Entity\MeetingPhase;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,24 +25,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *    }
  * )
  */
-class MeetingUrl extends ProcessorPluginBase {
+final class MeetingUrl extends ProcessorPluginBase {
 
   /**
-   * PolicymakerService.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
+   * Logger interface.
    */
-  private PolicymakerService $policymakerService;
+  private LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    /** @var static $instance */
-    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->policymakerService = $container->get('paatokset_policymakers');
-
-    return $instance;
+    $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $processor->logger = $container->get('logger.channel.paatokset_ahjo_api');
+    return $processor;
   }
 
   /**
@@ -52,13 +48,12 @@ class MeetingUrl extends ProcessorPluginBase {
     $properties = [];
 
     if ($datasource) {
-      $definition = [
+      $properties['meeting_url'] = new ProcessorProperty([
         'label' => $this->t('Meeting URL'),
         'description' => $this->t('Computes meeting URL for active languages.'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
-      ];
-      $properties['meeting_url'] = new ProcessorProperty($definition);
+      ]);
     }
 
     return $properties;
@@ -74,37 +69,29 @@ class MeetingUrl extends ProcessorPluginBase {
     }
 
     $node = $item->getOriginalObject()->getValue();
-
-    if (!$node instanceof NodeInterface || $node->getType() !== 'meeting') {
+    if (!$node instanceof Meeting) {
       return;
     }
 
-    if (!$node->hasField('field_meeting_id') || $node->get('field_meeting_id')->isEmpty() || !$node->hasField('field_meeting_dm_id') || $node->get('field_meeting_dm_id')->isEmpty()) {
+    if ($node->get('field_meeting_id')->isEmpty() || $node->get('field_meeting_dm_id')->isEmpty()) {
       return;
     }
-
-    $meeting_id = $node->get('field_meeting_id')->value;
-    $dm_id = $node->get('field_meeting_dm_id')->value;
-    $has_decision = $node->hasField('field_meeting_decision') && !$node->get('field_meeting_decision')->isEmpty();
 
     $data = [
       'meeting_link' => [],
       'decision_link' => [],
     ];
 
+    // Maybe this should not index the field at all if this meeting does
+    // not support minutes URL. However, that would require testing that
+    // the frontend still works.
     foreach (['fi', 'sv', 'en'] as $langcode) {
-      $url = $this->policymakerService->getMinutesRoute($meeting_id, $dm_id, FALSE, $langcode);
-
-      if ($url instanceof Url && !empty($url->toString())) {
-        $data['meeting_link'][$langcode] = $url->toString();
+      if ($minutesUrl = $node->getMinutesUrl($langcode)?->toString()) {
+        $data['meeting_link'][$langcode] = $minutesUrl;
       }
 
-      $decision_url = NULL;
-      if ($has_decision) {
-        $decision_url = $this->policymakerService->getMinutesRoute($meeting_id, $dm_id, TRUE, $langcode);
-      }
-      if ($decision_url instanceof Url && !empty($decision_url->toString())) {
-        $data['decision_link'][$langcode] = $decision_url->toString();
+      if ($node->getMeetingPhase() === MeetingPhase::DECISION && $decisionUrl = $node->getDecisionAnnouncementUrl($langcode)?->toString()) {
+        $data['decision_link'][$langcode] = $decisionUrl;
       }
     }
 

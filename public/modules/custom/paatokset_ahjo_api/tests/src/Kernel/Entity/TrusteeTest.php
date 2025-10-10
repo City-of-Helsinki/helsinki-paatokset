@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\paatokset_ahjo_api\Entity\Initiative;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 
@@ -27,6 +28,7 @@ class TrusteeTest extends AhjoKernelTestBase {
       // since that is how they are formatted in Ahjo API.
       'title' => 'Mehiläinen, Maija',
     ]);
+    $trustee->save();
     $this->assertInstanceOf(Trustee::class, $trustee);
 
     // Datapumppu can't handle commas.
@@ -36,6 +38,24 @@ class TrusteeTest extends AhjoKernelTestBase {
 
     // Manual override is used.
     $this->assertEquals('test-override', $trustee->getDatapumppuName());
+
+    $this->installEntitySchema('ahjo_initiative');
+
+    Initiative::create([
+      'title' => 'Test 1',
+      'date' => (new \DateTimeImmutable())->getTimestamp(),
+      'trustee_nid' => $trustee->id(),
+      'uri' => 'https://example.com/file1.pdf',
+    ])->save();
+    Initiative::create([
+      'title' => 'Test 2',
+      'date' => (new \DateTimeImmutable())->getTimestamp(),
+      // The trustee ID is different from the one in the database.
+      'trustee_nid' => $trustee->id() + 1,
+      'uri' => 'https://example.com/file1.pdf',
+    ])->save();
+
+    $this->assertCount(1, $trustee->getInitiatives());
   }
 
 }

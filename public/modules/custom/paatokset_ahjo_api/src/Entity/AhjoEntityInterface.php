@@ -14,6 +14,8 @@ interface AhjoEntityInterface extends ContentEntityInterface {
 
   /**
    * Gets ahjo proxy URL to this entity.
+   *
+   * @throws \InvalidArgumentException
    */
   public function getProxyUrl(): Url;
 

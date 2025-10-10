@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -51,39 +50,17 @@ class MeetingPhase extends ProcessorPluginBase {
     $datasourceId = $item->getDataSourceId();
     if ($datasourceId === 'entity:node') {
       $node = $item->getOriginalObject()->getValue();
-
-      if (!$node instanceof NodeInterface || $node->getType() !== 'meeting') {
+      if (!$node instanceof Meeting) {
         return;
       }
 
-      $phase = NULL;
-      foreach ($node->get('field_meeting_documents') as $field) {
-        assert($field instanceof FieldItemListInterface);
-        $json = json_decode($field->value, TRUE);
-        if (empty($json['Type'])) {
-          continue;
-        }
-
-        if ($json['Type'] === 'pöytäkirja') {
-          $phase = 'minutes';
-          break;
-        }
-
-        if ($json['Type'] === 'esityslista') {
-          $phase = 'agenda';
-          break;
-        }
-      }
-
-      if ($phase === 'agenda' && $node->hasField('field_meeting_decision') && !$node->get('field_meeting_decision')->isEmpty()) {
-        $phase = 'decision';
-      }
+      $phase = $node->getMeetingPhase();
 
       $fields = $this->getFieldsHelper()
         ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'meeting_phase');
 
       foreach ($fields as $field) {
-        $field->addValue($phase);
+        $field->addValue($phase?->value);
       }
     }
   }

@@ -30,7 +30,6 @@ class YearFilterTest extends ViewsKernelTestBase {
     'node',
     'field',
     'paatokset',
-    'publication_date',
     'paatokset_test_views',
   ];
 
@@ -77,9 +76,9 @@ class YearFilterTest extends ViewsKernelTestBase {
 
     // Add filter value.
     $view->displayHandlers->get('default')->overrideOption('filters', [
-      'year' => [
-        'id' => 'year',
-        'field' => 'year',
+      'created_year' => [
+        'id' => 'created_year',
+        'field' => 'created_year',
         'table' => 'node_field_data',
         'value' => [2024],
         'operator' => '=',
@@ -99,9 +98,9 @@ class YearFilterTest extends ViewsKernelTestBase {
 
     // Expose filter.
     $view->displayHandlers->get('default')->overrideOption('filters', [
-      'year' => [
-        'id' => 'year',
-        'field' => 'year',
+      'created_year' => [
+        'id' => 'created_year',
+        'field' => 'created_year',
         'table' => 'node_field_data',
         'operator' => '=',
         'exposed' => TRUE,
@@ -113,7 +112,7 @@ class YearFilterTest extends ViewsKernelTestBase {
 
     $view->initHandlers();
 
-    $filter = $view->filter['year'];
+    $filter = $view->filter['created_year'];
     $this->assertInstanceOf(YearFilter::class, $filter);
 
     $formState = new FormState();
@@ -142,7 +141,7 @@ class YearFilterTest extends ViewsKernelTestBase {
         'type' => 'test_content',
         'title' => 'Test Node ' . date('Y', $timestamp),
         'status' => 1,
-        'published_at' => $timestamp,
+        'created' => $timestamp,
       ]);
       $node->save();
     }

@@ -67,7 +67,8 @@ class AdminHooks {
 
     if (
       $this->currentUser->hasPermission('administer paatokset') &&
-      $entity instanceof AhjoUpdatableInterface
+      $entity instanceof AhjoUpdatableInterface &&
+      !$entity->isNew()
     ) {
       $form['actions']['#links']['update'] = [
         'title' => new TranslatableMarkup('Update ahjo data'),
@@ -83,16 +84,16 @@ class AdminHooks {
       ];
     }
 
-    if ($this->currentUser->hasPermission('access ahjo proxy')) {
-      $form['actions']['#links']['view'] = [
-        'title' => new TranslatableMarkup('View on ahjo proxy'),
-        'url' => $entity->getProxyUrl(),
-        'attributes' => [
-          'target' => '_blank',
-        ],
-      ];
-
+    if ($this->currentUser->hasPermission('access ahjo proxy') && !$entity->isNew()) {
       try {
+        $form['actions']['#links']['view'] = [
+          'title' => new TranslatableMarkup('View on ahjo proxy'),
+          'url' => $entity->getProxyUrl(),
+          'attributes' => [
+            'target' => '_blank',
+          ],
+        ];
+
         $environment = $this->environmentResolver->getActiveEnvironment();
         if ($environment->getEnvironment() !== EnvironmentEnum::Prod) {
           $form['warning'] = [

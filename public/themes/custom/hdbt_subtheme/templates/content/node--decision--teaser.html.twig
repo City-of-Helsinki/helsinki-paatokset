@@ -1,0 +1,16 @@
+{% set title %}
+  § {{ node.field_decision_section.value }} {{ label }}
+{% endset %}
+
+<div class="policymaker-list-item policymaker-list-item--decision">
+  {% if content.field_meeting_date %}
+  <div class="list-item__date">
+      <span>{{ content.field_meeting_date }}</span>
+  </div>
+  {% endif %}
+  <div class="list-item__subject">
+    <a href="{{ node_url }}" class="policymaker-list-item--document">
+    {{ title }}
+    </a>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+{% set title %}
+  <span>
+    {% if phase == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').MINUTES %}
+      {{ 'Minutes' | t }}
+    {% else %}
+      {{ 'Agenda' | t }}
+    {% endif %}
+    {% if content.field_meeting_sequence_number %}
+      <span class="subject__date">
+        {{ content.field_meeting_sequence_number }} - {{ node.field_meeting_date.value | date('Y') }}
+      </span>
+    {% endif %}
+  </span>
+{% endset %}
+
+<div class="policymaker-list-item">
+  <a href="{{ node.getMinutesUrl() }}" class="policymaker-list-item--document">
+    <div class="list-item__date">
+      {% if content.field_meeting_date %}
+        <span>{{ content.field_meeting_date }}</span>
+      {% endif %}
+    </div>
+    <div class="list-item__subject">
+      {{ title }}
+    </div>
+  </a>
+
+  {% if node.getMeetingPhase() == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').DECISION %}
+    {% set url = node.getDecisionAnnouncementUrl() %}
+    <div class="paatokset_download-link-container">
+      <a class="paatokset__link-plain" href="{{ url }}">
+        {% include '@hdbt/misc/icon.twig' with {icon: 'document'} %}
+        {{ 'Read decision announcement'|trans }}
+      </a>
+    </div>
+  {% endif %}
+</div>

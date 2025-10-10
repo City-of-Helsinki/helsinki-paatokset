@@ -1,0 +1,26 @@
+uuid: f69b9f7e-280c-4c6a-a7d0-e886333b3fa9
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - hdbt_subtheme
+id: meeting_minutes
+theme: hdbt_subtheme
+region: content_lower
+weight: -17
+provider: null
+plugin: policymaker_documents
+settings:
+  id: policymaker_documents
+  label: 'Policymaker meeting minutes'
+  label_display: '0'
+  provider: paatokset_ahjo_api
+  view: policymaker_minutes
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paattajat/*/asiakirjat\r\n/beslutsfattare/*/dokumenter\r\n/decisionmakers/*/documents"

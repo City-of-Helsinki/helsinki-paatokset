@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\Kernel\AhjoAdmin;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoAdmin;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -63,6 +63,9 @@ class AdminHooksTest extends KernelTestBase {
     $entity
       ->id()
       ->willReturn('1');
+    $entity
+      ->isNew()
+      ->willReturn(FALSE);
 
     // Entity form.
     $form = $this->prophesize(NodeForm::class);

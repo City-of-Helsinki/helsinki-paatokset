@@ -29,16 +29,35 @@ dependencies:
     - field.field.node.meeting.field_meeting_status
     - node.type.meeting
   module:
+    - datetime
     - user
 id: node.meeting.teaser
 targetEntityType: node
 bundle: meeting
 mode: teaser
 content:
+  field_meeting_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: short
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_meeting_sequence_number:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   field_agenda_items_processed: true
@@ -48,7 +67,6 @@ hidden:
   field_meeting_agenda_published: true
   field_meeting_attachment_info: true
   field_meeting_composition: true
-  field_meeting_date: true
   field_meeting_date_original: true
   field_meeting_decision: true
   field_meeting_dm: true
@@ -62,7 +80,6 @@ hidden:
   field_meeting_next_id: true
   field_meeting_prev: true
   field_meeting_prev_id: true
-  field_meeting_sequence_number: true
   field_meeting_status: true
   langcode: true
   meeting_link: true

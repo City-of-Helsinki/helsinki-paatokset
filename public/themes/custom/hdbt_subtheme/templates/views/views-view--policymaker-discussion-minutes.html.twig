@@ -1,0 +1,24 @@
+<div class="components components--computed">
+  {% embed "@hdbt/misc/component.twig" with
+    {
+      component_classes: [
+      'component--full-width',
+      'component--no-side-padding',
+      'component--policymaker-discussion-minutes',
+    ]
+    }
+  %}
+    {% block component_content %}
+      {% embed '@hdbt/component/content-list-with-count.twig' %}
+        {% block count_container %}
+          {%- if total_rows -%}
+            {{ total_rows }} {% trans with {'context': 'Discussion minutes list'}%}discussion minutes{% plural total_rows %}discussion minutes{% endtrans %}
+          {%- else -%}
+            {{ 'No results'|t({}, {'context' : 'Discussion minutes list'}) }}
+          {%- endif -%}
+        {% endblock count_container %}
+      {% endembed %}
+
+    {% endblock component_content %}
+  {% endembed %}
+</div>

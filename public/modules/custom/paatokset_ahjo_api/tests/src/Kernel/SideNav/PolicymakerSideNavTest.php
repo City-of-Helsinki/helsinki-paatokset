@@ -113,6 +113,7 @@ class PolicymakerSideNavTest extends AhjoKernelTestBase {
     // Inject policymaker to the current route.
     $policymaker = Policymaker::create([
       'title' => 'Kaupunginvaltuusto',
+      'field_organization_type' => 'valtuusto',
     ]);
     $policymaker->save();
     $routeMatch
@@ -126,6 +127,8 @@ class PolicymakerSideNavTest extends AhjoKernelTestBase {
       $policymaker->toUrl('canonical')->toString(),
       // Link to documents page.
       "/decisionmakers/{$policymaker->id()}/documents",
+      // Link to discussion minutes (only available for city council).
+      "/decisionmakers/{$policymaker->id()}/discussion-minutes",
     ], $build);
 
     // Setup custom_content_links paragraph.
@@ -151,6 +154,8 @@ class PolicymakerSideNavTest extends AhjoKernelTestBase {
       $policymaker->toUrl('canonical')->toString(),
       // Link to documents page.
       "/decisionmakers/{$policymaker->id()}/documents",
+      // Link to discussion minutes (only available for city council).
+      "/decisionmakers/{$policymaker->id()}/discussion-minutes",
       // Custom link.
       $decision->toUrl('canonical')->toString(),
     ], $build);
@@ -174,7 +179,8 @@ class PolicymakerSideNavTest extends AhjoKernelTestBase {
 
     // Inject policymaker to the current route.
     $policymaker = Policymaker::create([
-      'title' => 'Kaupunginvaltuusto',
+      'title' => 'Kaupunginhallitus',
+      'field_organization_type' => 'hallitus',
     ]);
     $policymaker->save();
     $routeMatch

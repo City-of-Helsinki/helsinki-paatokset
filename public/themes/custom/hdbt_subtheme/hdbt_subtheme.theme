@@ -7,10 +7,13 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Initiative;
+use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\TrusteeService;
 use Drupal\user\Entity\User;
 
@@ -39,6 +42,16 @@ function hdbt_subtheme_theme_suggestions_page_alter(array &$suggestions): void {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_ahjo_initiative_alter(array &$suggestions, array $variables): void {
+  $entity = $variables['elements']['#ahjo_initiative'];
+  if (!empty($entity->view) && $entity->view->storage->id()) {
+    $suggestions[] = 'ahjo_initiative__view__' . $entity->view->storage->id();
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function hdbt_subtheme_preprocess_block(array &$variables): void {
@@ -47,6 +60,16 @@ function hdbt_subtheme_preprocess_block(array &$variables): void {
     str_contains($variables['elements']['#id'], 'main_navigation_level_2')
   ) {
     $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hdbt_subtheme_theme_suggestions_media_alter(array &$suggestions, array $variables): void {
+  $entity = $variables['elements']['#media'];
+  if (!empty($entity->view) && $entity->view->storage->id()) {
+    $suggestions[] = 'media__view__' . $entity->view->storage->id();
   }
 }
 
@@ -249,28 +272,32 @@ function hdbt_subtheme_get_trustee_content(FieldItemListInterface $references): 
  */
 function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   $node = $variables['node'];
-
-  if (!$node instanceof NodeInterface) {
+  if (!$node instanceof Trustee) {
     return;
   }
 
-  $variables['#cache'] = [
-    'tags' => [
-      'media_list:declaration_of_affiliation',
-      'trustee_statements:' . $node->id(),
-    ],
-  ];
+  $cache = new CacheableMetadata();
+  $cache->setCacheTags([
+    'trustee_statements:' . $node->id(),
+    'media_list:declaration_of_affiliation',
+    'ahjo_initiative_list',
+  ]);
 
   if ($node->hasField('field_trustee_id') && !$node->get('field_trustee_id')->isEmpty()) {
-    $variables['#cache']['tags'][] = 'trustee:' . $node->get('field_trustee_id')->value;
+    $cache->addCacheTags(['trustee:' . $node->get('field_trustee_id')->value]);
   }
 
-  if ($node->get('field_trustee_initiatives')) {
+  if ($initiatives = $node->getInitiatives()) {
     $variables['initiatives'] = [
-      'title' => t('Initiatives by the councillor'),
-      'content' => hdbt_subtheme_get_trustee_content($node->get('field_trustee_initiatives')),
+      'title' => new TranslatableMarkup('Initiatives by the councillor'),
+      'content' => array_map(
+        static fn (Initiative $initiative) => \Drupal::entityTypeManager()
+          ->getViewBuilder($initiative->getEntityTypeId())
+          ->view($initiative),
+        $initiatives
+      ),
     ];
-  };
+  }
 
   if ($node->get('field_trustee_resolutions')) {
     $variables['resolutions'] = [
@@ -305,7 +332,7 @@ function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   if (isset($node->field_policymaker_reference->entity)) {
     $policymaker = $node->field_policymaker_reference->entity;
     $pmLink = Link::fromTextAndUrl(
-      $policymaker->title->value,
+      $policymaker->label(),
       $policymaker->toUrl()
     )->toString();
 
@@ -317,6 +344,8 @@ function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
       ]
     );
   };
+
+  $cache->applyTo($variables);
 }
 
 /**

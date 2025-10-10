@@ -16,7 +16,6 @@ dependencies:
     - field.field.node.trustee.field_trustee_homepage
     - field.field.node.trustee.field_trustee_id
     - field.field.node.trustee.field_trustee_image
-    - field.field.node.trustee.field_trustee_initiatives
     - field.field.node.trustee.field_trustee_phone
     - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
@@ -47,7 +46,6 @@ hidden:
   field_trustee_homepage: true
   field_trustee_id: true
   field_trustee_image: true
-  field_trustee_initiatives: true
   field_trustee_phone: true
   field_trustee_profession: true
   field_trustee_resolutions: true

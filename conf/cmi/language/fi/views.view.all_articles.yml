@@ -12,6 +12,6 @@ display:
         options:
           submit_button: Etsi
       filters:
-        year:
+        published_at_year:
           expose:
             label: Vuosi
