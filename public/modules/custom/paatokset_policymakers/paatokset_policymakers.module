@@ -168,7 +168,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       ->condition('field_meeting_dm_id', $policymaker->getAhjoId())
       ->condition('field_meeting_date', PolicymakerService::MEETING_START_DATE, '>=')
       ->condition('field_meeting_status', 'peruttu', '<>')
-      ->notExists('field_meeting_documents')
+      ->condition('field_meeting_documents', '', '<>')
       ->sort('field_meeting_date', 'DESC')
       ->range(0, 2)
       ->execute();
