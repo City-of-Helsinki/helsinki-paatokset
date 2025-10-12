@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
     - paatokset
     - paatokset_ahjo_api
     - user
@@ -217,18 +216,7 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships:
-        trustee_nid:
-          id: trustee_nid
-          table: paatokset_ahjo_initiative
-          field: trustee_nid
-          relationship: none
-          group_type: group
-          admin_label: Content
-          entity_type: ahjo_initiative
-          entity_field: trustee_nid
-          plugin_id: standard
-          required: true
+      relationships: {  }
       header: {  }
       footer: {  }
       display_extenders:
