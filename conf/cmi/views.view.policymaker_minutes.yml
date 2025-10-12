@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.policymaker_list_item
     - node.type.meeting
   module:
     - datetime
@@ -373,7 +373,7 @@ display:
         type: 'entity:node'
         options:
           relationship: none
-          view_mode: teaser
+          view_mode: policymaker_list_item
       query:
         type: views_query
         options:
