@@ -194,13 +194,14 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         functions: [{
           gauss: {
             [DecisionIndex.MEETING_DATE]: {
-              decay: 0.5,
+              decay: 0.3,
               origin: 'now',
-              scale: '30d',
+              scale: '60d',
             },
           },
         }],
-        boost_mode: 'multiply',
+        boost_mode: 'sum',
+        score_mode: 'sum',  
       },
     },
     size,
