@@ -6,7 +6,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 
 /**
@@ -159,7 +159,7 @@ class DecisionTest extends AhjoKernelTestBase {
       'type' => 'decision',
       'title' => 'Test decision',
       'field_decision_record' => file_get_contents(__DIR__ . '/../../../fixtures/decision-record.json'),
-      'field_organization_type' => PolicymakerService::TRUSTEE_TYPES[0],
+      'field_organization_type' => OrganizationType::TRUSTEE_TYPES[0],
     ]);
 
     $this->assertInstanceOf(Decision::class, $decision);

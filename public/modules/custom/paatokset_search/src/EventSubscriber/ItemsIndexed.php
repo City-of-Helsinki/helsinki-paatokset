@@ -3,7 +3,7 @@
 namespace Drupal\paatokset_search\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\IndexInterface;
@@ -11,6 +11,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * {@inheritdoc}
+ *
+ * What does this do?
+ *
+ * @todo is this still required?
  */
 class ItemsIndexed implements EventSubscriberInterface {
 
@@ -83,7 +87,7 @@ class ItemsIndexed implements EventSubscriberInterface {
 
       /** @var \Drupal\Core\Field\FieldItemList $org_type_field */
       $org_type_field = $item->get('field_organization_type');
-      if ($org_type_field->isEmpty() || !in_array($org_type_field->value, PolicymakerService::TRUSTEE_TYPES)) {
+      if ($org_type_field->isEmpty() || !in_array($org_type_field->value, OrganizationType::TRUSTEE_TYPES)) {
         continue;
       }
 

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\Processor;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Url;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\AhjoSearchApiKernelTestBase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -23,6 +22,14 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
   use ProphecyTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'language',
+    'content_translation',
+  ];
+
+  /**
    * Policymaker service mock.
    */
   private PolicymakerService|ObjectProphecy $policyMakerService;
@@ -32,6 +39,10 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
    */
   public function setUp($processor = NULL): void {
     parent::setUp('meeting_url');
+
+    foreach (['fi', 'sv'] as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
 
     $field = new Field($this->index, 'test_meeting_url');
     $field->setType('string');
@@ -57,16 +68,15 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
    * Tests color class processor.
    */
   public function testProcessor() {
-    $url = $this->prophesize(Url::class);
-    $url->toString()->willReturn('test-url');
-
-    $this->policyMakerService
-      ->getMinutesRoute(Argument::any(), Argument::any(), Argument::any(), Argument::any())
-      ->willReturn($url->reveal());
-
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get(EntityTypeManagerInterface::class)
       ->getStorage('node');
+
+    $storage->create([
+      'type' => 'policymaker',
+      'title' => 'Test policymaker',
+      'field_policymaker_id' => '234',
+    ])->save();
 
     $meeting = $storage->create([
       'type' => 'meeting',
@@ -74,8 +84,7 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
       'field_meeting_id' => '123',
       'field_meeting_dm_id' => '234',
     ]);
-
-    $this->assertInstanceOf(ContentEntityInterface::class, $meeting);
+    $this->assertInstanceOf(Meeting::class, $meeting);
 
     $id = Utility::createCombinedId('entity:node', $meeting->id() . ':' . $meeting->language()->getId());
     $item = $this->container
@@ -85,9 +94,9 @@ class MeetingUrlTest extends AhjoSearchApiKernelTestBase {
 
     $this->assertEquals([
       'meeting_link' => [
-        'fi' => 'test-url',
-        'sv' => 'test-url',
-        'en' => 'test-url',
+        'fi' => '/paattajat/234/asiakirjat/123',
+        'sv' => '/beslutsfattare/234/dokumenter/123',
+        'en' => '/decisionmakers/1/documents/123',
       ],
       'decision_link' => [],
     ], json_decode($fields['test_meeting_url']->getValues()[0], TRUE));

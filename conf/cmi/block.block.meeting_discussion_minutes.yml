@@ -1,0 +1,26 @@
+uuid: 5d92856e-bdee-447c-b0a2-9bf0b6d0aa78
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - hdbt_subtheme
+id: meeting_discussion_minutes
+theme: hdbt_subtheme
+region: content_lower
+weight: -13
+provider: null
+plugin: policymaker_documents
+settings:
+  id: meeting_discussion_minutes
+  label: 'Paatokset minutes of discussion block'
+  label_display: '0'
+  provider: paatokset_ahjo_api
+  view: policymaker_discussion_minutes
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paattajat/*/keskustelupöytäkirjat\r\n/paattajat/*/keskustelupoytakirjat\r\n/beslutsfattare/*/diskussionsprotokoll\r\n/decisionmakers/*/discussion-minutes"

@@ -1,0 +1,38 @@
+{
+  "trustees": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/example.com\/ahjorest\/v1\/agents\/positionoftrust\/ARHINPA?apireqlang=fi"
+        }
+      ],
+      "Name": "Testi, Testaaja",
+      "CorporateName": "",
+      "Title": "J\u00e4sen",
+      "ID": "test-trustee",
+      "CouncilGroup": "Valtuustoryhm\u00e4",
+      "Initiatives": [
+        {
+          "Title": "Valtuustoaloite 22.09.2021 Stansvikin kaavan muuttaminen",
+          "Date": "2021-09-22T03:00:00.000",
+          "FileURI": "https:\/\/ahjojulkaisu.hel.fi\/E764C79F-DA18-C784-9A76-7C0EE8800000.pdf"
+        }
+      ],
+      "Resolutions": [
+        {
+          "Title": "Toivomusponsi 1, Kvsto 13.6.2018 asia 11",
+          "Date": "2018-06-13T00:00:00.000",
+          "FileURI": "https:\/\/ahjojulkaisu.hel.fi\/3C347F86-C35F-C44A-A045-641BF8D00000.pdf"
+        }
+      ],
+      "Chairmanships": [
+        {
+          "Position": "Puheenjohtaja",
+          "OrganizationName": "Kulttuuri- ja vapaa-aikalautakunta",
+          "OrganizationID": "U480"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{% set card_metas = [] %}
+{% if content.date|render %}
+  {% set card_metas = card_metas|merge([{
+    icon: 'clock',
+    label: 'Published'|t({}, {'context' : 'Announcements and notifications list'}),
+    content: content.date,
+  }]) %}
+{% endif %}
+
+{% embed '@hdbt/component/card.twig' with {
+  card_modifier_class: 'card--border',
+  card_title_level: 'h4',
+  card_title: entity.label,
+  card_url: entity.uri.value,
+  card_url_external: true,
+  card_metas: card_metas,
+} %}
+{% endembed %}
