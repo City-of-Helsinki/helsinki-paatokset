@@ -33,7 +33,6 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
     'field',
     'datetime',
     'json_field',
-    'paatokset_ahjo_openid',
   ];
 
   /**

@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_openid\Kernel;
+namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\paatokset_ahjo_openid\AhjoOpenId;
-use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
-use Drupal\paatokset_ahjo_openid\Settings;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 /**
- * Kernel tests for paatokset_ahjo_openid.
+ * Kernel tests for ahjo open id service.
  *
- * These test functionality that use Drupal State API.
+ * These test functionality that uses Drupal State API.
  *
- * @group paatokset_ahjo_openid
+ * @group paatokset_ahjo_api
  */
 class AhjoOpenIdTest extends KernelTestBase {
 
@@ -28,8 +29,9 @@ class AhjoOpenIdTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_api_base',
     'migrate_plus',
-    'paatokset_ahjo_openid',
+    'paatokset_ahjo_api',
   ];
 
   /**
@@ -38,7 +40,7 @@ class AhjoOpenIdTest extends KernelTestBase {
   public function setUp(): void {
     parent::setUp();
 
-    $this->container->set('paatokset_ahjo_openid.settings', new Settings(
+    $this->container->set(Settings::class, new Settings(
       'auth',
       'token',
       'endpoint',
@@ -67,7 +69,7 @@ class AhjoOpenIdTest extends KernelTestBase {
 
     $sut = $this->container->get(AhjoOpenId::class);
     $this->assertFalse($sut->checkAuthToken());
-    $this->assertNotNull($sut->getAuthAndRefreshTokens('789'));
+    $this->assertInstanceOf(AhjoAuthToken::class, $sut->refreshAuthToken('789'));
     $this->assertTrue($sut->checkAuthToken());
     $this->assertEquals('123', $sut->getAuthToken());
 
@@ -78,7 +80,9 @@ class AhjoOpenIdTest extends KernelTestBase {
       ],
     ], $plugin->getAuthenticationOptions(''));
 
-    $this->assertEquals('321', $sut->getAuthToken(refresh: TRUE));
+    // Check that refresh changes the token.
+    $this->assertInstanceOf(AhjoAuthToken::class, $sut->refreshAuthToken());
+    $this->assertEquals('321', $sut->getAuthToken());
   }
 
   /**
@@ -100,15 +104,12 @@ class AhjoOpenIdTest extends KernelTestBase {
     ]);
 
     $sut = $this->container->get(AhjoOpenId::class);
-    $this->assertNotNull($sut->getAuthAndRefreshTokens('789'));
+    $this->assertInstanceOf(AhjoAuthToken::class, $sut->refreshAuthToken('789'));
+    $this->assertEquals($sut->getAuthToken(), '123');
     $this->assertFalse($sut->checkAuthToken());
 
-    // Refresh token manually, this should get the new value.
-    $this->assertEquals('321', $sut->getAuthToken(TRUE));
-    $this->assertTrue($sut->checkAuthToken());
-
-    // Second call should not refresh since token should be valid.
-    $this->assertEquals('321', $sut->getAuthToken());
+    // Refresh token, this should get the new value.
+    $this->assertEquals('321', $sut->refreshAuthToken()->token);
     $this->assertTrue($sut->checkAuthToken());
   }
 
@@ -128,14 +129,26 @@ class AhjoOpenIdTest extends KernelTestBase {
     ]);
 
     $sut = $this->container->get(AhjoOpenId::class);
-    $this->assertNotNull($sut->getAuthAndRefreshTokens('789'));
+    $this->assertInstanceOf(AhjoAuthToken::class, $sut->refreshAuthToken('789'));
+    $this->assertNotEmpty($sut->getAuthToken());
 
-    // Failed to refresh token:
+    // Token is expired:
+    /** @var \Drupal\paatokset_ahjo_api\Plugin\migrate_plus\authentication\AhjoOpenIdToken $plugin */
     $plugin = $this->container->get('plugin.manager.migrate_plus.authentication')->createInstance('ahjo_openid_token', []);
     $this->assertEquals([], $plugin->getAuthenticationOptions(''));
 
     $this->expectException(AhjoOpenIdException::class);
-    $sut->getAuthToken(refresh: TRUE);
+    try {
+      $sut->refreshAuthToken();
+    }
+    catch (\Throwable $e) {
+      // Botched refresh should remove the token.
+      // The old token stops working anyway, so this
+      // should make it easier to detect.
+      $this->assertEmpty($sut->getAuthToken());
+
+      throw $e;
+    }
 
   }
 

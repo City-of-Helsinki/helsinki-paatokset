@@ -1,4 +1,4 @@
-name: Päätökset Ahjo OpenID connector
+name: Päätökset Ahjo OpenID connector (deprecated)
 type: module
 description: OpenID connect authentication for Ahjo API.
 package: Custom

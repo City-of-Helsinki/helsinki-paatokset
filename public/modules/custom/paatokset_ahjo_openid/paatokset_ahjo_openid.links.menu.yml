@@ -1,9 +1,0 @@
-paatokset_ahjo_openid.index:
-  title: 'AHJO Open ID'
-  parent: system.admin_config
-  route_name: 'paatokset_ahjo_openid.index'
-
-paatokset_ahjo_openid.settings:
-  title: 'AHJO Open ID settings'
-  parent: paatokset_ahjo_openid.index
-  route_name: 'paatokset_ahjo_openid.settings'

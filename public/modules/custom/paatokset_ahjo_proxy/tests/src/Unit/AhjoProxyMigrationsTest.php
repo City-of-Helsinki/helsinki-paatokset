@@ -12,7 +12,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
-use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;

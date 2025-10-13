@@ -1,5 +1,0 @@
-auth_url: 'https://johdontyopoyta.hel.fi/ids4/connect/authorize'
-token_url: 'https://johdontyopoyta.hel.fi/ids4/connect/token'
-callback_url: 'https://nginx-paatokset-prod.apps.platta.hel.fi/ahjo-api/login'
-client_id: paatoksetpalvelu
-scope: 'openid offline_access'

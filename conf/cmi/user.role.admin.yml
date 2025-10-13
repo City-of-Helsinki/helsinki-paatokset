@@ -49,7 +49,6 @@ dependencies:
     - menu_link_content
     - node
     - paatokset_ahjo_api
-    - paatokset_ahjo_openid
     - paatokset_ahjo_proxy
     - paragraphs
     - paragraphs_library

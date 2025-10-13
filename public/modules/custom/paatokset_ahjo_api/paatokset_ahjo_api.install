@@ -34,3 +34,12 @@ function paatokset_ahjo_api_update_9005(): void {
   $updateManager = \Drupal::entityDefinitionUpdateManager();
   $updateManager->installEntityType($entityType);
 }
+
+/**
+ * Move paatokset_ahjo_openid.settings to paatokset_ahjo_api.settings.
+ */
+function paatokset_ahjo_api_update_9006(): void {
+  \Drupal::configFactory()
+    ->getEditable('paatokset_ahjo_openid.settings')
+    ->delete();
+}
