@@ -46,7 +46,7 @@ $config['helfi_api_base.api_accounts']['vault'][] = [
   ]),
 ];
 
-$config['helfi_api_base.settings']['proxy_api_key'] = getenv('LOCAL_PROXY_API_KEY');
+$config['paatokset_ahjo_api.settings']['proxy_api_key'] = getenv('LOCAL_PROXY_API_KEY');
 
 if (getenv('ALLU_BASE_URL')) {
   $config['paatokset_allu.settings']['base_url'] = getenv('ALLU_BASE_URL');
