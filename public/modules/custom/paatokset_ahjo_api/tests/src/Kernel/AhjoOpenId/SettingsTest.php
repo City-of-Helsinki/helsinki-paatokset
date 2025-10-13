@@ -2,18 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_openid\Unit;
+namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 
-use Drupal\paatokset_ahjo_openid\Settings;
-use Drupal\paatokset_ahjo_openid\SettingsFactory;
-use Drupal\Tests\UnitTestCase;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\SettingsFactory;
 
 /**
  * Tests for Settings.
  *
- * @group paatokset_ahjo_openid
+ * @group paatokset_ahjo_api
  */
-class SettingsTest extends UnitTestCase {
+class SettingsTest extends KernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'helfi_api_base',
+    'paatokset_ahjo_api',
+  ];
 
   /**
    * Tests settings.
@@ -24,11 +33,15 @@ class SettingsTest extends UnitTestCase {
     foreach ($environment as $key => $value) {
       putenv("$key=$value");
     }
-    $configFactory = $this->getConfigFactoryStub([
-      'paatokset_ahjo_openid.settings' => $values,
-    ]);
 
-    $sut = new SettingsFactory($configFactory);
+    $this
+      ->config('paatokset_ahjo_api.settings')
+      ->setData([
+        'openid_settings' => $values,
+      ])
+      ->save();
+
+    $sut = new SettingsFactory($this->container->get(ConfigFactoryInterface::class));
     $settings = $sut->create();
     $this->assertInstanceOf(Settings::class, $settings);
     foreach ($expectedValues as $key => $value) {
@@ -53,7 +66,6 @@ class SettingsTest extends UnitTestCase {
         [
           'auth_url' => 'auth',
           'token_url' => 'token',
-          'callback_url' => 'endpoint',
           'client_id' => 'id',
           'scope' => 'scope',
         ],
@@ -61,7 +73,7 @@ class SettingsTest extends UnitTestCase {
         [
           'authUrl' => 'auth',
           'tokenUrl' => 'token',
-          'callbackUrl' => 'endpoint',
+          'callbackUrl' => 'http://localhost/ahjo-api/login',
           'clientId' => 'id',
           'openIdScope' => 'scope',
           'clientSecret' => '123',
@@ -79,7 +91,6 @@ class SettingsTest extends UnitTestCase {
         [
           'auth_url' => $value,
           'token_url' => $value,
-          'callback_url' => $value,
           'client_id' => $value,
           'scope' => $value,
         ],
@@ -87,7 +98,7 @@ class SettingsTest extends UnitTestCase {
         [
           'authUrl' => '',
           'tokenUrl' => '',
-          'callbackUrl' => '',
+          'callbackUrl' => 'http://localhost/ahjo-api/login',
           'clientId' => '',
           'openIdScope' => '',
           'clientSecret' => '',

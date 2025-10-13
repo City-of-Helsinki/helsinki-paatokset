@@ -182,6 +182,19 @@ function paatokset_ahjo_api_helfi_paragraph_types() : array {
 }
 
 /**
+ * Implements hook_platform_config_grant_permissions().
+ */
+function paatokset_ahjo_api_platform_config_grant_permissions() : array {
+  return [
+    'admin' => [
+      'administer paatokset',
+      'access ahjo openid token',
+      'administer ahjo openid',
+    ],
+  ];
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function paatokset_ahjo_api_node_insert(EntityInterface $entity) {

@@ -2,49 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_openid\Controller;
+namespace Drupal\paatokset_ahjo_api\AhjoOpenId\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Url;
-use Drupal\paatokset_ahjo_openid\AhjoOpenId;
-use Drupal\paatokset_ahjo_openid\AhjoOpenIdException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Utility\Error;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * AHJO Open ID page controller.
- *
- * @package Drupal\paatokset_ahjo_openid\Controller
  */
-final class AhjoOpenIdController extends ControllerBase implements ContainerInjectionInterface {
+final class AhjoOpenIdController extends ControllerBase {
 
-  /**
-   * Constructor.
-   */
-  public function __construct(private readonly AhjoOpenId $ahjoOpenId) {
-  }
+  use AutowireTrait;
 
-  /**
-   * Create and inject.
-   */
-  public static function create(ContainerInterface $container) {
-    return new self(
-      $container->get('paatokset_ahjo_openid')
-    );
+  public function __construct(
+    private readonly AhjoOpenId $ahjoOpenId,
+    private readonly Settings $settings,
+  ) {
   }
 
   /**
    * Debug API.
    */
-  public function index() {
+  public function index(): array {
     return [
       'heading' => [
         '#markup' => '<h1>' . $this->t('AHJO Open ID connector') . '</h1>',
       ],
-      'div_1' => $this->getDivider(),
+      'div_1' => ['#markup' => '<hr>'],
       'auth_flow' => $this->getAuthFlowMarkup(),
-      'div_2' => $this->getDivider(),
+      'div_2' => ['#markup' => '<hr>'],
       'token_info' => $this->getTokenInfo(),
     ];
   }
@@ -71,9 +64,7 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
    *   Markup array.
    */
   private function getAuthFlowMarkup(): array {
-    $auth_url = $this->ahjoOpenId->getAuthUrl();
-
-    if ($auth_url) {
+    if ($auth_url = $this->settings->getAuthUrl()) {
       $link_markup = '<p>' . $this->t('To start authentication flow, go to:') . ' <a href="' . $auth_url . '">' . $auth_url . '</a></p>';
     }
     else {
@@ -108,35 +99,10 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
       $token_link = NULL;
     }
 
-    if ($this->ahjoOpenId->isConfigured()) {
-      $refresh_url = Url::fromRoute('paatokset_ahjo_openid.refresh', [], ['absolute' => TRUE])->toString();
-      $refresh_link = [
-        '#markup' => '<p><a href="' . $refresh_url . '">' . $this->t('Refresh token.') . '</a></p>',
-      ];
-    }
-    else {
-      $refresh_link = [
-        '#markup' => '<p>Refresh token is missing or module is not configured.</p>',
-      ];
-    }
-
     return [
       'title' => ['#markup' => '<h2>' . $this->t('Token info') . '</h2>'],
       'status' => ['#markup' => $token_status],
-      'link' => $refresh_link,
       'token' => $token_link,
-    ];
-  }
-
-  /**
-   * Get section divider markup.
-   *
-   * @return array
-   *   Markup array.
-   */
-  private function getDivider(): array {
-    return [
-      '#markup' => '<hr />',
     ];
   }
 
@@ -148,30 +114,20 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
    */
   public function callback(Request $request): array {
     $code = $request->query->get('code');
-    if (!empty($code)) {
-      $authentication_url = Url::fromRoute('paatokset_ahjo_openid.auth', ['code' => $code], ['absolute' => TRUE])->toString();
-      $auth_markup = '<p>' . $this->t('Continue to') . ' <a href="' . $authentication_url . '">' . $authentication_url . '</a></p>';
-    }
-    else {
-      $auth_markup = '<p>' . $this->t('Authentication failed.') . '</p>';
+    if (empty($code)) {
+      throw new BadRequestException('Authentication code is missing.');
     }
 
-    return [
-      '#markup' => $auth_markup,
-    ];
-  }
-
-  /**
-   * Get access and auth tokens.
-   */
-  public function auth($code = NULL): array {
-    $code = (string) $code;
     try {
-      $this->ahjoOpenId->getAuthAndRefreshTokens($code);
+      $this->ahjoOpenId->refreshAuthToken($code);
       $auth_response = $this->t('Token successfully stored!');
     }
     catch (AhjoOpenIdException $e) {
-      $auth_response = $this->t('Unable to authenticate:') . ' ' . $e->getMessage();
+      Error::logException($this->getLogger('paatokset_ahjo_openid'), $e);
+
+      $auth_response = $this->t('Unable to authenticate: @error', [
+        '@error' => $e->getMessage(),
+      ]);
     }
 
     $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
@@ -179,29 +135,6 @@ final class AhjoOpenIdController extends ControllerBase implements ContainerInje
     return [
       'response' => [
         '#markup' => '<p>' . $auth_response . '</p>',
-      ],
-      'back_link' => [
-        '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',
-      ],
-    ];
-  }
-
-  /**
-   * Refresh Access token.
-   */
-  public function refresh(): array {
-    try {
-      $refresh_response = $this->ahjoOpenId->getAuthToken(TRUE);
-    }
-    catch (\Throwable $e) {
-      $refresh_response = $e->getMessage();
-    }
-
-    $index_url = Url::fromRoute('paatokset_ahjo_openid.index', [], ['absolute' => TRUE])->toString();
-
-    return [
-      'response' => [
-        '#markup' => '<p>' . $refresh_response . '</p>',
       ],
       'back_link' => [
         '#markup' => '<p><a href="' . $index_url . '">' . $this->t('Go back.') . '</a></p>',

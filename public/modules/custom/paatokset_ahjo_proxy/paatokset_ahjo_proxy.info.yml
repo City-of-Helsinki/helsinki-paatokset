@@ -3,5 +3,8 @@ type: module
 description: Proxy for connecting to and caching Ahjo API endpoints.
 package: Custom
 core_version_requirement: ^9 || ^10
-dependencies:
-  - drupal:paatokset_ahjo_openid
+# In reality, all paatokset modules depend on each other, and Drupal does
+# not work well with the circular dependencies we have. New Ahjo-related code
+# should be written in the Ahjo API module, and everything else should be in
+# the paatokset module.
+dependencies: {}

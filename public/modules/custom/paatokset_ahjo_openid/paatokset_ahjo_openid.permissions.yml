@@ -1,4 +1,0 @@
-administer ahjo openid:
-  title: 'Administer Ahjo OpenID settings.'
-access ahjo openid token:
-  title: 'View Ahjo OpenID access token'
