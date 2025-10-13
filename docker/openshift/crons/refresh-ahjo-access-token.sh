@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Exit if refresh command fails. There is no point in
-# trying to run other cron commands if token refresh fails.
-set -e
-
 while true
 do
   # Renew auth and refresh tokens every 60 minutes.
