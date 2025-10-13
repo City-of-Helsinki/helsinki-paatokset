@@ -256,3 +256,40 @@ policymaker.minutes.en:
     _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getMinutesTitle'
   requirements:
     _access: 'TRUE'
+
+paatokset_ahjo_openid.index:
+  path: '/admin/ahjo-open-id'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::index'
+  requirements:
+    _permission: 'administer ahjo openid'
+  options:
+    no_cache: 'TRUE'
+
+paatokset_ahjo_openid.settings:
+  path: '/admin/ahjo-open-id/settings'
+  defaults:
+    _form: \Drupal\paatokset_ahjo_api\AhjoOpenId\Form\SettingsForm
+    _title: 'AHJO API Open ID settings'
+  requirements:
+    _permission: 'administer ahjo openid'
+
+paatokset_ahjo_openid.callback:
+  path: '/ahjo-api/login'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::callback'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
+    _admin_theme: 'TRUE'
+
+paatokset_ahjo_openid.token:
+  path: '/admin/ahjo-open-id/token'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::getToken'
+  requirements:
+    _permission: 'access ahjo openid token'
+  options:
+    _auth: ['cookie', 'key_auth']
+    no_cache: 'TRUE'

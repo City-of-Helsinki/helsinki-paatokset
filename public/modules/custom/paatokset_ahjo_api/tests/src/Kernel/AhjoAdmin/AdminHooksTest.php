@@ -31,7 +31,6 @@ class AdminHooksTest extends KernelTestBase {
     'paatokset_ahjo_proxy',
     'migrate',
     'file',
-    'paatokset_ahjo_openid',
     'system',
   ];
 

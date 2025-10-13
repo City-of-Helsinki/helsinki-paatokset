@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_openid\Plugin\migrate_plus\authentication;
+namespace Drupal\paatokset_ahjo_api\Plugin\migrate_plus\authentication;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate_plus\AuthenticationPluginBase;
-use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -21,29 +21,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class AhjoOpenIdToken extends AuthenticationPluginBase implements ContainerFactoryPluginInterface {
 
   /**
-   * {@inheritdoc}
+   * The logger.
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new self(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('paatokset_ahjo_openid'),
-      $container->get('logger.channel.paatokset_ahjo_openid'),
-    );
-  }
+  private LoggerInterface $logger;
+
+  /**
+   * Ahjo Open Id service.
+   */
+  private AhjoOpenId $ahjoOpenId;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(
-    array $configuration,
-    string $plugin_id,
-    mixed $plugin_definition,
-    private readonly AhjoOpenId $ahjoOpenId,
-    private readonly LoggerInterface $logger,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    $instance->ahjoOpenId = $container->get(AhjoOpenId::class);
+    $instance->logger = $container->get('logger.channel.paatokset_ahjo_api');
+    return $instance;
   }
 
   /**

@@ -1,0 +1,5 @@
+openid_settings:
+  auth_url: 'https://johdontyopoyta.hel.fi/ids4/connect/authorize'
+  token_url: 'https://johdontyopoyta.hel.fi/ids4/connect/token'
+  client_id: paatoksetpalvelu
+  scope: 'openid offline_access'

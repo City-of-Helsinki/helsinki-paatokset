@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Exit if refresh command fails. There is no point in
+# trying to run other cron commands if token refresh fails.
+set -e
+
 while true
 do
   # Renew auth and refresh tokens every 60 minutes.
@@ -12,7 +16,7 @@ do
     sleep 3600
   else
     echo "Checking access token: $(date)"
-    drush ahjo-proxy:check-auth-token refresh
+    drush ahjo-api:refresh-token
     # Sleep for 60 minutes.
     sleep 3600
   fi
