@@ -12,8 +12,8 @@ id: node.policymaker.field_documents_description
 field_name: field_documents_description
 entity_type: node
 bundle: policymaker
-label: 'Asiakirjojen kuvaus'
-description: 'Teksti, joka näytetään asiakirjalistausten yläpuolella. Käytetään kuvaamaan listauksen sisältöä käyttäjille.'
+label: 'Description'
+description: ''
 required: false
 translatable: true
 default_value: {  }

@@ -12,8 +12,8 @@ id: node.policymaker.field_decisions_description
 field_name: field_decisions_description
 entity_type: node
 bundle: policymaker
-label: 'Päätöksien kuvaus'
-description: 'Viimeisimpien päätösten yläpuolella näytettävä teksti. Kuvaa tällä kentällä päätöslistausta loppukäyttäjälle.'
+label: 'Description'
+description: ''
 required: false
 translatable: true
 default_value: {  }
