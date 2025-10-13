@@ -299,3 +299,27 @@ msgstr "Ei hakutuloksia"
 msgctxt "Policymaker documents list"
 msgid "Published"
 msgstr "Julkaistu"
+
+msgctxt "Policymaker documents list"
+msgid "Read decision announcement"
+msgstr "Lue päätöstiedote"
+
+msgctxt "Discussion minutes list"
+msgid "discussion minutes"
+msgid_plural "discussion minutes"
+msgstr[0] "keskustelupöytäkirja"
+msgstr[1] "keskustelupöytäkirjaa"
+
+msgctxt "Discussion minutes list"
+msgid "No results"
+msgstr "Ei hakutuloksia"
+
+msgctxt "All initiatives list"
+msgid "initiative"
+msgid_plural "intitiatives"
+msgstr[0] "aloite"
+msgstr[1] "aloitetta"
+
+msgctxt "All initiatives list"
+msgid "No results"
+msgstr "Ei hakutuloksia"

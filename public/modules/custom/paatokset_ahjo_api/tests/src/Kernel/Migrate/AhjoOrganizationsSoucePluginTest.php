@@ -44,7 +44,7 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
    *
    * @dataProvider providerSource
    */
-  public function testSource(array $source_data, array $expected_data, $expected_count = NULL, array $configuration = [], $high_water = NULL): void {
+  public function testSource(array $source_data, array $expected_data, $expected_count = -1, array $configuration = [], $high_water = NULL): void {
     // Setup database.
     foreach (($source_data['db'] ?? []) as $row) {
       $this->container->get(EntityTypeManagerInterface::class)

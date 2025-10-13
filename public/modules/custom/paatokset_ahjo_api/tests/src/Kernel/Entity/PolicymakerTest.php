@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 
@@ -42,14 +43,14 @@ class PolicymakerTest extends AhjoKernelTestBase {
     $this->assertTrue(!$policymaker->isActive());
 
     $this->assertEquals('color-none', $policymaker->getPolicymakerClass());
-    $policymaker->set('field_organization_type', 'luottamushenkilö');
+    $policymaker->set('field_organization_type', 'Luottamushenkilö');
     $this->assertEquals('color-engel', $policymaker->getPolicymakerClass());
     $policymaker->set('field_city_council_division', '123');
     $this->assertEquals('color-hopea', $policymaker->getPolicymakerClass());
     $policymaker->set('field_organization_color_code', 'override');
     $this->assertEquals('override', $policymaker->getPolicymakerClass());
 
-    $this->assertEmpty($policymaker->getDecisionsRoute('fi'));
+    $this->assertInstanceOf(Url::class, $policymaker->getDecisionsRoute('fi'));
 
     $this->installEntitySchema('ahjo_organization');
     $this->assertEmpty($policymaker->getOrganization());

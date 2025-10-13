@@ -232,3 +232,27 @@ msgstr "Inga resultat"
 msgctxt "Policymaker documents list"
 msgid "Published"
 msgstr "Publicerad"
+
+msgctxt "Policymaker documents list"
+msgid "Read decision announcement"
+msgstr "Läs beslutsmeddelandet"
+
+msgctxt "Discussion minutes list"
+msgid "discussion minutes"
+msgid_plural "discussion minutes"
+msgstr[0] "diskussionsprotokoll"
+msgstr[1] "diskussionsprotokoll"
+
+msgctxt "Discussion minutes list"
+msgid "No results"
+msgstr "Inga resultat"
+
+msgctxt "All initiatives list"
+msgid "initiative"
+msgid_plural "intitiatives"
+msgstr[0] "motion"
+msgstr[1] "motioner"
+
+msgctxt "All initiatives list"
+msgid "No results"
+msgstr "Inga resultat"
