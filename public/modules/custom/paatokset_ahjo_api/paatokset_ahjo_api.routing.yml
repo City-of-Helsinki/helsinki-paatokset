@@ -266,14 +266,6 @@ paatokset_ahjo_openid.index:
   options:
     no_cache: 'TRUE'
 
-paatokset_ahjo_openid.settings:
-  path: '/admin/ahjo-open-id/settings'
-  defaults:
-    _form: \Drupal\paatokset_ahjo_api\AhjoOpenId\Form\SettingsForm
-    _title: 'AHJO API Open ID settings'
-  requirements:
-    _permission: 'administer ahjo openid'
-
 paatokset_ahjo_openid.callback:
   path: '/ahjo-api/login'
   defaults:
