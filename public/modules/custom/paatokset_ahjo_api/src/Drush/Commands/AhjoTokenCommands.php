@@ -10,6 +10,8 @@ use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Ahjo token commands.
@@ -22,6 +24,8 @@ final class AhjoTokenCommands extends DrushCommands {
 
   public function __construct(
     private readonly AhjoOpenId $ahjoOpenId,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    private readonly LoggerInterface $drupalLogger,
   ) {
     parent::__construct();
   }
@@ -37,7 +41,8 @@ final class AhjoTokenCommands extends DrushCommands {
       return DrushCommands::EXIT_SUCCESS;
     }
     catch (AhjoOpenIdException $e) {
-      Error::logException($this->logger, $e);
+      // logException does not work with Drush logger.
+      Error::logException($this->drupalLogger, $e);
     }
 
     return DrushCommands::EXIT_FAILURE;
