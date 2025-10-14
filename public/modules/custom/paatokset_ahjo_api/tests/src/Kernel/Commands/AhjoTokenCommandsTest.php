@@ -9,6 +9,7 @@ use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use Drupal\paatokset_ahjo_api\Drush\Commands\AhjoTokenCommands;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 
@@ -32,7 +33,8 @@ class AhjoTokenCommandsTest extends KernelTestBase {
    */
   public function testTokenRefreshCommand(): void {
     $openId = $this->prophesize(AhjoOpenId::class);
-    $sut = new AhjoTokenCommands($openId->reveal());
+    $logger = $this->prophesize(LoggerInterface::class);
+    $sut = new AhjoTokenCommands($openId->reveal(), $logger->reveal());
 
     // Should refresh the token.
     $openId->refreshAuthToken()
@@ -42,11 +44,15 @@ class AhjoTokenCommandsTest extends KernelTestBase {
   }
 
   /**
-   * Tests list commands.
+   * Tests token refresh command failure.
    */
   public function testTokenRefreshCommandFailure(): void {
     $openId = $this->prophesize(AhjoOpenId::class);
-    $sut = new AhjoTokenCommands($openId->reveal());
+    $logger = $this->prophesize(LoggerInterface::class);
+    $sut = new AhjoTokenCommands($openId->reveal(), $logger->reveal());
+
+    // Should log an error message.
+    $logger->log("error", Argument::any(), Argument::any())->shouldBeCalled();
 
     $logger = $this->prophesize(LoggerInterface::class);
     $sut->setLogger($logger->reveal());
