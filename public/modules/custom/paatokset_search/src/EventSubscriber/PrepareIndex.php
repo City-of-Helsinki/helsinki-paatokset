@@ -40,36 +40,38 @@ class PrepareIndex implements EventSubscriberInterface {
       $event->setSettings(NestedArray::mergeDeep(
         $event->getSettings(),
         [
-          'analysis' => [
-            'analyzer' => [
-              'default' => [
-                'type' => 'finnish',
-              ],
-              'finnish_ngram' => [
-                'tokenizer' => 'standard',
-                'filter' => [
-                  'lowercase',
-                  'finnish_stemmer',
-                  'ngram_filter',
+          'index' => [
+            'analysis' => [
+              'analyzer' => [
+                'default' => [
+                  'type' => 'finnish',
+                ],
+                'finnish_ngram' => [
+                  'tokenizer' => 'standard',
+                  'filter' => [
+                    'lowercase',
+                    'finnish_stemmer',
+                    'ngram_filter',
+                  ],
+                ],
+                'finnish_search' => [
+                  'tokenizer' => 'standard',
+                  'filter' => [
+                    'lowercase',
+                    'finnish_stemmer',
+                  ],
                 ],
               ],
-              'finnish_search' => [
-                'tokenizer' => 'standard',
-                'filter' => [
-                  'lowercase',
-                  'finnish_stemmer',
+              'filter' => [
+                'ngram_filter' => [
+                  'type' => 'edge_ngram',
+                  'min_gram' => 3,
+                  'max_gram' => 15,
                 ],
-              ],
-            ],
-            'filter' => [
-              'ngram_filter' => [
-                'type' => 'edge_ngram',
-                'min_gram' => 3,
-                'max_gram' => 15,
-              ],
-              'finnish_stemmer' => [
-                'type' => 'stemmer',
-                'language' => 'finnish',
+                'finnish_stemmer' => [
+                  'type' => 'stemmer',
+                  'language' => 'finnish',
+                ],
               ],
             ],
           ],
