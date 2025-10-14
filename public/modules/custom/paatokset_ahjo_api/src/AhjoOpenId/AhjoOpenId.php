@@ -100,14 +100,7 @@ class AhjoOpenId implements LoggerAwareInterface {
    * @throws \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException
    */
   private function makeTokenRequest(array $formParameters): AhjoAuthToken {
-    // getHeaders throw an exception if settings are not valid.
-    // Refresh token is required.
-    try {
-      $this->settings->assertValid();
-    }
-    catch (\InvalidArgumentException $e) {
-      throw new AhjoOpenIdException("Ahjo Open Id is not configured", previous: $e);
-    }
+    $this->settings->assertValid();
 
     // Refresh tokens are invalidated the moment it is used.
     // It is critical that only one refresh attempt is made.
