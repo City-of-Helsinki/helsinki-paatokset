@@ -15,3 +15,8 @@ entity.disallowed_decisions.collection:
   route_name: entity.disallowed_decisions.collection
   description: 'Administer Disallowed Decisions.'
   parent: system.admin_config_system
+
+paatokset_ahjo_openid.index:
+  title: 'AHJO Open ID'
+  parent: system.admin_config
+  route_name: 'paatokset_ahjo_openid.index'

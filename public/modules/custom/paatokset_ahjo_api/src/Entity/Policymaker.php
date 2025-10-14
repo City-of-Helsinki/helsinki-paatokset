@@ -15,11 +15,6 @@ use Drupal\paatokset_policymakers\Service\PolicymakerService;
 class Policymaker extends Node implements AhjoEntityInterface {
 
   /**
-   * Policymaker roles for trustees (not decisionmaker organizations).
-   */
-  const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
-
-  /**
    * Check if policymaker is currently active.
    *
    * @return bool
@@ -45,18 +40,13 @@ class Policymaker extends Node implements AhjoEntityInterface {
       return 'color-hopea';
     }
 
-    // If type isn't set, return with no color.
-    if ($this->get('field_organization_type')->isEmpty()) {
-      return 'color-none';
-    }
-
     // Use org type to determine color coding.
-    return match (strtolower($this->get('field_organization_type')->value)) {
-      'valtuusto' => 'color-kupari',
-      'hallitus' => 'color-hopea',
-      'viranhaltija' => 'color-suomenlinna',
-      'luottamushenkilö' => 'color-engel',
-      'lautakunta', 'toimi-/neuvottelukunta', 'jaosto' => 'color-sumu',
+    return match ($this->getOrganizationType()) {
+      OrganizationType::COUNCIL => 'color-kupari',
+      OrganizationType::CABINET => 'color-hopea',
+      OrganizationType::OFFICE_HOLDER => 'color-suomenlinna',
+      OrganizationType::TRUSTEE => 'color-engel',
+      OrganizationType::BOARD => 'color-sumu',
       default => 'color-none',
     };
   }
@@ -82,14 +72,24 @@ class Policymaker extends Node implements AhjoEntityInterface {
   }
 
   /**
+   * Get organization type.
+   */
+  public function getOrganizationType(): ?OrganizationType {
+    if (!$this->get('field_organization_type')->isEmpty()) {
+      return OrganizationType::tryFromOrganizationType($this->get('field_organization_type')->value);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Returns true if policymaker is trustee.
    *
    * @return bool
    *   True if policymaker is trustee. If false, policymaker is an organization.
    */
   public function isTrustee(): bool {
-    $orgType = $this->get('field_organization_type')->value;
-    return !$orgType || in_array($orgType, PolicymakerService::TRUSTEE_TYPES);
+    return $this->getOrganizationType()?->isTrustee() ?: FALSE;
   }
 
   /**
@@ -104,17 +104,16 @@ class Policymaker extends Node implements AhjoEntityInterface {
    *   URL object, if route is valid.
    */
   public function getDecisionsRoute(string $langcode): ?Url {
-    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if (!$this->isTrustee()) {
       return NULL;
     }
 
-    $routes = PolicymakerRoutes::getTrusteeRoutes();
-    $baseRoute = $routes['decisions'];
-    $localizedRoute = "$baseRoute.$langcode";
-    $policymaker_org = $this->getPolicymakerOrganizationFromUrl($langcode);
+    ['decisions' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
 
-    if (PolicymakerService::routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
+    if (PolicymakerService::routeExists($route)) {
+      return Url::fromRoute($route, [
+        'organization' => strtolower($this->getPolicymakerOrganizationFromUrl($langcode)),
+      ]);
     }
 
     return NULL;
@@ -122,6 +121,17 @@ class Policymaker extends Node implements AhjoEntityInterface {
 
   /**
    * Get policymaker organization from URL.
+   *
+   * Policymakers are available from two different URL structures:
+   *  - /fi/paattajat/kaupunginvaltuusto/*
+   *    Handles by "policymaker.page.$langcode" route.
+   *  - /fi/paattajat/02900/*
+   *    URL alias handles by Drupal.
+   *
+   * This is used when generating policymaker related URLs in
+   * attempt to preserve the currently used URL format.
+   *
+   * @todo could this just slugify Ahjo title? UHF-11726
    *
    * @param string $langcode
    *   Langcode to get organization for.
@@ -134,11 +144,11 @@ class Policymaker extends Node implements AhjoEntityInterface {
     $policymaker = $this->hasTranslation($langcode) ? $this->getTranslation($langcode) : $this;
 
     // If we can't get the actual translation, return just the policymaker ID.
-    if ($policymaker->get('langcode')->value !== $langcode && !$policymaker->get('field_policymaker_id')->isEmpty()) {
+    if ($policymaker->language()->getId() !== $langcode && !$policymaker->get('field_policymaker_id')->isEmpty()) {
       return strtolower($policymaker->get('field_policymaker_id')->value);
     }
 
-    $policymaker_url = $policymaker->toUrl()->toString(TRUE)->getGeneratedUrl();
+    $policymaker_url = $policymaker->toUrl()->toString();
     $policymaker_url_bits = explode('/', $policymaker_url);
     $policymaker_org = array_pop($policymaker_url_bits);
     return strtolower($policymaker_org);
@@ -178,6 +188,26 @@ class Policymaker extends Node implements AhjoEntityInterface {
    */
   public function getAhjoId(): string {
     return $this->get('field_policymaker_id')->getString();
+  }
+
+  /**
+   * Return route for policymaker documents.
+   *
+   * @return \Drupal\Core\Url|null
+   *   URL object, if route is valid.
+   */
+  public function getDocumentsRoute(): ?Url {
+    if ($this->isTrustee()) {
+      return NULL;
+    }
+
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    ['documents' => $route] = PolicymakerRoutes::getRoutes($langcode, $this->getOrganizationType());
+
+    return Url::fromRoute($route, [
+      'organization' => strtolower($this->getPolicymakerOrganizationFromUrl($langcode)),
+    ]);
   }
 
 }

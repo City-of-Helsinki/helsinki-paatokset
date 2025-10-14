@@ -152,3 +152,136 @@ paatokset_ahjo_api.org_chart:
     parameters:
       ahjo_organization:
         type: entity:ahjo_organization
+
+policymaker.org_composition:
+  path: 'ahjo_api/org_composition/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::orgComposition'
+  requirements:
+    _access: 'TRUE'
+
+# @todo simplify these routes in UHF-11726.
+policymaker.documents.fi:
+  path: 'paattajat/{organization}/asiakirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDocumentsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.documents.sv:
+  path: 'beslutsfattare/{organization}/dokumenter'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDocumentsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.documents.en:
+  path: 'decisionmakers/{organization}/documents'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::documents'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDocumentsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.fi:
+  path: 'paattajat/{organization}/paatokset'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.sv:
+  path: 'beslutsfattare/{organization}/beslut'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.decisions.en:
+  path: 'decisionmakers/{organization}/decisions'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::decisions'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDecisionsTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.discussion_minutes.fi:
+  path: 'paattajat/{organization}/keskustelupoytakirjat'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.discussion_minutes.sv:
+  path: 'beslutsfattare/{organization}/diskussionsprotokoll'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.discussion_minutes.en:
+  path: 'decisionmakers/{organization}/discussion-minutes'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::discussionMinutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getDiscussionMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.minutes.fi:
+  path: 'paattajat/{organization}/asiakirjat/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.minutes.sv:
+  path: 'beslutsfattare/{organization}/dokumenter/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+policymaker.minutes.en:
+  path: 'decisionmakers/{organization}/documents/{id}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::minutes'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController::getMinutesTitle'
+  requirements:
+    _access: 'TRUE'
+
+paatokset_ahjo_openid.index:
+  path: '/admin/ahjo-open-id'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::index'
+  requirements:
+    _permission: 'administer ahjo openid'
+  options:
+    no_cache: 'TRUE'
+
+paatokset_ahjo_openid.callback:
+  path: '/ahjo-api/login'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::callback'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
+    _admin_theme: 'TRUE'
+
+paatokset_ahjo_openid.token:
+  path: '/admin/ahjo-open-id/token'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\AhjoOpenId\Controller\AhjoOpenIdController::getToken'
+  requirements:
+    _permission: 'access ahjo openid token'
+  options:
+    _auth: ['cookie', 'key_auth']
+    no_cache: 'TRUE'

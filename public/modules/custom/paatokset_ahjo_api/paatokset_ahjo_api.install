@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
+
 /**
  * Implements hook_update_last_removed().
  */
@@ -24,4 +27,39 @@ function paatokset_ahjo_api_update_9004(): void {
   $entityType = \Drupal::entityTypeManager()->getDefinition('ahjo_organization');
   $updateManager = \Drupal::entityDefinitionUpdateManager();
   $updateManager->installEntityType($entityType);
+}
+
+/**
+ * Install ahjo_initiative entity.
+ */
+function paatokset_ahjo_api_update_9005(): void {
+  $entityType = \Drupal::entityTypeManager()->getDefinition('ahjo_initiative');
+  $updateManager = \Drupal::entityDefinitionUpdateManager();
+  $updateManager->installEntityType($entityType);
+}
+
+/**
+ * Move paatokset_ahjo_openid.settings to paatokset_ahjo_api.settings.
+ */
+function paatokset_ahjo_api_update_9006(): void {
+  \Drupal::configFactory()
+    ->getEditable('paatokset_ahjo_openid.settings')
+    ->delete();
+}
+
+/**
+ * Migrate ahjo token to new format.
+ */
+function paatokset_ahjo_api_update_9007(): void {
+  $state = \Drupal::state();
+
+  $token = $state->get('ahjo-api-auth-key');
+  $expiration = $state->get('ahjo-api-auth-expiration');
+  $refreshToken = $state->get('ahjo_api_refresh_token');
+
+  // Migrate token to the new format.
+  if (!empty($token) && !empty($expiration) && !empty($refreshToken)) {
+    $state->set(AhjoOpenId::AHJO_AUTH_TOKEN, json_encode(new AhjoAuthToken($token, (int) $expiration, $refreshToken)));
+  }
+
 }

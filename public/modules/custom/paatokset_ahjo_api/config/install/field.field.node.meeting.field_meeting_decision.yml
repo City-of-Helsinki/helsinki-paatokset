@@ -1,0 +1,24 @@
+uuid: bfc29c16-59f4-4b58-8b71-8a7de35e5a34
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_decision
+    - filter.format.plain_text
+    - node.type.meeting
+  module:
+    - text
+id: node.meeting.field_meeting_decision
+field_name: field_meeting_decision
+entity_type: node
+bundle: meeting
+label: 'Decision announcement'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long

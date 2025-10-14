@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - key_auth
-    - paatokset_ahjo_openid
+    - paatokset_ahjo_api
     - paatokset_ahjo_proxy
     - raven
     - tfa

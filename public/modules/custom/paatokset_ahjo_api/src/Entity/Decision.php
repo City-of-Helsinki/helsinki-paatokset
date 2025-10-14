@@ -7,7 +7,6 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
 
 /**
  * Bundle class for decisions.
@@ -88,23 +87,35 @@ class Decision extends Node implements AhjoUpdatableInterface {
   /**
    * Get meeting URL for selected decision.
    *
+   * @todo This should use Drupal Links & Route Provider system.
+   * Revisit this if these are converted to custom entities.
+   * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
+   *
    * @return \Drupal\Core\Url|null
    *   Meeting URL, if found.
    */
   public function getDecisionMeetingLink(): ?Url {
-    if (
-      $this->get('field_meeting_id')->isEmpty() ||
-      $this->get('field_policymaker_id')->isEmpty()
-    ) {
+    if (!$meetingId = $this->get('field_meeting_id')->value) {
+      \Drupal::service('logger.channel.paatokset_ahjo_api')->warning('Decision @id has no meeting ID.', [
+        '@id' => $this->id(),
+      ]);
+
       return NULL;
     }
 
-    $meeting_id = $this->get('field_meeting_id')->value;
-    $policymaker_id = $this->get('field_policymaker_id')->value;
+    $meetings = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'type' => 'meeting',
+        'field_meeting_id' => $meetingId,
+      ]);
 
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-    return $policymakerService->getMinutesRoute($meeting_id, $policymaker_id);
+    if ($meeting = array_first($meetings)) {
+      assert($meeting instanceof Meeting);
+      return $meeting->getMinutesUrl();
+    }
+
+    return NULL;
   }
 
   /**
@@ -296,7 +307,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
    */
   private function getMinutesPdf(): ?string {
     // Check decision org type first.
-    if (!in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if (!in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
       return NULL;
     }
 
@@ -524,7 +535,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
       $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
     }
 
-    if ($signature_info_content && in_array($this->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+    if ($signature_info_content && in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
       $output['signature_info'] = [
         'heading' => new TranslatableMarkup('Decisionmaker'),
         'content' => ['#markup' => $signature_info_content],

@@ -12,7 +12,7 @@ do
     sleep 3600
   else
     echo "Checking access token: $(date)"
-    drush ahjo-proxy:check-auth-token refresh
+    drush ahjo-api:refresh-token
     # Sleep for 60 minutes.
     sleep 3600
   fi

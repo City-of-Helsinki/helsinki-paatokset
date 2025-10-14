@@ -151,6 +151,9 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     return;
   }
 
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
   if ($variables['is_organization']) {
     $members = $policymakerService->getComposition();
     if ($members) {
@@ -158,11 +161,23 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       $no_content = FALSE;
     }
 
-    $documents = $policymakerService->getApiMinutesFromElasticSearch(2);
+    $ids = $storage->getQuery()
+      ->accessCheck()
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $policymaker->getAhjoId())
+      ->condition('field_meeting_date', PolicymakerService::MEETING_START_DATE, '>=')
+      ->condition('field_meeting_status', 'peruttu', '<>')
+      ->condition('field_meeting_documents', '', '<>')
+      ->sort('field_meeting_date', 'DESC')
+      ->range(0, 2)
+      ->execute();
 
-    if ($documents) {
-      $variables['recent_documents'] = $documents;
-      $variables['all_documents_link'] = $policymakerService->getDocumentsRoute();
+    $meetings = $storage->loadMultiple($ids);
+
+    if ($meetings) {
+      $variables['recent_documents'] = array_map(fn ($meeting) => $viewBuilder->view($meeting, 'teaser'), $meetings);
+      $variables['all_documents_link'] = $policymaker->getDocumentsRoute();
       $no_content = FALSE;
     }
 
@@ -179,9 +194,21 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   }
   else {
     // Get the two most recent decisions.
-    $recentDecisions = $policymakerService->getAgendasListFromElasticSearch(2, FALSE);
-    if (!empty($recentDecisions)) {
-      $variables['recent_decisions'] = $recentDecisions;
+    $ids = $storage
+      ->getQuery()
+      ->accessCheck()
+      ->condition('field_policymaker_id', $policymaker->getAhjoId())
+      ->condition('field_is_decision', TRUE)
+      // Sort by date and section number.
+      ->sort('field_meeting_date', 'DESC')
+      ->sort('field_decision_section', 'DESC')
+      ->range(0, 2)
+      ->execute();
+
+    $decisions = $storage->loadMultiple($ids);
+
+    if (!empty($decisions)) {
+      $variables['recent_decisions'] = array_map(fn ($decisions) => $viewBuilder->view($decisions, 'teaser'), $decisions);
       $variables['all_decisions_link'] = $policymaker->getDecisionsRoute(\Drupal::languageManager()->getCurrentLanguage()->getId());
       $no_content = FALSE;
     }
@@ -339,12 +366,12 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   }
 
   // Only act on policymaker nodes and make sure fields exist.
-  if (!$node->bundle() === 'policymaker' || !$node->hasField('field_ahjo_title') || !$node->hasField('field_dm_org_name') || !$node->hasField('field_organization_type')) {
+  if (!$node instanceof Policymaker) {
     return;
   }
 
   // Only act on Viranhaltija decisionmakers.
-  if (!in_array($node->get('field_organization_type')->value, PolicymakerService::TRUSTEE_TYPES)) {
+  if (!$node->isTrustee()) {
     return;
   }
 
@@ -369,7 +396,6 @@ function paatokset_policymakers_pathauto_pattern_alter(&$pattern, array $context
   // If org name exists, add it to the path.
   if (!$node->get('field_dm_org_name')->isEmpty()) {
     $pattern->setPattern($prefix . '/[node:field_ahjo_title]-[node:field_dm_org_name:value]');
-    return;
   }
 }
 

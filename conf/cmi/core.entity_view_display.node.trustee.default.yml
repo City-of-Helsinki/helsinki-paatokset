@@ -15,17 +15,16 @@ dependencies:
     - field.field.node.trustee.field_trustee_homepage
     - field.field.node.trustee.field_trustee_id
     - field.field.node.trustee.field_trustee_image
-    - field.field.node.trustee.field_trustee_initiatives
     - field.field.node.trustee.field_trustee_phone
     - field.field.node.trustee.field_trustee_profession
     - field.field.node.trustee.field_trustee_resolutions
     - field.field.node.trustee.field_trustee_title
-    - responsive_image.styles.image_orig
     - node.type.trustee
+    - responsive_image.styles.image_orig
   module:
-    - responsive_image
     - json_field
     - link
+    - responsive_image
     - user
 id: node.trustee.default
 targetEntityType: node
@@ -117,14 +116,6 @@ content:
         attribute: lazy
     third_party_settings: {  }
     weight: 2
-    region: content
-  field_trustee_initiatives:
-    type: json
-    label: above
-    settings:
-      attach_library: true
-    third_party_settings: {  }
-    weight: 4
     region: content
   field_trustee_phone:
     type: string

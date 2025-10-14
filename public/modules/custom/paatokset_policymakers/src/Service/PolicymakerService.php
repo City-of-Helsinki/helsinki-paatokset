@@ -9,23 +9,17 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
-use Drupal\file\FileInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
-use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\pathauto\AliasCleanerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Service class for retrieving policymaker-related data.
@@ -45,11 +39,6 @@ class PolicymakerService {
    * Cut off date for old meetings.
    */
   const MEETING_START_DATE = '2017-01-01';
-
-  /**
-   * Policymaker roles for trustees (not decisionmaker organizations).
-   */
-  const TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
 
   /**
    * Visible trustee roles.
@@ -119,10 +108,6 @@ class PolicymakerService {
    *   Path alias manager.
    * @param \Drupal\pathauto\AliasCleanerInterface $pathAliasCleaner
    *   Path alias cleaner.
-   * @param \Drupal\Core\File\FileUrlGenerator $fileUrlGenerator
-   *   File URL generator.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   Logger channel.
    */
   public function __construct(
     private LanguageManagerInterface $languageManager,
@@ -131,8 +116,6 @@ class PolicymakerService {
     private RouteMatchInterface $routeMatch,
     private AliasManagerInterface $pathAliasManager,
     private AliasCleanerInterface $pathAliasCleaner,
-    private FileUrlGeneratorInterface $fileUrlGenerator,
-    private LoggerInterface $logger,
   ) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
 
@@ -314,19 +297,6 @@ class PolicymakerService {
   }
 
   /**
-   * Transform org_type value to css class.
-   *
-   * @param string $org_type
-   *   Org type value to transform.
-   *
-   * @return string
-   *   Transformed css class
-   */
-  public static function transformOrgType(string $org_type): string {
-    return Html::cleanCssIdentifier(strtolower($org_type));
-  }
-
-  /**
    * Get policymaker route.
    *
    * @param \Drupal\node\NodeInterface|null $policymaker
@@ -358,121 +328,6 @@ class PolicymakerService {
   }
 
   /**
-   * Return route for policymaker documents.
-   *
-   * @return \Drupal\Core\Url|null
-   *   URL object, if route is valid.
-   */
-  public function getDocumentsRoute(): ?Url {
-    if (!$this->policymaker instanceof Policymaker) {
-      return NULL;
-    }
-
-    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
-      return NULL;
-    }
-
-    $routes = PolicymakerRoutes::getOrganizationRoutes();
-    $baseRoute = $routes['documents'];
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-    $localizedRoute = "$baseRoute.$currentLanguage";
-
-    $policymaker_org = $this->policymaker->getPolicymakerOrganizationFromUrl($currentLanguage);
-
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, ['organization' => strtolower($policymaker_org)]);
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Return minutes page route by meeting id.
-   *
-   * @param string $id
-   *   Meeting ID.
-   * @param string|null $policymaker_id
-   *   Policymaker ID. NULL if using default.
-   * @param bool $include_anchor
-   *   Include decision announcement anchor, if valid.
-   * @param string|null $langcode
-   *   Language for URL, defaults to current language. Supports fi, en, sv.
-   *
-   * @return \Drupal\Core\Url|null
-   *   URL object, if route is valid.
-   */
-  public function getMinutesRoute(string $id, ?string $policymaker_id = NULL, bool $include_anchor = TRUE, ?string $langcode = NULL): ?Url {
-    if (!empty($policymaker_id)) {
-      $this->setPolicyMaker($policymaker_id);
-    }
-
-    if (!$this->policymaker instanceof NodeInterface) {
-      return NULL;
-    }
-
-    if (in_array($this->policymaker->get('field_organization_type')->value, self::TRUSTEE_TYPES)) {
-      return NULL;
-    }
-
-    $policymaker = $this->getPolicymaker();
-
-    if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
-      return NULL;
-    }
-
-    if (!$langcode) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    }
-
-    $route = PolicymakerRoutes::getSubroutes()['minutes'];
-    $localizedRoute = "$route.$langcode";
-    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($langcode);
-
-    $routeSettings = [
-      'organization' => $policymaker_org,
-      'id' => $id,
-    ];
-
-    $routeOptions = [
-      'language' => $this->languageManager->getLanguage($langcode),
-    ];
-    if ($include_anchor && $this->checkDecisionAnnouncementById($id)) {
-      $anchor = $this->getDecisionAnnouncementAnchor();
-      $routeOptions['fragment'] = $anchor;
-    }
-
-    if ($this->routeExists($localizedRoute)) {
-      return Url::fromRoute($localizedRoute, $routeSettings, $routeOptions);
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Check decision announcement by ID.
-   *
-   * @param string $id
-   *   Meeting ID.
-   *
-   * @return bool
-   *   TRUE if meeting has a decision announcement but no published minutes.
-   */
-  public function checkDecisionAnnouncementById(string $id): bool {
-    $query = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_id', $id)
-      ->condition('field_meeting_decision', '', '<>')
-      ->condition('field_meeting_minutes_published', 1, '<>')
-      ->range(0, 1);
-
-    $ids = $query->execute();
-    return !empty($ids);
-  }
-
-  /**
    * Parse decision announcement HTML from meeting node.
    *
    * @param \Drupal\node\NodeInterface $meeting
@@ -485,7 +340,7 @@ class PolicymakerService {
    * @return array|null
    *   Render array with parsed HTML content, if found.
    */
-  public function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
+  private function getDecisionAnnouncement(NodeInterface $meeting, string $langcode, ?array $agendaItems = []): ?array {
     // If meeting minutes are published, do not display announcement.
     if ($meeting->hasField('field_meeting_minutes_published') && $meeting->get('field_meeting_minutes_published')->value) {
       return NULL;
@@ -495,7 +350,7 @@ class PolicymakerService {
       return NULL;
     }
 
-    $element_id = $this->getDecisionAnnouncementAnchor();
+    $element_id = static::decisionAnnouncementAnchor($langcode);
 
     $dom = new \DOMDocument();
     @$dom->loadHTML($meeting->get('field_meeting_decision')->value);
@@ -563,7 +418,7 @@ class PolicymakerService {
    * @return array
    *   Accordion render array, or empty array.
    */
-  public function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, string $langcode, ?array $agendaItems = []): array {
+  private function getDecisionAnnouncementSections(?\DOMNodeList $main_sections, string $langcode, ?array $agendaItems = []): array {
     $accordions = [];
 
     foreach ($main_sections as $node) {
@@ -625,14 +480,11 @@ class PolicymakerService {
    * @return string
    *   Element ID or URL fragment.
    */
-  public function getDecisionAnnouncementAnchor(?string $langcode = NULL): string {
-    if (!$langcode) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    }
-    if ($langcode === 'sv') {
-      return 'beslutsmeddelanden';
-    }
-    return 'paatostiedote';
+  public static function decisionAnnouncementAnchor(string $langcode): string {
+    return match ($langcode) {
+      'sv' => 'beslutsmeddelanden',
+      default => 'paatostiedote',
+    };
   }
 
   /**
@@ -692,118 +544,6 @@ class PolicymakerService {
     }
 
     return TRUE;
-  }
-
-  /**
-   * Get decision list for officials from ElasticSearch Index.
-   *
-   * @param int|null $limit
-   *   Limit results. Defaults to 10000 (maximum amount of results from index).
-   * @param bool $byYear
-   *   Group decision by year.
-   *
-   * @return array
-   *   List of decisions.
-   */
-  public function getAgendasListFromElasticSearch(?int $limit = 10000, bool $byYear = TRUE): array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
-    if (!$limit) {
-      $limit = 10000;
-    }
-
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
-
-    /** @var \Drupal\search_api\IndexInterface $index */
-    $index = $this->entityTypeManager->getStorage('search_api_index')->load('decisions');
-    $query = $index
-      ->query()
-      ->range(0, $limit)
-      ->addCondition('field_policymaker_id', $this->policymakerId)
-      ->addCondition('field_is_decision', TRUE)
-      // Sort by date and section number.
-      ->sort('meeting_date', 'DESC')
-      ->sort('field_decision_section', 'DESC');
-
-    try {
-      $results = $query->execute();
-    }
-    catch (\Throwable $exception) {
-      Error::logException($this->logger, $exception);
-      return [];
-    }
-
-    $data = [];
-    foreach ($results as $result) {
-      $subject = $result->getField('subject')->getValues()[0];
-      $timestamp = $result->getField('meeting_date')->getValues()[0];
-      $section = $result->getField('field_decision_section')->getValues()[0];
-      $link = $result->getField('decision_url')->getValues()[0];
-      $year = date('Y', $timestamp);
-
-      if (!empty($section)) {
-        $decision_label = '§ ' . $section . ' ' . $subject;
-      }
-      else {
-        $decision_label = $subject;
-      }
-
-      // URL is based on node language, so replace parts of the URL here.
-      $search_strings = [
-        'fi' => [
-          '/fi/',
-          'asia',
-          'paatos',
-        ],
-        'sv' => [
-          '/sv/',
-          'arende',
-          'beslut',
-        ],
-        'en' => [
-          '/en/',
-          'case',
-          'decision',
-        ],
-      ];
-
-      $localized_link = $link;
-      if (str_starts_with($link, '/fi/')) {
-        $localized_link = str_replace($search_strings['fi'], $search_strings[$langcode], $link);
-      }
-      elseif (str_starts_with($link, '/sv/')) {
-        $localized_link = str_replace($search_strings['sv'], $search_strings[$langcode], $link);
-      }
-      elseif (str_starts_with($link, '/en/')) {
-        $localized_link = str_replace($search_strings['en'], $search_strings[$langcode], $link);
-      }
-
-      $item = [
-        'year' => $year,
-        'date_desktop' => date('d.m.Y', $timestamp),
-        'date_mobile' => date('m - Y', $timestamp),
-        'timestamp' => $timestamp,
-        'subject' => $decision_label,
-        'section' => $section,
-        'link' => $localized_link,
-      ];
-
-      $data[] = $item;
-    }
-
-    $transformedResults = [];
-    foreach ($data as $item) {
-      if ($byYear) {
-        $transformedResults[$item['year']][] = $item;
-      }
-      else {
-        $transformedResults[] = $item;
-      }
-    }
-
-    return $transformedResults;
   }
 
   /**
@@ -991,27 +731,13 @@ class PolicymakerService {
    */
   public function getTranslationForRole(string $role): string {
     $context = ['context' => 'Council group members list'];
-    switch ($role) {
-      case 'Jäsen':
-        $translation = $this->t('Member', [], $context);
-        break;
-
-      case 'Varajäsen':
-        $translation = $this->t('Deputy member', [], $context);
-        break;
-
-      case 'Puheenjohtaja':
-        $translation = $this->t('Chairman', [], $context);
-        break;
-
-      case 'Varapuheenjohtaja':
-        $translation = $this->t('Vice chairman', [], $context);
-        break;
-
-      default:
-        $translation = NULL;
-        break;
-    }
+    $translation = match ($role) {
+      'Jäsen' => $this->t('Member', [], $context),
+      'Varajäsen' => $this->t('Deputy member', [], $context),
+      'Puheenjohtaja' => $this->t('Chairman', [], $context),
+      'Varapuheenjohtaja' => $this->t('Vice chairman', [], $context),
+      default => NULL,
+    };
 
     if ($translation) {
       return (string) $translation;
@@ -1142,126 +868,6 @@ class PolicymakerService {
   }
 
   /**
-   * Get API-retrieved minutes and agendas from ElasticSearch Index.
-   *
-   * @param int|null $limit
-   *   Limit results. Defaults to 10000 (maximum amount of results from index).
-   * @param bool $byYear
-   *   Group decision by year.
-   *
-   * @return array
-   *   List of meeting documents.
-   */
-  public function getApiMinutesFromElasticSearch(?int $limit = NULL, bool $byYear = FALSE): array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
-    if (!$limit) {
-      $limit = 10000;
-    }
-
-    /** @var \Drupal\search_api\IndexInterface $index */
-    $index = $this->entityTypeManager->getStorage('search_api_index')->load('meetings');
-
-    $query = $index
-      ->query()
-      ->range(0, $limit)
-      ->addCondition('field_meeting_dm_id', $this->policymakerId)
-      ->addCondition('field_meeting_date', self::MEETING_START_DATE, '>=')
-      ->addCondition('field_meeting_status', 'peruttu', '<>')
-      ->addCondition('meeting_phase', '', '<>')
-      ->sort('field_meeting_date', 'DESC');
-
-    try {
-      $results = $query->execute();
-    }
-    catch (\Throwable $exception) {
-      Error::logException($this->logger, $exception);
-      return [];
-    }
-
-    $data = [];
-    foreach ($results as $result) {
-      $meeting_timestamp = $result->getField('field_meeting_date')->getValues()[0];
-      $meeting_year = date('Y', $meeting_timestamp);
-      $meeting_id = $result->getField('field_meeting_id')->getValues()[0];
-      $phase = $result->getField('meeting_phase')->getValues()[0];
-      $document_title = NULL;
-      $decision_link = NULL;
-      $link = $this->getMinutesRoute($meeting_id, NULL, FALSE);
-
-      if ($phase === 'minutes') {
-        $document_title = $this->t('Minutes');
-      }
-      elseif ($phase === 'agenda' || $phase === 'decision') {
-        $document_title = $this->t('Agenda');
-      }
-
-      if ($phase === 'decision') {
-        $decision_link = $this->getMinutesRoute($meeting_id);
-      }
-
-      $item = [
-        'id' => $result->getField('field_meeting_id')->getValues()[0],
-        'publish_date' => date('d.m.Y', $meeting_timestamp),
-        'publish_date_short' => date('m - Y', $meeting_timestamp),
-        'title' => $document_title,
-        'phase' => $phase,
-        'meeting_number' => $result->getField('field_meeting_sequence_number')->getValues()[0] . ' - ' . $meeting_year,
-        'link' => $link,
-        'decision_link' => $decision_link,
-      ];
-
-      if ($byYear) {
-        $data[$meeting_year][] = $item;
-      }
-      else {
-        $data[] = $item;
-      }
-    }
-
-    return $data;
-  }
-
-  /**
-   * Get meeting node for this policymaker.
-   *
-   * @param string $meetingId
-   *   Meeting ID to load.
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   Meeting node or NULL if one can't be loaded.
-   */
-  public function getMeetingNode(string $meetingId): ?NodeInterface {
-    if (!$this->policymakerId) {
-      return NULL;
-    }
-
-    $query = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId)
-      ->range(0, 1)
-      ->sort('field_meeting_date', 'DESC');
-
-    if ($meetingId) {
-      $query->condition('field_meeting_id', $meetingId);
-    }
-
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return NULL;
-    }
-
-    $id = reset($ids);
-    return $this->nodeStorage->load($id);
-  }
-
-  /**
    * Get meeting title from node.
    *
    * @param \Drupal\node\NodeInterface $meeting
@@ -1281,22 +887,13 @@ class PolicymakerService {
   /**
    * Return all agenda items for a meeting. Only works on policymaker subpages.
    *
-   * @param string $meetingId
-   *   Meeting ID to get Agenda Items for.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Meeting $meeting
+   *   Meeting entity.
    *
    * @return array|null
    *   Agenda items for meeting.
    */
-  public function getMeetingAgenda(string $meetingId): ?array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      throw new \InvalidArgumentException("Missing policymaker");
-    }
-
-    $meeting = $this->getMeetingNode($meetingId);
-    if (!$meeting instanceof NodeInterface) {
-      throw new NotFoundHttpException();
-    }
-
+  public function getMeetingAgenda(Meeting $meeting): ?array {
     $publishDate = NULL;
     $fileUrl = NULL;
 
@@ -1324,17 +921,17 @@ class PolicymakerService {
         $publishDate = date('d.m.Y', $document_timestamp);
       }
 
-      $fileUrl = $this->meetingService->getUrlFromAhjoDocument($document);
+      $fileUrl = $document['FileURI'] ?? NULL;
     }
 
     // Get items in both languages because all aren't translated.
-    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $currentLanguage);
+    $agendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meeting->getAhjoId(), $currentLanguage);
 
     $fallbackLanguage = match ($currentLanguage) {
       'fi' => 'sv',
       default => 'fi',
     };
-    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meetingId, $fallbackLanguage);
+    $fallbackAgendaItems = $this->getAgendaItems($meeting->get('field_meeting_agenda'), $meeting->getAhjoId(), $fallbackLanguage);
     // If the default language list is missing items, add them from fallback.
     if (count($agendaItems) < count($fallbackAgendaItems)) {
       // Initiate new list to keep correct ordering.
@@ -1352,10 +949,10 @@ class PolicymakerService {
 
     // Meeting metadata.
     $metadata = [];
-    if ($meeting->hasField('field_meeting_date') && !$meeting->get('field_meeting_date')->isEmpty()) {
+    if (!$meeting->get('field_meeting_date')->isEmpty()) {
       $metadata['date'] = date('d.m.Y - H:i', $meeting->get('field_meeting_date')->date->getTimeStamp());
     }
-    if ($meeting->hasField('field_meeting_location') && !$meeting->get('field_meeting_location')->isEmpty()) {
+    if (!$meeting->get('field_meeting_location')->isEmpty()) {
       $metadata['location'] = $meeting->get('field_meeting_location')->value;
     }
 
@@ -1393,7 +990,7 @@ class PolicymakerService {
    * @return null|array
    *   Null if no document is found.
    */
-  private function getMeetingDocumentWithLanguageFallback(NodeInterface $meeting, string $type, string $currentLanguage): ?array {
+  private function getMeetingDocumentWithLanguageFallback(Meeting $meeting, string $type, string $currentLanguage): ?array {
     $documentLanguages = [$currentLanguage, 'fi-sv'];
     $documentLanguages[] = match ($currentLanguage) {
       'fi' => 'sv',
@@ -1401,9 +998,7 @@ class PolicymakerService {
     };
 
     foreach ($documentLanguages as $documentLanguage) {
-      $document = $this->meetingService->getDocumentFromEntity($meeting, $type, $documentLanguage);
-
-      if (!is_null($document)) {
+      if ($document = $meeting->getDocumentFromEntity($type, $documentLanguage)) {
         return $document;
       }
     }
@@ -1513,165 +1108,6 @@ class PolicymakerService {
   }
 
   /**
-   * Get discussion minutes for meeting.
-   *
-   * @param int|null $limit
-   *   Limit query.
-   * @param bool $byYear
-   *   Search by year.
-   * @param string $meetingId
-   *   Filter by meeting.
-   *
-   * @return array
-   *   Meeting document data.
-   */
-  public function getMinutesOfDiscussion(?int $limit = NULL, bool $byYear = FALSE, ?string $meetingId = NULL) : array {
-    if (!$this->policymaker instanceof NodeInterface || !$this->policymakerId) {
-      return [];
-    }
-
-    $query = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('status', 1)
-      ->condition('type', 'meeting')
-      ->condition('field_meeting_dm_id', $this->policymakerId)
-      ->sort('field_meeting_date', 'DESC');
-
-    if ($limit) {
-      $query->range('0', $limit);
-    }
-
-    if ($meetingId) {
-      $query->condition('field_meeting_id', $meetingId);
-    }
-
-    $ids = $query->execute();
-
-    if (empty($ids)) {
-      return [];
-    }
-
-    $meeting_minutes = $this->getMeetingMediaEntities($ids);
-    $meeting_ids = array_keys($meeting_minutes);
-    $nodes = $this->nodeStorage->loadMultiple($meeting_ids);
-    $fileStorage = $this->entityTypeManager->getStorage('file');
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $nodes */
-    $transformedResults = [];
-    foreach ($meeting_minutes as $meeting_id => $meeting) {
-      foreach ($meeting as $entity) {
-        $meeting_timestamp = $nodes[$meeting_id]->get('field_meeting_date')->date->getTimeStamp();
-        $meeting_year = date('Y', $meeting_timestamp);
-        $dateLong = date('d.m.Y', $meeting_timestamp);
-
-        $result = [
-          'publish_date' => $dateLong,
-          'title' => $entity->label() . ' (PDF)',
-          'type' => 'minutes-of-discussion',
-          'year' => $meeting_year,
-        ];
-
-        $download_link = NULL;
-        $file = NULL;
-        if ($entity->get('field_document')->target_id) {
-          $file_id = $entity->get('field_document')->target_id;
-          $file = $fileStorage->load($file_id);
-        }
-
-        if ($file instanceof FileInterface) {
-          $download_link = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
-        }
-
-        if (!$download_link) {
-          continue;
-        }
-
-        $result['link'] = $download_link;
-
-        $transformedResults[] = $result;
-      }
-    }
-
-    usort($transformedResults, function ($item1, $item2) {
-      return strtotime($item2['publish_date']) - strtotime($item1['publish_date']);
-    });
-
-    if ($byYear) {
-      $sorted_by_year = [];
-      foreach ($transformedResults as $result) {
-        $sorted_by_year[$result['year']][] = $result;
-      }
-
-      $transformedResults = $sorted_by_year;
-    }
-
-    return $transformedResults;
-  }
-
-  /**
-   * Get meeting-related documents.
-   *
-   * @return array
-   *   Array of resulting documents
-   */
-  private function getMeetingMediaEntities($meetingids) {
-    if (count($meetingids) === 0) {
-      return [];
-    }
-
-    $mediaStorage = $this->entityTypeManager->getStorage('media');
-    $ids = $mediaStorage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('bundle', 'minutes_of_the_discussion')
-      ->condition('field_meetings_reference', $meetingids, 'IN')
-      ->execute();
-
-    $entities = $mediaStorage->loadMultiple($ids);
-    /** @var \Drupal\Core\Entity\FieldableEntityInterface[] $entities */
-    $result = [];
-    foreach ($entities as $entity) {
-      $meeting_id = $entity->get('field_meetings_reference')->target_id;
-      $result[$meeting_id][] = $entity;
-    }
-
-    return $result;
-  }
-
-  /**
-   * Gets all initiatives from trustee nodes.
-   *
-   * @return array
-   *   List of initiatives.
-   */
-  public function getAllInitiatives(): array {
-    $nids = $this->nodeStorage
-      ->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'trustee')
-      ->condition('status', 1)
-      ->condition('field_trustee_initiatives', '', '<>')
-      ->execute();
-
-    $nodes = $this->nodeStorage->loadMultiple($nids);
-    $initiatives = [];
-    foreach ($nodes as $node) {
-      if (!$node instanceof Trustee) {
-        continue;
-      }
-
-      $id = $node->get('field_trustee_id')->value;
-
-      foreach ($node->get('field_trustee_initiatives') as $field) {
-        $initiative = json_decode($field->value, TRUE);
-        $initiative['TrusteeID'] = $id;
-        $initiatives[] = $initiative;
-      }
-    }
-
-    return $initiatives;
-  }
-
-  /**
    * Get organization display type from node. Shouldn't be used for type checks.
    *
    * @param \Drupal\node\NodeInterface|null $node
@@ -1730,23 +1166,6 @@ class PolicymakerService {
   }
 
   /**
-   * Get organization display type by ID.
-   *
-   * @param string $id
-   *   Policymaker ID.
-   *
-   * @return string|null
-   *   Orginzation display type or NULL if policymaker can't be found.
-   */
-  public function getPolicymakerTypeById(string $id): ?string {
-    $node = $this->getPolicyMaker($id);
-    if ($node instanceof NodeInterface) {
-      return $this->getPolicymakerTypeFromNode($node);
-    }
-    return NULL;
-  }
-
-  /**
    * Get organization tag render array.
    *
    * @param \Drupal\node\NodeInterface $node
@@ -1755,7 +1174,7 @@ class PolicymakerService {
    * @return array|null
    *   Render array for tag.
    */
-  public function getPolicyMakerTag(NodeInterface $node): ?array {
+  public function getPolicymakerTag(NodeInterface $node): ?array {
     $type = $this->getPolicymakerTypeFromNode($node);
     assert($node instanceof Policymaker);
     $color = $node->getPolicymakerClass();

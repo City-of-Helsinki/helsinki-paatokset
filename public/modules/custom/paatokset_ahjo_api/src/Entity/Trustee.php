@@ -55,4 +55,19 @@ class Trustee extends Node implements AhjoUpdatableInterface {
     return 'trustees' . (\Drupal::languageManager()->getCurrentLanguage()->getId() === 'sv' ? '_sv' : '');
   }
 
+  /**
+   * Get initiatives made by the trustee.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Entity\Initiative[]
+   *   Initiatives made by the trustee.
+   */
+  public function getInitiatives(): array {
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Initiative[] */
+    return \Drupal::entityTypeManager()
+      ->getStorage('ahjo_initiative')
+      ->loadByProperties([
+        'trustee_nid' => $this->id(),
+      ]);
+  }
+
 }

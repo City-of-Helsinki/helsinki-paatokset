@@ -1,0 +1,11 @@
+uuid: 387d5b8a-03bf-4103-8cb2-35ce15967f0c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.policymaker_list_item
+label: 'Policymaker list item'
+description: ''
+targetEntityType: node
+cache: true

@@ -1,0 +1,24 @@
+uuid: 7a1b3c01-764f-45f3-bce5-4fa658652aa0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decisions_description
+    - filter.format.plain_text
+    - node.type.policymaker
+  module:
+    - text
+id: node.policymaker.field_decisions_description
+field_name: field_decisions_description
+entity_type: node
+bundle: policymaker
+label: 'Description'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long

@@ -1,0 +1,13 @@
+uuid: 4514dfa4-055e-4e0b-8b4e-5f926f2f6790
+langcode: en
+status: true
+dependencies: { }
+id: minutes_of_the_discussion
+label: 'Council discussion minutes'
+description: 'Minutes of discussion for City council meetings'
+source: file
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_document
+field_map: {  }

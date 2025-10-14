@@ -19,7 +19,7 @@ use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_openid\AhjoOpenId;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Utils;
@@ -62,7 +62,7 @@ class AhjoProxy {
    *   The database connection.
    * @param \Drupal\Core\Queue\QueueFactory $queue
    *   Queue factory.
-   * @param \Drupal\paatokset_ahjo_openid\AhjoOpenId $ahjoOpenId
+   * @param \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId $ahjoOpenId
    *   Ahjo Open ID service.
    */
   public function __construct(
@@ -2341,16 +2341,9 @@ class AhjoProxy {
       return [];
     }
 
-    $headers = [
+    return [
       'Authorization' => 'Bearer ' . $access_token,
     ];
-
-    $cookies = $this->ahjoOpenId->getCookies();
-    if ($cookies) {
-      $headers['Cookie'] = $cookies;
-    }
-
-    return $headers;
   }
 
   /**

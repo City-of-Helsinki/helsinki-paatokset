@@ -38,3 +38,16 @@ services:
   Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder: ~
 
   Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks: ~
+
+  Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient: ~
+  Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface: '@Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient'
+
+  paatokset_ahjo_openid.settings_factory:
+    class: Drupal\paatokset_ahjo_api\AhjoOpenId\SettingsFactory
+
+  Drupal\paatokset_ahjo_api\AhjoOpenId\Settings:
+    factory: [ '@paatokset_ahjo_openid.settings_factory', 'create' ]
+
+  paatokset_ahjo_openid:
+    class: Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId
+  Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId: '@paatokset_ahjo_openid'

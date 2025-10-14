@@ -1,0 +1,21 @@
+{% set card_title %}
+  {{ label }}
+{% endset %}
+{% set card_metas = [] %}
+{% if content.field_meeting_date|render %}
+  {% set card_metas = card_metas|merge([{
+    icon: 'clock',
+    label: 'Published'|t({}, {'context' : 'Policymaker documents list'}),
+    content: content.field_meeting_date,
+  }]) %}
+{% endif %}
+
+{% embed '@hdbt/component/card.twig' with {
+  card_modifier_class: 'card--border',
+  card_title_level: 'h4',
+  card_title: name ~ ' (PDF)',
+  card_url: 'internal:' ~ file_url(media.field_document.entity.uri.value),
+  card_url_external: true,
+  card_metas: card_metas,
+} %}
+{% endembed %}

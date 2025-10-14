@@ -1,4 +1,21 @@
-# Schema for the default text configuration files.
+paatokset_ahjo_api.settings:
+  type: config_object
+  mapping:
+    proxy_api_key:
+      type: string
+      label: 'API key for Ahjo Proxy'
+    openid_settings:
+      type: mapping
+      mapping:
+        auth_url:
+          type: string
+        token_url:
+          type: string
+        client_id:
+          type: string
+        scope:
+          type: string
+
 block.settings.policymaker_documents:
   type: block_settings
   label: 'Survey block settings'
@@ -8,6 +25,8 @@ block.settings.policymaker_documents:
     view_display:
       type: string
       nullable: true
+
+# Schema for the default text configuration files.
 paatokset_ahjo_api.default_texts:
   type: config_object
   label: 'Default text configuration'

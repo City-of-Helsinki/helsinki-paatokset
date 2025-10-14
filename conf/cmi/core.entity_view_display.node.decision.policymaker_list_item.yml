@@ -1,0 +1,125 @@
+uuid: bac43170-c74b-47cd-bd09-e9ee9ae90a00
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.policymaker_list_item
+    - field.field.node.decision.field_attachments_checked
+    - field.field.node.decision.field_classification_code
+    - field.field.node.decision.field_classification_title
+    - field.field.node.decision.field_dates_checked
+    - field.field.node.decision.field_decision_attachment_files
+    - field.field.node.decision.field_decision_attachments
+    - field.field.node.decision.field_decision_case_title
+    - field.field.node.decision.field_decision_content
+    - field.field.node.decision.field_decision_content_parsed
+    - field.field.node.decision.field_decision_date
+    - field.field.node.decision.field_decision_history
+    - field.field.node.decision.field_decision_history_pdf
+    - field.field.node.decision.field_decision_meeting
+    - field.field.node.decision.field_decision_minutes_pdf
+    - field.field.node.decision.field_decision_motion
+    - field.field.node.decision.field_decision_motion_parsed
+    - field.field.node.decision.field_decision_native_id
+    - field.field.node.decision.field_decision_organization
+    - field.field.node.decision.field_decision_previous
+    - field.field.node.decision.field_decision_record
+    - field.field.node.decision.field_decision_section
+    - field.field.node.decision.field_decision_series_id
+    - field.field.node.decision.field_diary_number
+    - field.field.node.decision.field_diary_number_label
+    - field.field.node.decision.field_dm_org_above_name
+    - field.field.node.decision.field_dm_org_name
+    - field.field.node.decision.field_full_title
+    - field.field.node.decision.field_hide_decision_content
+    - field.field.node.decision.field_is_decision
+    - field.field.node.decision.field_meeting_date
+    - field.field.node.decision.field_meeting_id
+    - field.field.node.decision.field_meeting_sequence_number
+    - field.field.node.decision.field_minutes_checked
+    - field.field.node.decision.field_organization_type
+    - field.field.node.decision.field_outdated_document
+    - field.field.node.decision.field_policymaker_id
+    - field.field.node.decision.field_record_language_checked
+    - field.field.node.decision.field_status_checked
+    - field.field.node.decision.field_top_category_name
+    - field.field.node.decision.field_unique_id
+    - field.field.node.decision.field_voting_results
+    - node.type.decision
+  module:
+    - datetime
+    - user
+id: node.decision.policymaker_list_item
+targetEntityType: node
+bundle: decision
+mode: policymaker_list_item
+content:
+  field_decision_case_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_decision_section:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_meeting_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: short
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_attachments_checked: true
+  field_classification_code: true
+  field_classification_title: true
+  field_dates_checked: true
+  field_decision_attachment_files: true
+  field_decision_attachments: true
+  field_decision_content: true
+  field_decision_content_parsed: true
+  field_decision_date: true
+  field_decision_history: true
+  field_decision_history_pdf: true
+  field_decision_meeting: true
+  field_decision_minutes_pdf: true
+  field_decision_motion: true
+  field_decision_motion_parsed: true
+  field_decision_native_id: true
+  field_decision_organization: true
+  field_decision_previous: true
+  field_decision_record: true
+  field_decision_series_id: true
+  field_diary_number: true
+  field_diary_number_label: true
+  field_dm_org_above_name: true
+  field_dm_org_name: true
+  field_full_title: true
+  field_hide_decision_content: true
+  field_is_decision: true
+  field_meeting_id: true
+  field_meeting_sequence_number: true
+  field_minutes_checked: true
+  field_organization_type: true
+  field_outdated_document: true
+  field_policymaker_id: true
+  field_record_language_checked: true
+  field_status_checked: true
+  field_top_category_name: true
+  field_unique_id: true
+  field_voting_results: true
+  langcode: true
+  links: true
+  published_at: true
+  search_api_excerpt: true
+  toc_enabled: true
