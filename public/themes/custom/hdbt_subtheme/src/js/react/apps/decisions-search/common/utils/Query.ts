@@ -12,6 +12,15 @@ export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[])
     multi_match: {
       query: searchTerm,
       fields: dataFields,
+      type: 'best_fields',
+      operator: 'or',
+      fuzziness: 'AUTO'
+    }
+  },
+  {
+    multi_match: {
+      query: searchTerm,
+      fields: dataFields,
       type: 'phrase',
       operator: 'or'
     }
@@ -24,4 +33,16 @@ export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[])
       operator: 'or'
     }
   },
+];
+
+export const getAdvancedBoostQuery = (searchTerm: string, dataField: string) => [
+  {
+    match: {
+      [dataField]: {
+        query: searchTerm,
+        operator: 'and',
+        boost: 10,
+      }
+    }
+  }
 ];

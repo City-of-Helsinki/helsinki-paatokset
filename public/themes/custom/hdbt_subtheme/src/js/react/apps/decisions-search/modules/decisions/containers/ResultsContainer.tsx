@@ -25,13 +25,15 @@ export const ResultsContainer = ({
   );
   const setInitialized = useSetAtom(initializedAtom);
 
-  const fetcher = () => fetch(`${url}/paatokset_decisions/_search`, {
+  const fetcher = useCallback((key: string) => 
+    fetch(`${url}/paatokset_decisions/_search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: query,
-    }).then((res) => res.json());
+      body: key,
+    }).then((res) => res.json())
+  , [url]);
 
   const { data, error, isLoading, isValidating } = useSWR(query, fetcher, {
     revalidateOnFocus: false

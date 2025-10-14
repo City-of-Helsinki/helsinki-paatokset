@@ -6,6 +6,7 @@ namespace Drupal\paatokset_search\EventSubscriber;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\elasticsearch_connector\Event\AlterSettingsEvent;
+use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,6 +20,7 @@ class PrepareIndex implements EventSubscriberInterface {
   public static function getSubscribedEvents(): array {
     return [
       AlterSettingsEvent::class => 'prepareIndices',
+      FieldMappingEvent::class => 'onFieldMapping',
     ];
   }
 
@@ -43,11 +45,64 @@ class PrepareIndex implements EventSubscriberInterface {
               'default' => [
                 'type' => 'finnish',
               ],
+              'finnish_ngram' => [
+                'tokenizer' => 'standard',
+                'filter' => [
+                  'lowercase',
+                  'finnish_stemmer',
+                  'ngram_filter',
+                ],
+              ],
+              'finnish_search' => [
+                'tokenizer' => 'standard',
+                'filter' => [
+                  'lowercase',
+                  'finnish_stemmer',
+                ],
+              ],
+            ],
+            'filter' => [
+              'ngram_filter' => [
+                'type' => 'edge_ngram',
+                'min_gram' => 3,
+                'max_gram' => 15,
+              ],
+              'finnish_stemmer' => [
+                'type' => 'stemmer',
+                'language' => 'finnish',
+              ],
             ],
           ],
-          'max_result_window' => 1000000,
         ],
       ));
+    }
+  }
+
+  /**
+   * Alters individual field mappings.
+   *
+   * @param \Drupal\elasticsearch_connector\Event\FieldMappingEvent $event
+   *   The field mapping event.
+   */
+  public function onFieldMapping(FieldMappingEvent $event): void {
+    $field = $event->getField();
+
+    // Modify the 'subject' field to use custom analyzer.
+    if ($field->getFieldIdentifier() === 'subject') {
+      $param = $event->getParam();
+
+      $param['analyzer'] = 'finnish_ngram';
+      $param['search_analyzer'] = 'finnish_search';
+
+      // Add multi-field for keyword searches.
+      $param['fields'] = [
+        'keyword' => [
+          'type' => 'keyword',
+          'ignore_above' => 256,
+        ],
+      ];
+
+      $event->setParam($param);
     }
   }
 

@@ -102,8 +102,14 @@ export const resetStateAtom = atom(null, (get, set) => {
 });
 
 export const updateQueryAtom = atom(null, (get, set, newValue: typeof defaultState) => {
-  const state = {...get(searchStateAtom), page: 1};
-  set(submittedStateAtom, state);
+  const searchState = get(searchStateAtom);
+  const submittedState = get(submittedStateAtom);
+  const newState = {...searchState, page: 1};
+  
+  // Only update if state actually changed
+  if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {
+    set(submittedStateAtom, newState);
+  }
 });
 
 export const getSearchTermAtom = atom((get) => {
