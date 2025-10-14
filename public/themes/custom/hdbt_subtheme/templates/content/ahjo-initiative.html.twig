@@ -1,4 +1,4 @@
 <div class="initiative">
-  <div class="date">{{ content.date }}</div>
+  <div class="date">{{ entity.date.value | format_date('short' )}}</div>
   {{ entity.getDocumentLink() }}
 </div>
