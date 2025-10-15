@@ -16,10 +16,12 @@ const defaultState = {
   [Components.CATEGORY]: [],
   [Components.DECISIONMAKER]: [],
   [Components.FROM]: undefined,
+  [Components.BODIES]: false,
   [Components.PAGE]: 1,
   [Components.SEARCHBAR]: undefined,
-  [Components.TO]: undefined,
   [Components.SORT]: SortOptions.RELEVANCE,
+  [Components.TO]: undefined,
+  [Components.TRUSTEES]: false,
 };
 
 const initialParams = new URLSearchParams(window.location.search);
@@ -55,7 +57,10 @@ export const aggsAtom = atom<aggType|undefined>(undefined, (get, set, aggs: aggT
     }
     else {
       const param = initialParams.get(key);
-      if (param !== null) {
+      if (typeof value === 'boolean' && param === 'true') {
+        initialState[key] = true;
+      }
+      else if (param !== null) {
         initialState[key] = param;
       }
     }
@@ -76,6 +81,9 @@ const stateToURLParams = (state: typeof defaultState) => {
       typeof value === 'number'
     ) {
       params.set(key, value);
+    }
+    else if (typeof value === 'boolean' && value === true) {
+      params.set(key, 'true');
     }
   });
   const url = new URL(window.location.href);
@@ -139,7 +147,7 @@ export const getCategoryAtom = atom((get) => {
   return state[Components.CATEGORY];
 });
 
-export const setCategoryAtom = atom(null, (get, set, value: Map<string, string>) => {
+export const setCategoryAtom = atom(null, (get, set, value: [{label: string, value: string}]) => {
   const state = {...get(searchStateAtom)};
   state[Components.CATEGORY] = value;
   set(searchStateAtom, state);
@@ -198,7 +206,7 @@ export const getDecisionMakersAtom = atom((get) => {
   return state[Components.DECISIONMAKER];
 });
 
-export const setDecisionMakersAtom = atom(null, (get, set, value: Map<string, string>) => {
+export const setDecisionMakersAtom = atom(null, (get, set, value: [{label: string, value: string}]) => {
   const state = {...get(searchStateAtom)};
   state[Components.DECISIONMAKER] = value;
   set(searchStateAtom, state);
@@ -216,3 +224,25 @@ export const setSortAtom = atom(null, (get, set, value: [{label: string, value: 
 });
 
 export const initializedAtom = atom<boolean>(false);
+
+export const getTrusteesFilterAtom = atom((get) => {
+  const state = {...get(searchStateAtom)};
+  return state[Components.TRUSTEES];
+});
+
+export const setTrusteesFilterAtom = atom(null, (get, set, value: boolean) => {
+  const state = {...get(searchStateAtom)};
+  state[Components.TRUSTEES] = value;
+  set(searchStateAtom, state);
+});
+
+export const getBodiesFilterAtom = atom((get) => {
+  const state = {...get(searchStateAtom)};
+  return state[Components.BODIES];
+});
+
+export const setBodiesFilterAtom = atom(null, (get, set, value: boolean) => {
+  const state = {...get(searchStateAtom)};
+  state[Components.BODIES] = value;
+  set(searchStateAtom, state);
+});

@@ -36,6 +36,13 @@ export const SelectionsContainer = () => {
     upateQuery(state);
   };
 
+  const setStateItemToFalse = (key: string) => {
+    const state = {...submittedState};
+    state[key] = false;
+    setState(state);
+    upateQuery(state);
+  };
+
   Object.entries({...submittedState})
     .filter(([key]) => ![Components.TO, Components.FROM, Components.PAGE, Components.SEARCHBAR, Components.SORT].includes(key))
     .forEach(([key, value], index) => {
@@ -56,6 +63,18 @@ export const SelectionsContainer = () => {
             key={`${key}-${value}`}
             clearSelection={() => unsetStateItem(key)}
             value={value}
+          />
+        );
+      }
+      else if (typeof value === 'boolean' && value === true) {
+        selections.push(
+          <FilterButton
+            key={`${key}-${value}-${index}`}
+            clearSelection={() => setStateItemToFalse(key)}
+            value={key === Components.BODIES ?
+              Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search'}) :
+              Drupal.t('Decisions of office holders', {}, { context: 'Decisions search'})
+            }
           />
         );
       }
