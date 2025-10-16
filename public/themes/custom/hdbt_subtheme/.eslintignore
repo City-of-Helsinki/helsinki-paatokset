@@ -1,3 +1,4 @@
+
 node_modules/**/*
 
-src/js/react/apps/decisions-search
+src/js/react/apps/decisions-search-old

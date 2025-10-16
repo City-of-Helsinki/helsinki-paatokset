@@ -12,3 +12,5 @@ services:
       - { name: 'event_subscriber' }
 
   Drupal\paatokset_search\SearchManager: ~
+
+  Drupal\paatokset_search\DecisionReindexer: ~

@@ -22,6 +22,7 @@ dependencies:
   module:
     - helfi_react_search
     - node
+    - paatokset_ahjo_api
     - paatokset_search
 id: decisions
 name: Decisions
@@ -134,6 +135,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_meeting_date
+  more_decisions:
+    label: 'More decisions'
+    datasource_id: 'entity:node'
+    property_path: more_decisions
+    type: boolean
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -249,6 +255,10 @@ processor_settings:
     weights:
       preprocess_index: 100
   language_with_fallback: {  }
+  more_decisions: {  }
+  organization_type_fallback:
+    weights:
+      preprocess_index: -10
   project_execution_schedule: {  }
   project_image_absolute_url: {  }
   project_plan_schedule: {  }
@@ -264,6 +274,7 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 0
+  delete_on_fail: true
   index_directly: false
   track_changes_in_references: true
 server: default

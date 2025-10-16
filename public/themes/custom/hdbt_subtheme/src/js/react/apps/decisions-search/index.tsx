@@ -1,25 +1,23 @@
-import './i18n';
-import React, { createContext } from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import DecisionsContainer from './modules/decisions/SearchContainer';
-import PolicymakersContainer from './modules/policymakers/SearchContainer';
-import FrontpageContainer from './modules/frontpage/SearchContainer';
-import initSentry from './common/Sentry';
 
-// Determine which data source we use once policymakers search is implemented
-const rootElement = document.getElementById('paatokset_search');
-let searchContainer;
+import { ErrorBoundary } from '@sentry/react';
+import initSentry from '../decisions-search-old/common/Sentry';
+import { DecisionsContainer } from './modules/decisions/DecisionsContainer';
+import ResultsError from '@/react/common/ResultsError';
+import { GhostList } from '@/react/common/GhostList';
 
-// Set to true for some additional info.
-window._DEBUG_MODE_ = false;
-// Need to instantiate this or reactivesearch dies.
-window.process = { env: {} };
+initSentry(); 
 
-initSentry();
+const ROOT_ID = 'paatokset_search';
 
-export const OperatorGuideContext = createContext(rootElement?.dataset.operatorGuideUrl || '');
+document.addEventListener('DOMContentLoaded', () => {
+  const rootElement = document.getElementById(ROOT_ID);
 
-if(rootElement) {
+  if (!rootElement) {
+    throw new Error('Root id missing for decisions search app');
+  }
+
   const type = rootElement.dataset.type || 'decisions';
   const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
@@ -27,22 +25,24 @@ if(rootElement) {
     case 'decisions':
       searchContainer = <DecisionsContainer url={elasticUrl} />;
       break;
-    case 'policymakers':
-      searchContainer = <PolicymakersContainer url={elasticUrl} />;
-      break;
-    case 'frontpage':
-      searchContainer = <FrontpageContainer url={elasticUrl} />;
-      break;
+    // case 'policymakers':
+    //   searchContainer = <PolicymakersContainer url={elasticUrl} />;
+    //   break;
+    // case 'frontpage':
+    //   searchContainer = <FrontpageContainer url={elasticUrl} />;
+    //   break;
     default:
-      searchContainer = null;
+      searchContainer = <DecisionsContainer url={elasticUrl} />;
   }
-}
 
-ReactDOM.render(
-  <React.StrictMode>
-    <section>
-      {searchContainer}
-    </section>
-  </React.StrictMode>,
-  document.getElementById('paatokset_search')
-);
+  ReactDOM.render(    
+    <React.StrictMode>
+      <ErrorBoundary fallback={<ResultsError />}>
+        <Suspense fallback={<GhostList count={10} />}>
+          {searchContainer}
+        </Suspense>
+      </ErrorBoundary>
+    </React.StrictMode>,
+    rootElement
+  );
+});
