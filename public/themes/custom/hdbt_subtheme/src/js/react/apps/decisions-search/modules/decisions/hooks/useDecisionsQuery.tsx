@@ -10,13 +10,12 @@ import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { SortOptions } from '../enum/SortOptions';
 import { getAdvancedBoostQuery, getBaseSearchTermQuery } from '../../../common/utils/Query';
+import { OrganizationTypes } from '../enum/OrganizationTypes';
 
 // Boosted fields for full text search
 const dataFields = [
   `${DecisionIndex.SUBJECT}^5`,
   `${DecisionIndex.ISSUE_SUBJECT}^2`,
-  DecisionIndex.DECISION_CONTENT,
-  DecisionIndex.DECISION_MOTION,
 ];
 
 // Fields to be returned in search results
@@ -59,13 +58,20 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
     if (searchTerm && searchTerm.length) {
       getBaseSearchTermQuery(searchTerm, dataFields).forEach(item => should.push(item));
       getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach(item => should.push(item));
-      should.push({
-        wildcard: {
-          [DecisionIndex.SUBJECT]: {
-            value: `*${searchTerm.toLowerCase()}*`,
+      [
+        DecisionIndex.DECISION_CONTENT,
+        DecisionIndex.DECISION_MOTION,
+      ].forEach(field => should.push({
+          constant_score: {
+            filter: {
+              match: {
+                [field]: searchTerm
+              }
+            },
+            boost: 1.0
           }
-        }
-      });
+        })
+      );
     }
 
     if (searchTerm && isOperatorSearch(searchTerm))  {
@@ -116,6 +122,28 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         }
       });
     }
+
+    [Components.BODIES, Components.TRUSTEES].forEach((component) => {
+      const value = submittedState[component];
+      if (typeof value === 'boolean' && value === true) {
+        filter.push(component === Components.BODIES ? {
+          bool: {
+            must_not: {
+              terms: {
+                [DecisionIndex.ORG_TYPE]: [
+                  OrganizationTypes.OFFICIAL,
+                  OrganizationTypes.TRUSTEE,
+                ],
+              }
+            }
+          }
+        }: {
+          term: {
+            [DecisionIndex.ORG_TYPE]: OrganizationTypes.TRUSTEE,
+          }
+        });
+      }
+    });
 
     const query: estypes.QueryDslQueryContainer = {
       bool: {
@@ -177,6 +205,7 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         total_issues: {
           cardinality: {
             field: DecisionIndex.UNIQUE_ISSUE_ID,
+            precision_threshold: 10000,
           },
         }
       },
@@ -196,19 +225,19 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
           functions: [{
             gauss: {
               [DecisionIndex.MEETING_DATE]: {
-                decay: 0.3,
+                decay: 0.5,
                 origin: 'now',
-                scale: '60d',
+                scale: '365d',
               },
             },
+            weight: 50,
           }],
           boost_mode: 'sum',
-          score_mode: 'sum',  
+          score_mode: 'sum',
         },
       },
       size,
       sort,
-      track_total_hits: true,
     };
 
     if (customSearchTerm) {

@@ -7,6 +7,8 @@ import { CategoryFilter } from '../components/CategoryFilter';
 import { DateFilter } from '../components/DateFilter';
 import { DMSelect } from '../components/DMSelect';
 import { SelectionsContainer } from './SelectionsContainer';
+import { TrusteeFilter } from '../components/TrusteeFilter';
+import { BodiesFilter } from '../components/BodiesFilter';
 
 export const FormContainer = ({
   url,
@@ -29,6 +31,15 @@ export const FormContainer = ({
         <DateFilter />
         <CategoryFilter />
         <DMSelect url={url} />
+      </div>
+      <div className='react-search__checkbox-filter-container'>
+        <fieldset className='hdbt-search--react__fieldset'>
+          <legend className='hdbt-search--react__legend'>
+            {Drupal.t('Filters', {}, {context: 'Checkbox filters heading'})}
+          </legend>
+          <BodiesFilter />
+          <TrusteeFilter />
+        </fieldset>
       </div>
       <Button
         className='hdbt-search--react__submit-button'

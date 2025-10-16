@@ -1,36 +1,20 @@
 export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[]) => [
   {
     multi_match: {
-      query: searchTerm,
       fields: dataFields,
-      type: 'best_fields',
+      fuzziness: 1,
       operator: 'or',
-      fuzziness: 0
+      query: searchTerm,
+      type: 'best_fields',
     }
   },
   {
     multi_match: {
-      query: searchTerm,
+      boost: 2,
       fields: dataFields,
-      type: 'best_fields',
       operator: 'or',
-      fuzziness: 'AUTO'
-    }
-  },
-  {
-    multi_match: {
       query: searchTerm,
-      fields: dataFields,
       type: 'phrase',
-      operator: 'or'
-    }
-  },
-  {
-    multi_match: {
-      query: searchTerm,
-      fields: dataFields,
-      type: 'phrase_prefix',
-      operator: 'or'
     }
   },
 ];
@@ -39,9 +23,9 @@ export const getAdvancedBoostQuery = (searchTerm: string, dataField: string) => 
   {
     match: {
       [dataField]: {
-        query: searchTerm,
+        boost: 3,
         operator: 'and',
-        boost: 10,
+        query: searchTerm,
       }
     }
   }

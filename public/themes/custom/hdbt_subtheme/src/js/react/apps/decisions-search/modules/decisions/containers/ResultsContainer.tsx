@@ -66,8 +66,25 @@ export const ResultsContainer = ({
     />;
   };
 
-  const customTotal = data?.aggregations?.total_issues.value;
-  const getHeaderText = () => data?.hits?.total?.value ? Drupal.formatPlural(customTotal, '1 decision', '@count decisions', {}, { context: 'Decisions search' }) : ''; 
+  const getCustomTotal = () => {
+    if (!data?.aggregations?.total_issues?.value) {
+      return 0;
+    }
+    return data.aggregations.total_issues.value > 9999 ?
+      10000 :
+      data.aggregations.total_issues.value;
+  };
+  const customTotal = getCustomTotal();
+  
+  const getHeaderText = () => {
+    if (!customTotal) {
+      return '';
+    }
+
+    return customTotal > 9999 ?
+      Drupal.t('Over 10 000 decisions', {}, { context: 'Decisions search' }) :
+      Drupal.formatPlural(customTotal, '1 decision', '@count decisions', {}, { context: 'Decisions search' });
+  };
   const sortElement = customTotal && <ResultsSort />;
 
   return (
