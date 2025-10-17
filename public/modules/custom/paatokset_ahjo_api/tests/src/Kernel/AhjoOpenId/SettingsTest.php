@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\SettingsFactory;
@@ -41,7 +42,10 @@ class SettingsTest extends KernelTestBase {
       ])
       ->save();
 
-    $sut = new SettingsFactory($this->container->get(ConfigFactoryInterface::class));
+    $sut = new SettingsFactory(
+      $this->container->get(ConfigFactoryInterface::class),
+      $this->container->get(LanguageManagerInterface::class)
+    );
     $settings = $sut->create();
     $this->assertInstanceOf(Settings::class, $settings);
     foreach ($expectedValues as $key => $value) {

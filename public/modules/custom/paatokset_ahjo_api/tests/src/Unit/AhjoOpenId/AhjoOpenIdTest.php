@@ -6,12 +6,16 @@ namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Unit;
 
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -22,6 +26,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 class AhjoOpenIdTest extends UnitTestCase {
 
   use ProphecyTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * Tests auth url.
@@ -62,8 +67,9 @@ class AhjoOpenIdTest extends UnitTestCase {
     }
 
     $lock = $this->prophesize(LockBackendInterface::class)->reveal();
+    $environmentResolver = $this->getEnvironmentResolver(Project::PAATOKSET, EnvironmentEnum::Test);
 
-    return new AhjoOpenId($settings, $httpClient, $state, $lock);
+    return new AhjoOpenId($settings, $httpClient, $state, $lock, $environmentResolver);
   }
 
   /**
@@ -100,8 +106,8 @@ class AhjoOpenIdTest extends UnitTestCase {
     $state = $this
       ->prophesize(StateInterface::class);
     $state
-      ->get(AhjoOpenId::AHJO_AUTH_TOKEN)
-      ->willReturn(FALSE);
+      ->get('ahjo-auth-test', Argument::any())
+      ->willReturn('');
 
     $sut = $this->getSut($settings, state: $state->reveal());
     $this->assertFalse($sut->isConfigured());
@@ -125,7 +131,7 @@ class AhjoOpenIdTest extends UnitTestCase {
     $state = $this
       ->prophesize(StateInterface::class);
     $state
-      ->get(AhjoOpenId::AHJO_AUTH_TOKEN)
+      ->get('ahjo-auth-test', Argument::any())
       ->willReturn(json_encode(new AhjoAuthToken('123', time() + 3600, '234')));
 
     $sut = $this->getSut($settings, state: $state->reveal());

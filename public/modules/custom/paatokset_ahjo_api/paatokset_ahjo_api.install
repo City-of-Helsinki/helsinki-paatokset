@@ -7,7 +7,8 @@
 
 declare(strict_types=1);
 
-use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
+use Drupal\Core\Utility\UpdateException;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 
 /**
@@ -59,7 +60,43 @@ function paatokset_ahjo_api_update_9007(): void {
 
   // Migrate token to the new format.
   if (!empty($token) && !empty($expiration) && !empty($refreshToken)) {
-    $state->set(AhjoOpenId::AHJO_AUTH_TOKEN, json_encode(new AhjoAuthToken($token, (int) $expiration, $refreshToken)));
+    $state->set('ahjo-auth', json_encode(new AhjoAuthToken($token, (int) $expiration, $refreshToken)));
   }
 
+}
+
+/**
+ * Add per environment ahjo tokens.
+ */
+function paatokset_ahjo_api_update_9008(): void {
+  $state = \Drupal::state();
+  $lock = \Drupal::lock();
+
+  try {
+    $environment = \Drupal::service(EnvironmentResolverInterface::class)
+      ->getActiveEnvironmentName();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+
+  if ($lock->acquire('ahjo-auth')) {
+    try {
+      if ($lock->acquire("ahjo-auth-$environment")) {
+        try {
+          // Migrate token to the new key.
+          $state->set("ahjo-auth-$environment", $state->get('ahjo-auth', ''));
+          return;
+        }
+        finally {
+          $lock->release("ahjo-auth-$environment");
+        }
+      }
+    }
+    finally {
+      $lock->release('ahjo-auth');
+    }
+  }
+
+  throw new UpdateException("Failed to migrate ahjo token");
 }
