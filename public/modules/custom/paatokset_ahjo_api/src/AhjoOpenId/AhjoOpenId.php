@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\AhjoOpenId;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -22,7 +23,6 @@ class AhjoOpenId implements LoggerAwareInterface {
 
   use LoggerAwareTrait;
 
-  public const string AHJO_AUTH_TOKEN = 'ahjo-auth';
   public const string AHJO_AUTH_OLD = 'ahjo-auth-old';
 
   public function __construct(
@@ -31,6 +31,7 @@ class AhjoOpenId implements LoggerAwareInterface {
     private readonly StateInterface $state,
     #[Autowire(service: 'lock')]
     private readonly LockBackendInterface $lock,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -94,6 +95,13 @@ class AhjoOpenId implements LoggerAwareInterface {
   }
 
   /**
+   * Get ahjo token state key.
+   */
+  private function getTokenKey(): string {
+    return sprintf('ahjo-auth-%s', $this->environmentResolver->getActiveEnvironmentName());
+  }
+
+  /**
    * Make openid request.
    *
    * @param array $formParameters
@@ -104,9 +112,11 @@ class AhjoOpenId implements LoggerAwareInterface {
   private function makeTokenRequest(array $formParameters): AhjoAuthToken {
     $this->settings->assertValid();
 
+    $tokenKey = $this->getTokenKey();
+
     // Refresh tokens are invalidated the moment it is used.
     // It is critical that only one refresh attempt is made.
-    if (!$this->lock->acquire(self::AHJO_AUTH_TOKEN)) {
+    if (!$this->lock->acquire($tokenKey)) {
       throw new AhjoOpenIdException('Failed to acquire lock');
     }
 
@@ -117,9 +127,9 @@ class AhjoOpenId implements LoggerAwareInterface {
       // strictly necessary anymore. However, settings the current
       // token to empty value makes it easier to detect that an
       // invalid token is used, in case the refresh fails.
-      if ($old = $this->state->get(self::AHJO_AUTH_TOKEN)) {
+      if ($old = $this->state->get($tokenKey)) {
         $this->state->set(self::AHJO_AUTH_OLD, $old);
-        $this->state->set(self::AHJO_AUTH_TOKEN, '');
+        $this->state->set($tokenKey, '');
       }
 
       $client_id = $this->settings->clientId;
@@ -142,7 +152,7 @@ class AhjoOpenId implements LoggerAwareInterface {
         throw new AhjoOpenIdException('Invalid token response: ' . $body, previous: $e);
       }
 
-      $this->state->set(self::AHJO_AUTH_TOKEN, json_encode($token));
+      $this->state->set($tokenKey, json_encode($token));
 
       return $token;
     }
@@ -150,7 +160,7 @@ class AhjoOpenId implements LoggerAwareInterface {
       throw new AhjoOpenIdException($e->getMessage(), previous: $e);
     }
     finally {
-      $this->lock->release(self::AHJO_AUTH_TOKEN);
+      $this->lock->release($tokenKey);
     }
   }
 
@@ -176,7 +186,7 @@ class AhjoOpenId implements LoggerAwareInterface {
    * @throws \InvalidArgumentException
    */
   private function getToken(): AhjoAuthToken {
-    return AhjoAuthToken::fromJson($this->state->get(self::AHJO_AUTH_TOKEN) ?: '');
+    return AhjoAuthToken::fromJson($this->state->get($this->getTokenKey(), ''));
   }
 
   /**
