@@ -65,6 +65,8 @@ class AhjoOpenId implements LoggerAwareInterface {
    * @throws \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException
    */
   public function refreshAuthToken(?string $code = NULL): AhjoAuthToken {
+    $this->logger?->info('Refreshing ahjo auth token');
+
     if ($code) {
       // Refresh token with auth code grant.
       return $this->makeTokenRequest([
