@@ -9,6 +9,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Tests ahjo open id controller.
@@ -16,11 +17,14 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 class AhjoOpenIdControllerTest extends KernelTestBase {
 
   use ApiTestTrait;
+  use UserCreationTrait;
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
+    'system',
+    'user',
     'helfi_api_base',
     'paatokset_ahjo_api',
   ];
@@ -43,9 +47,14 @@ class AhjoOpenIdControllerTest extends KernelTestBase {
       ],
     ]);
 
+    // 403 if use has no permissions.
     $request = $this->getMockedRequest($url->toString());
     $response = $this->processRequest($request);
+    $this->assertEquals(403, $response->getStatusCode());
 
+    $this->installEntitySchema('user');
+    $this->createUser(['administer ahjo openid']);
+    $response = $this->processRequest($request);
     $this->assertTrue($response->isSuccessful());
     $this->assertStringContainsString('Token successfully stored', $response->getContent());
   }
