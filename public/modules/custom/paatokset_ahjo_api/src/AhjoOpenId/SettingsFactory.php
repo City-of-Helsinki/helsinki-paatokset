@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\AhjoOpenId;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 
@@ -33,7 +34,7 @@ final readonly class SettingsFactory {
     $secret = getenv('PAATOKSET_OPENID_SECRET');
 
     $callbackUrl = Url::fromRoute('paatokset_ahjo_openid.callback', options: [
-      'language' => $this->languageManager->getLanguage('zxx'),
+      'language' => $this->languageManager->getLanguage(LanguageInterface::LANGCODE_NOT_APPLICABLE),
     ])
       ->setAbsolute()
       ->toString();
