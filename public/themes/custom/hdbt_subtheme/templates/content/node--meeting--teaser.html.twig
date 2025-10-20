@@ -1,6 +1,6 @@
 {% set title %}
   <span>
-    {% if phase == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').MINUTES %}
+    {% if node.getMeetingPhase() == enum('Drupal\\paatokset_ahjo_api\\Entity\\MeetingPhase').MINUTES %}
       {{ 'Minutes' | t }}
     {% else %}
       {{ 'Agenda' | t }}
