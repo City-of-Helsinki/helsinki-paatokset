@@ -11,5 +11,5 @@ services:
 
   paatokset_ahjo_proxy:
     class: Drupal\paatokset_ahjo_proxy\AhjoProxy
-    arguments: ['@http_client', '@cache.default', '@entity_type.manager', '@plugin.manager.migration', '@logger.channel.paatokset_ahjo_proxy', '@messenger', '@file.repository', '@config.factory', '@database', '@queue', '@paatokset_ahjo_openid']
+    arguments: ['@http_client', '@cache.default', '@entity_type.manager', '@plugin.manager.migration', '@logger.channel.paatokset_ahjo_proxy', '@messenger', '@file.repository', '@config.factory', '@database', '@queue', '@?paatokset_ahjo_openid']
   Drupal\paatokset_ahjo_proxy\AhjoProxy: '@paatokset_ahjo_proxy'
