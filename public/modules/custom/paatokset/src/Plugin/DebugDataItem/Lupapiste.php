@@ -28,7 +28,7 @@ final class Lupapiste extends DebugDataItemPluginBase implements ContainerFactor
    *
    * @var \Drupal\paatokset\Lupapiste\ItemsImporter
    */
-  private readonly ItemsImporter $importer;
+  private ItemsImporter $importer;
 
   /**
    * {@inheritdoc}
