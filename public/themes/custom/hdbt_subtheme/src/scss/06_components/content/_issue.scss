@@ -236,6 +236,13 @@
   margin-bottom: $spacing-quadruple;
   margin-top: $spacing-quadruple;
 
+  // The heading should look like h2 even it is h3.
+  // This is probably subject to change in the future
+  // if the layout is reworked.
+  h3 {
+    @include font('h2');
+  }
+
   div {
     margin: $spacing 0;
   }
