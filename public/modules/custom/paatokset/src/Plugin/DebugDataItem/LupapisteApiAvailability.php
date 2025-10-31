@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset\Plugin\DebugDataItem;
 
+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Drupal\paatokset\Lupapiste\ItemsImporter;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Debug data plugin for Lupapiste RSS service.
@@ -21,27 +21,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: 'lupapiste',
   title: new TranslatableMarkup('Lupapiste'),
 )]
-final class Lupapiste extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsValidityChecksInterface {
+final class LupapisteApiAvailability extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsValidityChecksInterface {
 
-  /**
-   * The Lupapiste data importer.
-   *
-   * @var \Drupal\paatokset\Lupapiste\ItemsImporter
-   */
-  private ItemsImporter $importer;
+  use AutowiredInstanceTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
+  public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
-    $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->importer = $container->get(ItemsImporter::class);
-    return $instance;
+    private readonly ItemsImporter $importer,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
