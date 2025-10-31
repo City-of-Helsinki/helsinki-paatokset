@@ -72,8 +72,7 @@ final readonly class ItemsStorage {
    */
   private function getCurrentPublishedTimestamp() : int {
     $data = $this->importer->fetch('fi');
-    $pubDateTimestamp = $data['pubDate'] ? strtotime($data['pubDate']) : 0;
-    return $pubDateTimestamp;
+    return $data['pubDate'] ? strtotime($data['pubDate']) : 0;
   }
 
   /**
