@@ -1,6 +1,7 @@
 label: 'Запланированные материалы'
 display:
   default:
+    display_title: Основной
     display_options:
       exposed_form:
         options:
@@ -63,7 +64,6 @@ display:
           expose:
             label: Язык
       title: 'Запланированные материалы'
-    display_title: Основной
   overview:
     display_options:
       menu:
