@@ -26,11 +26,22 @@
       <h2>{{ selectedDecision.field_full_title.value }}</h2>
     </div>
 
-    {% if decision_org_name %}
-      <div class="issue-content__policymaker-label {{ selected_class }}">
-        <span>{{ decision_org_name }} </span>
-      </div>
-    {% endif %}
+  {% if organization_type_name or decision_org_name %}
+    <div class="issue-content__labels">
+      {% if organization_type_name %}
+        <div class="content-tags__tags--static">
+          <span class="hds-tag {{selected_class}}">{{ organization_type_name }} </span>
+        </div>
+      {% endif %}
+
+      {% if decision_org_name %}
+        <div class="issue-content__policymaker-label--with-icon">
+        <span>{{ 'Decisionmaker'|t }}:</span>
+          <span>{{ decision_org_name }} </span>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 
     {% if favorites_enabled %}
     <div class="issue__favorite-button">
