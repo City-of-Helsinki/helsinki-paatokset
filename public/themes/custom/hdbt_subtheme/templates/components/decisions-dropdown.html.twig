@@ -40,22 +40,22 @@
         {% for option in options %}
           {% if selectedDecision.id == option.id %}
             <li
-              data-styleclass="{{ option.class }}"
+              data-styleclass="border-left--{{ option.class }}"
               data-link="{{ option.native_id }}"
               aria-selected="true"
               tabindex="0"
-              class="option selected {{ option.class }}"
+              class="option selected border-left--{{ option.class }}"
               title="{{ option.label }}"
             >
               <a class="paatokset__link-plain" href="?decision={{option.native_id|url_encode}}">{{ option.label }}</a>
             </li>
           {% else %}
             <li
-              data-styleclass="{{ option.class }}"
+              data-styleclass="border-left--{{ option.class }}"
               data-link="{{ option.native_id }}"
               aria-selected="false"
               tabindex="0"
-              class="option {{ option.class }}"
+              class="option border-left--{{ option.class }}"
               title="{{ option.label }}"
             >
               <a class="paatokset__link-plain" href="?decision={{ option.native_id|url_encode }}">{{ option.label }}</a>

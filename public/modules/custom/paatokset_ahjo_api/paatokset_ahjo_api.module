@@ -81,10 +81,10 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'policymaker_is_active' => NULL,
         'selected_class' => NULL,
         'decision_org_name' => NULL,
+        'organization_type_name' => NULL,
         'decision_content' => NULL,
         'decision_section' => NULL,
         'vote_results' => NULL,
-        'organization_type_name' => NULL,
       ],
     ],
     'case_attachments' => [
