@@ -508,6 +508,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $caseService = \Drupal::service('paatokset_ahjo_cases');
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
+  $organization_type = $policymaker?->getOrganizationType();
 
   /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
   $policymakerService = \Drupal::service('paatokset_policymakers');
@@ -521,7 +522,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['selectedDecision'] = $decision;
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
-  $variables['decision_org_name'] = $policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName();
+  $variables['decision_org_name'] = !$organization_type->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL ;
   $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
   $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');

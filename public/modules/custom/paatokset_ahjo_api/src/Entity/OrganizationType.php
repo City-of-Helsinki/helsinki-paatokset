@@ -28,6 +28,13 @@ enum OrganizationType {
   }
 
   /**
+   * True if organization type is considered council or cabinet.
+   */
+  public function isCouncilOrCabinet(): bool {
+    return in_array($this, [self::COUNCIL, self::CABINET]);
+  }
+
+  /**
    * Convert Ahjo Organization/Type field to TrusteeType enum.
    */
   public static function tryFromOrganizationType(string $type): ?self {

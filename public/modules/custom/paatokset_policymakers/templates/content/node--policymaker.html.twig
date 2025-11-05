@@ -86,9 +86,11 @@
   <section class="policymaker-summary policymaker-content">
     {% if organization_type %}
       <div class="policymaker-summary__label">
-        <div role="region" aria-label="{{ 'Page tags'|t }}" class="issue-content__policymaker-label policymaker-label--small {{ organization_type_color}}">
-          {{ organization_type }}
-        </div>
+        {% if organization_type %}
+          <div class="content-tags__tags--static">
+            <span class="hds-tag {{organization_type_color}}">{{ organization_type }} </span>
+          </div>
+        {% endif %}
       </div>
     {% endif %}
     {{  organization_hierarchy }}
