@@ -98,12 +98,16 @@ final class CaseController extends ControllerBase {
    * Renders decision content.
    */
   private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface|string {
+    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    $policymakerService = \Drupal::service('paatokset_policymakers');
+
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
       '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
       '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       '#decision_org_name' => $policymaker?->getPolicymakerName() ?? $decision->getDecisionMakerOrgName(),
+      '#organization_type_name' => $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL,
       '#decision_content' => $decision->parseContent(),
       '#decision_section' => $decision->getFormattedDecisionSection(),
       '#vote_results' => $decision->getVotingResults(),

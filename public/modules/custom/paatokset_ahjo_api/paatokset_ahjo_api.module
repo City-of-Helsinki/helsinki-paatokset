@@ -523,7 +523,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
   $variables['decision_org_name'] = !$organization_type?->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
-  $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker);
+  $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL;
   $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
   $variables['attachments'] = $decision?->getAttachments() ?? [];
