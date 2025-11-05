@@ -44,9 +44,9 @@ class PolicymakerTest extends AhjoKernelTestBase {
 
     $this->assertEquals('color-none', $policymaker->getPolicymakerClass());
     $policymaker->set('field_organization_type', 'Luottamushenkilö');
-    $this->assertEquals('color-engel', $policymaker->getPolicymakerClass());
+    $this->assertEquals('content-tags__tags__tag--gold', $policymaker->getPolicymakerClass());
     $policymaker->set('field_city_council_division', '123');
-    $this->assertEquals('color-hopea', $policymaker->getPolicymakerClass());
+    $this->assertEquals('', $policymaker->getPolicymakerClass());
     $policymaker->set('field_organization_color_code', 'override');
     $this->assertEquals('override', $policymaker->getPolicymakerClass());
 
