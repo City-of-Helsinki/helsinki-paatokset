@@ -13,6 +13,8 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,6 +35,8 @@ final class CaseController extends ControllerBase {
   public function __construct(
     private readonly CaseService $caseService,
     private readonly RendererInterface $renderer,
+    #[Autowire(service: 'paatokset_policymakers')]
+    private readonly PolicymakerService $policymakerService,
   ) {
   }
 
@@ -98,16 +102,13 @@ final class CaseController extends ControllerBase {
    * Renders decision content.
    */
   private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface|string {
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
-
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
       '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
       '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
       '#decision_org_name' => $policymaker?->getPolicymakerName() ?? $decision->getDecisionMakerOrgName(),
-      '#organization_type_name' => $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL,
+      '#organization_type_name' => $this->policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL,
       '#decision_content' => $decision->parseContent(),
       '#decision_section' => $decision->getFormattedDecisionSection(),
       '#vote_results' => $decision->getVotingResults(),

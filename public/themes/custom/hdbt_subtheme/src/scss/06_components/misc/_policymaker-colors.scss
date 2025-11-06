@@ -4,3 +4,52 @@
   --color-hopea: #{$color-silver};
   --color-kupari: #{$color-copper};
 }
+
+// TODO: UHF-12492 Remove old classes when possible.
+
+.issue-content__policymaker-label,
+.policymaker-row__color,
+.frontpage-calendar__item .color-line,
+.policymaker-card__color-title  {
+  &.color-sumu {
+    background-color: $color-fog;
+  }
+
+  &.color-hopea {
+    background-color: $color-silver;
+  }
+
+  &.color-suomenlinna {
+    background-color: $color-suomenlinna;
+  }
+
+  &.color-engel {
+    background-color: $color-engel
+  }
+
+  &.color-kupari {
+    background-color: $color-copper;
+  }
+}
+
+.issue__meetings-dropdown {
+  .color-sumu::before {
+    border-left-color: $color-fog;
+  }
+
+  .color-hopea::before {
+    border-left-color: $color-silver;
+  }
+
+  .color-suomenlinna::before {
+    border-left-color: $color-suomenlinna;
+  }
+
+  .color-engel::before {
+    border-left-color: $color-engel
+  }
+
+  .color-kupari::before {
+    border-left-color: $color-copper;
+  }
+}
