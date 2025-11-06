@@ -31,6 +31,8 @@ final class CaseController extends ControllerBase {
    *   The case service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
+   *   The policymaker service.
    */
   public function __construct(
     private readonly CaseService $caseService,
