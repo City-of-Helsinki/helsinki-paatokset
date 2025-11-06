@@ -1,0 +1,49 @@
+$color-council: $color-copper-medium-light;
+$color-cabinet: $color-black-10;
+$color-office-holder: $color-bus-medium-light;
+$color-trustee: $color-gold-medium-light;
+$color-board: $color-coat-of-arms-medium-light;
+
+
+//Background colors
+.bg--color-council {
+  background-color: $color-council;
+}
+
+.bg--color-cabinet {
+  background-color: $color-cabinet;
+}
+
+.bg--color-office-holder {
+  background-color: $color-office-holder;
+}
+
+.bg--color-trustee {
+  background-color: $color-trustee;
+}
+
+.bg--color-board {
+  background-color: $color-board;
+}
+
+
+//Border left pseudo colors
+.border-left--color-council::before {
+  border-left-color: $color-council;
+}
+
+.border-left--color-cabinet::before {
+  border-left-color: $color-cabinet;
+}
+
+.border-left--color-office-holder::before {
+  border-left-color: $color-office-holder;
+}
+
+.border-left--color-trustee::before {
+  border-left-color: $color-trustee;
+}
+
+.border-left--color-board::before {
+  border-left-color: $color-board;
+}

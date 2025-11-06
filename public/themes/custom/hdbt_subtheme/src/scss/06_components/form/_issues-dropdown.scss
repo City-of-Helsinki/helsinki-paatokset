@@ -50,7 +50,8 @@
 
   .hds-button::before {
     border-bottom: 26px solid transparent;
-    border-left: 20px solid;
+    border-left-style: solid;
+    border-left-width: 20px;
     border-top: 26px solid transparent;
     content: '';
     height: 0;
@@ -93,7 +94,8 @@
 
   .option:before {
     border-bottom: 26px solid transparent;
-    border-left: 20px solid $color-black;
+    border-left-style: solid;
+    border-left-width: 20px;
     border-top: 26px solid transparent;
     content: '';
     height: 0;

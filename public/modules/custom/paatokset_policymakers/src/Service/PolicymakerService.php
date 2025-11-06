@@ -1184,8 +1184,8 @@ class PolicymakerService {
     }
 
     return [
-      '#prefix' => '<div class="policymaker-summary__label"><div role="region" class="issue-content__policymaker-label policymaker-label--small ' . $color . '">',
-      '#suffix' => '</div></div>',
+      '#prefix' => '<div class="policymaker-summary__label"><div class="content-tags__tags--static"><span class="hds-tag bg--' . $color . '">',
+      '#suffix' => '</span></div></div>',
       '#markup' => $type,
     ];
   }

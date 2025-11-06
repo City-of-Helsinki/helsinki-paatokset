@@ -162,6 +162,31 @@
   }
 }
 
+.issue-content__labels {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+
+  .hds-tag {
+    width: fit-content;
+  }
+}
+
+.issue-content__policymaker-label--with-icon {
+  span {
+    @include font('body');
+
+    &:first-child {
+      font-weight: $font-weight-bold;
+
+      &::before {
+        @include pseudo-icon('user');
+        margin-right: $spacing-half;
+      }
+    }
+  }
+}
+
 .issue__favorite-button button.hds-button {
   color: $color-black;
   padding-left: 0;
@@ -235,6 +260,13 @@
 .issue__more-info {
   margin-bottom: $spacing-quadruple;
   margin-top: $spacing-quadruple;
+
+  // The heading should look like h2 even it is h3.
+  // This is probably subject to change in the future
+  // if the layout is reworked.
+  h3 {
+    @include font('h2');
+  }
 
   div {
     margin: $spacing 0;
