@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Service;
 
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\path_alias\Entity\PathAlias;
@@ -16,6 +18,7 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  * Tests for PolicymakerService.
  *
  * @group paatokset_ahjo_api
+ *
  * @coversDefaultClass \Drupal\paatokset_policymakers\Service\PolicymakerService
  */
 class PolicymakerServiceTest extends KernelTestBase {
@@ -29,6 +32,7 @@ class PolicymakerServiceTest extends KernelTestBase {
     'field',
     'helfi_api_base',
     'node',
+    'language',
     'paatokset_ahjo_api',
     'paatokset_policymakers',
     'path_alias',
@@ -119,6 +123,28 @@ class PolicymakerServiceTest extends KernelTestBase {
     $this->setCurrentUser($admin_user);
 
     // Get the services.
+    $this->policymakerService = $this->container->get('paatokset_policymakers');
+
+    // Add languages used in the test.
+    if (!ConfigurableLanguage::load('fi')) {
+      ConfigurableLanguage::create(['id' => 'fi', 'label' => 'Finnish'])->save();
+    }
+    if (!ConfigurableLanguage::load('sv')) {
+      ConfigurableLanguage::create(['id' => 'sv', 'label' => 'Swedish'])->save();
+    }
+
+    // Set default site language to Finnish.
+    $this->config('system.site')
+      ->set('default_langcode', 'fi')
+      ->save();
+
+    // Reset the language manager so current/default languages are recalculated.
+    $this->container->get('language_manager')->reset();
+
+    // If your routes are language-specific, rebuild the router.
+    $this->container->get('router.builder')->rebuild();
+
+    // Regrab the service after resets/rebuilds.
     $this->policymakerService = $this->container->get('paatokset_policymakers');
   }
 
@@ -350,6 +376,130 @@ class PolicymakerServiceTest extends KernelTestBase {
     $policymaker = $policymaker_service->getPolicyMaker();
     $this->assertNotNull($policymaker, 'Policymaker should not be null');
     $this->assertEquals('test123', $policymaker->get('field_policymaker_id')->value);
+  }
+
+  /**
+   * Test getting policymaker route.
+   */
+  public function testGetPolicymakerRoute(): void {
+    // Create a test policymaker.
+    $node = Node::create([
+      'type' => 'policymaker',
+      'title' => 'Test Policymaker',
+      'field_policymaker_id' => 'test123',
+      'status' => 1,
+    ]);
+    $node->save();
+
+    $this->policymakerService->setPolicyMakerNode($node);
+
+    // Default language should now be fi → route name should use fi.
+    $route = $this->policymakerService->getPolicymakerRoute();
+    $this->assertInstanceOf(Url::class, $route);
+    $this->assertEquals('policymaker.page.fi', $route->getRouteName());
+
+    // Explicit language sv (make sure 'sv' exists, we created it above).
+    $route = $this->policymakerService->getPolicymakerRoute(NULL, 'sv');
+    $this->assertInstanceOf(Url::class, $route);
+    $this->assertEquals('policymaker.page.sv', $route->getRouteName());
+
+    // Non-existent language should return NULL.
+    $route = $this->policymakerService->getPolicymakerRoute(NULL, 'de');
+    $this->assertNull($route);
+  }
+
+  /**
+   * Test getting decision announcement.
+   */
+  public function testGetDecisionAnnouncement(): void {
+    // Ensure the meeting node type exists.
+    $node_type_storage = $this->container->get('entity_type.manager')->getStorage('node_type');
+    if (!$node_type_storage->load('meeting')) {
+      $node_type_storage->create([
+        'type' => 'meeting',
+        'name' => 'Meeting',
+      ])->save();
+    }
+
+    // Create field storage and field if they don't exist.
+    $field_storage = FieldStorageConfig::load('node.field_meeting_decision');
+    if (!$field_storage) {
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_meeting_decision',
+        'entity_type' => 'node',
+        'type' => 'text_long',
+      ]);
+      $field_storage->save();
+    }
+
+    $field = FieldConfig::load('node.meeting.field_meeting_decision');
+    if (!$field) {
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'meeting',
+        'label' => 'Meeting Decision',
+      ]);
+      $field->save();
+    }
+
+    // Create field_meeting_minutes_published if it doesn't exist.
+    $minutes_field_storage = FieldStorageConfig::load('node.field_meeting_minutes_published');
+    if (!$minutes_field_storage) {
+      $minutes_field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_meeting_minutes_published',
+        'entity_type' => 'node',
+        'type' => 'boolean',
+      ]);
+      $minutes_field_storage->save();
+    }
+
+    $minutes_field = FieldConfig::load('node.meeting.field_meeting_minutes_published');
+    if (!$minutes_field) {
+      $minutes_field = FieldConfig::create([
+        'field_storage' => $minutes_field_storage,
+        'bundle' => 'meeting',
+        'label' => 'Meeting Minutes Published',
+      ]);
+      $minutes_field->save();
+    }
+
+    // Create a test meeting node with decision announcement.
+    $meeting = Node::create([
+      'type' => 'meeting',
+      'title' => 'Test Meeting',
+      'field_meeting_decision' => [
+        'value' => '
+        <div class="Paattaja">Test Decision</div>
+        <div class="Kokous">Meeting details</div>
+        <div class="Paikka Paivamaara">Location and date</div>
+        <div class="Tiedote">Announcement content</div>
+      ',
+        'format' => 'full_html',
+      ],
+      'field_meeting_minutes_published' => 0,
+    ]);
+    $meeting->save();
+
+    $reflection = new \ReflectionClass(get_class($this->policymakerService));
+    $method = $reflection->getMethod('getDecisionAnnouncement');
+
+    // Test with valid meeting and langcode.
+    $result = $method->invokeArgs($this->policymakerService, [$meeting, 'fi', []]);
+    $this->assertIsArray($result);
+    $this->assertArrayHasKey('heading', $result);
+    $this->assertArrayHasKey('metadata', $result);
+    $this->assertArrayHasKey('more_info', $result);
+    $this->assertArrayHasKey('accordions', $result);
+
+    // Test with published minutes, should return null.
+    $meeting->set('field_meeting_minutes_published', 1);
+    $result = $method->invokeArgs($this->policymakerService, [$meeting, 'fi', []]);
+    $this->assertNull($result);
+
+    // Test with empty decision field.
+    $meeting->set('field_meeting_decision', []);
+    $result = $method->invokeArgs($this->policymakerService, [$meeting, 'fi', []]);
+    $this->assertNull($result);
   }
 
 }
