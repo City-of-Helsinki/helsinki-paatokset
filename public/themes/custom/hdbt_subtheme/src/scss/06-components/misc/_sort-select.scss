@@ -1,0 +1,11 @@
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
+.decisions-search-sort-select {
+  margin-bottom: $spacing-and-half;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+    margin-left: auto;
+    width: 328px;
+  }
+}
