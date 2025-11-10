@@ -28,14 +28,14 @@ class FormContainer extends React.Component<FormContainerProps, FormContainerSta
 
   handleSubmit = (event: any) => {
     if(event) {
-      window.location.href = `${this.props.searchRedirect  }"${  encodeURIComponent(this.state.phrase)  }"`;
+      window.location.href = `${this.props.searchRedirect  }${  encodeURIComponent(this.state.phrase)  }`;
       event.preventDefault();
     }
   };
 
   handleSelectedValue = (value: any) => {
     if (value) {
-      window.location.href = `${this.props.searchRedirect  }"${  encodeURIComponent(value)  }"`;
+      window.location.href = `${this.props.searchRedirect  }${  encodeURIComponent(value)  }`;
     }
   };
 

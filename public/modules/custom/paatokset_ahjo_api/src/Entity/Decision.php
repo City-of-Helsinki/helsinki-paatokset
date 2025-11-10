@@ -522,9 +522,53 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
 
     if ($more_info_content) {
+      // Replace all HTML tags with commas.
+      $result = preg_replace('/<[^>]+>/', ',', $more_info_content);
+
+      // Remove leading and trailing commas/spaces.
+      $result = trim($result, ", \t\n\r\0\x0B");
+
+      // Remove multiple subsequent commas and clean spacing.
+      $result = preg_replace('/,+/', ',', $result);
+      $result = preg_replace('/\s*,\s*/', ', ', $result);
+
+      // Split into array.
+      $parts = array_map('trim', explode(',', $result));
+
+      // Make sure we have a phone number at index 2.
+      if (isset($parts[2])) {
+        // Remove all non-digit characters.
+        $parts[2] = preg_replace('/\D+/', '', $parts[2]);
+      }
+
+      // Example of assigning named keys.
+      $contact = [
+        'name' => $parts[0] ?? NULL,
+        'title' => ucfirst($parts[1]) ?? NULL,
+        'phone' => $parts[2] ?? NULL,
+        'email' => $parts[3] ?? NULL,
+      ];
+
       $output['more_info'] = [
         'heading' => new TranslatableMarkup('Ask for more info'),
-        'content' => ['#markup' => $more_info_content],
+        'content' => [
+          'name' => [
+            '#plain_text' => $contact['name'],
+          ],
+          'title' => [
+            '#plain_text' => $contact['title'],
+          ],
+          'phone' => [
+            '#type' => 'link',
+            '#title' => $contact['phone'],
+            '#url' => Url::fromUri('tel:' . preg_replace('/\D+/', '', $contact['phone'])),
+          ],
+          'email' => [
+            '#type' => 'link',
+            '#title' => $contact['email'],
+            '#url' => Url::fromUri('mailto:' . $contact['email']),
+          ],
+        ],
       ];
     }
 
@@ -536,9 +580,33 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
 
     if ($signature_info_content && in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
+      // Replace all HTML tags with #.
+      $result = preg_replace('/<[^>]+>/', '#', $signature_info_content);
+
+      // Remove leading and trailing # or whitespace.
+      $result = trim($result, "# \t\n\r\0\x0B");
+
+      // Collapse multiple # into one and normalize spacing around them.
+      $result = preg_replace('/#+/', '#', $result);
+      $result = preg_replace('/\s*#\s*/', ' # ', $result);
+
+      // Split into array.
+      $parts = array_map('trim', explode('#', $result));
+
+      $contact = [
+        'name' => $parts[0] ?? NULL,
+        'title' => ucfirst($parts[1]) ?? NULL,
+      ];
       $output['signature_info'] = [
         'heading' => new TranslatableMarkup('Decisionmaker'),
-        'content' => ['#markup' => $signature_info_content],
+        'content' => [
+          'name' => [
+            '#plain_text' => $contact['name'],
+          ],
+          'title' => [
+            '#plain_text' => $contact['title'],
+          ],
+        ],
       ];
     }
 
@@ -550,9 +618,32 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
 
     if ($presenter_content) {
+      // Replace all HTML tags with #.
+      $result = preg_replace('/<[^>]+>/', '#', $presenter_content);
+
+      // Remove leading and trailing # or whitespace.
+      $result = trim($result, "# \t\n\r\0\x0B");
+
+      // Collapse multiple # into one and normalize spacing around them.
+      $result = preg_replace('/#+/', '#', $result);
+      $result = preg_replace('/\s*#\s*/', ' # ', $result);
+
+      // Split into array.
+      $parts = array_map('trim', explode('#', $result));
+      $contact = [
+        'title' => ucfirst($parts[0]) ?? NULL,
+        'name' => ucfirst($parts[1]) ?? NULL,
+      ];
       $output['presenter_info'] = [
         'heading' => new TranslatableMarkup('Presenter information'),
-        'content' => ['#markup' => $presenter_content],
+        'content' => [
+          'title' => [
+            '#plain_text' => $contact['title'],
+          ],
+          'name' => [
+            '#plain_text' => $contact['name'],
+          ],
+        ],
       ];
     }
 

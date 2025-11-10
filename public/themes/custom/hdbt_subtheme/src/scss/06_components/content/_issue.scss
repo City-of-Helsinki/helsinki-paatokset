@@ -257,25 +257,24 @@
   font-weight: $font-weight-medium;
 }
 
+.issue__more-info__container {
+  margin-top: $spacing-quadruple;
+}
+
 .issue__more-info {
   margin-bottom: $spacing-quadruple;
-  margin-top: $spacing-quadruple;
 
   // The heading should look like h2 even it is h3.
   // This is probably subject to change in the future
   // if the layout is reworked.
   h3 {
     @include font('h2');
+    margin-bottom: $spacing-triple;
   }
 
-  div {
-    margin: $spacing 0;
+  .contact-card {
+    width: 100%;
   }
-}
-
-.issue__more-info__content {
-  border-left: 5px solid var(--hdbt-color-palette--primary);
-  padding-left: $spacing-and-half;
 }
 
 .issue-ajax-error__container {

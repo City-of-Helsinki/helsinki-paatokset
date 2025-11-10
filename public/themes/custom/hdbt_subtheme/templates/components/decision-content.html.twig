@@ -87,32 +87,41 @@
         {% endfor %}
       {% endblock component_content %}
     {% endembed %}
-
-    {% if decision_content.presenter_info %}
-      <div class="issue__more-info">
-        <h3>{{ decision_content.presenter_info.heading }}</h3>
-        <div class="issue__more-info__content">
-          {{ decision_content.presenter_info.content }}
-        </div>
-      </div>
-    {% endif %}
-
-    {% if decision_content.more_info %}
-      <div class="issue__more-info">
-        <h3>{{ decision_content.more_info.heading }}</h3>
-        <div class="issue__more-info__content">
-          {{ decision_content.more_info.content }}
-        </div>
-      </div>
-    {% endif %}
-
-    {% if decision_content.signature_info %}
-      <div class="issue__more-info">
-        <h3>{{ decision_content.signature_info.heading }}</h3>
-        <div class="issue__more-info__content">
-          {{ decision_content.signature_info.content }}
-        </div>
-      </div>
-    {% endif %}
   </div>
+</div>
+<div class="issue__more-info__container">
+  {% if decision_content.presenter_info %}
+    <div class="issue__more-info">
+      <h3>{{ decision_content.presenter_info.heading }}</h3>
+      {% include "@hdbt/component/contact-card.twig" with {
+        heading_level: 'h4',
+        contact_name: decision_content.presenter_info.content.name,
+        contact_title: decision_content.presenter_info.content.title,
+      } %}
+    </div>
+  {% endif %}
+
+  {% if decision_content.signature_info %}
+    <div class="issue__more-info">
+      <h3>{{ decision_content.signature_info.heading }}</h3>
+      {% include "@hdbt/component/contact-card.twig" with {
+        heading_level: 'h4',
+        contact_name: decision_content.signature_info.content.name,
+        contact_title: decision_content.signature_info.content.title,
+      } %}
+    </div>
+  {% endif %}
+
+  {% if decision_content.more_info %}
+    <div class="issue__more-info">
+      <h3>{{ decision_content.more_info.heading }}</h3>
+      {% include "@hdbt/component/contact-card.twig" with {
+        heading_level: 'h4',
+        contact_name: decision_content.more_info.content.name,
+        contact_title: decision_content.more_info.content.title,
+        email: decision_content.more_info.content.email,
+        phone_number: decision_content.more_info.content.phone,
+      } %}
+    </div>
+  {% endif %}
 </div>
