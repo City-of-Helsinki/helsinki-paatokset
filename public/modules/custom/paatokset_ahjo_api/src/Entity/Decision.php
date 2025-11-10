@@ -561,12 +561,12 @@ class Decision extends Node implements AhjoUpdatableInterface {
           'phone' => [
             '#type' => 'link',
             '#title' => $contact['phone'],
-            '#url' => Url::fromUri('tel:' . preg_replace('/\D+/', '', $contact['phone'])),
+            '#url' => $contact['phone'] ? Url::fromUri('tel:' . $contact['phone']) : NULL,
           ],
           'email' => [
             '#type' => 'link',
             '#title' => $contact['email'],
-            '#url' => Url::fromUri('mailto:' . $contact['email']),
+            '#url' => $contact['email'] ? Url::fromUri('mailto:' . $contact['email']) : NULL,
           ],
         ],
       ];
