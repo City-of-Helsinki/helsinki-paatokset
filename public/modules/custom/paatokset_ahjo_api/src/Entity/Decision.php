@@ -561,7 +561,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
           'phone' => [
             '#type' => 'link',
             '#title' => $contact['phone'],
-            '#url' => $contact['phone'] ? Url::fromUri('tel:' . $contact['phone']) : NULL,
+            '#url' => strlen($contact['phone']) > 2 ? Url::fromUri('tel:' . $contact['phone']) : NULL,
           ],
           'email' => [
             '#type' => 'link',
