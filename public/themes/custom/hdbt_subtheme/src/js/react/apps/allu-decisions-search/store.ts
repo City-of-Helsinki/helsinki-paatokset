@@ -11,10 +11,10 @@ const initialParams = {
   q: initalUrlParams.get('q') || undefined,
   start: initalUrlParams.get('start') || undefined,
   type:
-    initalUrlParams.getAll('type').map((label) => ({
-      label,
-      value: matchTypeValueFromLabel(label),
-    })) || undefined,
+    initalUrlParams
+      .getAll('type')
+      .map((label) => ({ label, value: matchTypeValueFromLabel(label) })) ||
+    undefined,
 };
 
 export const selectionsAtom = atom<Selections>(initialParams);
@@ -33,12 +33,7 @@ export const setSelectionsAtom = atom(
     }
 
     set(selectionsAtom, (currentValue) =>
-      partial
-        ? {
-            ...currentValue,
-            ...value,
-          }
-        : value,
+      partial ? { ...currentValue, ...value } : value,
     );
   },
 );

@@ -25,9 +25,7 @@ export const ResultsContainer = ({ url }: { url: string }) => {
     (key: string) =>
       fetch(`${url}/paatokset_decisions/_search`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: key,
       }).then((res) => res.json()),
     [url],

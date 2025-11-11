@@ -90,11 +90,7 @@ export const matchTypeValueFromLabel = (label: string) => {
  * @return {object} - The result
  */
 export const formQuery = (selections: Selections) => {
-  const body: estypes.AsyncSearchSubmitRequest = {
-    query: {
-      bool: {},
-    },
-  };
+  const body: estypes.AsyncSearchSubmitRequest = { query: { bool: {} } };
 
   const must: estypes.QueryDslQueryContainer[] = [
     {
@@ -107,9 +103,7 @@ export const formQuery = (selections: Selections) => {
 
   if (selections?.type?.length) {
     must.push({
-      terms: {
-        document_type: selections.type.map((type) => type.value),
-      },
+      terms: { document_type: selections.type.map((type) => type.value) },
     });
   }
 
@@ -129,11 +123,7 @@ export const formQuery = (selections: Selections) => {
   }
 
   if (Object.keys(range).length && body?.query?.bool) {
-    must.push({
-      range: {
-        document_created: range,
-      },
-    });
+    must.push({ range: { document_created: range } });
   }
 
   if (body.query?.bool) {
@@ -144,16 +134,8 @@ export const formQuery = (selections: Selections) => {
 
   if (selections.q) {
     should = should.concat([
-      {
-        match_phrase_prefix: {
-          address_fulltext: selections.q,
-        },
-      },
-      {
-        match: {
-          label: selections.q,
-        },
-      },
+      { match_phrase_prefix: { address_fulltext: selections.q } },
+      { match: { label: selections.q } },
     ]);
   }
 
@@ -163,20 +145,12 @@ export const formQuery = (selections: Selections) => {
   }
 
   const sort: estypes.SortCombinations[] = [
-    {
-      document_created: {
-        order: 'desc',
-      },
-    },
+    { document_created: { order: 'desc' } },
   ];
 
   const { _page, ...rest } = selections;
   if (Object.keys(rest).length) {
-    sort.unshift({
-      _score: {
-        order: 'desc',
-      },
-    });
+    sort.unshift({ _score: { order: 'desc' } });
   }
 
   body.sort = sort;

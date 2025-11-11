@@ -44,11 +44,7 @@ export const useDecisionsQuery = (
 
   return useMemo(() => {
     const filter: estypes.QueryDslQueryContainer[] = [
-      {
-        exists: {
-          field: DecisionIndex.MEETING_DATE,
-        },
-      },
+      { exists: { field: DecisionIndex.MEETING_DATE } },
     ];
     const should: estypes.QueryDslQueryContainer[] = [];
 
@@ -74,11 +70,7 @@ export const useDecisionsQuery = (
         (field) =>
           should.push({
             constant_score: {
-              filter: {
-                match: {
-                  [field]: searchTerm,
-                },
-              },
+              filter: { match: { [field]: searchTerm } },
               boost: 1.0,
             },
           }),
@@ -106,11 +98,7 @@ export const useDecisionsQuery = (
 
     const fromFilter = submittedState[Components.FROM];
     const toFilter = submittedState[Components.TO];
-    const dateQuery = {
-      range: {
-        meeting_date: {},
-      },
-    };
+    const dateQuery = { range: { meeting_date: {} } };
 
     [fromFilter, toFilter].forEach((date, index) => {
       if (date) {
@@ -149,20 +137,12 @@ export const useDecisionsQuery = (
                   },
                 },
               }
-            : {
-                term: {
-                  [DecisionIndex.ORG_TYPE]: OrganizationTypes.TRUSTEE,
-                },
-              },
+            : { term: { [DecisionIndex.ORG_TYPE]: OrganizationTypes.TRUSTEE } },
         );
       }
     });
 
-    const query: estypes.QueryDslQueryContainer = {
-      bool: {
-        filter,
-      },
-    };
+    const query: estypes.QueryDslQueryContainer = { bool: { filter } };
 
     if (should.length) {
       query.bool.should = should;

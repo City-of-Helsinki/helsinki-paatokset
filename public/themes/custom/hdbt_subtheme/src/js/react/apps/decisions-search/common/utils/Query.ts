@@ -26,13 +26,5 @@ export const getAdvancedBoostQuery = (
   searchTerm: string,
   dataField: string,
 ) => [
-  {
-    match: {
-      [dataField]: {
-        boost: 3,
-        operator: 'and',
-        query: searchTerm,
-      },
-    },
-  },
+  { match: { [dataField]: { boost: 3, operator: 'and', query: searchTerm } } },
 ];

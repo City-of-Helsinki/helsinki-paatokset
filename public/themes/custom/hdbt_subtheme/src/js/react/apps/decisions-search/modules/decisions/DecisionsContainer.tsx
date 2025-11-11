@@ -16,9 +16,7 @@ export const DecisionsContainer = ({ url }: { url: string }) => {
         `${url}/paatokset_decisions,paatokset_policymakers/_msearch`,
         {
           body: aggsQueryString,
-          headers: {
-            'Content-Type': 'application/x-ndjson',
-          },
+          headers: { 'Content-Type': 'application/x-ndjson' },
           method: 'POST',
         },
       );
@@ -43,9 +41,7 @@ export const DecisionsContainer = ({ url }: { url: string }) => {
 
     return fetch(`${url}/paatokset_decisions/_search`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: aggsQueryString,
     }).then((res) => res.json());
   };

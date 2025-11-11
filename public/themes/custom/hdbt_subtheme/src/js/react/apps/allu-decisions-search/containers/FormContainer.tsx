@@ -22,10 +22,7 @@ export const FormContainer = ({
   const [dates, setDates] = useState<{
     start: string | undefined;
     end: string | undefined;
-  }>({
-    start: selections.start,
-    end: selections.end,
-  });
+  }>({ start: selections.start, end: selections.end });
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -142,12 +139,7 @@ export const FormContainer = ({
                 );
                 const newValue =
                   !filtered || !filtered.length ? undefined : filtered;
-                setSelections(
-                  {
-                    type: newValue,
-                  },
-                  true,
-                );
+                setSelections({ type: newValue }, true);
                 setType(newValue);
               }}
             />
@@ -155,13 +147,7 @@ export const FormContainer = ({
         {(selections.start || selections.end) && (
           <FilterButton
             clearSelection={() => {
-              setSelections(
-                {
-                  start: undefined,
-                  end: undefined,
-                },
-                true,
-              );
+              setSelections({ start: undefined, end: undefined }, true);
               setDates({ start: undefined, end: undefined });
             }}
             value={`${selections.start || ''} - ${selections.end || ''}`}

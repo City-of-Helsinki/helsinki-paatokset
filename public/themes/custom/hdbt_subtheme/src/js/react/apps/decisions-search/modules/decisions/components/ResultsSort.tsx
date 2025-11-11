@@ -33,11 +33,7 @@ export const ResultsSort = () => {
     <Select
       className='hdbt-search__dropdown'
       label={Drupal.t('Sort by')}
-      {...{
-        options,
-        onChange,
-        value,
-      }}
+      {...{ options, onChange, value }}
       texts={{
         label: Drupal.t(
           'Sort search results',

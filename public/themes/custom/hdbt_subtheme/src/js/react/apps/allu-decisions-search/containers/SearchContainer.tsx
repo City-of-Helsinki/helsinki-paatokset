@@ -25,9 +25,7 @@ export const SearchContainer = () => {
       // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
       const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_search`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(queryBody),
       });
 
@@ -41,17 +39,10 @@ export const SearchContainer = () => {
     // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
     const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_msearch`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-ndjson',
-      },
+      headers: { 'Content-Type': 'application/x-ndjson' },
       body: `${ndjsonHeader}\n${JSON.stringify({
         aggs: {
-          typeOptions: {
-            terms: {
-              field: 'document_type',
-              size: 500000,
-            },
-          },
+          typeOptions: { terms: { field: 'document_type', size: 500000 } },
         },
       })}\n${ndjsonHeader}\n${JSON.stringify(queryBody)}\n`,
     });

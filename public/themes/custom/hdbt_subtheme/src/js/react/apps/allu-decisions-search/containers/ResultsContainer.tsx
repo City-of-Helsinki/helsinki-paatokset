@@ -62,12 +62,8 @@ export const ResultsContainer = ({
               total,
               '1 decision',
               '@count decisions',
-              {
-                '@count': total,
-              },
-              {
-                context: 'Allu decision search',
-              },
+              { '@count': total },
+              { context: 'Allu decision search' },
             )}
           </>
         }
@@ -86,12 +82,7 @@ export const ResultsContainer = ({
             index: number,
           ) => {
             event.preventDefault();
-            setSelections(
-              {
-                page: index.toString(),
-              },
-              true,
-            );
+            setSelections({ page: index.toString() }, true);
           }}
         />
       </div>

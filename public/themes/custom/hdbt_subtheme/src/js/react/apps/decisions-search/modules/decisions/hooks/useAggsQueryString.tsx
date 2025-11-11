@@ -9,18 +9,13 @@ export const useAggsQueryString = () => {
 
   const categoryAggs = {
     [Components.CATEGORY]: {
-      terms: {
-        field: DecisionIndex.TOP_CATEGORY_CODE,
-        size: 100,
-      },
+      terms: { field: DecisionIndex.TOP_CATEGORY_CODE, size: 100 },
     },
   };
 
   const categoryQuery = {
     aggs: categoryAggs,
-    query: {
-      match_all: {},
-    },
+    query: { match_all: {} },
     size: 0,
   };
 
@@ -30,10 +25,7 @@ export const useAggsQueryString = () => {
 
   const decisionMakerAggs = {
     [Components.DECISIONMAKER]: {
-      terms: {
-        field: DecisionIndex.POLICYMAKER_ID,
-        size: 1000,
-      },
+      terms: { field: DecisionIndex.POLICYMAKER_ID, size: 1000 },
       aggs: {
         [PolicymakerIndex.TITLE]: {
           terms: {
@@ -61,11 +53,7 @@ export const useAggsQueryString = () => {
                   .split(','),
               },
             },
-            {
-              term: {
-                _index: 'paatokset_policymakers',
-              },
-            },
+            { term: { _index: 'paatokset_policymakers' } },
             {
               term: {
                 [PolicymakerIndex.SEARCH_API_LANGUAGE]:

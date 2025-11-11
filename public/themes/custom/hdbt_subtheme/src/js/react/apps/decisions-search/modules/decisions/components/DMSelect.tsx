@@ -93,12 +93,8 @@ export const DMSelect = ({ url }: { url: string }) => {
   ) => {
     const response = await fetch(`${url}/paatokset_policymakers/_search`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...getQuery(searchTerm.trim()),
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...getQuery(searchTerm.trim()) }),
     });
 
     const json = await response.json();
@@ -137,10 +133,7 @@ export const DMSelect = ({ url }: { url: string }) => {
     onChange,
     onSearch: getDecisionMakers,
     open: false,
-    options: getDMSelectValue().map((dm) => ({
-      ...dm,
-      selected: true,
-    })),
+    options: getDMSelectValue().map((dm) => ({ ...dm, selected: true })),
   });
 
   const clearAllSelections = () => {
