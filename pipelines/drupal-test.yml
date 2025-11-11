@@ -4,7 +4,7 @@ trigger:
   batch: true
   branches:
     include:
-      - UHF-12209-decisions-search-update
+      - dev
   paths:
     exclude:
     - '*.md'
