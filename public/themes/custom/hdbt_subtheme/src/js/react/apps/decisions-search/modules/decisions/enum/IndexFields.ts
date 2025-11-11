@@ -1,7 +1,7 @@
 const searchApiFields = {
-  'SEARCH_API_DATASOURCE': 'search_api_datasource',
-  'SEARCH_API_ID': 'search_api_id',
-  'SEARCH_API_LANGUAGE': 'search_api_language',
+  SEARCH_API_DATASOURCE: 'search_api_datasource',
+  SEARCH_API_ID: 'search_api_id',
+  SEARCH_API_LANGUAGE: 'search_api_language',
 };
 
 export const DecisionIndex = {
@@ -58,4 +58,3 @@ export const PolicymakerIndex = {
   TRUSTEE_TITLE: 'trustee_title',
   UID: 'uid',
 };
-

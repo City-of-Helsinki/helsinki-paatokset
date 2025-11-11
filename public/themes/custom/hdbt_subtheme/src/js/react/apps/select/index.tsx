@@ -7,14 +7,18 @@ import ResultsError from '@/react/common/ResultsError';
 import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
 
 const parent = document.getElementById('helfi-select');
-const element = parent?.querySelector('input[type="hidden"]') as HTMLInputElement;
+const element = parent?.querySelector(
+  'input[type="hidden"]',
+) as HTMLInputElement;
 const rootElement = parent?.appendChild(document.createElement('div'));
 
-const selectOptions = Object.entries(drupalSettings.helfi_select.options).reverse().map(([key, value]) => ({
-  label: value,
-  value: key,
-  selected: value === drupalSettings.helfi_select.value,
-}));
+const selectOptions = Object.entries(drupalSettings.helfi_select.options)
+  .reverse()
+  .map(([key, value]) => ({
+    label: value,
+    value: key,
+    selected: value === drupalSettings.helfi_select.value,
+  }));
 
 if (rootElement) {
   ReactDOM.render(
@@ -28,16 +32,21 @@ if (rootElement) {
           }}
           theme={defaultSelectTheme}
           options={selectOptions}
-          onChange={element ? (options) => {
-            let value = options?.find(item => item.selected)?.value ?? '';
-            if (value === drupalSettings.helfi_select.empty_option) {
-              value = '';
-            }
-            element.value = value;
-          } : undefined}
+          onChange={
+            element
+              ? (options) => {
+                  let value =
+                    options?.find((item) => item.selected)?.value ?? '';
+                  if (value === drupalSettings.helfi_select.empty_option) {
+                    value = '';
+                  }
+                  element.value = value;
+                }
+              : undefined
+          }
         />
       </ErrorBoundary>
     </React.StrictMode>,
-    rootElement
+    rootElement,
   );
 }

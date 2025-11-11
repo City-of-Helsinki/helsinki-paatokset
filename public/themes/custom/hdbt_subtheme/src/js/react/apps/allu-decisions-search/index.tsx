@@ -11,10 +11,12 @@ const rootElement = document.getElementById(rootSelector);
 if (rootElement) {
   ReactDOM.render(
     <React.StrictMode>
-      <ErrorBoundary fallback={<ResultsError error='Allu decisions search crashed' />}>
+      <ErrorBoundary
+        fallback={<ResultsError error='Allu decisions search crashed' />}
+      >
         <SearchContainer />
       </ErrorBoundary>
     </React.StrictMode>,
-    rootElement
+    rootElement,
   );
 }

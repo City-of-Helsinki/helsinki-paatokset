@@ -15,13 +15,14 @@ export const SearchContainer = () => {
   const url = useAtomValue(urlAtom);
   const typeOptions = useRef(undefined);
   const readSelections = useAtomCallback(
-    useCallback((get) => get(selectionsAtom), [])
+    useCallback((get) => get(selectionsAtom), []),
   );
 
-  const fetcher = async() => {
+  const fetcher = async () => {
     const queryBody = formQuery(readSelections());
 
     if (typeOptions.current) {
+      // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
       const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_search`, {
         method: 'POST',
         headers: {
@@ -29,46 +30,44 @@ export const SearchContainer = () => {
         },
         body: JSON.stringify(queryBody),
       });
-  
+
       const json = await response.json();
-  
+
       return json;
     }
 
     // Include aggs request to get filter options
     const ndjsonHeader = '{}';
+    // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
     const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_msearch`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-ndjson',
       },
-      body:
-        `${ndjsonHeader
-        }\n${
-        JSON.stringify({
-          aggs: {
-            typeOptions: {
-              terms: {
-                field: 'document_type',
-                size: 500000,
-              },
+      body: `${ndjsonHeader}\n${JSON.stringify({
+        aggs: {
+          typeOptions: {
+            terms: {
+              field: 'document_type',
+              size: 500000,
             },
-          }
-        })}\n${ndjsonHeader
-        }\n${
-        JSON.stringify(queryBody)
-      }\n`,
+          },
+        },
+      })}\n${ndjsonHeader}\n${JSON.stringify(queryBody)}\n`,
     });
 
     const json = await response.json();
     const [aggs, results] = json.responses;
 
     if (aggs.aggregations?.typeOptions?.buckets) {
-      typeOptions.current = aggs.aggregations.typeOptions.buckets.map((bucket: any) => ({
-        label: matchTypeLabel(bucket.key),
-        value: bucket.key,
-      }));
-    };
+      typeOptions.current = aggs.aggregations.typeOptions.buckets.map(
+        // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
+        (bucket: any) => ({
+          label: matchTypeLabel(bucket.key),
+          value: bucket.key,
+        }),
+      );
+    }
 
     return results;
   };
@@ -80,9 +79,7 @@ export const SearchContainer = () => {
   return (
     <>
       <FormContainer typeOptions={typeOptions.current} />
-      <ResultsContainer
-        {...{ data, error, isLoading }}
-      />
+      <ResultsContainer {...{ data, error, isLoading }} />
     </>
   );
 };

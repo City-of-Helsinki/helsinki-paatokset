@@ -6,7 +6,7 @@ import { initialParamsAtom } from '../store';
 
 export const useAggsQueryString = () => {
   const initialParams = useAtomValue(initialParamsAtom);
-  
+
   const categoryAggs = {
     [Components.CATEGORY]: {
       terms: {
@@ -19,7 +19,7 @@ export const useAggsQueryString = () => {
   const categoryQuery = {
     aggs: categoryAggs,
     query: {
-      match_all: {}
+      match_all: {},
     },
     size: 0,
   };
@@ -39,12 +39,12 @@ export const useAggsQueryString = () => {
           terms: {
             field: `${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}.keyword`,
             size: 1000,
-          }
-        }
-      }
+          },
+        },
+      },
     },
   };
-  
+
   const msearchQuery = [
     {},
     categoryQuery,
@@ -56,25 +56,30 @@ export const useAggsQueryString = () => {
           filter: [
             {
               terms: {
-                [DecisionIndex.POLICYMAKER_ID]: initialParams.get(Components.DECISIONMAKER).split(','),
+                [DecisionIndex.POLICYMAKER_ID]: initialParams
+                  .get(Components.DECISIONMAKER)
+                  .split(','),
               },
             },
             {
               term: {
                 _index: 'paatokset_policymakers',
-              }
+              },
             },
             {
               term: {
-                [PolicymakerIndex.SEARCH_API_LANGUAGE]: drupalSettings.path.currentLanguage,
-              }
-            }
-          ]
-        }
+                [PolicymakerIndex.SEARCH_API_LANGUAGE]:
+                  drupalSettings.path.currentLanguage,
+              },
+            },
+          ],
+        },
       },
       size: 0,
-    }
-  ].map(query => JSON.stringify(query)).join('\n');
+    },
+  ]
+    .map((query) => JSON.stringify(query))
+    .join('\n');
 
   return `${msearchQuery}\n`;
 };

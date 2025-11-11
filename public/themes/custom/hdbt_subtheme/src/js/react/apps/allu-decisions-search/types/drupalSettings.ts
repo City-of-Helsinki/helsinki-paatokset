@@ -15,4 +15,4 @@ declare namespace drupalSettings {
     form: string;
     application_number: string;
   };
-};
+}

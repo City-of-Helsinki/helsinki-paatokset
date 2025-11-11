@@ -7,4 +7,4 @@ export type Selections = {
   start?: string;
   end?: string;
   page?: string;
-}
+};

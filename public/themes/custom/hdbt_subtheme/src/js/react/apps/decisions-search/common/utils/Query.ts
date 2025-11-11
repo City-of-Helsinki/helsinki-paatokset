@@ -1,4 +1,7 @@
-export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[]) => [
+export const getBaseSearchTermQuery = (
+  searchTerm: string,
+  dataFields: string[],
+) => [
   {
     multi_match: {
       fields: dataFields,
@@ -6,7 +9,7 @@ export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[])
       operator: 'or',
       query: searchTerm,
       type: 'best_fields',
-    }
+    },
   },
   {
     multi_match: {
@@ -15,18 +18,21 @@ export const getBaseSearchTermQuery = (searchTerm: string, dataFields: string[])
       operator: 'or',
       query: searchTerm,
       type: 'phrase',
-    }
+    },
   },
 ];
 
-export const getAdvancedBoostQuery = (searchTerm: string, dataField: string) => [
+export const getAdvancedBoostQuery = (
+  searchTerm: string,
+  dataField: string,
+) => [
   {
     match: {
       [dataField]: {
         boost: 3,
         operator: 'and',
         query: searchTerm,
-      }
-    }
-  }
+      },
+    },
+  },
 ];

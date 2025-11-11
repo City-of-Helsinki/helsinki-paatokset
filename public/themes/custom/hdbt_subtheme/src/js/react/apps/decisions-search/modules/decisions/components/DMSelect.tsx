@@ -1,17 +1,19 @@
-import { Select, SelectData, useSelectStorage } from 'hds-react';
-import { type estypes } from '@elastic/elasticsearch';
+import type { estypes } from '@elastic/elasticsearch';
+import { Select, type SelectData, useSelectStorage } from 'hds-react';
+import { useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, useEffect } from 'react';
-import { useSetAtom } from 'jotai';
-
-import { clearAllSelectionsFromStorage, updateSelectionsInStorage } from '@/react/common/helpers/HDS';
-import { Components } from '../enum/Components';
 import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
-import { PolicyMaker } from '../../../common/types/PolicyMaker';
-import { getDecisionMakersAtom, setDecisionMakersAtom } from '../store';
+import {
+  clearAllSelectionsFromStorage,
+  updateSelectionsInStorage,
+} from '@/react/common/helpers/HDS';
+import type { PolicyMaker } from '../../../common/types/PolicyMaker';
+import { getBaseSearchTermQuery } from '../../../common/utils/Query';
+import { Components } from '../enum/Components';
 import { Events } from '../enum/Events';
 import { PolicymakerIndex } from '../enum/IndexFields';
-import { getBaseSearchTermQuery } from '../../../common/utils/Query';
+import { getDecisionMakersAtom, setDecisionMakersAtom } from '../store';
 
 const dataFields = [
   'title',
@@ -40,14 +42,13 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
             type: 'number',
             script: {
               lang: 'painless',
-              source:
-                `doc['${PolicymakerIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`,
+              source: `doc['${PolicymakerIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`,
             },
             order: 'asc',
-          }
+          },
         },
-        { _score: 'desc' }
-      ]
+        { _score: 'desc' },
+      ],
     },
   },
   query: {
@@ -58,37 +59,37 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
           wildcard: {
             [PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE]: {
               value: `*${searchTerm.toLowerCase()}*`,
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       minimum_should_match: 1,
     },
-  }
+  },
 });
 
-export const DMSelect = ({
-  url,
-}: {
-  url: string;
-}) => {
+export const DMSelect = ({ url }: { url: string }) => {
   const setDecisionMakers = useSetAtom(setDecisionMakersAtom);
   const getDMSelectValue = useAtomCallback(
     useCallback((get) => get(getDecisionMakersAtom)),
   );
 
-  const onChange = (selectedOptions: Array<{label: string, value: string}>) => {
+  const onChange = (
+    selectedOptions: Array<{ label: string; value: string }>,
+  ) => {
     setDecisionMakers(selectedOptions);
-    selectStorage.updateAllOptions((option, group, groupindex) => ({
+    selectStorage.updateAllOptions((option, _group, _groupindex) => ({
       ...option,
-      selected: selectedOptions.some(selection => selection.value === option.value),
+      selected: selectedOptions.some(
+        (selection) => selection.value === option.value,
+      ),
     }));
   };
 
-  const getDecisionMakers = async(
+  const getDecisionMakers = async (
     searchTerm: string,
-    selectedOptions: Array<{label: string, value: string}>,
-    data: SelectData
+    _selectedOptions: Array<{ label: string; value: string }>,
+    _data: SelectData,
   ) => {
     const response = await fetch(`${url}/paatokset_policymakers/_search`, {
       method: 'POST',
@@ -99,23 +100,31 @@ export const DMSelect = ({
         ...getQuery(searchTerm.trim()),
       }),
     });
-    
+
     const json = await response.json();
     const result = [];
-    
+
     if (json?.hits?.hits) {
       result.options = json.hits.hits
-        .filter((hit: estypes.SearchHit<PolicyMaker>) => hit.inner_hits?.current_language?.hits.hits?.[0].fields[PolicymakerIndex.FIELD_POLICYMAKER_ID])
-        .map(hit => {
-          const innerHit = hit.inner_hits.current_language.hits.hits[0]; 
+        .filter(
+          (hit: estypes.SearchHit<PolicyMaker>) =>
+            hit.inner_hits?.current_language?.hits.hits?.[0].fields[
+              PolicymakerIndex.FIELD_POLICYMAKER_ID
+            ],
+        )
+        .map((hit) => {
+          const innerHit = hit.inner_hits.current_language.hits.hits[0];
           return {
-            value: innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
-            label: innerHit.fields[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE].toString(),
+            value:
+              innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
+            label:
+              innerHit.fields[
+                PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE
+              ].toString(),
           };
-        }
-      );
+        });
     }
-    
+
     return result;
   };
 
@@ -128,7 +137,7 @@ export const DMSelect = ({
     onChange,
     onSearch: getDecisionMakers,
     open: false,
-    options: getDMSelectValue().map(dm => ({
+    options: getDMSelectValue().map((dm) => ({
       ...dm,
       selected: true,
     })),
@@ -147,8 +156,14 @@ export const DMSelect = ({
     window.addEventListener(Events.DECISIONS_CLEAR_SINGLE_DM, updateSelections);
 
     return () => {
-      window.removeEventListener(Events.DECISIONS_CLEAR_ALL, clearAllSelections);
-      window.removeEventListener(Events.DECISIONS_CLEAR_SINGLE_DM, updateSelections);
+      window.removeEventListener(
+        Events.DECISIONS_CLEAR_ALL,
+        clearAllSelections,
+      );
+      window.removeEventListener(
+        Events.DECISIONS_CLEAR_SINGLE_DM,
+        updateSelections,
+      );
     };
   });
 
@@ -156,8 +171,16 @@ export const DMSelect = ({
     <Select
       className='hdbt-search__dropdown'
       texts={{
-        label: Drupal.t('Decision-maker / Division', {}, {context: 'Decisions search'}),
-        placeholder: Drupal.t('All decision-makers and divisions', {}, {context: 'Decisions search'}),
+        label: Drupal.t(
+          'Decision-maker / Division',
+          {},
+          { context: 'Decisions search' },
+        ),
+        placeholder: Drupal.t(
+          'All decision-makers and divisions',
+          {},
+          { context: 'Decisions search' },
+        ),
       }}
       theme={defaultMultiSelectTheme}
       {...selectStorage.getProps()}

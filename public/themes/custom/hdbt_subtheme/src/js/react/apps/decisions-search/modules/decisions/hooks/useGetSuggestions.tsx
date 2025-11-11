@@ -1,18 +1,17 @@
-import { type estypes } from '@elastic/elasticsearch';
-
-import { useDecisionsQuery } from './useDecisionsQuery';
-import { Decision } from '../../../common/types/Decision';
+import type { estypes } from '@elastic/elasticsearch';
+import type { Decision } from '../../../common/types/Decision';
 import { DecisionIndex } from '../enum/IndexFields';
+import { useDecisionsQuery } from './useDecisionsQuery';
 
-export const useGetSuggestions = async(searchTerm: string, url: string) => {
+export const useGetSuggestions = async (searchTerm: string, url: string) => {
   const baseQuery = useDecisionsQuery(searchTerm);
 
   if (!searchTerm || !searchTerm.length || searchTerm.length < 2) {
     return [];
   }
 
-  const {aggs, collapse, size, from, ...rest} = baseQuery;
-  const suggestionQuery = {...rest};
+  const { _aggs, _collapse, _size, _from, ...rest } = baseQuery;
+  const suggestionQuery = { ...rest };
 
   suggestionQuery.collapse = {
     field: `${[DecisionIndex.SUBJECT]}.keyword`,
@@ -33,8 +32,10 @@ export const useGetSuggestions = async(searchTerm: string, url: string) => {
 
   const json = await response.json();
 
-  if (json.hits && json.hits.hits) {
-    return json.hits.hits.map((hit: estypes.SearchHit<Decision>) => ({value: hit.fields.subject.toString()}));
+  if (json.hits?.hits) {
+    return json.hits.hits.map((hit: estypes.SearchHit<Decision>) => ({
+      value: hit.fields.subject.toString(),
+    }));
   }
 
   return [];

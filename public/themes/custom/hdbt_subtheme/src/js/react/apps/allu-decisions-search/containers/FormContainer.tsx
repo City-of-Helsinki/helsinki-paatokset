@@ -1,33 +1,39 @@
+// biome-ignore-all lint/complexity/useOptionalChain: @todo UHF-12501
 import { Button, ButtonPresetTheme, Select, TextInput } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { FormEvent, useState } from 'react';
 import { RESET } from 'jotai/utils';
-
-import { selectionsAtom, setSelectionsAtom } from '../store';
-import { Selections } from '../types/Selections';
+import { type FormEvent, useState } from 'react';
 import { DateRangeSelect } from '@/react/common/DateRangeSelect';
 import FilterButton from '@/react/common/FilterButton';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
+import { selectionsAtom, setSelectionsAtom } from '../store';
+import type { Selections } from '../types/Selections';
 
 export const FormContainer = ({
-  typeOptions,  
+  typeOptions,
 }: {
-  typeOptions?: Array<{label: string; value: string}>;
+  typeOptions?: Array<{ label: string; value: string }>;
 }) => {
   const selections = useAtomValue(selectionsAtom);
   const setSelections = useSetAtom(setSelectionsAtom);
-  const [type, setType] = useState<Array<{label: string, value: string}>|undefined>(selections.type);
-  const [dates, setDates] = useState<{start: string|undefined, end: string|undefined}>({
-    start: selections.start, end: selections.end
+  const [type, setType] = useState<
+    Array<{ label: string; value: string }> | undefined
+  >(selections.type);
+  const [dates, setDates] = useState<{
+    start: string | undefined;
+    end: string | undefined;
+  }>({
+    start: selections.start,
+    end: selections.end,
   });
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const { q } = form.elements as typeof form.elements & {
-      q: { value: string}
+      q: { value: string };
     };
-    
+
     const values: Selections = {};
 
     if (q?.value.length) {
@@ -53,6 +59,7 @@ export const FormContainer = ({
   };
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: @todo UHF-12501
     <form
       className='hdbt-search--react__form-container'
       onSubmit={onSubmit}
@@ -63,7 +70,11 @@ export const FormContainer = ({
         defaultValue={selections.q}
         id='q'
         label={Drupal.t('Street name', {}, { context: 'Allu decision search' })}
-        placeholder={Drupal.t('Eg. Mannerheimintie', {}, { context: 'Allu decision search' })}
+        placeholder={Drupal.t(
+          'Eg. Mannerheimintie',
+          {},
+          { context: 'Allu decision search' },
+        )}
         type='search'
       />
       <div className='hdbt-search--react__dropdown-filters'>
@@ -76,17 +87,37 @@ export const FormContainer = ({
           onChange={setType}
           options={typeOptions || []}
           texts={{
-            label: Drupal.t('Decision type', {}, { context: 'Allu decision search' }),
-            placeholder: Drupal.t('All types', {}, { context: 'Allu decision search' }),
+            label: Drupal.t(
+              'Decision type',
+              {},
+              { context: 'Allu decision search' },
+            ),
+            placeholder: Drupal.t(
+              'All types',
+              {},
+              { context: 'Allu decision search' },
+            ),
           }}
           value={type}
         />
         <DateRangeSelect
           endDate={dates.end}
-          helperText={Drupal.t('Eg. 5.11.2024 - 10.11.2024', {}, { context: 'Allu decision search' })}
+          helperText={Drupal.t(
+            'Eg. 5.11.2024 - 10.11.2024',
+            {},
+            { context: 'Allu decision search' },
+          )}
           id='date-range-select'
-          label={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
-          title={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
+          label={Drupal.t(
+            'Date of decision',
+            {},
+            { context: 'Allu decision search' },
+          )}
+          title={Drupal.t(
+            'Date of decision',
+            {},
+            { context: 'Allu decision search' },
+          )}
           setStart={(d?: string) => setDates({ ...dates, start: d })}
           setEnd={(d?: string) => setDates({ ...dates, end: d })}
           startDate={dates.start}
@@ -99,31 +130,38 @@ export const FormContainer = ({
       >
         {Drupal.t('Search')}
       </Button>
-      <SelectionsWrapper
-        resetForm={resetForm}
-        showClearButton
-      >
-        {selections.type && selections.type.map((typeSelection) => (
-          <FilterButton
-            key={typeSelection.value}
-            value={typeSelection.label}
-            clearSelection={() => {
-              const filtered = selections.type?.filter((currentType) => currentType.value !== typeSelection.value);
-              const newValue = (!filtered || !filtered.length) ? undefined : filtered;
-              setSelections({
-                type: newValue
-              }, true);
-              setType(newValue);
-            }}
-          />
-        ))}
+      <SelectionsWrapper resetForm={resetForm} showClearButton>
+        {selections.type &&
+          selections.type.map((typeSelection) => (
+            <FilterButton
+              key={typeSelection.value}
+              value={typeSelection.label}
+              clearSelection={() => {
+                const filtered = selections.type?.filter(
+                  (currentType) => currentType.value !== typeSelection.value,
+                );
+                const newValue =
+                  !filtered || !filtered.length ? undefined : filtered;
+                setSelections(
+                  {
+                    type: newValue,
+                  },
+                  true,
+                );
+                setType(newValue);
+              }}
+            />
+          ))}
         {(selections.start || selections.end) && (
           <FilterButton
             clearSelection={() => {
-              setSelections({
-                start: undefined,
-                end: undefined
-              }, true);
+              setSelections(
+                {
+                  start: undefined,
+                  end: undefined,
+                },
+                true,
+              );
               setDates({ start: undefined, end: undefined });
             }}
             value={`${selections.start || ''} - ${selections.end || ''}`}

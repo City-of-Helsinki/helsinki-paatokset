@@ -6,30 +6,38 @@ import { ResultsContainer } from './containers/ResultsContainer';
 import { aggsAtom } from './store';
 import { useAggsQueryString } from './hooks/useAggsQueryString';
 
-export const DecisionsContainer = ({
-  url,
-}: {
-  url: string
-}) => {
+export const DecisionsContainer = ({ url }: { url: string }) => {
   const [aggs, setAggs] = useAtom(aggsAtom);
   const aggsQueryString = useAggsQueryString();
-  
-  const fetcher = async() => {
+
+  const fetcher = async () => {
     if (aggsQueryString.includes('\n')) {
-      const response = await fetch(`${url}/paatokset_decisions,paatokset_policymakers/_msearch`, {
-        body: aggsQueryString,
-        headers: {
-          'Content-Type': 'application/x-ndjson',
+      const response = await fetch(
+        `${url}/paatokset_decisions,paatokset_policymakers/_msearch`,
+        {
+          body: aggsQueryString,
+          headers: {
+            'Content-Type': 'application/x-ndjson',
+          },
+          method: 'POST',
         },
-        method: 'POST',
-      });
+      );
 
       const results = await response.json();
       return {
-        aggregations: results.responses.reduce((acc: Record<string, any>, res: {aggregations: Record<string, any>}) => ({
-          ...acc,
-          ...res.aggregations,
-        }), {}),
+        aggregations: results.responses.reduce(
+          (
+            // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
+            acc: Record<string, any>,
+            // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
+            res: { aggregations: Record<string, any> },
+          ) => ({
+            // biome-ignore lint/performance/noAccumulatingSpread: @todo UHF-12501
+            ...acc,
+            ...res.aggregations,
+          }),
+          {},
+        ),
       };
     }
 

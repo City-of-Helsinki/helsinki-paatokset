@@ -3,10 +3,10 @@ declare namespace drupalSettings {
     currentLanguage: 'fi' | 'en' | 'sv';
   };
   const helfi_select: {
-    value?: string,
-    empty_option?: string,
+    value?: string;
+    empty_option?: string;
     options: {
-      [key: string]: string
+      [key: string]: string;
     };
   };
 }
