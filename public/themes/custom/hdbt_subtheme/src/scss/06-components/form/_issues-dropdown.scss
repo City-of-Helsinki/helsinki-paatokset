@@ -1,3 +1,7 @@
+/* stylelint-disable plugin/no-low-performance-animation-properties -- @todo UHF-12501 */
+/* stylelint-disable declaration-property-value-disallowed-list -- @todo UHF-12501 */
+/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
+/* stylelint-disable no-duplicate-selectors -- @todo UHF-12501 */
 .issue__wrapper .ajax-progress-throbber {
   display: none;
 }
@@ -92,7 +96,7 @@
     }
   }
 
-  .option:before {
+  .option::before {
     border-bottom: 26px solid transparent;
     border-left-style: solid;
     border-left-width: 20px;
@@ -109,6 +113,7 @@
 
     &:not(.selected):hover {
       background-color: $color-black;
+
       a {
         color: $color-white;
       }
@@ -125,18 +130,18 @@
 }
 
 .issue__meetings-select {
+  background: $color-white;
   display: none;
   list-style: none;
   margin-bottom: 0;
   margin-top: 0;
+  -ms-overflow-style: none;
   overflow-x: scroll;
   padding-left: 0;
   padding-top: 0;
-  width: 100%;
-  -ms-overflow-style: none;
-  background: $color-white;
   position: relative;
   scrollbar-width: none;
+  width: 100%;
   z-index: 2;
 
   .paatokset__link-plain:hover {
@@ -173,6 +178,7 @@
     .warning-label {
       display: block;
       visibility: hidden;
+
       &.visible {
         visibility: visible;
       }
