@@ -4,22 +4,22 @@
 @import 'decisions-search-frontpage';
 @import 'issues-dropdown';
 
-.department--council:before {
+.department--council::before {
   background-color: $color-copper;
 }
 
-.department--board-division:before, .department--board:before {
+.department--board-division::before, .department--board::before {
   background-color: $color-silver;
 }
 
-.department--traffic:before {
+.department--traffic::before {
   background-color: $color-engel;
 }
 
-.department--committee:before {
+.department--committee::before {
   background-color: $color-fog;
 }
 
-.department--trustee:before {
+.department--trustee::before {
   background-color: $color-suomenlinna;
 }

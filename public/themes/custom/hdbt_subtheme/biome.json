@@ -1,0 +1,8 @@
+{
+  "extends": ["@hdbt/theme-builder/biome"],
+  "files": {
+    "includes": [
+      "!src/js/react/apps/decisions-search-old"
+    ]
+  }
+}

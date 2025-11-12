@@ -1,27 +1,26 @@
-import React from 'react';
 import { format, parse } from 'date-fns';
-
-import Calendar from 'react-calendar';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
+import Calendar from 'react-calendar';
 
-const isValidDate = (date) => true;
+const isValidDate = (_date) => true;
 
 type Props = {
-  setTo: Function,
-  setFrom: Function,
-  from: string,
-  to: string
-}
+  // biome-ignore lint/complexity/noBannedTypes: @todo UHF-12501
+  setTo: Function;
+  // biome-ignore lint/complexity/noBannedTypes: @todo UHF-12501
+  setFrom: Function;
+  from: string;
+  to: string;
+};
 
 export const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
   const onSelect = (value: Array<Date>) => {
-    if(value[0]) {
+    if (value[0]) {
       setFrom(format(value[0], 'd.M.y'));
     }
-    if(value[1]) {
+    if (value[1]) {
       setTo(format(value[1], 'd.M.y'));
-    }
-    else {
+    } else {
       setTo(undefined);
     }
   };

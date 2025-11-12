@@ -1,7 +1,12 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import FilterButton from '@/react/common/FilterButton';
-import { resetStateAtom, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
+import {
+  resetStateAtom,
+  searchStateAtom,
+  submittedStateAtom,
+  updateQueryAtom,
+} from '../store';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { Components, DATE_SELECTION } from '../enum/Components';
 import { Events } from '../enum/Events';
@@ -17,9 +22,12 @@ export const SelectionsContainer = () => {
   const selections = [];
 
   const removeArrayItem = (key: string, value: string) => {
-    const state = {...submittedState};
+    const state = { ...submittedState };
     const existingItem = [...state[key]];
-    existingItem.splice(state[key].findIndex(item => item.value === value), 1);
+    existingItem.splice(
+      state[key].findIndex((item) => item.value === value),
+      1,
+    );
     state[key] = existingItem;
     setState(state);
     upateQuery(state);
@@ -30,21 +38,30 @@ export const SelectionsContainer = () => {
   };
 
   const unsetStateItem = (key: string) => {
-    const state = {...submittedState};
+    const state = { ...submittedState };
     state[key] = undefined;
     setState(state);
     upateQuery(state);
   };
 
   const setStateItemToFalse = (key: string) => {
-    const state = {...submittedState};
+    const state = { ...submittedState };
     state[key] = false;
     setState(state);
     upateQuery(state);
   };
 
-  Object.entries({...submittedState})
-    .filter(([key]) => ![Components.TO, Components.FROM, Components.PAGE, Components.SEARCHBAR, Components.SORT].includes(key))
+  Object.entries({ ...submittedState })
+    .filter(
+      ([key]) =>
+        ![
+          Components.TO,
+          Components.FROM,
+          Components.PAGE,
+          Components.SEARCHBAR,
+          Components.SORT,
+        ].includes(key),
+    )
     .forEach(([key, value], index) => {
       if (Array.isArray(value) && value.length) {
         value.forEach((option: string) => {
@@ -53,33 +70,40 @@ export const SelectionsContainer = () => {
               key={`${key}-${option.value}`}
               clearSelection={() => removeArrayItem(key, option.value)}
               value={option.label}
-            />
+            />,
           );
         });
-      }
-      else if (typeof value === 'string') {
+      } else if (typeof value === 'string') {
         selections.push(
           <FilterButton
             key={`${key}-${value}`}
             clearSelection={() => unsetStateItem(key)}
             value={value}
-          />
+          />,
         );
-      }
-      else if (typeof value === 'boolean' && value === true) {
+      } else if (typeof value === 'boolean' && value === true) {
         selections.push(
           <FilterButton
+            // biome-ignore lint/suspicious/noArrayIndexKey: @todo UHF-12501
             key={`${key}-${value}-${index}`}
             clearSelection={() => setStateItemToFalse(key)}
-            value={key === Components.BODIES ?
-              Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search'}) :
-              Drupal.t('Decisions of office holders', {}, { context: 'Decisions search'})
+            value={
+              key === Components.BODIES
+                ? Drupal.t(
+                    'Decisions of decision-making bodies',
+                    {},
+                    { context: 'Decisions search' },
+                  )
+                : Drupal.t(
+                    'Decisions of office holders',
+                    {},
+                    { context: 'Decisions search' },
+                  )
             }
-          />
+          />,
         );
       }
-    }
-  );
+    });
 
   if (submittedState[Components.FROM] || submittedState[Components.TO]) {
     let titleString = '';
@@ -87,14 +111,16 @@ export const SelectionsContainer = () => {
       titleString += submittedState[Components.FROM];
     }
     if (submittedState[Components.TO]) {
-      titleString += (submittedState[Components.FROM] ? ' - ' : '- ') + submittedState[Components.TO];
+      titleString +=
+        (submittedState[Components.FROM] ? ' - ' : '- ') +
+        submittedState[Components.TO];
     }
 
     selections.push(
       <FilterButton
         key={`date-${titleString}`}
         clearSelection={() => {
-          const state = {...submittedState};
+          const state = { ...submittedState };
           state[Components.FROM] = undefined;
           state[Components.TO] = undefined;
           state[DATE_SELECTION] = undefined;
@@ -102,13 +128,15 @@ export const SelectionsContainer = () => {
           upateQuery(state);
         }}
         value={titleString}
-      />
+      />,
     );
   }
 
   return (
     <SelectionsWrapper
-      showClearButton={selections.length || submittedState[Components.SEARCHBAR]?.length}
+      showClearButton={
+        selections.length || submittedState[Components.SEARCHBAR]?.length
+      }
       resetForm={resetForm}
     >
       {selections}

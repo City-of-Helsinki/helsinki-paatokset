@@ -5,7 +5,7 @@ $color-trustee: $color-gold-medium-light;
 $color-board: $color-coat-of-arms-medium-light;
 
 
-//Background colors
+// Background colors
 .bg--color-council {
   background-color: $color-council;
 }
@@ -27,7 +27,7 @@ $color-board: $color-coat-of-arms-medium-light;
 }
 
 
-//Border left pseudo colors
+// Border left pseudo colors
 .border-left--color-council::before {
   border-left-color: $color-council;
 }
