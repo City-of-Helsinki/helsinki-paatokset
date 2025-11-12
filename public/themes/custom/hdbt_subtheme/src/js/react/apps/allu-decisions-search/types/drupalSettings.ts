@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 declare namespace drupalSettings {
   const path: { currentLanguage: 'fi' | 'en' | 'sv' };
   const hdbt_cookie_banner: { settingsPageUrl: string };
