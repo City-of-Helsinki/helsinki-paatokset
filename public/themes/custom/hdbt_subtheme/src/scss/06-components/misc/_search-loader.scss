@@ -1,8 +1,7 @@
 // @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
 
 .decisions-search-loader {
-  background: rgba(255, 255, 255, 0.6);
-  -webkit-border-radius: 0;
+  background: rgb(255 255 255 / 60%);
   border-radius: 0;
   height: 100%;
   left: 0;
@@ -17,8 +16,7 @@
   width: 100%;
   z-index: 999999;
 
-  &:before {
-    -webkit-animation: spin 0.8s infinite linear;
+  &::before {
     animation: spin 0.8s infinite linear;
     border-color: $color-black-70 transparent $color-black-70 transparent;
     border-radius: 120px;
@@ -43,7 +41,7 @@
   }
 }
 
-@-webkit-keyframes spin {
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }

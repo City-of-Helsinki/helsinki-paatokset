@@ -2,15 +2,18 @@
 .page-title + .policymaker-text {
   margin-top: $spacing-double;
 }
+
 .node--type-policymaker,
 .policymaker-no-content,
 .minutes-container,
 .policymaker-text {
   @include font('body');
 }
+
 .policymaker-text .announcement {
   padding-left: 0;
 }
+
 .node--type-policymaker > section.policymaker-summary {
   margin-bottom: $spacing-and-half;
 
@@ -79,7 +82,7 @@
     }
   }
 
-  &:after {
+  &::after {
     border-bottom: 2px solid $color-black;
     content: '';
     display: block;
@@ -206,7 +209,7 @@ h1.minutes__header {
   @include font('h1');
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 0;
   line-height: 3rem;
   margin-bottom: $spacing;
   margin-top: 0;
@@ -221,6 +224,7 @@ h1.minutes__header {
 
   .minutes__header-suffix {
     color: $color-black-50;
+
     @include font('small');
   }
 }
@@ -247,7 +251,7 @@ h2.minutes-list__header {
     padding-bottom: $spacing-and-half;
     position: relative;
 
-    &:after {
+    &::after {
       background: $color-black;
       bottom: 0;
       content: '';
@@ -291,7 +295,7 @@ h2.minutes-list__header {
     display: flex;
   }
 
-  &:after {
+  &::after {
     border-bottom: 2px solid $color-black;
     content: '';
     display: block;

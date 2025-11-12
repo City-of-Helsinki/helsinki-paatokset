@@ -1,3 +1,7 @@
+/* stylelint-disable plugin/no-low-performance-animation-properties -- @todo UHF-12501 */
+/* stylelint-disable scss/dollar-variable-pattern -- @todo UHF-12501 */
+/* stylelint-disable no-duplicate-selectors -- @todo UHF-12501 */
+/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 // @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
 
 $collapsible_height: 56px;
@@ -76,13 +80,13 @@ $collapsible_height: 56px;
     padding: 16px;
     padding-top: 31px;
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       align-items: center;
       display: flex;
       justify-content: space-around;
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
       display: block;
     }
   }
@@ -95,12 +99,12 @@ $collapsible_height: 56px;
       margin-right: 15px;
     }
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       margin-bottom: 0;
       margin-right: 16px;
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
       margin-bottom: 31px;
     }
   }
@@ -108,11 +112,11 @@ $collapsible_height: 56px;
   .DateSelect__date-fields-divider {
     display: none;
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       display: inline-block;
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
       display: none;
     }
   }

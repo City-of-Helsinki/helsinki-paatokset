@@ -3,7 +3,7 @@
 .decisions-search-sort-select {
   margin-bottom: $spacing-and-half;
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     justify-content: flex-end;
     margin-left: auto;
     width: 328px;

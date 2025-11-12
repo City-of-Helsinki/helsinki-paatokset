@@ -10,10 +10,11 @@ const initialParams = {
   page: initalUrlParams.get('page') || undefined,
   q: initalUrlParams.get('q') || undefined,
   start: initalUrlParams.get('start') || undefined,
-  type: initalUrlParams.getAll('type').map(label => ({
-    label,
-    value: matchTypeValueFromLabel(label),
-  })) || undefined,
+  type:
+    initalUrlParams
+      .getAll('type')
+      .map((label) => ({ label, value: matchTypeValueFromLabel(label) })) ||
+    undefined,
 };
 
 export const selectionsAtom = atom<Selections>(initialParams);
@@ -21,24 +22,20 @@ export const selectionsAtom = atom<Selections>(initialParams);
 export const setSelectionsAtom = atom(
   null,
   (
-    get,
+    _get,
     set,
     value: Partial<Selections> | typeof RESET,
-    partial: boolean = false
+    partial: boolean = false,
   ) => {
     if (value === RESET) {
       set(selectionsAtom, {});
       return;
     }
 
-    set(selectionsAtom, (currentValue) => partial ? 
-      {
-        ...currentValue,
-        ...value
-      } :
-      value
+    set(selectionsAtom, (currentValue) =>
+      partial ? { ...currentValue, ...value } : value,
     );
-  }
+  },
 );
 
 export const getPageAtom = atom((get) => {
@@ -50,13 +47,13 @@ export const getPageAtom = atom((get) => {
 const selectionsToURLParams = (currentParams: Selections) => {
   const params = new URLSearchParams();
 
-  Object.entries(currentParams).forEach(entry => {
+  Object.entries(currentParams).forEach((entry) => {
     const [key, value] = entry;
 
     if (value && Array.isArray(value) && value.length) {
-      value.forEach(option => params.set(key, option.label));
-    }
-    else if (value && !Array.isArray(value)) {
+      /** biome-ignore lint/suspicious/useIterableCallbackReturn: @todo UHF-12501 */
+      value.forEach((option) => params.set(key, option.label));
+    } else if (value && !Array.isArray(value)) {
       params.set(key, value);
     }
   });
@@ -74,7 +71,7 @@ export const urlAtom = atom((get) => {
   });
 
   // Make sure keys that are not set are deleted
-  ['end', 'page', 'q', 'type', 'start',].forEach(key => {
+  ['end', 'page', 'q', 'type', 'start'].forEach((key) => {
     if (!params.has(key)) {
       newParams.delete(key);
     }
@@ -82,11 +79,7 @@ export const urlAtom = atom((get) => {
 
   const newUrl = new URL(window.location.toString());
   newUrl.search = newParams.toString();
-  window.history.pushState(
-    {},
-    '',
-    newUrl.toString(),
-  );
+  window.history.pushState({}, '', newUrl.toString());
 
   return params.toString();
 });

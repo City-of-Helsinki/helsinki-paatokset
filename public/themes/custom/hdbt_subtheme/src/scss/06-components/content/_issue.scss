@@ -1,6 +1,6 @@
+/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 .issue-header__container {
   border-bottom: 2px solid $color-black-20;
-
   margin-bottom: 27.5px;
 
   @include breakpoint($breakpoint-xl) {
@@ -208,6 +208,7 @@
 
 .issue-content__section {
   margin-bottom: $spacing-double;
+
   p,
   ul {
     margin-top: 0;
@@ -247,6 +248,7 @@
       flex-basis: auto;
     }
   }
+
   .decision-navigation-button--next .hel-icon {
     margin-left: 14px;
     margin-right: 0;
@@ -303,6 +305,7 @@
   del {
     text-decoration: line-through;
   }
+
   ins {
     text-decoration: none;
   }

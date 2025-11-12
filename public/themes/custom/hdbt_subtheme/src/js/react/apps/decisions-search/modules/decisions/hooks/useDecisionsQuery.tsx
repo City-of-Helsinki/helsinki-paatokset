@@ -1,16 +1,19 @@
-import { DateTime } from 'luxon';
+// biome-ignore-all lint/suspicious/useIterableCallbackReturn: @todo UHF-12501
+import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue } from 'jotai';
-import { type estypes } from '@elastic/elasticsearch';
+import { DateTime } from 'luxon';
 import { useMemo } from 'react';
-
-import { submittedStateAtom } from '../store';
+import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
+import {
+  getAdvancedBoostQuery,
+  getBaseSearchTermQuery,
+} from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
 import { DecisionIndex } from '../enum/IndexFields';
-import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
-import { SortOptions } from '../enum/SortOptions';
-import { getAdvancedBoostQuery, getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { OrganizationTypes } from '../enum/OrganizationTypes';
+import { SortOptions } from '../enum/SortOptions';
+import { submittedStateAtom } from '../store';
 
 // Boosted fields for full text search
 const dataFields = [
@@ -34,53 +37,53 @@ const fields = [
   DecisionIndex.UNIQUE_ISSUE_ID,
 ];
 
-export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQueryContainer => {
+export const useDecisionsQuery = (
+  customSearchTerm: string,
+): estypes.QueryDslQueryContainer => {
   const submittedState = useAtomValue(submittedStateAtom);
 
   return useMemo(() => {
     const filter: estypes.QueryDslQueryContainer[] = [
-      {
-        exists: {
-          field: DecisionIndex.MEETING_DATE
-        },
-      },
-    ]; 
+      { exists: { field: DecisionIndex.MEETING_DATE } },
+    ];
     const should: estypes.QueryDslQueryContainer[] = [];
 
     const getSearchTerm = () => {
       if (customSearchTerm) {
         return customSearchTerm;
       }
-      return submittedState[Components.SEARCHBAR] && submittedState[Components.SEARCHBAR].trim();
+      return (
+        submittedState[Components.SEARCHBAR] &&
+        submittedState[Components.SEARCHBAR].trim()
+      );
     };
 
     const searchTerm = getSearchTerm();
-    if (searchTerm && searchTerm.length) {
-      getBaseSearchTermQuery(searchTerm, dataFields).forEach(item => should.push(item));
-      getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach(item => should.push(item));
-      [
-        DecisionIndex.DECISION_CONTENT,
-        DecisionIndex.DECISION_MOTION,
-      ].forEach(field => should.push({
-          constant_score: {
-            filter: {
-              match: {
-                [field]: searchTerm
-              }
+    if (searchTerm?.length) {
+      getBaseSearchTermQuery(searchTerm, dataFields).forEach((item) =>
+        should.push(item),
+      );
+      getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach((item) =>
+        should.push(item),
+      );
+      [DecisionIndex.DECISION_CONTENT, DecisionIndex.DECISION_MOTION].forEach(
+        (field) =>
+          should.push({
+            constant_score: {
+              filter: { match: { [field]: searchTerm } },
+              boost: 1.0,
             },
-            boost: 1.0
-          }
-        })
+          }),
       );
     }
 
-    if (searchTerm && isOperatorSearch(searchTerm))  {
+    if (searchTerm && isOperatorSearch(searchTerm)) {
       filter.push({
         simple_query_string: {
           query: searchTerm,
           default_operator: 'or',
           analyze_wildcard: true,
-        }
+        },
       });
     }
 
@@ -88,29 +91,23 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
     if (categoryFilter.length) {
       filter.push({
         terms: {
-          'top_category_code': categoryFilter.map((category) => category.value)
-        }
+          top_category_code: categoryFilter.map((category) => category.value),
+        },
       });
     }
 
     const fromFilter = submittedState[Components.FROM];
     const toFilter = submittedState[Components.TO];
-    const dateQuery = {
-      range: {
-        meeting_date: {}
-      }
-    };
+    const dateQuery = { range: { meeting_date: {} } };
 
     [fromFilter, toFilter].forEach((date, index) => {
       if (date) {
-        dateQuery.range.meeting_date[index === 0 ? 'gte' : 'lte'] = DateTime.fromFormat(date, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+        dateQuery.range.meeting_date[index === 0 ? 'gte' : 'lte'] =
+          DateTime.fromFormat(date, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
       }
     });
 
-    if (
-      dateQuery.range.meeting_date.gte ||
-      dateQuery.range.meeting_date.lte
-    ) {
+    if (dateQuery.range.meeting_date.gte || dateQuery.range.meeting_date.lte) {
       filter.push(dateQuery);
     }
 
@@ -118,38 +115,34 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
     if (dmSelection.length) {
       filter.push({
         terms: {
-          [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm) => dm.value)
-        }
+          [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm) => dm.value),
+        },
       });
     }
 
     [Components.BODIES, Components.TRUSTEES].forEach((component) => {
       const value = submittedState[component];
       if (typeof value === 'boolean' && value === true) {
-        filter.push(component === Components.BODIES ? {
-          bool: {
-            must_not: {
-              terms: {
-                [DecisionIndex.ORG_TYPE]: [
-                  OrganizationTypes.OFFICIAL,
-                  OrganizationTypes.TRUSTEE,
-                ],
+        filter.push(
+          component === Components.BODIES
+            ? {
+                bool: {
+                  must_not: {
+                    terms: {
+                      [DecisionIndex.ORG_TYPE]: [
+                        OrganizationTypes.OFFICIAL,
+                        OrganizationTypes.TRUSTEE,
+                      ],
+                    },
+                  },
+                },
               }
-            }
-          }
-        }: {
-          term: {
-            [DecisionIndex.ORG_TYPE]: OrganizationTypes.TRUSTEE,
-          }
-        });
+            : { term: { [DecisionIndex.ORG_TYPE]: OrganizationTypes.TRUSTEE } },
+        );
       }
     });
 
-    const query: estypes.QueryDslQueryContainer = {
-      bool: {
-        filter,
-      }
-    };
+    const query: estypes.QueryDslQueryContainer = { bool: { filter } };
 
     if (should.length) {
       query.bool.should = should;
@@ -172,20 +165,22 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
         sort.push({ _score: 'desc' });
         sort.push({ [DecisionIndex.MEETING_DATE]: 'desc' });
         break;
-    };
+    }
 
     const { currentLanguage } = drupalSettings.path;
     const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
-    const innerHitSort = [{
-      _script: {
-        type: 'number',
-        script: {
-          lang: 'painless',
-          source: `doc['${DecisionIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`
+    const innerHitSort = [
+      {
+        _script: {
+          type: 'number',
+          script: {
+            lang: 'painless',
+            source: `doc['${DecisionIndex.SEARCH_API_LANGUAGE}'].value == '${preferredLanguage}' ? 0 : 1`,
+          },
+          order: 'asc',
         },
-        order: 'asc',
       },
-    }];
+    ];
     switch (sortSelection) {
       case SortOptions.OLDEST:
         innerHitSort.unshift({ [DecisionIndex.MEETING_DATE]: 'asc' });
@@ -207,7 +202,7 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
             field: DecisionIndex.UNIQUE_ISSUE_ID,
             precision_threshold: 10000,
           },
-        }
+        },
       },
       collapse: {
         field: DecisionIndex.UNIQUE_ISSUE_ID,
@@ -222,16 +217,18 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
       query: {
         function_score: {
           query,
-          functions: [{
-            gauss: {
-              [DecisionIndex.MEETING_DATE]: {
-                decay: 0.5,
-                origin: 'now',
-                scale: '365d',
+          functions: [
+            {
+              gauss: {
+                [DecisionIndex.MEETING_DATE]: {
+                  decay: 0.5,
+                  origin: 'now',
+                  scale: '365d',
+                },
               },
+              weight: 50,
             },
-            weight: 50,
-          }],
+          ],
           boost_mode: 'sum',
           score_mode: 'sum',
         },
