@@ -1,0 +1,13 @@
+.decisions-search__date-filter .collapsible__children {
+  padding: 0;
+}
+
+.date-filter__predefined-ranges-container,
+.date-filter__datepicker-wrapper {
+  padding: $spacing;
+}
+
+.date-filter__inner-control {
+  margin-top: $spacing;
+  width: 100%;
+}

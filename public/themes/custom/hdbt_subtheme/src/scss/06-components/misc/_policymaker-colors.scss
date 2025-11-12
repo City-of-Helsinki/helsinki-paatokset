@@ -1,0 +1,55 @@
+// Use old variable names for search app compatibility.
+:root {
+  --color-sumu: #{$color-fog};
+  --color-hopea: #{$color-silver};
+  --color-kupari: #{$color-copper};
+}
+
+// TODO: UHF-12492 Remove old classes.
+.issue-content__policymaker-label,
+.policymaker-row__color,
+.frontpage-calendar__item .color-line,
+.policymaker-card__color-title,
+.hds-tag {
+  &.bg--color-sumu {
+    background-color: $color-fog;
+  }
+
+  &.bg--color-hopea {
+    background-color: $color-silver;
+  }
+
+  &.bg--color-suomenlinna {
+    background-color: $color-suomenlinna;
+  }
+
+  &.bg--color-engel {
+    background-color: $color-engel
+  }
+
+  &.bg--color-kupari {
+    background-color: $color-copper;
+  }
+}
+
+.issue__meetings-dropdown {
+  .border-left--color-sumu::before {
+    border-left-color: $color-fog;
+  }
+
+  .border-left--color-hopea::before {
+    border-left-color: $color-silver;
+  }
+
+  .border-left--color-suomenlinna::before {
+    border-left-color: $color-suomenlinna;
+  }
+
+  .border-left--color-engel::before {
+    border-left-color: $color-engel
+  }
+
+  .border-left--color-kupari::before {
+    border-left-color: $color-copper;
+  }
+}

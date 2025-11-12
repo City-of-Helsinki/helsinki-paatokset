@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityInterface;
+
 /**
  * Implements hook_preprocess_html().
  */
@@ -21,6 +23,21 @@ function paatokset_search_preprocess_html(array &$variables) {
  */
 function paatokset_search_theme(): array {
   return [
+    'decisions_search' => [
+      'variables' => [
+        'description' => NULL,
+        'operator_guide_url' => NULL,
+        'search_element' => NULL,
+      ],
+      'template' => 'decisions-search',
+    ],
+    'decisions_search_hero_block' => [
+      'variables' => [
+        'hero_description' => NULL,
+        'hero_title' => NULL,
+      ],
+      'template' => 'decisions-search-hero-block',
+    ],
     'policymaker_search_block' => [
       'variables' => [
         'lead_in' => [],
@@ -28,4 +45,28 @@ function paatokset_search_theme(): array {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function paatokset_search_entity_update(EntityInterface $entity) {
+  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
+    ->onEntityChange($entity);
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function paatokset_search_entity_insert(EntityInterface $entity) {
+  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
+    ->onEntityChange($entity);
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function paatokset_search_entity_delete(EntityInterface $entity) {
+  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
+    ->onEntityChange($entity);
 }

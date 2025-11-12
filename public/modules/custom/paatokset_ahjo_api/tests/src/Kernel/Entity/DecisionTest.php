@@ -206,8 +206,8 @@ class DecisionTest extends AhjoKernelTestBase {
     $decision->set('field_hide_decision_content', '0');
     $content = $decision->parseContent();
 
-    $this->assertStringContainsString('Jane Doe', $content['more_info']['content']['#markup'] ?? '');
-    $this->assertStringContainsString('John Doe', $content['presenter_info']['content']['#markup'] ?? '');
+    $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('John Doe', $content['presenter_info']['content']['name']['#plain_text'] ?? '');
 
     // Empty <p> tags are stripped from accordions.
     $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));

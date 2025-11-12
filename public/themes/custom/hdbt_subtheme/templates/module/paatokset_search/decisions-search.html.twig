@@ -1,0 +1,19 @@
+ {{ description.children|render }}
+<article>
+  <div class="components components--computed">
+    {% embed "@hdbt/misc/component.twig" with
+      {
+        component_classes: [
+        'component--full-width',
+        'component--react-search',
+        ],
+        component_description: description,
+        component_title: 'Filter search results'|trans({}, {'context': 'Decisions search'})
+      }
+    %}
+      {% block component_content %}
+        {{ search_element|render }}
+      {% endblock component_content %}
+    {% endembed %}
+  </div>
+</article>

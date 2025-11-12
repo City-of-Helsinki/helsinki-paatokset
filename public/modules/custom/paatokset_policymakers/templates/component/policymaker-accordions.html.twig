@@ -24,7 +24,7 @@
             {% endif %}
             {% for subitem in item.subitems %}
               <a href="{{ subitem.link }}" class="policymaker-row__link">
-                <div class="policymaker-row__color {{ subitem.organization_color }}"></div>
+                <div class="policymaker-row__color {% if subitem.organization_color %} bg--{{ subitem.organization_color }}{% endif %}"></div>
                 <div class="policymaker-row__title">
                   {{ subitem.title }}
                   {% if subitem.organization_type == 'Viranhaltija'%}
@@ -36,7 +36,7 @@
             {% endfor %}
           {% else %}
             <a href="{{ item.link }}" class="policymaker-row__link">
-              <div class="policymaker-row__color {{ item.organization_color }}"></div>
+              <div class="policymaker-row__color {% if item.organization_color %} bg--{{ item.organization_color }}{% endif %}"></div>
               <div class="policymaker-row__title">
                 {% if organization_type == 'trustee' %}
                   {{ item.title }}

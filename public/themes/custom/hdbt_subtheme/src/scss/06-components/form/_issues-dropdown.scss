@@ -1,0 +1,181 @@
+.issue__wrapper .ajax-progress-throbber {
+  display: none;
+}
+
+.issue__meetings-container {
+  label {
+    @include font('small');
+  }
+}
+
+.issue__meetings-dropdown {
+  border: 2px solid $color-black-50;
+  margin-bottom: $spacing-double;
+
+  .hds-button {
+    border: none;
+    color: $color-black;
+    justify-content: flex-start;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    &:focus,
+    &:hover,
+    &[disabled] {
+      background-color: transparent;
+      color: $color-black;
+    }
+
+    &[disabled]:hover:active,
+    &[disabled]:hover:focus {
+      background-color: transparent;
+      color: $color-black;
+    }
+
+    &[disabled] .hel-icon.hel-icon--angle-down {
+      display: none;
+    }
+
+    .hel-icon.hel-icon--angle-down,
+    .hel-icon:last-of-type:not(:first-of-type) {
+      margin: 0 $spacing-half 0 auto;
+    }
+
+    .hds-button__label {
+      padding-left: 22px;
+      text-align: left;
+    }
+  }
+
+  .hds-button::before {
+    border-bottom: 26px solid transparent;
+    border-left-style: solid;
+    border-left-width: 20px;
+    border-top: 26px solid transparent;
+    content: '';
+    height: 0;
+    left: 0;
+    position: absolute;
+    width: 0;
+  }
+
+  .hds-button::after {
+    content: none;
+  }
+
+  &:focus,
+  &:focus-within {
+    border: 2px solid $color-black;
+  }
+
+  &.open .hds-button {
+    border-bottom: 1px solid;
+    border-color: $color-black-50;
+
+    .hel-icon.hel-icon--angle-down {
+      transform: rotate(180deg);
+    }
+  }
+
+  .option {
+    @include font('small');
+    align-items: center;
+    display: flex;
+    height: 52px;
+    margin-top: 0;
+    padding-left: 30px;
+    position: relative;
+
+    a:hover {
+      text-decoration: none;
+    }
+  }
+
+  .option:before {
+    border-bottom: 26px solid transparent;
+    border-left-style: solid;
+    border-left-width: 20px;
+    border-top: 26px solid transparent;
+    content: '';
+    height: 0;
+    left: 0;
+    position: absolute;
+    width: 0;
+  }
+
+  .option {
+    cursor: pointer;
+
+    &:not(.selected):hover {
+      background-color: $color-black;
+      a {
+        color: $color-white;
+      }
+    }
+
+    &:focus {
+      border: 2px solid $color-black;
+    }
+
+    &.selected {
+      background-color: $color-black-20;
+    }
+  }
+}
+
+.issue__meetings-select {
+  display: none;
+  list-style: none;
+  margin-bottom: 0;
+  margin-top: 0;
+  overflow-x: scroll;
+  padding-left: 0;
+  padding-top: 0;
+  width: 100%;
+  -ms-overflow-style: none;
+  background: $color-white;
+  position: relative;
+  scrollbar-width: none;
+  z-index: 2;
+
+  .paatokset__link-plain:hover {
+    color: inherit;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.issue__meetings-labels {
+  display: flex;
+  flex-direction: column-reverse;
+
+  @include breakpoint($breakpoint-l) {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.new-handlings-warning__wrapper {
+  .warning-label {
+    display: none;
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  @include breakpoint($breakpoint-l) {
+    margin-left: auto;
+
+    .warning-label {
+      display: block;
+      visibility: hidden;
+      &.visible {
+        visibility: visible;
+      }
+    }
+  }
+}

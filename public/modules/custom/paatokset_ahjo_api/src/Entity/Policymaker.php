@@ -37,16 +37,16 @@ class Policymaker extends Node implements AhjoEntityInterface {
     }
 
     if ($this->get('field_city_council_division')->value) {
-      return 'color-hopea';
+      return 'color-cabinet';
     }
 
     // Use org type to determine color coding.
     return match ($this->getOrganizationType()) {
-      OrganizationType::COUNCIL => 'color-kupari',
-      OrganizationType::CABINET => 'color-hopea',
-      OrganizationType::OFFICE_HOLDER => 'color-suomenlinna',
-      OrganizationType::TRUSTEE => 'color-engel',
-      OrganizationType::BOARD => 'color-sumu',
+      OrganizationType::COUNCIL => 'color-council',
+      OrganizationType::CABINET => 'color-cabinet',
+      OrganizationType::OFFICE_HOLDER => 'color-office-holder',
+      OrganizationType::TRUSTEE => 'color-trustee',
+      OrganizationType::BOARD => 'color-board',
       default => 'color-none',
     };
   }
