@@ -4,3 +4,4 @@ parameters:
   helfi_api_base.internal_domains:
     - 'paatokset.hel.fi'
     - 'nginx-paatokset-test.agw.arodevtest.hel.fi'
+    - 'paatokset.test.hel.ninja'
