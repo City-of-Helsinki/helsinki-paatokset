@@ -26,6 +26,14 @@ $color-board: $color-coat-of-arms-medium-light;
   background-color: $color-board;
 }
 
+// @todo these should be removed when https://helsinkisolutionoffice.atlassian.net/browse/UHF-12379 is completed
+:root {
+  --color-council: var(--color-copper-medium-light);
+  --color-cabinet: var(--color-black-10);
+  --color-office-holder: var(--color-bus-medium-light);
+  --color-trustee: var(--color-gold-medium-light);
+  --color-board: var(--color-coat-of-arms-medium-light);
+}
 
 // Border left pseudo colors
 .border-left--color-council::before {
