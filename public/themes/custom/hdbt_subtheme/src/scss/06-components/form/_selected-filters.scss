@@ -6,7 +6,7 @@
   overflow: hidden;
   padding-top: 28px;
 
-  @media (min-width: 1200px) {
+  @media (width >= 1200px) {
     margin-top: 55px;
   }
 }
@@ -28,7 +28,7 @@
   justify-content: center;
   margin-bottom: 12px;
   margin-right: 20px;
-  padding: 12px 0px 12px 20px;
+  padding: 12px 0 12px 20px;
 
   svg {
     margin-left: var(--spacing-2-xs);
@@ -48,6 +48,7 @@
 .decisions-search-selected-filters__filter-label {
   align-items: center;
   display: flex;
+
   @include font('lead');
   margin-bottom: 12px;
   margin-right: 20px;

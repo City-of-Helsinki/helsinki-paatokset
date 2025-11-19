@@ -1,12 +1,12 @@
 import CardItem from '@/react/common/Card';
-import { Decision } from '../types/Decision';
 import { matchTypeLabel } from '../helpers';
+import type { Decision } from '../types/Decision';
 
 const getShortAddress = (address: string) => {
   const regex = /(?:^|(?:[.!?]\s))(\w+)/;
   const matches = address.match(regex);
 
-  if (matches && matches.length) {
+  if (matches?.length) {
     return matches[0];
   }
 
@@ -26,9 +26,7 @@ export const ResultCard = ({
 
     if (address?.length) {
       const shortAddress = getShortAddress(address[0]);
-      result = shortAddress ?
-        `${result}, ${shortAddress}` :
-        result;
+      result = shortAddress ? `${result}, ${shortAddress}` : result;
     }
 
     return `${result}, ${Drupal.t('identifier', { context: 'Allu decision search' })} ${label[0]} (pdf)`;
@@ -60,16 +58,33 @@ export const ResultCard = ({
   return (
     <CardItem
       cardModifierClass='card--border'
-      cardTags={approval_type?.includes('WORK_FINISHED') ?
-        [{ tag: Drupal.t('Work complete', {}, { context: 'Allu decision search' }) }] :
-        []
+      cardTags={
+        approval_type?.includes('WORK_FINISHED')
+          ? [
+              {
+                tag: Drupal.t(
+                  'Work complete',
+                  {},
+                  { context: 'Allu decision search' },
+                ),
+              },
+            ]
+          : []
       }
       cardTitle={getCardTitle()}
       cardUrl={url?.[0] ?? ''}
       location={getFullAddress()}
-      locationLabel={Drupal.t('Address', {}, { context: 'Allu decision search' })}
+      locationLabel={Drupal.t(
+        'Address',
+        {},
+        { context: 'Allu decision search' },
+      )}
       time={getTime()}
-      timeLabel={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
+      timeLabel={Drupal.t(
+        'Date of decision',
+        {},
+        { context: 'Allu decision search' },
+      )}
     />
-  );  
+  );
 };

@@ -631,8 +631,8 @@ class Decision extends Node implements AhjoUpdatableInterface {
       // Split into array.
       $parts = array_map('trim', explode('#', $result));
       $contact = [
-        'title' => ucfirst($parts[0]) ?? NULL,
-        'name' => ucfirst($parts[1]) ?? NULL,
+        'title' => ucfirst($parts[0] ?? '') ?: NULL,
+        'name' => ucfirst($parts[1] ?? '') ?: NULL,
       ];
       $output['presenter_info'] = [
         'heading' => new TranslatableMarkup('Presenter information'),

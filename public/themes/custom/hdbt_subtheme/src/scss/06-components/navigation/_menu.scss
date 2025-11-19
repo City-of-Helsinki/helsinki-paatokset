@@ -2,6 +2,7 @@
 .header-branding .cssmenu-menu {
   grid-template-areas: 'lang' 'back' 'nav' 'footer';
 }
+
 .mmenu__back {
   align-items: start;
   background-color: $color-white;

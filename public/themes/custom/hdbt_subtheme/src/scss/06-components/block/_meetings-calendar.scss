@@ -1,3 +1,4 @@
+/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 .meetings-calendar {
   margin-top: $spacing-triple;
 
@@ -46,6 +47,7 @@
       min-width: 30px;
       width: 30px;
     }
+
     .icon-container--disabled {
       color: $color-silver-medium-light;
     }

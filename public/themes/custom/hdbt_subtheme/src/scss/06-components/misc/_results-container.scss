@@ -4,7 +4,7 @@
   min-height: 250px;
   position: relative;
 
-  @media (min-width: 1248px) {
+  @media (width >= 1248px) {
     padding-top: 100px;
   }
 }

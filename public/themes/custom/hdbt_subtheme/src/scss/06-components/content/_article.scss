@@ -1,6 +1,7 @@
 .page-title + .node--type-article {
   margin-top: $spacing-double;
 }
+
 .node--type-article {
   .content-author {
     @include font('small');

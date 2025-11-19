@@ -1,4 +1,6 @@
-jQuery(function($) {
+// biome-ignore-all lint/correctness/noUnusedFunctionParameters: @todo UHF-12501
+// biome-ignore-all lint/complexity/useArrowFunction: @todo UHF-12501
+jQuery(function ($) {
   const handle = $('.issue__meetings-dropdown button');
   const optionList = $('.issue__meetings-select');
   const options = $('.issue__meetings-select li');
@@ -7,28 +9,27 @@ jQuery(function($) {
   const socialMedia = $('.social-media__items a');
   let focusIndex = -1;
 
-  $(document).ready(function() {
-    $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'true');
+  $(document).ready(function () {
+    $('.issue-ajax-error__container .hds-notification__label').attr(
+      'aria-hidden',
+      'true',
+    );
     // Add the default style class to button
     const defaultSelected = $('.issue__meetings-select li.selected');
 
     function transformButton(selected) {
       const styleClass = $(selected).data('styleclass');
       const link = $(selected).data('link');
-  
-      const buttonClasses = [
-        'hds-button',
-        'hds-button--secondary',
-        styleClass
-      ];
-  
+
+      const buttonClasses = ['hds-button', 'hds-button--secondary', styleClass];
+
       $(handle).removeClass();
-      buttonClasses.forEach(function(className) {
+      buttonClasses.forEach(function (className) {
         $(handle).addClass(className);
       });
       $(handle).data('link', link);
     }
-    
+
     function openOptions() {
       $(optionList).show();
       $(optionList).attr('aria-expanded', 'true');
@@ -39,26 +40,29 @@ jQuery(function($) {
       $(optionList).hide();
       $(optionList).attr('aria-expanded', 'false');
       $(dropdown).removeClass('open');
-  
-      if(focusHandle) {
+
+      if (focusHandle) {
         $(handle).focus();
       }
     }
 
     function arrowHandler(event) {
-      if(!event.key || !(event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+      if (
+        !event.key ||
+        !(event.key === 'ArrowUp' || event.key === 'ArrowDown')
+      ) {
         return;
       }
       if (event.key === 'ArrowUp' && focusIndex > -1) {
         focusIndex -= 1;
       }
-      if(event.key === 'ArrowDown' && focusIndex < options.length -1) {
+      if (event.key === 'ArrowDown' && focusIndex < options.length - 1) {
         focusIndex += 1;
       }
-      if(focusIndex >= 0 && focusIndex < options.length) {
+      if (focusIndex >= 0 && focusIndex < options.length) {
         $(options)[focusIndex].focus();
       }
-      if(focusIndex === -1) {
+      if (focusIndex === -1) {
         handle.focus();
       }
     }
@@ -81,7 +85,6 @@ jQuery(function($) {
       const { baseUrl, pathPrefix } = window.drupalSettings.path;
       const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}/${id}`;
 
-
       $.ajax({
         url: path,
         beforeSend() {
@@ -95,19 +98,29 @@ jQuery(function($) {
             $('.issue__attachments__wrapper').html(data.attachments);
           }
           if (data.decision_navigation) {
-            $('.issue__decision-navigation__wrapper').html(data.decision_navigation);
+            $('.issue__decision-navigation__wrapper').html(
+              data.decision_navigation,
+            );
           }
           if (data.all_decisions_link) {
-            $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
-            $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the meeting'));
+            $('.issue-dropdown__show-more a').attr(
+              'href',
+              data.all_decisions_link,
+            );
+            $('.issue-dropdown__show-more a span').text(
+              Drupal.t('Other decisions for the meeting'),
+            );
             $('.issue-dropdown__show-more').css('display', 'block');
-          }
-          else if (data.other_decisions_link) {
-            $('.issue-dropdown__show-more a').attr('href', data.other_decisions_link);
-            $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the policymaker'));
+          } else if (data.other_decisions_link) {
+            $('.issue-dropdown__show-more a').attr(
+              'href',
+              data.other_decisions_link,
+            );
+            $('.issue-dropdown__show-more a span').text(
+              Drupal.t('Other decisions for the policymaker'),
+            );
             $('.issue-dropdown__show-more').css('display', 'block');
-          }
-          else {
+          } else {
             $('.issue-dropdown__show-more').css('display', 'none');
           }
           if (data.decision_pdf) {
@@ -117,125 +130,139 @@ jQuery(function($) {
             $('.issue__pdf').css('display', 'none');
           }
           if (data.language_urls) {
-            Object.keys(data.language_urls).forEach(langcode => {
-              $(`.language-link[lang="${langcode}"]`).attr('href', data.language_urls[langcode]);
+            Object.keys(data.language_urls).forEach((langcode) => {
+              $(`.language-link[lang="${langcode}"]`).attr(
+                'href',
+                data.language_urls[langcode],
+              );
             });
           }
           if (data.show_warning) {
             showWarning();
-          }
-          else {
+          } else {
             hideWarning();
           }
           $('.issue-ajax-error__container').hide();
         },
         error() {
-          $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'false');
+          $('.issue-ajax-error__container .hds-notification__label').attr(
+            'aria-hidden',
+            'false',
+          );
           $('.issue-ajax-error__container').attr('aria-hidden', 'false').show();
         },
         complete() {
           $('.issue__wrapper .ajax-progress-throbber').hide();
-          window.document.dispatchEvent(new Event('DOMContentLoaded', {
-            bubbles: true,
-            cancelable: true
-          }));
-        }
+          window.document.dispatchEvent(
+            new Event('DOMContentLoaded', { bubbles: true, cancelable: true }),
+          );
+        },
       });
 
       let queryKey = 'paatos';
       if (window.drupalSettings.path.currentLanguage === 'sv') {
         queryKey = 'beslut';
-      }
-      else if (window.drupalSettings.path.currentLanguage === 'en') {
+      } else if (window.drupalSettings.path.currentLanguage === 'en') {
         queryKey = 'decision';
       }
 
       let queryparams = window.location.search;
       if (queryparams === '') {
-        queryparams = `?${  queryKey  }=`;
+        queryparams = `?${queryKey}=`;
       }
-      const oldWindowHref = window.location.host + window.location.pathname + queryparams;
+      const oldWindowHref =
+        window.location.host + window.location.pathname + queryparams;
 
-      window.history.pushState({}, '', `${window.location.pathname}?${queryKey}=${id}`);
+      window.history.pushState(
+        {},
+        '',
+        `${window.location.pathname}?${queryKey}=${id}`,
+      );
 
       socialMedia.each(() => {
-        const oldHref =  $(this).attr('href');
-        const newWindowHref = window.location.host + window.location.pathname + window.location.search;
+        const oldHref = $(this).attr('href');
+        const newWindowHref =
+          window.location.host +
+          window.location.pathname +
+          window.location.search;
         $(this).attr('href', oldHref.replace(oldWindowHref, newWindowHref));
       });
     }
 
     function selectOption(selected) {
-      if($(selected).data('link') === $(handle).data('link')) {
+      if ($(selected).data('link') === $(handle).data('link')) {
         closeOptions();
         return;
       }
-  
-      if($(selected).length > 0) {
+
+      if ($(selected).length > 0) {
         transformButton(selected);
-        $('.issue__meetings-dropdown .hds-button__label').html($(selected).text());
+        $('.issue__meetings-dropdown .hds-button__label').html(
+          $(selected).text(),
+        );
         $('.issue__meetings-select li.selected').attr('aria-selected', 'false');
         $('.issue__meetings-select li.selected').removeClass('selected');
         $(selected).addClass('selected');
         $(selected).attr('aria-selected', 'true');
         closeOptions();
       }
-  
+
       loadDecision($(selected).data('link'));
     }
 
-    if(defaultSelected.length) {
+    if (defaultSelected.length) {
       transformButton($(defaultSelected)[0]);
     }
 
-    handle.on('click', function() {
+    handle.on('click', function () {
       optionList.toggle();
-      optionList.attr('aria-expanded', function(i, value) {
+      optionList.attr('aria-expanded', function (i, value) {
         return value === 'true' ? 'false' : 'true';
       });
       dropdown.toggleClass('open');
     });
 
-    handle.on('keydown', function(event) {
-      if(event.key && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
-        if(optionList.css('display') === 'none') {
+    handle.on('keydown', function (event) {
+      if (event.key && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+        if (optionList.css('display') === 'none') {
           openOptions();
         }
       }
     });
 
     // Close dropdown if focus moves outside parent
-    $(container).focusout(function(event) {
-      if(!$(this).has(event.relatedTarget).length) {
+    $(container).focusout(function (event) {
+      if (!$(this).has(event.relatedTarget).length) {
         closeOptions(false);
       }
     });
 
-    options.on('click keydown', function(event) {
+    options.on('click keydown', function (event) {
       // Prevent triggering handle's click event
       event.preventDefault();
-      if(!event.key || event.key === 'Enter') {
+      if (!event.key || event.key === 'Enter') {
         selectOption($(this));
       }
     });
 
-    dropdown.on('keydown', function(event) {
-      if(event.key && event.key === 'Escape') {
+    dropdown.on('keydown', function (event) {
+      if (event.key && event.key === 'Escape') {
         closeOptions(false);
       }
     });
 
-    options.on('focus', function() {
+    options.on('focus', function () {
       focusIndex = $(options).index($(this));
     });
 
     container.on('keydown', arrowHandler);
 
-    $('body').on('click', '.decision-navigation-button', function(event) {
+    $('body').on('click', '.decision-navigation-button', function (event) {
       event.preventDefault();
-      const link = event.target.tagName === 'A' ?
-        $(event.target).data('link') :
-        $(event.target).parent('a').data('link');
+      const link =
+        event.target.tagName === 'A'
+          ? $(event.target).data('link')
+          : $(event.target).parent('a').data('link');
 
       selectOption($(optionList).find(`[data-link='${link}']`));
     });

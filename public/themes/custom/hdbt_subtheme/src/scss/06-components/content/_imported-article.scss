@@ -11,6 +11,7 @@
     p {
       @include font('lead');
     }
+
     &::after {
       background: $color-black;
       content: "";

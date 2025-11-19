@@ -1,10 +1,11 @@
-/* stylelint-disable plugin/no-low-performance-animation-properties -- @todo UHF-12501 */
-// @todo refactor policymaker search result card styles
+// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+
 .policymaker-search-result-card {
   background: $color-white;
   width: 100%;
 
   svg {
+    /* stylelint-disable-next-line plugin/no-low-performance-animation-properties */
     transition: all 0.2s ease-in-out;
   }
 }
