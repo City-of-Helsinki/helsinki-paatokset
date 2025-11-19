@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.25.0",
+    "@biomejs/biome": "^2.2.4",
     "@elastic/elasticsearch": "^8.17.1",
     "@emotion/styled-base": "^10.3.0",
     "@hdbt/theme-builder": "file:../../contrib/hdbt/theme-builder",
