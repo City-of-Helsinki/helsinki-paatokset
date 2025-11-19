@@ -45,6 +45,27 @@
   button > span[class*='Select-module_buttonLabel'] {
     color: $color-black-60;
   }
+
+  // Autocomplete styles.
+  .search-autocomplete {
+    border: 2px solid $color-black;
+    border-top: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+
+  .search-autocomplete__wrapper {
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-autocomplete__item {
+    cursor: pointer;
+
+    @include font('small');
+    padding: 0.75rem 1rem;
+  }
 }
 
 .paatokset-search--decisions {
