@@ -10,14 +10,11 @@ import { SelectionsContainer } from './SelectionsContainer';
 import { TrusteeFilter } from '../components/TrusteeFilter';
 import { BodiesFilter } from '../components/BodiesFilter';
 
-export const FormContainer = ({
-  url,
-}: {
-  url: string;
-}) => {
+export const FormContainer = ({ url }: { url: string }) => {
   const updateQuery = useSetAtom(updateQueryAtom);
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: @todo UHF-12501
     <form
       className='hdbt-search--react__form-container'
       onSubmit={(e) => {
@@ -35,17 +32,18 @@ export const FormContainer = ({
       <div className='react-search__checkbox-filter-container'>
         <fieldset className='hdbt-search--react__fieldset'>
           <legend className='hdbt-search--react__legend'>
-            {Drupal.t('Filters', {}, {context: 'Checkbox filters heading'})}
+            {Drupal.t('Filters', {}, { context: 'Checkbox filters heading' })}
           </legend>
           <BodiesFilter />
           <TrusteeFilter />
         </fieldset>
       </div>
-      <Button
-        className='hdbt-search--react__submit-button'
-        type='submit'
-      >
-        {Drupal.t('Search', {}, {context: 'React search: submit button label'})}
+      <Button className='hdbt-search--react__submit-button' type='submit'>
+        {Drupal.t(
+          'Search',
+          {},
+          { context: 'React search: submit button label' },
+        )}
       </Button>
       <SelectionsContainer />
     </form>

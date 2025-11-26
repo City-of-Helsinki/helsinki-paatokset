@@ -40,7 +40,7 @@
 .decision-tree__upper-tree {
   display: flex;
   flex-direction: column;
-  margin: 0 60px 72px 60px;
+  margin: 0 60px 72px;
   position: relative;
 
   .decision-tree__arrow {
@@ -80,7 +80,7 @@
 .decision-tree__lower-tree {
   display: flex;
   flex-direction: column;
-  margin: 0 60px 72px 60px;
+  margin: 0 60px 72px;
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {

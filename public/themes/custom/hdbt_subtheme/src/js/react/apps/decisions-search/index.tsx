@@ -1,13 +1,12 @@
+import { ErrorBoundary } from '@sentry/react';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-
-import { ErrorBoundary } from '@sentry/react';
+import { GhostList } from '@/react/common/GhostList';
+import ResultsError from '@/react/common/ResultsError';
 import initSentry from '../decisions-search-old/common/Sentry';
 import { DecisionsContainer } from './modules/decisions/DecisionsContainer';
-import ResultsError from '@/react/common/ResultsError';
-import { GhostList } from '@/react/common/GhostList';
 
-initSentry(); 
+initSentry();
 
 const ROOT_ID = 'paatokset_search';
 
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const type = rootElement.dataset.type || 'decisions';
   const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
-  switch(type) {
+  switch (type) {
     case 'decisions':
       searchContainer = <DecisionsContainer url={elasticUrl} />;
       break;
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       searchContainer = <DecisionsContainer url={elasticUrl} />;
   }
 
-  ReactDOM.render(    
+  ReactDOM.render(
     <React.StrictMode>
       <ErrorBoundary fallback={<ResultsError />}>
         <Suspense fallback={<GhostList count={10} />}>
@@ -43,6 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
-    rootElement
+    rootElement,
   );
 });
