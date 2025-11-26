@@ -106,57 +106,7 @@ function paatokset_ahjo_api_update_9008(): void {
 /**
  * UHF-12492 Change organization color code allowed values.
  */
-function paatokset_ahjo_api_update_9009(): void {
-  try {
-    $old_rows = \Drupal::database()
-      ->select('node__field_organization_color_code')
-      ->fields('node__field_organization_color_code')
-      ->condition('bundle', 'policymaker')
-      ->execute()
-      ->fetchAll();
-
-    if (!$old_rows) {
-      \Drupal::logger('paatokset_ahjo_api')->notice('No old color values found, skipping update.');
-      return;
-    }
-
-    foreach ($old_rows as $row) {
-      $values = (array) $row;
-      $original_color = $values['field_organization_color_code_value'] ?? NULL;
-
-      // Skip if there's no value.
-      if (!$original_color) {
-        continue;
-      }
-
-      // Map the old color styles to the new ones.
-      $new_color = match ($original_color) {
-        'color-sumu' => 'color-office-holder',
-        'color-hopea' => 'color-cabinet',
-        'color-suomenlinna' => 'color-board',
-        'color-engel' => 'color-trustee',
-        'color-kupari' => 'color-council',
-        default => $original_color,
-      };
-
-      // Skip if nothing changed.
-      if ($new_color === $original_color) {
-        continue;
-      }
-
-      // Update the record.
-      \Drupal::database()
-        ->update('node__field_organization_color_code')
-        ->fields(['field_organization_color_code_value' => $new_color])
-        ->condition('entity_id', $values['entity_id'])
-        ->condition('revision_id', $values['revision_id'])
-        ->execute();
-    }
-  }
-  catch (\Exception $e) {
-    \Drupal::messenger()->addMessage(t('Transforming old color values failed.'));
-    return;
-  }
+function paatokset_ahjo_api_update_9010(): void {
   try {
     $field_organization_color_code = FieldStorageConfig::loadByName('node', 'field_organization_color_code');
     $field_organization_color_code->setSetting('allowed_values', []);
