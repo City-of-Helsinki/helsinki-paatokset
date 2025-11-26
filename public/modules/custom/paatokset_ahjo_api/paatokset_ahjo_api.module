@@ -1247,11 +1247,6 @@ function paatokset_ahjo_api_organization_color_code_allowed_values() : array {
     'color-board' => t('Coat of arms', [], ['context' => 'Organization color']),
     'color-none' => t('No color', [], ['context' => 'Organization color']),
   ];
-  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-  $moduleHandler = Drupal::service('module_handler');
 
-  // Let other modules alter the content cards design form validation.
-  $moduleHandler->alter('hook_paatokset_ahjo_api_organization_color_alter', $colors);
   return $colors;
 }
-

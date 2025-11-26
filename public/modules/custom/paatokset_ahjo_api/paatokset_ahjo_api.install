@@ -106,7 +106,7 @@ function paatokset_ahjo_api_update_9008(): void {
 /**
  * UHF-12492 Change organization color code allowed values.
  */
-function paatokset_ahjo_api_update_9011(): void {
+function paatokset_ahjo_api_update_9009(): void {
   try {
     $old_rows = \Drupal::database()
       ->select('node__field_organization_color_code')
@@ -116,6 +116,7 @@ function paatokset_ahjo_api_update_9011(): void {
       ->fetchAll();
 
     if (!$old_rows) {
+      \Drupal::logger('paatokset_ahjo_api')->notice('No old color values found, skipping update.');
       return;
     }
 
@@ -128,7 +129,7 @@ function paatokset_ahjo_api_update_9011(): void {
         continue;
       }
 
-      // Map the old grey styles to the new ones.
+      // Map the old color styles to the new ones.
       $new_color = match ($original_color) {
         'color-sumu' => 'color-office-holder',
         'color-hopea' => 'color-cabinet',
@@ -157,10 +158,10 @@ function paatokset_ahjo_api_update_9011(): void {
     return;
   }
   try {
-    $field_content_cards_design = FieldStorageConfig::loadByName('node', 'field_organization_color_code');
-    $field_content_cards_design->setSetting('allowed_values', []);
-    $field_content_cards_design->setSetting('allowed_values_function', 'paatokset_ahjo_api_organization_color_code_allowed_values');
-    $field_content_cards_design->save();
+    $field_organization_color_code = FieldStorageConfig::loadByName('node', 'field_organization_color_code');
+    $field_organization_color_code->setSetting('allowed_values', []);
+    $field_organization_color_code->setSetting('allowed_values_function', 'paatokset_ahjo_api_organization_color_code_allowed_values');
+    $field_organization_color_code->save();
   }
   catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
     // We know the database values are different what we are trying to write,
