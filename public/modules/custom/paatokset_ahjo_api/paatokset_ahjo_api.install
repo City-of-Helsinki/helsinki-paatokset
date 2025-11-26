@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
 use Drupal\Core\Utility\UpdateException;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 
@@ -99,4 +101,69 @@ function paatokset_ahjo_api_update_9008(): void {
   }
 
   throw new UpdateException("Failed to migrate ahjo token");
+}
+
+/**
+ * UHF-12492 Change organization color code allowed values.
+ */
+function paatokset_ahjo_api_update_9011(): void {
+  try {
+    $old_rows = \Drupal::database()
+      ->select('node__field_organization_color_code')
+      ->fields('node__field_organization_color_code')
+      ->condition('bundle', 'policymaker')
+      ->execute()
+      ->fetchAll();
+
+    if (!$old_rows) {
+      return;
+    }
+
+    foreach ($old_rows as $row) {
+      $values = (array) $row;
+      $original_color = $values['field_organization_color_code_value'] ?? NULL;
+
+      // Skip if there's no value.
+      if (!$original_color) {
+        continue;
+      }
+
+      // Map the old grey styles to the new ones.
+      $new_color = match ($original_color) {
+        'color-sumu' => 'color-office-holder',
+        'color-hopea' => 'color-cabinet',
+        'color-suomenlinna' => 'color-board',
+        'color-engel' => 'color-trustee',
+        'color-kupari' => 'color-council',
+        default => $original_color,
+      };
+
+      // Skip if nothing changed.
+      if ($new_color === $original_color) {
+        continue;
+      }
+
+      // Update the record.
+      \Drupal::database()
+        ->update('node__field_organization_color_code')
+        ->fields(['field_organization_color_code_value' => $new_color])
+        ->condition('entity_id', $values['entity_id'])
+        ->condition('revision_id', $values['revision_id'])
+        ->execute();
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addMessage(t('Transforming old color values failed.'));
+    return;
+  }
+  try {
+    $field_content_cards_design = FieldStorageConfig::loadByName('node', 'field_organization_color_code');
+    $field_content_cards_design->setSetting('allowed_values', []);
+    $field_content_cards_design->setSetting('allowed_values_function', 'paatokset_ahjo_api_organization_color_code_allowed_values');
+    $field_content_cards_design->save();
+  }
+  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying to write,
+    // but we are only replacing the values with an allowed_values_function.
+  }
 }

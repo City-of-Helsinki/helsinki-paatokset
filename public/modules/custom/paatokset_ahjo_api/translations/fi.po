@@ -30,3 +30,27 @@ msgstr "Liitettä ei julkaista internetissä."
 
 msgid: "More recent handlings"
 msgstr "Asialla on uudempia käsittelyjä"
+
+msgctxt "Organization color"
+msgid "Copper"
+msgstr "Kupari"
+
+msgctxt "Organization color"
+msgid "Gray"
+msgstr "Harmaa"
+
+msgctxt "Organization color"
+msgid "Bus"
+msgstr "Bussi"
+
+msgctxt "Organization color"
+msgid "Gold"
+msgstr "Kulta"
+
+msgctxt "Organization color"
+msgid "Coat of arms"
+msgstr "Vaakuna"
+
+msgctxt "Organization color"
+msgid "No color"
+msgstr "Ei värikoodia"
