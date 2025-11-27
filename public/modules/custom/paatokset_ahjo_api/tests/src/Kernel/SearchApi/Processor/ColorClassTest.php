@@ -58,14 +58,14 @@ class ColorClassTest extends AhjoSearchApiKernelTestBase {
     $this->assertColorClassField('test-color', 'test_color_class', $decision);
     $this->assertColorClassField('test-color', 'test_color_class', $policymaker);
 
-    // If policymaker is missing, should get 'color-sumu'.
+    // If policymaker is missing, should get 'color-board'.
     $decision = $storage->create([
       'type' => 'decision',
       'title' => 'Test decision',
       'field_policymaker_id' => 'missing',
     ]);
 
-    $this->assertColorClassField('color-sumu', 'test_color_class', $decision);
+    $this->assertColorClassField('color-board', 'test_color_class', $decision);
   }
 
   /**

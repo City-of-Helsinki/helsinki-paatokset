@@ -51,6 +51,3 @@ msgctxt "Organization color"
 msgid "Coat of arms"
 msgstr "Vaakuna"
 
-msgctxt "Organization color"
-msgid "No color"
-msgstr "Ei värikoodia"
