@@ -28,7 +28,7 @@ msgstr "Salassa pidettävä: @reasons"
 msgid "The attachment will not be published on the internet."
 msgstr "Liitettä ei julkaista internetissä."
 
-msgid: "More recent handlings"
+msgid "More recent handlings"
 msgstr "Asialla on uudempia käsittelyjä"
 
 msgctxt "Organization color"
