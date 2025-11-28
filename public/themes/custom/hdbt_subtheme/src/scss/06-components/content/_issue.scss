@@ -136,9 +136,18 @@
   margin-top: $spacing;
 }
 
+.motion-tag.issue-content__motion-tag {
+  margin-bottom: $spacing;
+}
+
+.issue-content__confidentiality-reason {
+  display: block;
+  margin-bottom: $spacing-and-half;
+}
+
 .issue-content__indices {
   @include font('lead');
-  margin-bottom: $spacing-half;
+  margin-bottom: $spacing;
 }
 
 .issue-content__policymaker-label {
