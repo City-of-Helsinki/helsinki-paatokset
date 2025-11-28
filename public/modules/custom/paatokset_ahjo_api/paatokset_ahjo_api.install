@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
 use Drupal\Core\Utility\UpdateException;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 
@@ -99,4 +101,20 @@ function paatokset_ahjo_api_update_9008(): void {
   }
 
   throw new UpdateException("Failed to migrate ahjo token");
+}
+
+/**
+ * UHF-12492 Change organization color code allowed values.
+ */
+function paatokset_ahjo_api_update_9010(): void {
+  try {
+    $field_organization_color_code = FieldStorageConfig::loadByName('node', 'field_organization_color_code');
+    $field_organization_color_code->setSetting('allowed_values', []);
+    $field_organization_color_code->setSetting('allowed_values_function', 'paatokset_ahjo_api_organization_color_code_allowed_values');
+    $field_organization_color_code->save();
+  }
+  catch (FieldStorageDefinitionUpdateForbiddenException $exception) {
+    // We know the database values are different what we are trying to write,
+    // but we are only replacing the values with an allowed_values_function.
+  }
 }

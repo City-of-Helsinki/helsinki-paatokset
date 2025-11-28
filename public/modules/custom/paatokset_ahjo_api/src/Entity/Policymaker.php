@@ -47,7 +47,7 @@ class Policymaker extends Node implements AhjoEntityInterface {
       OrganizationType::OFFICE_HOLDER => 'color-office-holder',
       OrganizationType::TRUSTEE => 'color-trustee',
       OrganizationType::BOARD => 'color-board',
-      default => 'color-none',
+      default => 'color-board',
     };
   }
 

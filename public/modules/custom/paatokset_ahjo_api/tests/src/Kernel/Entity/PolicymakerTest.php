@@ -42,7 +42,7 @@ class PolicymakerTest extends AhjoKernelTestBase {
     $policymaker->set('field_policymaker_existing', '0');
     $this->assertTrue(!$policymaker->isActive());
 
-    $this->assertEquals('color-none', $policymaker->getPolicymakerClass());
+    $this->assertEquals('color-board', $policymaker->getPolicymakerClass());
     $policymaker->set('field_organization_type', 'Luottamushenkilö');
     $this->assertEquals('color-trustee', $policymaker->getPolicymakerClass());
     $policymaker->set('field_city_council_division', '123');

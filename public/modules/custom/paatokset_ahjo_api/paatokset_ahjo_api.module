@@ -327,7 +327,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
   $meetings_with_color = [];
   foreach ($all_meetings as $meeting) {
     $policymaker = $policymakerService->getPolicyMaker($meeting['policymaker']);
-    $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
+    $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');
     $meetings_with_color[] = $meeting;
   }
 
@@ -525,7 +525,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['decision_org_name'] = !$organization_type?->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
   $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL;
   $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
-  $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu');
+  $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');
   $variables['attachments'] = $decision?->getAttachments() ?? [];
   $variables['all_decisions'] = $case ? $caseService->getDecisionsList($case) : NULL;
 
@@ -1230,4 +1230,22 @@ function _paatokset_ahjo_api_render_default_text(?array $configuration_array): a
  */
 function paatokset_ahjo_api_form_node_form_alter(array &$form, FormStateInterface $form_state): void {
   \Drupal::service(AdminHooks::class)->alterForm($form, $form_state);
+}
+
+/**
+ * Organization color code values.
+ *
+ * @return array
+ *   Values to select.
+ */
+function paatokset_ahjo_api_organization_color_code_allowed_values() : array {
+  $colors = [
+    'color-council' => t('Copper', [], ['context' => 'Organization color']),
+    'color-cabinet' => t('Gray', [], ['context' => 'Organization color']),
+    'color-office-holder' => t('Bus', [], ['context' => 'Organization color']),
+    'color-trustee' => t('Gold', [], ['context' => 'Organization color']),
+    'color-board' => t('Coat of arms', [], ['context' => 'Organization color']),
+  ];
+
+  return $colors;
 }

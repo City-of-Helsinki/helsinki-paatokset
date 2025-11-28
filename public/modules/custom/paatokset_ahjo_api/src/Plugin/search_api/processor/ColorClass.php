@@ -54,7 +54,7 @@ class ColorClass extends ProcessorPluginBase {
 
     $colorClass = NULL;
     if ($node instanceof Decision) {
-      $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass() ?? 'color-sumu';
+      $colorClass = $node->getPolicymaker($node->language()->getId())?->getPolicymakerClass() ?? 'color-board';
     }
     elseif ($node instanceof Policymaker) {
       $colorClass = $node->getPolicymakerClass();
@@ -65,7 +65,7 @@ class ColorClass extends ProcessorPluginBase {
       ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), 'color_class');
 
     foreach ($fields as $field) {
-      $field->addValue($colorClass ?? 'color-none');
+      $field->addValue($colorClass ?? 'color-board');
     }
   }
 
