@@ -64,6 +64,9 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
         },
       ],
       minimum_should_match: 1,
+      filter: [
+        { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
+      ],
     },
   },
 });
