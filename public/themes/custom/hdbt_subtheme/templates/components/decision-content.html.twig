@@ -33,7 +33,7 @@
           {{ "Confidential"|t }}
         </span>
       </div>
-      <span class="issue-content__confidentiality-reason">{{ selectedDecision.getConfidentialityReason() }}</span>
+      <span class="issue-content__confidentiality-reason">({{ selectedDecision.getConfidentialityReason() }})</span>
     {% endif %}
 
   {% if organization_type_name or decision_org_name %}

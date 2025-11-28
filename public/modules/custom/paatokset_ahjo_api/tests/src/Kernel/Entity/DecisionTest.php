@@ -233,7 +233,7 @@ class DecisionTest extends AhjoKernelTestBase {
 
     $this->assertInstanceOf(ConfidentialityInterface::class, $decision);
     $this->assertTrue($decision->isConfidential());
-    $this->assertEquals('Salassa pidettävä (SalassapidonPerustelut)', $decision->getConfidentialityReason());
+    $this->assertEquals('SalassapidonPerustelut', $decision->getConfidentialityReason());
   }
 
 }
