@@ -1,11 +1,5 @@
 <div class="issue-content-top__container">
   <div{{ content_attributes.addClass('issue-content-top') }}>
-    {% if decision_section %}
-      <div class="issue-content__indices">
-        {{ decision_section }}
-      </div>
-    {% endif %}
-
     {% if selectedDecision and not policymaker_is_active %}
     <div class="motion-tag">
       <div class="hds-tag hds-tag--alert">
@@ -25,6 +19,22 @@
     <div class="issue-content__title">
       <h2>{{ selectedDecision.field_full_title.value }}</h2>
     </div>
+
+    {% if decision_section %}
+      <div class="issue-content__indices">
+        {{ decision_section }}
+      </div>
+    {% endif %}
+
+
+    {% if selectedDecision.isConfidential() %}
+      <div class="motion-tag">
+        <span class="hds-tag hds-tag--error">
+          {{ "Confidential"|t }}
+        </span>
+      </div>
+      <span>{{ selectedDecision.getConfidentialityReason() }}</span>
+    {% endif %}
 
   {% if organization_type_name or decision_org_name %}
     <div class="issue-content__labels">
