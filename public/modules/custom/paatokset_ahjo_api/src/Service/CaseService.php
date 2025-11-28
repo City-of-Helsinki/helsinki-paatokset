@@ -824,7 +824,7 @@ class CaseService {
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,
         'label' => $this->formatDecisionLabel($node, $policymaker),
-        'class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
+        'class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board'),
       ];
     }
 

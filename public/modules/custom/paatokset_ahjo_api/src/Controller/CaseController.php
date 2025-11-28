@@ -108,7 +108,7 @@ final class CaseController extends ControllerBase {
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,
       '#policymaker_is_active' => $policymaker?->isActive() ?? FALSE,
-      '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-sumu'),
+      '#selected_class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board'),
       '#decision_org_name' => $policymaker?->getPolicymakerName() ?? $decision->getDecisionMakerOrgName(),
       '#organization_type_name' => $this->policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL,
       '#decision_content' => $decision->parseContent(),

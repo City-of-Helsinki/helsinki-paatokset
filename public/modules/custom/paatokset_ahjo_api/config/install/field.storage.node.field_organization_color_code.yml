@@ -10,26 +10,8 @@ field_name: field_organization_color_code
 entity_type: node
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: color-sumu
-      label: Sumu
-    -
-      value: color-hopea
-      label: Hopea
-    -
-      value: color-suomenlinna
-      label: Suomenlinna
-    -
-      value: color-engel
-      label: Engel
-    -
-      value: color-kupari
-      label: Kupari
-    -
-      value: color-none
-      label: 'Ei värikoodia'
-  allowed_values_function: ''
+  allowed_values: { }
+  allowed_values_function: paatokset_ahjo_api_organization_color_code_allowed_values
 module: options
 locked: false
 cardinality: 1
