@@ -47,4 +47,7 @@
     </div>
     {% endif %}
   </div>
+  {% if node.isConfidential() %}
+    <span class="issue-content__confidentiality-reason">({{ node.getConfidentialityReason() }})</span>
+  {% endif %}
 </header>
