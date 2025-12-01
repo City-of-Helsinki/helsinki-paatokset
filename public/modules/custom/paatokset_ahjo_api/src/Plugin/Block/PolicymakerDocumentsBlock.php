@@ -74,7 +74,10 @@ final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFact
     // Get policymaker from magic value and
     // pass it to view contextual filters.
     $policymaker = $this->policymakerService->getPolicyMaker();
-    assert($policymaker);
+
+    if (!$policymaker) {
+      return [];
+    };
 
     $display = $this->configuration['view_display'] ?? 'default';
     return $executable->buildRenderable($display, [$policymaker->getPolicymakerId()]);
