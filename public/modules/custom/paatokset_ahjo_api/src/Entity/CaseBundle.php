@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\Core\TypedData\Plugin\DataType\ItemList;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 
 /**
  * Bundle class for decisions.
  */
-class CaseBundle extends Node implements AhjoUpdatableInterface {
+class CaseBundle extends Node implements AhjoUpdatableInterface, ConfidentialityInterface {
 
   /**
    * Memoized result for self::getCase().
@@ -182,6 +183,33 @@ class CaseBundle extends Node implements AhjoUpdatableInterface {
     }
 
     return $found_node;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isConfidential(): bool {
+    return $this->get('field_publicity_class')->value === 'Salassa pidettävä';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfidentialityReason(): string|null {
+    $securityReasons = $this->get('field_security_reasons');
+
+    if ($securityReasons->isEmpty()) {
+      return NULL;
+    }
+
+    assert($securityReasons instanceof ItemList);
+
+    // The API response can contain multiple confidentiality reasons.
+    // Not sure if this happens in practice.
+    return implode(', ', array_map(
+      static fn ($value) => $value->getString(),
+      iterator_to_array($securityReasons->getIterator())
+    ));
   }
 
 }
