@@ -87,7 +87,7 @@ class PolicymakerController extends ControllerBase {
   public function decisions(): array {
     $policymaker = $this->policymakerService->getPolicymaker();
     if (!$policymaker instanceof NodeInterface) {
-      return [];
+      throw new NotFoundHttpException();
     }
 
     $description = $policymaker->get('field_decisions_description')->value

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
 
 /**
@@ -557,7 +559,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       $contact = [
         'name' => $parts[0] ?? NULL,
         'title' => ucfirst($parts[1]) ?? NULL,
-        'phone' => $parts[2] ?? NULL,
+        'phone' => $parts[2] ?? '',
         'email' => $parts[3] ?? NULL,
       ];
 
@@ -570,18 +572,31 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
           'title' => [
             '#plain_text' => $contact['title'],
           ],
-          'phone' => [
-            '#type' => 'link',
-            '#title' => $contact['phone'],
-            '#url' => strlen($contact['phone']) > 2 ? Url::fromUri('tel:' . $contact['phone']) : NULL,
-          ],
-          'email' => [
-            '#type' => 'link',
-            '#title' => $contact['email'],
-            '#url' => $contact['email'] ? Url::fromUri('mailto:' . $contact['email']) : NULL,
-          ],
         ],
       ];
+
+      try {
+        if (strlen($contact['phone']) > 2) {
+          // Drupal cannot handle phone numbers with 5 or less
+          // characters: https://www.drupal.org/node/2575577.
+          // This inserts dash (-) after the first digit. RFC 3966
+          // defines the dash as a visual separator character, so it
+          // will be removed before the phone number is used.
+          $phone = $contact['phone'];
+          if (strlen($contact['phone']) <= 5) {
+            $phone = substr_replace($contact['phone'], '-', 1, 0);
+          }
+
+          $output['more_info']['content']['phone'] = Link::fromTextAndUrl($contact['phone'], Url::fromUri('tel:' . $phone));
+        }
+
+        if ($contact['email']) {
+          $output['more_info']['content']['email'] = Link::fromTextAndUrl($contact['email'], Url::fromUri('mailto:' . $contact['email']));
+        }
+      }
+      catch (\InvalidArgumentException $e) {
+        Error::logException(\Drupal::logger('paatokset_ahjo_api'), $e);
+      }
     }
 
     // Signature information.
