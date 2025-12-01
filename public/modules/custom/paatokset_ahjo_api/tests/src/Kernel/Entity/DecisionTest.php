@@ -207,6 +207,8 @@ class DecisionTest extends AhjoKernelTestBase {
     $content = $decision->parseContent();
 
     $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
+    $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
     $this->assertEquals('John Doe', $content['presenter_info']['content']['name']['#plain_text'] ?? '');
 
     // Empty <p> tags are stripped from accordions.
