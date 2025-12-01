@@ -38,8 +38,9 @@ class OrganizationType extends ProcessorPluginBase {
           continue;
         }
 
+        // @todo Use Policymaker::getOrganizationType() instead of accessing the field directly (requires reindexing).
         $node = $item->getOriginalObject()->getValue();
-        $org_type = $node->getPolicymaker($node->language()->getId())->get('field_organization_type')->value;
+        $org_type = $node->getPolicymaker($node->language()->getId())?->get('field_organization_type')->value;
 
         if (!$org_type) {
           continue;
