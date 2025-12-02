@@ -887,7 +887,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     // Extract the text within parentheses from each element.
     return implode(', ', array_filter(array_map(
       static function ($element) {
-        if (preg_match('/\((.*?)\)/', $element->textContent, $matches)) {
+        if (preg_match('/\((.*?)\)[^)]*/', $element->textContent, $matches)) {
           return $matches[1];
         }
 
