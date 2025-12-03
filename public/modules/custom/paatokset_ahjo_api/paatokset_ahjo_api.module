@@ -518,8 +518,10 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['main_heading'] = $case?->get('field_full_title')?->getString() ?: $decision?->getDecisionHeading() ?: '';
   $variables['no_title_for_case'] = $case instanceof CaseBundle && (empty($case->getTitle()) || $case->getTitle() === 'NO TITLE');
 
-  $variables['decision_pdf'] = $decision?->getDecisionPdf();
+  $variables['case'] = $case;
   $variables['selectedDecision'] = $decision;
+
+  $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
   $variables['decision_org_name'] = !$organization_type?->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;

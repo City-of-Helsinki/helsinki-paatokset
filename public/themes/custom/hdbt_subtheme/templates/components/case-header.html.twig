@@ -33,7 +33,7 @@
           {{ node.field_top_category_name.value }}
         </span>
         {% endif %}
-        {% if node.isConfidential() %}
+        {% if case and case.isConfidential() %}
           <span class="hds-tag hds-tag--error">
             {{ "Confidential"|t }}
           </span>
@@ -47,7 +47,7 @@
     </div>
     {% endif %}
   </div>
-  {% if node.isConfidential() %}
-    <span class="issue-content__confidentiality-reason">({{ node.getConfidentialityReason() }})</span>
+  {% if case and case.isConfidential() %}
+    <span class="issue-content__confidentiality-reason">({{ case.getConfidentialityReason() }})</span>
   {% endif %}
 </header>
