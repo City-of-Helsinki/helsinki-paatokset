@@ -1,0 +1,215 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: c9478b83-1872-4a63-85bd-0b6a76233661
+  bundle: decision
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Test: Pöytäkirjan tarkastajien valinta '
+  created:
+    -
+      value: 1764770576
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Test: Pöytäkirjan tarkastajien valinta – Kaupunginvaltuusto | Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/fi/asia/731e1d08-2d89-405f-94e4-fdb32692b55b'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://helsinki-paatokset.docker.so/fi'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'Test: Pöytäkirjan tarkastajien valinta'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-12-03T15:51:17+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-12-03T16:02:56+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-12-03T15:51:17+0200'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: 'Test: Pöytäkirjan tarkastajien valinta | Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /asia/731e1d08-2d89-405f-94e4-fdb32692b55b
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1764770738
+  field_attachments_checked:
+    -
+      value: false
+  field_classification_code:
+    -
+      value: '00 02 09'
+  field_classification_title:
+    -
+      value: Kokousasiat
+  field_dates_checked:
+    -
+      value: true
+  field_decision_content:
+    -
+      value: '<html lang="fi"><head><META content="text/html; charset=UTF-8" http-equiv="Content-Type"><META name="DhId" content="{7D973521-12E0-CA3B-9866-9AE431B00002}"><META name="ThisHTMLGenerated" content="2025-12-03T14:36:35.024+02:00"><title>Pöytäkirjan tarkastajien valinta</title></head><body><div class="paatos"><div class="Otsikonviite"></div><div class="Asiapykala">§ 282</div><h1 class="AsiaOtsikko">Pöytäkirjan tarkastajien valinta</h1><div class="DnroTmuoto"></div><div class="Viite"></div><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Päätös</h3><div><p>Kaupunginvaltuusto valitsi pöytäkirjantarkastajiksi valtuutetut Ville Jalovaaran ja Seida Sohrabin sekä varatarkastajiksi valtuutetut Antti Vuorelan ja Outi Alanko-Kahiluodon.</p></div></div><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Käsittely</h3><div><p>Pöytäkirjantarkastajiksi valittiin yksimielisesti puheenjohtajan ehdotuksesta valtuutetut Ville Jalovaara ja Seida Sohrabi sekä varatarkastajiksi valtuutetut Antti Vuorela ja Outi Alanko-Kahiluoto</p></div></div><h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3><h4>MUUTOKSENHAKUKIELTO</h4><p>Tähän päätökseen ei saa hakea muutosta, koska päätös koskee asian valmistelua tai täytäntöönpanoa.</p><p>Sovellettava lainkohta: Kuntalaki 136 § </p></div></body></html>'
+      format: ''
+  field_decision_content_parsed:
+    -
+      value: "<h3>\r\n    Päätös\r\n</h3>\r\n<p>\r\n    Kaupunginvaltuusto valitsi pöytäkirjantarkastajiksi valtuutetut Ville Jalovaaran ja Seida Sohrabin sekä varatarkastajiksi valtuutetut Antti Vuorelan ja Outi Alanko-Kahiluodon.\r\n</p>\r\n<h3>\r\n    Käsittely\r\n</h3>\r\n<p>\r\n    Pöytäkirjantarkastajiksi valittiin yksimielisesti puheenjohtajan ehdotuksesta valtuutetut Ville Jalovaara ja Seida Sohrabi sekä varatarkastajiksi valtuutetut Antti Vuorela ja Outi Alanko-Kahiluoto\r\n</p>"
+      format: decision_html
+  field_decision_date:
+    -
+      value: '2025-12-04T00:00:00'
+  field_decision_meeting:
+    -
+      value: '{"Name": "Kaupunginvaltuuston kokous", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/meetings/02900202517?apireqlang=fi"}], "Location": "Valtuustosali, Aleksanterinkatu 20", "MeetingID": "02900202517", "DateMeeting": "2025-11-26T16:00:00.000", "DecisionMaker": "Kaupunginvaltuusto", "AgendaPublished": null, "DecisionMakerId": "02900", "MinutesPublished": null}'
+  field_decision_minutes_pdf:
+    -
+      value: '{"Type": "pöytäkirja", "Title": "Kaupunginvaltuusto pöytäkirja 26.11.2025/19, julkinen, julkaisujärjestelmä", "links": [], "Issued": "2025-12-04T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/5C888287-4EE1-CB78-8715-9AE42E700004.pdf", "Language": "fi", "NativeId": "{F4C028F7-F19A-43C8-9A13-7746CED8ABCA}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{5C888287-4EE1-CB78-8715-9AE42E700004}", "AttachmentNumber": null}'
+  field_decision_motion:
+    -
+      value: '<html lang="fi"><head><META content="text/html; charset=UTF-8" http-equiv="Content-Type"><META name="DhId" content="{7D973521-12E0-CA3B-9866-9AE431B00002}"><META name="ThisHTMLGenerated" content="2025-12-03T14:36:35.306+02:00"><title>Pöytäkirjan tarkastajien valinta</title></head><body><div class="esitys"><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Päätösehdotus</h3><div><p>Kaupunginvaltuusto valitsee pöytäkirjantarkastajiksi kaksi valtuutettua ja varatarkastajiksi kaksi valtuutettua.</p></div></div><h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3><p>Muutoksenhakukielto, valmistelu tai täytäntöönpano</p></div></body></html>'
+      format: ''
+  field_decision_motion_parsed:
+    -
+      value: "<h3>\r\n    Päätösehdotus\r\n</h3>\r\n<p>\r\n    Kaupunginvaltuusto valitsee pöytäkirjantarkastajiksi kaksi valtuutettua ja varatarkastajiksi kaksi valtuutettua.\r\n</p>"
+      format: decision_html
+  field_decision_native_id:
+    -
+      value: '{731E1D08-2D89-405F-94E4-FDB32692B55B}'
+  field_decision_organization:
+    -
+      value: '{"ID": "02900", "Name": "Kaupunginvaltuusto", "Type": "Valtuusto", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=02900&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "Sector": null, "TypeId": "1", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000", "OrganizationLevelAbove": {"count": 1, "links": [], "organizations": [{"ID": "00001", "Name": "Helsingin kaupunki", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00001&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00001&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "13", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}, "OrganizationLevelBelow": {"count": 1, "links": [], "organizations": [{"ID": "00400", "Name": "Kaupunginhallitus", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "2", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}}'
+  field_decision_record:
+    -
+      value: '{"Type": "päätös", "Title": "Pöytäkirjan tarkastajien valinta", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B731E1D08-2D89-405F-94E4-FDB32692B55B%7D"}], "Agents": [{"ID": "palmgso", "Name": "Palmgren, Soile", "Role": "mainCreator", "Email": "soile.palmgren@hel.fi", "Title": "hallintosihteeri", "links": [], "agentId": "palmgso"}], "Issued": "2025-12-04T02:00:00.000", "Created": "2025-12-03T14:20:27.813", "FileURI": "https://ahjojulkaisu.hel.fi/56C79754-7690-C44E-AC68-9AE428200002.pdf", "Acquired": "", "Language": "fi", "NativeId": "{731E1D08-2D89-405F-94E4-FDB32692B55B}", "MeetingID": "02900202517", "Reference": null, "AgendaPoint": "2", "DateMeeting": "2025-11-26T02:00:00.000", "Description": null, "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "PublicReference": null, "SecurityReasons": null, "VersionSeriesId": "{56C79754-7690-C44E-AC68-9AE428200002}", "AttachmentNumber": null}'
+  field_decision_section:
+    -
+      value: '282'
+  field_decision_series_id:
+    -
+      value: '{56C79754-7690-C44E-AC68-9AE428200002}'
+  field_dm_org_above_name:
+    -
+      value: 'Helsingin kaupunki'
+  field_dm_org_name:
+    -
+      value: Kaupunginvaltuusto
+  field_full_title:
+    -
+      value: 'Pöytäkirjan tarkastajien valinta'
+  field_hide_decision_content:
+    -
+      value: false
+  field_is_decision:
+    -
+      value: true
+  field_meeting_date:
+    -
+      value: '2025-11-26T14:00:00'
+  field_meeting_id:
+    -
+      value: '02900202517'
+  field_meeting_sequence_number:
+    -
+      value: 19
+  field_minutes_checked:
+    -
+      value: true
+  field_organization_type:
+    -
+      value: Valtuusto
+  field_outdated_document:
+    -
+      value: false
+  field_policymaker_id:
+    -
+      value: '02900'
+  field_record_language_checked:
+    -
+      value: true
+  field_status_checked:
+    -
+      value: true
+  field_top_category_name:
+    -
+      value: Hallintoasiat
+  field_unique_id:
+    -
+      value: 0-02900202517-282-2-02900
