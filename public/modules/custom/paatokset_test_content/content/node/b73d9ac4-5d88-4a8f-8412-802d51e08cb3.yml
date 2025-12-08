@@ -1,0 +1,216 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: b73d9ac4-5d88-4a8f-8412-802d51e08cb3
+  bundle: decision
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Test: Vahingonkorvaus, taloudellinen menetys'
+  created:
+    -
+      value: 1764772510
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys – Kaupunginhallitus | Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/fi/asia/hel-2024-014058/147213c7-b063-40fc-a319-c91d5b846623'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://helsinki-paatokset.docker.so/fi'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-12-03T16:25:01+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-12-03T16:35:10+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-12-03T16:25:01+0200'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys | Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /asia/hel-2024-014058/147213c7-b063-40fc-a319-c91d5b846623
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1764772690
+  field_attachments_checked:
+    -
+      value: true
+  field_classification_code:
+    -
+      value: '03 01 00'
+  field_classification_title:
+    -
+      value: Vahingonkorvausasiat
+  field_dates_checked:
+    -
+      value: true
+  field_decision_case_title:
+    -
+      value: 'Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki'
+  field_decision_content:
+    -
+      value: '<html lang="fi"><head><META content="text/html; charset=UTF-8" http-equiv="Content-Type"><META name="DhId" content="{F659CA47-3954-CE1F-9D7B-9A25BBD00001}"><META name="ThisHTMLGenerated" content="2025-10-27T14:59:33.876+02:00"><title>Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)</title></head><body><div class="paatos"><p class="Julkisuus SalassapidonPerustelut">Salassa pidettävä (SalassapidonPerustelut)</p><div class="Asiapykala">§ 664</div><h1 class="AsiaOtsikko">Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)</h1></div></body></html>'
+      format: ''
+  field_decision_content_parsed:
+    -
+      value: 'Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)'
+      format: decision_html
+  field_decision_date:
+    -
+      value: '2025-10-27T13:01:02'
+  field_decision_meeting:
+    -
+      value: '{"Name": "Kaupunginhallituksen kokous", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/meetings/00400202537?apireqlang=fi"}], "Location": "Kaupunginhallituksen istuntosali", "MeetingID": "00400202537", "DateMeeting": "2025-10-20T16:00:00.000", "DecisionMaker": "Kaupunginhallitus", "AgendaPublished": null, "DecisionMakerId": "00400", "MinutesPublished": null}'
+  field_decision_minutes_pdf:
+    -
+      value: '{"Type": "pöytäkirja", "Title": "Kaupunginhallitus pöytäkirja 20.10.2025/35, julkinen, julkaisujärjestelmä", "links": [], "Issued": "2025-10-28T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/7318BDC9-CF2D-CC74-B03E-9A25BA700006.pdf", "Language": "fi", "NativeId": "{8C5C0D9A-C64D-4903-88F6-8E17269F29F6}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{7318BDC9-CF2D-CC74-B03E-9A25BA700006}", "AttachmentNumber": null}'
+  field_decision_native_id:
+    -
+      value: '{147213C7-B063-40FC-A319-C91D5B846623}'
+  field_decision_organization:
+    -
+      value: '{"ID": "00400", "Name": "Kaupunginhallitus", "Type": null, "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "Sector": null, "TypeId": "2", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000", "OrganizationLevelAbove": {"count": 1, "links": [], "organizations": [{"ID": "02900", "Name": "Kaupunginvaltuusto", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=02900&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=02900&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "1", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}, "OrganizationLevelBelow": {"count": 14, "links": [], "organizations": [{"ID": "00400ES1", "Name": "Tarkastuslautakunta", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400ES1&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400ES1&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "11", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "100", "Name": "Kaupunkisuunnittelu- ja kiinteistötoimi", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=100&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=100&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "11010", "Name": "Kaupunginjohtaja", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=11010&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=11010&apireqlang=fi"}], "Formed": "2011-02-24T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "200", "Name": "Rakennus- ja ympäristötoimi", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=200&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=200&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "300", "Name": "Sivistys- ja henkilöstötoimi", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=300&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=300&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2014-01-20T23:59:59.000"}, {"ID": "301", "Name": "Sivistystoimi", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=301&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=301&apireqlang=fi"}], "Formed": "2014-01-21T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "400", "Name": "Sosiaali- ja terveystoimi", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=400&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=400&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "900", "Name": "Puheenjohtaja", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=900&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=900&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "11", "Existing": "false", "Dissolved": "2017-05-31T23:59:59.000"}, {"ID": "U320200", "Name": "Sosiaali- ja terveystoimiala", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U320200&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U320200&apireqlang=fi"}], "Formed": "2017-06-01T00:00:00.000", "TypeId": "7", "Existing": "false", "Dissolved": "2022-12-31T23:59:59.000"}, {"ID": "U321200", "Name": "Sosiaali-, terveys- ja pelastustoimiala", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U321200&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U321200&apireqlang=fi"}], "Formed": "2023-01-01T00:00:00.000", "TypeId": "7", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}, {"ID": "U420300", "Name": "Kasvatuksen ja koulutuksen toimiala", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U420300&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U420300&apireqlang=fi"}], "Formed": "2017-06-01T00:00:00.000", "TypeId": "7", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}, {"ID": "U480400", "Name": "Kulttuurin ja vapaa-ajan toimiala", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U480400&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U480400&apireqlang=fi"}], "Formed": "2017-06-01T00:00:00.000", "TypeId": "7", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}, {"ID": "U50", "Name": "Keskushallinto", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U50&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U50&apireqlang=fi"}], "Formed": "2017-06-01T00:00:00.000", "TypeId": "7", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}, {"ID": "U541000", "Name": "Kaupunkiympäristön toimiala", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U541000&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=U541000&apireqlang=fi"}], "Formed": "2017-06-01T00:00:00.000", "TypeId": "7", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}}'
+  field_decision_record:
+    -
+      value: '{"Type": "päätös", "Title": "Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B147213C7-B063-40FC-A319-C91D5B846623%7D"}], "Agents": [], "Issued": "", "Created": "2025-10-27T14:50:18.133", "FileURI": "https://ahjojulkaisu.hel.fi/BDBBFB3F-ADF6-C2EF-A3C4-9A25B8200008.pdf", "Acquired": "", "Language": "fi", "NativeId": "{147213C7-B063-40FC-A319-C91D5B846623}", "MeetingID": "00400202537", "Reference": null, "AgendaPoint": "14", "DateMeeting": "2025-10-20T03:00:00.000", "Description": null, "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "PublicReference": null, "SecurityReasons": null, "VersionSeriesId": "{BDBBFB3F-ADF6-C2EF-A3C4-9A25B8200008}", "AttachmentNumber": null}'
+  field_decision_section:
+    -
+      value: '664'
+  field_decision_series_id:
+    -
+      value: '{BDBBFB3F-ADF6-C2EF-A3C4-9A25B8200008}'
+  field_diary_number:
+    -
+      value: HEL-2024-014058
+  field_diary_number_label:
+    -
+      value: 'HEL 2024-014058'
+  field_dm_org_above_name:
+    -
+      value: Kaupunginvaltuusto
+  field_dm_org_name:
+    -
+      value: Kaupunginhallitus
+  field_full_title:
+    -
+      value: 'Test: Vahingonkorvaus, taloudellinen menetys'
+  field_hide_decision_content:
+    -
+      value: false
+  field_is_decision:
+    -
+      value: true
+  field_meeting_date:
+    -
+      value: '2025-10-20T13:00:00'
+  field_meeting_id:
+    -
+      value: '00400202537'
+  field_meeting_sequence_number:
+    -
+      value: 35
+  field_minutes_checked:
+    -
+      value: true
+  field_organization_type:
+    -
+      value: Hallitus
+  field_outdated_document:
+    -
+      value: false
+  field_policymaker_id:
+    -
+      value: '00400'
+  field_record_language_checked:
+    -
+      value: true
+  field_status_checked:
+    -
+      value: true
+  field_top_category_name:
+    -
+      value: 'Lainsäädäntö ja lainsäädännön soveltaminen'
+  field_unique_id:
+    -
+      value: HEL-2024-014058-00400202537-664-14-00400

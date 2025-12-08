@@ -1,0 +1,213 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: bb1ff946-1b57-4328-b063-dbe3cb6afe20
+  bundle: case
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Test: Hankesuunnitelma, M400-metrojunat, Liikenneliikelaitos HKL'
+  created:
+    -
+      value: 1764771397
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Test: Hankesuunnitelma, M400-metrojunat, Liikenneliikelaitos HKL | Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/en/case/hel-2023-013016'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://helsinki-paatokset.docker.so/en'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'Test: Hankesuunnitelma, M400-metrojunat, Liikenneliikelaitos HKL'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-12-03T16:21:17+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-12-03T16:16:37+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-12-03T16:21:17+0200'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: 'Test: Hankesuunnitelma, M400-metrojunat, Liikenneliikelaitos HKL | Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /asia/hel-2023-013016
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1764771588
+  field_acquired:
+    -
+      value: '2025-10-15T21:00:00'
+  field_case_handlings:
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/3?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päättynyt", "Created": "2024-06-18T14:09:15.890", "SectorID": "U50", "WorkSequenceNumber": 3, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/5?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päätöksenteossa", "Created": "2025-08-19T09:07:31.620", "SectorID": "U50", "WorkSequenceNumber": 5, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/6?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päätöksenteossa", "Created": "2025-11-11T09:12:32.930", "SectorID": "U50", "WorkSequenceNumber": 6, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/4?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päättynyt", "Created": "2025-05-08T10:57:34.377", "SectorID": "U50", "WorkSequenceNumber": 4, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/1?apireqlang=fi"}], "Sector": "Kaupunkiympäristön toimiala", "Status": "Päättynyt", "Created": "2023-10-16T09:00:48.923", "SectorID": "U541000", "WorkSequenceNumber": 1, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2023-013016/handlings/2?apireqlang=fi"}], "Sector": "Kaupunkiympäristön toimiala", "Status": "Päätöksenteossa", "Created": "2024-03-07T09:15:19.363", "SectorID": "U541000", "WorkSequenceNumber": 2, "DateNearestDeadline": ""}'
+  field_case_records:
+    -
+      value: '{"Type": "esitys", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BED5DF350-833F-C590-8FB0-98986B500001%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/51B0CA63-022C-C546-BC49-988434400003.pdf", "Language": "fi", "NativeId": "{ED5DF350-833F-C590-8FB0-98986B500001}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{51B0CA63-022C-C546-BC49-988434400003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BE68B1B2D-5CE2-431D-A983-8CD5EE52B50B%7D"}], "Issued": "2025-08-29T03:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/F71C407E-0FC6-CE13-B970-98EF43F00005.pdf", "Language": "fi", "NativeId": "{E68B1B2D-5CE2-431D-A983-8CD5EE52B50B}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{F71C407E-0FC6-CE13-B970-98EF43F00005}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "liite", "Title": "M400-metrojunahankinta_hankesuunnitelma 16.05.2025", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BACB8EF66-4B97-C8BE-86AC-98A2EAD00000%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/63376707-1946-C09C-B3DC-98A2EAD00000.pdf", "Language": "fi", "NativeId": "{ACB8EF66-4B97-C8BE-86AC-98A2EAD00000}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{63376707-1946-C09C-B3DC-98A2EAD00000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 12.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B2593BC77-7D82-C779-9CBB-9A2578D00002%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/6B6CF8C9-D8F2-C889-BF50-9A1070300003.pdf", "Language": "fi", "NativeId": "{2593BC77-7D82-C779-9CBB-9A2578D00002}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{6B6CF8C9-D8F2-C889-BF50-9A1070300003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BDC4C36C4-DFB1-C3A9-B0CD-98986B500006%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/F38DE77E-F94E-C66B-9078-988434500003.pdf", "Language": "fi", "NativeId": "{DC4C36C4-DFB1-C3A9-B0CD-98986B500006}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{F38DE77E-F94E-C66B-9078-988434500003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B1C7692F7-6211-4AA2-A141-53A62A40F92B%7D"}], "Issued": "2025-08-19T03:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/DADA66EE-DBE0-CF2E-818E-98BC20400003.pdf", "Language": "fi", "NativeId": "{1C7692F7-6211-4AA2-A141-53A62A40F92B}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{DADA66EE-DBE0-CF2E-818E-98BC20400003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "M400 metrojunien hankinta - hankkeen valmistelu", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BE2451356-27EA-409E-80A0-A1615361DD21%7D"}], "Issued": "2024-02-16T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/B6B40E9E-9109-C53E-B81D-8DB0DB400003.pdf", "Language": "fi", "NativeId": "{E2451356-27EA-409E-80A0-A1615361DD21}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{B6B40E9E-9109-C53E-B81D-8DB0DB400003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 26.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B23BC4B38-03F5-4CEF-91DB-FDB3A35ED62C%7D"}], "Issued": "2025-11-19T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/2C7F8D33-6ED7-C7D8-87B6-9A95F2300000.pdf", "Language": "fi", "NativeId": "{23BC4B38-03F5-4CEF-91DB-FDB3A35ED62C}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{2C7F8D33-6ED7-C7D8-87B6-9A95F2300000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 12.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BF51900B7-5D04-4B22-BA9E-04755F52EF9E%7D"}], "Issued": "2025-11-05T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/0ECCEC6A-1938-C9BE-8DCD-9A4F10F00002.pdf", "Language": "fi", "NativeId": "{F51900B7-5D04-4B22-BA9E-04755F52EF9E}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{0ECCEC6A-1938-C9BE-8DCD-9A4F10F00002}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B039ED13D-3FF7-CDC9-AA2C-98BC95200002%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/C3D7931F-D748-C2EF-BCDA-98A7EA100006.pdf", "Language": "fi", "NativeId": "{039ED13D-3FF7-CDC9-AA2C-98BC95200002}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{C3D7931F-D748-C2EF-BCDA-98A7EA100006}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 26.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B11D98A45-13AB-C16B-AC7A-9A6D91A00009%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/1446F63B-FAF9-CC3F-9433-9A58D6400008.pdf", "Language": "fi", "NativeId": "{11D98A45-13AB-C16B-AC7A-9A6D91A00009}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{1446F63B-FAF9-CC3F-9433-9A58D6400008}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B945E5DBE-D097-46D3-A74F-CA3E0CE870FE%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/223E929A-2ABC-CEF8-AC25-9AA0DA900004.pdf", "Language": "fi", "NativeId": "{945E5DBE-D097-46D3-A74F-CA3E0CE870FE}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{223E929A-2ABC-CEF8-AC25-9AA0DA900004}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "Projektplan för M400-metrotåg", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B64BA10B8-5FE0-4F87-BA70-CB0FCD198FFF%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/7890B879-777C-C327-8E2D-9AA0DCE00008.pdf", "Language": "sv", "NativeId": "{64BA10B8-5FE0-4F87-BA70-CB0FCD198FFF}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{7890B879-777C-C327-8E2D-9AA0DCE00008}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BB49538A7-41B6-C64B-BD31-98BC95200001%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/E91E4A79-B7C7-CC9C-85F2-98A7EA100004.pdf", "Language": "fi", "NativeId": "{B49538A7-41B6-C64B-BD31-98BC95200001}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{E91E4A79-B7C7-CC9C-85F2-98A7EA100004}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "Projektplan för M400-metrotåg", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B9DCDE663-D937-4D3E-8D8A-F045E64B2899%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/CC63A149-2085-C86E-AB51-9AA0DCF00002.pdf", "Language": "sv", "NativeId": "{9DCDE663-D937-4D3E-8D8A-F045E64B2899}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{CC63A149-2085-C86E-AB51-9AA0DCF00002}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 12.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BEC5FC749-8836-C49A-985D-9A493B400001%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/F995A283-AFC0-C572-8B60-9A349D500006.pdf", "Language": "fi", "NativeId": "{EC5FC749-8836-C49A-985D-9A493B400001}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{F995A283-AFC0-C572-8B60-9A349D500006}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "lausunto", "Title": "Lausunto 3.9.2024", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B22246E67-6D45-C78B-850E-91C1CDE00000%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/95554BAB-0537-C15C-9E99-91C1CDE00000.pdf", "Language": "fi", "NativeId": "{22246E67-6D45-C78B-850E-91C1CDE00000}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{95554BAB-0537-C15C-9E99-91C1CDE00000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "M400 metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B70155FD9-2471-4949-A84F-E3471097BDB7%7D"}], "Issued": "2024-06-19T03:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/9D5639E1-2B33-C427-84B3-903498E00000.pdf", "Language": "fi", "NativeId": "{70155FD9-2471-4949-A84F-E3471097BDB7}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{9D5639E1-2B33-C427-84B3-903498E00000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "liite", "Title": "Hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B4EDA250B-579B-CDCB-8488-9000A4100000%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/82C913A7-6CC9-C64D-970B-9000A4100000.pdf", "Language": "fi", "NativeId": "{4EDA250B-579B-CDCB-8488-9000A4100000}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{82C913A7-6CC9-C64D-970B-9000A4100000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 12.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B61B52D59-EAFD-4DD6-86F2-D4DCD39A046E%7D"}], "Issued": "2025-11-15T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/AA3A6FD9-8D9A-C29C-9F16-9A81E9A00001.pdf", "Language": "fi", "NativeId": "{61B52D59-EAFD-4DD6-86F2-D4DCD39A046E}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{AA3A6FD9-8D9A-C29C-9F16-9A81E9A00001}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "M400 metrojunien hankinta - hankkeen valmistelu", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BB39B994B-B28B-4380-9121-FDE4330EFD0C%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/5094458D-0AFE-CD2D-B3A0-8D8CA7400002.pdf", "Language": "fi", "NativeId": "{B39B994B-B28B-4380-9121-FDE4330EFD0C}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{5094458D-0AFE-CD2D-B3A0-8D8CA7400002}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 26.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B569ED8F4-48A1-4E01-A44D-79E7210D064D%7D"}], "Issued": "2025-11-19T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/459F8909-3FAE-C62E-8F95-9A95F2300003.pdf", "Language": "fi", "NativeId": "{569ED8F4-48A1-4E01-A44D-79E7210D064D}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{459F8909-3FAE-C62E-8F95-9A95F2300003}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "M400 metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B9C9D4578-14F2-CF86-8BE4-90022A200002%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/3A4314C5-F5B1-CBF3-A4AD-900153600006.pdf", "Language": "fi", "NativeId": "{9C9D4578-14F2-CF86-8BE4-90022A200002}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{3A4314C5-F5B1-CBF3-A4AD-900153600006}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BAD65439F-A40D-4A0D-BA38-44A756D3FCE3%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/12326076-44A7-C774-AB38-9AA0DA900001.pdf", "Language": "fi", "NativeId": "{AD65439F-A40D-4A0D-BA38-44A756D3FCE3}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{12326076-44A7-C774-AB38-9AA0DA900001}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "liite", "Title": "Hankesuunnitelma (päivitetty)", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B0DE51EF7-43D8-C059-87A2-902496A00000%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/103489D0-B78C-CB82-BB38-902496A00000.pdf", "Language": "fi", "NativeId": "{0DE51EF7-43D8-C059-87A2-902496A00000}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{103489D0-B78C-CB82-BB38-902496A00000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "päätös", "Title": "V 27.8.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BD4DCFFCF-3C88-489E-BA54-FA008BF85153%7D"}], "Issued": "2025-08-19T03:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/30D2B0C7-7798-C44D-848E-98BC20400000.pdf", "Language": "fi", "NativeId": "{D4DCFFCF-3C88-489E-BA54-FA008BF85153}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{30D2B0C7-7798-C44D-848E-98BC20400000}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "esitys", "Title": "V 12.11.2025, M400-metrojunien hankesuunnitelma", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BE707CFD2-AF4E-C36A-9D44-9A2578D00006%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/BBD09ED6-07A7-CC99-81F2-9A1070300007.pdf", "Language": "fi", "NativeId": "{E707CFD2-AF4E-C36A-9D44-9A2578D00006}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{BBD09ED6-07A7-CC99-81F2-9A1070300007}", "AttachmentNumber": null}'
+  field_classification_code:
+    -
+      value: '08 00 02'
+  field_classification_title:
+    -
+      value: 'Raideliikenteen suunnittelu'
+  field_created:
+    -
+      value: '2025-10-13T12:04:22'
+  field_diary_number:
+    -
+      value: HEL-2023-013016
+  field_diary_number_label:
+    -
+      value: 'HEL 2023-013016'
+  field_full_title:
+    -
+      value: 'Hankesuunnitelma, M400-metrojunat, Liikenneliikelaitos HKL'
+  field_publicity_class:
+    -
+      value: Julkinen
+  field_status:
+    -
+      value: Vireillä
+  field_top_category_name:
+    -
+      value: Liikenne

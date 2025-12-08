@@ -1,0 +1,171 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7e37da6c-820a-4189-b0d7-afb4543e9d8a
+  bundle: policymaker
+  default_langcode: fi
+  depends:
+    cbcea968-e583-418c-bfd6-abc5516377e4: media
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Test: Helsingin kaupunginvaltuusto'
+  created:
+    -
+      value: 1764761035
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: Sisällysluettelo
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Test: Helsingin kaupunginvaltuusto | Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/fi/paattajat/kaupunginvaltuusto'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://helsinki-paatokset.docker.so/fi'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'Test: Helsingin kaupunginvaltuusto'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-12-03T14:03:03+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-12-03T13:23:55+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-12-03T14:03:03+0200'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: 'Test: Helsingin kaupunginvaltuusto | Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /paattajat/kaupunginvaltuusto
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1764761235
+  field_ahjo_title:
+    -
+      value: Kaupunginvaltuusto
+  field_city_council_division:
+    -
+      value: false
+  field_custom_organization_type:
+    -
+      value: Kaupunginvaltuusto
+  field_dm_org_name:
+    -
+      value: 'Helsingin kaupunki'
+  field_documents_description:
+    -
+      value: '<p>Pöytäkirjat ja esityslistat koostuvat kokouksessa käsiteltävistä asioista.</p><p>Päätöstiedote julkaistaan heti kokouksen jälkeen. Päätöstiedote sisältää vain kokouksessa tehdyt päätökset eli sitä on luettava yhdessä esityslistan kanssa. Pöytäkirja korvaa ilmestyessään esityslistan ja päätöstiedotteen.</p>'
+      format: full_html
+  field_is_decisionmaker:
+    -
+      value: true
+  field_meetings_description:
+    -
+      value: '<p>Valtuuston kokoukset järjestetään yleensä joka toisena keskiviikkona. Kokoukset lähetetään suorina lähetyksinä tällä sivulla ja <a href="https://www.helsinkikanava.fi">Helsinki-kanavalla</a>.</p><p>Valtuuston esityslista tulee luettavaksi kokousta edeltävänä torstaina.</p><p>Kokouksessa pitää olla paikalla vähintään kaksi kolmasosaa valtuutetusta. Päätöksiin tarvitaan paikalla olevien valtuutettujen äänten enemmistö.</p><p><strong>Katso myös:</strong> <a href="/node/6949">Kyselytunnit ja lisätietoa kokouksista</a></p>'
+      format: full_html
+  field_meeting_composition:
+    -
+      value: '{"ID": "jane", "Name": "Jane Doe", "Role": "Jäsen", "links": [], "DeputyOf": null}'
+  field_organization_type:
+    -
+      value: Valtuusto
+  field_organization_type_id:
+    -
+      value: '1'
+  field_override_title:
+    -
+      value: true
+  field_policymaker_dissolved:
+    -
+      value: '2999-12-31T22:00:00'
+  field_policymaker_existing:
+    -
+      value: true
+  field_policymaker_formed:
+    -
+      value: '1999-12-31T22:00:00'
+  field_policymaker_id:
+    -
+      value: '02900'
+  field_policymaker_image:
+    -
+      entity: cbcea968-e583-418c-bfd6-abc5516377e4
+  field_policymaker_summary:
+    -
+      value: '<p>Kaupunginvaltuusto on Helsingin ylin päättävä elin. Se valitaan kuntavaaleissa joka neljäs vuosi. Kaupunginvaltuuston vastuulla ovat kaupungin toiminta ja talous.</p><p>Valtuusto päättää kaupungin toimintaa säätelevästä <a href="https://www.hel.fi/static/liitteet/kanslia/saannot/kaupungin-hallintosaanto.pdf">hallintosäännöstä (pdf)</a>, Helsingin toiminnan ja talouden pitkän aikavälin tavoitteista <a href="https://www.hel.fi/fi/paatoksenteko-ja-hallinto/strategia-ja-talous/strategia">kaupunkistrategiassa</a> sekä jokavuotisesta kaupungin <a href="https://www.hel.fi/fi/paatoksenteko-ja-hallinto/strategia-ja-talous/talous">talousarviosta</a> eli tavoitteiden asettamisesta ja rahan jakamisesta eri kaupungin toimintoihin.</p><p>Valtuusto päättää mitä toimielimiä kunnassa on, niiden kokoonpanon, sekä sen miten toimivalta ja tehtävät jaetaan luottamushenkilöiden ja viranhaltijoiden kesken. Lue lisää: <a href="https://paatokset.hel.fi/fi/tietoa-paatoksenteosta/kuka-paattaa-ja-mista">Kuka päättää ja mistä?</a></p><p>Valtuustossa on 85 jäsentä, jotka edustavat eri poliittisia ryhmiä. Jokaisella valtuutetulla on varavaltuutettu. Nykyisen valtuuston toimikausi on 2025–2029.</p><p><strong>Katso myös:</strong> <a href="https://www.hel.fi/fi/kaupunginvaltuusto-150-vuotta">Kaupunginvaltuusto 150 vuotta juhlavuosi 2025</a></p>'
+      format: full_html
