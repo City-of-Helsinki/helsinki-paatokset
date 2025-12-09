@@ -6,3 +6,8 @@ npm-debug.log
 .DS_Store
 .idea
 dist/**/*.map
+
+# BackstopJS
+backstop/*/bitmaps_reference
+backstop/*/bitmaps_test
+backstop/*/html_report

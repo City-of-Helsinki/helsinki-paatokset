@@ -1,0 +1,78 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: cbcea968-e583-418c-bfd6-abc5516377e4
+  bundle: policymaker_images
+  default_langcode: en
+  depends:
+    fa092be0-20bd-4498-a985-8e4e8a848a18: file
+default:
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: jpg-1_kaupunginvaltuuston_sali_kesa_2023_0235.jpg
+  created:
+    -
+      value: 1764763332
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '| Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/en'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: '| Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_media_image_1:
+    -
+      entity: fa092be0-20bd-4498-a985-8e4e8a848a18
+      alt: '""'
+      title: ''
+      width: 2528
+      height: 1685

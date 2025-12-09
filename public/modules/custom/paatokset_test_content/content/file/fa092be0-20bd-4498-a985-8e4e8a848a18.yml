@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: fa092be0-20bd-4498-a985-8e4e8a848a18
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: jpg-1_kaupunginvaltuuston_sali_kesa_2023_0235.jpg
+  uri:
+    -
+      value: 'public://2025-12/jpg-1_kaupunginvaltuuston_sali_kesa_2023_0235_1.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 536872
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1764763332

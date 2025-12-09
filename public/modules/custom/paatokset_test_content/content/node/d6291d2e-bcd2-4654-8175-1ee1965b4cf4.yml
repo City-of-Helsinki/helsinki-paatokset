@@ -1,0 +1,162 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: d6291d2e-bcd2-4654-8175-1ee1965b4cf4
+  bundle: case
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Test: Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki'
+  created:
+    -
+      value: 1764772319
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki | Decisions | Helsingin kaupunki'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'https://helsinki-paatokset.docker.so/en/case/hel-2024-014058'
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'https://helsinki-paatokset.docker.so/en'
+    -
+      tag: meta
+      attributes:
+        property: 'og:title'
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:updated_time'
+        content: '2025-12-03T16:34:38+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:published_time'
+        content: '2025-12-03T16:31:59+0200'
+    -
+      tag: meta
+      attributes:
+        property: 'article:modified_time'
+        content: '2025-12-03T16:34:38+0200'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary_large_image
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:title'
+        content: 'Test: Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki | Helsingin kaupunki'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'https://helsinki-paatokset.docker.so/modules/contrib/helfi_platform_config/fixtures/og-global.png'
+  path:
+    -
+      alias: /asia/hel-2024-014058
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1764772478
+  field_acquired:
+    -
+      value: '2025-10-06T21:00:00'
+  field_case_handlings:
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2024-014058/handlings/1?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päättynyt", "Created": "2024-10-24T09:02:14.217", "SectorID": "U50", "WorkSequenceNumber": 1, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2024-014058/handlings/2?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päättynyt", "Created": "2025-02-17T07:38:59.580", "SectorID": "U50", "WorkSequenceNumber": 2, "DateNearestDeadline": ""}'
+    -
+      value: '{"links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2024-014058/handlings/3?apireqlang=fi"}], "Sector": "Keskushallinto", "Status": "Päätöksenteossa", "Created": "2025-05-19T11:33:52.850", "SectorID": "U50", "WorkSequenceNumber": 3, "DateNearestDeadline": ""}'
+  field_case_records:
+    -
+      value: '{"Type": "päätös", "Title": "Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B147213C7-B063-40FC-A319-C91D5B846623%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/BDBBFB3F-ADF6-C2EF-A3C4-9A25B8200008.pdf", "Language": "fi", "NativeId": "{147213C7-B063-40FC-A319-C91D5B846623}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{BDBBFB3F-ADF6-C2EF-A3C4-9A25B8200008}", "AttachmentNumber": null}'
+    -
+      value: '{"Type": "viranhaltijan päätös", "Title": "Salassa pidettävä (JulkL (621/1999) 24.1 § 25 k)", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B36F1EE3E-3E17-49CB-81AC-77B7CAF87A1B%7D"}], "Issued": "", "FileURI": "https://ahjojulkaisu.hel.fi/5CC02DFC-AD9C-CC79-AB09-968159000001.pdf", "Language": "fi", "NativeId": "{36F1EE3E-3E17-49CB-81AC-77B7CAF87A1B}", "PersonalData": "Ei sisällä henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{5CC02DFC-AD9C-CC79-AB09-968159000001}", "AttachmentNumber": null}'
+  field_classification_code:
+    -
+      value: '03 01 00'
+  field_classification_title:
+    -
+      value: Vahingonkorvausasiat
+  field_created:
+    -
+      value: '2025-10-23T15:17:27'
+  field_diary_number:
+    -
+      value: HEL-2024-014058
+  field_diary_number_label:
+    -
+      value: 'HEL 2024-014058'
+  field_full_title:
+    -
+      value: 'Vahingonkorvaus, taloudellinen menetys, ansiosidonnainen työttömyysturva ja työmarkkinatuki'
+  field_publicity_class:
+    -
+      value: 'Salassa pidettävä'
+  field_security_reasons:
+    -
+      value: 'JulkL (621/1999) 24.1 § 23 k'
+    -
+      value: 'JulkL (621/1999) 24.1 § 25 k'
+  field_status:
+    -
+      value: Vireillä
+  field_top_category_name:
+    -
+      value: 'Lainsäädäntö ja lainsäädännön soveltaminen'

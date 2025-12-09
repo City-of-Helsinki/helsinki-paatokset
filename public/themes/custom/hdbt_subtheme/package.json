@@ -16,6 +16,8 @@
     "format:js": "biome format --write src/js/",
     "lint": "npm-run-all --parallel lint:scss lint:js -s",
     "test": "vitest",
+    "full-reference": "node --env-file ../../../../.env backstop/backstop_dynamic_config full reference",
+    "full-test": "node --env-file ../../../../.env backstop/backstop_dynamic_config full test",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -34,6 +36,7 @@
     "@typescript-eslint/parser": "^8.0.0",
     "@vitest/browser": "^3.0.8",
     "@vitest/coverage-v8": "^3.0.8",
+    "backstopjs": "^6.3.25",
     "breakpoint-sass": "^3.0.0",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",

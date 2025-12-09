@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\paatokset_ahjo_api\Entity\ConfidentialityInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
@@ -207,6 +208,8 @@ class DecisionTest extends AhjoKernelTestBase {
     $content = $decision->parseContent();
 
     $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
+    $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
     $this->assertEquals('John Doe', $content['presenter_info']['content']['name']['#plain_text'] ?? '');
 
     // Empty <p> tags are stripped from accordions.
@@ -214,6 +217,25 @@ class DecisionTest extends AhjoKernelTestBase {
     foreach ($content['accordions'] as $accordion) {
       $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
     }
+  }
+
+  /**
+   * Tests decision confidentiality markings.
+   */
+  public function testConfidentiality(): void {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $storage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('node');
+
+    $decision = $storage->create([
+      'type' => 'decision',
+      'title' => 'Test decision',
+      'field_decision_content' => file_get_contents(__DIR__ . '/../../../fixtures/confidential-decision-content.html'),
+    ]);
+
+    $this->assertInstanceOf(ConfidentialityInterface::class, $decision);
+    $this->assertTrue($decision->isConfidential());
+    $this->assertEquals('SalassapidonPerustelut', $decision->getConfidentialityReason());
   }
 
 }

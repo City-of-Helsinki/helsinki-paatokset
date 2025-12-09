@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
 
 /**
  * Bundle class for decisions.
  */
-class Decision extends Node implements AhjoUpdatableInterface {
+class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityInterface {
 
   /**
    * Memoized result for self::getAllDecisions().
@@ -418,6 +421,22 @@ class Decision extends Node implements AhjoUpdatableInterface {
   }
 
   /**
+   * Return decision content DOM.
+   *
+   * @return \DOMDocument|null
+   *   Return NULL if the decision content is empty.
+   */
+  private function getDecisionContent(): \DOMDocument|NULL {
+    $content = $this->get('field_decision_content')->value;
+
+    if (empty($content)) {
+      return NULL;
+    }
+
+    return Html::load($content);
+  }
+
+  /**
    * Parse decision content and motion data from HTML.
    *
    * @return array
@@ -436,15 +455,8 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
 
     $has_case_id = !$this->get('field_diary_number')->isEmpty();
-    $content = $this->get('field_decision_content')->value;
     $motion = $this->get('field_decision_motion')->value;
     $history = $this->get('field_decision_history')->value;
-
-    $content_dom = new \DOMDocument();
-    if (!empty($content)) {
-      @$content_dom->loadHTML($content);
-    }
-    $content_xpath = new \DOMXPath($content_dom);
 
     $motion_dom = new \DOMDocument();
     if (!empty($motion)) {
@@ -458,15 +470,17 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
     $history_xpath = new \DOMXPath($history_dom);
 
-    // If content is not set, use motion html instead.
-    // Keep $content variable NULL so we can use that for checking later.
-    if (empty($content)) {
-      $content_xpath = $motion_xpath;
+    // If content is not set, use motion HTML instead.
+    $content_xpath = $motion_xpath;
+
+    $content_dom = $this->getDecisionContent();
+    if ($content_dom) {
+      $content_xpath = new \DOMXPath($content_dom);
     }
 
     $output = [];
     $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
-    if (!empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
+    if ($content_dom && !empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
       $voting_link_paragraph = $content_dom->createElement('p');
       $voting_link_a = $content_dom->createElement('a', (string) new TranslatableMarkup('See table with voting results'));
       $voting_link_a->setAttribute('href', '#voting-results-accordion');
@@ -494,7 +508,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
     // Motion content sections.
     // If decision content is empty, print motion content as main content.
     $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-    if ($content) {
+    if ($content_dom) {
       $motion_accordions = $this->getMotionSections($motion_sections);
       foreach ($motion_accordions as $accordion) {
         $output['accordions'][] = $accordion;
@@ -545,7 +559,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
       $contact = [
         'name' => $parts[0] ?? NULL,
         'title' => ucfirst($parts[1]) ?? NULL,
-        'phone' => $parts[2] ?? NULL,
+        'phone' => $parts[2] ?? '',
         'email' => $parts[3] ?? NULL,
       ];
 
@@ -558,18 +572,31 @@ class Decision extends Node implements AhjoUpdatableInterface {
           'title' => [
             '#plain_text' => $contact['title'],
           ],
-          'phone' => [
-            '#type' => 'link',
-            '#title' => $contact['phone'],
-            '#url' => strlen($contact['phone']) > 2 ? Url::fromUri('tel:' . $contact['phone']) : NULL,
-          ],
-          'email' => [
-            '#type' => 'link',
-            '#title' => $contact['email'],
-            '#url' => $contact['email'] ? Url::fromUri('mailto:' . $contact['email']) : NULL,
-          ],
         ],
       ];
+
+      try {
+        if (strlen($contact['phone']) > 2) {
+          // Drupal cannot handle phone numbers with 5 or less
+          // characters: https://www.drupal.org/node/2575577.
+          // This inserts dash (-) after the first digit. RFC 3966
+          // defines the dash as a visual separator character, so it
+          // will be removed before the phone number is used.
+          $phone = $contact['phone'];
+          if (strlen($contact['phone']) <= 5) {
+            $phone = substr_replace($contact['phone'], '-', 1, 0);
+          }
+
+          $output['more_info']['content']['phone'] = Link::fromTextAndUrl($contact['phone'], Url::fromUri('tel:' . $phone));
+        }
+
+        if ($contact['email']) {
+          $output['more_info']['content']['email'] = Link::fromTextAndUrl($contact['email'], Url::fromUri('mailto:' . $contact['email']));
+        }
+      }
+      catch (\InvalidArgumentException $e) {
+        Error::logException(\Drupal::logger('paatokset_ahjo_api'), $e);
+      }
     }
 
     // Signature information.
@@ -667,7 +694,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
     // Add decision IssuedDate (not DecisionDate) to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
-    if ($has_case_id && $content && !$this->get('field_decision_date')->isEmpty()) {
+    if ($has_case_id && $content_dom && !$this->get('field_decision_date')->isEmpty()) {
       $decision_timestamp = strtotime($this->get('field_decision_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
       $appeal_content = '<p class="issue__decision-date">' . new TranslatableMarkup('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
@@ -675,7 +702,7 @@ class Decision extends Node implements AhjoUpdatableInterface {
 
     // Appeal information. Only display for decisions (if content is available).
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($content && $appeal_info) {
+    if ($content_dom && $appeal_info) {
       $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
     }
 
@@ -832,6 +859,42 @@ class Decision extends Node implements AhjoUpdatableInterface {
     }
 
     return $output;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isConfidential(): bool {
+    // Confidentiality is encoded into the HTML document.
+    return $this->getConfidentialityReason() !== NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfidentialityReason(): string|null {
+    if (!$dom = $this->getDecisionContent()) {
+      return NULL;
+    }
+
+    $xpath = new \DOMXPath($dom);
+    $elements = $xpath->query("//*[contains(@class, 'SalassapidonPerustelut')]");
+
+    if ($elements->length <= 0) {
+      return NULL;
+    }
+
+    // Extract the text within parentheses from each element.
+    return implode(', ', array_filter(array_map(
+      static function ($element) {
+        if (preg_match('/\((.*)\)[^)]*/', $element->textContent, $matches)) {
+          return $matches[1];
+        }
+
+        return NULL;
+      },
+      iterator_to_array($elements->getIterator())
+    )));
   }
 
 }

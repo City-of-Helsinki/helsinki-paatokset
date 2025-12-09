@@ -6,6 +6,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
+use Drupal\paatokset_ahjo_api\Entity\ConfidentialityInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 
@@ -30,6 +31,7 @@ class CaseTest extends AhjoKernelTestBase {
       'field_no_title_for_case' => '1',
     ]);
 
+    $this->assertInstanceOf(ConfidentialityInterface::class, $case);
     $this->assertInstanceOf(CaseBundle::class, $case);
 
     $this->assertEquals('123', $case->getDiaryNumber());
@@ -72,6 +74,19 @@ class CaseTest extends AhjoKernelTestBase {
     $this->assertEquals('Test decision 1', $case->getPrevDecision($middle)?->label());
     $this->assertEquals('Test decision 3', $case->getNextDecision($middle)?->label());
     $this->assertEmpty($case->getNextDecision($last));
+
+    // Field value isn't set.
+    $this->assertFalse($case->isConfidential());
+    $case->set('field_publicity_class', '???');
+    // Unknown value.
+    $this->assertFalse($case->isConfidential());
+    // Magic value.
+    $case->set('field_publicity_class', 'Salassa pidettävä');
+    $this->assertTrue($case->isConfidential());
+
+    $this->assertNull($case->getConfidentialityReason());
+    $case->set('field_security_reasons', ['reasons']);
+    $this->assertStringContainsString($case->getConfidentialityReason() ?? '', 'reasons');
   }
 
 }
