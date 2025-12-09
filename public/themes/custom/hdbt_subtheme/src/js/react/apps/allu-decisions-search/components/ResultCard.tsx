@@ -26,10 +26,13 @@ export const ResultCard = ({
 
     if (address?.length) {
       const shortAddress = getShortAddress(address[0]);
-      result = shortAddress ? `${result}, ${shortAddress}` : result;
+      result =
+        shortAddress === null || shortAddress === 'null'
+          ? result
+          : `${result}, ${shortAddress}`;
     }
 
-    return `${result}, ${Drupal.t('identifier', { context: 'Allu decision search' })} ${label[0]} (pdf)`;
+    return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
   };
 
   const getTime = () => {
