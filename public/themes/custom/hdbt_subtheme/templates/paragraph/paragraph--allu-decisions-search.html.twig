@@ -8,11 +8,11 @@
 #}
 {{ attach_library('hdbt_subtheme/allu-decisions-search') }}
 {% block paragraph %}
-  {% set component_title = 'Find decisions concerning temporary usage of streets and parks'|t({}, {'context': 'Allu decision search'}) %}
+  {% set component_title = 'Search for decisions on the temporary use of streets and parks'|t({}, {'context': 'Allu decision search'}) %}
   {% embed "@hdbt/misc/component.twig" with
     {
       component_title: component_title,
-      component_description: 'You can search decisions based on area name, or filter the list based on decision type or date. If you make no selections at all, results are listed based on decision date, newest first.'|t({}, {'context': 'Allu decision search'})
+      component_description: 'You can search for decisions by street or park name, or filter the list by type or date of decision. If you do not use a filter, the results are listed by date of decision in chronological order, newest first.'|t({}, {'context': 'Allu decision search'})
     }
   %}
     {% block component_content %}

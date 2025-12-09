@@ -66,7 +66,11 @@ export const FormContainer = ({
         className='hdbt-search__filter hdbt-search--react__text-field'
         defaultValue={selections.q}
         id='q'
-        label={Drupal.t('Street name', {}, { context: 'Allu decision search' })}
+        label={Drupal.t(
+          'Name of street or park',
+          {},
+          { context: 'Allu decision search' },
+        )}
         placeholder={Drupal.t(
           'Eg. Mannerheimintie',
           {},
@@ -85,7 +89,7 @@ export const FormContainer = ({
           options={typeOptions || []}
           texts={{
             label: Drupal.t(
-              'Decision type',
+              'Type of decision',
               {},
               { context: 'Allu decision search' },
             ),
