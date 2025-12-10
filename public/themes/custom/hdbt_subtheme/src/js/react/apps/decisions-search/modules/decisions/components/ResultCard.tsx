@@ -81,7 +81,15 @@ export const ResultCard = ({
         content={organization_name}
       />,
     ],
+    bottom: [] as React.ReactNode[],
   };
+
+  if (
+    field_policymaker_id?.toString() === Policymakers.CITY_COUNCIL ||
+    field_policymaker_id?.toString() === Policymakers.CITY_HALL
+  ) {
+    metaRows.top = [];
+  }
 
   if (more_decisions?.[0] === true) {
     metaRows.bottom = [
