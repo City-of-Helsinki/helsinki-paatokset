@@ -10,31 +10,20 @@ const initialParams = {
   page: initalUrlParams.get('page') || undefined,
   q: initalUrlParams.get('q') || undefined,
   start: initalUrlParams.get('start') || undefined,
-  type:
-    initalUrlParams
-      .getAll('type')
-      .map((label) => ({ label, value: matchTypeValueFromLabel(label) })) ||
-    undefined,
+  type: initalUrlParams.getAll('type').map((label) => ({ label, value: matchTypeValueFromLabel(label) })) || undefined,
 };
 
 export const selectionsAtom = atom<Selections>(initialParams);
 
 export const setSelectionsAtom = atom(
   null,
-  (
-    _get,
-    set,
-    value: Partial<Selections> | typeof RESET,
-    partial: boolean = false,
-  ) => {
+  (_get, set, value: Partial<Selections> | typeof RESET, partial: boolean = false) => {
     if (value === RESET) {
       set(selectionsAtom, {});
       return;
     }
 
-    set(selectionsAtom, (currentValue) =>
-      partial ? { ...currentValue, ...value } : value,
-    );
+    set(selectionsAtom, (currentValue) => (partial ? { ...currentValue, ...value } : value));
   },
 );
 
@@ -65,10 +54,7 @@ export const urlAtom = atom((get) => {
   const selections = get(selectionsAtom);
   const params = selectionsToURLParams(selections);
   const currentGlobalParams = new URLSearchParams(window.location.search);
-  const newParams = new URLSearchParams({
-    ...Object.fromEntries(currentGlobalParams),
-    ...Object.fromEntries(params),
-  });
+  const newParams = new URLSearchParams({ ...Object.fromEntries(currentGlobalParams), ...Object.fromEntries(params) });
 
   // Make sure keys that are not set are deleted
   ['end', 'page', 'q', 'type', 'start'].forEach((key) => {

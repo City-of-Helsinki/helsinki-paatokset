@@ -27,64 +27,40 @@ const initialParams = new URLSearchParams(window.location.search);
 export const initialParamsAtom = atom(initialParams);
 
 type aggType = { [string]: estypes.AggregationsBuckets };
-export const aggsAtom = atom<aggType | undefined>(
-  undefined,
-  (_get, set, aggs: aggType) => {
-    const initialState = { ...defaultState };
+export const aggsAtom = atom<aggType | undefined>(undefined, (_get, set, aggs: aggType) => {
+  const initialState = { ...defaultState };
 
-    Object.entries(defaultState).forEach(([key, value]) => {
-      if (
-        key === Components.CATEGORY &&
-        initialParams.get(key)?.length &&
-        aggs?.[key]?.buckets?.length
-      ) {
-        const selectedOptions = initialParams
-          .get(key)
-          .split(',')
-          .filter((param) =>
-            aggs[key].buckets.some(
-              (bucket: estypes.AggregationsAggregateBase) =>
-                bucket.key === param,
-            ),
-          );
-        if (selectedOptions.length) {
-          initialState[key] = selectedOptions.map((option) => ({
-            label: categoryToLabel(option),
-            value: option,
-          }));
-        }
-      } else if (
-        key === Components.DECISIONMAKER &&
-        initialParams.get(key)?.length &&
-        aggs?.[key]?.buckets?.length
-      ) {
-        const paramsValue = initialParams.get(key)?.split(',');
-        const selectedOptions = aggs[key].buckets.filter((bucket) =>
-          paramsValue?.includes(bucket.key),
-        );
-        if (selectedOptions.length) {
-          initialState[key] = selectedOptions
-            .filter((option) => option[PolicymakerIndex.TITLE]?.buckets.length)
-            .map((option) => ({
-              label: option[PolicymakerIndex.TITLE]?.buckets[0]?.key,
-              value: option.key,
-            }));
-        }
-      } else {
-        const param = initialParams.get(key);
-        if (typeof value === 'boolean' && param === 'true') {
-          initialState[key] = true;
-        } else if (param !== null) {
-          initialState[key] = param;
-        }
+  Object.entries(defaultState).forEach(([key, value]) => {
+    if (key === Components.CATEGORY && initialParams.get(key)?.length && aggs?.[key]?.buckets?.length) {
+      const selectedOptions = initialParams
+        .get(key)
+        .split(',')
+        .filter((param) => aggs[key].buckets.some((bucket: estypes.AggregationsAggregateBase) => bucket.key === param));
+      if (selectedOptions.length) {
+        initialState[key] = selectedOptions.map((option) => ({ label: categoryToLabel(option), value: option }));
       }
-    });
+    } else if (key === Components.DECISIONMAKER && initialParams.get(key)?.length && aggs?.[key]?.buckets?.length) {
+      const paramsValue = initialParams.get(key)?.split(',');
+      const selectedOptions = aggs[key].buckets.filter((bucket) => paramsValue?.includes(bucket.key));
+      if (selectedOptions.length) {
+        initialState[key] = selectedOptions
+          .filter((option) => option[PolicymakerIndex.TITLE]?.buckets.length)
+          .map((option) => ({ label: option[PolicymakerIndex.TITLE]?.buckets[0]?.key, value: option.key }));
+      }
+    } else {
+      const param = initialParams.get(key);
+      if (typeof value === 'boolean' && param === 'true') {
+        initialState[key] = true;
+      } else if (param !== null) {
+        initialState[key] = param;
+      }
+    }
+  });
 
-    set(searchStateAtom, initialState);
-    set(submittedStateAtom, initialState);
-    set(aggsAtom, aggs);
-  },
-);
+  set(searchStateAtom, initialState);
+  set(submittedStateAtom, initialState);
+  set(aggsAtom, aggs);
+});
 const stateToURLParams = (state: typeof defaultState) => {
   const params = new URLSearchParams();
   Object.entries({ ...state }).forEach(([key, value]) => {
@@ -125,33 +101,27 @@ export const resetStateAtom = atom(null, (_get, set) => {
   window.dispatchEvent(clearEvent);
 });
 
-export const updateQueryAtom = atom(
-  null,
-  (get, set, _newValue: typeof defaultState) => {
-    const searchState = get(searchStateAtom);
-    const submittedState = get(submittedStateAtom);
-    const newState = { ...searchState, page: 1 };
+export const updateQueryAtom = atom(null, (get, set, _newValue: typeof defaultState) => {
+  const searchState = get(searchStateAtom);
+  const submittedState = get(submittedStateAtom);
+  const newState = { ...searchState, page: 1 };
 
-    // Only update if state actually changed
-    if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {
-      set(submittedStateAtom, newState);
-    }
-  },
-);
+  // Only update if state actually changed
+  if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {
+    set(submittedStateAtom, newState);
+  }
+});
 
 export const getSearchTermAtom = atom((get) => {
   const state = { ...get(searchStateAtom) };
   return state[Components.SEARCHBAR];
 });
 
-export const setSearchTermAtom = atom(
-  null,
-  (get, set, value: string | undefined) => {
-    const state = { ...get(searchStateAtom) };
-    state[Components.SEARCHBAR] = value;
-    set(searchStateAtom, state);
-  },
-);
+export const setSearchTermAtom = atom(null, (get, set, value: string | undefined) => {
+  const state = { ...get(searchStateAtom) };
+  state[Components.SEARCHBAR] = value;
+  set(searchStateAtom, state);
+});
 
 export const getPageAtom = atom((get) => {
   const state = { ...get(submittedStateAtom) };
@@ -169,14 +139,11 @@ export const getCategoryAtom = atom((get) => {
   return state[Components.CATEGORY];
 });
 
-export const setCategoryAtom = atom(
-  null,
-  (get, set, value: [{ label: string; value: string }]) => {
-    const state = { ...get(searchStateAtom) };
-    state[Components.CATEGORY] = value;
-    set(searchStateAtom, state);
-  },
-);
+export const setCategoryAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
+  const state = { ...get(searchStateAtom) };
+  state[Components.CATEGORY] = value;
+  set(searchStateAtom, state);
+});
 
 export const getFromAtom = atom((get) => {
   const state = { ...get(searchStateAtom) };
@@ -231,28 +198,22 @@ export const getDecisionMakersAtom = atom((get) => {
   return state[Components.DECISIONMAKER];
 });
 
-export const setDecisionMakersAtom = atom(
-  null,
-  (get, set, value: [{ label: string; value: string }]) => {
-    const state = { ...get(searchStateAtom) };
-    state[Components.DECISIONMAKER] = value;
-    set(searchStateAtom, state);
-  },
-);
+export const setDecisionMakersAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
+  const state = { ...get(searchStateAtom) };
+  state[Components.DECISIONMAKER] = value;
+  set(searchStateAtom, state);
+});
 
 export const getSortAtom = atom((get) => {
   const state = { ...get(submittedStateAtom) };
   return state[Components.SORT];
 });
 
-export const setSortAtom = atom(
-  null,
-  (get, set, value: [{ label: string; value: string }]) => {
-    const state = { ...get(submittedStateAtom) };
-    state[Components.SORT] = value[0].value;
-    set(submittedStateAtom, state);
-  },
-);
+export const setSortAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
+  const state = { ...get(submittedStateAtom) };
+  state[Components.SORT] = value[0].value;
+  set(submittedStateAtom, state);
+});
 
 export const initializedAtom = atom<boolean>(false);
 

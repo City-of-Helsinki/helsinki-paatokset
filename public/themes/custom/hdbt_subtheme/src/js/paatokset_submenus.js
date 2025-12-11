@@ -1,8 +1,6 @@
 (($, Drupal, once) => {
   function handleListVisibility() {
-    const headerContainer = $(
-      '.paatokset__decision-tree-container .tabbed-list',
-    );
+    const headerContainer = $('.paatokset__decision-tree-container .tabbed-list');
     const containerWidth = headerContainer.width();
     const menu = headerContainer.find('ul.menu');
     const dropdown = $(headerContainer).find('.custom-select-wrapper');
@@ -15,9 +13,7 @@
     let itemsWidth = 0;
     let exceeded = false;
     const allowedItems = [];
-    const selectedFirst = items.sort(
-      (a, b) => $(b).hasClass('selected') - $(a).hasClass('selected'),
-    );
+    const selectedFirst = items.sort((a, b) => $(b).hasClass('selected') - $(a).hasClass('selected'));
 
     selectedFirst.forEach((item) => {
       itemsWidth += $(item).width();
@@ -35,9 +31,7 @@
 
     if (exceeded) {
       $(dropdown).removeClass('hidden');
-      const dropdownItems = $(
-        '.custom-select-wrapper div.custom-option',
-      ).toArray();
+      const dropdownItems = $('.custom-select-wrapper div.custom-option').toArray();
 
       dropdownItems.forEach((item) => {
         if (allowedItems.includes($(item).find('input').attr('value'))) {
@@ -60,16 +54,12 @@
   }
 
   function showSelected() {
-    const selectedValue = $('.tabbed-list__content__inner .selected')
-      .find('input[type="button"]')
-      .val();
+    const selectedValue = $('.tabbed-list__content__inner .selected').find('input[type="button"]').val();
 
-    $('.policymakers-documents, .policymakers-decisions').removeClass(
+    $('.policymakers-documents, .policymakers-decisions').removeClass('selected-year');
+    $(`.policymakers-documents[value="${selectedValue}"], .policymakers-decisions[value="${selectedValue}"]`).addClass(
       'selected-year',
     );
-    $(
-      `.policymakers-documents[value="${selectedValue}"], .policymakers-decisions[value="${selectedValue}"]`,
-    ).addClass('selected-year');
   }
 
   function handleSelect(event) {
@@ -87,22 +77,12 @@
       // Remove all prior selected classes
       $('.tabbed-list__content__inner ul.menu li').removeClass('selected');
       $('.custom-select-wrapper .custom-option').removeClass('selected');
-      $('.custom-select-wrapper .custom-option input').attr(
-        'aria-pressed',
-        false,
-      );
+      $('.custom-select-wrapper .custom-option input').attr('aria-pressed', false);
 
       // Add selected class to selected item
-      $(`.tabbed-list__content__inner ul.menu input[value="${value}"]`)
-        .parent('li')
-        .addClass('selected');
-      $(`.custom-select-wrapper .custom-option input[value="${value}"]`)
-        .parent('.custom-option')
-        .addClass('selected');
-      $(`.custom-select-wrapper .custom-option input[value="${value}"]`).attr(
-        'aria-pressed',
-        'true',
-      );
+      $(`.tabbed-list__content__inner ul.menu input[value="${value}"]`).parent('li').addClass('selected');
+      $(`.custom-select-wrapper .custom-option input[value="${value}"]`).parent('.custom-option').addClass('selected');
+      $(`.custom-select-wrapper .custom-option input[value="${value}"]`).attr('aria-pressed', 'true');
 
       // Handle narrow views
       handleListVisibility();
@@ -117,9 +97,7 @@
         handleListVisibility();
         window.addEventListener('resize', handleListVisibility);
         $(document).click(handleDropdownToggle);
-        $(context)
-          .find('.tabbed-list__content__inner input')
-          .click(handleSelect);
+        $(context).find('.tabbed-list__content__inner input').click(handleSelect);
         $(context).find('#custom-options').click(handleSelect);
       });
     },

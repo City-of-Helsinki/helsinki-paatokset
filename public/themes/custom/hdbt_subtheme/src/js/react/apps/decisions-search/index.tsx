@@ -37,9 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <React.StrictMode>
       <ErrorBoundary fallback={<ResultsError />}>
-        <Suspense fallback={<GhostList count={10} />}>
-          {searchContainer}
-        </Suspense>
+        <Suspense fallback={<GhostList count={10} />}>{searchContainer}</Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
     rootElement,

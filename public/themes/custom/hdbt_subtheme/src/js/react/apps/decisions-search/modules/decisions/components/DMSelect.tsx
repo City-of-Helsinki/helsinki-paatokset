@@ -4,10 +4,7 @@ import { useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, useEffect } from 'react';
 import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
-import {
-  clearAllSelectionsFromStorage,
-  updateSelectionsInStorage,
-} from '@/react/common/helpers/HDS';
+import { clearAllSelectionsFromStorage, updateSelectionsInStorage } from '@/react/common/helpers/HDS';
 import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
@@ -15,12 +12,7 @@ import { Events } from '../enum/Events';
 import { PolicymakerIndex } from '../enum/IndexFields';
 import { getDecisionMakersAtom, setDecisionMakersAtom } from '../store';
 
-const dataFields = [
-  'title',
-  'trustee_name',
-  'field_last_name',
-  'field_first_name',
-];
+const dataFields = ['title', 'trustee_name', 'field_last_name', 'field_first_name'];
 
 const { currentLanguage } = drupalSettings.path;
 const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
@@ -31,10 +23,7 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
     field: PolicymakerIndex.FIELD_POLICYMAKER_ID,
     inner_hits: {
       _source: false,
-      fields: [
-        PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE,
-        PolicymakerIndex.FIELD_POLICYMAKER_ID,
-      ],
+      fields: [PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE, PolicymakerIndex.FIELD_POLICYMAKER_ID],
       name: 'current_language',
       sort: [
         {
@@ -55,37 +44,23 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
     bool: {
       should: [
         ...getBaseSearchTermQuery(searchTerm, dataFields),
-        {
-          wildcard: {
-            [PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE]: {
-              value: `*${searchTerm.toLowerCase()}*`,
-            },
-          },
-        },
+        { wildcard: { [PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE]: { value: `*${searchTerm.toLowerCase()}*` } } },
       ],
       minimum_should_match: 1,
-      filter: [
-        { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
-      ],
+      filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
     },
   },
 });
 
 export const DMSelect = ({ url }: { url: string }) => {
   const setDecisionMakers = useSetAtom(setDecisionMakersAtom);
-  const getDMSelectValue = useAtomCallback(
-    useCallback((get) => get(getDecisionMakersAtom)),
-  );
+  const getDMSelectValue = useAtomCallback(useCallback((get) => get(getDecisionMakersAtom)));
 
-  const onChange = (
-    selectedOptions: Array<{ label: string; value: string }>,
-  ) => {
+  const onChange = (selectedOptions: Array<{ label: string; value: string }>) => {
     setDecisionMakers(selectedOptions);
     selectStorage.updateAllOptions((option, _group, _groupindex) => ({
       ...option,
-      selected: selectedOptions.some(
-        (selection) => selection.value === option.value,
-      ),
+      selected: selectedOptions.some((selection) => selection.value === option.value),
     }));
   };
 
@@ -107,19 +82,13 @@ export const DMSelect = ({ url }: { url: string }) => {
       result.options = json.hits.hits
         .filter(
           (hit: estypes.SearchHit<PolicyMaker>) =>
-            hit.inner_hits?.current_language?.hits.hits?.[0].fields[
-              PolicymakerIndex.FIELD_POLICYMAKER_ID
-            ],
+            hit.inner_hits?.current_language?.hits.hits?.[0].fields[PolicymakerIndex.FIELD_POLICYMAKER_ID],
         )
         .map((hit) => {
           const innerHit = hit.inner_hits.current_language.hits.hits[0];
           return {
-            value:
-              innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
-            label:
-              innerHit.fields[
-                PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE
-              ].toString(),
+            value: innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
+            label: innerHit.fields[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE].toString(),
           };
         });
     }
@@ -152,14 +121,8 @@ export const DMSelect = ({ url }: { url: string }) => {
     window.addEventListener(Events.DECISIONS_CLEAR_SINGLE_DM, updateSelections);
 
     return () => {
-      window.removeEventListener(
-        Events.DECISIONS_CLEAR_ALL,
-        clearAllSelections,
-      );
-      window.removeEventListener(
-        Events.DECISIONS_CLEAR_SINGLE_DM,
-        updateSelections,
-      );
+      window.removeEventListener(Events.DECISIONS_CLEAR_ALL, clearAllSelections);
+      window.removeEventListener(Events.DECISIONS_CLEAR_SINGLE_DM, updateSelections);
     };
   });
 
@@ -167,16 +130,8 @@ export const DMSelect = ({ url }: { url: string }) => {
     <Select
       className='hdbt-search__dropdown'
       texts={{
-        label: Drupal.t(
-          'Decision-maker / Division',
-          {},
-          { context: 'Decisions search' },
-        ),
-        placeholder: Drupal.t(
-          'All decision-makers and divisions',
-          {},
-          { context: 'Decisions search' },
-        ),
+        label: Drupal.t('Decision-maker / Division', {}, { context: 'Decisions search' }),
+        placeholder: Drupal.t('All decision-makers and divisions', {}, { context: 'Decisions search' }),
       }}
       theme={defaultMultiSelectTheme}
       {...selectStorage.getProps()}
