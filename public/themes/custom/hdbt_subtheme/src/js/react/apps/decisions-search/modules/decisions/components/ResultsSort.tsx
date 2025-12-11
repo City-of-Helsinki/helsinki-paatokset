@@ -11,22 +11,9 @@ export const ResultsSort = () => {
   const onChange = useSetAtom(setSortAtom);
 
   const options = [
-    {
-      label: Drupal.t(
-        'Most relevant first',
-        {},
-        { context: 'Decisions search' },
-      ),
-      value: SortOptions.RELEVANCE,
-    },
-    {
-      label: Drupal.t('Newest first', {}, { context: 'Decisions search' }),
-      value: SortOptions.NEWEST,
-    },
-    {
-      label: Drupal.t('Oldest first', {}, { context: 'Decisions search' }),
-      value: SortOptions.OLDEST,
-    },
+    { label: Drupal.t('Most relevant first', {}, { context: 'Decisions search' }), value: SortOptions.RELEVANCE },
+    { label: Drupal.t('Newest first', {}, { context: 'Decisions search' }), value: SortOptions.NEWEST },
+    { label: Drupal.t('Oldest first', {}, { context: 'Decisions search' }), value: SortOptions.OLDEST },
   ];
 
   return (
@@ -35,14 +22,8 @@ export const ResultsSort = () => {
       label={Drupal.t('Sort by')}
       {...{ options, onChange, value }}
       texts={{
-        label: Drupal.t(
-          'Sort search results',
-          {},
-          { context: 'HELfi Rekry job search' },
-        ),
-        language: getCurrentLanguage(
-          window.drupalSettings.path.currentLanguage,
-        ),
+        label: Drupal.t('Sort search results', {}, { context: 'HELfi Rekry job search' }),
+        language: getCurrentLanguage(window.drupalSettings.path.currentLanguage),
       }}
       theme={defaultSelectTheme}
     />

@@ -14,11 +14,7 @@ export const BodiesFilter = () => {
       checked={value}
       className='hdbt-search--react__checkbox'
       id={Components.BODIES}
-      label={Drupal.t(
-        'Decisions of decision-making bodies',
-        {},
-        { context: 'Decisions search' },
-      )}
+      label={Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search' })}
       name={Components.BODIES}
       onChange={(e) => setValue(e.target.checked)}
       style={defaultCheckboxStyle}

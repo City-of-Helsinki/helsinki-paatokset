@@ -7,18 +7,12 @@ import ResultsError from '@/react/common/ResultsError';
 import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
 
 const parent = document.getElementById('helfi-select');
-const element = parent?.querySelector(
-  'input[type="hidden"]',
-) as HTMLInputElement;
+const element = parent?.querySelector('input[type="hidden"]') as HTMLInputElement;
 const rootElement = parent?.appendChild(document.createElement('div'));
 
 const selectOptions = Object.entries(drupalSettings.helfi_select.options)
   .reverse()
-  .map(([key, value]) => ({
-    label: value,
-    value: key,
-    selected: value === drupalSettings.helfi_select.value,
-  }));
+  .map(([key, value]) => ({ label: value, value: key, selected: value === drupalSettings.helfi_select.value }));
 
 if (rootElement) {
   ReactDOM.render(
@@ -35,8 +29,7 @@ if (rootElement) {
           onChange={
             element
               ? (options) => {
-                  let value =
-                    options?.find((item) => item.selected)?.value ?? '';
+                  let value = options?.find((item) => item.selected)?.value ?? '';
                   if (value === drupalSettings.helfi_select.empty_option) {
                     value = '';
                   }

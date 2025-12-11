@@ -14,9 +14,7 @@ const DATA_ENDPOINT = `${drupalSettings.helfi_react_search.elastic_proxy_url}/pa
 export const SearchContainer = () => {
   const url = useAtomValue(urlAtom);
   const typeOptions = useRef(undefined);
-  const readSelections = useAtomCallback(
-    useCallback((get) => get(selectionsAtom), []),
-  );
+  const readSelections = useAtomCallback(useCallback((get) => get(selectionsAtom), []));
 
   const fetcher = async () => {
     const queryBody = formQuery(readSelections());
@@ -41,9 +39,7 @@ export const SearchContainer = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-ndjson' },
       body: `${ndjsonHeader}\n${JSON.stringify({
-        aggs: {
-          typeOptions: { terms: { field: 'document_type', size: 500000 } },
-        },
+        aggs: { typeOptions: { terms: { field: 'document_type', size: 500000 } } },
       })}\n${ndjsonHeader}\n${JSON.stringify(queryBody)}\n`,
     });
 
@@ -53,19 +49,14 @@ export const SearchContainer = () => {
     if (aggs.aggregations?.typeOptions?.buckets) {
       typeOptions.current = aggs.aggregations.typeOptions.buckets.map(
         // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
-        (bucket: any) => ({
-          label: matchTypeLabel(bucket.key),
-          value: bucket.key,
-        }),
+        (bucket: any) => ({ label: matchTypeLabel(bucket.key), value: bucket.key }),
       );
     }
 
     return results;
   };
 
-  const { data, error, isLoading } = useSWR(url || DATA_ENDPOINT, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data, error, isLoading } = useSWR(url || DATA_ENDPOINT, fetcher, { revalidateOnFocus: false });
 
   return (
     <>

@@ -13,14 +13,7 @@ const getShortAddress = (address: string) => {
   return null;
 };
 
-export const ResultCard = ({
-  address,
-  approval_type,
-  document_created,
-  document_type,
-  label,
-  url,
-}: Decision) => {
+export const ResultCard = ({ address, approval_type, document_created, document_type, label, url }: Decision) => {
   const getCardTitle = () => {
     let result = matchTypeLabel(document_type[0]);
 
@@ -35,11 +28,7 @@ export const ResultCard = ({
   const getTime = () => {
     if (document_created?.length) {
       const date = new Date(document_created[0] * 1000);
-      return date.toLocaleString('fi-FI', {
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-      });
+      return date.toLocaleString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
     }
   };
 
@@ -60,31 +49,15 @@ export const ResultCard = ({
       cardModifierClass='card--border'
       cardTags={
         approval_type?.includes('WORK_FINISHED')
-          ? [
-              {
-                tag: Drupal.t(
-                  'Work complete',
-                  {},
-                  { context: 'Allu decision search' },
-                ),
-              },
-            ]
+          ? [{ tag: Drupal.t('Work complete', {}, { context: 'Allu decision search' }) }]
           : []
       }
       cardTitle={getCardTitle()}
       cardUrl={url?.[0] ?? ''}
       location={getFullAddress()}
-      locationLabel={Drupal.t(
-        'Address',
-        {},
-        { context: 'Allu decision search' },
-      )}
+      locationLabel={Drupal.t('Address', {}, { context: 'Allu decision search' })}
       time={getTime()}
-      timeLabel={Drupal.t(
-        'Date of decision',
-        {},
-        { context: 'Allu decision search' },
-      )}
+      timeLabel={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
     />
   );
 };

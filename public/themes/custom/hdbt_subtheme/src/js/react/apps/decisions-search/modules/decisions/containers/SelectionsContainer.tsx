@@ -1,12 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import FilterButton from '@/react/common/FilterButton';
-import {
-  resetStateAtom,
-  searchStateAtom,
-  submittedStateAtom,
-  updateQueryAtom,
-} from '../store';
+import { resetStateAtom, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { Components, DATE_SELECTION } from '../enum/Components';
 import { Events } from '../enum/Events';
@@ -54,13 +49,7 @@ export const SelectionsContainer = () => {
   Object.entries({ ...submittedState })
     .filter(
       ([key]) =>
-        ![
-          Components.TO,
-          Components.FROM,
-          Components.PAGE,
-          Components.SEARCHBAR,
-          Components.SORT,
-        ].includes(key),
+        ![Components.TO, Components.FROM, Components.PAGE, Components.SEARCHBAR, Components.SORT].includes(key),
     )
     .forEach(([key, value], index) => {
       if (Array.isArray(value) && value.length) {
@@ -75,11 +64,7 @@ export const SelectionsContainer = () => {
         });
       } else if (typeof value === 'string') {
         selections.push(
-          <FilterButton
-            key={`${key}-${value}`}
-            clearSelection={() => unsetStateItem(key)}
-            value={value}
-          />,
+          <FilterButton key={`${key}-${value}`} clearSelection={() => unsetStateItem(key)} value={value} />,
         );
       } else if (typeof value === 'boolean' && value === true) {
         selections.push(
@@ -89,16 +74,8 @@ export const SelectionsContainer = () => {
             clearSelection={() => setStateItemToFalse(key)}
             value={
               key === Components.BODIES
-                ? Drupal.t(
-                    'Decisions of decision-making bodies',
-                    {},
-                    { context: 'Decisions search' },
-                  )
-                : Drupal.t(
-                    'Decisions of office holders',
-                    {},
-                    { context: 'Decisions search' },
-                  )
+                ? Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search' })
+                : Drupal.t('Decisions of office holders', {}, { context: 'Decisions search' })
             }
           />,
         );
@@ -111,9 +88,7 @@ export const SelectionsContainer = () => {
       titleString += submittedState[Components.FROM];
     }
     if (submittedState[Components.TO]) {
-      titleString +=
-        (submittedState[Components.FROM] ? ' - ' : '- ') +
-        submittedState[Components.TO];
+      titleString += (submittedState[Components.FROM] ? ' - ' : '- ') + submittedState[Components.TO];
     }
 
     selections.push(
@@ -134,9 +109,7 @@ export const SelectionsContainer = () => {
 
   return (
     <SelectionsWrapper
-      showClearButton={
-        selections.length || submittedState[Components.SEARCHBAR]?.length
-      }
+      showClearButton={selections.length || submittedState[Components.SEARCHBAR]?.length}
       resetForm={resetForm}
     >
       {selections}
