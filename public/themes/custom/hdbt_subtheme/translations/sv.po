@@ -12,6 +12,84 @@ msgctxt "Announcements and notifications list"
 msgid "No results"
 msgstr "Inga resultat"
 
+msgctxt "Allu decision search"
+msgid "Search for decisions on the temporary use of streets and parks"
+msgstr "Sök beslut som gäller tillfällig användning av gatu- och parkområden"
+
+msgctxt "Allu decision search"
+msgid "You can search for decisions by street or park name, or filter the list by type or date of decision. If you do not use a filter, the results are listed by date of decision in chronological order, newest first."
+msgstr "Du kan söka beslut med gatans eller parkens namn, eller filtrera listan enligt beslutstyp eller beslutsdatum.  Om du inte använder några filter listas resultaten i kronologisk ordning enligt beslutsdatum, med det senaste först."
+
+msgctxt "Allu decision search"
+msgid "Name of street or park"
+msgstr "Namn på gata eller park"
+
+msgctxt "Allu decision search"
+msgid "Eg. Mannerheimintie"
+msgstr "T.ex. Mannerheimvägen"
+
+msgctxt "Allu decision search"
+msgid "Type of decision"
+msgstr "Typ av beslut"
+
+msgctxt "Allu decision search"
+msgid "All types"
+msgstr "Alla beslutstyper"
+
+msgctxt "Allu decision search"
+msgid "identifier"
+msgstr "identifierare"
+
+msgctxt "Allu decision search"
+msgid "Date of decision"
+msgstr "Beslutsdatum"
+
+msgctxt "Allu decision search"
+msgid "Eg. 5.11.2024 - 10.11.2024"
+msgstr "T.ex. 5.11.2025–10.11.2025"
+
+msgctxt "Allu decision search"
+msgid "1 decision"
+msgid_plural "@count decisions"
+msgstr[0] "1 beslut"
+msgstr[1] "@count beslut"
+
+msgctxt "Allu decision search"
+msgid "Address"
+msgstr "Adress"
+
+msgctxt "Allu decision search"
+msgid "Date of decision"
+msgstr "Beslutsdatum"
+
+msgctxt "Allu decision search"
+msgid "Work complete"
+msgstr "Jobb färdig"
+
+msgctxt "Allu decision search"
+msgid "Excavation work"
+msgstr "Grävningsarbete"
+
+msgctxt "Allu decision search"
+msgid "Area leasing"
+msgstr "Områdesuthyrning"
+
+msgctxt "Allu decision search"
+msgid "Temporary traffic arrangement"
+msgstr "Ett tillfälligt trafikarrangemang"
+
+msgctxt "Allu decision search"
+msgid "Placement agreement"
+msgstr "Placeringsavtal"
+
+msgctxt "Allu decision search"
+msgid "Event"
+msgstr "Evenemang"
+
+msgctxt "Allu decision search"
+msgid "Short-term land leasing"
+msgstr "Kortvarig arrendering av mark"
+
 msgctxt "Voting results"
 msgid "Voting"
 msgstr "Omröstning"

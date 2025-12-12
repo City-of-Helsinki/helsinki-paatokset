@@ -16,5 +16,4 @@ const categoryMap = new Map([
   ['14', 'Elinkeino- ja työvoimapalvelut'],
 ]);
 
-export const categoryToLabel = (category: string): string | undefined =>
-  categoryMap.get(category);
+export const categoryToLabel = (category: string): string | undefined => categoryMap.get(category);

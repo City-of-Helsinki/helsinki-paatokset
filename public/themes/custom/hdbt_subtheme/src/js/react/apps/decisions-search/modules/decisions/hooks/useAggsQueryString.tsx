@@ -7,17 +7,9 @@ import { initialParamsAtom } from '../store';
 export const useAggsQueryString = () => {
   const initialParams = useAtomValue(initialParamsAtom);
 
-  const categoryAggs = {
-    [Components.CATEGORY]: {
-      terms: { field: DecisionIndex.TOP_CATEGORY_CODE, size: 100 },
-    },
-  };
+  const categoryAggs = { [Components.CATEGORY]: { terms: { field: DecisionIndex.TOP_CATEGORY_CODE, size: 100 } } };
 
-  const categoryQuery = {
-    aggs: categoryAggs,
-    query: { match_all: {} },
-    size: 0,
-  };
+  const categoryQuery = { aggs: categoryAggs, query: { match_all: {} }, size: 0 };
 
   if (!initialParams.get(Components.DECISIONMAKER)?.length) {
     return JSON.stringify(categoryQuery);
@@ -28,10 +20,7 @@ export const useAggsQueryString = () => {
       terms: { field: DecisionIndex.POLICYMAKER_ID, size: 1000 },
       aggs: {
         [PolicymakerIndex.TITLE]: {
-          terms: {
-            field: `${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}.keyword`,
-            size: 1000,
-          },
+          terms: { field: `${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}.keyword`, size: 1000 },
         },
       },
     },
@@ -46,20 +35,9 @@ export const useAggsQueryString = () => {
       query: {
         bool: {
           filter: [
-            {
-              terms: {
-                [DecisionIndex.POLICYMAKER_ID]: initialParams
-                  .get(Components.DECISIONMAKER)
-                  .split(','),
-              },
-            },
+            { terms: { [DecisionIndex.POLICYMAKER_ID]: initialParams.get(Components.DECISIONMAKER).split(',') } },
             { term: { _index: 'paatokset_policymakers' } },
-            {
-              term: {
-                [PolicymakerIndex.SEARCH_API_LANGUAGE]:
-                  drupalSettings.path.currentLanguage,
-              },
-            },
+            { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: drupalSettings.path.currentLanguage } },
           ],
         },
       },

@@ -39,11 +39,7 @@ export const FormContainer = ({ url }: { url: string }) => {
         </fieldset>
       </div>
       <Button className='hdbt-search--react__submit-button' type='submit'>
-        {Drupal.t(
-          'Search',
-          {},
-          { context: 'React search: submit button label' },
-        )}
+        {Drupal.t('Search', {}, { context: 'React search: submit button label' })}
       </Button>
       <SelectionsContainer />
     </form>

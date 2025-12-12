@@ -13,23 +13,23 @@ msgid "No results"
 msgstr "Ei tuloksia"
 
 msgctxt "Allu decision search"
-msgid "Find decisions concerning temporary usage of streets and parks"
+msgid "Search for decisions on the temporary use of streets and parks"
 msgstr "Etsi katu- ja puistoalueiden tilapäiseen käyttöön liittyviä päätöksiä"
 
 msgctxt "Allu decision search"
-msgid "You can search decisions based on area name, or filter the list based on decision type or date. If you make no selections at all, results are listed based on decision date, newest first."
-msgstr "Voit etsiä päätöksiä aluetta koskevan kadun nimen mukaan, tai suodattaa listaa päätöksen tyypin tai ajankohdan mukaan. Jos et tee lainkaan suodatusta, tulokset on listattu päätöksen päiväyksen mukaan aikajärjestyksessä, uusin ensin."
+msgid "You can search for decisions by street or park name, or filter the list by type or date of decision. If you do not use a filter, the results are listed by date of decision in chronological order, newest first."
+msgstr "Voit etsiä päätöksiä kadun tai puiston nimellä tai suodattaa listaa päätöksen tyypin tai päätösajankohdan mukaan. Jos et tee lainkaan suodatusta, tulokset on listattu päätöksen päiväyksen mukaan aikajärjestyksessä, uusin ensin."
 
 msgctxt "Allu decision search"
-msgid "Street name"
-msgstr "Kadun nimi"
+msgid "Name of street or park"
+msgstr "Kadun tai puiston nimi"
 
 msgctxt "Allu decision search"
 msgid "Eg. Mannerheimintie"
 msgstr "Esim. Mannerheimintie"
 
 msgctxt "Allu decision search"
-msgid "Decision type"
+msgid "Type of decision"
 msgstr "Päätöksen tyyppi"
 
 msgctxt "Allu decision search"
@@ -67,19 +67,19 @@ msgid "Work complete"
 msgstr "Työ valmis"
 
 msgctxt "Allu decision search"
-msgid "Excavation announcement"
+msgid "Excavation work"
 msgstr "Kaivutyö"
 
 msgctxt "Allu decision search"
-msgid "Area rental"
+msgid "Area leasing"
 msgstr "Aluevuokraus"
 
 msgctxt "Allu decision search"
-msgid "Temporary traffic announcement"
+msgid "Temporary traffic arrangement"
 msgstr "Tilapäinen liikennejärjestely"
 
 msgctxt "Allu decision search"
-msgid "Placement contract"
+msgid "Placement agreement"
 msgstr "Sijoitussopimus"
 
 msgctxt "Allu decision search"
@@ -87,8 +87,8 @@ msgid "Event"
 msgstr "Tapahtuma"
 
 msgctxt "Allu decision search"
-msgid "Short term rental"
-msgstr "Lyhytaikainen vuokraus"
+msgid "Short-term land leasing"
+msgstr "Lyhytaikainen maanvuokraus"
 
 msgctxt "Voting results"
 msgid "Voting"

@@ -35,13 +35,7 @@ export const ResultsContainer = ({
   }
 
   if (error) {
-    return (
-      <ResultsError
-        error={error}
-        className='react-search__results'
-        ref={scrollTarget}
-      />
-    );
+    return <ResultsError error={error} className='react-search__results' ref={scrollTarget} />;
   }
 
   if (!data?.hits?.hits.length) {
@@ -77,10 +71,7 @@ export const ResultsContainer = ({
           currentPage={Number(currentPage) || 1}
           pages={5}
           totalPages={addLastPage ? pages + 1 : pages}
-          updatePage={(
-            event: SyntheticEvent<HTMLButtonElement>,
-            index: number,
-          ) => {
+          updatePage={(event: SyntheticEvent<HTMLButtonElement>, index: number) => {
             event.preventDefault();
             setSelections({ page: index.toString() }, true);
           }}

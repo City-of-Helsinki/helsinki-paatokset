@@ -16,9 +16,7 @@ export const ResultsContainer = ({ url }: { url: string }) => {
   const currentPage = useAtomValue(getPageAtom);
   const setPage = useSetAtom(setPageAtom);
   const query = useDecisionsQuery();
-  const readInitialized = useAtomCallback(
-    useCallback((get) => get(initializedAtom), []),
-  );
+  const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
 
   const fetcher = useCallback(
@@ -31,9 +29,7 @@ export const ResultsContainer = ({ url }: { url: string }) => {
     [url],
   );
 
-  const { data, error, isLoading, isValidating } = useSWR(query, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data, error, isLoading, isValidating } = useSWR(query, fetcher, { revalidateOnFocus: false });
 
   const loading = isLoading || !aggs;
 
@@ -45,10 +41,7 @@ export const ResultsContainer = ({ url }: { url: string }) => {
 
   const resultItemCallBack = (item: estypes.SearchHit<Decision>) => {
     if (!item.inner_hits?.preferred_version?.hits.hits[0]) {
-      console.error(
-        'No preferred version found for decision with unique_issue_id:',
-        item._id,
-      );
+      console.error('No preferred version found for decision with unique_issue_id:', item._id);
       return null;
     }
 
@@ -66,9 +59,7 @@ export const ResultsContainer = ({ url }: { url: string }) => {
     if (!data?.aggregations?.total_issues?.value) {
       return 0;
     }
-    return data.aggregations.total_issues.value > 9999
-      ? 10000
-      : data.aggregations.total_issues.value;
+    return data.aggregations.total_issues.value > 9999 ? 10000 : data.aggregations.total_issues.value;
   };
   const customTotal = getCustomTotal();
 
@@ -79,28 +70,13 @@ export const ResultsContainer = ({ url }: { url: string }) => {
 
     return customTotal > 9999
       ? Drupal.t('Over 10 000 decisions', {}, { context: 'Decisions search' })
-      : Drupal.formatPlural(
-          customTotal,
-          '1 decision',
-          '@count decisions',
-          {},
-          { context: 'Decisions search' },
-        );
+      : Drupal.formatPlural(customTotal, '1 decision', '@count decisions', {}, { context: 'Decisions search' });
   };
   const sortElement = customTotal && <ResultsSort />;
 
   return (
     <ResultsWrapper
-      {...{
-        currentPage,
-        customTotal,
-        data,
-        error,
-        getHeaderText,
-        resultItemCallBack,
-        setPage,
-        sortElement,
-      }}
+      {...{ currentPage, customTotal, data, error, getHeaderText, resultItemCallBack, setPage, sortElement }}
       isLoading={loading}
       shouldScroll={readInitialized()}
     />

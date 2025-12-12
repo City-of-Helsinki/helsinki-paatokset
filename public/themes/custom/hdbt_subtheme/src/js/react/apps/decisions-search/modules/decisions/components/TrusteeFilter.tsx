@@ -14,11 +14,7 @@ export const TrusteeFilter = () => {
       checked={value}
       className='hdbt-search--react__checkbox'
       id={Components.TRUSTEES}
-      label={Drupal.t(
-        'Decisions of office holders',
-        {},
-        { context: 'Decisions search' },
-      )}
+      label={Drupal.t('Decisions of office holders', {}, { context: 'Decisions search' })}
       name={Components.TRUSTEES}
       onChange={(e) => setValue(e.target.checked)}
       style={defaultCheckboxStyle}

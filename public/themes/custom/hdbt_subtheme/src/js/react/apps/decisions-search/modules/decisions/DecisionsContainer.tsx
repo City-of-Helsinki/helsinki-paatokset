@@ -12,14 +12,11 @@ export const DecisionsContainer = ({ url }: { url: string }) => {
 
   const fetcher = async () => {
     if (aggsQueryString.includes('\n')) {
-      const response = await fetch(
-        `${url}/paatokset_decisions,paatokset_policymakers/_msearch`,
-        {
-          body: aggsQueryString,
-          headers: { 'Content-Type': 'application/x-ndjson' },
-          method: 'POST',
-        },
-      );
+      const response = await fetch(`${url}/paatokset_decisions,paatokset_policymakers/_msearch`, {
+        body: aggsQueryString,
+        headers: { 'Content-Type': 'application/x-ndjson' },
+        method: 'POST',
+      });
 
       const results = await response.json();
       return {
