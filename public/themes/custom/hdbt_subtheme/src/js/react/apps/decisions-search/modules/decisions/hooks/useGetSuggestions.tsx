@@ -25,9 +25,7 @@ export const useGetSuggestions = async (searchTerm: string, url: string) => {
   const json = await response.json();
 
   if (json.hits?.hits) {
-    return json.hits.hits.map((hit: estypes.SearchHit<Decision>) => ({
-      value: hit.fields.subject.toString(),
-    }));
+    return json.hits.hits.map((hit: estypes.SearchHit<Decision>) => ({ value: hit.fields.subject.toString() }));
   }
 
   return [];

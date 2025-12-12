@@ -54,11 +54,7 @@ export const ResultCard = ({
       type === OrganizationTypes.TEAM
     ) {
       tag.color = 'coat-of-arms';
-      tag.tag = Drupal.t(
-        'Committees and boards',
-        {},
-        { context: 'Decisions search' },
-      );
+      tag.tag = Drupal.t('Committees and boards', {}, { context: 'Decisions search' });
     } else if (type === OrganizationTypes.OFFICIAL) {
       tag.color = 'gold';
       tag.tag = Drupal.t('Officials', {}, { context: 'Decisions search' });
@@ -88,11 +84,7 @@ export const ResultCard = ({
       <Metarow
         key='1'
         icon={<IconLayers className='hel-icon' />}
-        label={Drupal.t(
-          'Issues with several decisions',
-          {},
-          { context: 'Decisions search' },
-        )}
+        label={Drupal.t('Issues with several decisions', {}, { context: 'Decisions search' })}
         content={issue_subject}
       />,
     ];
@@ -103,13 +95,7 @@ export const ResultCard = ({
       return;
     }
 
-    return [
-      {
-        color: 'alert',
-        iconStart: <IconAlertCircle className='hel-icon' />,
-        tag: Drupal.t('This is a motion'),
-      },
-    ];
+    return [{ color: 'alert', iconStart: <IconAlertCircle className='hel-icon' />, tag: Drupal.t('This is a motion') }];
   };
 
   return (

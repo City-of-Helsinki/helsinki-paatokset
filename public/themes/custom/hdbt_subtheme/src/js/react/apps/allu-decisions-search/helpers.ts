@@ -102,24 +102,16 @@ export const formQuery = (selections: Selections) => {
   ];
 
   if (selections?.type?.length) {
-    must.push({
-      terms: { document_type: selections.type.map((type) => type.value) },
-    });
+    must.push({ terms: { document_type: selections.type.map((type) => type.value) } });
   }
 
   const range: estypes.QueryDslRangeQuery = {};
 
   if (selections.start) {
-    range.gte = DateTime.fromFormat(selections.start, HDS_DATE_FORMAT)
-      .startOf('day')
-      .toUnixInteger()
-      .toString();
+    range.gte = DateTime.fromFormat(selections.start, HDS_DATE_FORMAT).startOf('day').toUnixInteger().toString();
   }
   if (selections.end) {
-    range.lte = DateTime.fromFormat(selections.end, HDS_DATE_FORMAT)
-      .endOf('day')
-      .toUnixInteger()
-      .toString();
+    range.lte = DateTime.fromFormat(selections.end, HDS_DATE_FORMAT).endOf('day').toUnixInteger().toString();
   }
 
   if (Object.keys(range).length && body?.query?.bool) {
@@ -144,9 +136,7 @@ export const formQuery = (selections: Selections) => {
     body.query.bool.minimum_should_match = 1;
   }
 
-  const sort: estypes.SortCombinations[] = [
-    { document_created: { order: 'desc' } },
-  ];
+  const sort: estypes.SortCombinations[] = [{ document_created: { order: 'desc' } }];
 
   const { _page, ...rest } = selections;
   if (Object.keys(rest).length) {

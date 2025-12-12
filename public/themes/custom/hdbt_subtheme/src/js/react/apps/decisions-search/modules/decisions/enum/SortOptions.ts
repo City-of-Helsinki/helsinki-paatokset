@@ -1,5 +1,1 @@
-export const SortOptions = {
-  RELEVANCE: 'relevance',
-  NEWEST: 'newest',
-  OLDEST: 'oldest',
-};
+export const SortOptions = { RELEVANCE: 'relevance', NEWEST: 'newest', OLDEST: 'oldest' };

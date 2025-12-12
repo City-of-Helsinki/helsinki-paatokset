@@ -10,10 +10,7 @@ jQuery(function ($) {
   let focusIndex = -1;
 
   $(document).ready(function () {
-    $('.issue-ajax-error__container .hds-notification__label').attr(
-      'aria-hidden',
-      'true',
-    );
+    $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'true');
     // Add the default style class to button
     const defaultSelected = $('.issue__meetings-select li.selected');
 
@@ -47,10 +44,7 @@ jQuery(function ($) {
     }
 
     function arrowHandler(event) {
-      if (
-        !event.key ||
-        !(event.key === 'ArrowUp' || event.key === 'ArrowDown')
-      ) {
+      if (!event.key || !(event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
         return;
       }
       if (event.key === 'ArrowUp' && focusIndex > -1) {
@@ -98,27 +92,15 @@ jQuery(function ($) {
             $('.issue__attachments__wrapper').html(data.attachments);
           }
           if (data.decision_navigation) {
-            $('.issue__decision-navigation__wrapper').html(
-              data.decision_navigation,
-            );
+            $('.issue__decision-navigation__wrapper').html(data.decision_navigation);
           }
           if (data.all_decisions_link) {
-            $('.issue-dropdown__show-more a').attr(
-              'href',
-              data.all_decisions_link,
-            );
-            $('.issue-dropdown__show-more a span').text(
-              Drupal.t('Other decisions for the meeting'),
-            );
+            $('.issue-dropdown__show-more a').attr('href', data.all_decisions_link);
+            $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the meeting'));
             $('.issue-dropdown__show-more').css('display', 'block');
           } else if (data.other_decisions_link) {
-            $('.issue-dropdown__show-more a').attr(
-              'href',
-              data.other_decisions_link,
-            );
-            $('.issue-dropdown__show-more a span').text(
-              Drupal.t('Other decisions for the policymaker'),
-            );
+            $('.issue-dropdown__show-more a').attr('href', data.other_decisions_link);
+            $('.issue-dropdown__show-more a span').text(Drupal.t('Other decisions for the policymaker'));
             $('.issue-dropdown__show-more').css('display', 'block');
           } else {
             $('.issue-dropdown__show-more').css('display', 'none');
@@ -131,10 +113,7 @@ jQuery(function ($) {
           }
           if (data.language_urls) {
             Object.keys(data.language_urls).forEach((langcode) => {
-              $(`.language-link[lang="${langcode}"]`).attr(
-                'href',
-                data.language_urls[langcode],
-              );
+              $(`.language-link[lang="${langcode}"]`).attr('href', data.language_urls[langcode]);
             });
           }
           if (data.show_warning) {
@@ -145,17 +124,12 @@ jQuery(function ($) {
           $('.issue-ajax-error__container').hide();
         },
         error() {
-          $('.issue-ajax-error__container .hds-notification__label').attr(
-            'aria-hidden',
-            'false',
-          );
+          $('.issue-ajax-error__container .hds-notification__label').attr('aria-hidden', 'false');
           $('.issue-ajax-error__container').attr('aria-hidden', 'false').show();
         },
         complete() {
           $('.issue__wrapper .ajax-progress-throbber').hide();
-          window.document.dispatchEvent(
-            new Event('DOMContentLoaded', { bubbles: true, cancelable: true }),
-          );
+          window.document.dispatchEvent(new Event('DOMContentLoaded', { bubbles: true, cancelable: true }));
         },
       });
 
@@ -170,21 +144,13 @@ jQuery(function ($) {
       if (queryparams === '') {
         queryparams = `?${queryKey}=`;
       }
-      const oldWindowHref =
-        window.location.host + window.location.pathname + queryparams;
+      const oldWindowHref = window.location.host + window.location.pathname + queryparams;
 
-      window.history.pushState(
-        {},
-        '',
-        `${window.location.pathname}?${queryKey}=${id}`,
-      );
+      window.history.pushState({}, '', `${window.location.pathname}?${queryKey}=${id}`);
 
       socialMedia.each(() => {
         const oldHref = $(this).attr('href');
-        const newWindowHref =
-          window.location.host +
-          window.location.pathname +
-          window.location.search;
+        const newWindowHref = window.location.host + window.location.pathname + window.location.search;
         $(this).attr('href', oldHref.replace(oldWindowHref, newWindowHref));
       });
     }
@@ -197,9 +163,7 @@ jQuery(function ($) {
 
       if ($(selected).length > 0) {
         transformButton(selected);
-        $('.issue__meetings-dropdown .hds-button__label').html(
-          $(selected).text(),
-        );
+        $('.issue__meetings-dropdown .hds-button__label').html($(selected).text());
         $('.issue__meetings-select li.selected').attr('aria-selected', 'false');
         $('.issue__meetings-select li.selected').removeClass('selected');
         $(selected).addClass('selected');
@@ -260,9 +224,7 @@ jQuery(function ($) {
     $('body').on('click', '.decision-navigation-button', function (event) {
       event.preventDefault();
       const link =
-        event.target.tagName === 'A'
-          ? $(event.target).data('link')
-          : $(event.target).parent('a').data('link');
+        event.target.tagName === 'A' ? $(event.target).data('link') : $(event.target).parent('a').data('link');
 
       selectOption($(optionList).find(`[data-link='${link}']`));
     });
