@@ -12,17 +12,33 @@ import type { Selections } from './types/Selections';
 export const matchTypeLabel = (type: string) => {
   switch (type) {
     case 'EXCAVATION_ANNOUNCEMENT':
-      return Drupal.t('Excavation announcement', {}, { context: 'Allu decision search' });
+      return Drupal.t(
+        'Excavation work',
+        {},
+        { context: 'Allu decision search' },
+      );
     case 'AREA_RENTAL':
-      return Drupal.t('Area rental', {}, { context: 'Allu decision search' });
+      return Drupal.t('Area leasing', {}, { context: 'Allu decision search' });
     case 'TEMPORARY_TRAFFIC_ARRANGEMENTS':
-      return Drupal.t('Temporary traffic announcement', {}, { context: 'Allu decision search' });
+      return Drupal.t(
+        'Temporary traffic arrangement',
+        {},
+        { context: 'Allu decision search' },
+      );
     case 'PLACEMENT_CONTRACT':
-      return Drupal.t('Placement contract', {}, { context: 'Allu decision search' });
+      return Drupal.t(
+        'Placement agreement',
+        {},
+        { context: 'Allu decision search' },
+      );
     case 'EVENT':
       return Drupal.t('Event', {}, { context: 'Allu decision search' });
     case 'SHORT_TERM_RENTAL':
-      return Drupal.t('Short term rental', {}, { context: 'Allu decision search' });
+      return Drupal.t(
+        'Short-term land leasing',
+        {},
+        { context: 'Allu decision search' },
+      );
     default:
       throw new Error('Unknown decision type');
   }
@@ -36,17 +52,29 @@ export const matchTypeLabel = (type: string) => {
  */
 export const matchTypeValueFromLabel = (label: string) => {
   switch (label) {
-    case Drupal.t('Excavation announcement', {}, { context: 'Allu decision search' }):
+    case Drupal.t('Excavation work', {}, { context: 'Allu decision search' }):
       return 'EXCAVATION_ANNOUNCEMENT';
-    case Drupal.t('Area rental', {}, { context: 'Allu decision search' }):
+    case Drupal.t('Area leasing', {}, { context: 'Allu decision search' }):
       return 'AREA_RENTAL';
-    case Drupal.t('Temporary traffic announcement', {}, { context: 'Allu decision search' }):
+    case Drupal.t(
+      'Temporary traffic arrangement',
+      {},
+      { context: 'Allu decision search' },
+    ):
       return 'TEMPORARY_TRAFFIC_ARRANGEMENTS';
-    case Drupal.t('Placement contract', {}, { context: 'Allu decision search' }):
+    case Drupal.t(
+      'Placement agreement',
+      {},
+      { context: 'Allu decision search' },
+    ):
       return 'PLACEMENT_CONTRACT';
     case Drupal.t('Event', {}, { context: 'Allu decision search' }):
       return 'EVENT';
-    case Drupal.t('Short term rental', {}, { context: 'Allu decision search' }):
+    case Drupal.t(
+      'Short-term land leasing',
+      {},
+      { context: 'Allu decision search' },
+    ):
       return 'SHORT_TERM_RENTAL';
     default:
       throw new Error('Unknown decision type label');
