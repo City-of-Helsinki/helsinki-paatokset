@@ -2349,17 +2349,17 @@
         },
         {
             "name": "drupal/ckeditor5_paste_filter",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/ckeditor5_paste_filter.git",
-                "reference": "1.1.0"
+                "reference": "1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ckeditor5_paste_filter-1.1.0.zip",
-                "reference": "1.1.0",
-                "shasum": "cb0ea9c1a0b070e38ad4caeefe05f8a1d0e81c9f"
+                "url": "https://ftp.drupal.org/files/projects/ckeditor5_paste_filter-1.1.1.zip",
+                "reference": "1.1.1",
+                "shasum": "a028a8a744c64a0dcc5168e00deec7d38119c1ce"
             },
             "require": {
                 "drupal/core": "^9.3 || ^10 || ^11"
@@ -2367,8 +2367,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.1.0",
-                    "datestamp": "1740597815",
+                    "version": "1.1.1",
+                    "datestamp": "1765403902",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3680,20 +3680,20 @@
         },
         {
             "name": "drupal/entity_reference_revisions",
-            "version": "1.12.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_reference_revisions.git",
-                "reference": "8.x-1.12"
+                "reference": "8.x-1.13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_reference_revisions-8.x-1.12.zip",
-                "reference": "8.x-1.12",
-                "shasum": "2a2ff8617c7ce01b56df1caaf0a563da04948e26"
+                "url": "https://ftp.drupal.org/files/projects/entity_reference_revisions-8.x-1.13.zip",
+                "reference": "8.x-1.13",
+                "shasum": "717ecc88566a3ed0aaec031043fe7a6913535862"
             },
             "require": {
-                "drupal/core": "^9 || ^10 || ^11"
+                "drupal/core": "^10.2 || ^11"
             },
             "require-dev": {
                 "drupal/diff": "^1 || ^2"
@@ -3701,8 +3701,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.12",
-                    "datestamp": "1722804497",
+                    "version": "8.x-1.13",
+                    "datestamp": "1765498075",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4414,16 +4414,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.16.9",
+            "version": "6.16.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "885611a3574d536040e5f20a23ed15bb955f4637"
+                "reference": "91d2d262988d9b165c86d5b5ca03f2364cc0301c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/885611a3574d536040e5f20a23ed15bb955f4637",
-                "reference": "885611a3574d536040e5f20a23ed15bb955f4637",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/91d2d262988d9b165c86d5b5ca03f2364cc0301c",
+                "reference": "91d2d262988d9b165c86d5b5ca03f2364cc0301c",
                 "shasum": ""
             },
             "require": {
@@ -4442,10 +4442,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.16.9",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.16.11",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2025-12-08T12:43:39+00:00"
+            "time": "2025-12-11T10:17:34+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4725,16 +4725,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "4.16.71",
+            "version": "4.16.72",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "c4e1fa617a2a1f200ae1359c0a10ca4d18cc911e"
+                "reference": "4c5a95786f6cde61b4463bf26fed91949c0b52f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/c4e1fa617a2a1f200ae1359c0a10ca4d18cc911e",
-                "reference": "c4e1fa617a2a1f200ae1359c0a10ca4d18cc911e",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/4c5a95786f6cde61b4463bf26fed91949c0b52f4",
+                "reference": "4c5a95786f6cde61b4463bf26fed91949c0b52f4",
                 "shasum": ""
             },
             "require": {
@@ -4857,10 +4857,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.71",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/4.16.72",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2025-12-09T11:29:43+00:00"
+            "time": "2025-12-12T10:33:14+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -5551,17 +5551,17 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "7.0.11",
+            "version": "7.0.12",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "7.0.11"
+                "reference": "7.0.12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-7.0.11.zip",
-                "reference": "7.0.11",
-                "shasum": "2ad2b67997dad8c6b3f4cbca8e15a78594e324f6"
+                "url": "https://ftp.drupal.org/files/projects/linkit-7.0.12.zip",
+                "reference": "7.0.12",
+                "shasum": "be60722e708e12be1596a804e816652c3c7ea815"
             },
             "require": {
                 "drupal/core": "^10.1 || ^11"
@@ -5569,8 +5569,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "7.0.11",
-                    "datestamp": "1762459908",
+                    "version": "7.0.12",
+                    "datestamp": "1765468273",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -17101,16 +17101,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.3.0",
+            "version": "5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8"
+                "reference": "b5a44b6391a3bbb75c9f2b73e1ef03d6045e1e20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8",
-                "reference": "feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/b5a44b6391a3bbb75c9f2b73e1ef03d6045e1e20",
+                "reference": "b5a44b6391a3bbb75c9f2b73e1ef03d6045e1e20",
                 "shasum": ""
             },
             "require": {
@@ -17160,9 +17160,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/5.3.0"
+                "source": "https://github.com/jsonrainbow/json-schema/tree/5.3.1"
             },
-            "time": "2024-07-06T21:00:26+00:00"
+            "time": "2025-12-12T08:56:22+00:00"
         },
         {
             "name": "lullabot/mink-selenium2-driver",
