@@ -109,6 +109,7 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'base hook' => 'entity',
       'template' => 'block/block--frontpage-calendar',
     ],
+    // @todo remove once new browse page is in place.
     'block__policymaker_listing' => [
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-listing',
@@ -402,6 +403,8 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
 
 /**
  * Preprocess policymaker listing block.
+ *
+ * @todo remove once new browse page is in place.
  */
 function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variables): void {
   // Helpful $content variable for templates.
