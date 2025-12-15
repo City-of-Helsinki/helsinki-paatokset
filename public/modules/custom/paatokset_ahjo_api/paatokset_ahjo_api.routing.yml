@@ -285,3 +285,12 @@ paatokset_ahjo_openid.token:
   options:
     _auth: ['cookie', 'key_auth']
     no_cache: TRUE
+
+paatokset_ahjo_api.browse_policymakers:
+  path: '/decisionmakers/browse-decisionmakers/{policymaker_slug}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\BrowseController::build'
+    _title: 'Browse decisionmakers'
+    policymaker_slug: ~
+  requirements:
+    _permission: 'access content'
