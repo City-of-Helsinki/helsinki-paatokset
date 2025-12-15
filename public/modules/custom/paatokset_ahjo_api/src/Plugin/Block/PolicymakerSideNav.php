@@ -81,6 +81,11 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    * {@inheritDoc}
    */
   public function build(): array {
+    // Skip block if the policymaker can't be found.
+    if ($this->policymakerService->getPolicymaker() === NULL) {
+      return [];
+    }
+
     return [
       '#theme' => 'policymaker_side_navigation',
       '#items' => $this->items,

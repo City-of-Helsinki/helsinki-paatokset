@@ -474,7 +474,7 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
     }
   }
 
-  return isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first']);
+  return isset($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_first']['policymakersidenavigation']['#items']);
 }
 
 /**
