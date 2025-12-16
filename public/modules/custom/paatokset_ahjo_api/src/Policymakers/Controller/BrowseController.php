@@ -18,10 +18,10 @@ class BrowseController extends ControllerBase {
   /**
    * Build policymaker browse page.
    *
-   * @param string|null $policymaker_slug
+   * @param string|null $slug
    *   Policymaker slug.
    */
-  public function build(string|null $policymaker_slug): array {
+  public function build(string|null $slug): array {
     // Load policymaker from slug.
     return [];
   }

@@ -12,12 +12,15 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -1045,6 +1048,54 @@ function paatokset_ahjo_api_entity_extra_field_info(): array {
   ];
 
   return $extra;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function paatokset_ahjo_api_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions): array {
+  $fields = [];
+
+  if ($entity_type->id() === 'node' && $bundle === 'policymaker') {
+    $storageDefinitions = paatokset_ahjo_api_entity_field_storage_info($entity_type);
+
+    foreach ($storageDefinitions as $name => $definition) {
+      $fields[$name] = FieldDefinition::createFromFieldStorageDefinition($definition)
+        ->setLabel(new TranslatableMarkup('URL slug', [], ['context' => 'Paatokset Ahjo API']))
+        ->setRequired(TRUE)
+        ->setTranslatable(TRUE)
+        ->addConstraint('UniqueField');
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_field_storage_info().
+ */
+function paatokset_ahjo_api_entity_field_storage_info(EntityTypeInterface $entity_type): array {
+  $fields = [];
+
+  if ($entity_type->id() === 'node') {
+    // URL slug for policymakers.
+    $fields['slug'] = BundleFieldDefinition::create('string')
+      ->setName('slug')
+      ->setLabel(new TranslatableMarkup('URL slug', [], ['context' => 'Paatokset Ahjo API']))
+      ->setTargetEntityTypeId('node')
+      ->setTargetBundle('policymaker')
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(FALSE)
+      ->setSettings([
+        'max_length' => 196,
+      ])
+      ->addConstraint('UniqueField')
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', FALSE);
+  }
+
+  return $fields;
 }
 
 /**
