@@ -73,7 +73,7 @@ final class AhjoInitiativeSource extends AhjoSourceBase {
   public function getIds(): array {
     return [
       'Trustee' => ['type' => 'string'],
-      'Date' => ['type' => 'string'],
+      'FileURI' => ['type' => 'string'],
     ];
   }
 
