@@ -23,6 +23,7 @@ enum OrganizationType : int {
   case DIVISION = 4;
   case TEAM = 20;
   case BUREAU = 8;
+  case UNIT = 14;
   case SECTOR = 7;
   case CITY = 13;
   case SERVICE_PACKAGE = 17;

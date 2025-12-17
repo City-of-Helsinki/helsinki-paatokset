@@ -82,15 +82,15 @@ class PathProcessorTest extends KernelTestBase {
     $tests = [
       'fi' => [
         '/paattajat/selaa-paattajia' => [],
-        '/paattajat/selaa-paattajia/kaupunginvaltuusto' => ['policymaker_slug' => 'kaupunginvaltuusto'],
+        '/paattajat/selaa-paattajia/kaupunginvaltuusto' => ['org' => 'kaupunginvaltuusto'],
       ],
       'sv' => [
         '/beslutsfattare/bladra-bland-beslutsfattare' => [],
-        '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige' => ['policymaker_slug' => 'stadsfullmäktige'],
+        '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige' => ['org' => 'stadsfullmäktige'],
       ],
       'en' => [
         '/decisionmakers/browse-decisionmakers' => [],
-        '/decisionmakers/browse-decisionmakers/city-council' => ['policymaker_slug' => 'city-council'],
+        '/decisionmakers/browse-decisionmakers/city-council' => ['org' => 'city-council'],
       ],
     ];
 

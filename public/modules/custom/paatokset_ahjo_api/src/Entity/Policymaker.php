@@ -237,4 +237,16 @@ class Policymaker extends Node implements AhjoEntityInterface {
     ]);
   }
 
+  /**
+   * Get policymaker url.
+   *
+   * Twig sandbox forbids toURL method, which is required
+   * by browse page template. This is a workaround to allow
+   * accessing the URL in twig.
+   * @todo Remove when https://www.drupal.org/i/2907810 is merged
+   */
+  public function getUrl(): Url {
+    return $this->toUrl();
+  }
+
 }

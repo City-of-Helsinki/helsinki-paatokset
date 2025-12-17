@@ -175,4 +175,18 @@ class Organization extends RemoteEntityBase implements EntityPublishedInterface,
     return $this->id();
   }
 
+  /**
+   * Gets the organization type.
+   */
+  public function getOranizationType(): OrganizationType {
+    return OrganizationType::tryFrom($this->get('type')->value) ?? OrganizationType::UNKNOWN;
+  }
+
+  /**
+   * Returns false if this organization is dissolved.
+   */
+  public function existing(): bool {
+    return boolval($this->get('existing')->value);
+  }
+
 }
