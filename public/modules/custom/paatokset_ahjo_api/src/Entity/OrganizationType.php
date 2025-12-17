@@ -7,18 +7,26 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 /**
  * Enum for organization types.
  */
-enum OrganizationType {
+enum OrganizationType : int {
 
   /**
    * Policymaker roles for trustees (not decisionmaker organizations).
    */
   const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
 
-  case TRUSTEE;
-  case OFFICE_HOLDER;
-  case COUNCIL;
-  case CABINET;
-  case BOARD;
+  case TRUSTEE = 19;
+  case OFFICE_HOLDER = 12;
+  case COUNCIL = 1;
+  case BOARD = 2;
+  case COMMITTEE = 5;
+  case WORKING_COMMITTEE = 15;
+  case DIVISION = 4;
+  case TEAM = 20;
+  case BUREAU = 8;
+  case SECTOR = 7;
+  case CITY = 13;
+  case SERVICE_PACKAGE = 17;
+  case UNKNOWN = -1;
 
   /**
    * True if organization type is considered trustee (?).
@@ -28,22 +36,25 @@ enum OrganizationType {
   }
 
   /**
-   * True if organization type is considered council or cabinet.
+   * True if organization type is considered council or board.
    */
-  public function isCouncilOrCabinet(): bool {
-    return in_array($this, [self::COUNCIL, self::CABINET]);
+  public function isCouncilOrBoard(): bool {
+    return in_array($this, [self::COUNCIL, self::BOARD]);
   }
 
   /**
-   * Convert Ahjo Organization/Type field to TrusteeType enum.
+   * Convert Ahjo Organization/Type field to OrganizationType enum.
    */
   public static function tryFromOrganizationType(string $type): ?self {
     return match (strtolower($type)) {
       'luottamushenkilö' => OrganizationType::TRUSTEE,
       'viranhaltija' => OrganizationType::OFFICE_HOLDER,
       'valtuusto' => OrganizationType::COUNCIL,
-      'hallitus' => OrganizationType::CABINET,
-      'lautakunta', 'toimi-/neuvottelukunta', 'jaosto' => OrganizationType::BOARD,
+      'hallitus' => OrganizationType::BOARD,
+      'lautakunta' => OrganizationType::COMMITTEE,
+      'toimi-/neuvottelukunta' => OrganizationType::WORKING_COMMITTEE,
+      'jaosto' => OrganizationType::DIVISION,
+      'tiimi' => OrganizationType::TEAM,
       // There might be other organization
       // types that we are not using.
       default => NULL,

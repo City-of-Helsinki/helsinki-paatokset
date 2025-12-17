@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -169,4 +171,36 @@ function paatokset_ahjo_api_update_9012(): void {
 
     $storage->resetCache($batch);
   }
+}
+
+/**
+ * Add type and sync_attempts fields to ahjo_organization entity.
+ */
+function paatokset_ahjo_api_update_9013(): void {
+  $entityDefinitionUpdater = \Drupal::entityDefinitionUpdateManager();
+
+  $fieldDefinition = BaseFieldDefinition::create('integer')
+    ->setLabel(new TranslatableMarkup('Type ID'))
+    ->setRequired(TRUE)
+    ->setReadOnly(TRUE)
+    ->setTranslatable(FALSE);
+
+  $entityDefinitionUpdater->installFieldStorageDefinition('type', 'ahjo_organization', 'paatokset_ahjo_api', $fieldDefinition);
+
+  $fieldDefinition = BaseFieldDefinition::create('integer')
+    ->setLabel(new TranslatableMarkup('Sync attempts'))
+    ->setDefaultValue(0)
+    ->setReadOnly(TRUE);
+
+  $entityDefinitionUpdater->installFieldStorageDefinition('sync_attempts', 'ahjo_organization', 'paatokset_ahjo_api', $fieldDefinition);
+}
+
+/**
+ * Set default value for sync_attempts field.
+ */
+function paatokset_ahjo_api_update_9014(): void {
+  \Drupal::database()
+    ->update('paatokset_ahjo_organization_data')
+    ->fields(['sync_attempts' => 0])
+    ->execute();
 }

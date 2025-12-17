@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
-use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedInterface;
@@ -13,7 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Entity\RemoteEntityInterface;
+use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 
 /**
  * Defines the decision entity class.
@@ -60,7 +59,7 @@ use Drupal\helfi_api_base\Entity\RemoteEntityInterface;
  *   },
  * )
  */
-class Organization extends ContentEntityBase implements EntityPublishedInterface, EntityChangedInterface, RemoteEntityInterface, AhjoEntityInterface {
+class Organization extends RemoteEntityBase implements EntityPublishedInterface, EntityChangedInterface, AhjoEntityInterface {
 
   use EntityPublishedTrait;
   use EntityChangedTrait;
@@ -68,8 +67,16 @@ class Organization extends ContentEntityBase implements EntityPublishedInterface
   /**
    * {@inheritdoc}
    */
+  public const MAX_SYNC_ATTEMPTS = 0;
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Field from RemoteEntityBase we don't need.
+    unset($fields['changed']);
 
     // Encode "Existing" field from Ahjo into entity published status.
     $fields += self::publishedBaseFieldDefinitions($entity_type);
@@ -85,6 +92,12 @@ class Organization extends ContentEntityBase implements EntityPublishedInterface
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setSetting('max_length', 255);
+
+    $fields['type'] = BaseFieldDefinition::create('integer')
+      ->setLabel(new TranslatableMarkup('Type ID'))
+      ->setRequired(TRUE)
+      ->setReadOnly(TRUE)
+      ->setTranslatable(FALSE);
 
     $fields['organization_above'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(new TranslatableMarkup('Organization level above'))
