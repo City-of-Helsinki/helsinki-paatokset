@@ -4,7 +4,7 @@ import type { Decision } from '../types/Decision';
 
 export const ResultCard = ({ address, approval_type, document_created, document_type, label, url }: Decision) => {
   const getCardTitle = () => {
-    let result = matchTypeLabel(document_type[0]);
+    const result = matchTypeLabel(document_type[0]);
     return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
   };
 
