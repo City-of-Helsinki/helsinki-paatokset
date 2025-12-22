@@ -84,7 +84,7 @@ display:
           label: 'Регистрация модуля'
         count:
           label: 'Используемое количество'
-          format_plural_string: !!binary MQNAY291bnQ=
+          format_plural_string: !!binary QGNvdW50A0Bjb3VudANAY291bnRbMl0=
       title: 'Использование файла'
       arguments:
         fid:

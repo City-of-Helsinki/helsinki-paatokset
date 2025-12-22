@@ -16,15 +16,15 @@ display:
         created:
           label: Создано
         enabled:
-          label: Enabled
+          label: Включено
           separator: ', '
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Вперёд
+            previous: Назад
+            first: Первый
+            last: Последний
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
@@ -74,7 +74,7 @@ display:
             label: Собственная
         enabled:
           expose:
-            label: Enabled
+            label: Включено
   page_1:
     display_title: Страница
     display_options:

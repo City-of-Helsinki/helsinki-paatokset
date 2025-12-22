@@ -8,10 +8,10 @@ display:
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Вперёд
+            previous: Назад
+            first: Первый
+            last: Последний
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
@@ -28,4 +28,4 @@ display:
           exception:
             title: Все
   service_units:
-    display_title: Block
+    display_title: Блок
