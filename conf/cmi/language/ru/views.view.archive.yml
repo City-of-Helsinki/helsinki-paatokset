@@ -25,7 +25,7 @@ display:
         created_year_month:
           title: '{{ arguments.created_year_month }}'
   block_1:
-    display_title: Block
+    display_title: Блок
     display_options:
       arguments:
         created_year_month:

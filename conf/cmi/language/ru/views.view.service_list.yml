@@ -8,10 +8,10 @@ display:
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Вперёд
+            previous: Назад
+            first: Первый
+            last: Последний
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
@@ -32,9 +32,9 @@ display:
           exception:
             title: Все
   block:
-    display_title: Block
+    display_title: Блок
   block_search:
-    display_title: Block
+    display_title: Блок
     display_options:
       fields:
         name:
@@ -48,17 +48,17 @@ display:
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Вперёд
+            previous: Назад
+            first: Первый
+            last: Последний
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
             offset_label: Пропустить
       exposed_form:
         options:
-          submit_button: Search
+          submit_button: Поиск
           reset_button_label: Сбросить
           exposed_sorts_label: 'Сортировать по'
           sort_asc_label: 'По возрастанию'
@@ -68,7 +68,7 @@ display:
           exception:
             title: Все
   entity_reference_1:
-    display_title: 'Entity Reference'
+    display_title: 'Ссылка на сущность'
     display_options:
       fields:
         name_override:
