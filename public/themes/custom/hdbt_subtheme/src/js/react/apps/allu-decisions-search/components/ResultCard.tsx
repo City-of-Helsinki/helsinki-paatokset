@@ -2,29 +2,9 @@ import CardItem from '@/react/common/Card';
 import { matchTypeLabel } from '../helpers';
 import type { Decision } from '../types/Decision';
 
-const getShortAddress = (address: string) => {
-  const regex = /(?:^|(?:[.!?]\s))(\w+)/;
-  const matches = address.match(regex);
-
-  if (matches?.length) {
-    return matches[0];
-  }
-
-  return null;
-};
-
 export const ResultCard = ({ address, approval_type, document_created, document_type, label, url }: Decision) => {
   const getCardTitle = () => {
     let result = matchTypeLabel(document_type[0]);
-
-    if (address?.length) {
-      const shortAddress = getShortAddress(address[0]);
-      result =
-        shortAddress === null || shortAddress === 'null'
-          ? result
-          : `${result}, ${shortAddress}`;
-    }
-
     return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
   };
 
@@ -36,10 +16,12 @@ export const ResultCard = ({ address, approval_type, document_created, document_
   };
 
   const getFullAddress = () => {
-    if (!address?.[0]) {
+    // Make sure that the address is not displayed if it is null, 'null' or undefined.
+    if (!address?.[0] || address?.[0] === 'null' || address?.[0] === null) {
       return '';
     }
 
+    // Don't let the addresses be too long.
     if (address[0].length > 165) {
       return `${address[0].slice(0, 165)}...`;
     }

@@ -125,9 +125,10 @@ export const formQuery = (selections: Selections) => {
   let should: estypes.QueryDslQueryContainer[] = [];
 
   if (selections.q) {
+    const searchTerm = `*${selections.q}*`.toLowerCase();
     should = should.concat([
-      { match_phrase_prefix: { address_fulltext: selections.q } },
-      { match: { label: selections.q } },
+      { wildcard: { address_fulltext: { value: searchTerm, case_insensitive: true } } },
+      { wildcard: { label: { value: searchTerm, case_insensitive: true } } },
     ]);
   }
 
@@ -138,7 +139,7 @@ export const formQuery = (selections: Selections) => {
 
   const sort: estypes.SortCombinations[] = [{ document_created: { order: 'desc' } }];
 
-  const { _page, ...rest } = selections;
+  const { page: _page, ...rest } = selections;
   if (Object.keys(rest).length) {
     sort.unshift({ _score: { order: 'desc' } });
   }
