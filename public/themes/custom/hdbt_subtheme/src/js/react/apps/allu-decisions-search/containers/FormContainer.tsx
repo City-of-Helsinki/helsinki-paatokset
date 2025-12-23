@@ -54,16 +54,8 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
         className='hdbt-search__filter hdbt-search--react__text-field'
         defaultValue={selections.q}
         id='q'
-        label={Drupal.t(
-          'Name of street or park',
-          {},
-          { context: 'Allu decision search' },
-        )}
-        placeholder={Drupal.t(
-          'Eg. Mannerheimintie',
-          {},
-          { context: 'Allu decision search' },
-        )}
+        label={Drupal.t('Name of street or park', {}, { context: 'Allu decision search' })}
+        placeholder={Drupal.t('Eg. Mannerheimintie', {}, { context: 'Allu decision search' })}
         type='search'
       />
       <div className='hdbt-search--react__dropdown-filters'>
@@ -76,16 +68,8 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           onChange={setType}
           options={typeOptions || []}
           texts={{
-            label: Drupal.t(
-              'Type of decision',
-              {},
-              { context: 'Allu decision search' },
-            ),
-            placeholder: Drupal.t(
-              'All types',
-              {},
-              { context: 'Allu decision search' },
-            ),
+            label: Drupal.t('Type of decision', {}, { context: 'Allu decision search' }),
+            placeholder: Drupal.t('All types', {}, { context: 'Allu decision search' }),
           }}
           value={type}
         />

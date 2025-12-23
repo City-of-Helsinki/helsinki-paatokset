@@ -19,10 +19,7 @@ export const ResultCard = ({ address, approval_type, document_created, document_
 
     if (address?.length) {
       const shortAddress = getShortAddress(address[0]);
-      result =
-        shortAddress === null || shortAddress === 'null'
-          ? result
-          : `${result}, ${shortAddress}`;
+      result = shortAddress === null || shortAddress === 'null' ? result : `${result}, ${shortAddress}`;
     }
 
     return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
