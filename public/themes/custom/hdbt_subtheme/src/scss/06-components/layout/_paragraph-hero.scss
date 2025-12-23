@@ -3,24 +3,6 @@
 }
 
 // Hero section for search form
-.hero--paatokset-search-bar {
-  margin-bottom: $spacing-double;
-
-  h1 {
-    @include font('h1');
-    hyphens: none;
-  }
-
-  @include breakpoint($breakpoint-xl) {
-    margin-bottom: $spacing-quadruple;
-  }
-
-  .hero__description {
-    @include font('body');
-  }
-
-  .hero__text-content {
-    padding-bottom: $spacing-double;
-    padding-top: $spacing-double;
-  }
+.paatokset-decision-search-form {
+  margin-top: $spacing;
 }

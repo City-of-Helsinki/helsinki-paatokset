@@ -44,6 +44,14 @@ function paatokset_search_theme(): array {
         'search' => [],
       ],
     ],
+    'frontpage_search_hero_block' => [
+      'variables' => [
+        'hero_description' => NULL,
+        'hero_title' => NULL,
+        'form' => [],
+      ],
+      'template' => 'frontpage-search-hero-block',
+    ],
   ];
 }
 
