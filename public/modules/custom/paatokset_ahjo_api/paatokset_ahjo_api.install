@@ -118,3 +118,10 @@ function paatokset_ahjo_api_update_9010(): void {
     // but we are only replacing the values with an allowed_values_function.
   }
 }
+
+/**
+ * Re-fetch ahjo initiatives.
+ */
+function paatokset_ahjo_api_update_9011(): void {
+  \Drupal::database()->schema()->dropTable('migrate_map_ahjo_initiatives');
+}
