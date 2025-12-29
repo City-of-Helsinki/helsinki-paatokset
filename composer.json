@@ -43,6 +43,7 @@
         "weitzman/drupal-test-traits": "^2.0"
     },
     "conflict": {
+        "drupal/core-composer-scaffold": "<10.5 || >=11",
         "drupal/drupal": "*"
     },
     "autoload": {

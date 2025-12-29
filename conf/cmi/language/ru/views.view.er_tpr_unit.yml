@@ -8,8 +8,8 @@ display:
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
+            next: Вперёд
+            previous: Назад
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
@@ -30,7 +30,7 @@ display:
           exception:
             title: Все
   entity_reference:
-    display_title: 'Entity Reference'
+    display_title: 'Ссылка на сущность'
     display_options:
       fields:
         name_override:

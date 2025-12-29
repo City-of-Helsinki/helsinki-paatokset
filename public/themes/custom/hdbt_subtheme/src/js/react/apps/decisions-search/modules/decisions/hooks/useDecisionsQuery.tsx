@@ -5,10 +5,7 @@ import { DateTime } from 'luxon';
 import { useMemo } from 'react';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
-import {
-  getAdvancedBoostQuery,
-  getBaseSearchTermQuery,
-} from '../../../common/utils/Query';
+import { getAdvancedBoostQuery, getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
 import { DecisionIndex } from '../enum/IndexFields';
 import { OrganizationTypes } from '../enum/OrganizationTypes';
@@ -16,10 +13,7 @@ import { SortOptions } from '../enum/SortOptions';
 import { submittedStateAtom } from '../store';
 
 // Boosted fields for full text search
-const dataFields = [
-  `${DecisionIndex.SUBJECT}^5`,
-  `${DecisionIndex.ISSUE_SUBJECT}^2`,
-];
+const dataFields = [`${DecisionIndex.SUBJECT}^5`, `${DecisionIndex.ISSUE_SUBJECT}^2`];
 
 // Fields to be returned in search results
 const fields = [
@@ -37,63 +31,36 @@ const fields = [
   DecisionIndex.UNIQUE_ISSUE_ID,
 ];
 
-export const useDecisionsQuery = (
-  customSearchTerm: string,
-): estypes.QueryDslQueryContainer => {
+export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQueryContainer => {
   const submittedState = useAtomValue(submittedStateAtom);
 
   return useMemo(() => {
-    const filter: estypes.QueryDslQueryContainer[] = [
-      { exists: { field: DecisionIndex.MEETING_DATE } },
-    ];
+    const filter: estypes.QueryDslQueryContainer[] = [{ exists: { field: DecisionIndex.MEETING_DATE } }];
     const should: estypes.QueryDslQueryContainer[] = [];
 
     const getSearchTerm = () => {
       if (customSearchTerm) {
         return customSearchTerm;
       }
-      return (
-        submittedState[Components.SEARCHBAR] &&
-        submittedState[Components.SEARCHBAR].trim()
-      );
+      return submittedState[Components.SEARCHBAR] && submittedState[Components.SEARCHBAR].trim();
     };
 
     const searchTerm = getSearchTerm();
     if (searchTerm?.length) {
-      getBaseSearchTermQuery(searchTerm, dataFields).forEach((item) =>
-        should.push(item),
-      );
-      getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach((item) =>
-        should.push(item),
-      );
-      [DecisionIndex.DECISION_CONTENT, DecisionIndex.DECISION_MOTION].forEach(
-        (field) =>
-          should.push({
-            constant_score: {
-              filter: { match: { [field]: searchTerm } },
-              boost: 1.0,
-            },
-          }),
+      getBaseSearchTermQuery(searchTerm, dataFields).forEach((item) => should.push(item));
+      getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach((item) => should.push(item));
+      [DecisionIndex.DECISION_CONTENT, DecisionIndex.DECISION_MOTION].forEach((field) =>
+        should.push({ constant_score: { filter: { match: { [field]: searchTerm } }, boost: 1.0 } }),
       );
     }
 
     if (searchTerm && isOperatorSearch(searchTerm)) {
-      filter.push({
-        simple_query_string: {
-          query: searchTerm,
-          default_operator: 'or',
-          analyze_wildcard: true,
-        },
-      });
+      filter.push({ simple_query_string: { query: searchTerm, default_operator: 'or', analyze_wildcard: true } });
     }
 
     const categoryFilter = submittedState[Components.CATEGORY];
     if (categoryFilter.length) {
-      filter.push({
-        terms: {
-          top_category_code: categoryFilter.map((category) => category.value),
-        },
-      });
+      filter.push({ terms: { top_category_code: categoryFilter.map((category) => category.value) } });
     }
 
     const fromFilter = submittedState[Components.FROM];
@@ -102,8 +69,9 @@ export const useDecisionsQuery = (
 
     [fromFilter, toFilter].forEach((date, index) => {
       if (date) {
-        dateQuery.range.meeting_date[index === 0 ? 'gte' : 'lte'] =
-          DateTime.fromFormat(date, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+        dateQuery.range.meeting_date[index === 0 ? 'gte' : 'lte'] = DateTime.fromFormat(date, HDS_DATE_FORMAT).toFormat(
+          'yyyy-MM-dd',
+        );
       }
     });
 
@@ -113,11 +81,7 @@ export const useDecisionsQuery = (
 
     const dmSelection = submittedState[Components.DECISIONMAKER];
     if (dmSelection.length) {
-      filter.push({
-        terms: {
-          [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm) => dm.value),
-        },
-      });
+      filter.push({ terms: { [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm) => dm.value) } });
     }
 
     [Components.BODIES, Components.TRUSTEES].forEach((component) => {
@@ -128,12 +92,7 @@ export const useDecisionsQuery = (
             ? {
                 bool: {
                   must_not: {
-                    terms: {
-                      [DecisionIndex.ORG_TYPE]: [
-                        OrganizationTypes.OFFICIAL,
-                        OrganizationTypes.TRUSTEE,
-                      ],
-                    },
+                    terms: { [DecisionIndex.ORG_TYPE]: [OrganizationTypes.OFFICIAL, OrganizationTypes.TRUSTEE] },
                   },
                 },
               }
@@ -196,38 +155,17 @@ export const useDecisionsQuery = (
 
     const result = {
       _source: false,
-      aggs: {
-        total_issues: {
-          cardinality: {
-            field: DecisionIndex.UNIQUE_ISSUE_ID,
-            precision_threshold: 10000,
-          },
-        },
-      },
+      aggs: { total_issues: { cardinality: { field: DecisionIndex.UNIQUE_ISSUE_ID, precision_threshold: 10000 } } },
       collapse: {
         field: DecisionIndex.UNIQUE_ISSUE_ID,
-        inner_hits: {
-          _source: false,
-          fields,
-          name: 'preferred_version',
-          sort: innerHitSort,
-        },
+        inner_hits: { _source: false, fields, name: 'preferred_version', sort: innerHitSort },
       },
       from: size * (page - 1),
       query: {
         function_score: {
           query,
           functions: [
-            {
-              gauss: {
-                [DecisionIndex.MEETING_DATE]: {
-                  decay: 0.5,
-                  origin: 'now',
-                  scale: '365d',
-                },
-              },
-              weight: 50,
-            },
+            { gauss: { [DecisionIndex.MEETING_DATE]: { decay: 0.5, origin: 'now', scale: '365d' } }, weight: 50 },
           ],
           boost_mode: 'sum',
           score_mode: 'sum',

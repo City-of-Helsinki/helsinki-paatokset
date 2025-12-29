@@ -13,21 +13,21 @@ export const matchTypeLabel = (type: string) => {
   switch (type) {
     case 'EXCAVATION_ANNOUNCEMENT':
       return Drupal.t(
-        'Excavation announcement',
+        'Excavation work',
         {},
         { context: 'Allu decision search' },
       );
     case 'AREA_RENTAL':
-      return Drupal.t('Area rental', {}, { context: 'Allu decision search' });
+      return Drupal.t('Area leasing', {}, { context: 'Allu decision search' });
     case 'TEMPORARY_TRAFFIC_ARRANGEMENTS':
       return Drupal.t(
-        'Temporary traffic announcement',
+        'Temporary traffic arrangement',
         {},
         { context: 'Allu decision search' },
       );
     case 'PLACEMENT_CONTRACT':
       return Drupal.t(
-        'Placement contract',
+        'Placement agreement',
         {},
         { context: 'Allu decision search' },
       );
@@ -35,7 +35,7 @@ export const matchTypeLabel = (type: string) => {
       return Drupal.t('Event', {}, { context: 'Allu decision search' });
     case 'SHORT_TERM_RENTAL':
       return Drupal.t(
-        'Short term rental',
+        'Short-term land leasing',
         {},
         { context: 'Allu decision search' },
       );
@@ -52,29 +52,29 @@ export const matchTypeLabel = (type: string) => {
  */
 export const matchTypeValueFromLabel = (label: string) => {
   switch (label) {
-    case Drupal.t(
-      'Excavation announcement',
-      {},
-      { context: 'Allu decision search' },
-    ):
+    case Drupal.t('Excavation work', {}, { context: 'Allu decision search' }):
       return 'EXCAVATION_ANNOUNCEMENT';
-    case Drupal.t('Area rental', {}, { context: 'Allu decision search' }):
+    case Drupal.t('Area leasing', {}, { context: 'Allu decision search' }):
       return 'AREA_RENTAL';
     case Drupal.t(
-      'Temporary traffic announcement',
+      'Temporary traffic arrangement',
       {},
       { context: 'Allu decision search' },
     ):
       return 'TEMPORARY_TRAFFIC_ARRANGEMENTS';
     case Drupal.t(
-      'Placement contract',
+      'Placement agreement',
       {},
       { context: 'Allu decision search' },
     ):
       return 'PLACEMENT_CONTRACT';
     case Drupal.t('Event', {}, { context: 'Allu decision search' }):
       return 'EVENT';
-    case Drupal.t('Short term rental', {}, { context: 'Allu decision search' }):
+    case Drupal.t(
+      'Short-term land leasing',
+      {},
+      { context: 'Allu decision search' },
+    ):
       return 'SHORT_TERM_RENTAL';
     default:
       throw new Error('Unknown decision type label');
@@ -102,24 +102,16 @@ export const formQuery = (selections: Selections) => {
   ];
 
   if (selections?.type?.length) {
-    must.push({
-      terms: { document_type: selections.type.map((type) => type.value) },
-    });
+    must.push({ terms: { document_type: selections.type.map((type) => type.value) } });
   }
 
   const range: estypes.QueryDslRangeQuery = {};
 
   if (selections.start) {
-    range.gte = DateTime.fromFormat(selections.start, HDS_DATE_FORMAT)
-      .startOf('day')
-      .toUnixInteger()
-      .toString();
+    range.gte = DateTime.fromFormat(selections.start, HDS_DATE_FORMAT).startOf('day').toUnixInteger().toString();
   }
   if (selections.end) {
-    range.lte = DateTime.fromFormat(selections.end, HDS_DATE_FORMAT)
-      .endOf('day')
-      .toUnixInteger()
-      .toString();
+    range.lte = DateTime.fromFormat(selections.end, HDS_DATE_FORMAT).endOf('day').toUnixInteger().toString();
   }
 
   if (Object.keys(range).length && body?.query?.bool) {
@@ -144,9 +136,7 @@ export const formQuery = (selections: Selections) => {
     body.query.bool.minimum_should_match = 1;
   }
 
-  const sort: estypes.SortCombinations[] = [
-    { document_created: { order: 'desc' } },
-  ];
+  const sort: estypes.SortCombinations[] = [{ document_created: { order: 'desc' } }];
 
   const { _page, ...rest } = selections;
   if (Object.keys(rest).length) {

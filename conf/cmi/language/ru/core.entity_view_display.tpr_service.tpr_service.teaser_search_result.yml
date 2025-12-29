@@ -5,6 +5,6 @@ content:
         EMAIL:
           label: Email
         TELEPHONE:
-          label: Telephone
+          label: Телефон
         PRINTABLE_FORM:
-          label: Form
+          label: Форма
