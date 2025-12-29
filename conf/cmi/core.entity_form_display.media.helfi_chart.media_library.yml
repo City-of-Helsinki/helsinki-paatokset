@@ -46,5 +46,8 @@ hidden:
   field_helfi_chart_url: true
   langcode: true
   path: true
+  publish_on: true
+  scheduler_settings: true
   status: true
   uid: true
+  unpublish_on: true

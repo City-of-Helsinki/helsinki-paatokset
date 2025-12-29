@@ -1,38 +1,41 @@
-uuid: 9d576789-5bde-4589-9c73-d8dcf4772991
+uuid: d5db9b5d-1ee3-41f9-aa36-0687773651d3
 langcode: en
 status: true
 dependencies:
+  config:
+    - system.menu.admin
   module:
-    - role_delegation
+    - taxonomy
     - user
-_core:
-  default_config_hash: J5EbGNdz0YUaSIYKwomyFSOtZjsV9TrBA3qdb3ZwBS0
-id: user_admin_people
-label: Käyttäjät
-module: user
-description: 'Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä.'
-tag: default
-base_table: users_field_data
-base_field: uid
+  enforced:
+    module:
+      - scheduler
+id: scheduler_scheduled_taxonomy_term
+label: 'Scheduled Taxonomy Terms'
+module: views
+description: 'Find and manage scheduled taxonomy terms.'
+tag: ''
+base_table: taxonomy_term_field_data
+base_field: tid
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Master
     display_plugin: default
     position: 0
     display_options:
-      title: Käyttäjät
+      title: 'Scheduled Taxonomy Terms'
       fields:
-        user_bulk_form:
-          id: user_bulk_form
-          table: users
-          field: user_bulk_form
+        taxonomy_term_bulk_form:
+          id: taxonomy_term_bulk_form
+          table: taxonomy_term_data
+          field: taxonomy_term_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: user
-          plugin_id: user_bulk_form
-          label: Massapäivitys
+          entity_type: taxonomy_term
+          plugin_id: bulk_form
+          label: 'Bulk update'
           exclude: false
           alter:
             alter_text: false
@@ -65,7 +68,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -73,17 +76,86 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          action_title: Action
+          include_exclude: exclude
+          selected_actions: {  }
         name:
           id: name
-          table: users_field_data
+          table: taxonomy_term_field_data
           field: name
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: user
+          entity_type: taxonomy_term
           entity_field: name
+          plugin_id: term_name
+          label: Term
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: vid
           plugin_id: field
-          label: Käyttäjätunnus
+          label: Vocabulary
           exclude: false
           alter:
             alter_text: false
@@ -124,15 +196,28 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: user_name
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         status:
           id: status
-          table: users_field_data
+          table: taxonomy_term_field_data
           field: status
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: user
+          entity_type: taxonomy_term
           entity_field: status
           plugin_id: field
           label: Status
@@ -176,279 +261,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          click_sort_column: value
           type: boolean
           settings:
             format: custom
-            format_custom_false: Suljettu
-            format_custom_true: Aktiivinen
-        roles_target_id:
-          id: roles_target_id
-          table: user__roles
-          field: roles_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: user_roles
-          label: Käyttäjäroolit
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: ul
-          separator: ', '
-        created:
-          id: created
-          table: users_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          entity_field: created
-          plugin_id: field
-          label: 'Käyttäjä jo'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: timestamp_ago
-          settings:
-            future_format: '@interval'
-            past_format: '@interval'
-            granularity: 2
-        access:
-          id: access
-          table: users_field_data
-          field: access
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          entity_field: access
-          plugin_id: field
-          label: 'Viimeksi paikalla'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: timestamp_ago
-          settings:
-            future_format: '@interval hence'
-            past_format: '@interval ago'
-            granularity: 2
-        operations:
-          id: operations
-          table: users
-          field: operations
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          plugin_id: entity_operations
-          label: Toimenpiteet
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          destination: true
-        mail:
-          id: mail
-          table: users_field_data
-          field: mail
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          entity_field: mail
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: basic_string
-          settings: {  }
+            format_custom_false: Unpublished
+            format_custom_true: Published
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -459,44 +277,228 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        publish_on:
+          id: publish_on
+          table: taxonomy_term_field_data
+          field: publish_on
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: publish_on
+          plugin_id: field
+          label: 'Publish on'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        unpublish_on:
+          id: unpublish_on
+          table: taxonomy_term_field_data
+          field: unpublish_on
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: unpublish_on
+          plugin_id: field
+          label: 'Unpublish on'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        operations:
+          id: operations
+          table: taxonomy_term_data
+          field: operations
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          plugin_id: entity_operations
+          label: Operations
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          destination: false
       pager:
         type: full
         options:
           offset: 0
-          pagination_heading_level: h4
           items_per_page: 50
-          total_pages: 0
+          total_pages: null
           id: 0
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Suodatin
+          submit_button: Filter
           reset_button: true
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: perm
         options:
-          perm: 'administer users'
+          perm: 'view scheduled taxonomy_term'
       cache:
         type: tag
+        options: {  }
       empty:
         area_text_custom:
           id: area_text_custom
@@ -507,52 +509,40 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Ei saatavilla olevia ihmisiä.'
+          content: 'No scheduled taxonomy terms'
           tokenize: false
-      sorts:
-        created:
-          id: created
-          table: users_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          entity_field: created
-          plugin_id: date
-          order: DESC
-          expose:
-            label: ''
-            field_identifier: created
-          exposed: false
-          granularity: second
+      sorts: {  }
+      arguments: {  }
       filters:
-        combine:
-          id: combine
-          table: views
-          field: combine
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: combine
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: string
           operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: combine_op
-            label: 'Nimi tai sähköposti sisältää'
+            operator_id: name_op
+            label: 'Term name'
             description: ''
             use_operator: false
-            operator: combine_op
+            operator: name_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: user
+            identifier: name
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -565,26 +555,64 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          fields:
-            name: name
-            mail: mail
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: vid_op
+            label: Vocabulary
+            description: ''
+            use_operator: false
+            operator: vid_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: vid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         status:
           id: status
-          table: users_field_data
+          table: taxonomy_term_field_data
           field: status
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: user
+          entity_type: taxonomy_term
           entity_field: status
           plugin_id: boolean
           operator: '='
-          value: '1'
+          value: ''
           group: 1
           exposed: true
           expose:
             operator_id: ''
-            label: ''
+            label: Status
             description: ''
             use_operator: false
             operator: status_op
@@ -598,7 +626,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Status
+            label: 'Published status'
             description: ''
             identifier: status
             optional: true
@@ -609,106 +637,30 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Aktiivinen
+                title: Published
                 operator: '='
                 value: '1'
               2:
-                title: Suljettu
+                title: Unpublished
                 operator: '='
                 value: '0'
-        roles_target_id:
-          id: roles_target_id
-          table: user__roles
-          field: roles_target_id
+        publish_on:
+          id: publish_on
+          table: taxonomy_term_field_revision
+          field: publish_on
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: user_roles
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: roles_target_id_op
-            label: Rooli
-            description: ''
-            use_operator: false
-            operator: roles_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: role
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-        permission:
-          id: permission
-          table: user__roles
-          field: permission
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: user_permissions
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: permission_op
-            label: Käyttöoikeus
-            description: ''
-            use_operator: false
-            operator: permission_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: permission
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-        default_langcode:
-          id: default_langcode
-          table: users_field_data
-          field: default_langcode
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          entity_field: default_langcode
-          plugin_id: boolean
-          operator: '='
-          value: '1'
-          group: 1
+          entity_type: taxonomy_term
+          entity_field: publish_on
+          plugin_id: date
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 2
           exposed: false
           expose:
             operator_id: ''
@@ -724,6 +676,9 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            min_placeholder: null
+            max_placeholder: null
+            placeholder: null
           is_grouped: false
           group_info:
             label: ''
@@ -736,24 +691,26 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        uid_raw:
-          id: uid_raw
-          table: users_field_data
-          field: uid_raw
+        unpublish_on:
+          id: unpublish_on
+          table: taxonomy_term_field_revision
+          field: unpublish_on
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: user
-          plugin_id: numeric
-          operator: '!='
+          entity_type: taxonomy_term
+          entity_field: unpublish_on
+          plugin_id: date
+          operator: 'not empty'
           value:
             min: ''
             max: ''
-            value: '0'
-          group: 1
+            value: ''
+            type: date
+          group: 2
           exposed: false
           expose:
-            operator_id: '0'
+            operator_id: ''
             label: ''
             description: ''
             use_operator: false
@@ -766,6 +723,9 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -782,6 +742,7 @@ display:
         operator: AND
         groups:
           1: AND
+          2: OR
       style:
         type: table
         options:
@@ -789,22 +750,27 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            user_bulk_form: user_bulk_form
+            taxonomy_term_bulk_form: taxonomy_term_bulk_form
             name: name
+            vid: vid
             status: status
-            rid: rid
-            created: created
-            access: access
-            edit_node: edit_node
-            dropbutton: dropbutton
-          default: created
+            publish_on: publish_on
+            unpublish_on: unpublish_on
+          default: publish_on
           info:
-            user_bulk_form:
+            taxonomy_term_bulk_form:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            vid:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -817,47 +783,35 @@ display:
               align: ''
               separator: ''
               empty_column: false
-              responsive: priority-low
-            rid:
-              sortable: false
+              responsive: ''
+            publish_on:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: priority-low
-            created:
+              responsive: ''
+            unpublish_on:
               sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            access:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            edit_node:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            dropbutton:
-              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
           override: true
-          sticky: false
+          sticky: true
           summary: ''
           empty_table: true
+          caption: ''
+          description: ''
           class: ''
       row:
         type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
       query:
         type: views_query
         options:
@@ -866,17 +820,9 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      css_class: ''
-      use_ajax: false
-      group_by: false
-      show_admin_links: true
-      use_more: false
-      use_more_always: false
-      use_more_text: lisää
-      link_display: page_1
-      link_url: ''
-      display_comment: ''
-      hide_attachment_summary: false
+      relationships: {  }
+      header: {  }
+      footer: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: 0
@@ -887,30 +833,24 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-  page_1:
-    id: page_1
-    display_title: Sivu
+  overview:
+    id: overview
+    display_title: 'Taxonomy Terms'
     display_plugin: page
     position: 1
     display_options:
-      defaults:
-        show_admin_links: false
-      show_admin_links: false
+      display_description: 'Overview of all scheduled terms, via main admin taxonomy page'
       display_extenders: {  }
-      path: admin/people/list
+      path: admin/structure/taxonomy/scheduled
       menu:
-        type: 'default tab'
-        title: Lista
-        description: 'Etsi ja hallinnoi sivustoasi käyttäviä ihmisiä.'
-        weight: -10
-        menu_name: admin
-        context: ''
-      tab_options:
         type: normal
-        title: Käyttäjät
-        description: 'Ylläpidä käyttäjiä, rooleja ja käyttöoikeuksia.'
+        title: 'Scheduled Taxonomy Terms'
+        description: 'Taxonomy Terms that are scheduled for publishing or unpublishing'
         weight: 0
+        expanded: false
         menu_name: admin
+        parent: entity.taxonomy_vocabulary.collection
+        context: '0'
     cache_metadata:
       max-age: 0
       contexts:

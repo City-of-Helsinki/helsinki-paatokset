@@ -11,11 +11,11 @@ dependencies:
     - field.field.paragraph.hero.field_hero_title
     - paragraphs.paragraphs_type.hero
   module:
-    - linkit
+    - link
     - options
     - text
 _core:
-  default_config_hash: FY3fZ4gakarDkCNjDIX-y1QN7Jujew5NaNCXIMjvwmg
+  default_config_hash: b7aWqy27zvIiOUxzstnlmUkuXpLDdEBEqfresW9tUz8
 id: paragraph.hero.default
 targetEntityType: paragraph
 bundle: hero
@@ -45,15 +45,14 @@ content:
     weight: 0
     region: content
   field_hero_link:
-    type: linkit
+    type: link
     label: hidden
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: '0'
-      target: '0'
-      linkit_profile: helfi
+      rel: ''
+      target: ''
     third_party_settings: {  }
     weight: 3
     region: content

@@ -31,11 +31,10 @@ dependencies:
     - datetime
     - field_group
     - hdbt_admin_tools
-    - json_field
+    - json_field_widget
     - media_library
     - path
     - publication_date
-    - scheduler
     - text
 third_party_settings:
   field_group:
@@ -395,12 +394,6 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
-  publish_on:
-    type: datetime_timestamp_no_default
-    weight: 11
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
     weight: 10
@@ -444,12 +437,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  unpublish_on:
-    type: datetime_timestamp_no_default
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   url_redirects:
     weight: 13
     region: content
@@ -458,3 +445,5 @@ content:
 hidden:
   field_meeting_agenda_files: true
   hide_sidebar_navigation: true
+  publish_on: true
+  unpublish_on: true
