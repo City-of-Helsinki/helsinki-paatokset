@@ -2,7 +2,7 @@ name: Päätökset language switcher (DEPRECATED)
 type: module
 description: Language switcher overrides for Päätökset palvelu.
 package: Custom
-core_version_requirement: ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:paatokset_ahjo_api
   - drupal:paatokset_policymakers
