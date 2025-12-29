@@ -64,16 +64,6 @@ class PolicymakerTest extends AhjoKernelTestBase {
       ])
       ->save();
     $this->assertNotEmpty($policymaker->getOrganization());
-
-    // Presave adds slug field.
-    $policymaker->save();
-    $this->assertEquals('test-override-test-dm-org-name', $policymaker->get('slug')->value);
-
-    // Customized slug fields should not be overridden.
-    $policymaker
-      ->set('slug', 'foobar')
-      ->save();
-    $this->assertEquals('foobar', $policymaker->get('slug')->value);
   }
 
 }

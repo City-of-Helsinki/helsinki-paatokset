@@ -27,7 +27,7 @@ class BrowseController extends ControllerBase {
    *   Organization.
    */
   public function build(Organization|null $org): array {
-    // Null is the default value for policymaker slug. If no
+    // Null is the default value for organization. If no
     // organization is specified, show special root level page.
     if (!$org) {
       return $this->buildRoot();

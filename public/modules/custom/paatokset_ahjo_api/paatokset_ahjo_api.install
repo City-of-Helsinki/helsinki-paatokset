@@ -122,58 +122,6 @@ function paatokset_ahjo_api_update_9010(): void {
 }
 
 /**
- * Add slug bundle field to policymaker node type.
- */
-function paatokset_ahjo_api_update_9011(): void {
-  $entityDefinitionUpdater = \Drupal::entityDefinitionUpdateManager();
-  $entityType = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->getEntityType();
-
-  $fields = paatokset_ahjo_api_entity_field_storage_info($entityType);
-
-  foreach ($fields as $name => $definition) {
-    $entityDefinitionUpdater->installFieldStorageDefinition($name, 'node', 'paatokset_ahjo_api', $definition);
-  }
-}
-
-/**
- * Copy data to the slug field.
- */
-function paatokset_ahjo_api_update_9012(): void {
-  $storage = \Drupal::entityTypeManager()
-    ->getStorage('node');
-
-  $ids = $storage
-    ->getQuery()
-    ->accessCheck(FALSE)
-    ->condition('type', 'policymaker')
-    ->execute();
-
-  $pathAlias = \Drupal::service('path_alias.manager');
-
-  foreach (array_chunk($ids, 100) as $batch) {
-    foreach ($storage->loadMultiple($batch) as $node) {
-      /** @var \Drupal\node\NodeInterface $node */
-      foreach (['fi', 'sv', 'en'] as $langcode) {
-        if (!$node->hasTranslation($langcode)) {
-          continue;
-        }
-
-        $slug = array_last(explode('/', $pathAlias->getAliasByPath('/node/' . $node->id(), $langcode)));
-
-        $node
-          ->getTranslation($langcode)
-          ->set('slug', $slug)
-          ->save();
-      }
-    }
-
-    $storage->resetCache($batch);
-  }
-}
-
-/**
  * Add type and sync_attempts fields to ahjo_organization entity.
  */
 function paatokset_ahjo_api_update_9013(): void {
