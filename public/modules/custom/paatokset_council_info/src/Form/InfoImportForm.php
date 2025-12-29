@@ -198,7 +198,7 @@ class InfoImportForm extends FormBase {
       mb_detect_encoding($contents, 'UTF-8, ISO-8859-1', TRUE)
     );
 
-    $reader = Reader::createFromString($contents);
+    $reader = Reader::fromString($contents);
     $reader->setDelimiter(';');
     $reader->setHeaderOffset(0);
     return $reader;

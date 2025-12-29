@@ -141,7 +141,7 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
   /**
    * Data provider for the test.
    */
-  public function providerSource(): array {
+  public static function providerSource(): array {
     return [
       [
         // Source data.

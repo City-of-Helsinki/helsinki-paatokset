@@ -282,11 +282,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_proxy/tests/src/Kernel/MeetingAggregatorsTest.php
 
     -
-      message: "#^Method App\\\\Commands\\\\ListFetchCommand\\:\\:doRequest\\(\\) should return GuzzleHttp\\\\Psr7\\\\Response but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_cmdline_poc/src/Commands/ListFetchCommand.php
-
-    -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$target_id\\.$#"
       count: 1
       path: public/modules/custom/paatokset_pdf_listing/paatokset_pdf_listing.module
