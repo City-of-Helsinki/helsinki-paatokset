@@ -90,7 +90,7 @@ class AhjoImagesTest extends FileTestBase {
   }
 
   /**
-   * Tests errors..
+   * Tests errors.
    */
   public function testErrors(): void {
     $data_sets = [

@@ -77,7 +77,7 @@ final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFact
 
     if (!$policymaker) {
       return [];
-    };
+    }
 
     $display = $this->configuration['view_display'] ?? 'default';
     return $executable->buildRenderable($display, [$policymaker->getPolicymakerId()]);

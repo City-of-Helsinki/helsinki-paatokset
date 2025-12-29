@@ -133,8 +133,8 @@ class TrusteeService {
         $data = json_decode($json->value, TRUE);
         $position = $policymakerService->getTranslationForRole($data['Position']);
         $chairmanships[] = $position . ', ' . $data['OrganizationName'];
-      };
-    };
+      }
+    }
 
     $id = $node->get('field_trustee_id')->value;
     $org_nids = \Drupal::entityQuery('node')

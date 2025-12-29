@@ -192,7 +192,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $accordion_contents[$key]['items'] = array_filter($filtered, function ($var) use ($filter) {
         return ($var['organization_type'] == $filter);
       });
-    };
+    }
 
     // Merge "lautakunnat" and "jaostot" into single section.
     $lautakunnat_jaostot = array_merge($accordion_contents['lautakunta']['items'], $accordion_contents['jaosto']['items']);
@@ -228,7 +228,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $sectors[$key]['subitems'] = array_filter($lautakunnat_jaostot, function ($var) use ($filter) {
         return ($var['sector'] === $filter);
       });
-    };
+    }
 
     ksort($sectors);
 
@@ -258,7 +258,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $sectors_occupants[$key]['items'] = array_filter($accordion_contents['viranhaltijat']['items'], function ($var) use ($filter) {
         return ($var['sector'] === $filter);
       });
-    };
+    }
 
     ksort($sectors_occupants);
 
@@ -392,7 +392,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_type' => 'trustee',
         'trustee_type' => $node['role'],
       ];
-    };
+    }
     foreach ($deputies as $node) {
       $items[] = [
         'title' => $node['first_name'] . ' ' . $node['last_name'],
@@ -400,7 +400,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_type' => 'trustee',
         'trustee_type' => $node['role'],
       ];
-    };
+    }
 
     if (!empty($items)) {
       return [
