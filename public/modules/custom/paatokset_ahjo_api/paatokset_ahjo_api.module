@@ -28,8 +28,6 @@ use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 
-require_once __DIR__ . '/includes/paatokset_lang_switcher.php';
-
 /**
  * Implements hook_entity_bundle_info_alter().
  */

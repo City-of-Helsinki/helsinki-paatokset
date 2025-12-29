@@ -19,6 +19,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\migrate\Kernel\MigrateSourceTestBase;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests migrate source plugin.
@@ -112,9 +113,8 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
 
   /**
    * {@inheritDoc}
-   *
-   * @dataProvider providerSource
    */
+  #[DataProvider('providerSource')]
   public function testSource(array $source_data, array $expected_data, $expected_count = -1, array $configuration = [], $high_water = NULL): void {
     // Setup database.
     foreach (($source_data['db'] ?? []) as $row) {

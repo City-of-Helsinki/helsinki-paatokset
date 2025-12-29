@@ -13,14 +13,14 @@ use Drupal\node\Entity\Node;
 use Drupal\paatokset_policymakers\Service\PolicymakerService;
 use Drupal\path_alias\Entity\PathAlias;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for PolicymakerService.
  *
- * @group paatokset_ahjo_api
- *
  * @coversDefaultClass \Drupal\paatokset_policymakers\Service\PolicymakerService
  */
+#[Group('paatokset_ahjo_api')]
 class PolicymakerServiceTest extends KernelTestBase {
 
   use UserCreationTrait;

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\ExistingSite;
 
 use Drupal\Tests\helfi_api_base\Functional\ExistingSiteTestBase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test CaseNodeViewController.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class CaseNodeViewControllerTest extends ExistingSiteTestBase {
 
   /**
@@ -121,9 +122,8 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
    *   Request is made to this url.
    * @param string $expected
    *   The expected canonical tag.
-   *
-   * @dataProvider canonicalUrlData
    */
+  #[DataProvider('canonicalUrlData')]
   public function testCanonicalUrl(string $url, string $expected): void {
     $pathParts = explode('/', trim($url, '/'));
 
@@ -195,7 +195,7 @@ class CaseNodeViewControllerTest extends ExistingSiteTestBase {
    * @return array
    *   Test data.
    */
-  private function canonicalUrlData(): array {
+  public static function canonicalUrlData(): array {
     // Format ['url', 'expected canonical url'].
     return [
       // Case has no translation or decisions, use case url in current language.

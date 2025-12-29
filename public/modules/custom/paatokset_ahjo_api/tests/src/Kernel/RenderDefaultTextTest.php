@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests default text renderer.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class RenderDefaultTextTest extends KernelTestBase {
 
   /**

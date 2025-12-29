@@ -15,14 +15,15 @@ use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Unit tests for ahjo open id.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class AhjoOpenIdTest extends UnitTestCase {
 
   use ProphecyTrait;
@@ -164,9 +165,8 @@ class AhjoOpenIdTest extends UnitTestCase {
 
   /**
    * Test ahjo auth token DTO.
-   *
-   * @dataProvider ahjoAuthTokenErrors
    */
+  #[DataProvider('ahjoAuthTokenErrors')]
   public function testAhjoAuthTokenErrors(string $json) : void {
     $this->expectException(\InvalidArgumentException::class);
     AhjoAuthToken::fromJson($json);
@@ -175,7 +175,7 @@ class AhjoOpenIdTest extends UnitTestCase {
   /**
    * Data provider for testAhjoAuthTokenErrors.
    */
-  private function ahjoAuthTokenErrors() : array {
+  public static function ahjoAuthTokenErrors() : array {
     return [
       [''],
       ['""'],

@@ -13,6 +13,7 @@ use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 use Symfony\Component\Routing\Route;
@@ -55,9 +56,8 @@ class LanguageSwitcherTest extends AhjoKernelTestBase {
 
   /**
    * Tests language switcher for decisions.
-   *
-   * @dataProvider languageSwitcherDataProvider
    */
+  #[DataProvider('languageSwitcherDataProvider')]
   public function testLanguageSwitcher(
     string $routeName,
     string $routeParameter,
@@ -145,7 +145,7 @@ class LanguageSwitcherTest extends AhjoKernelTestBase {
   /**
    * Data provider for tests.
    */
-  protected function languageSwitcherDataProvider(): array {
+  public static function languageSwitcherDataProvider(): array {
     return [
       // Case without decisions, canonical route.
       [

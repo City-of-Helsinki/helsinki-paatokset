@@ -7,12 +7,13 @@ namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\SettingsFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for Settings.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class SettingsTest extends KernelTestBase {
 
   /**
@@ -25,9 +26,8 @@ class SettingsTest extends KernelTestBase {
 
   /**
    * Tests settings.
-   *
-   * @dataProvider settingsData
    */
+  #[DataProvider('settingsData')]
   public function testSettings(array $environment, array $values, array $expectedValues) : void {
     foreach ($environment as $key => $value) {
       putenv("$key=$value");
@@ -55,7 +55,7 @@ class SettingsTest extends KernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function settingsData() : array {
+  public static function settingsData() : array {
     $values = [
       [
         // Environment.

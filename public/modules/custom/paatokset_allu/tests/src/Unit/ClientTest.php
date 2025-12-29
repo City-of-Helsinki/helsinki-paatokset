@@ -14,14 +14,14 @@ use Drupal\paatokset_allu\DecisionType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * Allu api client test.
- *
- * @group paatokset_allu
  */
+#[Group('paatokset_allu')]
 class ClientTest extends KernelTestBase {
 
   use ApiTestTrait;
