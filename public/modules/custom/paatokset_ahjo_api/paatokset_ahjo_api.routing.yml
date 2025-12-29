@@ -35,6 +35,8 @@ paatokset_ahjo_api.disallowed_prefixes:
   requirements:
     _permission: 'administer paatokset'
 
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 paatokset_case.fi:
   path: 'asia/{case}'
   defaults:
@@ -71,6 +73,8 @@ paatokset_case.en:
       case:
         type: case_or_decision
 
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 paatokset_decision.fi:
   path: 'asia/{case_id}/{decision}'
   defaults:
@@ -160,7 +164,8 @@ policymaker.org_composition:
   requirements:
     _access: 'TRUE'
 
-# @todo simplify these routes in UHF-11726.
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 policymaker.documents.fi:
   path: 'paattajat/{organization}/asiakirjat'
   defaults:
@@ -185,6 +190,8 @@ policymaker.documents.en:
   requirements:
     _access: 'TRUE'
 
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 policymaker.decisions.fi:
   path: 'paattajat/{organization}/paatokset'
   defaults:
@@ -209,6 +216,8 @@ policymaker.decisions.en:
   requirements:
     _access: 'TRUE'
 
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 policymaker.discussion_minutes.fi:
   path: 'paattajat/{organization}/keskustelupoytakirjat'
   defaults:
@@ -233,6 +242,8 @@ policymaker.discussion_minutes.en:
   requirements:
     _access: 'TRUE'
 
+# @todo UHF-11726: To simplify the URL handling, these should be replaced with path processors
+# See: \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
 policymaker.minutes.fi:
   path: 'paattajat/{organization}/asiakirjat/{id}'
   defaults:
