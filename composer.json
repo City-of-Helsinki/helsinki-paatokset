@@ -28,7 +28,6 @@
         "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
         "mglaman/composer-drupal-lenient": "*",
-        "paatokset/paatokset_search": "^1.4.0",
         "symfony/property-access": "^7.2"
     },
     "require-dev": {
