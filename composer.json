@@ -10,12 +10,12 @@
         "ext-dom": "*",
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6.7",
-        "drupal/core-composer-scaffold": "^10|^11",
+        "drupal/core-composer-scaffold": "^11.2",
         "drupal/hdbt": "^6.9",
         "drupal/hdbt_admin": "^3.0",
         "drupal/helfi_azure_fs": "^2.0",
         "drupal/helfi_drupal_tools": "dev-main",
-        "drupal/helfi_platform_config": "^5.0",
+        "drupal/helfi_platform_config": "^5.0.15",
         "drupal/helfi_tunnistamo": "^3.0",
         "drupal/json_field": "^1.0",
         "drupal/key_auth": "^2.0",
@@ -26,21 +26,20 @@
         "josdejong/jsoneditor": "^5.29",
         "laminas/laminas-feed": "^2.23",
         "league/csv": "^9.8",
-        "mglaman/composer-drupal-lenient": "*",
-        "symfony/property-access": "^7.2"
+        "mglaman/composer-drupal-lenient": "*"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.8",
         "dmore/chrome-mink-driver": "^2.8",
-        "drupal/core-dev": "^10|^11",
+        "drupal/core-dev": "^11",
         "drupal/migrate_tools": "^6.0",
         "jangregor/phpstan-prophecy": "^1.0",
         "phpstan/phpstan-deprecation-rules": "^1.1",
         "weitzman/drupal-test-traits": "^2.0"
     },
     "conflict": {
-        "drupal/core-composer-scaffold": "<10.5 || >=11",
+        "drupal/core-composer-scaffold": "<10.5",
         "drupal/drupal": "*"
     },
     "autoload": {
@@ -109,11 +108,6 @@
             "drush/Commands/{$name}": [
                 "type:drupal-drush"
             ]
-        },
-        "patches": {
-            "drupal/default_content": {
-                "Don't reimport translations": "https://www.drupal.org/files/issues/2020-10-14/default_content-3176839-2.patch"
-            }
         },
         "patchLevel": {
             "drupal/core": "-p2"
