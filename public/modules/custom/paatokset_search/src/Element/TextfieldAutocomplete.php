@@ -35,7 +35,6 @@ class TextfieldAutocomplete extends Textfield {
       $element['#attributes']['data-operator-guide-url'] = $element['#operator_guide_url'];
     }
 
-
     $element['#label_attributes']['class'] = array_merge([
       'hds-text-input__label',
     ], $element['#label_attributes']['class'] ?? []);
