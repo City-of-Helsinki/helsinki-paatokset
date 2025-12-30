@@ -49,7 +49,7 @@ let abortController = new AbortController();
       if (!specialCharLink) {
         specialCharLink = document.createElement('a');
         specialCharLink.className = 'paatokset-special-char-hint-link';
-        specialCharLink.href = '/test'; //element.dataset.operatorGuideUrl;
+        specialCharLink.href = '/test'; //TODO: Replace with actual link
         specialCharLink.textContent = specialCharLinkText;
         specialCharHint.appendChild(specialCharLink);
       }

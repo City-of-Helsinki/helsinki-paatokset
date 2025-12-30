@@ -54,7 +54,7 @@ class DecisionSearchForm extends FormBase implements ContainerInjectionInterface
 
     $form['q'] = [
       '#type' => 'paatokset_textfield_autocomplete',
-      '#autocomplete_route_name' => 'helfi_api_base.location_autocomplete',
+      '#autocomplete_route_name' => 'helfi_api_base.location_autocomplete', //TODO: Change route to decision autocomplete
       '#title' => $this->t('Search decisions'),
       '#placeholder' => $this->t(
         'Search with a Finnish keyword, eg. Viikki',
