@@ -52,6 +52,12 @@ function paatokset_search_theme(): array {
       ],
       'template' => 'frontpage-search-hero-block',
     ],
+    'paatokset_textfield_autocomplete' => [
+      'variables' => [
+        'attributes' => [],
+        'children' => NULL,
+      ],
+    ],
   ];
 }
 

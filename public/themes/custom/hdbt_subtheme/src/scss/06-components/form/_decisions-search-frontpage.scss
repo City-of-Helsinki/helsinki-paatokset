@@ -110,7 +110,12 @@
 }
 
 .decisions-search-bar-wrapper__label-status {
-  @include font('special.helper_text');;
+  @include font('special.helper_text');
+  margin-bottom: $spacing-half;
+
+ a {
+  margin-left:$spacing-quarter;
+ }
 }
 
 .decisions-search-bar-wrapper__input {
