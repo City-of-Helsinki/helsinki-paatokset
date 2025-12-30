@@ -32,6 +32,9 @@ class AhjoOpenIdTest extends KernelTestBase {
     'helfi_api_base',
     'migrate_plus',
     'paatokset_ahjo_api',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**

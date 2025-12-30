@@ -11,7 +11,7 @@ use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;

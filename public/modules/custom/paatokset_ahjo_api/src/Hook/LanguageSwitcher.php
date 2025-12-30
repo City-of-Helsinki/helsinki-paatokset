@@ -13,8 +13,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
  * Language switcher hooks.
@@ -24,9 +23,7 @@ readonly class LanguageSwitcher {
   public function __construct(
     private LanguageManagerInterface $languageManager,
     private RouteMatchInterface $routeMatch,
-    #[Autowire(service: 'paatokset_ahjo_cases')]
     private CaseService $caseService,
-    #[Autowire(service: 'paatokset_policymakers')]
     private PolicymakerService $policyMakerService,
   ) {
   }

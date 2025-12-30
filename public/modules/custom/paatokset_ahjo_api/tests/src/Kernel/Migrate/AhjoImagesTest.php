@@ -22,7 +22,12 @@ class AhjoImagesTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['migrate', 'system', 'file', 'user'];
+  protected static $modules = [
+    'migrate',
+    'system',
+    'file',
+    'user',
+  ];
 
   /**
    * {@inheritdoc}

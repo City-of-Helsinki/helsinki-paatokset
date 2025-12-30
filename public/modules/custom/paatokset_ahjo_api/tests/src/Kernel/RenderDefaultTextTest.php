@@ -20,6 +20,9 @@ class RenderDefaultTextTest extends KernelTestBase {
     'system',
     'paatokset_ahjo_api',
     'helfi_api_base',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**

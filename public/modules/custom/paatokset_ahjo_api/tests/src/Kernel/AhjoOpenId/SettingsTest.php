@@ -22,6 +22,9 @@ class SettingsTest extends KernelTestBase {
   protected static $modules = [
     'helfi_api_base',
     'paatokset_ahjo_api',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -29,6 +32,8 @@ class SettingsTest extends KernelTestBase {
    */
   #[DataProvider('settingsData')]
   public function testSettings(array $environment, array $values, array $expectedValues) : void {
+    $this->installEntitySchema('path_alias');
+
     foreach ($environment as $key => $value) {
       putenv("$key=$value");
     }

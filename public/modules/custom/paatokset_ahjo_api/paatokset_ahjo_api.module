@@ -27,6 +27,9 @@ use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -301,9 +304,10 @@ function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array 
  * Preprocess frontpage calendar block.
  */
 function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
-  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $meetingService = \Drupal::service(MeetingService::class);
+
+  $policymakerService = \Drupal::service(PolicymakerService::class);
+
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   $params = [
@@ -429,8 +433,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
  * Preprocess decision tree page.
  */
 function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): void {
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
 
   $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
   $committees_url = $defaults_config->get('committees_boards_url');
@@ -502,14 +505,13 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
  * Preprocess variables for case and decision pages.
  */
 function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $case, ?Decision $decision): void {
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
+  $caseService = \Drupal::service(CaseService::class);
+
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
   $organization_type = $policymaker?->getOrganizationType();
 
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
 
   // Case migration sets 'NO TITLE' as a default
   // value, if the case has no title in Ahjo.

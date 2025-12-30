@@ -43,6 +43,9 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
     'node',
     'user',
     'field',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -86,6 +89,8 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
       Project::PAATOKSET,
       EnvironmentEnum::Test->value
     );
+
+    $this->installEntitySchema('path_alias');
 
     $this->container->set(EnvironmentResolverInterface::class, $environmentResolver);
   }

@@ -124,7 +124,7 @@ class TrusteeService {
    */
   public static function getMemberships(NodeInterface $node): array {
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    /** @var \Drupal\paatokset_ahjo_api\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
     $chairmanships = [];
