@@ -67,4 +67,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  publish_on: true
   replace_file: true
+  unpublish_on: true

@@ -7,7 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
  * Bundle class for meetings.

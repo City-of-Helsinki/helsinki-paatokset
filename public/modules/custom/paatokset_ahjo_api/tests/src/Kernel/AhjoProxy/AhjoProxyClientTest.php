@@ -34,6 +34,9 @@ class AhjoProxyClientTest extends KernelTestBase {
   protected static $modules = [
     'helfi_api_base',
     'paatokset_ahjo_api',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**

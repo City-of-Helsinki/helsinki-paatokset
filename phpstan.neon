@@ -282,11 +282,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_proxy/tests/src/Kernel/MeetingAggregatorsTest.php
 
     -
-      message: "#^Method App\\\\Commands\\\\ListFetchCommand\\:\\:doRequest\\(\\) should return GuzzleHttp\\\\Psr7\\\\Response but returns Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_cmdline_poc/src/Commands/ListFetchCommand.php
-
-    -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$target_id\\.$#"
       count: 1
       path: public/modules/custom/paatokset_pdf_listing/paatokset_pdf_listing.module
@@ -317,11 +312,6 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
 
     -
-      message: "#^Unsafe usage of new static\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
-
-    -
       message: "#^Method Drupal\\\\paatokset_policymakers\\\\Plugin\\\\Block\\\\ContactsBlock\\:\\:build\\(\\) should return array but empty return statement found\\.$#"
       count: 2
       path: public/modules/custom/paatokset_policymakers/src/Plugin/Block/ContactsBlock.php
@@ -332,44 +322,9 @@ parameters:
       path: public/modules/custom/paatokset_policymakers/src/Plugin/Block/ContactsBlock.php
 
     -
-      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\:\\:\\$value\\.$#"
+      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface<Drupal\\\\Core\\\\Field\\\\FieldItemInterface>\\:\\:\\$date\\.$#"
       count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\<Drupal\\\\Core\\\\Field\\\\FieldItemInterface\\>\\:\\:\\$date\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Call to an undefined method Drupal\\\\node\\\\NodeInterface\\:\\:getPolicymakerOrganizationFromUrl\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Service\\\\CaseService\\:\\:getDecisionUrlByNativeId\\(\\) invoked with 3 parameters, 1 required\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Method Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:getTrusteeByPath\\(\\) should return Drupal\\\\node\\\\NodeInterface\\|null but returns Drupal\\\\Core\\\\Entity\\\\EntityInterface\\|null\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Property Drupal\\\\paatokset_policymakers\\\\Service\\\\PolicymakerService\\:\\:\\$policymaker \\(Drupal\\\\paatokset_ahjo_api\\\\Entity\\\\Policymaker\\|null\\) does not accept Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^Variable \\$node might not be defined\\.$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
-
-    -
-      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
-      count: 2
-      path: public/modules/custom/paatokset_policymakers/src/Service/PolicymakerService.php
+      path: public/modules/custom/paatokset_ahjo_api/src/Service/PolicymakerService.php
 
     -
       message: "#^Access to an undefined property Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\:\\:\\$date\\.$#"

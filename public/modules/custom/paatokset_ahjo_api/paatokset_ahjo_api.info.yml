@@ -2,10 +2,13 @@ name: Päätökset Ahjo API migrations
 type: module
 description: Migrating content from new Ahjo API.
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:paatokset_ahjo_proxy
   - drupal:paatokset_policymakers
   - drupal:paatokset_datapumppu
+  - drupal:path_alias
+  - pathauto:pathauto
+  - token:token
 'interface translation project': paatokset_ahjo_api
 'interface translation server pattern': modules/custom/paatokset_ahjo_api/translations/%language.po

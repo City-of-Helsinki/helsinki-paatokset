@@ -13,8 +13,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -27,7 +26,6 @@ class PolicymakerController extends ControllerBase {
   use AutowireTrait;
 
   public function __construct(
-    #[Autowire(service: 'paatokset_policymakers')]
     private readonly PolicymakerService $policymakerService,
     private readonly OrganizationPathBuilder $organizationPathBuilderService,
   ) {
@@ -104,7 +102,7 @@ class PolicymakerController extends ControllerBase {
    *   Documents title.
    */
   public static function getDocumentsTitle(): TranslatableMarkup {
-    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService = \Drupal::service(PolicymakerService::class);
     $policymakerService->setPolicyMakerByPath();
     $policymaker = $policymakerService->getPolicymaker();
 
@@ -122,7 +120,7 @@ class PolicymakerController extends ControllerBase {
    *   Decisions title.
    */
   public static function getDecisionsTitle(): TranslatableMarkup {
-    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService = \Drupal::service(PolicymakerService::class);
     $policymakerService->setPolicyMakerByPath();
     $policymaker = $policymakerService->getPolicymaker();
 
@@ -269,7 +267,7 @@ class PolicymakerController extends ControllerBase {
    * Return title as translatable string.
    */
   public static function getDiscussionMinutesTitle(): TranslatableMarkup {
-    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService = \Drupal::service(PolicymakerService::class);
     $policymakerService->setPolicyMakerByPath();
     $policymaker = $policymakerService->getPolicymaker();
 

@@ -2,10 +2,14 @@ uuid: b2a4601b-3be0-4376-8751-c95db64866ac
 langcode: en
 status: true
 dependencies:
+  config:
+    - system.menu.admin
   module:
     - node
-    - scheduler
     - user
+  enforced:
+    module:
+      - scheduler
 _core:
   default_config_hash: LTfFZy_nemFOcbdoYD7tu1uw3uHbcYcQ6wlGJ7deGEk
 id: scheduler_scheduled_content
@@ -378,15 +382,6 @@ display:
             date_format: short
             custom_date_format: ''
             timezone: ''
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -454,15 +449,6 @@ display:
             date_format: short
             custom_date_format: ''
             timezone: ''
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -592,10 +578,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -634,10 +617,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
             placeholder: ''
           is_grouped: false
           group_info:
@@ -677,10 +657,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
             reduce: false
           is_grouped: false
           group_info:
@@ -720,10 +697,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              authenticated: '0'
-              anonymous: '0'
-              administrator: '0'
+            remember_roles: {  }
           is_grouped: true
           group_info:
             label: 'Published status'
@@ -770,10 +744,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
             reduce: false
           is_grouped: false
           group_info:
@@ -817,10 +788,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -866,10 +834,7 @@ display:
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              anonymous: '0'
-              authenticated: '0'
-              administrator: '0'
+            remember_roles: {  }
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -965,6 +930,7 @@ display:
           empty_table: true
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -1008,8 +974,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
+        - user.permissions
       tags: {  }
   overview:
     id: overview
@@ -1043,8 +1009,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
+        - user.permissions
       tags: {  }
   user_page:
     id: user_page
@@ -1052,6 +1018,10 @@ display:
     display_plugin: page
     position: 2
     display_options:
+      access:
+        type: perm
+        options:
+          perm: 'access content'
       empty:
         area_text_custom:
           id: area_text_custom
@@ -1137,6 +1107,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
+        - user.permissions
       tags: {  }

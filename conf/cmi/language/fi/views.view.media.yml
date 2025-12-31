@@ -49,7 +49,7 @@ display:
           sort_desc_label: Laskevasti
       empty:
         area_text_custom:
-          content: 'Mediatiedostoja ei ole saatavilla.'
+          content: 'Ei mediaa saatavilla.'
       filters:
         name:
           expose:

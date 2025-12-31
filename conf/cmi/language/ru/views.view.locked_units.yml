@@ -4,7 +4,7 @@ display:
     display_options:
       fields:
         tpr_unit_bulk_form:
-          label: 'Bulk update'
+          label: 'Массовое обновление'
           action_title: Действие
         name:
           label: Заголовок
@@ -12,17 +12,17 @@ display:
         name_1:
           separator: ', '
         langcode:
-          label: 'Content language'
+          label: 'Язык содержимого'
           separator: ', '
         operations:
           label: Операции
       pager:
         options:
           tags:
-            next: Next
-            previous: Previous
-            first: First
-            last: Last
+            next: Вперёд
+            previous: Назад
+            first: Первый
+            last: Последний
           expose:
             items_per_page_label: 'Элементов на страницу'
             items_per_page_options_all_label: '- Все -'
@@ -39,4 +39,4 @@ display:
           expose:
             label: Заголовок
   locked_units_block:
-    display_title: Block
+    display_title: Блок

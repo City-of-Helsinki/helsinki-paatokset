@@ -15,14 +15,14 @@ use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Routing\Route;
 
 /**
  * Tests breadcrumb hook.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class BreadcrumbTest extends AhjoKernelTestBase {
 
   use UserCreationTrait;

@@ -6,6 +6,7 @@ namespace Drupal\Tests\paatokset_datapumppu\Kernel\Unit;
 
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test datapumppu import options.
@@ -32,9 +33,8 @@ class ImportOptionsTest extends UnitTestCase {
 
   /**
    * Test exceptions.
-   *
-   * @dataProvider dataProvider
    */
+  #[DataProvider('dataProvider')]
   public function testExceptions(array $options): void {
     $this->expectException(\LogicException::class);
     DatapumppuImportOptions::fromOptions($options);
@@ -43,7 +43,7 @@ class ImportOptionsTest extends UnitTestCase {
   /**
    * Data provider for exception tests.
    */
-  public function dataProvider(): array {
+  public static function dataProvider(): array {
     return [
       // Mutually exclusive arguments.
       [

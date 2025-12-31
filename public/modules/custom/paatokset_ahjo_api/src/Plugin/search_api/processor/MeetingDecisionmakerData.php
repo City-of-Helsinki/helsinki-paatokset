@@ -6,7 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -29,8 +29,6 @@ class MeetingDecisionmakerData extends ProcessorPluginBase {
 
   /**
    * PolicymakerService.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   private PolicymakerService $policymakerService;
 
@@ -40,7 +38,7 @@ class MeetingDecisionmakerData extends ProcessorPluginBase {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var static $instance */
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->policymakerService = $container->get('paatokset_policymakers');
+    $instance->policymakerService = $container->get(PolicymakerService::class);
 
     return $instance;
   }
