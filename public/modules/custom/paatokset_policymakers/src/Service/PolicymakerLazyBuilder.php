@@ -11,6 +11,7 @@ use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
  * Lazy building functions for policymaker data.
@@ -19,55 +20,17 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
 
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManager
-   */
-  protected $languageManager;
-
-  /**
-   * Current language.
-   *
-   * @var string
-   */
-  protected $currentLanguage;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * Policymaker service.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
-   */
-  protected $policymakerService;
-
-  /**
-   * Lazy Builder constructor.
-   *
-   * @param \Drupal\Core\Language\LanguageManager $language_manager
-   *   The language manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymaker_service
-   *   Policymaker service.
-   */
-  public function __construct(LanguageManager $language_manager, EntityTypeManagerInterface $entity_type_manager, PolicymakerService $policymaker_service) {
-    $this->languageManager = $language_manager;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->policymakerService = $policymaker_service;
-    $this->currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
+  public function __construct(
+    private readonly LanguageManager $languageManager,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly PolicymakerService $policymakerService,
+  ) {
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function trustedCallbacks() {
+  public static function trustedCallbacks(): array {
     return [
       'policymakersAccordions',
       'policymakersCards',
@@ -83,6 +46,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
   public function policymakersCards(): array {
     $council = $this->policymakerService->getPolicyMaker(PolicymakerService::CITY_COUNCIL_DM_ID);
     $board = $this->policymakerService->getPolicyMaker('00400');
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     $cache_tags = [];
     $cards = [];
@@ -100,7 +64,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $cards[] = [
         'title' => $title,
         'ahjo_title' => $this->policymakerService->getPolicymakerTypeFromNode($node),
-        'link' => $this->policymakerService->getPolicymakerRoute($node, $this->currentLanguage),
+        'link' => $this->policymakerService->getPolicymakerRoute($node, $currentLanguage),
         'image' => $node->get('field_policymaker_image')->view('default'),
         'organization_color' => $node->getPolicymakerClass(),
       ];
@@ -192,7 +156,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $accordion_contents[$key]['items'] = array_filter($filtered, function ($var) use ($filter) {
         return ($var['organization_type'] == $filter);
       });
-    };
+    }
 
     // Merge "lautakunnat" and "jaostot" into single section.
     $lautakunnat_jaostot = array_merge($accordion_contents['lautakunta']['items'], $accordion_contents['jaosto']['items']);
@@ -228,7 +192,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $sectors[$key]['subitems'] = array_filter($lautakunnat_jaostot, function ($var) use ($filter) {
         return ($var['sector'] === $filter);
       });
-    };
+    }
 
     ksort($sectors);
 
@@ -258,7 +222,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       $sectors_occupants[$key]['items'] = array_filter($accordion_contents['viranhaltijat']['items'], function ($var) use ($filter) {
         return ($var['sector'] === $filter);
       });
-    };
+    }
 
     ksort($sectors_occupants);
 
@@ -313,6 +277,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
       ->execute();
 
     $nodes = $storage->loadMultiple($nids);
+    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     $filtered = [];
     foreach ($nodes as $node) {
@@ -324,12 +289,12 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         continue;
       }
 
-      if ($node->hasTranslation($this->currentLanguage)) {
-        $node = $node->getTranslation($this->currentLanguage);
+      if ($node->hasTranslation($currentLanguage)) {
+        $node = $node->getTranslation($currentLanguage);
       }
 
       if ($node->hasField('field_sector_name') && !$node->get('field_sector_name')->isEmpty()) {
-        $sector = $this->policymakerService->getSectorTranslation($node->get('field_sector_name')->value, $this->currentLanguage);
+        $sector = $this->policymakerService->getSectorTranslation($node->get('field_sector_name')->value, $currentLanguage);
         $sector_display = $node->get('field_sector_name')->value;
       }
       else {
@@ -343,7 +308,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'title' => $node->get('title')->value,
         'sort_title' => $node->get('field_dm_org_name')->value . ' ' . $node->get('title')->value,
         'ahjo_title' => $node->get('field_ahjo_title')->value,
-        'link' => $this->policymakerService->getPolicymakerRoute($node, $this->currentLanguage),
+        'link' => $this->policymakerService->getPolicymakerRoute($node, $currentLanguage),
         'organization_type' => $node->get('field_organization_type')->value,
         'organization_name' => $node->get('field_dm_org_name')->value,
         'image' => $node->get('field_policymaker_image')->view('default'),
@@ -392,7 +357,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_type' => 'trustee',
         'trustee_type' => $node['role'],
       ];
-    };
+    }
     foreach ($deputies as $node) {
       $items[] = [
         'title' => $node['first_name'] . ' ' . $node['last_name'],
@@ -400,7 +365,7 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
         'organization_type' => 'trustee',
         'trustee_type' => $node['role'],
       ];
-    };
+    }
 
     if (!empty($items)) {
       return [

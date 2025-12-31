@@ -27,6 +27,9 @@ class AhjoCallbackCommandsTest extends KernelTestBase {
   protected static $modules = [
     'paatokset_ahjo_api',
     'helfi_api_base',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -37,7 +40,7 @@ class AhjoCallbackCommandsTest extends KernelTestBase {
     $input = $this->prophesize(InputInterface::class);
     $style = $this->prophesize(DrushStyle::class);
     $style->confirm(Argument::any())->willReturn(TRUE);
-    $style->info(Argument::any())->willReturn();
+    $style->info(Argument::any());
 
     $queueFactory = $this->container->get(QueueFactory::class);
     $sut = new AhjoCallbackCommands(

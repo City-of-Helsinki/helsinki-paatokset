@@ -11,7 +11,7 @@ use Drupal\migrate\Row;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
 use Drupal\paatokset_datapumppu\Plugin\migrate\source\DatapumppuStatementsSource;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -69,7 +69,7 @@ class DatapumppuSourceTest extends KernelTestBase {
       ->willReturn($this->randomMachineName());
 
     $this->policymakerService = $this->prophesize(PolicymakerService::class);
-    $this->container->set('paatokset_policymakers', $this->policymakerService->reveal());
+    $this->container->set(PolicymakerService::class, $this->policymakerService->reveal());
   }
 
   /**

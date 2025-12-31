@@ -13,17 +13,18 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * Tests Allu token factory.
- *
- * @group paatokset_allu
  */
+#[Group('paatokset_allu')]
 class TokenFactoryTest extends UnitTestCase {
 
   use ProphecyTrait;
@@ -63,9 +64,8 @@ class TokenFactoryTest extends UnitTestCase {
    *   Test time.
    * @param \Psr\Http\Message\ResponseInterface|\GuzzleHttp\Exception\GuzzleException $response
    *   Response.
-   *
-   * @dataProvider exceptionsData
    */
+  #[DataProvider('exceptionsData')]
   public function testExceptions(int $timestamp, ResponseInterface|GuzzleException $response): void {
     // First token is always expired which triggers token fetching.
     $expiredToken = $this->createMockToken([
@@ -80,18 +80,18 @@ class TokenFactoryTest extends UnitTestCase {
   /**
    * Data provider for testExceptions().
    */
-  private function exceptionsData(): array {
+  public static function exceptionsData(): array {
     $timestamp = time();
     return [
       // Expired token.
       [
         $timestamp,
-        new Response(body: $this->createMockToken(['exp' => $timestamp - 100])),
+        new Response(body: self::createMockToken(['exp' => $timestamp - 100])),
       ],
       // Invalid payload.
       [
         $timestamp,
-        new Response(body: $this->createMockToken([])),
+        new Response(body: self::createMockToken([])),
       ],
       // Malformed token.
       [
@@ -103,7 +103,7 @@ class TokenFactoryTest extends UnitTestCase {
         $timestamp,
         new ClientException(
           'test error',
-          $this->prophesize(RequestInterface::class)->reveal(),
+          new Request('GET', '/test'),
           new Response(500),
         ),
       ],
@@ -141,7 +141,7 @@ class TokenFactoryTest extends UnitTestCase {
   /**
    * Gets mocked token.
    */
-  private function createMockToken(array $payload): string {
+  private static function createMockToken(array $payload): string {
     $payload = base64_encode(json_encode($payload));
 
     return "foo.$payload.bar";

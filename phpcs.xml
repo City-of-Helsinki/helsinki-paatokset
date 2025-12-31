@@ -3,7 +3,11 @@
   <arg name="extensions" value="php,module,install,theme,inc"/>
   <exclude-pattern>*.css</exclude-pattern>
   <exclude-pattern>*.js</exclude-pattern>
-  <rule ref="Drupal" />
+  <rule ref="Drupal">
+    <!-- Legacy code uses invalid enum naming - disable the linter rule -->
+    <exclude name="Drupal.NamingConventions.ValidEnumCase.NoUpperAcronyms" />
+    <exclude name="Drupal.NamingConventions.ValidEnumCase.NoUnderscores" />
+  </rule>
   <rule ref="DrupalPractice">
     <exclude name="DrupalPractice.General.OptionsT.TforValue" />
     <exclude name="DrupalPractice.Objects.UnusedPrivateMethod.UnusedMethod" />

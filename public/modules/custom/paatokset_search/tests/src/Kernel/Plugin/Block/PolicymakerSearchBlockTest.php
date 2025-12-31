@@ -22,6 +22,9 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
     'paatokset_search',
     'paatokset_ahjo_api',
     'helfi_api_base',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**

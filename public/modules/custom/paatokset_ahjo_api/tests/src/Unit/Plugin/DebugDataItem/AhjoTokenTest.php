@@ -7,12 +7,13 @@ namespace Drupal\Tests\paatokset_ahjo_api\Unit\Plugin\DebugDataItem;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\Plugin\DebugDataItem\AhjoToken;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \Drupal\paatokset_ahjo_api\Plugin\DebugDataItem\AhjoToken
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class AhjoTokenTest extends UnitTestCase {
 
   use ProphecyTrait;

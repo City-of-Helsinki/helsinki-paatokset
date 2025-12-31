@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Service;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\path_alias\Entity\PathAlias;
+use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for PolicymakerService.
- *
- * @group paatokset_ahjo_api
- *
- * @coversDefaultClass \Drupal\paatokset_policymakers\Service\PolicymakerService
  */
+#[Group('paatokset_ahjo_api')]
 class PolicymakerServiceTest extends KernelTestBase {
 
   use UserCreationTrait;
@@ -45,17 +50,13 @@ class PolicymakerServiceTest extends KernelTestBase {
 
   /**
    * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The policymaker service.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
    */
-  protected $policymakerService;
+  protected PolicymakerService $policymakerService;
 
   /**
    * {@inheritdoc}
@@ -123,7 +124,7 @@ class PolicymakerServiceTest extends KernelTestBase {
     $this->setCurrentUser($admin_user);
 
     // Get the services.
-    $this->policymakerService = $this->container->get('paatokset_policymakers');
+    $this->policymakerService = $this->container->get(PolicymakerService::class);
 
     // Add languages used in the test.
     if (!ConfigurableLanguage::load('fi')) {
@@ -145,7 +146,7 @@ class PolicymakerServiceTest extends KernelTestBase {
     $this->container->get('router.builder')->rebuild();
 
     // Regrab the service after resets/rebuilds.
-    $this->policymakerService = $this->container->get('paatokset_policymakers');
+    $this->policymakerService = $this->container->get(PolicymakerService::class);
   }
 
   /**
@@ -232,12 +233,14 @@ class PolicymakerServiceTest extends KernelTestBase {
 
     // Create a new instance of the service with our mocks.
     $policymaker_service = new PolicymakerService(
-      $this->container->get('language_manager'),
-      $this->container->get('entity_type.manager'),
-      $this->container->get('config.factory'),
+      $this->container->get(LanguageManagerInterface::class),
+      $this->container->get(EntityTypeManagerInterface::class),
+      $this->container->get(ConfigFactoryInterface::class),
       $route_match,
-      $this->container->get('path_alias.manager'),
-      $this->container->get('pathauto.alias_cleaner')
+      $this->container->get(AliasManagerInterface::class),
+      $this->container->get(AliasCleanerInterface::class),
+      $this->container->get(MeetingService::class),
+      $this->container->get(CaseService::class),
     );
 
     // Test setting policymaker by path.
@@ -353,12 +356,14 @@ class PolicymakerServiceTest extends KernelTestBase {
 
     // Create a new instance of the service with the mocked dependencies.
     $policymaker_service = new PolicymakerService(
-      $this->container->get('language_manager'),
-      $this->container->get('entity_type.manager'),
-      $this->container->get('config.factory'),
+      $this->container->get(LanguageManagerInterface::class),
+      $this->container->get(EntityTypeManagerInterface::class),
+      $this->container->get(ConfigFactoryInterface::class),
       $route_match,
-      $this->container->get('path_alias.manager'),
-      $this->container->get('pathauto.alias_cleaner')
+      $this->container->get(AliasManagerInterface::class),
+      $this->container->get(AliasCleanerInterface::class),
+      $this->container->get(MeetingService::class),
+      $this->container->get(CaseService::class),
     );
 
     // Test setting policymaker by path with subpages.
