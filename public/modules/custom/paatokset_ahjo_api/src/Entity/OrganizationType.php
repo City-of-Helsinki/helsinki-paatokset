@@ -7,7 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 /**
  * Enum for organization types.
  */
-enum OrganizationType : int {
+enum OrganizationType: int {
 
   /**
    * Policymaker roles for trustees (not decisionmaker organizations).
