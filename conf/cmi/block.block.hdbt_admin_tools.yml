@@ -16,7 +16,7 @@ provider: null
 plugin: 'system_menu_block:tools'
 settings:
   id: 'system_menu_block:tools'
-  label: Työkalut
+  label: Tools
   label_display: visible
   provider: system
   level: 1

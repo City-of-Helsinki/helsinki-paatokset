@@ -9,18 +9,18 @@ dependencies:
     - media
     - user
 _core:
-  default_config_hash: UZP23LgBdE1XbvscbLCdd9uTk5t4qqA1Z56koqbvYP0
+  default_config_hash: mF_CA96Q4unIl78LRoLKR5YPUDGdxn0wbSqyUbvrQjc
 id: media
 label: Media
 module: views
-description: 'Etsi ja ylläpidä mediatiedostoja.'
+description: 'Find and manage media.'
 tag: ''
 base_table: media_field_data
 base_field: mid
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
@@ -76,7 +76,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Toiminto
+          action_title: Action
           include_exclude: exclude
           selected_actions: {  }
         thumbnail__target_id:
@@ -89,7 +89,7 @@ display:
           entity_type: media
           entity_field: thumbnail
           plugin_id: field
-          label: Pienoiskuva
+          label: Thumbnail
           exclude: false
           alter:
             alter_text: false
@@ -157,7 +157,7 @@ display:
           entity_type: media
           entity_field: media
           plugin_id: field
-          label: 'Mediatiedoston nimi'
+          label: 'Media name'
           exclude: false
           alter:
             alter_text: false
@@ -204,7 +204,7 @@ display:
           entity_type: media
           entity_field: bundle
           plugin_id: field
-          label: Tyyppi
+          label: Type
           exclude: false
           alter:
             alter_text: false
@@ -269,7 +269,7 @@ display:
           entity_type: media
           entity_field: uid
           plugin_id: field
-          label: Kirjoittaja
+          label: Author
           exclude: false
           alter:
             alter_text: false
@@ -334,7 +334,7 @@ display:
           entity_type: media
           entity_field: status
           plugin_id: field
-          label: Tila
+          label: Status
           exclude: false
           alter:
             alter_text: false
@@ -379,8 +379,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Julkaisematon
-            format_custom_true: Julkaistu
+            format_custom_false: Unpublished
+            format_custom_true: Published
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -401,7 +401,7 @@ display:
           entity_type: media
           entity_field: changed
           plugin_id: field
-          label: Päivitetty
+          label: Updated
           exclude: false
           alter:
             alter_text: false
@@ -476,7 +476,7 @@ display:
           admin_label: ''
           entity_type: media
           plugin_id: entity_operations
-          label: Toimenpiteet
+          label: Operations
           exclude: false
           alter:
             alter_text: false
@@ -527,29 +527,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Seuraava
-            previous: Edellinen
-            first: Ensimmäinen
-            last: Viimeinen
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Filter
           reset_button: false
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: perm
         options:
@@ -567,7 +567,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Mediatiedostoja ei ole saatavilla.'
+          content: 'No media available.'
           tokenize: false
       sorts:
         created:
@@ -604,7 +604,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: 'Mediatiedoston nimi'
+            label: 'Media name'
             description: ''
             use_operator: false
             operator: name_op
@@ -644,7 +644,7 @@ display:
           exposed: true
           expose:
             operator_id: bundle_op
-            label: Tyyppi
+            label: Type
             description: ''
             use_operator: false
             operator: bundle_op
@@ -685,7 +685,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: Tosi
+            label: 'True'
             description: null
             use_operator: false
             operator: status_op
@@ -699,7 +699,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Julkaisutila
+            label: 'Published status'
             description: ''
             identifier: status
             optional: true
@@ -710,11 +710,11 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Julkaistu
+                title: Published
                 operator: '='
                 value: '1'
               2:
-                title: Julkaisematon
+                title: Unpublished
                 operator: '='
                 value: '0'
         status_extra:
@@ -772,7 +772,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Kieli
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op
@@ -860,7 +860,6 @@ display:
           empty_table: true
           caption: ''
           description: ''
-          class: ''
       row:
         type: fields
       query:

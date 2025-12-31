@@ -18,11 +18,11 @@ base_field: id
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Master
     display_plugin: default
     position: 0
     display_options:
-      title: 'Uudelleenkäytettävät lohkot'
+      title: 'Paragraphs library'
       fields:
         entity_browser_select:
           id: entity_browser_select
@@ -33,7 +33,7 @@ display:
           admin_label: ''
           entity_type: paragraphs_library_item
           plugin_id: entity_browser_select
-          label: Valitse
+          label: Select
           exclude: false
           alter:
             alter_text: false
@@ -85,7 +85,7 @@ display:
           entity_type: paragraphs_library_item
           entity_field: label
           plugin_id: field
-          label: Tunnus
+          label: Label
           exclude: false
           alter:
             alter_text: false
@@ -150,7 +150,7 @@ display:
           entity_type: paragraph
           entity_field: type
           plugin_id: field
-          label: Tyyppi
+          label: Type
           exclude: false
           alter:
             alter_text: false
@@ -215,7 +215,7 @@ display:
           entity_type: paragraphs_library_item
           entity_field: paragraphs
           plugin_id: field
-          label: Lohkot
+          label: Paragraphs
           exclude: false
           alter:
             alter_text: false
@@ -281,7 +281,7 @@ display:
           entity_type: paragraphs_library_item
           entity_field: changed
           plugin_id: field
-          label: Muuttunut
+          label: Changed
           exclude: false
           alter:
             alter_text: false
@@ -356,26 +356,26 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Seuraava
-            previous: Edellinen
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Filter
           reset_button: false
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: none
         options: {  }
@@ -413,7 +413,7 @@ display:
           exposed: true
           expose:
             operator_id: label_op
-            label: Tunnus
+            label: Label
             description: ''
             use_operator: false
             operator: label_op
@@ -427,7 +427,7 @@ display:
               authenticated: authenticated
           is_grouped: false
           group_info:
-            label: Tunnus
+            label: Label
             description: null
             identifier: label
             optional: true
@@ -456,7 +456,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: Tyyppi
+            label: Type
             description: ''
             use_operator: false
             operator: type_op

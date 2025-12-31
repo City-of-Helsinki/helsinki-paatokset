@@ -9,20 +9,20 @@ dependencies:
 _core:
   default_config_hash: 7-f_3ASk-Ly7MqcUiwREHB0r0l-jkq7bKwjRLTMhDEs
 id: redirect
-label: Uudelleenohjaukset
+label: Redirect
 module: views
-description: Uudelleenohjaukset
+description: 'List of redirects'
 tag: ''
 base_table: redirect
 base_field: rid
 display:
   default:
     id: default
-    display_title: Oletus
+    display_title: Master
     display_plugin: default
     position: 0
     display_options:
-      title: Uudelleenohjaukset
+      title: Redirect
       fields:
         redirect_bulk_form:
           id: redirect_bulk_form
@@ -74,7 +74,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          action_title: Valinnalla
+          action_title: 'With selection'
           include_exclude: exclude
           selected_actions: {  }
         redirect_source__path:
@@ -87,7 +87,7 @@ display:
           entity_type: redirect
           entity_field: redirect_source
           plugin_id: field
-          label: Lähettäjä
+          label: From
           exclude: false
           alter:
             alter_text: false
@@ -172,7 +172,7 @@ display:
           entity_type: redirect
           entity_field: created
           plugin_id: date
-          label: Luotu
+          label: Created
           exclude: false
           alter:
             alter_text: false
@@ -231,29 +231,29 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Seuraava
-            previous: Edellinen
-            first: Ensimmäinen
-            last: Viimeinen
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Kaikki -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Suodata
+          submit_button: Filter
           reset_button: true
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       access:
         type: perm
         options:
@@ -271,7 +271,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Ei ole vielä uudelleenohjaksia.'
+          content: 'There is no redirect yet.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -292,7 +292,7 @@ display:
           exposed: true
           expose:
             operator_id: redirect_source__path_op
-            label: Lähettäjä
+            label: From
             description: ''
             use_operator: false
             operator: redirect_source__path_op
@@ -332,7 +332,7 @@ display:
           exposed: true
           expose:
             operator_id: redirect_redirect__uri_op
-            label: Osoitteeseen
+            label: To
             description: ''
             use_operator: false
             operator: redirect_redirect__uri_op
@@ -375,7 +375,7 @@ display:
           exposed: true
           expose:
             operator_id: status_code_op
-            label: Tilakoodi
+            label: 'Status code'
             description: ''
             use_operator: false
             operator: status_code_op
@@ -389,7 +389,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Tilakoodi
+            label: 'Status code'
             description: ''
             identifier: status_code
             optional: true
@@ -400,49 +400,49 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: '300 Useita valintoja'
+                title: '300 Multiple Choices'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '300'
               2:
-                title: '301 Pysyvästi siirretty'
+                title: '301 Moved Permanently'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '301'
               3:
-                title: '302 Löydetty'
+                title: '302 Found'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '302'
               4:
-                title: '303 Kts. toinen'
+                title: '303 See Other'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '303'
               5:
-                title: '304 Muuttamaton'
+                title: '304 Not Modified'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '304'
               6:
-                title: '305 Käytä proxyä'
+                title: '305 Use Proxy'
                 operator: '='
                 value:
                   min: ''
                   max: ''
                   value: '305'
               7:
-                title: '307 Tilapäinen uudelleenohjaus'
+                title: '307 Temporary Redirect'
                 operator: '='
                 value:
                   min: ''
@@ -464,7 +464,7 @@ display:
           exposed: true
           expose:
             operator_id: language_op
-            label: 'Alkuperäinen kieli'
+            label: 'Original language'
             description: ''
             use_operator: false
             operator: language_op
@@ -583,7 +583,7 @@ display:
       cacheable: false
   page_1:
     id: page_1
-    display_title: Sivu
+    display_title: Page
     display_plugin: page
     position: 1
     display_options:

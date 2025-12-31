@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: flXhTcp55yLcyy7ZLOhPGKGZobZQJdkAFVWV3LseiuI
 id: user.register
-label: Rekisteröidy
+label: Register
 description: null
 targetEntityType: user
 cache: true
