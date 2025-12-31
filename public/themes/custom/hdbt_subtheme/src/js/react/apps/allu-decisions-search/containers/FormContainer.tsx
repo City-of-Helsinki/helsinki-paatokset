@@ -8,6 +8,7 @@ import FilterButton from '@/react/common/FilterButton';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { selectionsAtom, setSelectionsAtom } from '../store';
 import type { Selections } from '../types/Selections';
+import { useEffect } from 'react';
 
 export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: string; value: string }> }) => {
   const selections = useAtomValue(selectionsAtom);
@@ -17,6 +18,14 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
     start: selections.start,
     end: selections.end,
   });
+  const [endDisabled, setEndDisabled] = useState<boolean>(false);
+  // When the component mounts and endDisabled is enabled and start date is set
+  // but end date is not, set end date to match start date.
+  useEffect(() => {
+    if (endDisabled && dates.start && !dates.end) {
+      setDates((prev) => ({ ...prev, end: prev.start }));
+    }
+  }, [endDisabled, dates.start, dates.end]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,16 +63,8 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
         className='hdbt-search__filter hdbt-search--react__text-field'
         defaultValue={selections.q}
         id='q'
-        label={Drupal.t(
-          'Name of street or park',
-          {},
-          { context: 'Allu decision search' },
-        )}
-        placeholder={Drupal.t(
-          'Eg. Mannerheimintie',
-          {},
-          { context: 'Allu decision search' },
-        )}
+        label={Drupal.t('Name of street or park', {}, { context: 'Allu decision search' })}
+        placeholder={Drupal.t('Eg. Mannerheimintie', {}, { context: 'Allu decision search' })}
         type='search'
       />
       <div className='hdbt-search--react__dropdown-filters'>
@@ -76,16 +77,8 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           onChange={setType}
           options={typeOptions || []}
           texts={{
-            label: Drupal.t(
-              'Type of decision',
-              {},
-              { context: 'Allu decision search' },
-            ),
-            placeholder: Drupal.t(
-              'All types',
-              {},
-              { context: 'Allu decision search' },
-            ),
+            label: Drupal.t('Type of decision', {}, { context: 'Allu decision search' }),
+            placeholder: Drupal.t('All types', {}, { context: 'Allu decision search' }),
           }}
           value={type}
         />
@@ -95,9 +88,23 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           id='date-range-select'
           label={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
           title={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
-          setStart={(d?: string) => setDates({ ...dates, start: d })}
+          setStart={(d?: string) => {
+            if (endDisabled && d) {
+              setDates({ start: d, end: d });
+            } else {
+              setDates({ ...dates, start: d });
+            }
+          }}
           setEnd={(d?: string) => setDates({ ...dates, end: d })}
+          setEndDisabled={(disabled) => {
+            setEndDisabled(disabled);
+            if (disabled && dates.start) {
+              // When endDisabled is enabled, set end date to match start date.
+              setDates((prev) => ({ ...prev, end: prev.start }));
+            }
+          }}
           startDate={dates.start}
+          endDisabled={endDisabled}
         />
       </div>
       <Button className='hdbt-search--react__submit-button' theme={ButtonPresetTheme.Black} type='submit'>

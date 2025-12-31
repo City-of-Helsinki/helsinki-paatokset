@@ -1,7 +1,7 @@
 type: module
 name: Configuration package for testing media types
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - paatokset_ahjo_api
   - drupal:media

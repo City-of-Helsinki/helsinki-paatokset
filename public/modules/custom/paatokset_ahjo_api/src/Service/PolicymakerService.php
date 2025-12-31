@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_policymakers\Service;
+namespace Drupal\paatokset_ahjo_api\Service;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -16,15 +15,11 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 
 /**
  * Service class for retrieving policymaker-related data.
- *
- * @package Drupal\paatokset_ahjo_api\Serivces
  */
 class PolicymakerService {
 
@@ -33,17 +28,17 @@ class PolicymakerService {
   /**
    * Machine name for meeting node type.
    */
-  const NODE_TYPE = 'policymaker';
+  const string NODE_TYPE = 'policymaker';
 
   /**
    * Cut off date for old meetings.
    */
-  const MEETING_START_DATE = '2017-01-01';
+  const string MEETING_START_DATE = '2017-01-01';
 
   /**
    * Visible trustee roles.
    */
-  const TRUSTEE_ROLES = [
+  const array TRUSTEE_ROLES = [
     'Jäsen',
     'Varajäsen',
     'Puheenjohtaja',
@@ -53,12 +48,12 @@ class PolicymakerService {
   /**
    * City council id in Ahjo.
    */
-  public const CITY_COUNCIL_DM_ID = '02900';
+  public const string CITY_COUNCIL_DM_ID = '02900';
 
   /**
    * City board id in Ahjo.
    */
-  public const CITY_BOARD_DM_ID = '00400';
+  public const string CITY_BOARD_DM_ID = '00400';
 
   /**
    * Policymaker node.
@@ -67,64 +62,19 @@ class PolicymakerService {
 
   /**
    * Policymaker ID.
-   *
-   * @var string
    */
-  private $policymakerId;
+  private string $policymakerId;
 
-  /**
-   * Node storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  private EntityStorageInterface $nodeStorage;
-
-  /**
-   * Meeting service.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\MeetingService
-   */
-  private MeetingService $meetingService;
-
-  /**
-   * Case service.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
-   */
-  private CaseService $caseService;
-
-  /**
-   * Constructs policymaker service.
-   *
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   Language manager service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity type manager.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
-   *   Config service.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   Route match service.
-   * @param \Drupal\path_alias\AliasManagerInterface $pathAliasManager
-   *   Path alias manager.
-   * @param \Drupal\pathauto\AliasCleanerInterface $pathAliasCleaner
-   *   Path alias cleaner.
-   */
   public function __construct(
-    private LanguageManagerInterface $languageManager,
-    private EntityTypeManagerInterface $entityTypeManager,
-    private ConfigFactoryInterface $config,
-    private RouteMatchInterface $routeMatch,
-    private AliasManagerInterface $pathAliasManager,
-    private AliasCleanerInterface $pathAliasCleaner,
+    private readonly LanguageManagerInterface $languageManager,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly ConfigFactoryInterface $config,
+    private readonly RouteMatchInterface $routeMatch,
+    private readonly AliasManagerInterface $pathAliasManager,
+    private readonly AliasCleanerInterface $pathAliasCleaner,
+    private readonly MeetingService $meetingService,
+    private readonly CaseService $caseService,
   ) {
-    $this->nodeStorage = $entityTypeManager->getStorage('node');
-
-    // Using dependency injection here fails on `make new` due to cyclical
-    // dependency with paatokset_ahjo_api module.
-    // phpcs:ignore
-    $this->meetingService = \Drupal::service('paatokset_ahjo_meetings');
-    // phpcs:ignore
-    $this->caseService = \Drupal::service('paatokset_ahjo_cases');
   }
 
   /**
@@ -144,7 +94,8 @@ class PolicymakerService {
   public function query(array $params = []) : array {
     $sort = $params['sort'] ?? 'ASC';
 
-    $query = $this->nodeStorage
+    $query = $this->entityTypeManager
+      ->getStorage('node')
       ->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
@@ -165,7 +116,7 @@ class PolicymakerService {
       return [];
     }
 
-    return $this->nodeStorage->loadMultiple($ids);
+    return $this->entityTypeManager->getStorage('node')->loadMultiple($ids);
   }
 
   /**
@@ -233,6 +184,7 @@ class PolicymakerService {
     }
 
     if ($node->getType() === 'policymaker') {
+      assert($node instanceof Policymaker);
       $this->policymaker = $node;
     }
 
@@ -265,7 +217,7 @@ class PolicymakerService {
 
       $path = $this->pathAliasManager->getPathByAlias($path_prefix . '/' . $organization, $currentLanguage);
       if (preg_match('/node\/(\d+)/', $path, $matches)) {
-        $node = $this->nodeStorage->load($matches[1]);
+        $node = $this->entityTypeManager->getStorage('node')->load($matches[1]);
       }
       elseif ($this->getPolicyMaker($organization) !== NULL) {
         $node = $this->getPolicyMaker($organization);
@@ -283,7 +235,7 @@ class PolicymakerService {
         $alias_parts = array_slice($url_parts, 2, 2);
         $path = $this->pathAliasManager->getPathByAlias('/' . implode('/', $alias_parts));
         if (preg_match('/node\/(\d+)/', $path, $matches)) {
-          $node = $this->nodeStorage->load($matches[1]);
+          $node = $this->entityTypeManager->getStorage('node')->load($matches[1]);
         }
       }
     }
@@ -314,7 +266,7 @@ class PolicymakerService {
     if ($policymaker === NULL) {
       $policymaker = $this->getPolicyMaker();
     }
-    if (!$policymaker instanceof NodeInterface) {
+    if (!$policymaker instanceof Policymaker) {
       return NULL;
     }
 
@@ -375,10 +327,13 @@ class PolicymakerService {
     $info_content = $xpath->query("//*[contains(@class, 'Paikka Paivamaara')]");
     if ($info_content->count() > 0) {
       $current_item = $info_content->item(0);
-      $announcement_info .= $node->ownerDocument->saveHTML($current_item);
-      while ($current_item->nextSibling instanceof \DOMNode) {
-        $current_item = $current_item->nextSibling;
+      // @fixme possible bug here, where does the node variable come from?
+      if (isset($node)) {
         $announcement_info .= $node->ownerDocument->saveHTML($current_item);
+        while ($current_item->nextSibling instanceof \DOMNode) {
+          $current_item = $current_item->nextSibling;
+          $announcement_info .= $node->ownerDocument->saveHTML($current_item);
+        }
       }
     }
 
@@ -459,7 +414,7 @@ class PolicymakerService {
 
       // Last try to get URL based on native ID.
       if (!empty($motion_id) && !$motion_url instanceof Url) {
-        $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id, NULL, $langcode);
+        $motion_url = $this->caseService->getDecisionUrlByNativeId($motion_id);
       }
 
       if ($motion_url instanceof Url) {
@@ -563,7 +518,7 @@ class PolicymakerService {
     $composition = [];
 
     foreach ($policymaker->get('field_meeting_composition') as $field) {
-      $data = json_decode($field->value, TRUE);
+      $data = json_decode($field->getString(), TRUE);
       if (!isset($data['Role']) || !in_array($data['Role'], self::TRUSTEE_ROLES)) {
         continue;
       }
@@ -807,10 +762,10 @@ class PolicymakerService {
 
     $node = NULL;
     if (preg_match('/node\/(\d+)/', $path, $matches)) {
-      $node = $this->nodeStorage->load($matches[1]);
+      $node = $this->entityTypeManager->getStorage('node')->load($matches[1]);
     }
     elseif (preg_match('/node\/(\d+)/', $fallback_path, $matches)) {
-      $node = $this->nodeStorage->load($matches[1]);
+      $node = $this->entityTypeManager->getStorage('node')->load($matches[1]);
     }
 
     return $node;
@@ -826,7 +781,8 @@ class PolicymakerService {
    *   Array of nodes.
    */
   private function getTrusteeNodesById(array $ids): ?array {
-    $query = $this->nodeStorage
+    $query = $this->entityTypeManager
+      ->getStorage('node')
       ->getQuery()
       ->accessCheck(TRUE)
       ->condition('status', 1)
@@ -839,7 +795,7 @@ class PolicymakerService {
       return [];
     }
 
-    return $this->nodeStorage->loadMultiple($ids);
+    return $this->entityTypeManager->getStorage('node')->loadMultiple($ids);
   }
 
   /**

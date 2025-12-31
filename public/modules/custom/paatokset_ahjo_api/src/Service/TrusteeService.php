@@ -124,7 +124,7 @@ class TrusteeService {
    */
   public static function getMemberships(NodeInterface $node): array {
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
+    /** @var \Drupal\paatokset_ahjo_api\Service\PolicymakerService $policymakerService */
     $policymakerService = \Drupal::service('paatokset_policymakers');
 
     $chairmanships = [];
@@ -133,8 +133,8 @@ class TrusteeService {
         $data = json_decode($json->value, TRUE);
         $position = $policymakerService->getTranslationForRole($data['Position']);
         $chairmanships[] = $position . ', ' . $data['OrganizationName'];
-      };
-    };
+      }
+    }
 
     $id = $node->get('field_trustee_id')->value;
     $org_nids = \Drupal::entityQuery('node')

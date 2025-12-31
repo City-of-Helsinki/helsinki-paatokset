@@ -57,8 +57,8 @@ class SoucePluginTest extends MigrateSourceTestBase {
   /**
    * Data provider for test.
    */
-  public function providerSource(): array {
-    $decisions = $this->getTestDecisions();
+  public static function providerSource(): array {
+    $decisions = self::getTestDecisions();
     $decisionConfiguration = [
       'ids' => [
         'id' => [

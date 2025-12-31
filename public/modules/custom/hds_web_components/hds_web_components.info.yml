@@ -2,4 +2,4 @@ name: Web components
 description: Deprecated and should be removed once it's been uninstalled.
 type: module
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11

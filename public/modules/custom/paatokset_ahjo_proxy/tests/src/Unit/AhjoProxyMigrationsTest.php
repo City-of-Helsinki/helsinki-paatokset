@@ -18,6 +18,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
@@ -43,9 +44,8 @@ class AhjoProxyMigrationsTest extends UnitTestCase {
 
   /**
    * Tests migration ids.
-   *
-   * @dataProvider provideMigrationIds
    */
+  #[DataProvider('provideMigrationIds')]
   public function testSingleMigrations(string $type, int $rval, ?array $pluginArguments = NULL): void {
     $client = $this->createMockHttpClient([
       new Response(200, body: json_encode([
@@ -76,7 +76,7 @@ class AhjoProxyMigrationsTest extends UnitTestCase {
   /**
    * Data provider for test.
    */
-  private function provideMigrationIds(): array {
+  public static function provideMigrationIds(): array {
     return [
       // Migration uses proxy url.
       ['meetings', 6, ['ahjo_meetings:single', 'https://ahjo-url/ahjo-proxy/meetings/single/123']],

@@ -5,12 +5,12 @@ namespace Drupal\Tests\paatokset_allu\Unit;
 use Drupal\paatokset_allu\DocumentType;
 use Drupal\paatokset_allu\Plugin\Deriver\AlluSourcePlugin;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests plugin deriver.
- *
- * @group paatokset_allu
  */
+#[Group('paatokset_allu')]
 class DeriverTest extends UnitTestCase {
 
   /**

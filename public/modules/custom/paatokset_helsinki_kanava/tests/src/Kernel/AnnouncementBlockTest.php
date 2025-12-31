@@ -11,7 +11,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_helsinki_kanava\Plugin\Block\AnnouncementsBlock;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 

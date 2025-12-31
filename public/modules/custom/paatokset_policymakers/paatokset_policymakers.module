@@ -12,11 +12,11 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * Implements hook_ENTITY_TYPE_update().
@@ -84,10 +84,8 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
  *   - elements: An array of elements to display in view mode.
  */
 function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$variables) {
-  /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
-  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $meetingService = \Drupal::service(MeetingService::class);
+  $policymakerService = \Drupal::service(PolicymakerService::class);
   $policymakerService->setPolicyMakerByPath();
   $node = $policymakerService->getPolicyMaker();
 
@@ -124,11 +122,8 @@ function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$v
  * Implements preprocess_node hook.
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
-
-  /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingService */
-  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
+  $meetingService = \Drupal::service(MeetingService::class);
   $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
   $policymaker = $variables['node'];
@@ -325,8 +320,7 @@ function paatokset_policymakers_preprocess_policymaker_minutes(&$variables) {
 function template_preprocess_block__policymaker_members(array &$variables) {
   $variables['#attached']['library'][] = 'paatokset_policymakers/policymaker_members';
 
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
   $policymakerService->setPolicyMakerByPath();
   $node = $policymakerService->getPolicyMaker();
 
@@ -468,8 +462,7 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
       return TRUE;
     }
 
-    /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-    $policymakerService = \Drupal::service('paatokset_policymakers');
+    $policymakerService = \Drupal::service(PolicymakerService::class);
     if (!$policymakerService->setPolicyMakerByPath()) {
       return FALSE;
     }
@@ -549,8 +542,7 @@ function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool 
     return FALSE;
   }
 
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
   $policymakerService->setPolicyMakerNode($parent);
   return TRUE;
 }

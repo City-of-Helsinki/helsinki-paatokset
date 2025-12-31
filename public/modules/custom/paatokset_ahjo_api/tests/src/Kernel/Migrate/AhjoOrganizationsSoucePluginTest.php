@@ -7,6 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Migrate;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Tests\migrate\Kernel\MigrateSourceTestBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -25,6 +26,9 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
   protected static $modules = [
     'paatokset_ahjo_api',
     'helfi_api_base',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -41,9 +45,8 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
 
   /**
    * {@inheritDoc}
-   *
-   * @dataProvider providerSource
    */
+  #[DataProvider('providerSource')]
   public function testSource(array $source_data, array $expected_data, $expected_count = -1, array $configuration = [], $high_water = NULL): void {
     // Setup database.
     foreach (($source_data['db'] ?? []) as $row) {
@@ -72,7 +75,7 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
   /**
    * Data provider for the test.
    */
-  public function providerSource(): array {
+  public static function providerSource(): array {
     return [
       [
         // Source data.
