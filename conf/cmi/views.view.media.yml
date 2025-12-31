@@ -334,7 +334,7 @@ display:
           entity_type: media
           entity_field: status
           plugin_id: field
-          label: Status
+          label: Tila
           exclude: false
           alter:
             alter_text: false
@@ -527,10 +527,10 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page: false
             items_per_page_label: 'Merkintöjä sivua kohti'

@@ -10,7 +10,7 @@ dependencies:
     - paatokset
     - user
 id: all_articles
-label: 'All articles'
+label: ''
 module: views
 description: ''
 tag: ''
@@ -23,7 +23,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'All articles'
+      title: 'Kaikki kuulutukset ja ilmoitukset'
       fields:
         title:
           id: title
@@ -97,8 +97,8 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: Next
-            previous: Previous
+            next: Seuraava
+            previous: Edellinen
             first: First
             last: Last
           expose:
@@ -113,7 +113,7 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Find
+          submit_button: Etsi
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -225,7 +225,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: 'Filter by year'
+            label: Vuosi
             description: ''
             use_operator: false
             operator: published_at_year_op

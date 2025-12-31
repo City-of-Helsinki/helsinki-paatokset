@@ -135,7 +135,7 @@ display:
           entity_type: user
           entity_field: status
           plugin_id: field
-          label: Status
+          label: Tila
           exclude: false
           alter:
             alter_text: false
@@ -342,7 +342,7 @@ display:
           type: timestamp_ago
           settings:
             future_format: '@interval hence'
-            past_format: '@interval ago'
+            past_format: '@interval sitten'
             granularity: 2
         operations:
           id: operations
@@ -468,10 +468,10 @@ display:
           total_pages: 0
           id: 0
           tags:
-            next: 'Seuraava ›'
-            previous: '‹ Edellinen'
-            first: '« Ensimmäinen'
-            last: 'Viimeinen »'
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
           expose:
             items_per_page: false
             items_per_page_label: 'Merkintöjä sivua kohti'
@@ -484,7 +484,7 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Suodatin
+          submit_button: Suodata
           reset_button: true
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
@@ -598,7 +598,7 @@ display:
               authenticated: authenticated
           is_grouped: true
           group_info:
-            label: Status
+            label: Tila
             description: ''
             identifier: status
             optional: true
