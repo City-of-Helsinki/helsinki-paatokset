@@ -2,14 +2,10 @@
 
 /**
  * @file
+ * Contains installation hooks for Päätökset Search module.
  */
 
 declare(strict_types=1);
-
-/**
- * @file
- * Contains installation hooks for Päätökset Search module.
- */
 
 use Drupal\node\Entity\Node;
 

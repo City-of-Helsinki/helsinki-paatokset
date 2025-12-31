@@ -17,7 +17,7 @@ class DecisionSearchForm extends FormBase {
   use AutowireTrait;
 
   public function __construct(
-    private readonly LanguageManagerInterface $languageManager
+    private readonly LanguageManagerInterface $languageManager,
   ) {
   }
 
