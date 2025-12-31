@@ -7,6 +7,7 @@ namespace Drupal\Tests\paatokset_search\Kernel\Controller;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_search\Controller\SearchController;
 use Drupal\paatokset_search\SearchManager;
+use Elastic\Elasticsearch\Client;
 
 /**
  * Tests search controller.
@@ -29,7 +30,8 @@ class SearchControllerTest extends KernelTestBase {
    * @covers ::decisions
    */
   public function testDecisions(): void {
-    $controller = new SearchController($this->container->get(SearchManager::class));
+    $client = $this->prophesize(Client::class);
+    $controller = new SearchController($this->container->get(SearchManager::class), $client->reveal());
     $build = $controller->decisions();
 
     $this->assertNotEmpty($build);

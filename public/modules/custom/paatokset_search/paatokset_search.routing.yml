@@ -31,3 +31,10 @@ paatokset_search.settings_form:
     _permission: 'access administration pages'
   options:
     _admins_route: TRUE
+
+paatokset_search.autocomplete:
+  path: '/api/v1/paatokset-autocomplete'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::autocomplete'
+  requirements:
+    _permission: 'access content'

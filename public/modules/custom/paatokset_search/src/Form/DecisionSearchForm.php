@@ -8,6 +8,7 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\paatokset_search\SearchManager;
 
 /**
  * Decision search form.
@@ -18,6 +19,7 @@ class DecisionSearchForm extends FormBase {
 
   public function __construct(
     private readonly LanguageManagerInterface $languageManager,
+    private readonly SearchManager $searchManager,
   ) {
   }
 
@@ -36,8 +38,9 @@ class DecisionSearchForm extends FormBase {
 
     $form['q'] = [
       '#type' => 'paatokset_textfield_autocomplete',
-      // @todo Change route to decision autocomplete
-      '#autocomplete_route_name' => 'helfi_api_base.location_autocomplete',
+      '#maxlength' => 1028,
+      '#autocomplete_route_name' => 'paatokset_search.autocomplete',
+      '#operator_guide_url' => $this->searchManager->getOperatorGuideUrl(),
       '#title' => $this->t('Search decisions'),
       '#placeholder' => $this->t(
         'Search with a Finnish keyword, eg. Viikki',
@@ -78,17 +81,15 @@ class DecisionSearchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $search = $form_state->getValue('q');
 
-    $language = $this->languageManager
+    $langcode = $this->languageManager
       ->getCurrentLanguage()
       ->getId();
 
-    $route_map = [
-      'fi' => 'paatokset_search.decisions.fi',
+    $route_name = match ($langcode) {
       'sv' => 'paatokset_search.decisions.sv',
       'en' => 'paatokset_search.decisions.en',
-    ];
-
-    $route_name = $route_map[$language] ?? 'paatokset_search.decisions.fi';
+      default => 'paatokset_search.decisions.fi',
+    };
 
     $form_state->setRedirect(
       $route_name,
