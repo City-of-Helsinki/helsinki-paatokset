@@ -4,39 +4,21 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_search\Form;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Decision search form.
  */
-class DecisionSearchForm extends FormBase implements ContainerInjectionInterface {
+class DecisionSearchForm extends FormBase {
 
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
+  use AutowireTrait;
 
-  /**
-   * Constructs the form.
-   */
-  public function __construct(LanguageManagerInterface $language_manager) {
-    $this->languageManager = $language_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): self {
-    return new self(
-      $container->get('language_manager'),
-    );
+  public function __construct(
+    private readonly LanguageManagerInterface $languageManager
+  ) {
   }
 
   /**
@@ -54,7 +36,7 @@ class DecisionSearchForm extends FormBase implements ContainerInjectionInterface
 
     $form['q'] = [
       '#type' => 'paatokset_textfield_autocomplete',
-    // @todo Change route to decision autocomplete
+      // @todo Change route to decision autocomplete
       '#autocomplete_route_name' => 'helfi_api_base.location_autocomplete',
       '#title' => $this->t('Search decisions'),
       '#placeholder' => $this->t(
@@ -97,7 +79,7 @@ class DecisionSearchForm extends FormBase implements ContainerInjectionInterface
     $search = $form_state->getValue('q');
 
     $language = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getCurrentLanguage()
       ->getId();
 
     $route_map = [
@@ -117,7 +99,7 @@ class DecisionSearchForm extends FormBase implements ContainerInjectionInterface
           'page' => 1,
           'sort' => 'relevance',
         ],
-      ]
+      ],
     );
   }
 
