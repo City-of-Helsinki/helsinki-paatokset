@@ -31,14 +31,6 @@ class TextfieldAutocomplete extends Textfield {
     $element['#theme'] = 'paatokset_textfield_autocomplete';
     $element['#attributes']['data-paatokset-textfield-autocomplete'] = TRUE;
 
-    if (!empty($element['#operator_guide_url'])) {
-      $element['#attributes']['data-operator-guide-url'] = $element['#operator_guide_url'];
-    }
-
-    $element['#label_attributes']['class'] = array_merge([
-      'hds-text-input__label',
-    ], $element['#label_attributes']['class'] ?? []);
-
     $element['#wrapper_attributes']['class'] = array_merge([
       'hds-text-input',
       'hdbt-search__filter',
