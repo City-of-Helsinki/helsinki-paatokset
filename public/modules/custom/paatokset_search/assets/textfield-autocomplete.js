@@ -1,6 +1,5 @@
-let abortController = new AbortController();
-
 ((Drupal, once) => {
+  let abortController = new AbortController();
 
   const minCharAssistiveHint = Drupal.t(
     'Type @count or more characters for results',
