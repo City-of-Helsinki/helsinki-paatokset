@@ -1,4 +1,4 @@
- Swedish translations
+# Swedish translations
 msgid ""
 msgstr ""
 
@@ -362,35 +362,3 @@ msgstr "Organens beslut"
 msgctxt "Decisions search"
 msgid "Over 10 000 decisions"
 msgstr "Över 10 000 beslut"
-
-msgctxt "Frontpage decision search"
-msgid "Your search contains special characters, such as “ or +. For more results, try searching without special characters."
-msgstr "Ditt sökord innehåller specialtecken, såsom “ eller +. För fler resultat, prova att söka utan specialtecken."
-
-msgctxt "Frontpage decision search"
-msgid "Learn more about using special characters."
-msgstr "Läs mer om användningen av specialtecken."
-
-msgctxt "Frontpage decision search"
-msgid "Type @count or more characters for results"
-msgstr "Skriv @count eller fler tecken för att se resultat"
-
-msgctxt "Frontpage decision search"
-msgid "When autocomplete results are available use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures."
-msgstr "När autokomplettering är tillgänglig, använd upp- och nedåtpilarna för att bläddra och tryck enter för att välja. För pekskärmsanvändare, navigera med beröring eller svepgester."
-
-msgctxt "Frontpage decision search"
-msgid "No decision suggestions were found"
-msgstr "Inga beslutförslag hittades"
-
-msgctxt "Frontpage decision search"
-msgid "There are @count results available."
-msgstr "Det finns @count resultat tillgängliga."
-
-msgctxt "Frontpage decision search"
-msgid "There is one result available."
-msgstr "Det finns ett resultat tillgängligt."
-
-msgctxt "Frontpage decision search"
-msgid "@selectedItem @position of @count is highlighted"
-msgstr "@selectedItem @position av @count är markerad"
