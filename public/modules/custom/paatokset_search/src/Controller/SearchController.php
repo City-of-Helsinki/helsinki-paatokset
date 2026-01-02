@@ -18,12 +18,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class SearchController extends ControllerBase {
 
-  /**
-   * Controller for policymaker subpages.
-   *
-   * @param \Drupal\paatokset_search\SearchManager $searchManager
-   *   The search manager.
-   */
   public function __construct(
     private readonly SearchManager $searchManager,
     #[Autowire('paatokest_search.elastic_client')]

@@ -20,6 +20,7 @@ class TextfieldAutocomplete extends Textfield {
     $info = parent::getInfo();
     $class = static::class;
     $info['#process'][] = [$class, 'processTextfieldAutocomplete'];
+    $info['#attached']['library'][] = 'paatokset_search/textfield_autocomplete';
     return $info;
   }
 
@@ -29,7 +30,6 @@ class TextfieldAutocomplete extends Textfield {
   public static function processTextfieldAutocomplete(array $element): array {
     $element['#theme'] = 'paatokset_textfield_autocomplete';
     $element['#attributes']['data-paatokset-textfield-autocomplete'] = TRUE;
-    $element['#attached']['library'][] = 'hdbt_subtheme/textfield_autocomplete';
 
     if (!empty($element['#operator_guide_url'])) {
       $element['#attributes']['data-operator-guide-url'] = $element['#operator_guide_url'];

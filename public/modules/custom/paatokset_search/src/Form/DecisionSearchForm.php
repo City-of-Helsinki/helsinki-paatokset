@@ -51,7 +51,6 @@ class DecisionSearchForm extends FormBase {
       '#default_value' => $this->getRequest()?->query->get('q', ''),
       '#attributes' => [
         'class' => [
-          'hds-text-input',
           'hdbt-search__filter',
         ],
       ],

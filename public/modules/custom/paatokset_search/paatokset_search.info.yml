@@ -3,5 +3,6 @@ type: module
 package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
+  - helfi_platform_config:helfi_platform_config
   - elasticsearch_connector:elasticsearch_connector
   - search_api:search_api
