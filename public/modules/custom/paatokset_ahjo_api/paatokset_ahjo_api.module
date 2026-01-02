@@ -109,6 +109,7 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'base hook' => 'entity',
       'template' => 'block/block--frontpage-calendar',
     ],
+    // @todo remove once new browse page is in place.
     'block__policymaker_listing' => [
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-listing',
@@ -136,6 +137,14 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'variables' => [
         'items' => [],
         'current_option' => NULL,
+      ],
+    ],
+    'policymaker_browser' => [
+      'variables' => [
+        'organization' => NULL,
+        'children' => NULL,
+        'policymakers' => NULL,
+        'breadcrumb' => NULL,
       ],
     ],
   ];
@@ -402,6 +411,8 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
 
 /**
  * Preprocess policymaker listing block.
+ *
+ * @todo remove once new browse page is in place.
  */
 function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variables): void {
   // Helpful $content variable for templates.
@@ -524,7 +535,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
-  $variables['decision_org_name'] = !$organization_type?->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
+  $variables['decision_org_name'] = !$organization_type?->isCouncilOrBoard() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
   $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL;
   $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');

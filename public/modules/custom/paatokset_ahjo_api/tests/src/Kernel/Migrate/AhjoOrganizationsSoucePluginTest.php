@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Migrate;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
+use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\migrate\Kernel\MigrateSourceTestBase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Tests migrate source plugin.
@@ -18,7 +24,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
  */
 class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
 
-  use ProphecyTrait;
+  use ApiTestTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -39,8 +46,13 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
 
     $this->installEntitySchema('ahjo_organization');
 
-    // Makes it possible to mock ahjo proxy.
-    putenv('AHJO_PROXY_BASE_URL=test');
+    // Replace environment resolver.
+    $environmentResolver = $this->getEnvironmentResolver(
+      Project::PAATOKSET,
+      EnvironmentEnum::Test->value
+    );
+
+    $this->container->set(EnvironmentResolverInterface::class, $environmentResolver);
   }
 
   /**
@@ -56,18 +68,14 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
         ->save();
     }
 
-    $ahjoProxy = $this->prophesize(AhjoProxy::class);
-    $ahjoProxy
-      ->isOperational()
-      ->willReturn(TRUE);
-
     // Setup api responses.
-    foreach ($source_data['api'] ?? [] as $id => $row) {
-      $ahjoProxy->getData(Argument::containingString($id), NULL)
-        ->willReturn($row);
-    }
-
-    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
+    $this->container->set(AhjoProxyClientInterface::class, new AhjoProxyClient(
+      $this->createMockHttpClient(
+        array_map(static fn (string $body) => new Response(body: $body), $source_data['api'] ?? [])
+      ),
+      $this->container->get(EnvironmentResolverInterface::class),
+      $this->container->get(ConfigFactoryInterface::class),
+    ));
 
     parent::testSource($source_data, $expected_data, $expected_count, $configuration, $high_water);
   }
@@ -82,7 +90,8 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
         [
           'db' => [],
           'api' => [
-            '00001' => json_decode(file_get_contents(__DIR__ . '/../../../fixtures/organizations-00001.json'), TRUE),
+            '00001_fi' => file_get_contents(__DIR__ . '/../../../fixtures/organizations-00001.json'),
+            '00001_sv' => file_get_contents(__DIR__ . '/../../../fixtures/organizations-00001.json'),
           ],
         ],
         // Expected data.
@@ -114,8 +123,10 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
           ],
           'api' => [
             // Simulate error.
-            '00001' => [],
-            '02900' => json_decode(file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'), TRUE),
+            '00001_fi' => '',
+            '00001_sv' => '',
+            '02900_fi' => file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
+            '02900_sv' => file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
           ],
         ],
         // Expected data.

@@ -43,10 +43,9 @@ class Policymaker extends Node implements AhjoEntityInterface {
     // Use org type to determine color coding.
     return match ($this->getOrganizationType()) {
       OrganizationType::COUNCIL => 'color-council',
-      OrganizationType::CABINET => 'color-cabinet',
+      OrganizationType::BOARD => 'color-cabinet',
       OrganizationType::OFFICE_HOLDER => 'color-office-holder',
       OrganizationType::TRUSTEE => 'color-trustee',
-      OrganizationType::BOARD => 'color-board',
       default => 'color-board',
     };
   }
@@ -208,6 +207,19 @@ class Policymaker extends Node implements AhjoEntityInterface {
     return Url::fromRoute($route, [
       'organization' => strtolower($this->getPolicymakerOrganizationFromUrl($langcode)),
     ]);
+  }
+
+  /**
+   * Get policymaker url.
+   *
+   * Twig sandbox forbids toURL method, which is required
+   * by browse page template. This is a workaround to allow
+   * accessing the URL in twig.
+   *
+   * @todo Remove when https://www.drupal.org/i/2907810 is merged
+   */
+  public function getUrl(): Url {
+    return $this->toUrl();
   }
 
 }
