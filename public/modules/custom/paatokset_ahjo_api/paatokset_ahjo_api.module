@@ -1067,16 +1067,6 @@ function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, En
 }
 
 /**
- * Alter the Hero design selection array.
- *
- * @param array $designs
- *   The designs for the hero.
- */
-function paatokset_ahjo_api_helfi_hero_design_alter(array &$designs) {
-  $designs['paatokset-search-bar'] = t('Paatokset decision search');
-}
-
-/**
  * Implements hook_metatag_route_entity().
  *
  * @see \Drupal\paatokset_ahjo_api\Controller\CaseNodeViewController

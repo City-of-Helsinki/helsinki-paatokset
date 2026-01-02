@@ -3,5 +3,8 @@ type: module
 package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
+  - helfi_platform_config:helfi_platform_config
   - elasticsearch_connector:elasticsearch_connector
   - search_api:search_api
+'interface translation project': paatokset_search
+'interface translation server pattern': modules/custom/paatokset_search/translations/%language.po

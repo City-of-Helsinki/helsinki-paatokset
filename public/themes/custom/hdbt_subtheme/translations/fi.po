@@ -199,6 +199,18 @@ msgid "For example, Viikki"
 msgstr "Esim. Viikki"
 
 msgctxt "Decisions search"
+msgid "Search with a Finnish keyword, eg. Viikki"
+msgstr "Kirjoita hakusana, esim. Viikki"
+
+msgctxt "Decisions search"
+msgid "The City's decisions"
+msgstr "Kaupungin päätökset"
+
+msgctxt "Decisions search"
+msgid "The City of Helsinki uses Finnish in its decision-making. You can browse the service in English, but the decision documents themselves are only available in Finnish. The Decisions service compiles all decision-making by the City of Helsinki in one place. You can find decisions made by the Helsinki City Council, City Board, committees, office holders and other authorities of Helsinki in Finnish."
+msgstr "Päätökset-palvelusta löydät Helsingin kaupunginvaltuuston, kaupunginhallituksen, lautakuntien ja viranhaltijoiden päätökset. Voit myös tutustua kaupungin päätöksenteon kulkuun ja aloittaa muutoksenhaun päätökseen."
+
+msgctxt "Decisions search"
 msgid "The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
 msgstr "Voit etsiä kaupungin päätöksiä hakusanalla. Voit rajata tuloksia ajankohdan, aiheen ja päättäjän mukaan."
 
