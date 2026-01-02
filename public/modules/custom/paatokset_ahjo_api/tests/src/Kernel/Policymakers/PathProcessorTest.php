@@ -24,6 +24,9 @@ class PathProcessorTest extends KernelTestBase {
     'helfi_api_base',
     'paatokset_ahjo_api',
     'language',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -31,6 +34,8 @@ class PathProcessorTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+
+    $this->installEntitySchema('path_alias');
 
     // Install language configuration.
     $this->installConfig(['language']);
