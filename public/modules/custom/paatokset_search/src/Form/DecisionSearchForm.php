@@ -41,7 +41,7 @@ class DecisionSearchForm extends FormBase {
       '#maxlength' => 1028,
       '#autocomplete_route_name' => 'paatokset_search.autocomplete',
       '#operator_guide_url' => $this->searchManager->getOperatorGuideUrl(),
-      '#title' => $this->t('Search decisions'),
+      '#title' => $this->t('Search decisions', [], ['context' => 'Decisions search']),
       '#placeholder' => $this->t(
         'Search with a Finnish keyword, eg. Viikki',
         [],
