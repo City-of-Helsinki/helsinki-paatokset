@@ -15,8 +15,8 @@
 {% if operator_guide_url %}
 <div class="decisions-search-bar-wrapper__label-status" hidden="">
   <span class="paatokset-special-char-hint" role="status" aria-live="polite">
-    {{ "Your search contains special characters, such as “ or +. For more results, try searching without special characters." | t }}
-    <a class="paatokset-special-char-hint-link" href="{{ operator_guide_url }}">{{ "Learn more about using special characters." | t }}</a>
+    {{ "Your search contains special characters, such as “ or +. For more results, try searching without special characters." | t({}, {'context': 'Frontpage decision search'}) }}
+    <a class="paatokset-special-char-hint-link" href="{{ operator_guide_url }}">{{ "Learn more about using special characters." | t({}, {'context': 'Frontpage decision search'}) }}</a>
   </span>
 </div>
 {% endif %}
