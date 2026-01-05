@@ -52,11 +52,6 @@
   }
 }
 
-.container--search-frontpage {
-  padding-left: 0;
-  padding-right: 0;
-}
-
 .decisions-search-form-container {
   position: relative;
 
@@ -111,11 +106,11 @@
 
 .decisions-search-bar-wrapper__label-status {
   @include font('special.helper_text');
-  margin-bottom: $spacing-half;
+  margin-block-end: $spacing-half;
 
- a {
-  margin-left:$spacing-quarter;
- }
+  a {
+    margin-left: $spacing-quarter;
+  }
 }
 
 .decisions-search-bar-wrapper__input {
