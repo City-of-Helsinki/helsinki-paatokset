@@ -34,8 +34,6 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
 
   /**
    * Sidenav links.
-   *
-   * @var ?array
    */
   protected ?array $items;
 
