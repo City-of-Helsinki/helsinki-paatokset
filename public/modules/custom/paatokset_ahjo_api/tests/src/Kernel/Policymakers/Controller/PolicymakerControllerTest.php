@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Policymakers;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Policymakers\Controller;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\file\Entity\File;
