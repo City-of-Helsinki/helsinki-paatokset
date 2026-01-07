@@ -107,10 +107,6 @@
 .decisions-search-bar-wrapper__label-status {
   @include font('special.helper_text');
   margin-block-end: $spacing-half;
-
-  a {
-    margin-inline-start: $spacing-quarter;
-  }
 }
 
 .decisions-search-bar-wrapper__input {
