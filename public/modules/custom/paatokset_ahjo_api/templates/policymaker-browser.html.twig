@@ -17,8 +17,11 @@
 <ul>
 {% for organization in children %}
   <li>
-    {{ organization.label() }}
-    {{ url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() }) }}
+    <a href="{{ url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() }) }}">
+      {{ organization.label() }}
+    </a>
+
+    |
 
     {%
       set policymaker = policymakers[organization.id()] ?? null

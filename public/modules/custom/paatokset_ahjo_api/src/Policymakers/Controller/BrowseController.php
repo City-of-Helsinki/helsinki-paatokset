@@ -7,6 +7,8 @@ namespace Drupal\paatokset_ahjo_api\Policymakers\Controller;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -43,7 +45,16 @@ class BrowseController extends ControllerBase {
 
     $breadcrumb = new Breadcrumb();
     if ($parent = $org->getParentOrganization()) {
-      $breadcrumb->addLink($parent->toLink());
+      // Special case for the first organizations:
+      // link directly to the root level.
+      if ($parent->id() == '00001') {
+        $breadcrumb->addLink(Link::createFromRoute($parent->label(), 'paatokset_ahjo_api.browse_policymakers'));
+      }
+      else {
+        $breadcrumb->addLink(Link::createFromRoute(new TranslatableMarkup('City of Helsinki'), 'paatokset_ahjo_api.browse_policymakers', [
+          'org' => $parent->id(),
+        ]));
+      }
       $breadcrumb->addCacheableDependency($parent);
     }
 
