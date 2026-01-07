@@ -3,7 +3,6 @@ import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
 import DecisionsContainer from './modules/decisions/SearchContainer';
 import PolicymakersContainer from './modules/policymakers/SearchContainer';
-import FrontpageContainer from './modules/frontpage/SearchContainer';
 import initSentry from './common/Sentry';
 
 // Determine which data source we use once policymakers search is implemented
@@ -29,9 +28,6 @@ if(rootElement) {
       break;
     case 'policymakers':
       searchContainer = <PolicymakersContainer url={elasticUrl} />;
-      break;
-    case 'frontpage':
-      searchContainer = <FrontpageContainer url={elasticUrl} />;
       break;
     default:
       searchContainer = null;

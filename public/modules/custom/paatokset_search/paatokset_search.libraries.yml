@@ -1,0 +1,9 @@
+textfield_autocomplete:
+  version: 1.0.0
+  js:
+    assets/textfield-autocomplete.js: {}
+  dependencies:
+    - helfi_platform_config/a11y_autocomplete
+    - core/drupal
+    - core/drupalSettings
+    - core/once
