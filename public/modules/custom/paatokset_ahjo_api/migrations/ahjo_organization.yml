@@ -18,6 +18,7 @@ process:
   title: name
   id: id
   existing: existing
+  type: type
   organization_above:
     -
       plugin: skip_on_empty

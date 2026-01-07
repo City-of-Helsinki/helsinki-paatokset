@@ -28,6 +28,7 @@ class PolicymakerTest extends AhjoKernelTestBase {
       'langcode' => 'en',
       'title' => 'Test policymaker',
       'field_policymaker_id' => '123',
+      'field_dm_org_name' => 'Test dm org name',
     ]);
 
     $this->assertInstanceOf(Policymaker::class, $policymaker);

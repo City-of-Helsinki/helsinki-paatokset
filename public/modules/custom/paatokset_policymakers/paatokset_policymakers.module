@@ -406,7 +406,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['has_sidebar_second'] = TRUE;
   }
 
-  // Add template variables on dm pages.
+  // Add template variables on policymaker pages.
   if (_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['has_sidebar_first'] = TRUE;
     $variables['move_before_content'] = TRUE;
@@ -456,25 +456,37 @@ function paatokset_policymakers_preprocess_html(&$variables) {
  *   Return result of conditional check.
  */
 function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
-  if (isset($variables['node']) && $variables['node']) {
-    // Always show on trustee pages.
-    if ($variables['node']->bundle() === 'trustee') {
+  if (isset($variables['node'])) {
+    if ($variables['node']?->bundle() === 'trustee') {
       return TRUE;
     }
 
-    $policymakerService = \Drupal::service(PolicymakerService::class);
-    if (!$policymakerService->setPolicyMakerByPath()) {
-      return FALSE;
-    }
-    if ($policymakerService->getPolicyMaker() instanceof NodeInterface) {
+    if ($variables['node']?->bundle() === 'policymaker') {
       return TRUE;
     }
-    else {
-      return FALSE;
-    }
+
+    // Some `page` nodes are injected into policymaker side nav, e.g.
+    // https://paatokset.hel.fi/fi/paattajat/kaupunginvaltuusto/aloitteet.
+    // These pages break, unless the setPolicymakerByPath() is called.
+    // @fixme find a better way to add pages to policymaker sidebar menu.
+    return \Drupal::service(PolicymakerService::class)
+      ->setPolicyMakerByPath();
   }
 
-  return isset($variables['page']['sidebar_first']) && array_key_exists('policymakersidenavigation', $variables['page']['sidebar_first']);
+  // There routes are duplicated for each langcode.
+  // The actual route name has .[langcode] suffix.
+  $allowed_routes = [
+    'policymaker.discussion_minutes.',
+    'policymaker.documents.',
+    'policymaker.decisions.',
+  ];
+
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  return array_any(
+    $allowed_routes,
+    fn (string $allowed) => str_starts_with($route_name, $allowed)
+  );
 }
 
 /**

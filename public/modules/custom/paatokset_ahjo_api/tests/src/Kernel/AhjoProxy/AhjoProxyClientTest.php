@@ -13,7 +13,10 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationNode;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
+use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use GuzzleHttp\Exception\ClientException;
@@ -52,11 +55,11 @@ class AhjoProxyClientTest extends KernelTestBase {
   }
 
   /**
-   * Tests ahjo proxy client error.
+   * Tests ahjo proxy client trustees.
    */
-  public function testAhjoProxyClient(): void {
+  public function testTrusteeClient(): void {
     $sut = $this->getSut([
-      new Response(200, [], file_get_contents(__DIR__ . '/../../../fixtures/trustee.json')),
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/trustee.json')),
       new ClientException('test-error', new Request('GET', '/test'), new Response()),
     ]);
 
@@ -75,6 +78,50 @@ class AhjoProxyClientTest extends KernelTestBase {
 
     foreach ($trustee->chairmanships as $chairmanship) {
       $this->assertInstanceOf(Chairmanship::class, $chairmanship);
+    }
+
+    $this->expectException(AhjoProxyException::class);
+    $sut->getTrustee('fi', 'test-trustee');
+  }
+
+  /**
+   * Tests ahjo proxy client organizations.
+   */
+  public function testOrganizationClient(): void {
+    $sut = $this->getSut([
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/organizations-00001.json')),
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/organizations-02900.json')),
+      new ClientException('test-error', new Request('GET', '/test'), new Response()),
+    ]);
+
+    $organization = $sut->getOrganization('fi', '00001');
+    $this->assertInstanceOf(OrganizationNode::class, $organization);
+
+    // Hard coded to match the json file.
+    $this->assertCount(1, $organization->children);
+    $this->assertNull($organization->parent);
+    $this->assertEquals('00001', $organization->organization->id);
+    $this->assertEquals(OrganizationType::CITY, $organization->organization->type);
+    $this->assertEquals('Helsingin kaupunki', $organization->organization->name);
+    $this->assertCount(1, $organization->children);
+
+    foreach ($organization->children as $child) {
+      $this->assertInstanceOf(Organization::class, $child);
+    }
+
+    $organization = $sut->getOrganization('fi', '02900');
+    $this->assertInstanceOf(OrganizationNode::class, $organization);
+
+    // Hard coded to match the json file.
+    $this->assertCount(1, $organization->children);
+    $this->assertNotNull($organization->parent);
+    $this->assertEquals('02900', $organization->organization->id);
+    $this->assertEquals(OrganizationType::COUNCIL, $organization->organization->type);
+    $this->assertEquals('Kaupunginvaltuusto', $organization->organization->name);
+    $this->assertCount(1, $organization->children);
+
+    foreach ($organization->children as $child) {
+      $this->assertInstanceOf(Organization::class, $child);
     }
 
     $this->expectException(AhjoProxyException::class);

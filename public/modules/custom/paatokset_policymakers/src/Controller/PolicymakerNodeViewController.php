@@ -8,7 +8,9 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Controller\NodeViewController;
 use Drupal\node\NodeInterface;
@@ -28,6 +30,7 @@ class PolicymakerNodeViewController extends NodeViewController {
     AccountInterface $currentUser,
     EntityRepositoryInterface $entityRepository,
     private readonly PolicymakerService $policymakerService,
+    private readonly LanguageManagerInterface $languageManager,
   ) {
     parent::__construct($entityTypeManager, $renderer, $currentUser, $entityRepository);
   }
@@ -54,6 +57,18 @@ class PolicymakerNodeViewController extends NodeViewController {
   public function policymaker(string $organization) {
     $this->policymakerService->setPolicyMakerByPath();
     $node = $this->policymakerService->getPolicyMaker();
+
+    // Do not serve policymakers from duplicate paths.
+    // If policymaker is accessed with the policymaker URL,
+    // redirect to the canonical URL.
+    if (
+      $node &&
+      $node->getPolicymakerId() === $organization &&
+      !str_contains($url = $node->toUrl()->toString(), $organization) &&
+      $this->languageManager->getCurrentLanguage()->getId() === $node->language()->getId()
+    ) {
+      return new TrustedRedirectResponse($url, 301);
+    }
 
     if (!$node instanceof EntityInterface) {
       $node = $this->policymakerService->getTrusteeByPath($organization);
