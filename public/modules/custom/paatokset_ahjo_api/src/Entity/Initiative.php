@@ -4,51 +4,57 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\Core\Entity\Attribute\ContentEntityType;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\ContentEntityDeleteForm;
+use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityViewBuilder;
+use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess;
 use Drupal\paatokset_ahjo_api\InitiativeInterface;
+use Drupal\views\EntityViewsData;
 
 /**
  * Defines the initiative entity class.
- *
- * @ContentEntityType(
- *   id = "ahjo_initiative",
- *   label = @Translation("Initiative"),
- *   label_collection = @Translation("Initiatives"),
- *   label_singular = @Translation("initiative"),
- *   label_plural = @Translation("initiatives"),
- *   label_count = @PluralTranslation(
- *     singular = "@count initiatives",
- *     plural = "@count initiatives",
- *   ),
- *   handlers = {
- *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
- *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
- *     "form" = {
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *     },
- *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
- *     },
- *   },
- *   base_table = "paatokset_ahjo_initiative",
- *   admin_permission = "administer remote entities",
- *   entity_keys = {
- *     "id" = "id",
- *     "label" = "title",
- *   },
- *   links = {
- *     "collection" = "/admin/content/ahjo/initiative",
- *     "delete-form" = "/ahjo/initiative/{ahjo_initiative}/delete",
- *   },
- * )
  */
+#[ContentEntityType(
+  id: 'ahjo_initiative',
+  label: new TranslatableMarkup('Initiative'),
+  label_collection: new TranslatableMarkup('Initiatives'),
+  label_singular: new TranslatableMarkup('initiative'),
+  label_plural: new TranslatableMarkup('initiatives'),
+  entity_keys: [
+    'id' => 'id',
+    'label' => 'title',
+  ],
+  handlers: [
+    'view_builder' => EntityViewBuilder::class,
+    'list_builder' => EntityListBuilder::class,
+    'views_data' => EntityViewsData::class,
+    'access' => RemoteEntityAccess::class,
+    'form' => [
+      'delete' => ContentEntityDeleteForm::class,
+    ],
+    'route_provider' => [
+      'html' => AdminHtmlRouteProvider::class,
+    ],
+  ],
+  links: [
+    'collection' => '/admin/content/ahjo/initiative',
+    'delete-form' => '/ahjo/initiative/{ahjo_initiative}/delete',
+  ],
+  admin_permission: 'administer remote entities',
+  base_table: 'paatokset_ahjo_initiative',
+  label_count: [
+    'singular' => '@count initiatives',
+    'plural' => '@count initiatives',
+  ],
+)]
 final class Initiative extends ContentEntityBase implements InitiativeInterface {
 
   /**
