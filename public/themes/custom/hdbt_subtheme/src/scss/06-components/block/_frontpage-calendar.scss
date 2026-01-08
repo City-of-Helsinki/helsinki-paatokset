@@ -1,24 +1,19 @@
 .container.frontpage-calendar__container {
-  margin-bottom: $spacing-quadruple;
-  margin-top: $spacing-quadruple;
   max-width: none;
   padding-left: 0;
   padding-right: 0;
-
-  @include breakpoint($breakpoint-l) {
-    margin-bottom: $spacing-quadruple * 2;
-    margin-top: $spacing-quadruple * 2;
-  }
 }
 
 .frontpage-calendar {
   background-color: $color-black-5;
-  margin-top: 50px;
+  margin-top: $spacing-quadruple;
   position: relative;
 
   .hds-koros {
     color: $color-black-5;
     position: absolute;
+
+    // Height of the mask is 50px
     top: -50px;
   }
 
@@ -32,7 +27,7 @@
   }
 
   .container {
-    padding-bottom: 80px;
+    padding-bottom: $spacing-quadruple;
   }
 }
 
@@ -42,7 +37,7 @@
   margin-top: $spacing;
 
   i {
-    width: 36px;
+    width: $spacing-double;
   }
 
   a {
@@ -80,9 +75,8 @@
 
 // Minimun height from the design
 .frontpage-calendar__item {
-  min-height: 282px;
+  min-height: 280px;
   position: relative;
-  width: 100%;
 
   .motions-link {
     @include font('small');
@@ -91,13 +85,8 @@
     font-weight: $font-weight-medium;
     text-decoration: none;
 
-    i {
-      height: 18px;
-      width: 18px;
-    }
-
-    span {
-      width: auto;
+    .hel-icon {
+      --icon-size: 18px;
     }
 
     &::after {
@@ -126,7 +115,7 @@
 
   .meeting-date {
     @include font('body');
-    margin-bottom: $gutter;
+    margin-bottom: $spacing;
   }
 
   h3 {

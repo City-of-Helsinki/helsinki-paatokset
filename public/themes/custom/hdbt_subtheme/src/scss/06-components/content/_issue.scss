@@ -153,7 +153,7 @@
 .issue-content__policymaker-label {
   @include font('special.helper_text');
   display: inline-block;
-  margin-bottom: 36px;
+  margin-bottom: $spacing-double;
   max-width: 100%;
   padding: 10px $spacing-triple;
   text-align: left;
@@ -326,7 +326,7 @@
   .SisaltoSektio {
     ul,
     ol {
-      padding-left: 1rem;
+      padding-left: $spacing;
       padding-top: 0;
     }
 
@@ -347,7 +347,7 @@
 
 // Decision history adjustments.
 h4.decision-history-title + h5.decision-history-title {
-  margin-top: 1rem;
+  margin-top: $spacing;
 }
 
 // Accordion style overrides for the voting section on issues.

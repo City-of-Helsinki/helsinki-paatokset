@@ -28,7 +28,7 @@
   }
 
   .search-wrapper {
-    margin-bottom: 36px;
+    margin-bottom: $spacing-double;
     position: relative;
     width: 100%;
 
@@ -46,7 +46,7 @@
   }
 
   .form-item {
-    margin-bottom: 36px;
+    margin-bottom: $spacing-double;
     width: 100%;
 
     @include breakpoint($breakpoint-s) {
