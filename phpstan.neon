@@ -29,11 +29,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
-      message: "#^Unsafe usage of new static\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Form/DisallowedDecisionsForm.php
-
-    -
       message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
       count: 3
       path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/process/SkipDisallowedDecisions.php
