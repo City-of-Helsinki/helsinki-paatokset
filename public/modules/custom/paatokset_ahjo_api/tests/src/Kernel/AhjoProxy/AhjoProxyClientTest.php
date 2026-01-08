@@ -11,7 +11,10 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoHandling;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoRecord;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationNode;
@@ -127,6 +130,120 @@ class AhjoProxyClientTest extends KernelTestBase {
 
     $this->expectException(AhjoProxyException::class);
     $sut->getTrustee('fi', 'test-trustee');
+  }
+
+  /**
+   * Tests ahjo proxy client cases.
+   */
+  public function testCaseClient(): void {
+    $sut = $this->getSut([
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/case.json')),
+      new ClientException('test-error', new Request('GET', '/test'), new Response()),
+    ]);
+
+    $case = $sut->getCase('fi', 'HEL-2025-001216');
+    $this->assertInstanceOf(AhjoCase::class, $case);
+
+    // Hard coded to match case.json file.
+    $this->assertEquals('HEL-2025-001216', $case->id);
+    $this->assertEquals('HEL 2025-001216', $case->caseIdLabel);
+    $this->assertEquals('Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus', $case->title);
+    $this->assertEquals('00 00 03', $case->classificationCode);
+    $this->assertEquals('Valtuuston aloitetoiminta', $case->classificationTitle);
+    $this->assertEquals('Ratkaistu', $case->status);
+    $this->assertEquals('fi', $case->language);
+    $this->assertEquals('Julkinen', $case->publicityClass);
+    $this->assertIsArray($case->securityReasons);
+    $this->assertCount(0, $case->securityReasons);
+
+    // Test date fields.
+    $this->assertInstanceOf(\DateTimeImmutable::class, $case->created);
+    $this->assertEquals('2025-01-22 19:46:13', $case->created->format('Y-m-d H:i:s'));
+    $this->assertInstanceOf(\DateTimeImmutable::class, $case->acquired);
+    $this->assertEquals('2025-01-22 18:00:00', $case->acquired->format('Y-m-d H:i:s'));
+
+    // Test handlings.
+    $this->assertCount(2, $case->handlings);
+    foreach ($case->handlings as $handling) {
+      $this->assertInstanceOf(AhjoHandling::class, $handling);
+      $this->assertInstanceOf(\DateTimeImmutable::class, $handling->created);
+      $this->assertEquals('Keskushallinto', $handling->sector);
+      $this->assertEquals('Päättynyt', $handling->status);
+      $this->assertEquals('U50', $handling->sectorId);
+    }
+
+    // Test records.
+    $this->assertCount(3, $case->records);
+    foreach ($case->records as $record) {
+      $this->assertInstanceOf(AhjoRecord::class, $record);
+      $this->assertEquals('Julkinen', $record->publicityClass);
+      $this->assertTrue(in_array($record->language, ['fi', 'sv']));
+    }
+
+    // Test first record with no issued date.
+    $this->assertNull($case->records[0]->issued);
+    $this->assertEquals('esitys', $case->records[0]->type);
+
+    // Test second record with issued date.
+    $this->assertInstanceOf(\DateTimeImmutable::class, $case->records[2]->issued);
+    $this->assertEquals('2025-04-07 03:00:00', $case->records[2]->issued->format('Y-m-d H:i:s'));
+    $this->assertEquals('päätös', $case->records[2]->type);
+
+    $this->expectException(AhjoProxyException::class);
+    $sut->getCase('fi', 'HEL-2025-001216');
+  }
+
+  /**
+   * Tests ahjo proxy client multiple cases.
+   */
+  public function testGetCases(): void {
+    $sut = $this->getSut([
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/cases.json')),
+      new Response(200, [], json_encode(['cases' => []])),
+      new Response(200, [], json_encode(['invalid' => 'response'])),
+    ]);
+
+    // Test successful response with multiple cases.
+    $handledBefore = new \DateTimeImmutable('2024-03-05');
+    $handledAfter = new \DateTimeImmutable('2022-10-01');
+    $cases = $sut->getCases($handledAfter, $handledBefore, 5);
+
+    $this->assertIsArray($cases);
+    $this->assertCount(5, $cases);
+
+    // Verify all items are AhjoCase instances.
+    foreach ($cases as $case) {
+      $this->assertInstanceOf(AhjoCase::class, $case);
+    }
+
+    // Verify first case properties (from cases.json fixture).
+    $firstCase = $cases[0];
+    $this->assertEquals('HEL-2022-011760', $firstCase->id);
+    $this->assertEquals('HEL 2022-011760', $firstCase->caseIdLabel);
+    $this->assertEquals('Lausuntopyyntö, Suomi-rata Oy:n Lentorata-hanke, ympäristövaikutusten arviointiohjelma, UUDELY', $firstCase->title);
+    $this->assertEquals('11 01 05', $firstCase->classificationCode);
+    $this->assertEquals('Ympäristövaikutusten arviointi', $firstCase->classificationTitle);
+    $this->assertEquals('Vireillä', $firstCase->status);
+    $this->assertEquals('fi', $firstCase->language);
+    $this->assertEquals('Julkinen', $firstCase->publicityClass);
+
+    // Verify date fields.
+    $this->assertInstanceOf(\DateTimeImmutable::class, $firstCase->created);
+    $this->assertEquals('2022-10-05', $firstCase->created->format('Y-m-d'));
+    $this->assertInstanceOf(\DateTimeImmutable::class, $firstCase->acquired);
+
+    // Verify SecurityReasons handles null (from cases.json line 19).
+    $this->assertIsArray($firstCase->securityReasons);
+
+    // Test empty response.
+    $emptyCases = $sut->getCases($handledAfter, $handledBefore);
+    $this->assertIsArray($emptyCases);
+    $this->assertCount(0, $emptyCases);
+
+    // Test missing cases key in response.
+    $this->expectException(AhjoProxyException::class);
+    $this->expectExceptionMessage('Cases data not found in response.');
+    $sut->getCases($handledAfter, $handledBefore);
   }
 
   /**

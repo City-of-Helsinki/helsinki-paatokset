@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
@@ -91,6 +92,47 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
     catch (\ValueError | \DateMalformedStringException $e) {
       throw new AhjoProxyException($e->getMessage(), previous: $e);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCase(string $langcode, string $id): AhjoCase {
+    $response = $this->makeRequest("/cases/single/$id", [
+      'query' => [
+        'apireqlang' => $langcode,
+      ],
+    ]);
+
+    if (!$object = array_first($response->cases)) {
+      throw new AhjoProxyException('Case not found.');
+    }
+
+    try {
+      return AhjoCase::fromAhjoObject($object);
+    }
+    catch (\DateMalformedStringException $e) {
+      throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCases(\DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, int $count = 1000): array {
+    $response = $this->makeRequest('/cases', [
+      'query' => [
+        'handledbefore' => $handledBefore->format(\DateTimeInterface::RFC3339),
+        'handledsince' => $handledAfter->format(\DateTimeInterface::RFC3339),
+        'size' => $count,
+      ],
+    ]);
+
+    if (!isset($response->cases) || !is_array($response->cases)) {
+      throw new AhjoProxyException('Cases data not found in response.');
+    }
+
+    return array_map(AhjoCase::class . '::fromAhjoObject', $response->cases);
   }
 
   /**
