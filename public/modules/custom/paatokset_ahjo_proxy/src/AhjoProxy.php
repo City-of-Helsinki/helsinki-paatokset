@@ -256,7 +256,7 @@ class AhjoProxy {
     if ($query_string === NULL) {
       $query_string = '';
     }
-    $agenda_item_url = $this->getApiBaseUrl() . 'meetings/' . strtoupper($meeting_id) . '/agendaitems' . '/' . $id . '?' . urldecode($query_string);
+    $agenda_item_url = $this->getApiBaseUrl() . 'meetings/' . strtoupper($meeting_id) . '/agendaitems/' . $id . '?' . urldecode($query_string);
     $agenda_item = $this->getContent($agenda_item_url, $bypass_cache);
     return ['agenda_item' => $agenda_item];
   }

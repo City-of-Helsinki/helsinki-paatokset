@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -30,8 +30,6 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
 
   /**
    * The policymaker service.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   private PolicymakerService $policymakerService;
 
@@ -48,7 +46,7 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     /** @var static $processor */
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $processor->policymakerService = $container->get('paatokset_policymakers');
+    $processor->policymakerService = $container->get(PolicymakerService::class);
     return $processor;
   }
 

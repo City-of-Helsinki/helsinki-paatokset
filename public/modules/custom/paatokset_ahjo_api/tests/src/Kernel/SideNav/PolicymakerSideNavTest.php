@@ -107,8 +107,7 @@ class PolicymakerSideNavTest extends AhjoKernelTestBase {
 
     $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
     $build = $sut->build();
-    $this->assertEquals('policymakers.en', $build['#menu_link_parent']['url']?->getRouteName() ?? '');
-    $this->assertMenuItems([], $build);
+    $this->assertEmpty($build);
 
     // Inject policymaker to the current route.
     $policymaker = Policymaker::create([

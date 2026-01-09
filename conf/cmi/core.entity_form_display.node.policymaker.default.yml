@@ -43,7 +43,6 @@ dependencies:
     - path
     - publication_date
     - readonly_field_widget
-    - scheduler
     - text
 third_party_settings:
   field_group:
@@ -403,12 +402,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  publish_on:
-    type: datetime_timestamp_no_default
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
     weight: 15
@@ -445,12 +438,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  unpublish_on:
-    type: datetime_timestamp_no_default
-    weight: 11
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   url_redirects:
     weight: 13
     region: content
@@ -460,5 +447,7 @@ hidden:
   field_resource_uri: true
   hide_sidebar_navigation: true
   promote: true
+  publish_on: true
   sticky: true
   translation: true
+  unpublish_on: true

@@ -10,23 +10,23 @@ use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\paatokset_allu\Client\SettingsFactory;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests Allu settings.
- *
- * @group paatokset_allu
  */
+#[Group('paatokset_allu')]
 class SettingsTest extends UnitTestCase {
 
   use ProphecyTrait;
 
   /**
    * Tests settings.
-   *
-   * @dataProvider settingsData
    */
+  #[DataProvider('settingsData')]
   public function testSettings(array $vault, array $configuration, array $expectedValues): void {
     $vaultManager = new VaultManager([
       new Json('allu', json_encode($vault)),
@@ -49,7 +49,7 @@ class SettingsTest extends UnitTestCase {
   /**
    * A data provider.
    */
-  public function settingsData() : array {
+  public static function settingsData() : array {
     $values = [
       [
         [

@@ -11,6 +11,8 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationNode;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -54,6 +56,41 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
         $document->OrganizationID,
       ), $object->Chairmanships)
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOrganization(string $langcode, string $id): OrganizationNode {
+    $response = $this->makeRequest("/organization/single/$id", [
+      'query' => [
+        'apireqlang' => $langcode,
+      ],
+    ]);
+
+    if (!$object = array_first($response->decisionMakers)?->Organization) {
+      throw new AhjoProxyException('Organization not found.');
+    }
+
+    $parents = array_map(static fn ($item) => Organization::fromAhjoObject($item), $object->OrganizationLevelAbove->organizations);
+
+    // As far as I know, an organization should never have
+    // more than one parent. However, the data type is array.
+    if (count($parents) > 1) {
+      throw new AhjoProxyException('Organization has more than one parent.');
+    }
+
+    try {
+      return new OrganizationNode(
+        Organization::fromAhjoObject($object),
+        array_first($parents),
+        array_map(static fn($item) => Organization::fromAhjoObject($item), $object->OrganizationLevelBelow->organizations),
+        (array) $object->Sector
+      );
+    }
+    catch (\ValueError | \DateMalformedStringException $e) {
+      throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
   }
 
   /**

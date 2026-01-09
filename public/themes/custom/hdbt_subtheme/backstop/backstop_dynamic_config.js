@@ -85,7 +85,7 @@ function getConfig(hostname, protocol, type) {
     {
       label: 'Landing page - hero',
       url: `/fi/etusivu`,
-      selectors: ['#block-hdbt-subtheme-heroblock'],
+      selectors: ['#block-hdbt-subtheme-frontpagesearchheroblock'],
       expect: 1,
     },
     {

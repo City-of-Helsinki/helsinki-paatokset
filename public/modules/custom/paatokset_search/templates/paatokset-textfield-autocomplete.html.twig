@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Template for the helfi location autocomplete field.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ * @see claro_preprocess_input()
+ */
+#}
+
+{% if operator_guide_url %}
+<div class="decisions-search-bar-wrapper__label-status" hidden="">
+  <span class="paatokset-special-char-hint" role="status" aria-live="polite">
+    {{ "Your search contains special characters, such as “ or +. For more results, try searching without special characters." | t({}, {'context': 'Frontpage decision search'}) }}
+    <a class="paatokset-special-char-hint-link" href="{{ operator_guide_url }}">{{ "Learn more about using special characters." | t({}, {'context': 'Frontpage decision search'}) }}</a>
+  </span>
+</div>
+{% endif %}
+
+<div class="helfi-location-autocomplete__wrapper hds-text-input__input-wrapper">
+  <input {{ attributes.addClass('hds-text-input__input') }} />
+  <div class="helfi-location-autocomplete__loader">
+    <div class="hds-loading-spinner hds-loading-spinner--small">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+{{ children }}

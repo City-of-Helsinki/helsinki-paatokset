@@ -10,6 +10,7 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -23,9 +24,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  * - Migrations fail if the returned status code != 1.
  * - If processing meeting and if not retrying previously failed item
  *   (=feature or a bug?), set `field_agenda_items_processed` to false.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class AhjoQueueWorkerTest extends UnitTestCase {
 
   use ProphecyTrait;

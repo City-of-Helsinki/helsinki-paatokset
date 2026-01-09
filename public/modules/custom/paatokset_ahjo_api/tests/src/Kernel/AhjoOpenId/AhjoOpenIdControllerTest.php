@@ -27,12 +27,17 @@ class AhjoOpenIdControllerTest extends KernelTestBase {
     'user',
     'helfi_api_base',
     'paatokset_ahjo_api',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
    * Tests callback.
    */
   public function testCallback(): void {
+    $this->installEntitySchema('path_alias');
+
     $mock = $this->prophesize(AhjoOpenId::class);
     $this->container->set(AhjoOpenId::class, $mock->reveal());
 

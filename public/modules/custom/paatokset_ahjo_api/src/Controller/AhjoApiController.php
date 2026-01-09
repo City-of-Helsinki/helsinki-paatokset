@@ -69,7 +69,7 @@ class AhjoApiController extends ControllerBase {
         }
 
         $data['children'][] = $this->buildOrgCharg($child, $ids, $cacheMetadata, $steps - 1, $langcode);
-      };
+      }
     }
 
     return $data;

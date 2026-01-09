@@ -1,0 +1,118 @@
+{
+  "took": 4,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 938,
+      "relation": "eq"
+    },
+    "max_score": null,
+    "hits": [
+      {
+        "_index": "paatokset_decisions",
+        "_id": "entity:node/116165:fi",
+        "_score": 138.6438,
+        "_ignored": [
+          "decision_content.keyword"
+        ],
+        "fields": {
+          "subject.keyword": [
+            "Kaupunginhallituksen kokouksen peruuttaminen"
+          ],
+          "subject": [
+            "Kaupunginhallituksen kokouksen peruuttaminen"
+          ]
+        },
+        "sort": [
+          138.6438,
+          1681257600000
+        ]
+      },
+      {
+        "_index": "paatokset_decisions",
+        "_id": "entity:node/116605:fi",
+        "_score": 137.62549,
+        "_ignored": [
+          "decision_content.keyword"
+        ],
+        "fields": {
+          "subject.keyword": [
+            "Kokouksessa jätetyt aloitteet"
+          ],
+          "subject": [
+            "Kokouksessa jätetyt aloitteet"
+          ]
+        },
+        "sort": [
+          137.62549,
+          1680706800000
+        ]
+      },
+      {
+        "_index": "paatokset_decisions",
+        "_id": "entity:node/112945:fi",
+        "_score": 137.49387,
+        "fields": {
+          "subject.keyword": [
+            "Kokouksen laillisuuden ja päätösvaltaisuuden toteaminen "
+          ],
+          "subject": [
+            "Kokouksen laillisuuden ja päätösvaltaisuuden toteaminen "
+          ]
+        },
+        "sort": [
+          137.49387,
+          1482300900000
+        ]
+      },
+      {
+        "_index": "paatokset_decisions",
+        "_id": "entity:node/117142:fi",
+        "_score": 136.8248,
+        "fields": {
+          "subject.keyword": [
+            "Tämän kokouksen päätösten täytäntöönpano"
+          ],
+          "subject": [
+            "Tämän kokouksen päätösten täytäntöönpano"
+          ]
+        },
+        "sort": [
+          136.8248,
+          1682501400000
+        ]
+      },
+      {
+        "_index": "paatokset_decisions",
+        "_id": "entity:node/116166:fi",
+        "_score": 136.77922,
+        "_ignored": [
+          "decision_content.keyword"
+        ],
+        "fields": {
+          "subject.keyword": [
+            "Kaupunginhallituksen aamukoulun kokouksen peruuttaminen"
+          ],
+          "subject": [
+            "Kaupunginhallituksen aamukoulun kokouksen peruuttaminen"
+          ]
+        },
+        "sort": [
+          136.77922,
+          1681257600000
+        ]
+      }
+    ]
+  },
+  "aggregations": {
+    "total_issues": {
+      "value": 796
+    }
+  }
+}

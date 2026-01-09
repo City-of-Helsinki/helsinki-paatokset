@@ -7,7 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\Processor;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\AhjoSearchApiKernelTestBase;

@@ -11,6 +11,7 @@ use Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Tests Ahjo callbacks.
  *
  * Meeting lifecyle part 1: ahjo callback.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class CallbackTest extends AhjoKernelTestBase {
 
   use ApiTestTrait;

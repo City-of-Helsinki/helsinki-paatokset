@@ -22,6 +22,9 @@ class MigrationDeriverTest extends KernelTestBase {
     'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
     'helfi_api_base',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**
@@ -29,6 +32,8 @@ class MigrationDeriverTest extends KernelTestBase {
    */
   public function setUp(): void {
     parent::setUp();
+
+    $this->installEntitySchema('path_alias');
 
     putenv('AHJO_PROXY_BASE_URL=https://ahjo-api-test');
   }

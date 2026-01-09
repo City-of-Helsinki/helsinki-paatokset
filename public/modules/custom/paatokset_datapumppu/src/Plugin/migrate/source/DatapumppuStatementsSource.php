@@ -10,7 +10,7 @@ use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -64,22 +64,16 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
 
   /**
    * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
   protected LoggerInterface $logger;
 
   /**
    * Node storage service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * Meeting service.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
    */
   protected PolicymakerService $policymakerService;
 
@@ -96,7 +90,7 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition, $migration);
     $instance->logger = $container->get('logger.channel.paatokset_datapumppu');
     $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
-    $instance->policymakerService = $container->get('paatokset_policymakers');
+    $instance->policymakerService = $container->get(PolicymakerService::class);
     return $instance;
   }
 

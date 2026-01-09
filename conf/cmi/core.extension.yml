@@ -132,11 +132,9 @@ module:
   paatokset_council_info: 0
   paatokset_datapumppu: 0
   paatokset_helsinki_kanava: 0
-  paatokset_lang_switcher: 0
   paatokset_pdf_listing: 0
   paatokset_policymakers: 0
   paatokset_search: 0
-  paatokset_search_form: 0
   page_cache: 0
   paragraphs_asymmetric_translation_widgets: 0
   paragraphs_library: 0

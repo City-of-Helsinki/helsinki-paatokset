@@ -19,6 +19,7 @@ class Select extends Hidden {
   public function getInfo(): array {
     $info = parent::getInfo();
     $info['#process'][] = [static::class, 'processHelfiSelect'];
+    $info['#attached']['library'][] = 'paatokset/helfi_select';
     return $info;
   }
 
@@ -26,14 +27,15 @@ class Select extends Hidden {
    * Preprocess callback.
    */
   public static function processHelfiSelect(array $element): array {
-    $element['#attached']['library'][] = 'paatokset/helfi_select';
-    $element['#attached']['drupalSettings']['helfi_select']['value'] = $element['#value'];
-    $element['#attached']['drupalSettings']['helfi_select']['options'] = $element['#options'];
+    $settings['value'] = $element['#value'];
+    $settings['options'] = $element['#options'];
     if (isset($element['#empty_option'])) {
       $key = $element['#empty_value'] ?? '';
-      $element['#attached']['drupalSettings']['helfi_select']['options'][$key] = $element['#empty_option'];
-      $element['#attached']['drupalSettings']['helfi_select']['empty_option'] = $element['#empty_option'];
+      $settings['options'][$key] = $element['#empty_option'];
+      $settings['empty_option'] = $element['#empty_option'];
     }
+
+    $element['#attributes']['data-helfi-select-settings'] = json_encode($settings);
 
     // Options cause validation errors for the hidden element.
     unset($element['#options']);

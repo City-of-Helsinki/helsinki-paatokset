@@ -8,5 +8,6 @@ services:
   app:
     environment:
       DRUPAL_REVERSE_PROXY_ADDRESS: helsinki-paatokset.docker.so
+      OPERATOR_GUIDE_NODE_ID: 220913
     env_file:
       - .env.local

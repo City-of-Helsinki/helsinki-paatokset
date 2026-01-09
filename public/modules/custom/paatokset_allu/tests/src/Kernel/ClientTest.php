@@ -10,14 +10,14 @@ use Drupal\paatokset_allu\Client\Settings;
 use Drupal\paatokset_allu\Client\TokenFactory;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Allu api client test.
- *
- * @group paatokset_allu
  */
+#[Group('paatokset_allu')]
 class ClientTest extends KernelTestBase {
 
   use ApiTestTrait;

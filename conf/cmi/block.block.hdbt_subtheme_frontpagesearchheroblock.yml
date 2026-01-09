@@ -1,0 +1,25 @@
+uuid: 8ee11b0f-c9cb-4716-83d5-24d4e340f07a
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_search
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_frontpagesearchheroblock
+theme: hdbt_subtheme
+region: before_content
+weight: 0
+provider: null
+plugin: frontpage_search_hero_block
+settings:
+  id: frontpage_search_hero_block
+  label: 'Frontpage Search Hero Block'
+  label_display: '0'
+  provider: paatokset_search
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/etusivu\r\n/frontpage\r\n/huvudsida"
