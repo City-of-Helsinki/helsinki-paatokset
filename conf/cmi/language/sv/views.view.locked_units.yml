@@ -13,7 +13,7 @@ display:
           label: 'Lås ägare'
           separator: ', '
         timestamp:
-          label: 'Lukituksen ajankohta'
+          label: 'Lock Date/Time'
         langcode:
           label: 'Språk för innehåll'
           separator: ', '

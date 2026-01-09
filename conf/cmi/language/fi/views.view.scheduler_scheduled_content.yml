@@ -72,6 +72,7 @@ display:
     display_options:
       menu:
         title: Ajastettu
+        description: 'Content scheduled for publishing and unpublishing'
       tab_options:
         title: Sisältö
       display_description: 'Yleiskatsaus koko ajoitetusta sisällöstä.'

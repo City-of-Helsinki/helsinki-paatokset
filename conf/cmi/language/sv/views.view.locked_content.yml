@@ -6,7 +6,7 @@ display:
       title: 'Låst innehåll'
       fields:
         node_bulk_form:
-          label: 'Solmujen bulkkitoimintojen lomake'
+          label: 'Node operations bulk form'
           action_title: Åtgärd
         title:
           label: Titel
@@ -15,7 +15,7 @@ display:
           label: Innehållstyp
           separator: ', '
         timestamp:
-          label: 'Lukituksen ajankohta'
+          label: 'Lock Date/Time'
         name:
           label: 'Lås ägare'
           separator: ', '
@@ -41,7 +41,7 @@ display:
           sort_desc_label: Fallande
       empty:
         area_text_custom:
-          content: 'Lukittua sisältöä ei ole.'
+          content: 'There is no content currently locked.'
       filters:
         status:
           expose:
@@ -51,8 +51,6 @@ display:
             group_items:
               1:
                 title: Publicerad
-              2:
-                title: 'Ej publicerad'
         type:
           expose:
             label: Innehållstyp
