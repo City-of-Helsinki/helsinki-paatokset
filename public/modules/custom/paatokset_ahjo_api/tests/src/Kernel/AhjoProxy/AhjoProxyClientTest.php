@@ -122,6 +122,7 @@ class AhjoProxyClientTest extends KernelTestBase {
 
     foreach ($organization->children as $child) {
       $this->assertInstanceOf(Organization::class, $child);
+      $this->assertFalse($child->existing);
     }
 
     $this->expectException(AhjoProxyException::class);
