@@ -100,12 +100,19 @@ class PathProcessorTest extends KernelTestBase {
     ];
 
     foreach ($tests as $langcode => $paths) {
-      $languageManager->setCurrentLanguage(ConfigurableLanguage::load($langcode));
-
       foreach ($paths as $path => $parameters) {
-        $this->assertEquals($path, urldecode(Url::fromRoute('paatokset_ahjo_api.browse_policymakers', $parameters)->toString()));
+        $url = Url::fromRoute('paatokset_ahjo_api.browse_policymakers', $parameters, [
+          'language' => $languageManager->getLanguage($langcode),
+        ]);
+
+        $this->assertEquals($path, urldecode($url->toString()));
       }
     }
+
+    // Path processor should work without a language parameter:
+    $languageManager->setCurrentLanguage(ConfigurableLanguage::load('fi'));
+    $url = Url::fromRoute('paatokset_ahjo_api.browse_policymakers');
+    $this->assertEquals('/paattajat/selaa-paattajia', urldecode($url->toString()));
   }
 
 }
