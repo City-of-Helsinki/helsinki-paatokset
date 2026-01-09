@@ -47,16 +47,16 @@
     }
 
     .hds-button__label {
-      padding-left: 22px;
+      padding-left: $spacing-and-half;
       text-align: left;
     }
   }
 
   .hds-button::before {
-    border-bottom: 26px solid transparent;
+    border-bottom: $spacing-and-half solid transparent;
     border-left-style: solid;
-    border-left-width: 20px;
-    border-top: 26px solid transparent;
+    border-left-width: $spacing-and-half;
+    border-top: $spacing-and-half solid transparent;
     content: '';
     height: 0;
     left: 0;
@@ -86,9 +86,9 @@
     @include font('small');
     align-items: center;
     display: flex;
-    height: 52px;
+    height: 52px; /* Same as button height */
     margin-top: 0;
-    padding-left: 30px;
+    padding-left: $spacing-double;
     position: relative;
 
     a:hover {
@@ -97,10 +97,10 @@
   }
 
   .option::before {
-    border-bottom: 26px solid transparent;
+    border-bottom: $spacing-and-half solid transparent;
     border-left-style: solid;
-    border-left-width: 20px;
-    border-top: 26px solid transparent;
+    border-left-width: $spacing-and-half;
+    border-top: $spacing-and-half solid transparent;
     content: '';
     height: 0;
     left: 0;

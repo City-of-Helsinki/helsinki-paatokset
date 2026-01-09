@@ -26,7 +26,7 @@
 
 .decisions-search-results__container--decisions-module {
   min-height: 250px;
-  padding-top: 16px;
+  padding-top: $spacing;
   position: relative;
 
   @media (width >= 1248px) {
@@ -35,7 +35,7 @@
 }
 
 .decisions-search-results__container--decisions-module .decisions-search-results__status {
-  margin-bottom: 24px;
+  margin-bottom: $spacing-and-half;
   width: 100%;
 }
 
@@ -47,7 +47,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: $spacing-double;
   width: 100%;
 
   @media (width >= 768px) {
@@ -64,7 +64,7 @@
 }
 
 .decisions-search-results__stats-count strong {
-  margin-right: 5px;
+  margin-right: $spacing-quarter;
 }
 
 .decisions-search-results__stats-size {
@@ -81,17 +81,19 @@
   position: relative;
 
   @media (width >= 1248px) {
-    padding-top: 100px;
+    padding-top: $spacing-sextuple;
   }
 }
 
 .policymaker-search-results__container {
+  padding-block-end: $spacing-double;
+
   >div:first-child {
     width: 100%;
   }
 }
 
 .policymaker-search-results__stats-count {
-  margin-bottom: 22px;
+  margin-bottom: $spacing-and-half;
   width: 100%;
 }

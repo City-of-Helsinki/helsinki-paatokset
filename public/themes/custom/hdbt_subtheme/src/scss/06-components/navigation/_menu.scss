@@ -85,7 +85,7 @@
   grid-area: label;
   justify-self: start;
   margin-top: $spacing-half;
-  padding-left: 10px;
+  padding-left: $spacing-half;
 }
 
 // Backporting footer menu.

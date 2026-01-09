@@ -18,7 +18,7 @@
   .link__type--external {
     @include pseudo-icon(
       'download',
-      calc(var(--line-height) * 1em),
+      calc(var(--line-height) * 20px),
       currentColor,
       inline-block
     );

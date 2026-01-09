@@ -1,7 +1,7 @@
 /* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 .issue-header__container {
   border-bottom: 2px solid $color-black-20;
-  margin-bottom: 27.5px;
+  margin-bottom: $spacing-and-half;
 
   @include breakpoint($breakpoint-xl) {
     margin-bottom: $spacing-double;
@@ -10,8 +10,6 @@
 
 .issue__title {
   @include font('h2');
-  font-weight: normal;
-  line-height: 1.1;
   margin-bottom: $spacing-and-half;
 
   .issue__header & {
@@ -25,7 +23,7 @@
 
   label {
     display: block;
-    font-weight: 600;
+    font-weight: $font-weight-bold;
   }
 }
 
@@ -75,10 +73,6 @@
     margin-bottom: $spacing-double;
   }
 
-  .voting-results-accordion {
-    margin-bottom: -2px;
-  }
-
   @include breakpoint($breakpoint-xl) {
     display: flex;
   }
@@ -86,7 +80,7 @@
 
 .issue__left-column__container {
   @include breakpoint($breakpoint-xl) {
-    padding-right: 125px;
+    padding-right: $spacing-sextuple;
     width: 65%;
   }
 }
@@ -95,10 +89,8 @@
   .issue__attachment {
     @include font('small');
     border-bottom: 1px solid $color-black-40;
-    font-weight: 600;
-    line-height: $spacing-and-half;
+    font-weight: $font-weight-bold;
     padding: $spacing-and-half 0;
-    vertical-align: top;
 
     & > a,
     & > div {
@@ -106,12 +98,7 @@
     }
 
     div:first-child {
-      margin-right: $gutter;
-    }
-
-    .hel-icon {
-      height: var(--spacing-m);
-      width: var(--spacing-m);
+      margin-right: $spacing;
     }
   }
 
@@ -130,10 +117,7 @@
 
 .issue-content__title h2 {
   @include font('h3');
-  font-weight: normal;
-  line-height: 1.1;
   margin-bottom: $spacing-double;
-  margin-top: $spacing;
 }
 
 .motion-tag.issue-content__motion-tag {
@@ -155,19 +139,19 @@
   display: inline-block;
   margin-bottom: $spacing-double;
   max-width: 100%;
-  padding: 10px $spacing-triple;
+  padding: $spacing-half $spacing-triple;
   text-align: left;
   text-transform: uppercase;
 
   &.policymaker-label--small {
     @include font('special.helper_text');
     display: inline-block;
-    padding: 10px 40px;
+    padding: $spacing-half 40px;
   }
 
   @include breakpoint($breakpoint-m) {
     display: inline-block;
-    padding: 10px 55px;
+    padding: $spacing-half 55px;
   }
 }
 
@@ -206,7 +190,7 @@
 
   .hel-icon:first-of-type:not(:last-of-type) {
     margin-left: 0;
-    margin-right: 13px;
+    margin-right: $spacing;
   }
 }
 
@@ -259,7 +243,7 @@
   }
 
   .decision-navigation-button--next .hel-icon {
-    margin-left: 14px;
+    margin-left: $spacing;
     margin-right: 0;
   }
 }
@@ -355,7 +339,6 @@ h4.decision-history-title + h5.decision-history-title {
   .accordion__wrapper,
   .voting-result--no-votes {
     border: 1px solid $color-black;
-    font-weight: 400;
     margin-block-start: $spacing;
 
     &:first-child {
@@ -397,7 +380,8 @@ h4.decision-history-title + h5.decision-history-title {
 }
 
 .voting-result__opinion__color {
-  min-width: 54px;
+  // Same height as accordion item
+  min-width: 60px;
   text-align: center;
 }
 
@@ -431,7 +415,7 @@ h4.decision-history-title + h5.decision-history-title {
   .voting-result__opinion__table__header__cell,
   .voting-result__opinion__table__cell {
     @include font('small');
-    padding: 16px;
+    padding: $spacing;
     text-align: left;
     width: 50%;
   }
@@ -459,11 +443,10 @@ h4.decision-history-title + h5.decision-history-title {
 
   .voting-results-by-party__table__header__cell,
   .voting-results-by-party__table__cell {
-    max-width: 56px;
+    // Same as height of table rows
     min-width: 56px;
-    padding: $spacing 6px;
+    padding: $spacing $spacing-half;
     text-align: center;
-    width: 56px;
   }
 
   .voting-results-by-party__table__header__cell {
@@ -474,7 +457,7 @@ h4.decision-history-title + h5.decision-history-title {
 
     &:first-of-type {
       @include font('small');
-      font-weight: 600;
+      font-weight: $font-weight-bold;
       padding-inline: $spacing;
       text-align: left;
       width: 100%;
@@ -522,7 +505,7 @@ h4.decision-history-title + h5.decision-history-title {
     // Set max width for banner element on issue page to match left-container
 
     @include breakpoint($breakpoint-xl) {
-      padding-right: 125px;
+      padding-right: $spacing-sextuple;
       width: 65%;
     }
   }

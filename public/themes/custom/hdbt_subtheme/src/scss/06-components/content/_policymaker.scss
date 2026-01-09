@@ -72,7 +72,7 @@
   }
 
   .organizations {
-    @include font(body);
+    @include font('body');
     display: flex;
     flex-wrap: wrap;
     padding: 0;
@@ -87,7 +87,7 @@
     content: '';
     display: block;
     margin-top: $spacing-and-half;
-    width: 90px;
+    width: $spacing-sextuple;
   }
 }
 
@@ -121,23 +121,6 @@
 
 .table-of-contents + .policymaker-image {
   padding-top: $spacing-triple;
-}
-
-.content-menu__arrow {
-  display: none;
-
-  &.hel-icon--arrow-up {
-    transform: rotate(180deg);
-  }
-
-  @include breakpoint($breakpoint-xs) {
-    color: $color-metro;
-    display: block;
-    height: 111px;
-    position: absolute;
-    right: 0;
-    width: 90px;
-  }
 }
 
 .node--type-policymaker > section {
@@ -192,8 +175,7 @@
   }
 
   .list-item__subject {
-    font-size: 24px; // TODO: Change to a variable
-    font-weight: $font-weight-medium;
+    @include font('h4');
 
     a {
       text-decoration: none;
@@ -210,28 +192,20 @@ h1.minutes__header {
   display: flex;
   flex-direction: column;
   gap: 0;
-  line-height: 3rem;
-  margin-bottom: $spacing;
-  margin-top: 0;
-
-  @include breakpoint($breakpoint-l) {
-    line-height: 4rem;
-  }
+  margin-block: 0 $spacing;
 
   .minutes__header-prefix {
     @include font('lead');
   }
 
   .minutes__header-suffix {
-    color: $color-black-50;
-
     @include font('small');
+    color: $color-black-50;
   }
 }
 
 h2.minutes-list__header {
   @include font('h4');
-  font-weight: $font-weight-medium;
   margin-bottom: $spacing-and-half;
 }
 
@@ -258,7 +232,7 @@ h2.minutes-list__header {
       height: 2px;
       left: 0;
       position: absolute;
-      width: 62px;
+      width: $spacing-quadruple;
     }
   }
 
@@ -277,33 +251,6 @@ h2.minutes-list__header {
   }
 }
 
-.policymaker-label__tags {
-  margin-bottom: $spacing-double;
-
-  .hds-tag {
-    @include font('small');
-    background: $color-black;
-    border-radius: $spacing-and-half;
-    color: $color-white;
-    display: flex;
-    margin-right: $spacing-three-quarters;
-    padding: 6px $spacing;
-    width: fit-content;
-  }
-
-  .hds-tag__container {
-    display: flex;
-  }
-
-  &::after {
-    border-bottom: 2px solid $color-black;
-    content: '';
-    display: block;
-    margin-top: $spacing-and-half;
-    width: 90px;
-  }
-}
-
 .minutes-decision__container {
   margin-top: $spacing-quadruple;
 }
@@ -319,6 +266,5 @@ h2.minutes-list__header {
 .minutes-decision__heading {
   @include font('h3');
   font-weight: normal;
-  line-height: 1.1;
   margin-bottom: $spacing-double;
 }
