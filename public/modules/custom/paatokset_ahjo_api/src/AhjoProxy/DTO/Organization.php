@@ -39,7 +39,7 @@ readonly class Organization {
     return new self(
       $object->ID,
       $name,
-      boolval($object->Existing),
+      filter_var($object->Existing, FILTER_VALIDATE_BOOLEAN),
       new \DateTimeImmutable($object->Formed),
       new \DateTimeImmutable($object->Dissolved),
       OrganizationType::tryFrom((int) $object->TypeId) ?? OrganizationType::UNKNOWN,
