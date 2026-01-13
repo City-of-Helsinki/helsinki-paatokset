@@ -75,7 +75,6 @@ display:
         description: 'Content scheduled for publishing and unpublishing'
       tab_options:
         title: Innehåll
-      display_description: "Overview of all scheduled content, as a tab on main 'content admin' page"
     display_title: Innehållsöversikt
   user_page:
     display_options:
@@ -87,7 +86,4 @@ display:
         uid:
           exception:
             title: Alla
-      empty:
-        area_text_custom:
-          content: 'No scheduled content for user {{ arguments.uid }}'
     display_title: Användare
