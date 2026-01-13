@@ -119,20 +119,35 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCases(\DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, int $count = 1000): array {
-    $response = $this->makeRequest('/cases', [
-      'query' => [
-        'handledbefore' => $handledBefore->format(\DateTimeInterface::RFC3339),
-        'handledsince' => $handledAfter->format(\DateTimeInterface::RFC3339),
-        'size' => $count,
-      ],
-    ]);
+  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): \Generator {
+    for ($current = $handledAfter; $current < $handledBefore; $current = $next) {
+      $next = $current->add($interval);
+      if ($next > $handledBefore) {
+        $next = $handledBefore;
+      }
 
-    if (!isset($response->cases) || !is_array($response->cases)) {
-      throw new AhjoProxyException('Cases data not found in response.');
+      $response = $this->makeRequest('/cases', [
+        'query' => [
+          'apireqlang' => $langcode,
+          'handledbefore' => $next->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+          'handledsince' => $current->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+          'size' => 1000,
+        ],
+      ]);
+
+      if (!isset($response->cases) || !is_array($response->cases)) {
+        throw new AhjoProxyException('Cases data not found in response.');
+      }
+
+      try {
+        foreach ($response->cases as $caseObject) {
+          yield AhjoCase::fromAhjoObject($caseObject);
+        }
+      }
+      catch (\DateMalformedStringException $e) {
+        throw new AhjoProxyException($e->getMessage(), previous: $e);
+      }
     }
-
-    return array_map(AhjoCase::class . '::fromAhjoObject', $response->cases);
   }
 
   /**

@@ -74,11 +74,7 @@
 {%
   set classes = [
   'issue',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  not case.isPublished() ? 'node--unpublished',
   first_paragraph_grey ? 'has-first-gray-bg-block'
 ]
 %}
@@ -87,7 +83,7 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% include '@hdbt_subtheme/components/node-case-header.html.twig' %}
+  {% include '@hdbt_subtheme/components/case-header.html.twig' %}
 
   <div class="issue__wrapper">
     <div class="ajax-progress-throbber"></div>
@@ -113,4 +109,5 @@
 
     </div>
   </div>
+
 </article>

@@ -206,9 +206,13 @@ class AhjoProxyClientTest extends KernelTestBase {
     // Test successful response with multiple cases.
     $handledBefore = new \DateTimeImmutable('2024-03-05');
     $handledAfter = new \DateTimeImmutable('2022-10-01');
-    $cases = $sut->getCases($handledAfter, $handledBefore, 5);
+    $interval = new \DateInterval('P1Y');
+    $casesGenerator = $sut->getCases('fi', $handledAfter, $handledBefore, $interval);
 
-    $this->assertIsArray($cases);
+    $this->assertInstanceOf(\Generator::class, $casesGenerator);
+
+    // Convert generator to array for testing.
+    $cases = iterator_to_array($casesGenerator);
     $this->assertCount(5, $cases);
 
     // Verify all items are AhjoCase instances.
@@ -236,14 +240,14 @@ class AhjoProxyClientTest extends KernelTestBase {
     $this->assertIsArray($firstCase->securityReasons);
 
     // Test empty response.
-    $emptyCases = $sut->getCases($handledAfter, $handledBefore);
-    $this->assertIsArray($emptyCases);
+    $emptyCasesGenerator = $sut->getCases('fi', $handledAfter, $handledBefore, $interval);
+    $emptyCases = iterator_to_array($emptyCasesGenerator);
     $this->assertCount(0, $emptyCases);
 
     // Test missing cases key in response.
     $this->expectException(AhjoProxyException::class);
     $this->expectExceptionMessage('Cases data not found in response.');
-    $sut->getCases($handledAfter, $handledBefore);
+    iterator_to_array($sut->getCases('fi', $handledAfter, $handledBefore, $interval));
   }
 
   /**

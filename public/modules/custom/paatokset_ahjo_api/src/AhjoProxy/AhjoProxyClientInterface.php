@@ -40,21 +40,27 @@ interface AhjoProxyClientInterface {
   /**
    * Get multiple cases.
    *
+   * Fetches cases in batches using the provided interval to split the date
+   * range into smaller chunks.
+   *
+   * @param string $langcode
+   *   Request langcode.
    * @param \DateTimeImmutable $handledAfter
    *   Lower bound for case handling date.
    * @param \DateTimeImmutable $handledBefore
    *   Upper bound for case handling date.
-   * @param int $count
-   *   Maximum number of cases to retrieve.
+   * @param \DateInterval $interval
+   *   Date interval for batching requests (e.g., P7D for 7 days).
+   *   The date range will be split into chunks of this size.
    *
-   * @return \Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase[]
-   *   Array of AhjoCase DTOs. This API returns incomplete cases.
+   * @return \Generator<\Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase>
+   *   Generator of AhjoCase DTOs. This API returns incomplete cases.
    *   Use `::getCase()` to get all data.
    *
    * @throws \Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException
    *   If the API request fails or response is malformed.
    */
-  public function getCases(\DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, int $count = 1000): array;
+  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): \Generator;
 
   /**
    * Get case by ID.

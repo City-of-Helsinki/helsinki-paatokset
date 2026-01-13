@@ -24,7 +24,7 @@ final readonly class AhjoRecord {
    *   Version series ID.
    * @param string $nativeId
    *   Native ID.
-   * @param string $type
+   * @param ?string $type
    *   Record type (e.g., "esitys", "päätös", "aloite").
    * @param string $fileUri
    *   File URI/URL.
@@ -42,7 +42,7 @@ final readonly class AhjoRecord {
     public ?string $securityReasons,
     public string $versionSeriesId,
     public string $nativeId,
-    public string $type,
+    public ?string $type,
     public string $fileUri,
     public string $language,
     public string $personalData,

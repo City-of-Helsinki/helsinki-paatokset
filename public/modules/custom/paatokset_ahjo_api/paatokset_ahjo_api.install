@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -151,4 +152,15 @@ function paatokset_ahjo_api_update_9014(): void {
     ->update('paatokset_ahjo_organization_data')
     ->fields(['sync_attempts' => 0])
     ->execute();
+}
+
+/**
+ * UHF-12081 Add case entity type.
+ */
+function paatokset_ahjo_api_update_11001(): void {
+  $type = \Drupal::service(EntityTypeManagerInterface::class)
+    ->getDefinition('ahjo_case');
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installEntityType($type);
 }

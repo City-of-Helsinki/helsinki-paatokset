@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api;
+namespace Drupal\paatokset_ahjo_api\Queue;
 
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\Queue\SuspendQueueException;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,14 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * {@inheritDoc}
-   */
   final public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     protected AhjoProxy $ahjoProxy,
+    protected AhjoMigrationDriver $migrationDriver,
+    protected AhjoQueueManager $queueManager,
     protected LoggerChannelInterface $logger,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -38,6 +38,8 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
       $plugin_id,
       $plugin_definition,
       $container->get('paatokset_ahjo_proxy'),
+      $container->get(AhjoMigrationDriver::class),
+      $container->get(AhjoQueueManager::class),
       $container->get('logger.channel.paatokset_ahjo_api'),
     );
   }
@@ -46,6 +48,48 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
    * {@inheritdoc}
    */
   public function processItem(mixed $data): void {
+    // Process v1 items.
+    if (!$data['content'] instanceof Item) {
+      $this->processLegacyItem($data);
+      return;
+    }
+
+    $content = $data['content'];
+
+    $result = $this->migrationDriver->import($content->toMigrateSettings(), $content->migration);
+
+    if ($result != MigrationInterface::RESULT_COMPLETED) {
+      $this->logger->warning('Could not process @id from @queue, migration return code = @result', [
+        '@id' => $content->id,
+        '@queue' => $this->getPluginId(),
+        '@result' => $result,
+      ]);
+
+      // Check if the item should be moved to the next queue.
+      if ($this->canMoveToNextQueue($data)) {
+        $return = $this->queueManager->addItemToAhjoQueue(AhjoQueue::from($this->getFallbackQueueId()), $content->id, $content->migration);
+
+        // Return normally so the item is marked as processed from this queue.
+        if ($return !== FALSE) {
+          return;
+        }
+      }
+
+      // If the item could not or should not be moved, throw
+      // an error to return it to the queue.
+      throw new \RuntimeException('Could not process ' . $content->id . ' at ' . $this->getPluginId());
+    }
+
+    $this->logger->info('Migrated @id from @queue', [
+      '@id' => $content->id,
+      '@queue' => $this->getPluginId(),
+    ]);
+  }
+
+  /**
+   * For backwards compatibility.
+   */
+  public function processLegacyItem(mixed $data): void {
     $operation = $data['content']->updatetype ?? NULL;
     $entity = $data['content']->id ?? NULL;
 
@@ -124,6 +168,8 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
   /**
    * Move item to retry or error queue if enough time has elapsed.
    *
+   * Legacy method. See processV2Item.
+   *
    * @param mixed $item
    *   Item data to move to another queue.
    *
@@ -135,18 +181,11 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
 
     $move_to = $this->getFallbackQueueId();
 
-    // getFallbackQueueId returns NULL if the item should not be moved.
-    if (empty($move_to)) {
+    if (!$this->canMoveToNextQueue($item)) {
       return FALSE;
     }
 
-    // Move all old items without timestamps.
-    if (!isset($item['created'])) {
-      $item['created'] = 0;
-    }
-    elseif ($item['created'] > $this->getMaxRetryTime()) {
-      return FALSE;
-    }
+    assert(isset($item['content']->id));
 
     // Check if item is already in next queue.
     // If it is, return TRUE here so the duplicate can be removed here too.
@@ -163,6 +202,34 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     }
 
     return FALSE;
+  }
+
+  /**
+   * Checks if the item should be moved to the next queue.
+   *
+   * @param mixed $item
+   *   Item data to move to another queue.
+   *
+   * @return bool
+   *   TRUE if item was moved, FALSE if not necessary or moving failed.
+   */
+  protected function canMoveToNextQueue(mixed $item): bool {
+    $moveTo = $this->getFallbackQueueId();
+
+    // getFallbackQueueId returns NULL if the item should not be moved.
+    if (empty($moveTo)) {
+      return FALSE;
+    }
+
+    // Handle legacy items without timestamps.
+    if (!isset($item['created'])) {
+      $item['created'] = 0;
+    }
+    elseif ($item['created'] > $this->getMaxRetryTime()) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
 }

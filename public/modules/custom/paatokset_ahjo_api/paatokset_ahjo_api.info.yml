@@ -10,5 +10,6 @@ dependencies:
   - drupal:path_alias
   - pathauto:pathauto
   - token:token
+  - json_field:json_field
 'interface translation project': paatokset_ahjo_api
 'interface translation server pattern': modules/custom/paatokset_ahjo_api/translations/%language.po

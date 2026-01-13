@@ -163,7 +163,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
 
       $operations[] = [
-        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',
+        AhjoProxy::class . '::processBatchItem',
         [$data],
       ];
     }
@@ -178,7 +178,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       batch_set([
         'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
         'operations' => $operations,
-        'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
+        'finished' => AhjoProxy::class . '::finishBatch',
       ]);
 
       drush_backend_batch_process();

@@ -252,11 +252,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
 
     -
-      message: "#^PHPDoc tag @var for variable \\$node contains unknown class Drupal\\\\paatokset_ahjo_proxy\\\\Drush\\\\Commands\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
-
-    -
       message: "#^Variable \\$date_range_end might not be defined\\.$#"
       count: 1
       path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php

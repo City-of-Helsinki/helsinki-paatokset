@@ -66,6 +66,9 @@ function paatokset_ahjo_api_grant_permissions() : array {
  */
 function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
   return [
+    'ahjo_case' => [
+      'render element' => 'elements',
+    ],
     'ahjo_initiative' => [
       'render element' => 'elements',
       'template' => 'ahjo-initiative',
@@ -622,6 +625,13 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
     'url' => $url,
     'label' => $label,
   ];
+}
+
+/**
+ * Prepares variables for ahjo_case templates.
+ */
+function template_preprocess_ahjo_case(array &$variables) : void {
+  $variables['case'] = $variables['elements']['#ahjo_case'];
 }
 
 /**

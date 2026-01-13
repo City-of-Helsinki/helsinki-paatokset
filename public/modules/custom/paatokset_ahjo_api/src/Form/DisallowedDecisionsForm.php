@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\paatokset_ahjo_api\Entity\DisallowedDecisions;
 
 /**
  * Disallowed Decisions entity form.
@@ -36,6 +37,7 @@ class DisallowedDecisionsForm extends EntityForm {
       '#changeable_state' => !$this->entity->isNew(),
     ];
 
+    assert($this->entity instanceof DisallowedDecisions);
     $form['configuration'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Configuration'),
