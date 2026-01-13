@@ -30,6 +30,7 @@ class AhjoOpenIdControllerTest extends KernelTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'migrate',
   ];
 
   /**

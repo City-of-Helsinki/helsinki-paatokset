@@ -46,6 +46,7 @@ class PolicymakerServiceTest extends KernelTestBase {
     'text',
     'token',
     'user',
+    'migrate',
   ];
 
   /**

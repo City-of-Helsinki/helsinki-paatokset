@@ -27,6 +27,7 @@ class PathProcessorTest extends KernelTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'migrate',
   ];
 
   /**

@@ -8,6 +8,7 @@ dependencies:
   - drupal:paatokset_policymakers
   - drupal:paatokset_datapumppu
   - drupal:path_alias
+  - drupal:migrate
   - pathauto:pathauto
   - token:token
   - json_field:json_field

@@ -30,6 +30,7 @@ class AhjoCallbackCommandsTest extends KernelTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'migrate',
   ];
 
   /**
