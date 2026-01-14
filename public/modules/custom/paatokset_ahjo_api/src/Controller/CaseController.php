@@ -13,8 +13,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -24,20 +23,9 @@ final class CaseController extends ControllerBase {
 
   use AutowireTrait;
 
-  /**
-   * Class constructor.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
-   *   The case service.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService
-   *   The policymaker service.
-   */
   public function __construct(
     private readonly CaseService $caseService,
     private readonly RendererInterface $renderer,
-    #[Autowire(service: 'paatokset_policymakers')]
     private readonly PolicymakerService $policymakerService,
   ) {
   }

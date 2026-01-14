@@ -134,7 +134,7 @@ readonly class AhjoBatchBuilder {
           $agenda_endpoint = 'agenda-item/' . $meeting_data['meeting_id'] . '/' . $native_id;
         }
         else {
-          $agenda_endpoint = 'meetings/' . $meeting_data['meeting_id'] . '/agendaitems' . '/' . $native_id;
+          $agenda_endpoint = 'meetings/' . $meeting_data['meeting_id'] . '/agendaitems/' . $native_id;
         }
 
         $count++;

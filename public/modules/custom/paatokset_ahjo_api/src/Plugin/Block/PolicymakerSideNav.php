@@ -17,7 +17,7 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -34,8 +34,6 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
 
   /**
    * Sidenav links.
-   *
-   * @var ?array
    */
   protected ?array $items;
 
@@ -70,7 +68,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       $plugin_definition,
       $container->get('menu.link_tree'),
       $container->get('router.route_provider'),
-      $container->get('paatokset_policymakers'),
+      $container->get(PolicymakerService::class),
       $container->get('logger.channel.paatokset_ahjo_api'),
       $container->get('language_manager')->getCurrentLanguage()->getId(),
       $container->get('path.current')->getPath()
@@ -81,6 +79,11 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    * {@inheritDoc}
    */
   public function build(): array {
+    // Skip block if the policymaker can't be found.
+    if ($this->policymakerService->getPolicymaker() === NULL) {
+      return [];
+    }
+
     return [
       '#theme' => 'policymaker_side_navigation',
       '#items' => $this->items,

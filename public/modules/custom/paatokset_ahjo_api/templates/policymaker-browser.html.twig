@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Default tempalte for policymaker browser.
+ *
+ * Available variables:
+ * - policymaker: Currently selected organization level.
+ * - children: Child organizations of current policymaker.
+#}
+
+{# {{ dd(_context) }} #}
+
+{{ breadcrumb }}
+
+{{ organization.label() }}
+
+<ul>
+{% for organization in children %}
+  <li>
+    <a href="{{ url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() }) }}">
+      {{ organization.label() }}
+    </a>
+
+    |
+
+    {%
+      set policymaker = policymakers[organization.id()] ?? null
+    %}
+    {% if policymaker %}
+      {{ link(policymaker.label(), policymaker.getUrl()) }}
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>

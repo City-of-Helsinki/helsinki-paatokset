@@ -29,7 +29,7 @@
               "Name": "Kaupunginhallitus",
               "ID": "00400",
               "TypeId": "2",
-              "Existing": "true",
+              "Existing": "false",
               "Formed": "2009-01-01T00:00:00.000",
               "Dissolved": "2100-01-01T00:00:00.000"
             }

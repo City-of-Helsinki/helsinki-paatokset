@@ -13,14 +13,14 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Kernel tests for ahjo open id service.
  *
  * These test functionality that uses Drupal State API.
- *
- * @group paatokset_ahjo_api
  */
+#[Group('paatokset_ahjo_api')]
 class AhjoOpenIdTest extends KernelTestBase {
 
   use ApiTestTrait;
@@ -32,6 +32,9 @@ class AhjoOpenIdTest extends KernelTestBase {
     'helfi_api_base',
     'migrate_plus',
     'paatokset_ahjo_api',
+    'path_alias',
+    'pathauto',
+    'token',
   ];
 
   /**

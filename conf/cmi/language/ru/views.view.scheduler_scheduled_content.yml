@@ -1,7 +1,6 @@
 label: 'Запланированные материалы'
 display:
   default:
-    display_title: Основной
     display_options:
       exposed_form:
         options:
@@ -64,10 +63,11 @@ display:
           expose:
             label: Язык
       title: 'Запланированные материалы'
+    display_title: Основной
   overview:
     display_options:
       menu:
-        title: Запланировано
+        title: 'Запланированные материалы'
       tab_options:
         title: Содержимое
   user_page:
@@ -80,3 +80,4 @@ display:
         uid:
           exception:
             title: Все
+    display_title: Пользователь

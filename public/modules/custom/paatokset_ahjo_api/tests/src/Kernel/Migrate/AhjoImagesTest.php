@@ -7,22 +7,27 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\process;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
-use Drupal\KernelTests\Core\File\FileTestBase;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
 use Drupal\paatokset_ahjo_api\Plugin\migrate\process\AhjoImages;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the `ahjo_images` process plugin.
- *
- * @group paatokset_ahjo_api
  */
-class AhjoImagesTest extends FileTestBase {
+#[Group('paatokset_ahjo_api')]
+class AhjoImagesTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['migrate', 'system', 'file', 'user'];
+  protected static $modules = [
+    'migrate',
+    'system',
+    'file',
+    'user',
+  ];
 
   /**
    * {@inheritdoc}
@@ -69,7 +74,7 @@ class AhjoImagesTest extends FileTestBase {
     ]);
 
     // File already exists.
-    $this->createUri('ahjo-images/761523e5d2ef1e871b506467348fa22c24d9bf3d7466f7138712b15c5d9310bb.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg=='), scheme: 'temporary');
+    file_put_contents('temporary://ahjo-images/761523e5d2ef1e871b506467348fa22c24d9bf3d7466f7138712b15c5d9310bb.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg=='));
 
     foreach ($data_sets as $data) {
       [$markup, $destination] = $data;
@@ -90,7 +95,7 @@ class AhjoImagesTest extends FileTestBase {
   }
 
   /**
-   * Tests errors..
+   * Tests errors.
    */
   public function testErrors(): void {
     $data_sets = [

@@ -27,8 +27,9 @@ use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
-
-require_once __DIR__ . '/includes/paatokset_lang_switcher.php';
+use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -108,6 +109,7 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'base hook' => 'entity',
       'template' => 'block/block--frontpage-calendar',
     ],
+    // @todo remove once new browse page is in place.
     'block__policymaker_listing' => [
       'base hook' => 'entity',
       'template' => 'block/block--policymaker-listing',
@@ -135,6 +137,14 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'variables' => [
         'items' => [],
         'current_option' => NULL,
+      ],
+    ],
+    'policymaker_browser' => [
+      'variables' => [
+        'organization' => NULL,
+        'children' => NULL,
+        'policymakers' => NULL,
+        'breadcrumb' => NULL,
       ],
     ],
   ];
@@ -303,9 +313,10 @@ function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array 
  * Preprocess frontpage calendar block.
  */
 function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variables): void {
-  $meetingService = \Drupal::service('paatokset_ahjo_meetings');
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $meetingService = \Drupal::service(MeetingService::class);
+
+  $policymakerService = \Drupal::service(PolicymakerService::class);
+
   $currentLanguage = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   $params = [
@@ -400,6 +411,8 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
 
 /**
  * Preprocess policymaker listing block.
+ *
+ * @todo remove once new browse page is in place.
  */
 function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variables): void {
   // Helpful $content variable for templates.
@@ -431,8 +444,7 @@ function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variab
  * Preprocess decision tree page.
  */
 function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): void {
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
 
   $defaults_config = \Drupal::config('paatokset_ahjo_api.default_texts');
   $committees_url = $defaults_config->get('committees_boards_url');
@@ -504,14 +516,13 @@ function paatokset_ahjo_api_preprocess_block__decision_tree(array &$variables): 
  * Preprocess variables for case and decision pages.
  */
 function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $case, ?Decision $decision): void {
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
+  $caseService = \Drupal::service(CaseService::class);
+
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $policymaker = $decision?->getPolicymaker($langcode);
   $organization_type = $policymaker?->getOrganizationType();
 
-  /** @var \Drupal\paatokset_policymakers\Service\PolicymakerService $policymakerService */
-  $policymakerService = \Drupal::service('paatokset_policymakers');
+  $policymakerService = \Drupal::service(PolicymakerService::class);
 
   // Case migration sets 'NO TITLE' as a default
   // value, if the case has no title in Ahjo.
@@ -524,7 +535,7 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['decision_pdf'] = $decision?->getDecisionPdf();
   $variables['policymaker_is_active'] = $policymaker?->isActive() ?? FALSE;
   $variables['decision_section'] = $decision?->getFormattedDecisionSection();
-  $variables['decision_org_name'] = !$organization_type?->isCouncilOrCabinet() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
+  $variables['decision_org_name'] = !$organization_type?->isCouncilOrBoard() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
   $variables['organization_type_name'] = $policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL;
   $variables['selected_label'] = $decision ? $caseService->formatDecisionLabel($decision, $policymaker) : NULL;
   $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');
@@ -1064,16 +1075,6 @@ function paatokset_ahjo_api_node_view(array &$build, EntityInterface $entity, En
         ->toRenderable();
     }
   }
-}
-
-/**
- * Alter the Hero design selection array.
- *
- * @param array $designs
- *   The designs for the hero.
- */
-function paatokset_ahjo_api_helfi_hero_design_alter(array &$designs) {
-  $designs['paatokset-search-bar'] = t('Paatokset decision search');
 }
 
 /**

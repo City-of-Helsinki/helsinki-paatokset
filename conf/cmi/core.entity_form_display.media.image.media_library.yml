@@ -54,6 +54,8 @@ hidden:
   field_caption: true
   langcode: true
   path: true
+  publish_on: true
   replace_file: true
   status: true
   uid: true
+  unpublish_on: true

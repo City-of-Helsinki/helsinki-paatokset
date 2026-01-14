@@ -10,6 +10,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides Policymaker listing Block.
+ *
+ * @todo remove once new browse page is in place.
  */
 #[Block(
   id: 'policymaker_listing',

@@ -9,6 +9,7 @@ use Drupal\paatokset_allu\Client\Client;
 use Drupal\paatokset_allu\Entity\Document;
 use Drupal\Tests\helfi_api_base\Kernel\Entity\Access\RemoteEntityAccessTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * Kernel tests for document entity.
  */
+#[Group('paatokset_allu')]
 class DocumentEntityTest extends RemoteEntityAccessTestBase {
 
   use ProphecyTrait;

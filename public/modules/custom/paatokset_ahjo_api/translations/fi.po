@@ -3,6 +3,9 @@
 msgid ""
 msgstr ""
 
+msgid "Browse decisionmakers"
+msgstr "Selaa päättäjiä"
+
 msgid "See table with voting results"
 msgstr "Katso äänestystulos taulukkona"
 

@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_policymakers\Controller;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Controller\NodeViewController;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_policymakers\Service\PolicymakerService;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -18,57 +22,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class PolicymakerNodeViewController extends NodeViewController {
 
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $currentUser;
+  use AutowireTrait;
 
-  /**
-   * The entity repository service.
-   *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
-   */
-  protected $entityRepository;
-
-  /**
-   * Policymaker service.
-   *
-   * @var \Drupal\paatokset_policymakers\Service\PolicymakerService
-   */
-  private $policymakerService;
-
-  /**
-   * Creates a NodeViewController object.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   The current user.
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository.
-   * @param \Drupal\paatokset_policymakers\Service\PolicymakerService $policymaker_service
-   *   Policymaker service.
-   */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, RendererInterface $renderer, AccountInterface $current_user, EntityRepositoryInterface $entity_repository, PolicymakerService $policymaker_service) {
-    parent::__construct($entity_type_manager, $renderer, $current_user, $entity_repository);
-    $this->policymakerService = $policymaker_service;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager'),
-      $container->get('renderer'),
-      $container->get('current_user'),
-      $container->get('entity.repository'),
-      $container->get('paatokset_policymakers')
-    );
+  public function __construct(
+    EntityTypeManagerInterface $entityTypeManager,
+    RendererInterface $renderer,
+    AccountInterface $currentUser,
+    EntityRepositoryInterface $entityRepository,
+    private readonly PolicymakerService $policymakerService,
+    private readonly LanguageManagerInterface $languageManager,
+  ) {
+    parent::__construct($entityTypeManager, $renderer, $currentUser, $entityRepository);
   }
 
   /**
@@ -93,6 +57,18 @@ class PolicymakerNodeViewController extends NodeViewController {
   public function policymaker(string $organization) {
     $this->policymakerService->setPolicyMakerByPath();
     $node = $this->policymakerService->getPolicyMaker();
+
+    // Do not serve policymakers from duplicate paths.
+    // If policymaker is accessed with the policymaker URL,
+    // redirect to the canonical URL.
+    if (
+      $node &&
+      $node->getPolicymakerId() === $organization &&
+      !str_contains($url = $node->toUrl()->toString(), $organization) &&
+      $this->languageManager->getCurrentLanguage()->getId() === $node->language()->getId()
+    ) {
+      return new TrustedRedirectResponse($url, 301);
+    }
 
     if (!$node instanceof EntityInterface) {
       $node = $this->policymakerService->getTrusteeByPath($organization);

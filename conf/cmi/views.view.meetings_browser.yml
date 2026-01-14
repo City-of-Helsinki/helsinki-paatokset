@@ -550,13 +550,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              read_only: '0'
-              content_producer: '0'
-              editor: '0'
-              admin: '0'
-              api_user: '0'
-              elevated_api_user: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -598,13 +591,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              read_only: '0'
-              content_producer: '0'
-              editor: '0'
-              admin: '0'
-              api_user: '0'
-              elevated_api_user: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -720,6 +706,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
         options:

@@ -5,6 +5,8 @@
  * Contains installation hooks for Päätökset Search module.
  */
 
+declare(strict_types=1);
+
 use Drupal\node\Entity\Node;
 
 /**

@@ -15,6 +15,10 @@ services:
     class: Drupal\paatokset_ahjo_api\Service\CaseService
   Drupal\paatokset_ahjo_api\Service\CaseService: '@paatokset_ahjo_cases'
 
+  paatokset_policymakers:
+    class: Drupal\paatokset_ahjo_api\Service\PolicymakerService
+  Drupal\paatokset_ahjo_api\Service\PolicymakerService: '@paatokset_policymakers'
+
   paatokset_ahjo_trustees:
     class: Drupal\paatokset_ahjo_api\Service\TrusteeService
 
@@ -51,3 +55,8 @@ services:
   paatokset_ahjo_openid:
     class: Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId
   Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId: '@paatokset_ahjo_openid'
+
+  Drupal\paatokset_ahjo_api\Policymakers\PathProcessor:
+    tags:
+      - { name: path_processor_inbound, priority: 200 }
+      - { name: path_processor_outbound }
