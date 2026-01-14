@@ -118,6 +118,7 @@
 .issue-content__title h2 {
   @include font('h3');
   margin-bottom: $spacing-double;
+  margin-top: $spacing;
 }
 
 .motion-tag.issue-content__motion-tag {
