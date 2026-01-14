@@ -9,6 +9,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\views\Entity\View;
@@ -22,7 +23,7 @@ use Drupal\views\ViewExecutableFactory;
   admin_label: new TranslatableMarkup('Policymaker documents'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-final class PolicymakerDocumentsBlock extends BlockBase {
+final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   use AutowiredInstanceTrait;
 
