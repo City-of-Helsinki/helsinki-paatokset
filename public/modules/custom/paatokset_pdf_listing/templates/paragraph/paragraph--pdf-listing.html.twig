@@ -50,8 +50,8 @@
 {% if documents %}
 <div{{ attributes.addClass(classes) }}>
   {% if (years is not empty ) %}
-    <div class="paatokset__decision-tree-container">
-      <div class="decision-tree__title">
+    <div class="tabbed-content__container">
+      <div class="tabbed-content__title">
         <span>{{ 'Select year' |trans }}</span>
       </div>
       {% embed "@hdbt/misc/container.twig" with {container_element: 'tabbed-content'} %}

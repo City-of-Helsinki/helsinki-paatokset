@@ -1,14 +1,10 @@
-// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
+// @todo UHF-12379 This whole file can probably be deleted after the refactoring is done. https://helsinkisolutionoffice.atlassian.net/browse/UHF-12379
 
 .decisions-search-selected-filters {
   border-top: 1px solid $color-black;
-  margin-top: 37.5px;
+  margin-top: $spacing-double;
   overflow: hidden;
-  padding-top: 28px;
-
-  @media (width >= 1200px) {
-    margin-top: 55px;
-  }
+  padding-top: $spacing-double;
 }
 
 .decisions-search-selected-filters__container {

@@ -3,45 +3,38 @@
   background-color: $color-silver-light;
 
   .container {
-    padding-bottom: 65px;
-    padding-top: 65px;
+    padding-block: $spacing-quadruple;
   }
 
   h2 {
-    margin-bottom: 50px;
+    margin-bottom: $spacing-triple;
   }
 }
 
 .policymaker-card__container {
-  margin-bottom: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  margin-bottom: $spacing-quadruple;
 
   @include breakpoint($breakpoint-s) {
-    display: flex;
+    flex-direction: row;
   }
 
   .policymaker-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-bottom: $spacing;
     text-decoration: none;
 
     @include breakpoint($breakpoint-s) {
       padding-bottom: 0;
       width: 50%;
-
-      &:first-of-type {
-        padding-right: $spacing-half;
-      }
-
-      &:last-of-type {
-        padding-left: $spacing-half;
-      }
     }
 
     &:hover {
       .hel-icon {
-        transform: translate(10px);
+        transform: translate($spacing-half);
       }
     }
   }
@@ -55,7 +48,7 @@
 
   .policymaker-card__title-icon {
     background-color: $color-white;
-    padding: 25px;
+    padding: $spacing-and-half;
 
     h4 {
       margin-top: 0;
@@ -63,11 +56,8 @@
   }
 
   .hel-icon {
-    height: 30px;
-    min-height: 30px;
-    min-width: 30px;
+    --icon-size: 30px;
     transition: all 0.2s ease-in-out;
-    width: 30px;
   }
 }
 
@@ -84,14 +74,12 @@
 
   &:hover {
     .hel-icon {
-      transform: translate(10px);
+      transform: translate($spacing-half);
     }
   }
 
   .hel-icon {
-    height: 30px;
-    min-height: 30px;
-    min-width: 30px;
+    --icon-size: 30px;
     transition: all 0.2s ease-in-out;
     width: 10%;
   }
@@ -106,7 +94,7 @@
   }
 
   .policymaker-row__title {
-    font-size: 24px; // TODO: Change to a variable
+    @include font('h4');
     hyphens: auto;
     overflow-wrap: break-word;
     padding-right: $spacing;
@@ -117,6 +105,12 @@
   .policymaker-row__sub-title {
     @include font('lead');
     color: $color-black-50;
+
+    // Styles for react results
+    svg {
+      --icon-size: 18px;
+      margin-top: $spacing-half;
+    }
   }
 }
 

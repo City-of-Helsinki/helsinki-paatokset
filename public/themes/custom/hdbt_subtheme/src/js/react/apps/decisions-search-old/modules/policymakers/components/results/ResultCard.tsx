@@ -64,21 +64,21 @@ const ResultCard: FC<Props> = ({ color_class, title, trustee_name, trustee_title
       <a
         href={url}
         data-color-class={colorClass}
-        className='policymaker-search-result-card__container'
+        className='policymaker-row__link'
       >
-        <span className='policymaker-search-result-card__department-highlight' style={{ backgroundColor: colorClass }}></span>
-        <div className='policymaker-search-result-card__title-container'>
-          <h2 className='policymaker-search-result-card__title'>{trustee_name ?? title}</h2>
+        <span className='policymaker-row__color' style={{ backgroundColor: colorClass }}></span>
+        <div className='policymaker-row__title'>
+          {trustee_name ?? title}
           {
             trustee_title &&
-            <div className='policymaker-search-result-card__sub-title'>{ translatedTrusteeTitle(trustee_title) }</div>
+            <div className='policymaker-row__sub-title'>{ translatedTrusteeTitle(trustee_title) }</div>
           }
           {
             organization_hierarchy &&
-            <div className='policymaker-search-result-card__sub-title'>{ formattedOrganizations(organization_hierarchy) }</div>
+            <div className='policymaker-row__sub-title'>{ formattedOrganizations(organization_hierarchy) }</div>
           }
         </div>
-        <IconArrowRight size={IconSize.Medium} />
+        <IconArrowRight className="hel-icon"size={IconSize.Medium} />
       </a>
     </article>
   );

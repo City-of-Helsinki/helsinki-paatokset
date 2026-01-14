@@ -1,6 +1,6 @@
 (($, Drupal, once) => {
   function handleListVisibility() {
-    const headerContainer = $('.paatokset__decision-tree-container .tabbed-list');
+    const headerContainer = $('.tabbed-content__container .tabbed-list');
     const containerWidth = headerContainer.width();
     const menu = headerContainer.find('ul.menu');
     const dropdown = $(headerContainer).find('.custom-select-wrapper');

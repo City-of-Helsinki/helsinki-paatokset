@@ -39,6 +39,11 @@
  */
 #}
 
+{% set classes = [
+  'component',
+  'component--content-cards-grey',
+] %}
+
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% embed "@hdbt/misc/container.twig" with {container_element: 'frontpage-calendar'} %}

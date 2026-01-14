@@ -3,6 +3,7 @@ import { Button } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import useWindowDimensions from '../../../../hooks/useWindowDimensions';
+import { primaryButtonTheme } from '@/react/common/constants/buttonTheme';
 
 import SearchComponents from '../../enum/SearchComponents';
 
@@ -24,6 +25,7 @@ const SubmitButton = () => {
             'decisions-search-form-element',
             customClass
           )}
+          theme={primaryButtonTheme}
         >
           {t('SEARCH:submit')}
         </Button>
