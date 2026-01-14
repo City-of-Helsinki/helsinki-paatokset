@@ -14,7 +14,7 @@ final readonly class AhjoHandling {
    *
    * @param int $workSequenceNumber
    *   Work sequence number.
-   * @param string $sector
+   * @param ?string $sector
    *   Sector name (e.g., "Keskushallinto").
    * @param string $status
    *   Handling status (e.g., "Päätöksenteossa", "Päättynyt").
@@ -22,18 +22,18 @@ final readonly class AhjoHandling {
    *   Created timestamp.
    * @param string $dateNearestDeadline
    *   Date nearest deadline (can be empty string).
-   * @param string $sectorId
+   * @param ?string $sectorId
    *   Sector ID (e.g., "U50").
    * @param array $links
    *   Links array.
    */
   public function __construct(
     public int $workSequenceNumber,
-    public string $sector,
+    public ?string $sector,
     public string $status,
     public \DateTimeImmutable $created,
     public string $dateNearestDeadline,
-    public string $sectorId,
+    public ?string $sectorId,
     public array $links,
   ) {}
 

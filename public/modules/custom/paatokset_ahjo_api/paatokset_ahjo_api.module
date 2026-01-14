@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
@@ -22,6 +20,7 @@ use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks;
+use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
@@ -206,98 +205,6 @@ function paatokset_ahjo_api_platform_config_grant_permissions() : array {
       'administer ahjo openid',
     ],
   ];
-}
-
-/**
- * Implements hook_ENTITY_TYPE_insert().
- */
-function paatokset_ahjo_api_node_insert(EntityInterface $entity) {
-  if ($entity->bundle() === 'decision') {
-    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
-  }
-  elseif ($entity->bundle() === 'meeting') {
-    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_update().
- */
-function paatokset_ahjo_api_node_update(EntityInterface $entity) {
-  if ($entity->bundle() === 'decision') {
-    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
-  }
-  elseif ($entity->bundle() === 'meeting') {
-    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_delete().
- */
-function paatokset_ahjo_api_node_delete(EntityInterface $entity) {
-  if ($entity->bundle() === 'decision') {
-    _paatokset_ahjo_api_invalidate_decision_cache_tags($entity);
-  }
-  elseif ($entity->bundle() === 'meeting') {
-    _paatokset_ahjo_api_invalidate_meeting_cache_tags($entity);
-  }
-}
-
-/**
- * Invalidates custom cache tags for decisions.
- *
- * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
- *   Entity to base cache invalidations on.
- */
-function _paatokset_ahjo_api_invalidate_decision_cache_tags(FieldableEntityInterface $entity): void {
-  $meeting_id = NULL;
-  if ($entity->hasField('field_meeting_id') && !$entity->get('field_meeting_id')->isEmpty()) {
-    $meeting_id = $entity->get('field_meeting_id')->value;
-  }
-
-  $policymaker_id = NULL;
-  if ($entity->hasField('field_policymaker_id') && !$entity->get('field_policymaker_id')->isEmpty()) {
-    $policymaker_id = $entity->get('field_policymaker_id')->value;
-  }
-
-  $tags = [];
-  if ($meeting_id) {
-    $tags[] = 'meeting:' . $meeting_id;
-  }
-  if ($policymaker_id) {
-    $tags[] = 'decision_pm:' . $policymaker_id;
-  }
-
-  if (!empty($tags)) {
-    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
-    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
-    $cache_invalidator->invalidateTags($tags);
-  }
-}
-
-/**
- * Invalidates custom cache tags for meetings.
- *
- * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
- *   Entity to base cache invalidations on.
- */
-function _paatokset_ahjo_api_invalidate_meeting_cache_tags(FieldableEntityInterface $entity): void {
-  $policymaker_id = NULL;
-  if ($entity->hasField('field_meeting_dm_id') && !$entity->get('field_meeting_dm_id')->isEmpty()) {
-    $policymaker_id = $entity->get('field_meeting_dm_id')->value;
-  }
-
-  $tags = [];
-  if ($policymaker_id) {
-    $tags[] = 'meeting_pm:' . $policymaker_id;
-  }
-
-  if (!empty($tags)) {
-    /** @var Drupal\Core\Cache\CacheTagsInvalidator $cache_invalidator */
-    $cache_invalidator = \Drupal::service('cache_tags.invalidator');
-    $cache_invalidator->invalidateTags($tags);
-  }
 }
 
 /**
@@ -546,17 +453,11 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
   $variables['all_decisions'] = $case ? $caseService->getDecisionsList($case) : NULL;
 
   if ($decision && $adjacent = $case?->getNextDecision($decision)) {
-    $variables['next_decision'] = [
-      'title' => $adjacent->label(),
-      'id' => $adjacent->getNormalizedNativeId(),
-    ];
+    $variables['next_decision'] = $adjacent;
   }
 
   if ($decision && $adjacent = $case?->getPrevDecision($decision)) {
-    $variables['previous_decision'] = [
-      'title' => $adjacent->label(),
-      'id' => $adjacent->getNormalizedNativeId(),
-    ];
+    $variables['previous_decision'] = $adjacent;
   }
 
   $variables['decision_content'] = $decision?->parseContent() ?? [];
@@ -631,7 +532,11 @@ function paatokset_ahjo_api_preprocess_block__dictionary_banner(&$variables) {
  * Prepares variables for ahjo_case templates.
  */
 function template_preprocess_ahjo_case(array &$variables) : void {
-  $variables['case'] = $variables['elements']['#ahjo_case'];
+  $case = $variables['elements']['#ahjo_case'];
+  assert($case instanceof AhjoCase);
+
+  $variables['decision'] = $case->getDefaultDecision();
+  $variables['case'] = $case;
 }
 
 /**
@@ -1167,57 +1072,6 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
       }
     }
   }
-}
-
-/**
- * Implements hook_system_breadcrumb_alter().
- */
-function paatokset_ahjo_api_system_breadcrumb_alter(
-  Breadcrumb &$breadcrumb,
-  RouteMatchInterface $route_match,
-  array $context,
-): void {
-  // Skip admin routes.
-  if ($route_match->getRouteObject()?->getOption('_admin_route')) {
-    return;
-  }
-
-  $links = $breadcrumb->getLinks();
-
-  // Case migration sets 'NO TITLE' as a default
-  // value, if the case has no title in Ahjo.
-  if (end($links)?->getText() === 'NO TITLE') {
-    $cases = array_filter($route_match->getParameters()->all(), function ($value) {
-      return $value instanceof CaseBundle;
-    });
-
-    if (empty($case = reset($cases))) {
-      return;
-    }
-
-    /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-    $caseService = \Drupal::service('paatokset_ahjo_cases');
-    $decision = $caseService->guessDecisionFromPath($case);
-
-    // Replace the link text if current route entity is case, the case service
-    // has found a decision, and the decision has custom title field set.
-    if ($heading = $decision?->getDecisionHeading()) {
-      end($links)->setText($heading);
-
-      // We have to recreate entire breadcrumb trail here, because breadcrumb
-      // class forbids setting links after they've been set once.
-      // @see \Drupal\Core\Breadcrumb\Breadcrumb::setLinks().
-      $newBreadcrumb = new Breadcrumb();
-      $newBreadcrumb->setLinks($links);
-      // Merge cacheable metadata.
-      $newBreadcrumb->addCacheTags($breadcrumb->getCacheTags())
-        ->addCacheContexts($breadcrumb->getCacheContexts());
-
-      $breadcrumb = $newBreadcrumb;
-    }
-  }
-
-  $breadcrumb->addCacheContexts(['url.query_args']);
 }
 
 /**

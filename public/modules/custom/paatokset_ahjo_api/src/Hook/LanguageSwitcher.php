@@ -40,7 +40,7 @@ readonly class LanguageSwitcher {
   public function languageSwitchLinksAlter(array &$links, $type, Url $url): void {
     $route_name = $this->routeMatch->getRouteName();
 
-    if (!$this->isRouteAllowed($route_name)) {
+    if (!$route_name || !$this->isRouteAllowed($route_name)) {
       return;
     }
 

@@ -83,6 +83,31 @@ final class AhjoCase extends RemoteEntityBase implements EntityPublishedInterfac
   /**
    * {@inheritdoc}
    */
+  #[\Override]
+  public function label() : string {
+    if ($this->hasOwnLabel()) {
+      return parent::label();
+    }
+
+    // Some decisions released prior to 2019 don't have a label.
+    // Show a related decision label instead.
+    if ($decision = $this->getDefaultDecision()) {
+      return $decision->label();
+    }
+
+    return (string) new TranslatableMarkup('NO TITLE');
+  }
+
+  /**
+   * Check if title has own label.
+   */
+  public function hasOwnLabel(): bool {
+    return (bool) parent::label();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -204,6 +229,13 @@ final class AhjoCase extends RemoteEntityBase implements EntityPublishedInterfac
    */
   public static function getAhjoEndpoint(): string {
     return 'cases';
+  }
+
+  /**
+   * Gets the default decision for this case.
+   */
+  public function getDefaultDecision(): Decision {
+    return array_first($this->getAllDecisions());
   }
 
   /**

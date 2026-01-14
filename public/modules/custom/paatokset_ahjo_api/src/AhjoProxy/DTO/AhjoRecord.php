@@ -45,7 +45,7 @@ final readonly class AhjoRecord {
     public ?string $type,
     public string $fileUri,
     public string $language,
-    public string $personalData,
+    public ?string $personalData,
     public ?\DateTimeImmutable $issued,
   ) {}
 

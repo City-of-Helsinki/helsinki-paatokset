@@ -106,9 +106,9 @@
       </div>
 
       <div class="issue-right-column__container">
-        {% include '@hdbt_subtheme/components/decision-pdf.html.twig' %}
+        {% include '@hdbt_subtheme/components/decision-pdf.html.twig' with { decision_pdf: selectedDecision.getDecisionPdf() } only %}
 
-        {% include '@hdbt_subtheme/components/case-attachments.html.twig' %}
+        {% include '@hdbt_subtheme/components/case-attachments.html.twig' with { attachments: selectedDecision.getAttachments() } only %}
       </div>
 
     </div>

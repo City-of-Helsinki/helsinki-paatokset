@@ -63,14 +63,8 @@ final class CaseController extends ControllerBase {
 
     $navigation = [
       '#theme' => 'decision_navigation',
-      '#next_decision' => $next ? [
-        'title' => $next->label(),
-        'id' => $next->getNormalizedNativeId(),
-      ] : NULL,
-      '#previous_decision' => $prev ? [
-        'title' => $prev->label(),
-        'id' => $prev->getNormalizedNativeId(),
-      ] : NULL,
+      '#next_decision' => $next,
+      '#previous_decision' => $prev,
     ];
 
     $response = new CacheableJsonResponse([
@@ -171,6 +165,11 @@ final class CaseController extends ControllerBase {
       // Redirect to the decision.
       return (new CacheableRedirectResponse($decision->toUrl('canonical', ['absolute' => TRUE])->toString(), 302))
         ->addCacheableDependency($metadata);
+    }
+
+    // Cases are not useful if they don't have a decision.
+    if (!$ahjo_case->getDefaultDecision()) {
+      throw new NotFoundHttpException("Case with ID '{$ahjo_case->id()}' does not have a decision.");
     }
 
     // Otherwise, render the entity normally.

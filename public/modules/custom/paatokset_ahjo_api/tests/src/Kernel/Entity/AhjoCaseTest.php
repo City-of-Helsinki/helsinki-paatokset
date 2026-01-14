@@ -29,7 +29,7 @@ class AhjoCaseTest extends AhjoEntityKernelTestBase {
       'id' => '123',
       'status' => '1',
       'langcode' => 'en',
-      'classification_code' => '11 01 05'
+      'classification_code' => '11 01 05',
     ]);
     $case->save();
 

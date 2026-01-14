@@ -26,6 +26,7 @@ final readonly class AhjoPathProcessor implements InboundPathProcessorInterface,
    */
   public function processInbound($path, Request $request): string {
     $paths = [
+      // @todo remove v2 prefix.
       '/v2/case' => [
         'fi' => '/^\/v2\/asia\/([\p{L}\p{N}\-]+)$/ui',
         'sv' => '/^\/v2\/arende\/([\p{L}\p{N}\-]+)$/ui',
@@ -54,6 +55,7 @@ final readonly class AhjoPathProcessor implements InboundPathProcessorInterface,
    */
   public function processOutbound($path, &$options = [], ?Request $request = NULL, ?BubbleableMetadata $bubbleable_metadata = NULL): string {
     $paths = [
+      // @todo remove v2 prefix.
       '/^\/v2\/case\/([\p{L}\p{N}\-]+)$/u' => [
         'fi' => '/v2/asia',
         'sv' => '/v2/arende',

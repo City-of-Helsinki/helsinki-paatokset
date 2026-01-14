@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Drush\Commands;
 
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
+use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
 use Drupal\paatokset_ahjo_api\Drush\Commands\DTO\MigrateSettings;
 use Drupal\paatokset_ahjo_api\Queue\AhjoMigrationDriver;
 use Drupal\paatokset_ahjo_api\Queue\AhjoQueue;
@@ -28,7 +28,7 @@ class AhjoImportCommands extends DrushCommands {
 
   public function __construct(
     private readonly AhjoMigrationDriver $migrationDriver,
-    private readonly AhjoProxyClient $client,
+    private readonly AhjoProxyClientInterface $client,
     private readonly AhjoQueueManager $queue,
   ) {
     parent::__construct();

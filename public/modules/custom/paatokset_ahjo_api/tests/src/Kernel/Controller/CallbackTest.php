@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Url;
@@ -10,6 +10,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
@@ -28,6 +29,13 @@ class CallbackTest extends AhjoEntityKernelTestBase {
   use UserCreationTrait;
   use NodeCreationTrait;
   use ProphecyTrait;
+
+  /**
+   * {@inheritDoc}
+   */
+  protected static $modules = [
+    'paatokset_ahjo_proxy',
+  ];
 
   /**
    * {@inheritDoc}

@@ -119,7 +119,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): \Generator {
+  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): iterable {
     for ($current = $handledAfter; $current < $handledBefore; $current = $next) {
       $next = $current->add($interval);
       if ($next > $handledBefore) {

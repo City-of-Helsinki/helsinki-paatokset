@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_api\Unit;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Queue;
 
 use Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker;
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -26,50 +24,25 @@ use Prophecy\Prophecy\ObjectProphecy;
  *   (=feature or a bug?), set `field_agenda_items_processed` to false.
  */
 #[Group('paatokset_ahjo_api')]
-class AhjoQueueWorkerTest extends UnitTestCase {
+class AhjoQueueWorkerTest extends KernelTestBase {
 
   use ProphecyTrait;
 
   /**
-   * Gets the SUT.
-   *
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
-   *   The ahjo proxy.
-   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The logger.
-   *
-   * @return \Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker
-   *   Ahjo queue worker SUT.
+   * {@inheritdoc}
    */
-  private function getSut(AhjoProxy $ahjoProxy, ?LoggerChannelInterface $logger = NULL): DummyWorker {
-    if (is_null($logger)) {
-      $logger = $this->prophesize(LoggerChannelInterface::class);
-      $logger = $logger->reveal();
-    }
-
-    $container = new ContainerBuilder();
-    $container->set('paatokset_ahjo_proxy', $ahjoProxy);
-    $container->set('logger.channel.paatokset_ahjo_api', $logger);
-
-    return DummyWorker::create($container, [], 'ahjo_queue_worker_test', []);
-  }
+  protected static $modules = [
+    'paatokset_ahjo_proxy',
+    'file',
+  ];
 
   /**
-   * Mock ahjo proxy service.
+   * {@inheritdoc}
    */
-  private function prophesizeAhjoProxy(int $migrationReturnCode, bool $operational = TRUE): AhjoProxy|ObjectProphecy {
-    $ahjoProxy = $this->prophesize(AhjoProxy::class);
+  protected function setUp(): void {
+    parent::setUp();
 
-    $ahjoProxy
-      ->isOperational()
-      ->willReturn($operational);
-
-    $ahjoProxy
-      ->migrateSingleEntity(Argument::any(), Argument::any())
-      // Successful migration.
-      ->willReturn($migrationReturnCode);
-
-    return $ahjoProxy;
+    $this->installEntitySchema('path_alias');
   }
 
   /**
@@ -77,9 +50,10 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    */
   public function testAhjoProxyNotOperational(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1, FALSE);
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
 
     $this->expectException(SuspendQueueException::class);
-    $this->getSut($ahjoProxy->reveal())->processItem([
+    $this->getSut()->processItem([
       'id' => 'test',
       'content' => (object) [
         'id' => '1',
@@ -97,8 +71,9 @@ class AhjoQueueWorkerTest extends UnitTestCase {
     $ahjoProxy
       ->markMeetingMotionsAsUnprocessed(Argument::exact($entityId))
       ->shouldBeCalled();
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
 
-    $this->getSut($ahjoProxy->reveal())->processItem([
+    $this->getSut()->processItem([
       'id' => 'meetings',
       'content' => (object) [
         'id' => $entityId,
@@ -117,8 +92,9 @@ class AhjoQueueWorkerTest extends UnitTestCase {
     $ahjoProxy
       ->markMeetingMotionsAsUnprocessed(Argument::any())
       ->shouldNotBeCalled();
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
 
-    $this->getSut($ahjoProxy->reveal())->processItem([
+    $this->getSut()->processItem([
       'id' => 'meetings',
       'content' => (object) [
         'id' => '123',
@@ -137,10 +113,11 @@ class AhjoQueueWorkerTest extends UnitTestCase {
    */
   public function testRetryNonExpired(): void {
     $ahjoProxy = $this->prophesizeAhjoProxy(-1);
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
 
     $this->expectException(\Exception::class);
 
-    $sut = $this->getSut($ahjoProxy->reveal());
+    $sut = $this->getSut();
     $sut->processItem([
       'id' => 'meeting',
       // Item is created after the max retry time:
@@ -166,7 +143,9 @@ class AhjoQueueWorkerTest extends UnitTestCase {
       ->addItemToAhjoQueue(Argument::any(), Argument::any(), Argument::any(), Argument::any())
       ->shouldNotBeCalled();
 
-    $sut = $this->getSut($ahjoProxy->reveal());
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
+
+    $sut = $this->getSut();
     $sut->processItem([
       'id' => 'meeting',
       // Item is created before the max retry time -> expired.
@@ -196,7 +175,9 @@ class AhjoQueueWorkerTest extends UnitTestCase {
       ->shouldBeCalled()
       ->willReturn(321);
 
-    $sut = $this->getSut($ahjoProxy->reveal());
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
+
+    $sut = $this->getSut();
     $sut->processItem([
       'id' => 'meeting',
       // Item is created before the max retry time -> expired:
@@ -223,7 +204,9 @@ class AhjoQueueWorkerTest extends UnitTestCase {
       ->shouldBeCalled()
       ->willReturn(321);
 
-    $this->getSut($ahjoProxy->reveal())->processItem([
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
+
+    $this->getSut()->processItem([
       'id' => 'meeting',
       'content' => (object) [
         'id' => '123',
@@ -246,9 +229,11 @@ class AhjoQueueWorkerTest extends UnitTestCase {
       ->addItemToAhjoQueue(Argument::any(), Argument::any(), Argument::any(), Argument::any())
       ->willReturn(NULL);
 
+    $this->container->set('paatokset_ahjo_proxy', $ahjoProxy->reveal());
+
     $this->expectException(\Exception::class);
 
-    $sut = $this->getSut($ahjoProxy->reveal());
+    $sut = $this->getSut();
     $sut->processItem([
       'id' => 'meeting',
       // Item is created before the max retry time -> expired:
@@ -258,6 +243,34 @@ class AhjoQueueWorkerTest extends UnitTestCase {
         'updatetype' => 'Updated',
       ],
     ]);
+  }
+
+  /**
+   * Mock ahjo proxy service.
+   */
+  private function prophesizeAhjoProxy(int $migrationReturnCode, bool $operational = TRUE): AhjoProxy|ObjectProphecy {
+    $ahjoProxy = $this->prophesize(AhjoProxy::class);
+
+    $ahjoProxy
+      ->isOperational()
+      ->willReturn($operational);
+
+    $ahjoProxy
+      ->migrateSingleEntity(Argument::any(), Argument::any())
+      // Successful migration.
+      ->willReturn($migrationReturnCode);
+
+    return $ahjoProxy;
+  }
+
+  /**
+   * Gets the SUT.
+   *
+   * @return \Drupal\ahjo_queue_worker_test\Plugin\QueueWorker\DummyWorker
+   *   Ahjo queue worker SUT.
+   */
+  private function getSut(): DummyWorker {
+    return DummyWorker::create($this->container, [], 'ahjo_queue_worker_test', []);
   }
 
 }

@@ -10,7 +10,7 @@ use Drupal\paatokset_ahjo_api\Controller\CaseController;
 use Symfony\Component\Routing\Route;
 
 /**
- * Provides routes for AhjoCase entities.
+ * Provides routes for ahjo entities.
  */
 final class AhjoRouteProvider extends AdminHtmlRouteProvider {
 
@@ -18,8 +18,10 @@ final class AhjoRouteProvider extends AdminHtmlRouteProvider {
    * {@inheritdoc}
    */
   protected function getCanonicalRoute(EntityTypeInterface $entity_type): ?Route {
+    $route = parent::getCanonicalRoute($entity_type);
+
     // Use our custom controller instead of the default view builder.
-    return parent::getCanonicalRoute($entity_type)
+    return $route
       ?->setDefault('_controller', CaseController::class . '::view');
   }
 

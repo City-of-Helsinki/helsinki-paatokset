@@ -34,6 +34,7 @@ class PolicymakerServiceTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'paatokset_policymakers',
     'field',
     'node',
     'language',

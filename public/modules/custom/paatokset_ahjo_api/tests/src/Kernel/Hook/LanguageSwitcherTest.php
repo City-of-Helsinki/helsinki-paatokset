@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Hook;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -12,6 +12,7 @@ use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Route;
 /**
  * Tests paatokset language switcher.
  *
- * @see \paatokset_ahjo_api_language_switch_links_alter()
+ * @see \Drupal\paatokset_ahjo_api\Hook\Breadcrumbs
  */
 class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
 
@@ -33,7 +34,6 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
     'helfi_language_negotiator_test',
     'language',
     // Päätökset Language switcher relies on hdbt_admin_tool settings
@@ -48,8 +48,6 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    module_set_weight('hdbt_admin_tools', -1000);
 
     $this->setupLanguages();
   }

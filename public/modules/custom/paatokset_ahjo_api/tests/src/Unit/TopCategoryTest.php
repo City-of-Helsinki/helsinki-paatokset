@@ -8,6 +8,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\TopCategory;
 use Drupal\Tests\UnitTestCase;
 
+/**
+ * Tests top category enum.
+ */
 class TopCategoryTest extends UnitTestCase {
 
   /**

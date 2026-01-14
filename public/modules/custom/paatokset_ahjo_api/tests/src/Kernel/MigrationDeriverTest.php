@@ -13,6 +13,14 @@ use Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver;
 class MigrationDeriverTest extends KernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'paatokset_ahjo_proxy',
+    'file',
+  ];
+
+  /**
    * {@inheritDoc}
    */
   public function setUp(): void {

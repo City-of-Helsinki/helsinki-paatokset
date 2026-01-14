@@ -53,14 +53,14 @@ interface AhjoProxyClientInterface {
    *   Date interval for batching requests (e.g., P7D for 7 days).
    *   The date range will be split into chunks of this size.
    *
-   * @return \Generator<\Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase>
-   *   Generator of AhjoCase DTOs. This API returns incomplete cases.
+   * @return iterable<\Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase>
+   *   Iterable of AhjoCase DTOs. This API returns incomplete cases.
    *   Use `::getCase()` to get all data.
    *
    * @throws \Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException
    *   If the API request fails or response is malformed.
    */
-  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): \Generator;
+  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): iterable;
 
   /**
    * Get case by ID.
