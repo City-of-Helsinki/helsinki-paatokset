@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\SettingsFactory;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -15,18 +15,6 @@ use PHPUnit\Framework\Attributes\Group;
  */
 #[Group('paatokset_ahjo_api')]
 class SettingsTest extends KernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'helfi_api_base',
-    'paatokset_ahjo_api',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
-  ];
 
   /**
    * Tests settings.

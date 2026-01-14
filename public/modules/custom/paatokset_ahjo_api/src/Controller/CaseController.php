@@ -149,8 +149,8 @@ final class CaseController extends ControllerBase {
         ->range(0, 1)
         ->execute();
 
-      // Query parameter does not match
-      // decision that belong to this case.
+      // Query parameter does not match the
+      // decision that belongs to this case.
       if (empty($ids)) {
         throw new NotFoundHttpException("Decision with ID '$decisionId' not found.");
       }

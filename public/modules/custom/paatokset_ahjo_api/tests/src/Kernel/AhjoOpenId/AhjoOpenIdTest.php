@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\AhjoOpenId\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -29,13 +29,7 @@ class AhjoOpenIdTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
     'migrate_plus',
-    'paatokset_ahjo_api',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
   ];
 
   /**

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Service;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests case controller.
  */
-class OrganizationPathBuilderTest extends AhjoKernelTestBase {
+class OrganizationPathBuilderTest extends AhjoEntityKernelTestBase {
 
   /**
    * {@inheritDoc}

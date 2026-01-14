@@ -11,7 +11,7 @@ use Drupal\paatokset_ahjo_api\Service\CaseService;
 /**
  * Tests case service.
  */
-class CaseServiceTest extends AhjoKernelTestBase {
+class CaseServiceTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests decision list generation.

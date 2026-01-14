@@ -7,7 +7,6 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoProxy;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
@@ -22,6 +21,7 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -33,18 +33,6 @@ class AhjoProxyClientTest extends KernelTestBase {
 
   use ApiTestTrait;
   use EnvironmentResolverTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'helfi_api_base',
-    'paatokset_ahjo_api',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
-  ];
 
   /**
    * {@inheritDoc}
@@ -205,14 +193,13 @@ class AhjoProxyClientTest extends KernelTestBase {
     ]);
 
     // Test successful response with multiple cases.
-    $handledBefore = new \DateTimeImmutable('2024-03-05');
-    $handledAfter = new \DateTimeImmutable('2022-10-01');
+    $handledBefore = new \DateTimeImmutable('2024-03-03');
+    $handledAfter = new \DateTimeImmutable('2024-01-01');
     $interval = new \DateInterval('P1Y');
     $casesGenerator = $sut->getCases('fi', $handledAfter, $handledBefore, $interval);
 
     $this->assertInstanceOf(\Generator::class, $casesGenerator);
 
-    // Convert generator to array for testing.
     $cases = iterator_to_array($casesGenerator);
     $this->assertCount(5, $cases);
 

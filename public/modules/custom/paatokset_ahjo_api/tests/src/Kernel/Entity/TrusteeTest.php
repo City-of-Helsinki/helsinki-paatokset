@@ -7,12 +7,12 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Initiative;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests trustee bundle class.
  */
-class TrusteeTest extends AhjoKernelTestBase {
+class TrusteeTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests bundle class.

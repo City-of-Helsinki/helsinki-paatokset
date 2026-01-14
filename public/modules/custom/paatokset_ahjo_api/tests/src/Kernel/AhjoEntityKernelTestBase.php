@@ -2,15 +2,13 @@
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
-
 /**
- * Base class for Ahjo api kernel tests.
+ * Base class for Ahjo api kernel tests that use node config.
  *
  * This base class installs Ahjo related nodes and their configurations.
  * For custom entity tests, extend KernelTestBase directly.
  */
-abstract class AhjoKernelTestBase extends KernelTestBase {
+abstract class AhjoEntityKernelTestBase extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -20,14 +18,7 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
     'user',
     'options',
     'node',
-    'helfi_api_base',
-    'paatokset_ahjo_api',
-    'paatokset_ahjo_proxy',
-    'token',
-    'pathauto',
-    'path_alias',
     'paatokset_policymakers',
-    'migrate',
     'file',
     'text',
     'field',
@@ -48,6 +39,8 @@ abstract class AhjoKernelTestBase extends KernelTestBase {
 
     // Install node types & fields.
     $this->installConfig('paatokset_ahjo_api');
+
+    $this->installEntitySchema('ahjo_case');
 
     putenv('AHJO_PROXY_BASE_URL=https://ahjo-api-test');
   }

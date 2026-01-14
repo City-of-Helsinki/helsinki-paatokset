@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Route;
  * Tests breadcrumb hook.
  */
 #[Group('paatokset_ahjo_api')]
-class BreadcrumbTest extends AhjoKernelTestBase {
+class BreadcrumbTest extends AhjoEntityKernelTestBase {
 
   use UserCreationTrait;
   use NodeCreationTrait;

@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Meeting lifecyle part 1: ahjo callback.
  */
 #[Group('paatokset_ahjo_api')]
-class CallbackTest extends AhjoKernelTestBase {
+class CallbackTest extends AhjoEntityKernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;

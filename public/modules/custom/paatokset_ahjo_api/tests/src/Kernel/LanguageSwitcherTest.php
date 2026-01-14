@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Route;
  *
  * @see \paatokset_ahjo_api_language_switch_links_alter()
  */
-class LanguageSwitcherTest extends AhjoKernelTestBase {
+class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
 
   use PropertyTrait;
   use LanguageManagerTrait;

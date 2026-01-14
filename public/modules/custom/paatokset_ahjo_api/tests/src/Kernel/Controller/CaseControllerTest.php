@@ -7,12 +7,12 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests case controller.
  */
-class CaseControllerTest extends AhjoKernelTestBase {
+class CaseControllerTest extends AhjoEntityKernelTestBase {
 
   use ApiTestTrait;
 

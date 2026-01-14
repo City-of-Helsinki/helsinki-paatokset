@@ -5,39 +5,41 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
+use Drupal\node\Entity\Node;
+use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\ConfidentialityInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\paatokset_ahjo_api\Entity\TopCategory;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
- * Tests case bundle class.
+ * Tests ahjo case entity.
  */
-class CaseTest extends AhjoKernelTestBase {
+class AhjoCaseTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests bundle class.
    */
-  public function testBundleClass(): void {
+  public function testEntity(): void {
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('node');
+      ->getStorage('ahjo_case');
 
     $case = $storage->create([
-      'type' => 'case',
+      'id' => '123',
       'status' => '1',
       'langcode' => 'en',
-      'field_diary_number' => '123',
-      'field_no_title_for_case' => '1',
+      'classification_code' => '11 01 05'
     ]);
+    $case->save();
 
     $this->assertInstanceOf(ConfidentialityInterface::class, $case);
-    $this->assertInstanceOf(CaseBundle::class, $case);
+    $this->assertInstanceOf(AhjoCase::class, $case);
 
-    $this->assertEquals('123', $case->getDiaryNumber());
+    $this->assertEquals('123', $case->id());
 
     // Create a bunch of decisions.
-    $middle = $storage->create([
+    $middle = Node::create([
       'type' => 'decision',
       'title' => 'Test decision 2',
       'status' => '1',
@@ -45,7 +47,7 @@ class CaseTest extends AhjoKernelTestBase {
       'field_diary_number' => '123',
       'field_meeting_date' => '2018-01-01',
     ]);
-    $first = $storage->create([
+    $first = Node::create([
       'type' => 'decision',
       'title' => 'Test decision 1',
       'status' => '1',
@@ -53,7 +55,7 @@ class CaseTest extends AhjoKernelTestBase {
       'field_diary_number' => '123',
       'field_meeting_date' => '2017-01-01',
     ]);
-    $last = $storage->create([
+    $last = Node::create([
       'type' => 'decision',
       'title' => 'Test decision 3',
       'status' => '1',
@@ -75,18 +77,12 @@ class CaseTest extends AhjoKernelTestBase {
     $this->assertEquals('Test decision 3', $case->getNextDecision($middle)?->label());
     $this->assertEmpty($case->getNextDecision($last));
 
-    // Field value isn't set.
     $this->assertFalse($case->isConfidential());
-    $case->set('field_publicity_class', '???');
-    // Unknown value.
-    $this->assertFalse($case->isConfidential());
-    // Magic value.
-    $case->set('field_publicity_class', 'Salassa pidettävä');
+    $case->set('security_reasons', 'foo');
     $this->assertTrue($case->isConfidential());
+    $this->assertEquals($case->getConfidentialityReason(), 'foo');
 
-    $this->assertNull($case->getConfidentialityReason());
-    $case->set('field_security_reasons', ['reasons']);
-    $this->assertStringContainsString($case->getConfidentialityReason() ?? '', 'reasons');
+    $this->assertEquals($case->getTopCategory(), TopCategory::EnvironmentalMatters);
   }
 
 }

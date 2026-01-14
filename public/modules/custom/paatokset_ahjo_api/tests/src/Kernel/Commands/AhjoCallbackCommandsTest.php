@@ -6,8 +6,8 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Commands;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Queue\QueueFactory;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\Drush\Commands\AhjoCallbackCommands;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Drush\Style\DrushStyle;
 use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,18 +20,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTra
 class AhjoCallbackCommandsTest extends KernelTestBase {
 
   use PropertyTrait;
-
-  /**
-   * {@inheritDoc}
-   */
-  protected static $modules = [
-    'paatokset_ahjo_api',
-    'helfi_api_base',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
-  ];
 
   /**
    * Tests list commands.
