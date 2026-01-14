@@ -2,6 +2,7 @@
 /* stylelint-disable declaration-property-value-disallowed-list -- @todo UHF-12501 */
 /* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 /* stylelint-disable no-duplicate-selectors -- @todo UHF-12501 */
+// @todo UHF-12379 This whole file can probably be deleted after the refactoring is done. https://helsinkisolutionoffice.atlassian.net/browse/UHF-12379
 .issue__wrapper .ajax-progress-throbber {
   display: none;
 }
