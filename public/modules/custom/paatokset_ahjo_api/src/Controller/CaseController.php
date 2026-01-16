@@ -76,7 +76,7 @@ final class CaseController extends ControllerBase {
       'show_warning' => !empty($navigation['#next_decision']),
       'decision_pdf' => $decision->getDecisionPdf(),
       'all_decisions_link' => $decision->getDecisionMeetingLink()?->toString(),
-      'other_decisions_link' => $policymaker->getDecisionsRoute($langcode)?->toString(),
+      'other_decisions_link' => $policymaker?->getDecisionsRoute($langcode)?->toString(),
     ]);
 
     $response->addCacheableDependency($decision);
@@ -91,7 +91,7 @@ final class CaseController extends ControllerBase {
   /**
    * Renders decision content.
    */
-  private function renderDecisionContent(Decision $decision, Policymaker $policymaker): MarkupInterface|string {
+  private function renderDecisionContent(Decision $decision, Policymaker|NULL $policymaker): MarkupInterface|string {
     $build = [
       '#theme' => 'decision_content',
       '#selectedDecision' => $decision,

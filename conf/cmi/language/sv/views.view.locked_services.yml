@@ -12,8 +12,6 @@ display:
         name_1:
           label: 'Lås ägare'
           separator: ', '
-        timestamp:
-          label: 'Lock Date/Time'
         langcode:
           label: 'Språk för innehåll'
           separator: ', '

@@ -1174,6 +1174,10 @@ function paatokset_ahjo_api_system_breadcrumb_alter(
 
   $links = $breadcrumb->getLinks();
 
+  if (!$links) {
+    return;
+  }
+
   // Case migration sets 'NO TITLE' as a default
   // value, if the case has no title in Ahjo.
   if (end($links)?->getText() === 'NO TITLE') {
