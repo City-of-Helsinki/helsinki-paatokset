@@ -2,15 +2,13 @@
 
 namespace Drupal\ahjo_queue_worker_test\Plugin\QueueWorker;
 
-use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
+use Drupal\Core\Queue\Attribute\QueueWorker;
+use Drupal\paatokset_ahjo_api\Queue\AhjoQueueWorkerBase;
 
 /**
  * Dummy queue plugin.
- *
- * @QueueWorker(
- *    id = "ahjo_queue_worker_test",
- * )
  */
+#[QueueWorker(id: 'ahjo_queue_worker_test')]
 class DummyWorker extends AhjoQueueWorkerBase {
 
   /**

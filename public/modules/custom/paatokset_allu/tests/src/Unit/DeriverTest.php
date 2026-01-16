@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\paatokset_allu\Unit;
 
 use Drupal\paatokset_allu\DocumentType;

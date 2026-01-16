@@ -8,7 +8,9 @@ dependencies:
   - drupal:paatokset_policymakers
   - drupal:paatokset_datapumppu
   - drupal:path_alias
+  - drupal:migrate
   - pathauto:pathauto
   - token:token
+  - json_field:json_field
 'interface translation project': paatokset_ahjo_api
 'interface translation server pattern': modules/custom/paatokset_ahjo_api/translations/%language.po

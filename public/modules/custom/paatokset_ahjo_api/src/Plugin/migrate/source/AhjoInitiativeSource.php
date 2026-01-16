@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\source;
 
+use Drupal\migrate\Attribute\MigrateSource;
 use Drupal\migrate\MigrateException;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
@@ -17,11 +18,8 @@ use Drupal\paatokset_ahjo_api\Entity\Trustee;
  *  source:
  *    plugin: ahjo_api_initiatives
  * @endcode
- *
- * @MigrateSource(
- *   id = "ahjo_api_initiatives"
- * )
  */
+#[MigrateSource(id: 'ahjo_api_initiatives')]
 final class AhjoInitiativeSource extends AhjoSourceBase {
 
   /**

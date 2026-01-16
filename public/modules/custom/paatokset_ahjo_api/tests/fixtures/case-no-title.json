@@ -1,0 +1,60 @@
+{
+  "cases": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2017-000241?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2017-000241",
+      "Title": "",
+      "Created": "2017-01-09T00:00:00.000",
+      "Acquired": "2017-01-09T00:00:00.000",
+      "ClassificationCode": "10 01 01 02",
+      "ClassificationTitle": "Lyhyt- ja pitk\u00e4aikaiset tonttivuokraukset, maanalaisten rakennuspaikkojen vuokraukset",
+      "Status": "Arkistoitu",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": [],
+      "Handlings": [
+        {
+          "links": [
+            {
+              "rel": "self",
+              "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2017-000241\/handlings\/1?apireqlang=fi"
+            }
+          ],
+          "WorkSequenceNumber": 1,
+          "Sector": null,
+          "Status": "Valmistelussa",
+          "Created": "2018-03-15T20:05:19.580",
+          "DateNearestDeadline": "",
+          "SectorID": null
+        }
+      ],
+      "Records": [
+        {
+          "links": [
+            {
+              "rel": "self",
+              "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/records\/%7B570F6495-6A7E-4115-87B0-D25E134159AD%7D"
+            }
+          ],
+          "Title": "Asuntotontin (A, 2 500 k-m\u00b2) lyhytaikaista vuokraamista TA-Asumisoikeus Oy:lle koskevan p\u00e4\u00e4t\u00f6ksen korjaaminen (Mellunkyl\u00e4, Kivikko, tontti 47353\/4)",
+          "AttachmentNumber": null,
+          "PublicityClass": "Julkinen",
+          "SecurityReasons": null,
+          "VersionSeriesId": "{99E0E414-46BA-CD11-90A0-59920F700002}",
+          "NativeId": "{570F6495-6A7E-4115-87B0-D25E134159AD}",
+          "Type": "viranhaltijan p\u00e4\u00e4t\u00f6s",
+          "FileURI": "https:\/\/ahjojulkaisu.hel.fi\/99E0E414-46BA-CD11-90A0-59920F700002.pdf",
+          "Language": "fi",
+          "PersonalData": "Ei sis\u00e4ll\u00e4 henkil\u00f6tietoja",
+          "Issued": ""
+        }
+      ],
+      "CaseID": "HEL-2017-000241"
+    }
+  ]
+}

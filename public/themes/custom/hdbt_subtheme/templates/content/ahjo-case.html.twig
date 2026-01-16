@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Theme override to display an ahjo case.
+ *
+ * todo: This template should be broken into smaller pieces.
+ * What we are really displaying here is a decision. Case only
+ * offers some additional metadata to a decision. Having too much
+ * rendering logic here makes it harder to display decisions that
+ * don't have case, while cases themselves offer nothing useful
+ * without a decision.
+ */
+#}
+
+{%
+  set classes = [
+  'issue',
+  not case.isPublished() ? 'node--unpublished',
+  first_paragraph_grey ? 'has-first-gray-bg-block'
+]
+%}
+
+{% set selectedDecision = decision %}
+
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% include '@hdbt_subtheme/components/case-header.html.twig' with { 'case': case } only %}
+
+  <div class="issue__wrapper">
+    <div class="ajax-progress-throbber"></div>
+
+    <div class="issue__container issue__container--content">
+      <div class="issue__left-column__container">
+        <div class="issue__decision-navigation__wrapper">
+          {% include '@hdbt_subtheme/components/decision-navigation.html.twig' with { case: case, decision: selectedDecision } %}
+        </div>
+
+        {% include '@hdbt_subtheme/components/case-navigation.html.twig' %}
+
+        <div class="issue__ajax-container">
+          {% include '@hdbt_subtheme/components/decision-content.html.twig' with { selectedDecision } %}
+        </div>
+      </div>
+
+      <div class="issue-right-column__container">
+        {% include '@hdbt_subtheme/components/decision-pdf.html.twig' with { decision_pdf: selectedDecision.getDecisionPdf() } only %}
+
+        {% include '@hdbt_subtheme/components/case-attachments.html.twig' with { attachments: selectedDecision.getAttachments() } only %}
+      </div>
+
+    </div>
+  </div>
+
+</article>

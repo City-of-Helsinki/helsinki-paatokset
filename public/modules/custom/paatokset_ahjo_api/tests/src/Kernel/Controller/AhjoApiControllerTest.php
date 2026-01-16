@@ -7,27 +7,17 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests case controller.
  */
-class AhjoApiControllerTest extends AhjoKernelTestBase {
+class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'system',
-    'user',
-    'helfi_api_base',
-    'paatokset_ahjo_api',
-  ];
 
   /**
    * {@inheritDoc}

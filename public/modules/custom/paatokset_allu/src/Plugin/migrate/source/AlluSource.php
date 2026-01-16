@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace Drupal\paatokset_allu\Plugin\migrate\source;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\migrate\Attribute\MigrateSource;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\Client\Client;
 use Drupal\paatokset_allu\DecisionType;
 use Drupal\paatokset_allu\DocumentType;
+use Drupal\paatokset_allu\Plugin\Deriver\AlluSourcePlugin;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Source plugin for retrieving data from Allu API.
- *
- * @MigrateSource(
- *   id = "paatokset_allu",
- *   deriver = "Drupal\paatokset_allu\Plugin\Deriver\AlluSourcePlugin",
- * )
  */
+#[MigrateSource('paatokset_allu', deriver: AlluSourcePlugin::class)]
 final class AlluSource extends SourcePluginBase implements ContainerFactoryPluginInterface {
 
   /**

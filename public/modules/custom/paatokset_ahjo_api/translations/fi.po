@@ -54,3 +54,62 @@ msgctxt "Organization color"
 msgid "Coat of arms"
 msgstr "Vaakuna"
 
+msgctxt "Ahjo cases"
+msgid "Administrative matters"
+msgstr "Hallintoasiat"
+
+msgctxt "Ahjo cases"
+msgid "Personnel matters"
+msgstr "Henkilöstöasiat"
+
+msgctxt "Ahjo cases"
+msgid "Financial matters, taxation and property management"
+msgstr "Talousasiat, verotus ja omaisuuden hallinta"
+
+msgctxt "Ahjo cases"
+msgid "Legislation and application of legislation"
+msgstr "Lainsäädäntö ja lainsäädännön soveltaminen"
+
+msgctxt "Ahjo cases"
+msgid "International activities and immigration policy"
+msgstr "Kansainvälinen toiminta ja maahanmuuttopolitiikka"
+
+msgctxt "Ahjo cases"
+msgid "Social services"
+msgstr "Sosiaalitoimi"
+
+msgctxt "Ahjo cases"
+msgid "Healthcare"
+msgstr "Terveydenhuolto"
+
+msgctxt "Ahjo cases"
+msgid "Information management"
+msgstr "Tiedon hallinta"
+
+msgctxt "Ahjo cases"
+msgid "Traffic"
+msgstr "Liikenne"
+
+msgctxt "Ahjo cases"
+msgid "Security and public order"
+msgstr "Turvallisuus ja yleinen järjestys"
+
+msgctxt "Ahjo cases"
+msgid "Land use, construction and housing"
+msgstr "Maankäyttö, rakentaminen ja asuminen"
+
+msgctxt "Ahjo cases"
+msgid "Environmental matters"
+msgstr "Ympäristöasia"
+
+msgctxt "Ahjo cases"
+msgid "Education and culture"
+msgstr "Opetus- ja sivistystoimi"
+
+msgctxt "Ahjo cases"
+msgid "Research and development"
+msgstr "Tutkimus- ja kehittämistoiminta"
+
+msgctxt "Ahjo cases"
+msgid "Business and employment services"
+msgstr "Elinkeino- ja työvoimapalvelut"

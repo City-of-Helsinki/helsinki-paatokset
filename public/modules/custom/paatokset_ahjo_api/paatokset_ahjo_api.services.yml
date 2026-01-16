@@ -56,7 +56,16 @@ services:
     class: Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId
   Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId: '@paatokset_ahjo_openid'
 
+  Drupal\paatokset_ahjo_api\Queue\AhjoQueueManager: ~
+
+  Drupal\paatokset_ahjo_api\Queue\AhjoMigrationDriver: ~
+
   Drupal\paatokset_ahjo_api\Policymakers\PathProcessor:
+    tags:
+      - { name: path_processor_inbound, priority: 200 }
+      - { name: path_processor_outbound }
+
+  Drupal\paatokset_ahjo_api\Entity\Routing\AhjoPathProcessor:
     tags:
       - { name: path_processor_inbound, priority: 200 }
       - { name: path_processor_outbound }

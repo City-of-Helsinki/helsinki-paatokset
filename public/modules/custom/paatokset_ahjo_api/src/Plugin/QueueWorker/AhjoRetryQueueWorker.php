@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\QueueWorker;
 
-use Drupal\paatokset_ahjo_api\AhjoQueueWorkerBase;
+use Drupal\Core\Queue\Attribute\QueueWorker;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paatokset_ahjo_api\Queue\AhjoQueueWorkerBase;
 
 /**
  * Processes cron queue.
- *
- * @QueueWorker(
- *   id = "ahjo_api_retry_queue",
- *   title = @Translation("Ahjo Retry Queue Worker"),
- * )
  */
+#[QueueWorker(id: 'ahjo_api_retry_queue', title: new TranslatableMarkup('Ahjo Retry Queue Worker'))]
 class AhjoRetryQueueWorker extends AhjoQueueWorkerBase {
 
   /**

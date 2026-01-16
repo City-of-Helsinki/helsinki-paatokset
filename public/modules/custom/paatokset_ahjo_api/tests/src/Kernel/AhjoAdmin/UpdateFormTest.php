@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\Kernel\AhjoAdmin;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoAdmin;
 
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -11,13 +11,13 @@ use Drupal\paatokset_ahjo_api\AhjoAdmin\UpdateForm;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Tests update form.
  */
-class UpdateFormTest extends AhjoKernelTestBase {
+class UpdateFormTest extends AhjoEntityKernelTestBase {
 
   use UserCreationTrait;
   use ApiTestTrait;

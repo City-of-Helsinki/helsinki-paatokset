@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_proxy\Drush\Commands;
 
+use Consolidation\AnnotatedCommand\Attributes\Command;
+use Consolidation\AnnotatedCommand\Attributes\Option;
+use Consolidation\AnnotatedCommand\Attributes\Usage;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -33,31 +36,19 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   protected NodeStorageInterface $nodeStorage;
 
-  /**
-   * Constructor for Ahjo Aggregator Commands.
-   *
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
-   *   Ahjo Proxy service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity type manager.
-   * @param \Drupal\file\FileRepositoryInterface $fileRepository
-   *   File repository.
-   * @param \Drupal\Core\Database\Connection $database
-   *   Database connection.
-   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
-   *   Module extension list.
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoBatchBuilder $ahjoBatchBuilder
-   *   Batch builder for meetings.
-   */
   public function __construct(
-    private AhjoProxy $ahjoProxy,
-    private EntityTypeManagerInterface $entityTypeManager,
-    private FileRepositoryInterface $fileRepository,
-    private Connection $database,
-    private ModuleExtensionList $moduleExtensionList,
-    private AhjoBatchBuilder $ahjoBatchBuilder,
+    private readonly AhjoProxy $ahjoProxy,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly FileRepositoryInterface $fileRepository,
+    private readonly Connection $database,
+    private readonly ModuleExtensionList $moduleExtensionList,
+    private readonly AhjoBatchBuilder $ahjoBatchBuilder,
   ) {
-    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    parent::__construct();
+
+    $storage = $this->entityTypeManager->getStorage('node');
+    assert($storage instanceof NodeStorageInterface);
+    $this->nodeStorage = $storage;
   }
 
   /**
@@ -67,35 +58,19 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Endpoint to aggregate data from.
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:aggregate
-   *
-   * @option dataset
-   *   Which dataset to get (latest, all, etc)
-   * @option start
-   *   Custom timestamp for fetching data.
-   * @option end
-   *   Custom timestamp for fetching data.
-   * @option retry
-   *   Filename to retry from.
-   * @option append
-   *   File to append to. Useful when retrying.
-   * @option filename
-   *   Filename to use instead of default. Can be used to split/batch results.
-   * @option cancelledonly
-   *   Adds a parameter to only fetch cancelled meetings.
-   * @option decisionmaker_id
-   *   Filter results by specific decision ID.
-   * @option queue
-   *   Add items to aggregation queue to be processed later via cron.
-   *
-   * @usage ahjo-proxy:aggregate meetings --dataset=latest
-   *   Stores latest meetings into meetings_latest.json
-   * @usage ahjo-proxy:aggregate meetings --dataset=all --retry=failed_meetings_all.json --append=meetings_all.json
-   *   Retries failed aggregation based on stored file.
-   *
-   * @aliases ap:agg
    */
+  #[Command(name: 'ahjo-proxy:aggregate', aliases: ['ap:agg'])]
+  #[Usage(name: 'ahjo-proxy:aggregate meetings --dataset=latest', description: 'Stores latest meetings into meetings_latest.json')]
+  #[Usage(name: 'ahjo-proxy:aggregate meetings --dataset=all --retry=failed_meetings_all.json --append=meetings_all.json', description: 'Retries failed aggregation based on stored file.')]
+  #[Option('dataset', 'Which dataset to get (latest, all, etc)')]
+  #[Option('start', 'Custom timestamp for fetching data.')]
+  #[Option('end', 'Custom timestamp for fetching data.')]
+  #[Option('retry', 'Filename to retry from.')]
+  #[Option('append', 'File to append to. Useful when retrying.')]
+  #[Option('filename', 'Filename to use instead of default. Can be used to split/batch results.')]
+  #[Option('cancelledonly', 'Adds a parameter to only fetch cancelled meetings.')]
+  #[Option('decisionmaker_id', 'Filter results by specific decision ID.')]
+  #[Option('queue', 'Add items to aggregation queue to be processed later via cron.')]
   public function aggregate(
     string $endpoint,
     array $options = [
@@ -117,23 +92,11 @@ class AhjoAggregatorCommands extends DrushCommands {
       'cancelled',
     ];
 
-    if (in_array($options['dataset'], $allowed_datasets)) {
-      $dataset = $options['dataset'];
-    }
-    else {
-      $dataset = 'latest';
-    }
-
-    if (!empty($options['queue'])) {
-      $add_to_queue = TRUE;
-    }
-    else {
-      $add_to_queue = FALSE;
-    }
+    $dataset = in_array($options['dataset'], $allowed_datasets) ? $options['dataset'] : 'latest';
+    $add_to_queue = !empty($options['queue']);
 
     $options = $this->setDefaultOptions($endpoint, $dataset, $options);
 
-    $data = [];
     $list_key = $this->getListKey($endpoint);
 
     $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $options['query_string']);
@@ -150,12 +113,10 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->logger->info('Combining with file: ' . $options['append']);
     }
 
+    $filename = NULL;
     if (!empty($options['filename'])) {
       $filename = $options['filename'];
       $this->logger->info('Using filename: ' . $filename);
-    }
-    else {
-      $filename = NULL;
     }
 
     if (empty($data[$list_key])) {
@@ -166,19 +127,11 @@ class AhjoAggregatorCommands extends DrushCommands {
     $this->logger->info('Processing ' . count($data[$list_key]) . ' results.');
 
     // Get property key for ID value based on endpoint.
-    switch ($endpoint) {
-      case 'cases':
-        $id_key = 'CaseID';
-        break;
-
-      case 'meetings':
-        $id_key = 'MeetingID';
-        break;
-
-      default:
-        $id_key = 'NativeId';
-        break;
-    }
+    $id_key = match ($endpoint) {
+      'cases' => 'CaseID',
+      'meetings' => 'MeetingID',
+      default => 'NativeId',
+    };
 
     $operations = [];
     $count = 0;
@@ -210,7 +163,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
 
       $operations[] = [
-        '\Drupal\paatokset_ahjo_proxy\AhjoProxy::processBatchItem',
+        AhjoProxy::class . '::processBatchItem',
         [$data],
       ];
     }
@@ -225,7 +178,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       batch_set([
         'title' => 'Aggregating: ' . $endpoint . ' with dataset:' . $dataset,
         'operations' => $operations,
-        'finished' => '\Drupal\paatokset_ahjo_proxy\AhjoProxy::finishBatch',
+        'finished' => AhjoProxy::class . '::finishBatch',
       ]);
 
       drush_backend_batch_process();
@@ -239,25 +192,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Endpoint to get data from.
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:get
-   *
-   * @option changedsince
-   *   Custom timestamp for fetching data.
-   * @option changedbefore
-   *   Custom timestamp for fetching data.
-   * @option filename
-   *   Filename to use instead of default. Can be used to split/batch results.
-   * @option langcode
-   *   Langcode to get data for.
-   *
-   * @usage ahjo-proxy:get decisionmakers
-   *   Stores all decisionmakers into decisionmakers.json
-   * @usage ahjo-proxy:get decisionmakers --start=021100VH1 --filename=decisionmakers_021100VH1.json
-   *   Stores decisionmakers under the 021100VH1 organisation.
-   *
-   * @aliases ap:get
    */
+  #[Command(name: 'ahjo-proxy:get', aliases: ['ap:get'])]
+  #[Usage(name: 'ahjo-proxy:get', description: 'Stores all decisionmakers into decisionmakers.json.')]
+  #[Usage(name: 'ahjo-proxy:get decisionmakers --start=021100VH1 --filename=decisionmakers_021100VH1.json', description: 'Stores decisionmakers under the 021100VH1 organisation.')]
+  #[Option('changedsince', 'Custom timestamp for fetching data.')]
+  #[Option('changedbefore', 'Custom timestamp for fetching data.')]
+  #[Option('filename', 'Filename to use instead of default. Can be used to split/batch results.')]
+  #[Option('langcode', 'Langcode to get data for.')]
   public function get(
     string $endpoint,
     array $options = [
@@ -275,12 +217,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     $data = [];
     $list_key = $this->getListKey($endpoint);
 
-    if (!empty($options['dataset'])) {
-      $dataset = $options['dataset'];
-    }
-    else {
-      $dataset = 'all';
-    }
+    $dataset = $options['dataset'] ?? 'all';
 
     if ($dataset === 'latest') {
       $week_ago = strtotime("-1 week");
@@ -339,14 +276,9 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * Aggregates position of trust data from Ahjo API.
-   *
-   * @command ahjo-proxy:get-positionsoftrust
-   *
-   * @usage ahjo-proxy:get-positionsoftrust
-   *   Stores all positions of trust into a file.
-   *
-   * @aliases ap:pt
    */
+  #[Command(name: 'ahjo-proxy:get-positionsoftrust', aliases: ['ap:pt'])]
+  #[Usage(name: 'ahjo-proxy:get-positionsoftrust', description: 'Stores all positions of trust into a file.')]
   public function positionsoftrust(): void {
     $this->logger->info('Fetching decision making organizations...');
     $org_data = $this->ahjoProxy->getData('organization/decisionmakingorganizations', NULL);
@@ -424,14 +356,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Filename to get initial data from.
    * @param string $langcode
    *   Langcode to get data for.
-   *
-   * @command ahjo-proxy:get-trustees
-   *
-   * @usage ahjo-proxy:get-trustees
-   *   Stores all positions of trust into a file.
-   *
-   * @aliases ap:trust
    */
+  #[Command(name: 'ahjo-proxy:get-trustees', aliases: ['ap:trust'])]
+  #[Usage(name: 'ahjo-proxy:get-trustees', description: 'Stores all positions of trust into a file.')]
   public function trustees(string $filename = 'positionsoftrust.json', string $langcode = 'fi'): void {
     $this->logger->info('Fetching trustees organizations...');
     $data = $this->ahjoProxy->getStatic($filename);
@@ -478,11 +405,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * Checks decisionmaker status and removes non-existing ones.
-   *
-   * @command ahjo-proxy:check-dm-status
-   *
-   * @aliases ap:cdms
    */
+  #[Command(name: 'ahjo-proxy:check-dm-status', aliases: ['ap:cdms'])]
   public function checkDecisionMakerStatus() {
     $this->logger->info('Checking organization and office holder status.');
 
@@ -551,28 +475,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:update-decisions
-   *
-   * @option update
-   *   Update all decisions, not just ones with missing records.
-   * @option logic
-   *   Logic on how to check which decisions to update. Irrelevant if
-   *   update flag is set.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option start
-   *   Filter query start by decision date (field_meeting_date).
-   * @option limit
-   *   Filter query end by decision date (field_meeting_date).
-   *
-   * @usage ahjo-proxy:update-decisions
-   *   Fetches data for decisions where the record field is null.
-   * @usage ahjo-proxy:update-decisions --update
-   *   Fetches and updates data for all decisions.
-   *
-   * @aliases ap:ud
    */
+  #[Command(name: 'ahjo-proxy:update-decisions', aliases: ['ap:ud'])]
+  #[Usage(name: 'ahjo-proxy:update-decisions', description: 'Fetches data for decisions where the record field is null.')]
+  #[Usage(name: 'ahjo-proxy:update-decisions --update', description: 'Fetches and updates data for all decisions.')]
+  #[Option('update', 'Update all decisions, not just ones with missing records.')]
+  #[Option('logic', 'Logic on how to check which decisions to update. Irrelevant if update flag is set.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('start', 'Filter query start by decision date (field_meeting_date).')]
+  #[Option('end', 'Filter query end by decision date (field_meeting_date).')]
   public function updateDecisions(
     array $options = [
       'update' => NULL,
@@ -582,36 +493,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       'end' => NULL,
     ],
   ): void {
-
     $update_all = !empty($options['update']);
-
-    if (!empty($options['logic'])) {
-      $logic = $options['logic'];
-    }
-    else {
-      $logic = 'record';
-    }
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    if (!empty($options['start'])) {
-      $start = $options['start'];
-    }
-    else {
-      $start = NULL;
-    }
-
-    if (!empty($options['end'])) {
-      $end = $options['end'];
-    }
-    else {
-      $end = NULL;
-    }
+    $logic = $options['logic'] ?? 'record';
 
     if ($update_all) {
       $this->logger->info('Updating all nodes...');
@@ -620,20 +503,19 @@ class AhjoAggregatorCommands extends DrushCommands {
       $this->logger->info('Only updating nodes based on missing ' . $logic . ' data.');
     }
 
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
-      ->accessCheck(TRUE)
+      ->accessCheck(FALSE)
       ->condition('type', 'decision')
       ->condition('status', 1)
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
-    if ($start) {
-      $query->condition('field_meeting_date', $start, '>');
+    if (!empty(['start'])) {
+      $query->condition('field_meeting_date', $options['start'], '>');
     }
-    if ($end) {
-      $query->condition('field_meeting_date', $end, '<');
+
+    if (!empty($options['end'])) {
+      $query->condition('field_meeting_date', $options['end'], '<');
     }
 
     if (!$update_all) {
@@ -701,8 +583,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       }
     }
 
-    if ($limit) {
-      $query->range('0', $limit);
+    if (!empty($options['limit'])) {
+      $this->logger->info('Limiting nodes to: ' . $options['limit']);
+      $query->range('0', (int) $options['limit']);
     }
 
     $ids = $query->execute();
@@ -779,19 +662,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:update-cases
-   *
-   * @option logic
-   *   Logic on how to check which cases to update.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @usage ahjo-proxy:update-cases
-   *   Fetches data for decisions where the publicity class field is null.
-   *
-   * @aliases ap:uc
    */
+  #[Command(name: 'ahjo-proxy:update-cases', aliases: ['ap:uc'])]
+  #[Usage(name: 'ahjo-proxy:update-cases', description: 'Fetches data for decisions where the publicity class field is null.')]
+  #[Option('logic', 'Logic on how to check which cases to update.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function updateCases(
     array $options = [
       'logic' => 'publicity',
@@ -799,24 +674,10 @@ class AhjoAggregatorCommands extends DrushCommands {
       'limit' => NULL,
     ],
   ): void {
-
-    if (!empty($options['logic'])) {
-      $logic = $options['logic'];
-    }
-    else {
-      $logic = 'publicity';
-    }
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
+    $logic = $options['logic'] ?? 'publicity';
 
     $this->logger->info('Updating nodes based on missing ' . $logic . ' data.');
     $this->logger->info('Fetching data from API...');
-    $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -838,7 +699,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query->condition('field_publicity_class', 'Julkinen', '<>');
     }
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -899,18 +762,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:reset-decision-records
-   *
-   * @option start
-   *   Date of where to start query, based on decision date field.
-   * @option end
-   *   Date of where to end query, based on decision date field.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:rdr
    */
+  #[Command(name: 'ahjo-proxy:reset-decision-records', aliases: ['ap:rdr'])]
+  #[Option('start', 'Date of where to start query, based on decision date field.')]
+  #[Option('end', 'Date of where to end query, based on decision date field.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function resetDecisionRecords(
     array $options = [
       'start' => NULL,
@@ -918,29 +774,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    if (!empty($options['start'])) {
-      $start = $options['start'];
-    }
-    else {
-      $start = NULL;
-    }
-
-    if (!empty($options['end'])) {
-      $end = $options['end'];
-    }
-    else {
-      $end = NULL;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -950,14 +783,19 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
+    $start = $options['start'] ?? NULL;
     if ($start) {
       $query->condition('field_meeting_date', $start, '>');
     }
+
+    $end = $options['end'] ?? NULL;
     if ($end) {
       $query->condition('field_meeting_date', $end, '<');
     }
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -977,21 +815,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-disallowed-decisions
-   *
-   * @option org
-   *   Organisation ID to check for.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option dry
-   *   Dry run, does not actually unpublish nodes.
-   *
-   * @usage ahjo-proxy:check-disallowed-decisions
-   *   Unpublishes disallowed decisions.
-   *
-   * @aliases ap:cdd
    */
+  #[Command(name: 'ahjo-proxy:check-disallowed-decisions', aliases: ['ap:cdd'])]
+  #[Usage(name: 'ahjo-proxy:check-disallowed-decisions', description: 'Unpublishes disallowed decisions.')]
+  #[Option('org', 'Organisation ID to check for.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('dry', 'Dry run, does not actually unpublish nodes.')]
   public function checkDisallowedDecisions(
     array $options = [
       'org' => NULL,
@@ -999,29 +828,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       'limit' => NULL,
     ],
   ): void {
-
-    if (!empty($options['dry'])) {
-      $do_unpublish = FALSE;
-    }
-    else {
-      $do_unpublish = TRUE;
-    }
-
-    if (!empty($options['org'])) {
-      $org = (string) $options['org'];
-    }
-    else {
-      $org = FALSE;
-    }
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
+    $do_unpublish = empty($options['dry']);
+    $org = !empty($options['org']) ? (string) $options['org'] : FALSE;
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1045,7 +853,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query->condition($orgroup);
     }
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1079,11 +889,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * Get list of org IDs with disallowed decisions.
-   *
-   * @command ahjo-proxy:get-flagged-ids
-   *
-   * @aliases ap:gfi
    */
+  #[Command(name: 'ahjo-proxy:get-flagged-ids', aliases: ['ap:gfi'])]
   public function getFlaggedOrgIds(): void {
     /** @var \Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager $dd_manager */
     $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
@@ -1098,28 +905,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:update-decision-attachments
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:uda
    */
+  #[Command(name: 'ahjo-proxy-update-decision-attachments', aliases: ['ap:uda'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function updateDecisionAttachments(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $this->logger->info('Fetching data from API...');
-    $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1134,7 +928,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $or->condition('field_attachments_checked', 0);
     $query->condition($or);
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1192,28 +988,16 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:update-decision-dates
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:udd
    */
+  #[Command(name: 'ahjo-proxy:update-decision-dates', aliases: ['ap:udd'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function updateDecisionDates(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
 
     $this->logger->info('Fetching data from API...');
-    $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1227,7 +1011,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $or->condition('field_dates_checked', 0);
     $query->condition($or);
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1285,28 +1071,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-decision-status
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:cds
    */
+  #[Command(name: 'ahjo-proxy:check-decision-status', aliases: ['ap:cds'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function checkDecisionStatus(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $this->logger->info('Fetching data from API...');
-    $this->logger->info('Limiting nodes to: ' . $limit);
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1321,7 +1094,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $or->condition('field_status_checked', 0);
     $query->condition($or);
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1379,34 +1154,17 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:parse-decision-content
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option logic
-   *   Determines if motion or content fields are checked.
-   *
-   * @usage ahjo-proxy:parse-decision-content --limit=50
-   *   Parses fields for the first 50 decisions where content is empty.
-   *
-   * @aliases ap:dc
    */
+  #[Command(name: 'ahjo-proxy:parse-decision-content', aliases: ['ap:dc'])]
+  #[Usage(name: 'ahjo-proxy:parse-decision-content --limit=50', description: 'Parses fields for the first 50 decisions where content is empty.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('logic', 'Determines if motion or content fields are checked.')]
   public function parseDecisionContents(
     array $options = [
       'logic' => 'content',
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -1428,7 +1186,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       $query->condition('field_decision_content', '', '<>');
     }
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1469,31 +1229,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:set-decision-flag
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @usage ahjo-proxy:set-decision-flag --limit=50
-   *   Sets decision flag for the first 50 decisions where it wasn't before.
-   *
-   * @aliases ap:sdf
    */
+  #[Command(name: 'ahjo-proxy:set-decision-flag', aliases: ['ap:sdf'])]
+  #[Usage(name: 'ahjo-proxy:set-decision-flag --limit=50', description: 'Sets decision flag for the first 50 decisions where it wasn\'t before.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function setDecisionFlag(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -1501,7 +1245,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->notExists('field_is_decision')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1542,31 +1288,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:remove-policymaker-fields
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @usage ahjo-proxy:remove-policymaker-fields --limit=50
-   *   Remove description fields for first 50 nodes.
-   *
-   * @aliases ap:rpf
    */
+  #[Command(name: 'ahjo-proxy:remove-policymaker-fields', aliases: ['ap:rpf'])]
+  #[Usage(name: 'ahjo-proxy:remove-policymaker-fields --limit=50', description: 'Remove description fields for first 50 nodes.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function removePolicymakerDescriptionFields(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'policymaker')
@@ -1579,7 +1309,9 @@ class AhjoAggregatorCommands extends DrushCommands {
     $or->condition('field_decisions_description', '', '<>');
     $query->condition($or);
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1620,31 +1352,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:remove-decision-uniqueids
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @usage ahjo-proxy:remove-policymaker-fields --limit=50
-   *   Remove unique id fields for first 50 nodes.
-   *
-   * @aliases ap:ruid
    */
+  #[Command(name: 'ahjo-proxy:remove-decision-uniqueids', aliases: ['ap:ruid'])]
+  #[Usage(name: 'ahjo-proxy:remove-policymaker-fields --limit=50', description: 'Remove unique id fields for first 50 nodes.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function removeDecisionUniqueIdFields(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -1652,7 +1368,9 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('field_unique_id', '', '<>')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1690,11 +1408,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * Resets all meetings so their motions can be processed again.
-   *
-   * @command ahjo-proxy:reset-meeting-motion-check
-   *
-   * @aliases ap:rm
    */
+  #[Command(name: 'ahjo-proxy:reset-meeting-motion-check', aliases: ['ap:rm'])]
   public function resetMeetingsMotionProcessing(): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1721,11 +1436,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $id
    *   Meeting ID.
-   *
-   * @command ahjo-proxy:reset-single-meeting-motion-check
-   *
-   * @aliases ap:rsm
    */
+  #[Command(name: 'ahjo-proxy:reset-single-meeting-motion-check', aliases: ['ap:rsm'])]
   public function resetSingleMeetingsMotionProcessing(string $id): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -1751,30 +1463,16 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-outdated-documents
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option motions
-   *   Check motions instead of decisions.
-   *
-   * @aliases ap:cod
    */
+  #[COmmand(name: 'ahjo-proxy:check-outdated-documents', aliases: ['ap:cod'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('motions', 'Check motions instead of decisions.')]
   public function checkOutdatedDocuments(
     array $options = [
       'motions' => FALSE,
       'limit' => NULL,
     ],
   ): void {
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -1783,6 +1481,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->notExists('field_outdated_document')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
       $query->range(0, $limit);
     }
@@ -1808,28 +1507,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-motion-document-format
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:cmdf
    */
+  #[Command(name: 'ahjo-proxy:check-motion-document-format', aliases: ['ap:cmdf'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function checkMotionDocuments(
     array $options = [
       'motions' => FALSE,
       'limit' => NULL,
     ],
   ): void {
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -1839,6 +1525,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
       $query->range(0, $limit);
     }
@@ -1862,18 +1549,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-meeting-records
-   *
-   * @option start
-   *   Date of where to start query, based on meeting date field.
-   * @option end
-   *   Date of where to end query, based on meeting date field.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:cmr
    */
+  #[Command(name: 'ahjo-proxy:check-meeting-records', aliases: ['ap:cmr'])]
+  #[Option('start', 'Date of where to start query, based on meeting date field.')]
+  #[Option('end', 'Date of where to end query, based on meeting date field.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes')]
   public function checkMeetingRecords(
     array $options = [
       'start' => NULL,
@@ -1881,29 +1561,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
-    if (!empty($options['start'])) {
-      $start = $options['start'];
-    }
-    else {
-      $start = NULL;
-    }
-
-    if (!empty($options['end'])) {
-      $end = $options['end'];
-    }
-    else {
-      $end = NULL;
-    }
-
-    $this->logger->info('Limiting nodes to: ' . $limit);
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
@@ -1912,14 +1569,19 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
+    $start = $options['start'] ?? NULL;
     if ($start) {
       $query->condition('field_meeting_date', $start, '>');
     }
+
+    $end = $options['end'] ?? NULL;
     if ($end) {
       $query->condition('field_meeting_date', $end, '<');
     }
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
+      $this->logger->info('Limiting nodes to: ' . $limit);
       $query->range('0', $limit);
     }
 
@@ -1983,27 +1645,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-motion-processing
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:cmp
    */
+  #[Command(name: 'ahjo-proxy:check-motion-processing', aliases: ['ap:cmp'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function checkMeetingsMotionProcessing(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
@@ -2014,6 +1663,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->condition('field_meeting_agenda', '', '<>')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
       $query->range(0, $limit);
     }
@@ -2037,20 +1687,12 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-decision-processing
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option queue
-   *   Queue decisions to be imported automatically.
-   * @option start
-   *   Meeting date to start queryi.
-   * @option limit
-   *   Meeting date to end query.
-   *
-   * @aliases ap:cdp
    */
+  #[Command(name: 'ahjo-proxy:check-decision-processing', aliases: ['ap:cdp'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('queue', 'Queue decisions to be imported automatically.')]
+  #[Option('start', 'Meetings date to start query.')]
+  #[Option('start', 'Meetings date to end query.')]
   public function checkMeetingsDecisionProcessing(
     array $options = [
       'queue' => FALSE,
@@ -2059,30 +1701,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       'end' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-    if (!empty($options['start'])) {
-      $start = $options['start'];
-    }
-    else {
-      $start = NULL;
-    }
-    if (!empty($options['end'])) {
-      $end = $options['end'];
-    }
-    else {
-      $end = NULL;
-    }
-    if (!empty($options['queue'])) {
-      $queue = TRUE;
-    }
-    else {
-      $queue = FALSE;
-    }
+    $queue = !empty($options['queue']);
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2093,12 +1712,17 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
+    $limit = (int) ($options['limit'] ?? 0);
     if ($limit) {
       $query->range(0, $limit);
     }
+
+    $start = $options['start'] ?? NULL;
     if ($start) {
       $query->condition('field_meeting_date', $start, '>');
     }
+
+    $end = $options['end'] ?? NULL;
     if ($end) {
       $query->condition('field_meeting_date', $end, '<');
     }
@@ -2145,18 +1769,11 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:check-decision-attachments
-   *
-   * @option motions
-   *   Check motions instead of decisions.
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   * @option offset
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:cda
    */
+  #[Command(name: 'ahjo-proxy:check-decision-attachments', aliases: ['ap:cda'])]
+  #[Option('motions', 'Check motions instead of decisions.')]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
+  #[Option('offset', 'Offset processing to certain amount of nodes.')]
   public function checkDecisionAttachments(
     array $options = [
       'motions' => NULL,
@@ -2164,25 +1781,6 @@ class AhjoAggregatorCommands extends DrushCommands {
       'offset' => NULL,
     ],
   ): void {
-    if (!empty($options['motions'])) {
-      $motions = TRUE;
-    }
-    else {
-      $motions = FALSE;
-    }
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-    if (!empty($options['offset'])) {
-      $offset = (int) $options['offset'];
-    }
-    else {
-      $offset = 0;
-    }
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'decision')
@@ -2190,13 +1788,10 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
-    if ($motions) {
-      $query->condition('field_is_decision', 0);
-    }
-    else {
-      $query->condition('field_is_decision', 1);
-    }
+    $query->condition('field_is_decision', !empty($options['motions']));
 
+    $limit = (int) ($options['limit'] ?? 0);
+    $offset = (int) ($options['offset'] ?? 0);
     if ($limit) {
       $query->range($offset, $limit);
     }
@@ -2278,26 +1873,14 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:reset-meeting-orig-date
-   *
-   * @option limit
-   *   Limit processing to certain amount of nodes.
-   *
-   * @aliases ap:rmod
    */
+  #[Command(name: 'ahjo-proxy:reset-meeting-orig-date', aliases: ['ap:rmod'])]
+  #[Option('limit', 'Limit processing to certain amount of nodes.')]
   public function resetMeetingsOriginalDate(
     array $options = [
       'limit' => NULL,
     ],
   ): void {
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = 0;
-    }
-
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'meeting')
@@ -2305,8 +1888,8 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->notExists('field_meeting_date_original')
       ->latestRevision();
 
-    if ($limit) {
-      $query->range('0', $limit);
+    if (!empty($options['limit'])) {
+      $query->range('0', (int) $options['limit']);
     }
 
     $ids = $query->execute();
@@ -2329,28 +1912,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command ahjo-proxy:get-motions
-   *
-   * @option update
-   *   Update previously created motions instead of just creating new ones.
-   * @option localdata
-   *   Use only local and placeholder data, doesn't require VPN connection.
-   * @option limit
-   *   Limit processing to certain amount of meeting nodes.
-   * @option offset
-   *   Skip the fist x meetings (useful with limit and update parameter).
-   *
-   * @usage ahjo-proxy:get-motions
-   *   Fetches data for new motions from meetings.
-   * @usage ahjo-proxy:update-decisions --update
-   *   Creates and updates existing motions.
-   * @usage ahjo-proxy:get-motions --localdata
-   *   Gets data for new motions from locally stored meetings.
-   *   Some fields may be limited.
-   *
-   * @aliases ap:gm
    */
+  #[Command(name: 'ahjo-proxy:get-motions', aliases: ['ap:gm'])]
+  #[Usage(name: 'ahjo-proxy:get-motions', description: 'Fetches data for new motions from meetings.')]
+  #[Usage(name: 'ahjo-proxy:update-decisions --update', description: 'Creates and updates existing motions.')]
+  #[Usage(name: 'ahjo-proxy:get-motions --localdata', description: 'Gets data for new motions from locally stored meetings. Some fields may be limited.')]
+  #[Option('update', 'Update previously created motions instead of just creating new ones.')]
+  #[Option('localdata', 'Use only local and placeholder data, doesn\'t require VPN connection.')]
+  #[Option('limit', 'Limit processing to certain amount of meeting nodes.')]
+  #[Option('offset', 'Skip the fist x meetings (useful with limit and update parameter).')]
   public function getMotionsFromAgendaItems(
     array $options = [
       'update' => NULL,
@@ -2362,19 +1932,8 @@ class AhjoAggregatorCommands extends DrushCommands {
     $update_all = !empty($options['update']);
     $use_local_data = !empty($options['localdata']);
 
-    if (!empty($options['limit'])) {
-      $limit = (int) $options['limit'];
-    }
-    else {
-      $limit = NULL;
-    }
-
-    if (!empty($options['offset'])) {
-      $offset = (int) $options['offset'];
-    }
-    else {
-      $offset = 0;
-    }
+    $limit = (int) ($options['limit'] ?? 0);
+    $offset = (int) ($options['offset'] ?? 0);
 
     $batch = $this->ahjoBatchBuilder
       ->getMotionsFromAgendaItemsBatch($update_all, $use_local_data, $limit, $offset);
@@ -2392,14 +1951,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Additional options for the command.
    * @param string $id
    *   Entity ID.
-   *
-   * @command ahjo-proxy:update-entity
-   *
-   * @usage ahjo-proxy:update-entity meetings U0298020221
-   *   Updates or creates entity with ID U0298020221.
-   *
-   * @aliases ap:update
    */
+  #[Command(name: 'ahjo-proxy:update-entity', aliases: ['ap:update'])]
+  #[Usage(name: 'ahjo-proxy:update-entity meetings U0298020221', description: 'Updates or creates entity with ID U0298020221.')]
   public function updateSingleEntity(string $endpoint, string $id): void {
     $this->logger->info('Migrating single entity from ' . $endpoint . ' with ID: ' . $id);
     $status = $this->ahjoProxy->migrateSingleEntity($endpoint, $id);
@@ -2408,11 +1962,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * List decisions without records.
-   *
-   * @command ahjo-proxy:list-decisions-without-records
-   *
-   * @aliases ap:ldwr
    */
+  #[Command(name: 'ahjo-proxy:list-decisions-without-records', aliases: ['ap:ldwr'])]
   public function listDecisionsWithoutRecord(): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2450,11 +2001,8 @@ class AhjoAggregatorCommands extends DrushCommands {
 
   /**
    * List missing decision makers.
-   *
-   * @command ahjo-proxy:list-missing-decision-makers
-   *
-   * @aliases ap:lmdm
    */
+  #[Command(name: 'ahjo-proxy:list-missing-decision-makers', aliases: ['ap:lmdm'])]
   public function listMissingDecisionMakers(): void {
     $pm_query = $this->database->select('node__field_policymaker_id', 'field')
       ->fields('field', ['field_policymaker_id_value'])
@@ -2499,16 +2047,10 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param array $options
    *   Options from command line parameters.
-   *
-   * @command ahjo-proxy:check-decision-makers
-   *
-   * @option base_url
-   *   Base URL to use for comparison check.
-   * @option ids
-   *   Org IDs to check, separated by a command.
-   *
-   * @aliases ap:cdm
    */
+  #[Command(name: 'ahjo-proxy:check-decision-makers', aliases: ['ap:cdm'])]
+  #[Option('base_url', 'Base URL to use for comparison check.')]
+  #[Option('ids', 'Org IDs to check, separated by a command.')]
   public function checkDecisionMakers(
     array $options = [
       'base_url' => NULL,
@@ -2591,11 +2133,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $id
    *   Policymaker ID.
-   *
-   * @command ahjo-proxy:list-decisions-by-org
-   *
-   * @aliases ap:ldbo
    */
+  #[Command(name: 'ahjo-proxy:list-decisions-by-org', aliases: ['ap:ldbo'])]
   public function listDecisionsByPolicymakerId(string $id): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2632,11 +2171,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   Policymaker ID.
    * @param string|null $years
    *   Comma separated list of years to check.
-   *
-   * @command ahjo-proxy:check-org-missing-decisions
-   *
-   * @aliases ap:comd
    */
+  #[Command(name: 'ahjo-proxy:check-org-missing-decisions', aliases: ['ap:comd'])]
   public function checkMissingDecisionsByOrgId(string $id, ?string $years = NULL): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2703,11 +2239,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   - 'list': Only list nodes.
    *   - 'unpublish': Unpublish nodes.
    *   - 'delete': Delete nodes.
-   *
-   * @command ahjo-proxy:orphaned-motions
-   *
-   * @aliases ap:om
    */
+  #[Command(name: 'ahjo-proxy:orphaned-motions', aliases: ['ap:om'])]
   public function handleOrphanedMotions(string $action = 'list'): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2807,11 +2340,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $meeting_id
    *   Meeting ID.
-   *
-   * @command ahjo-proxy:list-meeting-agenda
-   *
-   * @aliases ap:lma
    */
+  #[Command(name: 'ahjo-proxy:list-meeting-agenda', aliases: ['ap:lma'])]
   public function listMeetingAgenda(string $meeting_id): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck()
@@ -2870,11 +2400,8 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string $meeting_id
    *   Meeting ID.
-   *
-   * @command ahjo-proxy:import-meeting-decisions
-   *
-   * @aliases ap:imd
    */
+  #[Command(name: 'ahjo-proxy:import-meeting-decisions', aliases: ['ap:imd'])]
   public function importMeetingDecisions(string $meeting_id): void {
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)
@@ -2891,7 +2418,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       return;
     }
 
-    /** @var Drupal\node\NodeInterface $node */
+    /** @var \Drupal\node\NodeInterface $node */
     foreach ($node->get('field_meeting_agenda') as $field) {
       $item = json_decode($field->value, TRUE);
 
@@ -2917,14 +2444,9 @@ class AhjoAggregatorCommands extends DrushCommands {
    *
    * @param string|null $filename
    *   Which file to store.
-   *
-   * @command ahjo-proxy:store-static-files
-   *
-   * @usage ahjo-proxy:store-static-files
-   *   Stores default static files into filesystem (for debugging migrations).
-   *
-   * @aliases ap:fs
    */
+  #[Command(name: 'ahjo-proxy:store-static-files', aliases: ['ap:fs'])]
+  #[Usage(name: 'ahjo-proxy:store-static-files', description: 'Stores default static files into filesystem (for debugging migrations).')]
   public function storeStaticFiles(?string $filename = NULL): void {
     $allowed_static_files = [
       'cases_all.json',
@@ -3045,38 +2567,15 @@ class AhjoAggregatorCommands extends DrushCommands {
    *   List key.
    */
   private function getListKey(string $endpoint): ?string {
-
-    switch ($endpoint) {
-      case 'cases':
-        $key = 'cases';
-        break;
-
-      case 'decisions':
-        $key = 'decisions';
-        break;
-
-      case 'meetings':
-        $key = 'meetings';
-        break;
-
-      case 'decisionmakers':
-        $key = 'decisionMakers';
-        break;
-
-      case 'resolutions':
-        $key = 'resolutions';
-        break;
-
-      case 'initiatives':
-        $key = 'initiatives';
-        break;
-
-      default:
-        $key = $endpoint;
-        break;
-    }
-
-    return $key;
+    return match ($endpoint) {
+      'cases' => 'cases',
+      'decisions' => 'decisions',
+      'meetings' => 'meetings',
+      'decisionmakers' => 'decisionMakers',
+      'resolutions' => 'resolutions',
+      'initiatives' => 'initiatives',
+      default => $endpoint,
+    };
   }
 
 }

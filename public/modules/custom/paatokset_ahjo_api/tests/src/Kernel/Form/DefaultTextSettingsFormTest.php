@@ -6,12 +6,12 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Form;
 
 use Drupal\Core\Form\FormState;
 use Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests the DefaultTextSettingsForm form.
  */
-class DefaultTextSettingsFormTest extends AhjoKernelTestBase {
+class DefaultTextSettingsFormTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests form submission.

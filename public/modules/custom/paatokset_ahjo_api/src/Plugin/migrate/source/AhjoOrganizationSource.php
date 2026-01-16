@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\source;
 
+use Drupal\migrate\Attribute\MigrateSource;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
 
 /**
@@ -15,11 +16,8 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
  *  source:
  *    plugin: ahjo_api_organizations
  * @endcode
- *
- * @MigrateSource(
- *   id = "ahjo_api_organizations"
- * )
  */
+#[MigrateSource(id: 'ahjo_api_organizations')]
 final class AhjoOrganizationSource extends AhjoSourceBase {
 
   /**

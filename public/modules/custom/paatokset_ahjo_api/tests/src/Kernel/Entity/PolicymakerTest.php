@@ -7,12 +7,12 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests policymaker bundle class.
  */
-class PolicymakerTest extends AhjoKernelTestBase {
+class PolicymakerTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests bundle class.

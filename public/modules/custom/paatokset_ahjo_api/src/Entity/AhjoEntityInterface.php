@@ -24,6 +24,8 @@ interface AhjoEntityInterface extends ContentEntityInterface {
    *
    * Ahjo entities are stored as Drupal nodes, and the node
    * id is not related to the Ahjo id fields.
+   *
+   * @todo remove this method once Ahjo entities are stored as custom entities.
    */
   public function getAhjoId(): string;
 

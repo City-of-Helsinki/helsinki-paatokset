@@ -197,8 +197,8 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       ];
     }
 
-    $publicity_reason = \Drupal::config('paatokset_ahjo_api.default_texts')->get('non_public_attachments_text.value');
     if (!empty($attachments)) {
+      $publicity_reason = \Drupal::config('paatokset_ahjo_api.default_texts')->get('non_public_attachments_text.value');
       return [
         'items' => $attachments,
         'publicity_reason' => ['#markup' => $publicity_reason],

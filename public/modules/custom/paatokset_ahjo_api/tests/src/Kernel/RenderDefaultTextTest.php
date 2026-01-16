@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -18,11 +17,6 @@ class RenderDefaultTextTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
-    'paatokset_ahjo_api',
-    'helfi_api_base',
-    'path_alias',
-    'pathauto',
-    'token',
   ];
 
   /**

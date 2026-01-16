@@ -4,61 +4,69 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Entity;
 
+use Drupal\content_translation\ContentTranslationHandler;
+use Drupal\Core\Entity\Attribute\ContentEntityType;
+use Drupal\Core\Entity\ContentEntityDeleteForm;
+use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityViewBuilder;
+use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
+use Drupal\views\EntityViewsData;
 
 /**
- * Defines the decision entity class.
- *
- * @ContentEntityType(
- *   id = "ahjo_organization",
- *   label = @Translation("Organization"),
- *   label_collection = @Translation("Organizations"),
- *   label_singular = @Translation("organization"),
- *   label_plural = @Translation("organizations"),
- *   label_count = @PluralTranslation(
- *     singular = "@count organization",
- *     plural = "@count organizations",
- *   ),
- *   handlers = {
- *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
- *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
- *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
- *     "translation" = "Drupal\content_translation\ContentTranslationHandler",
- *     "form" = {
- *       "default" = "Drupal\Core\Entity\ContentEntityForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *     },
- *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
- *     },
- *   },
- *   base_table = "paatokset_ahjo_organization",
- *   data_table = "paatokset_ahjo_organization_data",
- *   translatable = TRUE,
- *   admin_permission = "administer remote entities",
- *   entity_keys = {
- *     "id" = "id",
- *     "label" = "title",
- *     "langcode" = "langcode",
- *     "published" = "existing",
- *   },
- *   links = {
- *     "collection" = "/admin/content/ahjo/organizations",
- *     "canonical" = "/ahjo/organization/{ahjo_organization}",
- *     "edit-form" = "/ahjo/organization/{ahjo_organization}/edit",
- *     "delete-form" = "/ahjo/organization/{ahjo_organization}/delete",
- *   },
- * )
+ * Defines the organization entity class.
  */
+#[ContentEntityType(
+  id: 'ahjo_organization',
+  label: new TranslatableMarkup('Organization'),
+  label_collection: new TranslatableMarkup('Organizations'),
+  label_singular: new TranslatableMarkup('organization'),
+  label_plural: new TranslatableMarkup('organizations'),
+  entity_keys: [
+    'id' => 'id',
+    'label' => 'title',
+    'langcode' => 'langcode',
+    'published' => 'existing',
+  ],
+  handlers: [
+    'list_builder' => EntityListBuilder::class,
+    'view_builder' => EntityViewBuilder::class,
+    'views_data' => EntityViewsData::class,
+    'access' => RemoteEntityAccess::class,
+    'translation' => ContentTranslationHandler::class,
+    'form' => [
+      'default' => ContentEntityForm::class,
+      'delete' => ContentEntityDeleteForm::class,
+    ],
+    'route_provider' => [
+      'html' => AdminHtmlRouteProvider::class,
+    ],
+  ],
+  links: [
+    'collection' => '/admin/content/ahjo/organizations',
+    'canonical' => '/ahjo/organization/{ahjo_organization}',
+    'edit-form' => '/ahjo/organization/{ahjo_organization}/edit',
+    'delete-form' => '/ahjo/organization/{ahjo_organization}/delete',
+  ],
+  admin_permission: 'administer remote entities',
+  base_table: 'paatokset_ahjo_organization',
+  data_table: 'paatokset_ahjo_organization_data',
+  translatable: TRUE,
+  label_count: [
+    'singular' => '@count organization',
+    'plural' => '@count organizations',
+  ],
+)]
 class Organization extends RemoteEntityBase implements EntityPublishedInterface, EntityChangedInterface, AhjoEntityInterface {
 
   use EntityPublishedTrait;

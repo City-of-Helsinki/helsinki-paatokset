@@ -8,11 +8,9 @@ url:
     fi: fi
     sv: sv
     en: en
-    ru: ru
     '': null
   domains:
     en: ''
     fi: ''
     sv: ''
-    ru: ''
 selected_langcode: fi

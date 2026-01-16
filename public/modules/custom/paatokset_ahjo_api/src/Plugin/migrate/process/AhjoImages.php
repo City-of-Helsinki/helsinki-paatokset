@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\process;
 
+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileExistsException;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\FileInterface;
+use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements 'ahjo_images' process plugin.
@@ -23,43 +23,28 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * (i.e., images embedded directly in the HTML). This process plugin extracts
  * those images and saves them as files in the filesystem, instead of storing
  * them in the database.
- *
- * @MigrateProcessPlugin(
- *  id = "ahjo_images"
- * )
  */
-final class AhjoImages extends ProcessPluginBase implements ContainerFactoryPluginInterface {
+#[MigrateProcess('ahjo_images')]
+final class AhjoImages extends ProcessPluginBase {
 
-  /**
-   * The file system service.
-   */
-  private FileSystemInterface $filesystem;
-
-  /**
-   * The file url generator.
-   */
-  private FileUrlGeneratorInterface $fileUrlGenerator;
-
-  /**
-   * The entity type manager.
-   */
-  private EntityTypeManagerInterface $entityTypeManager;
+  use AutowiredInstanceTrait;
 
   /**
    * Base uri.
    */
   private string $baseUri;
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
-    $instance->filesystem = $container->get(FileSystemInterface::class);
-    $instance->fileUrlGenerator = $container->get(FileUrlGeneratorInterface::class);
-    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
-    $instance->baseUri = $configuration['base_uri'] ?? 'public://ahjo-images';
-    return $instance;
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    mixed $plugin_definition,
+    private readonly FileSystemInterface $fileSystem,
+    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->baseUri = $configuration['base_uri'] ?? 'public://ahjo-images';
   }
 
   /**
@@ -77,7 +62,7 @@ final class AhjoImages extends ProcessPluginBase implements ContainerFactoryPlug
 
     $images = $dom->getElementsByTagName('img');
 
-    $this->filesystem->prepareDirectory($this->baseUri, FileSystemInterface::CREATE_DIRECTORY);
+    $this->fileSystem->prepareDirectory($this->baseUri, FileSystemInterface::CREATE_DIRECTORY);
 
     foreach ($images as $image) {
       $src = $image->getAttribute('src');
@@ -117,7 +102,7 @@ final class AhjoImages extends ProcessPluginBase implements ContainerFactoryPlug
     $uri = $this->baseUri . '/' . $filename;
 
     try {
-      $this->filesystem->saveData($data, $uri, FileExists::Error);
+      $this->fileSystem->saveData($data, $uri, FileExists::Error);
     }
     catch (FileExistsException) {
       // Filenames are hashed contents of the file, so if

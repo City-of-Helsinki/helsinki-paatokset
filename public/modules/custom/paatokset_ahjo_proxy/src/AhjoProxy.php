@@ -1429,9 +1429,6 @@ class AhjoProxy {
   /**
    * Add entity to callback queue.
    *
-   * @todo this should not be in ahjo proxy - other queue code is in
-   *       paatokset_ahjo_api.
-   *
    * @param string $endpoint
    *   Endpoint to use (cases, meetings, decisions).
    * @param string $id
@@ -1443,6 +1440,11 @@ class AhjoProxy {
    *
    * @return string|null
    *   Item ID if it was successfully added to queue, otherwise NULL.
+   *
+   *  @todo this should not be in ahjo proxy - other queue code is in
+   *       paatokset_ahjo_api.
+   *
+   * @see \Drupal\paatokset_ahjo_api\Queue\AhjoQueueManager
    */
   public function addItemToAhjoQueue(string $endpoint, string $id, string $queue_name = 'ahjo_api_retry_queue', $update_type = 'AddedFromDrush'): ?string {
     // Attempt to reduce duplicates.

@@ -9,7 +9,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoBatchBuilder;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use GuzzleHttp\Psr7\Response;
 
 /**
@@ -17,10 +17,17 @@ use GuzzleHttp\Psr7\Response;
  *
  * @group paatokset_ahjo_api
  */
-class MeetingAggregatorsTest extends AhjoKernelTestBase {
+class MeetingAggregatorsTest extends AhjoEntityKernelTestBase {
 
   use NodeCreationTrait;
   use ApiTestTrait;
+
+  /**
+   * {@inheritDoc}
+   */
+  protected static $modules = [
+    'paatokset_ahjo_proxy',
+  ];
 
   /**
    * Tests ahjo-proxy:get-motions command batch creation.

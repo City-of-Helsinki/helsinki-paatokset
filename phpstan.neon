@@ -29,16 +29,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
-      message: "#^Unsafe usage of new static\\(\\)\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Form/DisallowedDecisionsForm.php
-
-    -
-      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
-      count: 3
-      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/process/SkipDisallowedDecisions.php
-
-    -
       message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\AhjoOrgCompositionSource\\:\\:getDefaultQuery\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\.$#"
       count: 1
       path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
@@ -259,11 +249,6 @@ parameters:
         \\\\Drupal\\\\Core\\\\File\\\\FileExists\\:\\:Replace instead\\.$#
       """
       count: 2
-      path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
-
-    -
-      message: "#^PHPDoc tag @var for variable \\$node contains unknown class Drupal\\\\paatokset_ahjo_proxy\\\\Drush\\\\Commands\\\\Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
       path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
 
     -

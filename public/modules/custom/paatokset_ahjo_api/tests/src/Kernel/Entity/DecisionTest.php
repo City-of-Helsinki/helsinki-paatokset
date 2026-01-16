@@ -8,12 +8,12 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\ConfidentialityInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests decision bundle class.
  */
-class DecisionTest extends AhjoKernelTestBase {
+class DecisionTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests bundle class.

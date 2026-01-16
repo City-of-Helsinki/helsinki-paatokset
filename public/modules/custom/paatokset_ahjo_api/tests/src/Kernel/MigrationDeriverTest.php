@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel;
 
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver;
 
 /**
@@ -17,14 +16,8 @@ class MigrationDeriverTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'migrate',
-    'file',
-    'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
-    'helfi_api_base',
-    'path_alias',
-    'pathauto',
-    'token',
+    'file',
   ];
 
   /**

@@ -27,6 +27,7 @@ class InitiativesTest extends RemoteEntityAccessTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'migrate',
   ];
 
   /**

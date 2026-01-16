@@ -33,3 +33,63 @@ msgstr "Bilagan publiceras inte på internet."
 
 msgid: "More recent handlings"
 msgstr "Ärendet har nyare handläggningar"
+
+msgctxt "Ahjo cases"
+msgid "Administrative matters"
+msgstr "Förvaltningsärenden"
+
+msgctxt "Ahjo cases"
+msgid "Personnel matters"
+msgstr "Personalärenden"
+
+msgctxt "Ahjo cases"
+msgid "Financial matters, taxation and property management"
+msgstr "Ekonomi, beskattning och egendomsförvaltning"
+
+msgctxt "Ahjo cases"
+msgid "Legislation and application of legislation"
+msgstr "Lagstiftning och dess tillämpning"
+
+msgctxt "Ahjo cases"
+msgid "International activities and immigration policy"
+msgstr "Internationell verksamhet och migrationspolitik"
+
+msgctxt "Ahjo cases"
+msgid "Social services"
+msgstr "Socialvård"
+
+msgctxt "Ahjo cases"
+msgid "Healthcare"
+msgstr "Hälsovård"
+
+msgctxt "Ahjo cases"
+msgid "Information management"
+msgstr "Informationshantering"
+
+msgctxt "Ahjo cases"
+msgid "Traffic"
+msgstr "Trafik"
+
+msgctxt "Ahjo cases"
+msgid "Security and public order"
+msgstr "Säkerhet och allmän ordning"
+
+msgctxt "Ahjo cases"
+msgid "Land use, construction and housing"
+msgstr "Markanvändning, byggande och boende"
+
+msgctxt "Ahjo cases"
+msgid "Environmental matters"
+msgstr "Miljöärenden"
+
+msgctxt "Ahjo cases"
+msgid "Education and culture"
+msgstr "Undervisnings- och bildningsväsende"
+
+msgctxt "Ahjo cases"
+msgid "Research and development"
+msgstr "Forskning och utveckling"
+
+msgctxt "Ahjo cases"
+msgid "Business and employment services"
+msgstr "Näringslivs- och arbetskraftstjänster"

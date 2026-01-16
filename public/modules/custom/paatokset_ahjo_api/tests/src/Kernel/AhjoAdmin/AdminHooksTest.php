@@ -6,11 +6,11 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoAdmin;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Form\NodeForm;
 use Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks;
 use Drupal\paatokset_ahjo_api\Entity\AhjoUpdatableInterface;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
@@ -25,16 +25,10 @@ class AdminHooksTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'user',
-    'helfi_api_base',
-    'paatokset_ahjo_api',
     'paatokset_ahjo_proxy',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
-    'file',
     'system',
+    'user',
+    'file',
   ];
 
   /**
