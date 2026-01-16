@@ -274,9 +274,9 @@ final class AhjoCase extends RemoteEntityBase implements EntityPublishedInterfac
       }
     }
 
-    // Remove any decisions where:
-    // - The language is not the currently active language.
-    // - Another decision with the same ID exists in the active language.
+    // Keep decisions that are either:
+    // - In the current language, OR
+    // - Not available in the current language (fallback to any language).
     $results = array_filter($results, fn (Decision $decision) =>
       $decision->language()->getId() === $currentLanguage || !isset($native_results[$decision->field_unique_id->value])
     );
