@@ -181,6 +181,7 @@ permissions:
   - 'edit terms in pdf_categories'
   - 'edit terms in pdf_minutes_category'
   - 'mark as hidden in editoria11y'
+  - 'rebuild node access permissions'
   - 'revert all tpr_service revisions'
   - 'revert all tpr_unit revisions'
   - 'revert announcement revisions'
