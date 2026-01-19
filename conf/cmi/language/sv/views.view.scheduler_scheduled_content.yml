@@ -72,9 +72,9 @@ display:
     display_options:
       menu:
         title: Schemalagd
+        description: 'Content scheduled for publishing and unpublishing'
       tab_options:
         title: Innehåll
-      display_description: 'Yleiskatsaus koko ajoitetusta sisällöstä.'
     display_title: Innehållsöversikt
   user_page:
     display_options:
@@ -86,7 +86,4 @@ display:
         uid:
           exception:
             title: Alla
-      empty:
-        area_text_custom:
-          content: '{{ arguments.uid }} käyttäjä ei ole ajastanut sisältöä.'
     display_title: Användare

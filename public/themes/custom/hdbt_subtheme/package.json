@@ -20,6 +20,16 @@
     "full-test": "node --env-file ../../../../.env backstop/backstop_dynamic_config full test",
     "coverage": "vitest run --coverage"
   },
+  "@comment dependencies": [
+    "The following packages were updated manually.",
+    "Remove this section once the dependencies have been updated in their respective upstream packages.",
+    {
+      "diff": "^8.0.3, dependency of backstopjs"
+    }
+  ],
+  "overrides": {
+    "diff": "^8.0.3"
+  },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.25.0",
     "@biomejs/biome": "^2.2.4",

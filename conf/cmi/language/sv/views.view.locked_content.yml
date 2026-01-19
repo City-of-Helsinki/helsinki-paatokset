@@ -6,7 +6,6 @@ display:
       title: 'Låst innehåll'
       fields:
         node_bulk_form:
-          label: 'Solmujen bulkkitoimintojen lomake'
           action_title: Åtgärd
         title:
           label: Titel
@@ -14,8 +13,6 @@ display:
         type:
           label: Innehållstyp
           separator: ', '
-        timestamp:
-          label: 'Lukituksen ajankohta'
         name:
           label: 'Lås ägare'
           separator: ', '
@@ -39,9 +36,6 @@ display:
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
-      empty:
-        area_text_custom:
-          content: 'Lukittua sisältöä ei ole.'
       filters:
         status:
           expose:
@@ -51,8 +45,6 @@ display:
             group_items:
               1:
                 title: Publicerad
-              2:
-                title: 'Ej publicerad'
         type:
           expose:
             label: Innehållstyp

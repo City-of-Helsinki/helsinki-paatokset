@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Policymakers;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\PathProcessor\InboundPathProcessorInterface;
 use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
@@ -19,11 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
  * option.
  */
 class PathProcessor implements InboundPathProcessorInterface, OutboundPathProcessorInterface {
-
-  /**
-   * The browse route path.
-   */
-  private const string BROWSE_PATH = '/decisionmakers/browse-decisionmakers';
 
   public function __construct(private readonly LanguageManagerInterface $languageManager) {
   }
@@ -66,9 +62,16 @@ class PathProcessor implements InboundPathProcessorInterface, OutboundPathProces
    */
   public function processOutbound($path, &$options = [], ?Request $request = NULL, ?BubbleableMetadata $bubbleable_metadata = NULL): string {
     if (preg_match('/\/decisionmakers\/browse-decisionmakers(\/[\p{Ll}0-9-]+)?$/u', $path, $matches)) {
-      $langcode = $this->languageManager
-        ->getCurrentLanguage()
-        ->getId();
+      if (isset($options['language'])) {
+        $langcode = $options['language'];
+
+        if ($options['language'] instanceof LanguageInterface) {
+          $langcode = $options['language']->getId();
+        }
+      }
+      else {
+        $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      }
 
       try {
         $translated = match($langcode) {

@@ -6,13 +6,14 @@ namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutableFactory;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides policymaker documents block.
@@ -24,20 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The policymaker service.
-   */
-  private PolicymakerService $policymakerService;
-
-  /**
-   * The entity type manager.
-   */
-  private EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The view executable factory.
-   */
-  private ViewExecutableFactory $viewExecutable;
+  use AutowiredInstanceTrait;
 
   /**
    * {@inheritdoc}
@@ -49,15 +37,15 @@ final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFact
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    $plugin = new self($configuration, $plugin_id, $plugin_definition);
-    $plugin->policymakerService = $container->get(PolicymakerService::class);
-    $plugin->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
-    $plugin->viewExecutable = $container->get(ViewExecutableFactory::class);
-    return $plugin;
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private readonly PolicymakerService $policymakerService,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly ViewExecutableFactory $viewExecutable,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
@@ -76,7 +64,12 @@ final class PolicymakerDocumentsBlock extends BlockBase implements ContainerFact
     $policymaker = $this->policymakerService->getPolicyMaker();
 
     if (!$policymaker) {
-      return [];
+      $build = [];
+
+      $cache = new CacheableMetadata();
+      $cache->setCacheMaxAge(60);
+      $cache->applyTo($build);
+      return $build;
     }
 
     $display = $this->configuration['view_display'] ?? 'default';
