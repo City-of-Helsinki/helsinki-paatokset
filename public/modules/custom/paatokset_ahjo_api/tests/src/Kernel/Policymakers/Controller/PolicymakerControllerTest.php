@@ -12,7 +12,7 @@ use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Policymakers\Controller\PolicymakerController;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,13 +20,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Tests policymaker controller.
  */
-class PolicymakerControllerTest extends AhjoKernelTestBase {
+class PolicymakerControllerTest extends AhjoEntityKernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'paatokset_ahjo_api',
     'ahjo_media_test',
     'image',
     'media',

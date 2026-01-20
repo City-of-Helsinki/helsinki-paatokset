@@ -1,0 +1,57 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - paatokset_ahjo_api
+id: ahjo_cases_v2
+migration_tags:
+  - ahjo_api
+  - ahjo_api_cases
+migration_group: ahjo_api
+label: 'Ahjo API - Cases'
+source:
+  plugin: ahjo_api_cases
+  track_changes: true
+  constants:
+    security_separator: ', '
+process:
+  # Entity ID and label fields.
+  id:
+    plugin: callback
+    callable: strtoupper
+    source: id
+  label: caseIdLabel
+  title: title
+  langcode: language
+
+  # Timestamps (already converted to Unix timestamps in source plugin).
+  created: created
+  changed: acquired
+
+  # Classification fields.
+  classification_code: classificationCode
+  classification_title: classificationTitle
+
+  # Security and confidentiality.
+  security_reasons:
+    plugin: callback
+    callable: implode
+    source:
+      - constants/security_separator
+      - securityReasons
+    unpack_source: true
+
+  # Complex fields stored as JSON.
+  handlings: handlings
+  records: records
+
+  # Published status - publish all cases.
+  status:
+    plugin: default_value
+    default_value: 1
+
+destination:
+  plugin: 'entity:ahjo_case'
+migration_dependencies: {  }
+

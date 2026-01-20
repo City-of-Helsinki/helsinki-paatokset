@@ -1,0 +1,53 @@
+{#
+
+#}
+<header id="case-header" class="issue-header__container" data-case-id="{{ node.field_diary_number.value }}">
+  <div{{ content_attributes.addClass('issue__header') }}>
+    <h1{{ title_attributes.addClass('issue__title') }}>
+      {{ main_heading }}
+    </h1>
+
+    {% if no_title_for_case %}
+    <div class="title-tag">
+      <div class="info-label">
+        <div class="hds-tag hds-tag--info">
+          <span>{{ 'For decisions released prior to 2019 a related decision heading is displayed for cases.'|t }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% if content.field_diary_number_label|render %}
+    <div class="issue__diarynumber">
+      <label>
+        {{ 'Diary number'|trans }}
+      </label>
+      <span>{{ node.field_diary_number_label.value }}</span>
+    </div>
+  {% endif %}
+  <div class="issue-header__footer">
+    {% if content.field_top_category_name|render or node.isConfidential() %}
+      <section class="issue__category issue__left-column__container" aria-label='{{ 'Tags'|t }}' role="Region">
+        {% if content.field_top_category_name|render %}
+        <span class="hds-tag">
+          {{ node.field_top_category_name.value }}
+        </span>
+        {% endif %}
+        {% if case and case.isConfidential() %}
+          <span class="hds-tag hds-tag--error">
+            {{ "Confidential"|t }}
+          </span>
+        {% endif %}
+      </section>
+    {% endif %}
+    {% if favorites_enabled %}
+    <div class="issue__favorite-button">
+      {% set button_label = 'Save %s to favorites'|format('issue')|t %}
+      {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'supplementary', icon_first: true, icon_first_type: 'heart', disabled: false, label: button_label } %}
+    </div>
+    {% endif %}
+  </div>
+  {% if case and case.isConfidential() %}
+    <span class="issue-content__confidentiality-reason">({{ case.getConfidentialityReason() }})</span>
+  {% endif %}
+</header>

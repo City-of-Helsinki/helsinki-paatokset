@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
+use Drupal\migrate\Attribute\MigrateSource;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\node\NodeInterface;
@@ -43,11 +44,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *    orgs: ids
  *    org_id: 00400,02900
  * @endcode
- *
- * @MigrateSource(
- *   id = "ahjo_org_composition"
- * )
  */
+#[MigrateSource(id: 'ahjo_org_composition')]
 final class AhjoOrgCompositionSource extends HttpSourcePluginBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}

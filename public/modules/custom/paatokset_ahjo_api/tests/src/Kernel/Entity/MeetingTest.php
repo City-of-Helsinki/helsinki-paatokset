@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Tests trustee bundle class.
  */
-class MeetingTest extends AhjoKernelTestBase {
+class MeetingTest extends AhjoEntityKernelTestBase {
 
   /**
    * Tests bundle class.

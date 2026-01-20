@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
@@ -90,6 +91,62 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
     }
     catch (\ValueError | \DateMalformedStringException $e) {
       throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCase(string $langcode, string $id): AhjoCase {
+    $response = $this->makeRequest("/cases/single/$id", [
+      'query' => [
+        'apireqlang' => $langcode,
+      ],
+    ]);
+
+    if (!$object = array_first($response->cases)) {
+      throw new AhjoProxyException('Case not found.');
+    }
+
+    try {
+      return AhjoCase::fromAhjoObject($object);
+    }
+    catch (\DateMalformedStringException $e) {
+      throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): iterable {
+    for ($current = $handledAfter; $current < $handledBefore; $current = $next) {
+      $next = $current->add($interval);
+      if ($next > $handledBefore) {
+        $next = $handledBefore;
+      }
+
+      $response = $this->makeRequest('/cases', [
+        'query' => [
+          'apireqlang' => $langcode,
+          'handledbefore' => $next->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+          'handledsince' => $current->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+          'size' => 1000,
+        ],
+      ]);
+
+      if (!isset($response->cases) || !is_array($response->cases)) {
+        throw new AhjoProxyException('Cases data not found in response.');
+      }
+
+      try {
+        foreach ($response->cases as $caseObject) {
+          yield AhjoCase::fromAhjoObject($caseObject);
+        }
+      }
+      catch (\DateMalformedStringException $e) {
+        throw new AhjoProxyException($e->getMessage(), previous: $e);
+      }
     }
   }
 
