@@ -117,7 +117,6 @@ const ResultsContainer = ({ getLastRefreshed }: Props) => {
           <ReactiveList.ResultCardsWrapper
             style={{
               margin: 0,
-              gap: '24px',
               width: '100%'
             }}
           >

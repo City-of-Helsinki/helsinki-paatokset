@@ -44,7 +44,7 @@ class SearchManagerTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['system']);
+    $this->installConfig(['system', 'user']);
     $this->installSchema('node', ['node_access']);
 
     // Clear permissions for authenticated users.
