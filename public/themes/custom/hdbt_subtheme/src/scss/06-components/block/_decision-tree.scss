@@ -1,5 +1,7 @@
+$box-arrow-size: 30px;
+
 .decision-tree {
-  margin-top: 72px;
+  margin-top: $spacing-quadruple;
 }
 
 .decision-tree__box {
@@ -14,7 +16,7 @@
   word-wrap: break-word;
 
   @include breakpoint($breakpoint-s) {
-    padding: 28px;
+    padding: $spacing-double;
   }
 
   &:not(&:last-of-type) {
@@ -24,15 +26,15 @@
       background-color: $color-white;
       border-bottom: 2px solid $color-black-90;
       border-right: 2px solid $color-black-90;
-      bottom: -15.5px;
+      bottom: -$spacing;
       content: '';
-      height: 30px;
+      height: $box-arrow-size;
       left: 0;
       margin: auto;
       position: absolute;
       right: 0;
       transform: rotate(45deg);
-      width: 30px;
+      width: $box-arrow-size;
     }
   }
 }
@@ -40,22 +42,24 @@
 .decision-tree__upper-tree {
   display: flex;
   flex-direction: column;
-  margin: 0 60px 72px;
+  margin: 0 $spacing-quadruple $spacing-quadruple;
   position: relative;
 
   .decision-tree__arrow {
     position: absolute;
   }
 
+  // Needs pixels for positioning
   .arrow-left {
-    height: 280px;
-    left: -54px;
-    top: 23px;
+    height: 300px;
+    left: -55px;
+    top: $spacing-and-half;
     width: 55px;
   }
 
+  // Needs pixels for positioning
   .arrow-right {
-    bottom: 23px;
+    bottom: $spacing-and-half;
     height: 395px;
     right: -65px;
     width: 65px;
@@ -80,7 +84,7 @@
 .decision-tree__lower-tree {
   display: flex;
   flex-direction: column;
-  margin: 0 60px 72px;
+  margin: 0 $spacing-quadruple $spacing-quadruple;
 
   .decision-tree__box:nth-of-type(2),
   .decision-tree__box:nth-of-type(2)::after {
@@ -90,6 +94,6 @@
 
 .decision-tree__info-text {
   @include font('h3');
-  margin-bottom: 36px;
+  margin-bottom: $spacing-double;
   text-align: center;
 }

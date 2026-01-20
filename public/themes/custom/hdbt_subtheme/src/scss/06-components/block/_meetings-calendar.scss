@@ -8,159 +8,154 @@
 
   .hds-loading-spinner {
     left: unset;
-    margin: 90px auto;
+    margin: $spacing-quadruple auto;
     position: relative;
     top: unset;
   }
+}
 
-  ol {
-    list-style: none;
+.calendar-header {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: $spacing-double;
+
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: $spacing-triple;
   }
 
-  .calendar-header {
+  h2 {
+    @include font('special.card_title');
+    margin: 0 $spacing;
+    text-align: center;
+    text-transform: capitalize;
+
+    @include breakpoint($breakpoint-s) {
+      margin: 0 $spacing-double;
+    }
+  }
+
+  .hel-icon,
+  .icon-container {
+    cursor: pointer;
+    height: $spacing-double;
+    min-width: $spacing-double;
+    width: $spacing-double;
+  }
+
+  .icon-container--disabled {
+    color: $color-silver-medium-light;
+  }
+}
+
+.calendar-day {
+  flex: 1;
+  margin-top: 0;
+  padding: $spacing;
+  position: relative;
+
+  @include breakpoint($breakpoint-l) {
+    margin-bottom: $spacing-quadruple;
+    max-width: 20%;
+    min-width: 20%;
+
+    &::after {
+      background-color: $color-gold;
+      bottom: -$spacing-double;
+      content: '';
+      display: block;
+      height: $spacing-half;
+      left: 0;
+      margin: 0 $spacing;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .no-meetings {
+    background-color: $color-silver-light;
+    height: 100%;
+    padding: $spacing;
+
+    @include breakpoint($breakpoint-l) {
+      height: calc(100% - $spacing-double);
+    }
+  }
+}
+
+.days-grid {
+  display: grid;
+  gap: $spacing-double;
+  list-style: none;
+  padding-left: 0;
+
+  @include breakpoint($breakpoint-l) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+}
+
+.meeting-row {
+  @include font('small');
+  border-bottom: 1px dashed $color-black-60;
+  padding: $spacing 0;
+
+  a {
     align-items: center;
     display: flex;
-    justify-content: center;
-    margin-bottom: $spacing-double;
-
-    @include breakpoint($breakpoint-l) {
-      margin-bottom: $spacing-triple;
-    }
-
-    h2 {
-      @include font('special.card_title');
-      margin: 0 15px;
-      min-width: 190px;
-      text-align: center;
-      text-transform: capitalize;
-
-      @include breakpoint($breakpoint-s) {
-        margin: 0 30px;
-        min-width: 235px;
-      }
-    }
-
-    .hel-icon,
-    .icon-container {
-      cursor: pointer;
-      height: 30px;
-      min-width: 30px;
-      width: 30px;
-    }
-
-    .icon-container--disabled {
-      color: $color-silver-medium-light;
-    }
   }
 
-  .days-grid {
-    display: grid;
-    gap: 30px;
-    padding-left: 0;
-
-    @include breakpoint($breakpoint-l) {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0;
-    }
+  .hel-icon {
+    height: $spacing;
+    width: $spacing;
   }
+}
 
-  .calendar-day {
-    flex: 1;
-    margin-top: 0;
-    padding: $spacing;
-    position: relative;
+.meeting-title {
+  @include font('small');
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-half;
+  margin-top: 0;
+}
 
-    @include breakpoint($breakpoint-l) {
-      margin-bottom: 60px;
-      max-width: 20%;
-      min-width: 20%;
 
-      &::after {
-        background-color: $color-gold;
-        bottom: -$spacing-double;
-        content: '';
-        display: block;
-        height: $spacing-half;
-        left: 0;
-        margin: 0 $spacing;
-        position: absolute;
-        right: 0;
-      }
-    }
+.meeting-start-time {
+  color: $color-black-60;
+}
 
-    .no-meetings {
-      background-color: $color-silver-light;
-      height: 100%;
-      padding: $spacing;
-
-      @include breakpoint($breakpoint-l) {
-        height: calc(100% - 40px);
-      }
-    }
-  }
-
-  .meeting-row {
-    @include font('small');
-    border-bottom: 1px dashed $color-black-60;
-    padding: $spacing 0;
-
-    a {
-      align-items: center;
-      display: flex;
-    }
-
-    .hel-icon {
-      height: $spacing;
-      width: $spacing;
-    }
-  }
-
-  .meeting-title {
-    @include font('small');
-    font-weight: $font-weight-bold;
-    line-height: 1.5;
-    margin-bottom: $spacing-half;
-    margin-top: 0;
-  }
-
+.meeting-row--cancelled {
+  .meeting-title,
   .meeting-start-time {
-    color: $color-black-60;
+    text-decoration: line-through;
   }
+}
 
-  .meeting-row--cancelled {
-    .meeting-title,
-    .meeting-start-time {
-      text-decoration: line-through;
-    }
+.date-header {
+  @include font('lead');
+  border-bottom: 2px solid $color-black;
+  display: flex;
+  font-weight: $font-weight-medium;
+  justify-content: space-between;
+  padding-bottom: $spacing-half;
+  white-space: nowrap;
+}
+
+.calendar-day__today {
+  .meeting-row {
+    background-color: $color-gold-light;
+    padding: $spacing;
   }
 
   .date-header {
-    @include font('lead');
-    border-bottom: 2px solid $color-black;
-    display: flex;
-    font-weight: $font-weight-medium;
-    justify-content: space-between;
-    padding-bottom: $spacing-half;
-    white-space: nowrap;
+    border-color: $color-gold;
+    color: $color-gold;
   }
+}
 
-  .calendar-day__today {
-    .meeting-row {
-      background-color: $color-gold-light;
-      padding: $spacing;
-    }
-
-    .date-header {
-      border-color: $color-gold;
-      color: $color-gold;
-    }
-  }
-
-  .calendar-day__no-meetings {
-    .date-header {
-      border-color: $color-black-60;
-      color: $color-black-60;
-    }
+.calendar-day__no-meetings {
+  .date-header {
+    border-color: $color-black-60;
+    color: $color-black-60;
   }
 }

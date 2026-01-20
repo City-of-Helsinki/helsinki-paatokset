@@ -1,4 +1,7 @@
 /* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
+$member-image-size-small: 75px;
+$member-image-size-large: 120px;
+
 .policymaker-members {
   h2 {
     margin-bottom: $spacing-double;
@@ -9,12 +12,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 54px;
+  margin-bottom: $spacing-triple;
 
   input:not(input[type='checkbox']),
   select {
     border: 2px solid $color-black-50;
-    height: 56px;
     padding: $spacing;
     width: 100%;
   }
@@ -28,25 +30,25 @@
   }
 
   .search-wrapper {
-    margin-bottom: 36px;
+    margin-bottom: $spacing-double;
     position: relative;
     width: 100%;
 
     .hel-icon {
       bottom: $spacing;
       height: $spacing-and-half;
-      left: 20px;
+      left: $spacing-and-half;
       position: absolute;
       width: $spacing-and-half;
     }
 
     input {
-      padding-left: 56px !important;
+      padding-left: $spacing-quadruple !important;
     }
   }
 
   .form-item {
-    margin-bottom: 36px;
+    margin-bottom: $spacing-double;
     width: 100%;
 
     @include breakpoint($breakpoint-s) {
@@ -62,7 +64,7 @@
       height: $spacing-and-half;
       pointer-events: none;
       position: absolute;
-      right: 20px;
+      right: $spacing-and-half;
       width: $spacing-and-half;
     }
   }
@@ -143,12 +145,12 @@
 
   .member-image {
     border-radius: 50%;
-    height: 75px;
+    height: $member-image-size-small;
     margin-left: $spacing-half;
-    min-height: 75px;
-    min-width: 75px;
+    min-height: $member-image-size-small;
+    min-width: $member-image-size-small;
     overflow: hidden;
-    width: 75px;
+    width: $member-image-size-small;
 
     img {
       height: auto;
@@ -156,17 +158,16 @@
     }
 
     @include breakpoint($breakpoint-s) {
-      height: 120px;
-      min-height: 120px;
-      min-width: 120px;
-      width: 120px;
+      height: $member-image-size-large;
+      min-height: $member-image-size-large;
+      min-width: $member-image-size-large;
+      width: $member-image-size-large;
     }
   }
 
   .member-name {
     @include font('lead');
     font-weight: $font-weight-medium;
-    line-height: 29px;
     margin-bottom: 0;
     margin-top: 0;
   }
@@ -179,7 +180,6 @@
 
     @include breakpoint($breakpoint-s) {
       @include font('body');
-      line-height: 27px;
     }
   }
 

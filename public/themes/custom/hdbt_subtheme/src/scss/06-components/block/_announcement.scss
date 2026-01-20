@@ -4,8 +4,8 @@
   h2 {
     @include font('body');
     font-weight: $font-weight-bold;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+    margin-block-end: $spacing;
+    margin-block-start: $spacing;
   }
 
   p {
@@ -13,16 +13,15 @@
   }
 
   .announcement__content {
-    margin-left: 0;
-    margin-right: auto;
+    margin-inline-end: auto;
+    margin-inline-start: 0;
   }
 
   .announcement__container {
-    margin-left: 0;
+    margin-inline-start: 0;
 
     @include breakpoint($breakpoint-m) {
-      margin-left: 0;
-      margin-right: 0;
+      margin-inline: 0;
     }
   }
 }
@@ -30,7 +29,6 @@
 // Negate padding on policymaker page
 .policymaker-summary {
   .announcement.announcement--helsinki-kanava {
-    padding-left: 0;
-    padding-right: 0;
+    padding-inline: 0;
   }
 }

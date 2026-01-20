@@ -1,3 +1,5 @@
+// @todo UHF-12379 This whole file can probably be deleted after the refactoring is done. https://helsinkisolutionoffice.atlassian.net/browse/UHF-12379
+
 .decisions-search__date-filter .collapsible__children {
   padding: 0;
 }
@@ -12,21 +14,7 @@
   width: 100%;
 }
 
-// @todo audit this file when searches get an update: https://helsinkisolutionoffice.atlassian.net/browse/UHF-11962
-
-.paatokset-search--decisions,
-.paatokset-search-wrapper,
-.paatokset-search--frontpage {
-  h1 {
-    @include font('h1');
-  }
-
-  h1,
-  .container > p,
-  .container--search-description p {
-    color: $color-black;
-  }
-
+.paatokset-search-wrapper {
   button + ul li {
     @include font('small');
     margin-top: 0;
@@ -61,37 +49,10 @@
   }
 
   .search-autocomplete__item {
-    cursor: pointer;
-
     @include font('small');
-    padding: 0.75rem 1rem;
+    cursor: pointer;
+    padding: $spacing;
   }
-}
-
-.paatokset-search--decisions {
-  .container--search-title {
-    margin-top: $spacing-and-half;
-    overflow: hidden;
-
-    h1 {
-      margin-top: $spacing-double;
-    }
-  }
-
-  .container--search-description {
-    margin-bottom: $spacing-triple;
-  }
-}
-
-.paatokset-search--frontpage {
-  div[class*='SearchBarWrapper_SearchBarWrapper'] {
-    max-width: 100%;
-  }
-}
-
-.container--search-frontpage {
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .paatokset-search--policymaker {
@@ -101,48 +62,8 @@
 /* stylelint-disable selector-id-pattern */
 #paatokset_search {
   .wrapper {
-    padding: 16px 0;
+    padding: $spacing 0;
   }
-}
-/* stylelint-enable selector-id-pattern */
-
-.decisions-search-multiselect {
-  > div {
-    border-radius: 2px;
-  }
-
-  div[role='link'] {
-    @include font('special.helper_text');
-    background: $color-black;
-    border-radius: 24px;
-    color: $color-white;
-    padding: 2px 10px;
-  }
-
-  li[role='option'] {
-    --multiselect-checkbox-background-selected: $color-black;
-  }
-}
-
-.decisions-search-multidropdown__item {
-  @include font('body');
-  height: $input-height;
-}
-
-.decisions-search-dateselect__collapsible-element label {
-  display: block;
-}
-
-.decisions-search-form-container {
-  position: relative;
-
-  @media (min-width: var(--breakpoint-xl)) {
-    margin-top: 80px;
-  }
-}
-
-.decisions-search-form-container--gold {
-  background-color: var(--color-gold);
 }
 
 .decisions-search-form-container__koro-wrapper {
@@ -160,12 +81,8 @@
   width: 100%;
 }
 
-.decisions-search-form {
-  padding-bottom: 6px;
-}
-
 .decisions-search-form-element {
-  margin-bottom: 16px;
+  margin-bottom: $spacing;
 
   > input,
   > button {
@@ -181,7 +98,7 @@
 .decisions-search-form-element__select > label {
   display: block;
   font-weight: $font-weight-bold;
-  margin-bottom: var(--spacing-3-xs);
+  margin-bottom: $spacing-quarter;
 
   @media (width <= 768px) {
     display: none;
@@ -192,7 +109,7 @@
   @media (width >= 1248px) {
     align-items: flex-start;
     display: flex;
-    margin-bottom: 16px;
+    margin-bottom: $spacing;
   }
 }
 
@@ -201,10 +118,9 @@
 
   @media (width >= 1248px) {
     margin-bottom: 0;
-    width: 282px;
 
     &:not(:first-child) {
-      margin-left: 24px;
+      margin-left: $spacing-and-half;
     }
 
     &:last-of-type {
@@ -213,26 +129,51 @@
   }
 }
 
-.decisions-search-form-container__description {
-  @include font('body');
-  margin-bottom: 1.2rem;
-  max-width: 894px;
+.decisions-search-bar-wrapper {
+  flex: 1;
+
+  .input-group {
+    box-shadow: none;
+  }
+
+  input {
+    @include input;
+    background-color: $color-white;
+    line-height: $input-height;
+
+  }
 }
 
-// Needs specific selector to override HDS button styles
+.decisions-search-bar-wrapper__label {
+  align-items: center;
+  color: $color-black;
+  display: flex;
+  display: inline-block;
+  flex-wrap: wrap;
+  font-weight: bold;
+  gap: $spacing-quarter;
+  justify-content: space-between;
+  margin-bottom: $spacing-quarter;
+
+  span {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+  }
+}
+
+.decisions-search-bar-wrapper__label-status {
+  @include font('special.helper_text');
+  margin-block-end: $spacing-half;
+}
+
+.decisions-search-bar-wrapper__input {
+  &:focus-within input {
+    @include focus-outline;
+  }
+}
+
 .decisions-search-submit-button[type='submit'] {
-  --background-color-focus: #{$color-white};
-  --background-color-hover: #{$color-white};
-  --background-color: #{$color-black};
-  --color-focus: #{$color-black};
-  --color-hover: #{$color-black};
-  height: 56px;
   width: 100%;
-}
-
-.decisions-search-submit-button--policymakers[type='submit'] {
-  --background-color-focus: --color-gold;
-  --background-color-hover: --color-gold;
 }
 
 .decisions-search-submit-button--desktop {
@@ -240,5 +181,5 @@
 }
 
 .decisions-search-submit-button--mobile {
-  margin-bottom: 34.5px;
+  margin-bottom: $spacing-double;
 }
