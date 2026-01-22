@@ -201,6 +201,7 @@ h1.minutes__header {
   .minutes__header-suffix {
     @include font('small');
     color: $color-black-50;
+    margin-block-start: $spacing;
   }
 }
 

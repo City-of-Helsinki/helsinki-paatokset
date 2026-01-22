@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Path\PathMatcherInterface;
 
 /**
  * Implements hook_preprocess_html().
@@ -15,6 +16,19 @@ use Drupal\Core\Entity\EntityInterface;
 function paatokset_search_preprocess_html(array &$variables): void {
   if (str_contains(\Drupal::routeMatch()->getRouteName(), 'paatokset_search.decisions')) {
     $variables['attributes']['class'][] = 'paatokset-search-page--decisions';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_search_preprocess_page(&$variables): void {
+  /** @var \Drupal\Core\Path\PathMatcherInterface $path_matcher */
+  $path_matcher = \Drupal::service(PathMatcherInterface::class);
+  if ($path_matcher->isFrontPage()) {
+    // There is a hero block on front page but
+    // since it isn't a paragraph we must set this variable manually.
+    $variables['has_hero'] = TRUE;
   }
 }
 
