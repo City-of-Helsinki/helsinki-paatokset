@@ -479,6 +479,7 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
     'policymaker.discussion_minutes.',
     'policymaker.documents.',
     'policymaker.decisions.',
+    'policymaker.minutes.',
   ];
 
   $route_name = \Drupal::routeMatch()->getRouteName();
