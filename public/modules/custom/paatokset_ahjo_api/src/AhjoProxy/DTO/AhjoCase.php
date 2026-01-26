@@ -18,9 +18,9 @@ final readonly class AhjoCase {
    *   Case ID label (e.g., HEL 2025-007790).
    * @param string $title
    *   Case title.
-   * @param \DateTimeImmutable $created
+   * @param \DateTimeImmutable|null $created
    *   Created timestamp.
-   * @param \DateTimeImmutable $acquired
+   * @param \DateTimeImmutable|null $acquired
    *   Acquired timestamp.
    * @param string $classificationCode
    *   Classification code.
@@ -43,8 +43,8 @@ final readonly class AhjoCase {
     public string $id,
     public string $caseIdLabel,
     public string $title,
-    public \DateTimeImmutable $created,
-    public \DateTimeImmutable $acquired,
+    public \DateTimeImmutable|NULL $created,
+    public \DateTimeImmutable|NULL $acquired,
     public string $classificationCode,
     public string $classificationTitle,
     public string $status,
@@ -72,8 +72,8 @@ final readonly class AhjoCase {
       $object->CaseID,
       $object->CaseIDLabel,
       $object->Title,
-      new \DateTimeImmutable($object->Created),
-      new \DateTimeImmutable($object->Acquired),
+      $object->Created ? new \DateTimeImmutable($object->Created) : NULL,
+      $object->Acquired ? new \DateTimeImmutable($object->Acquired) : NULL,
       $object->ClassificationCode,
       $object->ClassificationTitle,
       $object->Status,

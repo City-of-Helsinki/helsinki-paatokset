@@ -127,8 +127,8 @@ final class AhjoCaseSource extends AhjoSourceBase {
 
       // Cast DTO to array and override complex fields.
       yield array_merge((array) $caseData, [
-        'created' => $caseData->created->getTimestamp(),
-        'acquired' => $caseData->acquired->getTimestamp(),
+        'created' => $caseData->created?->getTimestamp(),
+        'acquired' => $caseData->acquired?->getTimestamp(),
         'handlings' => json_encode($caseData->handlings),
         'records' => json_encode($caseData->records),
       ]);
