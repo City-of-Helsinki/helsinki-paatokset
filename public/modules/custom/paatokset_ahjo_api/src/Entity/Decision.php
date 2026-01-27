@@ -7,7 +7,6 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
