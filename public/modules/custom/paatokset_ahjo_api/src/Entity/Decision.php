@@ -463,6 +463,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     $has_case_id = !$this->get('field_diary_number')->isEmpty();
+    $has_decision = !$this->get('field_decision_content')->isEmpty();
     $history = $this->get('field_decision_history')->value;
 
     $history_dom = new \DOMDocument();
@@ -477,18 +478,20 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     $parser = DecisionParser::parse($content);
     $motion = DecisionParser::parse($this->get('field_decision_motion')->value);
 
-    $content_dom = $this->getDecisionContent();
-    $content_xpath = $parser->xpath;
-
     $output = [];
-    $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
-    if ($content_dom && !empty($voting_results) && $voting_results[0] instanceof \DOMNode) {
-      $voting_link_paragraph = $content_dom->createElement('p');
-      $voting_link_a = $content_dom->createElement('a', (string) new TranslatableMarkup('See table with voting results'));
-      $voting_link_a->setAttribute('href', '#voting-results-accordion');
-      $voting_link_a->setAttribute('id', 'open-voting-results');
-      $voting_link_paragraph->appendChild($voting_link_a);
-      $voting_results[0]->appendChild($voting_link_paragraph);
+
+    // Inject a link that opens voting results accordion.
+    if ($has_decision) {
+      $voting_results = $parser->xpath->query("//*[contains(@class, 'aanestykset')]");
+
+      foreach ($voting_results as $voting_result) {
+        $voting_link_paragraph = $parser->dom->createElement('p');
+        $voting_link_a = $parser->dom->createElement('a', (string) new TranslatableMarkup('See table with voting results'));
+        $voting_link_a->setAttribute('href', '#voting-results-accordion');
+        $voting_link_a->setAttribute('id', 'open-voting-results');
+        $voting_link_paragraph->appendChild($voting_link_a);
+        $voting_result->appendChild($voting_link_paragraph);
+      }
     }
 
     // Main decision content sections.
@@ -503,7 +506,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     // Motion content sections.
     // If decision content is empty, motion is printed as the main content.
     // Otherwise, add motion content as accordions.
-    if ($content_dom) {
+    if ($has_decision) {
       foreach ($motion->getSections() as $section) {
         $output['accordions'][] = [
           'heading' => $section->heading,
@@ -604,14 +607,14 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     // Add decision IssuedDate (not DecisionDate) to appeal process accordion.
     // Do not display for motions, only for decisions.
     $appeal_content = NULL;
-    if ($has_case_id && $content_dom && !$this->get('field_decision_date')->isEmpty()) {
+    if ($has_case_id && $has_decision && !$this->get('field_decision_date')->isEmpty()) {
       $decision_timestamp = strtotime($this->get('field_decision_date')->value);
       $decision_date = date('d.m.Y', $decision_timestamp);
       $appeal_content = '<p class="issue__decision-date">' . new TranslatableMarkup('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
     }
 
     // Appeal information. Only display for decisions (if content is available).
-    if ($content_dom && $appealInfo = $parser->getAppealInfo()) {
+    if ($has_decision && $appealInfo = $parser->getAppealInfo()) {
       $appeal_content .= $appealInfo;
     }
 
