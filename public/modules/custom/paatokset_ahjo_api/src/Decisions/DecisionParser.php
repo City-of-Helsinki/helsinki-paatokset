@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Decisions;
 
 use Drupal\Component\Utility\Html;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SisaltoSection;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
@@ -226,6 +227,45 @@ readonly class DecisionParser {
       phone: $phone,
       email: $parts[3] ?? NULL,
     );
+  }
+
+  /**
+   * Get content sections.
+   *
+   * Parses sections with class 'SisaltoSektio' from the HTML content.
+   * Each section contains a heading (h3) and content.
+   *
+   * @return SisaltoSection[]
+   *   Array of sections.
+   */
+  public function getSections(): array {
+    $sections = $this->xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' SisaltoSektio ')]");
+    if ($sections->length < 1) {
+      return [];
+    }
+
+    $output = [];
+    foreach ($sections as $node) {
+      if (!$node instanceof \DOMElement) {
+        continue;
+      }
+
+      $headingNode = $this->xpath->query(".//*[contains(@class, 'SisaltoOtsikko')]", $node)->item(0);
+      $heading = $headingNode?->nodeValue;
+
+      $content = '';
+
+      foreach ($node->childNodes as $child) {
+        if ($child === $headingNode) {
+          continue;
+        }
+        $content .= $child->ownerDocument->saveHtml($child);
+      }
+
+      $output[] = new SisaltoSection($heading, $content);
+    }
+
+    return $output;
   }
 
   /**

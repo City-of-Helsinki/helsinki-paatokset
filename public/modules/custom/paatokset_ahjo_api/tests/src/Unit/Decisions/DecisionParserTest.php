@@ -10,6 +10,7 @@ use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SisaltoSection;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -87,6 +88,7 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
+    $this->assertEmpty($parser->getSections());
   }
 
   /**
@@ -98,6 +100,7 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
+    $this->assertEmpty($parser->getSections());
   }
 
   /**
@@ -267,6 +270,39 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertEquals('', $chairman->title);
 
     $this->assertNull($result->getSigner(SignerRole::SECRETARY));
+  }
+
+  /**
+   * Tests getSections with multiple sections.
+   */
+  public function testGetSections(): void {
+    $html = <<<HTML
+      <section class="SisaltoSektioToisto">
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Päätös</h3>
+          <p>Decision content.</p>
+        </div>
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Käsittely</h3>
+          <p>Handling content.</p>
+          <p>More content.</p>
+        </div>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getSections();
+
+    $this->assertCount(2, $result);
+
+    $this->assertInstanceOf(SisaltoSection::class, $result[0]);
+    $this->assertEquals('Päätös', $result[0]->heading);
+    $this->assertStringContainsString('<p>Decision content.</p>', $result[0]->content);
+
+    $this->assertInstanceOf(SisaltoSection::class, $result[1]);
+    $this->assertEquals('Käsittely', $result[1]->heading);
+    $this->assertStringContainsString('Handling content.', $result[1]->content);
+    $this->assertStringContainsString('More content.', $result[1]->content);
   }
 
 }

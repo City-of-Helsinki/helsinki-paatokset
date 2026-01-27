@@ -463,14 +463,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     $has_case_id = !$this->get('field_diary_number')->isEmpty();
-    $motion = $this->get('field_decision_motion')->value;
     $history = $this->get('field_decision_history')->value;
-
-    $motion_dom = new \DOMDocument();
-    if (!empty($motion)) {
-      @$motion_dom->loadHTML($motion);
-    }
-    $motion_xpath = new \DOMXPath($motion_dom);
 
     $history_dom = new \DOMDocument();
     if (!empty($history)) {
@@ -508,17 +501,23 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // Motion content sections.
-    // If decision content is empty, print motion content as main content.
-    $motion_sections = $motion_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
+    // If decision content is empty, motion is printed as the main content.
+    // Otherwise, add motion content as accordions.
     if ($content_dom) {
-      $motion_accordions = $this->getMotionSections($motion_sections);
-      foreach ($motion_accordions as $accordion) {
-        $output['accordions'][] = $accordion;
+      foreach ($motion->getSections() as $section) {
+        $output['accordions'][] = [
+          'heading' => $section->heading,
+          'content' => [
+            '#type' => 'processed_text',
+            '#format' => 'full_html',
+            '#text' => $section->content,
+          ],
+        ];
       }
     }
 
     // To be decided in this meeting.
-    $decided_in_this_meeting = $motion_xpath->query("//*[contains(@class, 'Muokkaustieto')]");
+    $decided_in_this_meeting = $motion->xpath->query("//*[contains(@class, 'Muokkaustieto')]");
     $decided_in_this_meeting_content = NULL;
     if ($decided_in_this_meeting->length > 0) {
       $decided_in_this_meeting_content = $decided_in_this_meeting[0]->nodeValue;
@@ -653,50 +652,6 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
           '#text' => $appeal_content,
         ],
       ];
-    }
-
-    return $output;
-  }
-
-  /**
-   * Split motions into sections.
-   *
-   * @param \DOMNodeList $list
-   *   Motion content sections.
-   *
-   * @return array
-   *   Array of sections.
-   */
-  private function getMotionSections(\DOMNodeList $list): array {
-    $output = [];
-    if ($list->length < 1) {
-      return [];
-    }
-
-    foreach ($list as $node) {
-      if (!$node instanceof \DOMElement) {
-        continue;
-      }
-
-      $section = [
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'full_html',
-          '#text' => NULL,
-        ],
-      ];
-      $heading_found = FALSE;
-      foreach ($node->childNodes as $node) {
-        if (!$heading_found && $node->nodeName === 'h3') {
-          $section['heading'] = $node->nodeValue;
-          $heading_found = TRUE;
-          continue;
-        }
-
-        $section['content']['#text'] .= $node->ownerDocument->saveHtml($node);
-      }
-
-      $output[] = $section;
     }
 
     return $output;

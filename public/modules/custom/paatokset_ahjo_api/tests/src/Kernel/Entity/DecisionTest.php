@@ -188,6 +188,7 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
+      'field_organization_type' => 'Viranhaltija',
     ]);
 
     // Some decisions in production have 'null' on history field.
@@ -201,6 +202,8 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
     $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
     $this->assertEquals('John Doe', $content['presenter_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('Aku Ankka', $content['signature_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('Tilapäällikkö', $content['signature_info']['content']['title']['#plain_text'] ?? '');
 
     // Empty <p> tags are stripped from accordions.
     $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
@@ -216,6 +219,7 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
+      'field_organization_type' => 'Viranhaltija',
     ]);
 
     $this->assertEmpty($decision->parseContent());
@@ -236,6 +240,8 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
     $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
     $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
+    $this->assertEquals('Aku Ankka', $content['signature_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('Tehtävänimike', $content['signature_info']['content']['title']['#plain_text'] ?? '');
 
     // Empty <p> tags are stripped from accordions.
     $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content-new.html'));
