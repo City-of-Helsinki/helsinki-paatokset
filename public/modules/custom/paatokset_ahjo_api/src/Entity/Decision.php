@@ -570,37 +570,15 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // Presenter information.
-    $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
-    $presenter_content = NULL;
-    if ($presenter_info->length > 0) {
-      $presenter_content = DecisionParser::getHtmlContentUntilBreakingElement($presenter_info);
-    }
-
-    if ($presenter_content) {
-      // Replace all HTML tags with #.
-      $result = preg_replace('/<[^>]+>/', '#', $presenter_content);
-
-      // Remove leading and trailing # or whitespace.
-      $result = trim($result, "# \t\n\r\0\x0B");
-
-      // Collapse multiple # into one and normalize spacing around them.
-      $result = preg_replace('/#+/', '#', $result);
-      $result = preg_replace('/\s*#\s*/', ' # ', $result);
-
-      // Split into array.
-      $parts = array_map('trim', explode('#', $result));
-      $contact = [
-        'title' => ucfirst($parts[0] ?? '') ?: NULL,
-        'name' => ucfirst($parts[1] ?? '') ?: NULL,
-      ];
+    if ($presenterInfo = $parser->getPresenterInfo()) {
       $output['presenter_info'] = [
         'heading' => new TranslatableMarkup('Presenter information'),
         'content' => [
           'title' => [
-            '#plain_text' => $contact['title'],
+            '#plain_text' => $presenterInfo->title,
           ],
           'name' => [
-            '#plain_text' => $contact['name'],
+            '#plain_text' => $presenterInfo->name,
           ],
         ],
       ];
@@ -633,9 +611,8 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // Appeal information. Only display for decisions (if content is available).
-    $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
-    if ($content_dom && $appeal_info) {
-      $appeal_content .= DecisionParser::getHtmlContentUntilBreakingElement($appeal_info);
+    if ($content_dom && $appealInfo = $parser->getAppealInfo()) {
+      $appeal_content .= $appealInfo;
     }
 
     if ($appeal_content) {

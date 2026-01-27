@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Decisions;
 
 use Drupal\Component\Utility\Html;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\PresenterInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SisaltoSection;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
@@ -250,19 +251,15 @@ readonly class DecisionParser {
         continue;
       }
 
-      $headingNode = $this->xpath->query(".//*[contains(@class, 'SisaltoOtsikko')]", $node)->item(0);
-      $heading = $headingNode?->nodeValue;
+      $headingNodes = $this->xpath->query(".//*[contains(@class, 'SisaltoOtsikko')]", $node);
+      $heading = $headingNodes?->item(0)?->nodeValue;
 
-      $content = '';
-
-      foreach ($node->childNodes as $child) {
-        if ($child === $headingNode) {
-          continue;
-        }
-        $content .= $child->ownerDocument->saveHtml($child);
+      // Remove headings from the content.
+      foreach ($headingNodes as $headingNode) {
+        $headingNode->parentNode->removeChild($headingNode);
       }
 
-      $output[] = new SisaltoSection($heading, $content);
+      $output[] = new SisaltoSection($heading, self::getInnerHtml($node));
     }
 
     return $output;
@@ -274,6 +271,120 @@ readonly class DecisionParser {
   public function getModificationInfo(): ?string {
     $node = $this->xpath->query("//*[contains(@class, 'Muokkaustieto')]")->item(0);
     return $node?->nodeValue;
+  }
+
+  /**
+   * Get appeal info (Muutoksenhakuohjeet).
+   *
+   * Format:
+   *
+   * ```
+   * <section class="MuutoksenhakuohjeetSektio">
+   *   <h3 class="MuutoksenhakuohjeetOtsikko">MUUTOKSENHAKUOHJEET</h3>
+   *   <h4>VALITUSOSOITUS</h4>
+   *   <p>Tähän päätökseen haetaan muutosta kunnallisvalituksella.</p>
+   *   ...arbitrary HTML content...
+   * </section>
+   * ```
+   *
+   * Legacy format is missing the section wrapper. We detect the title
+   * and get everything until the next section.
+   *
+   * ```
+   * <h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3>
+   * <h4>VALITUSOSOITUS</h4>
+   * <p>Tähän päätökseen haetaan muutosta kunnallisvalituksella.</p>
+   * ...arbitrary HTML content...
+   * <h3 class="*Otsikko">Next section title</h3>
+   * ```
+   */
+  public function getAppealInfo(): ?string {
+    // Try to find a section wrapper.
+    foreach ($this->xpath->query("//*[contains(@class, 'MuutoksenhakuohjeetSektio')]") as $section) {
+      // Remove section heading. We customize the heading in Drupal.
+      foreach ($this->xpath->evaluate('//*[contains(@class, "MuutoksenhakuohjeetOtsikko")]', $section) as $el) {
+        $el->parentNode->removeChild($el);
+      }
+
+      return self::getInnerHtml($section);
+    }
+
+    // Fall back to legacy format.
+    $heading = $this->xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
+
+    return self::getHtmlContentUntilBreakingElement($heading);
+  }
+
+  /**
+   * Get presenter info (EsittelijaTiedot).
+   *
+   * Format:
+   *
+   * ```
+   * <section class="EsittelijaTiedot">
+   *   <h3 class="EsittelijaTiedot">Esittelijä</h3>
+   *   <div></div>
+   *   <div>Kaupunginhallitus</div>
+   * </section>
+   * ```
+   *
+   * Legacy format is missing the `EsittelijaTiedot` section wrapper.
+   *
+   * ```
+   * <h3 class="EsittelijaTiedot">Esittelijä</h3>
+   * <div>Pormestari</div>
+   * <div>Aku Ankka</div>
+   * ```
+   */
+  public function getPresenterInfo(): ?PresenterInfo {
+    $sections = $this->xpath->query("//section[contains(@class, 'EsittelijaTiedot')]/*[not(self::h3)]");
+
+    $content = '';
+    if ($sections->length > 0) {
+      foreach ($sections as $node) {
+        $content .= $node->ownerDocument->saveHTML($node);
+      }
+    }
+    else {
+      // Legacy format:
+      $content = self::getHtmlContentUntilBreakingElement(
+        $this->xpath->query("//*[contains(@class, 'EsittelijaTiedot')]")
+      );
+    }
+
+    if (!$content) {
+      return NULL;
+    }
+
+    // Replace all HTML tags with #.
+    $result = preg_replace('/<[^>]+>/', '#', $content);
+
+    // Remove leading and trailing # or whitespace.
+    $result = trim($result, "# \t\n\r\0\x0B");
+
+    // Collapse multiple # into one and normalize spacing around them.
+    $result = preg_replace('/#+/', '#', $result);
+    $result = preg_replace('/\s*#\s*/', ' # ', $result);
+
+    // Split into array.
+    $parts = array_map('trim', explode('#', $result));
+
+    $title = ucfirst($parts[0] ?? '') ?: NULL;
+    $name = ucfirst($parts[1] ?? '') ?: NULL;
+
+    return ($title || $name) ? new PresenterInfo($title, $name) : NULL;
+  }
+
+  /**
+   * Get inner HTML of a DOM element.
+   */
+  private static function getInnerHtml(\DOMElement $node): string {
+    $content = [];
+    foreach ($node->childNodes as $child) {
+      $content[] = $node->ownerDocument->saveHTML($child);
+    }
+
+    return implode('', $content);
   }
 
   /**

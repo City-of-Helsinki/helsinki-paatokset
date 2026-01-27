@@ -7,6 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Unit\Decisions;
 use Drupal\Core\Link;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\PresenterInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
@@ -89,6 +90,8 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
     $this->assertNull($parser->getModificationInfo());
+    $this->assertNull($parser->getAppealInfo());
+    $this->assertNull($parser->getPresenterInfo());
     $this->assertEmpty($parser->getSections());
   }
 
@@ -102,6 +105,8 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
     $this->assertNull($parser->getModificationInfo());
+    $this->assertNull($parser->getAppealInfo());
+    $this->assertNull($parser->getPresenterInfo());
     $this->assertEmpty($parser->getSections());
   }
 
@@ -319,6 +324,94 @@ class DecisionParserTest extends UnitTestCase {
     $result = $parser->getModificationInfo();
 
     $this->assertEquals('Blaablaa', $result);
+  }
+
+  /**
+   * Tests getAppealInfo with new format (section wrapper).
+   */
+  public function testGetAppealInfoNewFormat(): void {
+    $html = <<<HTML
+      <section class="MuutoksenhakuohjeetSektio">
+        <h3 class="MuutoksenhakuohjeetOtsikko">MUUTOKSENHAKUOHJEET</h3>
+        <h4>VALITUSOSOITUS</h4>
+        <p>Tähän päätökseen haetaan muutosta kunnallisvalituksella.</p>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getAppealInfo();
+
+    $this->assertNotNull($result);
+    $this->assertStringNotContainsString('MUUTOKSENHAKUOHJEET', $result);
+    $this->assertStringContainsString('VALITUSOSOITUS', $result);
+    $this->assertStringContainsString('Tähän päätökseen haetaan muutosta', $result);
+  }
+
+  /**
+   * Tests getAppealInfo with legacy format (heading only).
+   */
+  public function testGetAppealInfoLegacyFormat(): void {
+    $html = <<<HTML
+      <h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3>
+      <p>Appeal content here.</p>
+      <h3 class="SomeOtherHeading">Next section</h3>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getAppealInfo();
+
+    $this->assertNotNull($result);
+    $this->assertStringContainsString('Appeal content here.', $result);
+    $this->assertStringNotContainsString('Next section', $result);
+  }
+
+  /**
+   * Tests getAppealInfo returns NULL when not present.
+   */
+  public function testGetAppealInfoEmpty(): void {
+    $html = '<div>Some other content</div>';
+
+    $parser = DecisionParser::parse($html);
+
+    $this->assertNull($parser->getAppealInfo());
+  }
+
+  /**
+   * Tests getPresenterInfo with new format.
+   */
+  public function testGetPresenterInfoNewFormat(): void {
+    $html = <<<HTML
+      <section class="EsittelijaTiedot">
+        <h3 class="EsittelijaTiedot">Esittelijä</h3>
+        <div></div>
+        <div>Kaupunginhallitus</div>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getPresenterInfo();
+
+    $this->assertInstanceOf(PresenterInfo::class, $result);
+    $this->assertEquals('Kaupunginhallitus', $result->title);
+  }
+
+  /**
+   * Tests getPresenterInfo with legacy format.
+   */
+  public function testGetPresenterInfoLegacyFormat(): void {
+    $html = <<<HTML
+      <h3 class="EsittelijaTiedot">Esittelijä</h3>
+      <div>Apulaispormestari</div>
+      <div>Aku Ankka</div>
+      <h3 class="SomeOtherHeading">Next section</h3>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getPresenterInfo();
+
+    $this->assertInstanceOf(PresenterInfo::class, $result);
+    $this->assertEquals('Apulaispormestari', $result->title);
+    $this->assertEquals('Aku Ankka', $result->name);
   }
 
 }
