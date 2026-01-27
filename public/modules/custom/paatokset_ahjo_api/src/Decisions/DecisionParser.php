@@ -235,7 +235,7 @@ readonly class DecisionParser {
    * Parses sections with class 'SisaltoSektio' from the HTML content.
    * Each section contains a heading (h3) and content.
    *
-   * @return SisaltoSection[]
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\SisaltoSection[]
    *   Array of sections.
    */
   public function getSections(): array {
@@ -266,6 +266,14 @@ readonly class DecisionParser {
     }
 
     return $output;
+  }
+
+  /**
+   * Get modification info (Muokkaustieto).
+   */
+  public function getModificationInfo(): ?string {
+    $node = $this->xpath->query("//*[contains(@class, 'Muokkaustieto')]")->item(0);
+    return $node?->nodeValue;
   }
 
   /**

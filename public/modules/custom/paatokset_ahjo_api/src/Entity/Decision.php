@@ -517,14 +517,9 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // To be decided in this meeting.
-    $decided_in_this_meeting = $motion->xpath->query("//*[contains(@class, 'Muokkaustieto')]");
-    $decided_in_this_meeting_content = NULL;
-    if ($decided_in_this_meeting->length > 0) {
-      $decided_in_this_meeting_content = $decided_in_this_meeting[0]->nodeValue;
-    }
-    if ($decided_in_this_meeting_content) {
+    if ($modificationInfo = $motion->getModificationInfo()) {
       $output['decided_in_this_meeting'] = [
-        '#markup' => $decided_in_this_meeting_content,
+        '#markup' => $modificationInfo,
       ];
     }
 

@@ -88,6 +88,7 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
+    $this->assertNull($parser->getModificationInfo());
     $this->assertEmpty($parser->getSections());
   }
 
@@ -100,6 +101,7 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
+    $this->assertNull($parser->getModificationInfo());
     $this->assertEmpty($parser->getSections());
   }
 
@@ -303,6 +305,20 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertEquals('Käsittely', $result[1]->heading);
     $this->assertStringContainsString('Handling content.', $result[1]->content);
     $this->assertStringContainsString('More content.', $result[1]->content);
+  }
+
+  /**
+   * Tests getModificationInfo returns content.
+   */
+  public function testGetModificationInfo(): void {
+    $html = <<<HTML
+      <div class="Muokkaustieto">Blaablaa</div>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getModificationInfo();
+
+    $this->assertEquals('Blaablaa', $result);
   }
 
 }
