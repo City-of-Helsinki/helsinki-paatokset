@@ -6,6 +6,9 @@ namespace Drupal\paatokset_ahjo_api\Decisions;
 
 use Drupal\Component\Utility\Html;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
 
 /**
  * Parser for decision HTML content.
@@ -34,11 +37,23 @@ readonly class DecisionParser {
   }
 
   /**
-   * Get main content sections (SisaltoSektio).
+   * Get main content sections.
    *
-   * New format has a wrapper element `SisaltoSektioToisto` containing
-   * all `SisaltoSektio` sections. Legacy format has individual
-   * `SisaltoSektio` divs without a wrapper.
+   * The main content is presented in the following format:
+   *
+   * ```
+   * <section class="SisaltoSektioToisto">
+   *   <div class="SisaltoSektio">
+   *     <h3 class="SisaltoOtsikko">Päätös</h3>
+   *     <p>Kaupunginhallitus päätti panna asian pöydälle.</p>
+   *   </div>
+   *   <div class="SisaltoSektio">
+   *     ...arbitrary HTML content...
+   *   </div>
+   * </section>
+   * ```
+   *
+   * The legacy format does not have the `SisaltoSektioToisto` wrapper.
    *
    * @return string|null
    *   HTML content of the main sections, or NULL if not found.
@@ -65,9 +80,48 @@ readonly class DecisionParser {
   }
 
   /**
+   * Get signature information (decisionmaker).
+   *
+   * ```
+   * <section class="SahkoinenAllekirjoitusSektio">
+   *   <p class="SahkoisestiAllekirjoitettuTeksti">Allekirjoitettu.</p>
+   *   <p>
+   *     <div class="Puheenjohtajanimi">Aku Ankka</div>
+   *     <div class="Puheenjohtajaotsikko">tehtävänimike</div>
+   *   </p>
+   *   <p>
+   *     <div class="Poytakirjanpitajanimi">Roope Ankka</div>
+   *     <div class="Poytakirjanpitajaotsikko">tehtävänimike</div>
+   *   </p>
+   * </section>
+   * ```
+   *
+   * In legacy format, the wrapper is div instead of section.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo|null
+   *   Signature info, or NULL if not found.
+   */
+  public function getSignatureInfo(): ?SignatureInfo {
+    $signers = [];
+
+    foreach (SignerRole::cases() as $role) {
+      $name = $this->xpath->query("//*[contains(@class, '{$role->getNameSelector()}')]");
+      if ($name->length > 0) {
+        $title = $this->xpath->query("//*[contains(@class, '{$role->getRoleSelector()}')]");
+        $signers[$role->name] = new Signer(
+          name: trim($name->item(0)->textContent),
+          title: $title->length > 0 ? ucfirst(trim($title->item(0)->textContent)) : '',
+        );
+      }
+    }
+
+    return $signers ? new SignatureInfo($signers) : NULL;
+  }
+
+  /**
    * Get more info details.
    *
-   * More info details presented in the following format:
+   * More info details are presented in the following format:
    *
    * ```
    * phpcs:disable

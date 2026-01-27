@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
 
 /**
  * Bundle class for decisions.
@@ -303,6 +304,13 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
   }
 
   /**
+   * Returns true if the organization owning this decision is a trustee.
+   */
+  private function organizationIsTrustee(): bool {
+    return in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES);
+  }
+
+  /**
    * Get active decisions Minutes PDF file URI.
    *
    * @return string|null
@@ -310,7 +318,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
    */
   private function getMinutesPdf(): ?string {
     // Check decision org type first.
-    if (!in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
+    if (!$this->organizationIsTrustee()) {
       return NULL;
     }
 
@@ -474,6 +482,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     // decision is not set, use motion content instead.
     $content = $this->get('field_decision_content')->value ?? $this->get('field_decision_motion')->value;
     $parser = DecisionParser::parse($content);
+    $motion = DecisionParser::parse($this->get('field_decision_motion')->value);
 
     $content_dom = $this->getDecisionContent();
     $content_xpath = $parser->xpath;
@@ -549,41 +558,21 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // Signature information.
-    $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
-    $signature_info_content = NULL;
-    if ($signature_info->length > 0) {
-      $signature_info_content = DecisionParser::getHtmlContentUntilBreakingElement($signature_info);
-    }
-
-    if ($signature_info_content && in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
-      // Replace all HTML tags with #.
-      $result = preg_replace('/<[^>]+>/', '#', $signature_info_content);
-
-      // Remove leading and trailing # or whitespace.
-      $result = trim($result, "# \t\n\r\0\x0B");
-
-      // Collapse multiple # into one and normalize spacing around them.
-      $result = preg_replace('/#+/', '#', $result);
-      $result = preg_replace('/\s*#\s*/', ' # ', $result);
-
-      // Split into array.
-      $parts = array_map('trim', explode('#', $result));
-
-      $contact = [
-        'name' => $parts[0] ?? NULL,
-        'title' => ucfirst($parts[1]) ?? NULL,
-      ];
-      $output['signature_info'] = [
-        'heading' => new TranslatableMarkup('Decisionmaker'),
-        'content' => [
-          'name' => [
-            '#plain_text' => $contact['name'],
+    if ($this->organizationIsTrustee()) {
+      $signatureInfo = $parser->getSignatureInfo();
+      if ($chairman = $signatureInfo?->getSigner(SignerRole::CHAIRMAN)) {
+        $output['signature_info'] = [
+          'heading' => new TranslatableMarkup('Decisionmaker'),
+          'content' => [
+            'name' => [
+              '#plain_text' => $chairman->name,
+            ],
+            'title' => [
+              '#plain_text' => $chairman->title,
+            ],
           ],
-          'title' => [
-            '#plain_text' => $contact['title'],
-          ],
-        ],
-      ];
+        ];
+      }
     }
 
     // Presenter information.

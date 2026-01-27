@@ -7,6 +7,9 @@ namespace Drupal\Tests\paatokset_ahjo_api\Unit\Decisions;
 use Drupal\Core\Link;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SignatureInfo;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
+use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -74,18 +77,16 @@ class DecisionParserTest extends UnitTestCase {
   }
 
   /**
-   * Tests that NULL is returned when no more info section exists.
+   * Tests that NULL is returned when no content exists.
    */
   public function testNoContent(): void {
     $html = '<div>Some other content</div>';
 
     $parser = DecisionParser::parse($html);
 
-    $result = $parser->getMoreInfoDetails();
-    $this->assertNull($result);
-
-    $result = $parser->getMainContent();
-    $this->assertNull($result);
+    $this->assertNull($parser->getMoreInfoDetails());
+    $this->assertNull($parser->getMainContent());
+    $this->assertNull($parser->getSignatureInfo());
   }
 
   /**
@@ -94,11 +95,9 @@ class DecisionParserTest extends UnitTestCase {
   public function testParseWithNullHtml(): void {
     $parser = DecisionParser::parse(NULL);
 
-    $result = $parser->getMoreInfoDetails();
-    $this->assertNull($result);
-
-    $result = $parser->getMainContent();
-    $this->assertNull($result);
+    $this->assertNull($parser->getMoreInfoDetails());
+    $this->assertNull($parser->getMainContent());
+    $this->assertNull($parser->getSignatureInfo());
   }
 
   /**
@@ -206,6 +205,68 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertEquals('09 310', $result->phone);
     // Drupal can't handle short phone numbers. Tests that the bug is mitigated.
     $this->assertEquals('tel:0-9310', $result->getPhoneLink()->getUrl()->getUri());
+  }
+
+  /**
+   * Tests getSignatureInfo with multiple signers.
+   */
+  public function testGetSignatureInfoNewFormat(): void {
+    $html = <<<HTML
+      <section class="SahkoinenAllekirjoitusSektio">
+        <p class="SahkoisestiAllekirjoitettuTeksti">Päätös on sähköisesti allekirjoitettu.</p>
+        <p>
+          <div class="Puheenjohtajanimi">Aku Ankka</div>
+          <div class="Puheenjohtajaotsikko">puheenjohtaja</div>
+        </p>
+        <p>
+          <div class="Poytakirjanpitajanimi">Roope Ankka</div>
+          <div class="Poytakirjanpitajaotsikko">sihteeri</div>
+        </p>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getSignatureInfo();
+
+    $this->assertInstanceOf(SignatureInfo::class, $result);
+    $this->assertCount(2, $result->signers);
+
+    $chairman = $result->getSigner(SignerRole::CHAIRMAN);
+    $this->assertInstanceOf(Signer::class, $chairman);
+    $this->assertEquals('Aku Ankka', $chairman->name);
+    $this->assertEquals('Puheenjohtaja', $chairman->title);
+
+    $secretary = $result->getSigner(SignerRole::SECRETARY);
+    $this->assertInstanceOf(Signer::class, $secretary);
+    $this->assertEquals('Roope Ankka', $secretary->name);
+    $this->assertEquals('Sihteeri', $secretary->title);
+  }
+
+  /**
+   * Tests getSignatureInfo with missing data.
+   */
+  public function testGetSignatureInfoNewFormatMissingData(): void {
+    $html = <<<HTML
+      <section class="SahkoinenAllekirjoitusSektio">
+        <p class="SahkoisestiAllekirjoitettuTeksti">Päätös on sähköisesti allekirjoitettu.</p>
+        <p>
+          <div class="Puheenjohtajanimi">Aku Ankka</div>
+        </p>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getSignatureInfo();
+
+    $this->assertInstanceOf(SignatureInfo::class, $result);
+    $this->assertCount(1, $result->signers);
+
+    $chairman = $result->getSigner(SignerRole::CHAIRMAN);
+    $this->assertInstanceOf(Signer::class, $chairman);
+    $this->assertEquals('Aku Ankka', $chairman->name);
+    $this->assertEquals('', $chairman->title);
+
+    $this->assertNull($result->getSigner(SignerRole::SECRETARY));
   }
 
 }
