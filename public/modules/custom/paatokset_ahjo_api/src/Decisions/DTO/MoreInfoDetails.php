@@ -45,7 +45,11 @@ final readonly class MoreInfoDetails {
         $phone = substr_replace($phone, '-', 1, 0);
       }
 
-      return Link::fromTextAndUrl($this->phone, Url::fromUri("tel:$phone"));
+      try {
+        return Link::fromTextAndUrl($this->phone, Url::fromUri("tel:$phone"));
+      }
+      catch (\InvalidArgumentException) {
+      }
     }
 
     return NULL;
@@ -56,7 +60,11 @@ final readonly class MoreInfoDetails {
    */
   public function getEmailLink(): ?Link {
     if ($this->email) {
-      return Link::fromTextAndUrl($this->email, Url::fromUri('mailto:' . $this->email));
+      try {
+        return Link::fromTextAndUrl($this->email, Url::fromUri('mailto:' . $this->email));
+      }
+      catch (\InvalidArgumentException) {
+      }
     }
 
     return NULL;

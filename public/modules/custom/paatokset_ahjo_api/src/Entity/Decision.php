@@ -464,13 +464,6 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
 
     $has_case_id = !$this->get('field_diary_number')->isEmpty();
     $has_decision = !$this->get('field_decision_content')->isEmpty();
-    $history = $this->get('field_decision_history')->value;
-
-    $history_dom = new \DOMDocument();
-    if (!empty($history)) {
-      @$history_dom->loadHTML($history);
-    }
-    $history_xpath = new \DOMXPath($history_dom);
 
     // Parse content from decision HTML. If the
     // decision is not set, use motion content instead.
@@ -528,80 +521,42 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
 
     // More information.
     if ($moreInfo = $parser->getMoreInfoDetails()) {
-      $output['more_info'] = [
-        'heading' => new TranslatableMarkup('Ask for more info'),
-        'content' => [
-          'name' => [
-            '#plain_text' => $moreInfo->name,
-          ],
-          'title' => [
-            '#plain_text' => $moreInfo->title,
-          ],
-        ],
-      ];
-
-      try {
-        if ($phone = $moreInfo->getPhoneLink()) {
-          $output['more_info']['content']['phone'] = $phone;
-        }
-
-        if ($email = $moreInfo->getEmailLink()) {
-          $output['more_info']['content']['email'] = $email;
-        }
-      }
-      catch (\InvalidArgumentException $e) {
-        Error::logException(\Drupal::logger('paatokset_ahjo_api'), $e);
-      }
+      $output['more_info'] = $moreInfo;
     }
 
     // Signature information.
     if ($this->organizationIsTrustee()) {
       $signatureInfo = $parser->getSignatureInfo();
       if ($chairman = $signatureInfo?->getSigner(SignerRole::CHAIRMAN)) {
-        $output['signature_info'] = [
-          'heading' => new TranslatableMarkup('Decisionmaker'),
-          'content' => [
-            'name' => [
-              '#plain_text' => $chairman->name,
-            ],
-            'title' => [
-              '#plain_text' => $chairman->title,
-            ],
-          ],
-        ];
+        $output['signature_info'] = $chairman;
       }
     }
 
     // Presenter information.
     if ($presenterInfo = $parser->getPresenterInfo()) {
-      $output['presenter_info'] = [
-        'heading' => new TranslatableMarkup('Presenter information'),
-        'content' => [
-          'title' => [
-            '#plain_text' => $presenterInfo->title,
-          ],
-          'name' => [
-            '#plain_text' => $presenterInfo->name,
-          ],
-        ],
-      ];
+      $output['presenter_info'] = $presenterInfo;
     }
 
     // Decision history.
-    $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
-    $decision_history_content = NULL;
-    if ($decision_history->length > 0) {
-      $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
-    }
-    if ($decision_history_content) {
-      $output['accordions'][] = [
-        'heading' => new TranslatableMarkup('Decision history'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $decision_history_content,
-        ],
-      ];
+    $history = $this->get('field_decision_history')->value;
+    if (!empty($history)) {
+      $history_dom = new \DOMDocument();
+      @$history_dom->loadHTML($history);
+      $history_xpath = new \DOMXPath($history_dom);
+
+      $decision_history = $history_xpath->query("//*[contains(@class, 'paatoshistoria')]");
+      if ($decision_history->length > 0) {
+        $decision_history_content = $this->getDecisionHistoryHtmlContent($decision_history);
+
+        $output['accordions'][] = [
+          'heading' => new TranslatableMarkup('Decision history'),
+          'content' => [
+            '#type' => 'processed_text',
+            '#format' => 'decision_html',
+            '#text' => $decision_history_content,
+          ],
+        ];
+      }
     }
 
     // Add decision IssuedDate (not DecisionDate) to appeal process accordion.

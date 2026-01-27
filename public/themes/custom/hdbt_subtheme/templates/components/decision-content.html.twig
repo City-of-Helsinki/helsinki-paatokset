@@ -102,35 +102,35 @@
 <div class="issue__more-info__container">
   {% if decision_content.presenter_info %}
     <div class="issue__more-info">
-      <h3>{{ decision_content.presenter_info.heading }}</h3>
+      <h3>{{ 'Presenter information' | t }}</h3>
       {% include "@hdbt/component/contact-card.twig" with {
         heading_level: 'h4',
-        contact_name: decision_content.presenter_info.content.name,
-        contact_title: decision_content.presenter_info.content.title,
+        contact_name: decision_content.presenter_info.name,
+        contact_title: decision_content.presenter_info.title,
       } %}
     </div>
   {% endif %}
 
   {% if decision_content.signature_info %}
     <div class="issue__more-info">
-      <h3>{{ decision_content.signature_info.heading }}</h3>
+      <h3>{{ 'Decisionmaker' | t }}</h3>
       {% include "@hdbt/component/contact-card.twig" with {
         heading_level: 'h4',
-        contact_name: decision_content.signature_info.content.name,
-        contact_title: decision_content.signature_info.content.title,
+        contact_name: decision_content.signature_info.name,
+        contact_title: decision_content.signature_info.title,
       } %}
     </div>
   {% endif %}
 
   {% if decision_content.more_info %}
     <div class="issue__more-info">
-      <h3>{{ decision_content.more_info.heading }}</h3>
+      <h3>{{ 'Ask for more info' | t }}</h3>
       {% include "@hdbt/component/contact-card.twig" with {
         heading_level: 'h4',
-        contact_name: decision_content.more_info.content.name,
-        contact_title: decision_content.more_info.content.title,
-        email: decision_content.more_info.content.email,
-        phone_number: decision_content.more_info.content.phone,
+        contact_name: decision_content.more_info.name,
+        contact_title: decision_content.more_info.title,
+        email: decision_content.more_info.getEmailLink(),
+        phone_number: decision_content.more_info.getPhoneLink(),
       } %}
     </div>
   {% endif %}
