@@ -396,7 +396,7 @@ readonly class DecisionParser {
    * @return string|null
    *   HTML content as string, or NULL if content is empty.
    */
-  public static function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
+  private static function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
     $output = NULL;
     if ($list->length < 1) {
       return NULL;
