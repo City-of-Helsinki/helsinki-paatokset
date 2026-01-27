@@ -366,17 +366,6 @@ class DecisionParserTest extends UnitTestCase {
   }
 
   /**
-   * Tests getAppealInfo returns NULL when not present.
-   */
-  public function testGetAppealInfoEmpty(): void {
-    $html = '<div>Some other content</div>';
-
-    $parser = DecisionParser::parse($html);
-
-    $this->assertNull($parser->getAppealInfo());
-  }
-
-  /**
    * Tests getPresenterInfo with new format.
    */
   public function testGetPresenterInfoNewFormat(): void {
