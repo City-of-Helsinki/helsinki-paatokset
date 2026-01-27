@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\node\Entity\Node;
+use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 
 /**
  * Bundle class for decisions.
@@ -470,13 +470,13 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
     $history_xpath = new \DOMXPath($history_dom);
 
-    // If content is not set, use motion HTML instead.
-    $content_xpath = $motion_xpath;
+    // Parse content from decision HTML. If the
+    // decision is not set, use motion content instead.
+    $content = $this->get('field_decision_content')->value ?? $this->get('field_decision_motion')->value;
+    $parser = DecisionParser::parse($content);
 
     $content_dom = $this->getDecisionContent();
-    if ($content_dom) {
-      $content_xpath = new \DOMXPath($content_dom);
-    }
+    $content_xpath = $parser->xpath;
 
     $output = [];
     $voting_results = $content_xpath->query("//*[contains(@class, 'aanestykset')]");
@@ -528,70 +528,26 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     }
 
     // More information.
-    $more_info = $content_xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info->length > 0) {
-      $more_info_content = $this->getHtmlContentUntilBreakingElement($more_info);
-      $more_info_content = str_replace(': 310', ': 09 310', $more_info_content);
-    }
-
-    if ($more_info_content) {
-      // Replace all HTML tags with commas.
-      $result = preg_replace('/<[^>]+>/', ',', $more_info_content);
-
-      // Remove leading and trailing commas/spaces.
-      $result = trim($result, ", \t\n\r\0\x0B");
-
-      // Remove multiple subsequent commas and clean spacing.
-      $result = preg_replace('/,+/', ',', $result);
-      $result = preg_replace('/\s*,\s*/', ', ', $result);
-
-      // Split into array.
-      $parts = array_map('trim', explode(',', $result));
-
-      // Make sure we have a phone number at index 2.
-      if (isset($parts[2])) {
-        // Remove all non-digit characters.
-        $parts[2] = preg_replace('/\D+/', '', $parts[2]);
-      }
-
-      // Example of assigning named keys.
-      $contact = [
-        'name' => $parts[0] ?? NULL,
-        'title' => ucfirst($parts[1]) ?? NULL,
-        'phone' => $parts[2] ?? '',
-        'email' => $parts[3] ?? NULL,
-      ];
-
+    if ($moreInfo = $parser->getMoreInfoDetails()) {
       $output['more_info'] = [
         'heading' => new TranslatableMarkup('Ask for more info'),
         'content' => [
           'name' => [
-            '#plain_text' => $contact['name'],
+            '#plain_text' => $moreInfo->name,
           ],
           'title' => [
-            '#plain_text' => $contact['title'],
+            '#plain_text' => $moreInfo->title,
           ],
         ],
       ];
 
       try {
-        if (strlen($contact['phone']) > 2) {
-          // Drupal cannot handle phone numbers with 5 or less
-          // characters: https://www.drupal.org/node/2575577.
-          // This inserts dash (-) after the first digit. RFC 3966
-          // defines the dash as a visual separator character, so it
-          // will be removed before the phone number is used.
-          $phone = $contact['phone'];
-          if (strlen($contact['phone']) <= 5) {
-            $phone = substr_replace($contact['phone'], '-', 1, 0);
-          }
-
-          $output['more_info']['content']['phone'] = Link::fromTextAndUrl($contact['phone'], Url::fromUri('tel:' . $phone));
+        if ($phone = $moreInfo->getPhoneLink()) {
+          $output['more_info']['content']['phone'] = $phone;
         }
 
-        if ($contact['email']) {
-          $output['more_info']['content']['email'] = Link::fromTextAndUrl($contact['email'], Url::fromUri('mailto:' . $contact['email']));
+        if ($email = $moreInfo->getEmailLink()) {
+          $output['more_info']['content']['email'] = $email;
         }
       }
       catch (\InvalidArgumentException $e) {
@@ -603,7 +559,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     $signature_info = $content_xpath->query("//*[contains(@class, 'SahkoisestiAllekirjoitettuTeksti')]");
     $signature_info_content = NULL;
     if ($signature_info->length > 0) {
-      $signature_info_content = $this->getHtmlContentUntilBreakingElement($signature_info);
+      $signature_info_content = DecisionParser::getHtmlContentUntilBreakingElement($signature_info);
     }
 
     if ($signature_info_content && in_array($this->get('field_organization_type')->value, OrganizationType::TRUSTEE_TYPES)) {
@@ -641,7 +597,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     $presenter_info = $content_xpath->query("//*[contains(@class, 'EsittelijaTiedot')]");
     $presenter_content = NULL;
     if ($presenter_info->length > 0) {
-      $presenter_content = $this->getHtmlContentUntilBreakingElement($presenter_info);
+      $presenter_content = DecisionParser::getHtmlContentUntilBreakingElement($presenter_info);
     }
 
     if ($presenter_content) {
@@ -703,7 +659,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
     // Appeal information. Only display for decisions (if content is available).
     $appeal_info = $content_xpath->query("//*[contains(@class, 'MuutoksenhakuOtsikko')]");
     if ($content_dom && $appeal_info) {
-      $appeal_content .= $this->getHtmlContentUntilBreakingElement($appeal_info);
+      $appeal_content .= DecisionParser::getHtmlContentUntilBreakingElement($appeal_info);
     }
 
     if ($appeal_content) {
@@ -759,50 +715,6 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       }
 
       $output[] = $section;
-    }
-
-    return $output;
-  }
-
-  /**
-   * Get HTML content from first heading until next heading.
-   *
-   * @param \DOMNodeList $list
-   *   Xpath query results.
-   *
-   * @return string|null
-   *   HTML content as string, or NULL if content is empty.
-   */
-  private function getHtmlContentUntilBreakingElement(\DOMNodeList $list): ?string {
-    $output = NULL;
-    if ($list->length < 1) {
-      return NULL;
-    }
-
-    $current_item = $list->item(0);
-    while ($current_item->nextSibling instanceof \DOMNode) {
-      // Iterate over to next sibling. This skips the first one.
-      $current_item = $current_item->nextSibling;
-
-      if (!$current_item instanceof \DOMElement) {
-        continue;
-      }
-
-      // H3 with a class is considered a breaking element.
-      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
-        break;
-      }
-      // More information section should stop before the signatures.
-      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
-        break;
-      }
-
-      // Strip empty nodes. Ahjo HTML seems to contain a lot of <p></p> tags.
-      if (empty($current_item->nodeValue) && $current_item->nodeName !== 'img') {
-        continue;
-      }
-
-      $output .= $current_item->ownerDocument->saveHTML($current_item);
     }
 
     return $output;

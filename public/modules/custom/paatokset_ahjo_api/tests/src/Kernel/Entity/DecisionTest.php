@@ -179,30 +179,20 @@ class DecisionTest extends AhjoEntityKernelTestBase {
   }
 
   /**
-   * Tests decision pdf link.
+   * Tests decision content parsing.
+   *
+   * Decision HTML format was changed in 2026. We need to support
+   * the old format until all decisions are re-fetched.
    */
-  public function testParseContent(): void {
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
-    $storage = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('node');
-
-    $decision = $storage->create([
+  public function testLegacyParseContent(): void {
+    $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
     ]);
 
-    $this->assertInstanceOf(Decision::class, $decision);
-    $this->assertEmpty($decision->parseContent());
-
-    // Hide decision.
-    $this->config('paatokset_ahjo_api.default_texts')->set('hidden_decisions_text.value', 'test-message')->save();
-    $decision->set('field_hide_decision_content', '1');
-    $this->assertEquals('test-message', $decision->parseContent()['message']['#markup'] ?? NULL);
-
     // Some decisions in production have 'null' on history field.
     $decision->set('field_decision_history', 'null');
     $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
-    $decision->set('field_decision_motion', file_get_contents(__DIR__ . '/../../../fixtures/decision-motion.html'));
     $decision->set('field_diary_number', 'HEL-2024-009117');
     $decision->set('field_hide_decision_content', '0');
     $content = $decision->parseContent();
@@ -214,6 +204,41 @@ class DecisionTest extends AhjoEntityKernelTestBase {
 
     // Empty <p> tags are stripped from accordions.
     $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    foreach ($content['accordions'] as $accordion) {
+      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
+    }
+  }
+
+  /**
+   * Tests decision content parsing.
+   */
+  public function testParseContent(): void {
+    $decision = Decision::create([
+      'type' => 'decision',
+      'title' => 'Test decision',
+    ]);
+
+    $this->assertEmpty($decision->parseContent());
+
+    // Hide decision.
+    $this->config('paatokset_ahjo_api.default_texts')->set('hidden_decisions_text.value', 'test-message')->save();
+    $decision->set('field_hide_decision_content', '1');
+    $this->assertEquals('test-message', $decision->parseContent()['message']['#markup'] ?? NULL);
+
+    // Some decisions in production have 'null' on history field.
+    $decision->set('field_decision_history', 'null');
+    $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content-new.html'));
+    $decision->set('field_decision_motion', file_get_contents(__DIR__ . '/../../../fixtures/decision-motion.html'));
+    $decision->set('field_diary_number', 'HEL-2024-009117');
+    $decision->set('field_hide_decision_content', '0');
+    $content = $decision->parseContent();
+
+    $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
+    $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
+
+    // Empty <p> tags are stripped from accordions.
+    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content-new.html'));
     foreach ($content['accordions'] as $accordion) {
       $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
     }
