@@ -489,15 +489,8 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       $voting_results[0]->appendChild($voting_link_paragraph);
     }
 
-    $main_content = NULL;
     // Main decision content sections.
-    $content_sections = $content_xpath->query("//*[contains(@class, 'SisaltoSektio')]");
-
-    foreach ($content_sections as $section) {
-      $main_content .= $section->ownerDocument->saveHTML($section);
-    }
-
-    if ($main_content) {
+    if ($main_content = $parser->getMainContent()) {
       $output['main'] = [
         '#type' => 'processed_text',
         '#format' => 'decision_html',

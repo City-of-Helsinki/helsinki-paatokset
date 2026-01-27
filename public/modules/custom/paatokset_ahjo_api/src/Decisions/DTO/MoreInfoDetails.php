@@ -40,12 +40,12 @@ final readonly class MoreInfoDetails {
       // This inserts dash (-) after the first digit. RFC 3966
       // defines the dash as a visual separator character, so it
       // will be removed before the phone number is used.
-      $phone = $this->phone;
-      if (strlen($this->phone) <= 5) {
-        $phone = substr_replace($this->phone, '-', 1, 0);
+      $phone = str_replace(' ', '', $this->phone);
+      if (strlen($phone) <= 5) {
+        $phone = substr_replace($phone, '-', 1, 0);
       }
 
-      return Link::fromTextAndUrl($this->phone, Url::fromUri('tel:' . str_replace(' ', '', $phone)));
+      return Link::fromTextAndUrl($this->phone, Url::fromUri("tel:$phone"));
     }
 
     return NULL;

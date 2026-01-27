@@ -34,6 +34,37 @@ readonly class DecisionParser {
   }
 
   /**
+   * Get main content sections (SisaltoSektio).
+   *
+   * New format has a wrapper element `SisaltoSektioToisto` containing
+   * all `SisaltoSektio` sections. Legacy format has individual
+   * `SisaltoSektio` divs without a wrapper.
+   *
+   * @return string|null
+   *   HTML content of the main sections, or NULL if not found.
+   */
+  public function getMainContent(): ?string {
+    // Try new format first: query the wrapper element.
+    $wrapper = $this->xpath->query("//*[contains(@class, 'SisaltoSektioToisto')]");
+    if ($wrapper->length > 0) {
+      return $wrapper->item(0)->ownerDocument->saveHTML($wrapper->item(0));
+    }
+
+    // Fall back to legacy format: query individual sections.
+    $sections = $this->xpath->query("//*[contains(@class, 'SisaltoSektio')]");
+    if ($sections->length === 0) {
+      return NULL;
+    }
+
+    $content = '';
+    foreach ($sections as $section) {
+      $content .= $section->ownerDocument->saveHTML($section);
+    }
+
+    return $content ?: NULL;
+  }
+
+  /**
    * Get more info details.
    *
    * More info details presented in the following format:

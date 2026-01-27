@@ -76,12 +76,15 @@ class DecisionParserTest extends UnitTestCase {
   /**
    * Tests that NULL is returned when no more info section exists.
    */
-  public function testGetMoreInfoDetailsReturnsNullWhenNoContent(): void {
+  public function testNoContent(): void {
     $html = '<div>Some other content</div>';
 
     $parser = DecisionParser::parse($html);
-    $result = $parser->getMoreInfoDetails();
 
+    $result = $parser->getMoreInfoDetails();
+    $this->assertNull($result);
+
+    $result = $parser->getMainContent();
     $this->assertNull($result);
   }
 
@@ -90,8 +93,11 @@ class DecisionParserTest extends UnitTestCase {
    */
   public function testParseWithNullHtml(): void {
     $parser = DecisionParser::parse(NULL);
-    $result = $parser->getMoreInfoDetails();
 
+    $result = $parser->getMoreInfoDetails();
+    $this->assertNull($result);
+
+    $result = $parser->getMainContent();
     $this->assertNull($result);
   }
 
@@ -121,6 +127,62 @@ class DecisionParserTest extends UnitTestCase {
   }
 
   /**
+   * Tests getMainContent with new format (SisaltoSektioToisto wrapper).
+   */
+  public function testGetMainContentNewFormat(): void {
+    $html = <<<HTML
+      <section class="SisaltoSektioToisto">
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Päätös</h3>
+          <div><p>Decision content.</p></div>
+        </div>
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Käsittely</h3>
+          <div><p>Handling content.</p></div>
+        </div>
+      </section>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getMainContent();
+
+    $this->assertNotNull($result);
+    $this->assertStringContainsString('SisaltoSektioToisto', $result);
+    $this->assertStringContainsString('Päätös', $result);
+    $this->assertStringContainsString('Käsittely', $result);
+    $this->assertStringContainsString('Decision content.', $result);
+    $this->assertStringContainsString('Handling content.', $result);
+  }
+
+  /**
+   * Tests getMainContent with legacy format (individual SisaltoSektio divs).
+   */
+  public function testGetMainContentLegacyFormat(): void {
+    $html = <<<HTML
+      <div class="paatos">
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Päätös</h3>
+          <div><p>Decision content.</p></div>
+        </div>
+        <div class="SisaltoSektio">
+          <h3 class="SisaltoOtsikko">Käsittely</h3>
+          <div><p>Handling content.</p></div>
+        </div>
+      </div>
+    HTML;
+
+    $parser = DecisionParser::parse($html);
+    $result = $parser->getMainContent();
+
+    $this->assertNotNull($result);
+    $this->assertStringNotContainsString('SisaltoSektioToisto', $result);
+    $this->assertStringContainsString('Päätös', $result);
+    $this->assertStringContainsString('Käsittely', $result);
+    $this->assertStringContainsString('Decision content.', $result);
+    $this->assertStringContainsString('Handling content.', $result);
+  }
+
+  /**
    * Tests area code handling for city phone numbers.
    */
   public function testPhoneNumberAreaCode(): void {
@@ -129,7 +191,7 @@ class DecisionParserTest extends UnitTestCase {
         <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
         <p>
           <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
-          <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">310 12345</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
+          <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">310</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
         </p>
       </section>
     HTML;
@@ -140,7 +202,10 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertInstanceOf(MoreInfoDetails::class, $result);
 
     // Area code is added to city phone numbers.
-    $this->assertEquals('09 310 12345', $result->phone);
+    // Production data contains phone numbers containing only "310".
+    $this->assertEquals('09 310', $result->phone);
+    // Drupal can't handle short phone numbers. Tests that the bug is mitigated.
+    $this->assertEquals('tel:0-9310', $result->getPhoneLink()->getUrl()->getUri());
   }
 
 }
