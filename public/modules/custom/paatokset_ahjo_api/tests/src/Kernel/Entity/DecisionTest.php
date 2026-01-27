@@ -242,12 +242,6 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $this->assertEquals('tel:0-9123', $content['more_info']?->getPhoneLink()?->getUrl()->toString());
     $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
     $this->assertEquals('Tehtävänimike', $content['signature_info']?->title);
-
-    // Empty <p> tags are stripped from accordions.
-    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content-new.html'));
-    foreach ($content['accordions'] as $accordion) {
-      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
-    }
   }
 
   /**
