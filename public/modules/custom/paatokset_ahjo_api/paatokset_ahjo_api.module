@@ -147,6 +147,7 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'children' => NULL,
         'policymakers' => NULL,
         'breadcrumb' => NULL,
+        'tags' => NULL,
       ],
     ],
   ];

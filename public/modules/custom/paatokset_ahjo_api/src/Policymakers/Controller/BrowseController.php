@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Policymakers\Controller;
 
-use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -21,6 +22,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @see \Drupal\paatokset_ahjo_api\Policymakers\PathProcessor
  */
 class BrowseController extends ControllerBase {
+
+  use AutowireTrait;
+
+  public function __construct(private readonly PolicymakerService $policymakerService) {
+  }
 
   /**
    * Build policymaker browse page.
@@ -43,19 +49,29 @@ class BrowseController extends ControllerBase {
 
     $policymakers = $this->loadPolicymakers([$org->id(), ...array_keys($children)]);
 
-    $breadcrumb = new Breadcrumb();
+    $tags = [];
+
+    foreach ($policymakers as $id => $policymaker) {
+      $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
+    }
+
+    $breadcrumb = '';
+
     if ($parent = $org->getParentOrganization()) {
       // Special case for the first organizations:
       // link directly to the root level.
       if ($parent->id() == '00001') {
-        $breadcrumb->addLink(Link::createFromRoute($parent->label(), 'paatokset_ahjo_api.browse_policymakers'));
+        $breadcrumb = Link::createFromRoute(new TranslatableMarkup('City of Helsinki'), 'paatokset_ahjo_api.browse_policymakers', [], [
+          'attributes' => ['class' => ['policymaker-browser__breadcrumb__link']],
+        ]);
       }
       else {
-        $breadcrumb->addLink(Link::createFromRoute(new TranslatableMarkup('City of Helsinki'), 'paatokset_ahjo_api.browse_policymakers', [
+        $breadcrumb = Link::createFromRoute($parent->label(), 'paatokset_ahjo_api.browse_policymakers', [
           'org' => $parent->id(),
-        ]));
+        ], [
+          'attributes' => ['class' => ['policymaker-browser__breadcrumb__link']],
+        ]);
       }
-      $breadcrumb->addCacheableDependency($parent);
     }
 
     $build = [
@@ -64,6 +80,7 @@ class BrowseController extends ControllerBase {
       '#children' => $children,
       '#policymakers' => $policymakers,
       '#breadcrumb' => $breadcrumb,
+      '#tags' => $tags,
     ];
 
     $cache = new CacheableMetadata();
