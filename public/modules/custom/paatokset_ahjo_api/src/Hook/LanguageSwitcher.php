@@ -30,34 +30,42 @@ readonly class LanguageSwitcher {
 
   /**
    * Implements hook_language_switch_links_alter().
+   *
+   * Most decisions and cases are not translated. We still want to
+   * serve the untranslated content with translated UI elements. This
+   * hooks forces language switcher to display links to the content in
+   * all languages.
    */
   #[Hook('language_switch_links_alter', order: new OrderAfter(['hdbt_admin_tools']))]
   public function languageSwitchLinksAlter(array &$links, $type, Url $url): void {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
     $route_name = $this->routeMatch->getRouteName();
 
-    // Don't act on NULL routes.
-    if ($route_name === NULL) {
+    if (!$route_name || !$this->isRouteAllowed($route_name)) {
       return;
     }
 
-    $node = NULL;
-    if ($route_name === 'entity.node.canonical') {
-      $node = $this->routeMatch->getParameter('node');
-    }
+    $currentLanguage = $this->languageManager
+      ->getCurrentLanguage()
+      ->getId();
 
-    if (!$this->isRouteAllowed($route_name)) {
-      return;
-    }
+    $node = match ($route_name) {
+      'entity.node.canonical' => $this->routeMatch->getParameter('node'),
+      default => NULL,
+    };
 
     foreach ($links as $langCode => $link) {
-      // Don't do anything for current page.
+      // Don't do anything for the current language.
       if ($langCode === $currentLanguage) {
         continue;
       }
 
-      // Only act on untranslated node links.
-      if ($node instanceof NodeInterface && isset($link['#untranslated']) && $link['#untranslated']) {
+      if ($route_name === 'entity.ahjo_case.canonical') {
+        $url = $link['url'];
+      }
+      // This relies on the `#untranslated` key set by
+      // hdbt_admin_tools. The hooks from hdbt_admin_tools must be run before
+      // this code is run.
+      elseif ($node instanceof NodeInterface && isset($link['#untranslated']) && $link['#untranslated']) {
         $url = $this->getAltUrlsForNode($node, $langCode);
       }
       elseif ($route_name !== 'entity.node.canonical') {
@@ -219,8 +227,12 @@ readonly class LanguageSwitcher {
    *   If route can be altered (internal Päätökset routes).
    */
   private function isRouteAllowed(string $route_name): bool {
-    // Always allow node routes to be altered.
-    if ($route_name === 'entity.node.canonical') {
+    $routes = [
+      'entity.node.canonical',
+      'entity.ahjo_case.canonical',
+    ];
+
+    if (in_array($route_name, $routes)) {
       return TRUE;
     }
 

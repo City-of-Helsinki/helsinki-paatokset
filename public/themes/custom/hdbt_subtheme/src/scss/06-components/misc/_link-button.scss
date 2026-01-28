@@ -7,12 +7,12 @@
   width: 100%;
 
   i, span {
-    margin-right: $gutter - 2px;
+    margin-right: $spacing - 2px;
   }
 
   .hel-icon {
-    height: var(--spacing-m);
-    width: var(--spacing-m);
+    height: $spacing-and-half;
+    width: $spacing-and-half;
   }
 
   &:hover {

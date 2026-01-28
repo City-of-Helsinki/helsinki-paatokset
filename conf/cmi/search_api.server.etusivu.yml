@@ -1,11 +1,11 @@
 uuid: 549707e6-3487-4a87-a2d2-a543e3f8d911
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - elasticsearch_connector
 _core:
-  default_config_hash: OIxUCaL66sr9LecMqWUniH-FqDJI4zgt1L3L_pU9jGk
+  default_config_hash: 4NX_SLBgTI2jD05079FbSWlocSrycnXAy3RKCdPLMc8
 id: etusivu
 name: Etusivu
 description: 'Etusivu elasticsearch'

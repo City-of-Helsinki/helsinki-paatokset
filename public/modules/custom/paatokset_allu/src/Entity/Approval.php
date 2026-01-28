@@ -4,53 +4,60 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_allu\Entity;
 
+use Drupal\Core\Entity\Attribute\ContentEntityType;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\ContentEntityDeleteForm;
+use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess;
 use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\DocumentInterface;
+use Drupal\paatokset_allu\Entity\Routing\EntityRouteProvider;
+use Drupal\views\EntityViewsData;
 
 /**
- * Defines the decision entity class.
- *
- * @ContentEntityType(
- *   id = "paatokset_allu_approval",
- *   label = @Translation("Approval"),
- *   label_collection = @Translation("Approval"),
- *   label_singular = @Translation("approval"),
- *   label_plural = @Translation("approvals"),
- *   label_count = @PluralTranslation(
- *     singular = "@count approval",
- *     plural = "@count approvals",
- *   ),
- *   handlers = {
- *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
- *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
- *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
- *     "form" = {
- *       "default" = "Drupal\Core\Entity\ContentEntityForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *     },
- *     "route_provider" = {
- *       "html" = "Drupal\paatokset_allu\Entity\Routing\EntityRouteProvider",
- *     },
- *   },
- *   base_table = "paatokset_allu_approval",
- *   admin_permission = "administer remote entities",
- *   entity_keys = {
- *     "id" = "id",
- *     "uuid" = "uuid",
- *   },
- *   links = {
- *     "collection" = "/admin/content/allu/approval",
- *     "canonical" = "/allu/approval/{paatokset_allu_approval}/download",
- *     "edit-form" = "/allu/approval/{paatokset_allu_approval}/edit",
- *     "delete-form" = "/allu/approval/{paatokset_allu_approval}/delete",
- *   },
- * )
+ * Defines the approval entity class.
  */
+#[ContentEntityType(
+  id: 'paatokset_allu_approval',
+  label: new TranslatableMarkup('Approval'),
+  label_collection: new TranslatableMarkup('Approval'),
+  label_singular: new TranslatableMarkup('approval'),
+  label_plural: new TranslatableMarkup('approvals'),
+  entity_keys: [
+    'id' => 'id',
+    'uuid' => 'uuid',
+  ],
+  handlers: [
+    'list_builder' => EntityListBuilder::class,
+    'view_builder' => EntityViewBuilder::class,
+    'views_data' => EntityViewsData::class,
+    'access' => RemoteEntityAccess::class,
+    'form' => [
+      'default' => ContentEntityForm::class,
+      'delete' => ContentEntityDeleteForm::class,
+    ],
+    'route_provider' => [
+      'html' => EntityRouteProvider::class,
+    ],
+  ],
+  links: [
+    'collection' => '/admin/content/allu/approval',
+    'canonical' => '/allu/approval/{paatokset_allu_approval}/download',
+    'edit-form' => '/allu/approval/{paatokset_allu_approval}/edit',
+    'delete-form' => '/allu/approval/{paatokset_allu_approval}/delete',
+  ],
+  admin_permission: 'administer remote entities',
+  base_table: 'paatokset_allu_approval',
+  label_count: [
+    'singular' => '@count approval',
+    'plural' => '@count approvals',
+  ],
+)]
 class Approval extends ContentEntityBase implements DocumentInterface {
 
   /**

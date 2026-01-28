@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\process;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Skips processing the current row if the decision is flagged for mass removal.
@@ -37,13 +43,21 @@ use Drupal\migrate\Row;
  * message table.
  *
  * @see \Drupal\migrate\Plugin\MigrateProcessInterface
- *
- * @MigrateProcessPlugin(
- *   id = "skip_disallowed_decisions",
- *   handle_multiples = TRUE
- * )
  */
-class SkipDisallowedDecisions extends ProcessPluginBase {
+#[MigrateProcess('skip_disallowed_decisions', handle_multiples: TRUE)]
+class SkipDisallowedDecisions extends ProcessPluginBase implements ContainerFactoryPluginInterface {
+
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    private readonly LoggerInterface $logger,
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
 
   /**
    * {@inheritdoc}
@@ -62,9 +76,12 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     }
 
     if ($this->checkIfDisallowed($dm_id, $date, $section)) {
-      $message = 'Skipped decision. ID: ' . $dm_id . ', section: ' . $section . ', date: ' . $date;
-      \Drupal::logger('paatokset_disallowed_decisions')->warning($message);
-      throw new MigrateSkipRowException($message);
+      $this->logger->warning('Skipped decision. ID: @id, section: @section, date: @date', [
+        '@id' => $dm_id,
+        '@section' => $section,
+        '@date' => $date,
+      ]);
+      throw new MigrateSkipRowException('Skipped disallowed decision');
     }
   }
 
@@ -82,7 +99,7 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
    *   TRUE if values match a disallowed decision config entity.
    */
   protected function checkIfDisallowed(string $dm_id, string $date_str, string $section): bool {
-    $config = \Drupal::config('paatokset_ahjo_api.disallowed_prefixes');
+    $config = $this->configFactory->get('paatokset_ahjo_api.disallowed_prefixes');
 
     // Check if decision years match before proceeding.
     $years = explode(',', $config->get('years'));
@@ -95,7 +112,7 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     $dm_ids = explode(',', $config->get('id_prefixes'));
     $id_match = FALSE;
     foreach ($dm_ids as $id_prefix) {
-      if (strpos($dm_id, $id_prefix) !== FALSE) {
+      if (str_contains($dm_id, $id_prefix)) {
         $id_match = TRUE;
         break;
       }
@@ -105,7 +122,7 @@ class SkipDisallowedDecisions extends ProcessPluginBase {
     }
 
     /** @var \Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager $dd_manager */
-    $dd_manager = \Drupal::service('entity_type.manager')->getStorage('disallowed_decisions');
+    $dd_manager = $this->entityTypeManager->getStorage('disallowed_decisions');
     return $dd_manager->checkIfDisallowed($dm_id, $year, $section);
   }
 

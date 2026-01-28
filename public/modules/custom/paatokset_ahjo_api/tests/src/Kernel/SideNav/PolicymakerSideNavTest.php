@@ -14,13 +14,13 @@ use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerMobileNav;
 use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerSideNav;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Tests PolicymakerSideNav block.
  */
-class PolicymakerSideNavTest extends AhjoKernelTestBase {
+class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
 
   /**
    * {@inheritdoc}

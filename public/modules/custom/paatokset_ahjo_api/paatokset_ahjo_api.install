@@ -7,10 +7,14 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
@@ -151,4 +155,103 @@ function paatokset_ahjo_api_update_9014(): void {
     ->update('paatokset_ahjo_organization_data')
     ->fields(['sync_attempts' => 0])
     ->execute();
+}
+
+/**
+ * UHF-12081 Add case entity type.
+ */
+function paatokset_ahjo_api_update_11001(): void {
+  $type = \Drupal::service(EntityTypeManagerInterface::class)
+    ->getDefinition('ahjo_case');
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installEntityType($type);
+}
+
+/**
+ * Change node__field_maps from string_long to string type.
+ */
+function paatokset_ahjo_api_update_11002(): void {
+  // Adapted from:
+  // https://git.drupalcode.org/project/field_type_converter/-/blob/1.0.x/src/FieldTypeConverter.php?ref_type=heads
+  $entityTypeId = 'node';
+  $fieldName = 'field_decision_section';
+
+  $originalFieldStorage = FieldStorageConfig::loadByName($entityTypeId, $fieldName);
+  $entityStorage = \Drupal::entityTypeManager()->getStorage($entityTypeId);
+
+  $fieldStorageArray = $originalFieldStorage->toArray();
+  $fieldStorageArray['type'] = 'integer';
+  $fieldStorage = FieldStorageConfig::create($fieldStorageArray);
+
+  $tableMapping = $entityStorage->getTableMapping([$fieldName => $fieldStorage]);
+  assert($tableMapping instanceof DefaultTableMapping);
+  $tableNames = $tableMapping->getDedicatedTableNames();
+  $columns = $tableMapping->getColumnNames($fieldName);
+
+  $schemas = array_map(fn (string $property) => $fieldStorage->getSchema()['columns'][$property], array_flip($columns));
+  $oldColumns = $entityStorage
+    ->getTableMapping([$fieldName => $originalFieldStorage])
+    ->getColumnNames($fieldName);
+
+  $schema = \Drupal::database()->schema();
+
+  // Ensure database schema is ready for field changes:
+  array_walk($tableNames, function (string $table) use ($schema, $columns, $oldColumns, $schemas): void {
+    // Update existing database columns to match the new schema.
+    $existing_columns = array_filter($columns, fn (string $column) => $schema->fieldExists($table, $column));
+    $changes = array_intersect_key($schemas, array_flip($existing_columns));
+
+    array_walk($changes, function (array $columnSchema, string $column) use ($table, $schema): void {
+      $schema->changeField($table, $column, $column, $columnSchema);
+    });
+    $adds = array_diff_key($schemas, array_flip($existing_columns));
+    // Add database columns to match the new schema.
+    array_walk($adds, function (array $columnSchema, string $column) use ($table, $schema): void {
+      $schema->addField($table, $column, $columnSchema);
+    });
+    // Remove database columns that don't exist in the new schema.
+    $delete = array_diff($oldColumns, $columns);
+    array_walk($delete, function (string $column) use ($table, $schema): void {
+      $schema->dropField($table, $column);
+    });
+  });
+
+  $keyValue = \Drupal::service('keyvalue');
+  $installedStorageSchema = $keyValue->get('entity.storage_schema.sql');
+
+  // Wipe data from the installed storage schema to prevent validation errors
+  // when column schema changes are detected.
+  $key_name = "$entityTypeId.field_schema_data.$fieldName";
+  $installed_schema = array_map(function (array $table_schema): array {
+    $table_schema['fields'] = [];
+    return $table_schema;
+  }, $installedStorageSchema->get($key_name) ?? []);
+  $installedStorageSchema->set($key_name, $installed_schema);
+
+  // Now that the database tables and installed schema are prepared, proceed
+  // with converting field storage to the new type. Intentionally set the new
+  // field storage as "original" to allow changing the field type.
+  // @phpstan-ignore property.notFound
+  $fieldStorage->original = $fieldStorage;
+  $fieldStorage->enforceIsNew(FALSE);
+  $fieldStorage->save();
+
+  // Convert the field instance (per-bundle) configs too.
+  $fieldInstances = \Drupal::entityTypeManager()
+    ->getStorage('field_config')
+    ->loadByProperties([
+      'field_name' => $fieldName,
+      'entity_type' => $entityTypeId,
+    ]);
+
+  array_walk($fieldInstances, function (FieldConfigInterface $original): void {
+    $fieldInstanceArray = $original->toArray();
+    $fieldInstanceArray['field_type'] = 'integer';
+    $newFieldInstance = FieldConfig::create($fieldInstanceArray);
+    $newFieldInstance->enforceIsNew(FALSE);
+    // @phpstan-ignore property.notFound
+    $newFieldInstance->original = $original;
+    $newFieldInstance->save();
+  });
 }

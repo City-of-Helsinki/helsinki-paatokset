@@ -6,10 +6,10 @@ namespace Drupal\paatokset_ahjo_api\Kernel\Policymakers;
 
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\paatokset_ahjo_api\Policymakers\PathProcessor;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,12 +21,7 @@ class PathProcessorTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
-    'paatokset_ahjo_api',
     'language',
-    'path_alias',
-    'pathauto',
-    'token',
   ];
 
   /**

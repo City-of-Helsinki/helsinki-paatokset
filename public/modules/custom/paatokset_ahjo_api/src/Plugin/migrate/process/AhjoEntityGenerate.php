@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Plugin\migrate\process;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
@@ -21,12 +22,9 @@ use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
  * field in `value_key`.
  * - values: (required) entity fields mapped to the source field properties.
  *
- * @MigrateProcessPlugin(
- *   id = "ahjo_entity_generate"
- * )
- *
  * @see EntityLookup, EntityGenerate
  */
+#[MigrateProcess('ahjo_entity_generate')]
 class AhjoEntityGenerate extends EntityLookup {
 
   /**

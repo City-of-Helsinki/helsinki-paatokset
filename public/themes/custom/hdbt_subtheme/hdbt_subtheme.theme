@@ -8,8 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Entity\Initiative;
@@ -330,19 +330,15 @@ function hdbt_subtheme_preprocess_node__trustee(array &$variables): void {
   }
 
   if (isset($node->field_policymaker_reference->entity)) {
-    $policymaker = $node->field_policymaker_reference->entity;
-    $pmLink = Link::fromTextAndUrl(
-      $policymaker->label(),
-      $policymaker->toUrl()
-    )->toString();
+    $policymaker = \Drupal::service(EntityRepositoryInterface::class)
+      ->getTranslationFromContext($node->field_policymaker_reference->entity);
 
-    $variables['policymaker_declaration'] = t(
-      '@trustee is @policymaker',
-      [
-        '@trustee' => TrusteeService::getTrusteeName($node),
-        '@policymaker' => $pmLink,
-      ]
-    );
+    $variables['policymaker_declaration'] = new TranslatableMarkup('@trustee is @policymaker', [
+      '@trustee' => TrusteeService::getTrusteeName($node),
+      '@policymaker' => $policymaker->toLink($policymaker->label())->toString(),
+    ]);
+
+    $cache->addCacheableDependency($policymaker);
   }
 
   $cache->applyTo($variables);

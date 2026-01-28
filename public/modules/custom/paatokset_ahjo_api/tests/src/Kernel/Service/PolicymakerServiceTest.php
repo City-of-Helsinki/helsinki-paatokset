@@ -10,7 +10,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
@@ -19,6 +18,7 @@ use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\path_alias\Entity\PathAlias;
 use Drupal\pathauto\AliasCleanerInterface;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -34,17 +34,12 @@ class PolicymakerServiceTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'paatokset_policymakers',
     'field',
-    'helfi_api_base',
     'node',
     'language',
-    'paatokset_ahjo_api',
-    'paatokset_policymakers',
-    'path_alias',
-    'pathauto',
     'system',
     'text',
-    'token',
     'user',
   ];
 

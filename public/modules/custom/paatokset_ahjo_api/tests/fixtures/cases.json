@@ -1,0 +1,110 @@
+{
+  "cases": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2022-011760?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2022-011760",
+      "Title": "Lausuntopyynt\u00f6, Suomi-rata Oy:n Lentorata-hanke, ymp\u00e4rist\u00f6vaikutusten arviointiohjelma, UUDELY",
+      "Created": "2022-10-05T13:37:07.237",
+      "Acquired": "2022-10-05T00:00:00.000",
+      "ClassificationCode": "11 01 05",
+      "ClassificationTitle": "Ymp\u00e4rist\u00f6vaikutusten arviointi",
+      "Status": "Vireill\u00e4",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "CaseID": "HEL-2022-011760"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2022-015420?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2022-015420",
+      "Title": "Asemakaavan muutos, nro 12993, Patterim\u00e4en it\u00e4osa, Pajam\u00e4ki, Pit\u00e4j\u00e4nm\u00e4ki",
+      "Created": "2022-12-28T09:21:38.560",
+      "Acquired": "2022-12-28T00:00:00.000",
+      "ClassificationCode": "10 03 03",
+      "ClassificationTitle": "Asemakaavoitus",
+      "Status": "Vireill\u00e4",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "CaseID": "HEL-2022-015420"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2023-000156?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2023-000156",
+      "Title": "Asemakaavan muutos nro 12856, Kluuvi, Pohjoisesplanadi 37",
+      "Created": "2023-01-04T12:20:31.853",
+      "Acquired": "2023-01-03T13:45:00.000",
+      "ClassificationCode": "10 03 03",
+      "ClassificationTitle": "Asemakaavoitus",
+      "Status": "Vireill\u00e4",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "CaseID": "HEL-2023-000156"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2023-016326?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2023-016326",
+      "Title": "Asemakaavan muutos nro 12939, 31.KO, Lauttasaari, Oy Hedengren Ab",
+      "Created": "2023-12-29T08:56:10.717",
+      "Acquired": "2023-12-22T15:03:00.000",
+      "ClassificationCode": "10 03 03",
+      "ClassificationTitle": "Asemakaavoitus",
+      "Status": "Vireill\u00e4",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "CaseID": "HEL-2023-016326"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases\/HEL-2024-003410?apireqlang=fi"
+        }
+      ],
+      "CaseIDLabel": "HEL 2024-003410",
+      "Title": "Asemakaavan muutos nro 12948, Malmi, tontti 38096\/14, Ormuspellontie 2, Lidl Suomi Kommandiittiyhti\u00f6",
+      "Created": "2024-03-05T09:49:23.123",
+      "Acquired": "2024-03-04T00:00:00.000",
+      "ClassificationCode": "10 03 03",
+      "ClassificationTitle": "Asemakaavoitus",
+      "Status": "Vireill\u00e4",
+      "Language": "fi",
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "CaseID": "HEL-2024-003410"
+    }
+  ],
+  "page": 0,
+  "count": 100,
+  "nextCount": 5,
+  "prevCount": 0,
+  "links": [
+    {
+      "rel": "self",
+      "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/cases?q=\u0026sectors=\u0026page=0\u0026size=5\u0026resolved=false\u0026count_limit=100\u0026public=false\u0026handledsince=2026-01-02T00:03:18Z\u0026handledbefore=\u0026modifiedsince=\u0026apireqlang=fi"
+    }
+  ],
+  "size": 5
+}

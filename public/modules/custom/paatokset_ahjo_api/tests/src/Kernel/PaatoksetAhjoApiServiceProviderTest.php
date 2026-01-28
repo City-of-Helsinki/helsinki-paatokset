@@ -11,7 +11,7 @@ use Drupal\paatokset_ahjo_api\EventSubscriber\CspMeetingsCalendarSubscriber;
  *
  * @coversDefaultClass \Drupal\paatokset_ahjo_api\PaatoksetAhjoApiServiceProvider
  */
-class PaatoksetAhjoApiServiceProviderTest extends AhjoKernelTestBase {
+class PaatoksetAhjoApiServiceProviderTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}

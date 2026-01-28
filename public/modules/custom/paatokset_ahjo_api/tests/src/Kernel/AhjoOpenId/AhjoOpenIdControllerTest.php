@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace src\Kernel\AhjoOpenId;
+namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoOpenId;
 
 use Drupal\Core\Url;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
@@ -25,11 +25,6 @@ class AhjoOpenIdControllerTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'user',
-    'helfi_api_base',
-    'paatokset_ahjo_api',
-    'path_alias',
-    'pathauto',
-    'token',
   ];
 
   /**

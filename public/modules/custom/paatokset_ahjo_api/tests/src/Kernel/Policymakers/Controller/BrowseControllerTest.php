@@ -8,24 +8,16 @@ use Drupal\Core\Url;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Tests policymaker controller.
  */
-class BrowseControllerTest extends AhjoKernelTestBase {
+class BrowseControllerTest extends AhjoEntityKernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'paatokset_ahjo_api',
-    'user',
-  ];
 
   /**
    * {@inheritDoc}

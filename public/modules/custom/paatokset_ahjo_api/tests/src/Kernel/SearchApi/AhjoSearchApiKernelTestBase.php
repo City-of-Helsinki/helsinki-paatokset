@@ -9,14 +9,14 @@ use Drupal\search_api\Entity\Server;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorInterface;
 use Drupal\search_api\ServerInterface;
-use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**
  * Base class for search api related kernel tests.
  *
  * @see \Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase
  */
-abstract class AhjoSearchApiKernelTestBase extends AhjoKernelTestBase {
+abstract class AhjoSearchApiKernelTestBase extends AhjoEntityKernelTestBase {
 
   /**
    * {@inheritdoc}
