@@ -7,8 +7,8 @@ Drupal Website for the Helsinki Päätökset project.
 Env        | Branch    | Drush alias | URL                                  | Notes
 ---------- | --------- | ----------- | -------------------------------------| -----
 dev        |     *     |      -      | http://helsinki-paatokset.docker.so/ | Local development environment
-test       |     *     |      -      | https://paatokset.test.hel.ninja/    | Test environment
-stage      |     *     |      -      | https://paatokset.stage.hel.ninja/   | Staging environment
+test       |     *     |      -      | https://paatokset.test.hel.ninja/fi  | Test environment
+stage      |     *     |      -      | https://paatokset.stage.hel.ninja/fi | Staging environment
 production | tag based |      -      | https://paatokset.hel.fi             | Production environment
 
 ## Documentation
