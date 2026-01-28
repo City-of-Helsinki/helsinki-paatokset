@@ -179,19 +179,49 @@ class DecisionTest extends AhjoEntityKernelTestBase {
   }
 
   /**
-   * Tests decision pdf link.
+   * Tests decision content parsing.
+   *
+   * Decision HTML format was changed in 2026. We need to support
+   * the old format until all decisions are re-fetched.
    */
-  public function testParseContent(): void {
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
-    $storage = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('node');
-
-    $decision = $storage->create([
+  public function testLegacyParseContent(): void {
+    $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
+      'field_organization_type' => 'Viranhaltija',
     ]);
 
-    $this->assertInstanceOf(Decision::class, $decision);
+    // Some decisions in production have 'null' on history field.
+    $decision->set('field_decision_history', 'null');
+    $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    $decision->set('field_diary_number', 'HEL-2024-009117');
+    $decision->set('field_hide_decision_content', '0');
+    $content = $decision->parseContent();
+
+    $this->assertEquals('Jane Doe', $content['more_info']?->name);
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9123', $content['more_info']?->getPhoneLink()?->getUrl()->toString());
+    $this->assertEquals('John Doe', $content['presenter_info']?->name);
+    $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
+    $this->assertEquals('Tilapäällikkö', $content['signature_info']?->title);
+
+    // Empty <p> tags are stripped from accordions.
+    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    foreach ($content['accordions'] as $accordion) {
+      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
+    }
+  }
+
+  /**
+   * Tests decision content parsing.
+   */
+  public function testParseContent(): void {
+    $decision = Decision::create([
+      'type' => 'decision',
+      'title' => 'Test decision',
+      'field_organization_type' => 'Viranhaltija',
+    ]);
+
     $this->assertEmpty($decision->parseContent());
 
     // Hide decision.
@@ -201,22 +231,17 @@ class DecisionTest extends AhjoEntityKernelTestBase {
 
     // Some decisions in production have 'null' on history field.
     $decision->set('field_decision_history', 'null');
-    $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
+    $decision->set('field_decision_content', file_get_contents(__DIR__ . '/../../../fixtures/decision-content-new.html'));
     $decision->set('field_decision_motion', file_get_contents(__DIR__ . '/../../../fixtures/decision-motion.html'));
     $decision->set('field_diary_number', 'HEL-2024-009117');
     $decision->set('field_hide_decision_content', '0');
     $content = $decision->parseContent();
 
-    $this->assertEquals('Jane Doe', $content['more_info']['content']['name']['#plain_text'] ?? '');
-    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']['content']['email']?->getUrl()->toString() ?? '');
-    $this->assertEquals('tel:0-9123', $content['more_info']['content']['phone']?->getUrl()->toString() ?? '');
-    $this->assertEquals('John Doe', $content['presenter_info']['content']['name']['#plain_text'] ?? '');
-
-    // Empty <p> tags are stripped from accordions.
-    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
-    foreach ($content['accordions'] as $accordion) {
-      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
-    }
+    $this->assertEquals('Jane Doe', $content['more_info']?->name);
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9123', $content['more_info']?->getPhoneLink()?->getUrl()->toString());
+    $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
+    $this->assertEquals('Tehtävänimike', $content['signature_info']?->title);
   }
 
   /**

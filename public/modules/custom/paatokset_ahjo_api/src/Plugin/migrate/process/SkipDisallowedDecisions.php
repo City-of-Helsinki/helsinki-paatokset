@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\Plugin\migrate\process;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipRowException;
@@ -44,13 +45,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * @see \Drupal\migrate\Plugin\MigrateProcessInterface
  */
 #[MigrateProcess('skip_disallowed_decisions', handle_multiples: TRUE)]
-class SkipDisallowedDecisions extends ProcessPluginBase {
+class SkipDisallowedDecisions extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    #[Autowire('logger.channel.paatokset_ahjo_api')]
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerInterface $logger,
     private readonly ConfigFactoryInterface $configFactory,
     private readonly EntityTypeManagerInterface $entityTypeManager,

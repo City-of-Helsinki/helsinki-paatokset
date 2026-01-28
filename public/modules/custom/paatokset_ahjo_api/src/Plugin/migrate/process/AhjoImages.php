@@ -10,6 +10,7 @@ use Drupal\Core\File\Exception\FileExistsException;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\FileInterface;
 use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -25,7 +26,7 @@ use Drupal\migrate\Row;
  * them in the database.
  */
 #[MigrateProcess('ahjo_images')]
-final class AhjoImages extends ProcessPluginBase {
+final class AhjoImages extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
   use AutowiredInstanceTrait;
 
