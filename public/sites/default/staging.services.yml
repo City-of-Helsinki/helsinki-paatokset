@@ -4,3 +4,4 @@ parameters:
   helfi_api_base.internal_domains:
     - 'paatokset.hel.fi'
     - 'nginx-paatokset-staging.apps.platta.hel.fi'
+    - 'paatokset.stage.hel.ninja'
