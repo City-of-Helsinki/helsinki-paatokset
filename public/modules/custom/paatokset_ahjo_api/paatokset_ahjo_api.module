@@ -150,6 +150,14 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'tags' => NULL,
       ],
     ],
+    'policymaker_browser_hero_block' => [
+      'variables' => [
+        'hero_title' => NULL,
+        'first_paragraph_bg' => NULL,
+        'hero_description' => NULL,
+      ],
+      'template' => 'policymaker-browser-hero-block',
+    ],
   ];
 }
 
@@ -1116,4 +1124,32 @@ function paatokset_ahjo_api_organization_color_code_allowed_values() : array {
   ];
 
   return $colors;
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function paatokset_ahjo_api_preprocess_html(&$variables): void {
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  $policymaker_browser = [
+    'paatokset_ahjo_api.browse_policymakers',
+  ];
+
+  if (in_array($route, $policymaker_browser)) {
+    $variables['theme_color'] = 'gold';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function paatokset_ahjo_api_preprocess_page(&$variables): void {
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  // There is hero block on Policymaker browser pages but
+  // since it isn't a paragraph we must set this variable manually.
+  if ($route === 'paatokset_ahjo_api.browse_policymakers') {
+    $variables['has_hero'] = TRUE;
+  }
 }
