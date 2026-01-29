@@ -162,7 +162,7 @@ final class AhjoOrgCompositionSource extends HttpSourcePluginBase implements Con
   /**
    * Get default entity query for fetching decisionmaker nodes.
    *
-   * @return Drupal\Core\Entity\Query\QueryInterface
+   * @return \Drupal\Core\Entity\Query\QueryInterface
    *   Entity query that filters out unpublished and non-decisionmaker nodes.
    */
   private function getDefaultQuery(): QueryInterface {
@@ -238,7 +238,7 @@ final class AhjoOrgCompositionSource extends HttpSourcePluginBase implements Con
   /**
    * Get organization data from AHJO API.
    *
-   * @param \Drupal\node\NodeInterfac $org
+   * @param \Drupal\node\NodeInterface $org
    *   The policymaker node.
    *
    * @return array
