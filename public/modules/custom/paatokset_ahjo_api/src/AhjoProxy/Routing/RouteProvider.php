@@ -50,7 +50,7 @@ final class RouteProvider {
           '_permission' => 'access ahjo proxy',
         ],
         options: [
-          'auth' => ['cookie', 'key_auth'],
+          '_auth' => ['cookie', 'key_auth'],
         ],
         methods: ['GET'],
       );
