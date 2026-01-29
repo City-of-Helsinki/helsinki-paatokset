@@ -43,7 +43,6 @@ services:
 
   Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks: ~
 
-  Drupal\paatokset_ahjo_api\AhjoProxy\AhjoClient: ~
   Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient: ~
   Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClientInterface: '@Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient'
 
