@@ -24,6 +24,8 @@ final readonly class MigrateSettings {
    *   Force update of existing items.
    * @param bool $queue
    *   Add new cases to the aggregation queue.
+   * @param array $sourceConfiguration
+   *   Additional source configuration to merge into the migration.
    */
   public function __construct(
     public string|null $after = NULL,
@@ -32,6 +34,7 @@ final readonly class MigrateSettings {
     public array|null $idlist = NULL,
     public bool $update = FALSE,
     public bool $queue = FALSE,
+    public array $sourceConfiguration = [],
   ) {
     // Using `prepareUpdate()` modifies the idmap for all items. This
     // forces all items to be updated, which is expensive when there
@@ -46,6 +49,8 @@ final readonly class MigrateSettings {
    *
    * @param array $options
    *   Drush command options.
+   * @param array $sourceConfiguration
+   *   Additional source configuration to merge into the migration.
    *
    * @return self
    *   The MigrateSettings instance.
@@ -53,14 +58,15 @@ final readonly class MigrateSettings {
    * @throws \InvalidArgumentException
    *   If date strings are malformed or validation fails.
    */
-  public static function fromOptions(array $options): self {
+  public static function fromOptions(array $options, array $sourceConfiguration = []): self {
     // If an idlist is provided, use ID list mode.
     if (!empty($options['idlist'])) {
       $ids = array_map('trim', explode(',', $options['idlist']));
       return new self(
         idlist: $ids,
-        update: (bool) $options['update'],
-        queue: (bool) $options['queue'],
+        update: (bool) ($options['update'] ?? FALSE),
+        queue: (bool) ($options['queue'] ?? FALSE),
+        sourceConfiguration: $sourceConfiguration,
       );
     }
 
@@ -69,8 +75,9 @@ final readonly class MigrateSettings {
       after: $options['after'] ?? NULL,
       before: $options['before'] ?? NULL,
       interval: $options['interval'] ?? NULL,
-      update: (bool) $options['update'],
-      queue: (bool) $options['queue'] ?? FALSE,
+      update: (bool) ($options['update'] ?? FALSE),
+      queue: (bool) ($options['queue'] ?? FALSE),
+      sourceConfiguration: $sourceConfiguration,
     );
   }
 
@@ -82,14 +89,14 @@ final readonly class MigrateSettings {
    */
   public function toSourceConfiguration(): array {
     if ($this->idlist !== NULL) {
-      return ['idlist' => $this->idlist];
+      return ['idlist' => $this->idlist] + $this->sourceConfiguration;
     }
 
     return [
       'after' => $this->after,
       'before' => $this->before,
       'interval' => $this->interval,
-    ];
+    ] + $this->sourceConfiguration;
   }
 
 }
