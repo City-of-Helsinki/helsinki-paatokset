@@ -30,7 +30,7 @@ class PolicymakerBrowserHeroBlockTest extends KernelTestBase {
     'helfi_api_base',
     'path_alias',
     'pathauto',
-    'token'
+    'token',
   ];
 
   /**
