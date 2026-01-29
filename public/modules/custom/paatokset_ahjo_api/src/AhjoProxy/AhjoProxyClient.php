@@ -115,7 +115,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    * {@inheritdoc}
    */
   public function getDecisionmaker(string $langcode, string $id): Decisionmaker {
-    $response = $this->makeRequest('/organization/decisionmakingorganizations', [
+    $response = $this->makeRequest('/agents/decisionmakers', [
       'query' => [
         'orgid' => strtoupper($id),
         'apireqlang' => $langcode,
@@ -139,7 +139,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    */
   public function getDecisionmakers(string $langcode, \DateTimeImmutable $changedAfter, \DateTimeImmutable $changedBefore, \DateInterval $interval): iterable {
     foreach (new DateRangeIterator($changedAfter, $changedBefore, $interval) as [$current, $next]) {
-      $response = $this->makeRequest('/organization/decisionmakingorganizations', [
+      $response = $this->makeRequest('/agents/decisionmakers', [
         'query' => [
           'apireqlang' => $langcode,
           'changedbefore' => $next->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
