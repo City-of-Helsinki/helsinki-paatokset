@@ -1,0 +1,343 @@
+{
+  "decisionMakers": [
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Kaupunginhallitus",
+        "ID": "00400",
+        "TypeId": "2",
+        "Existing": "true",
+        "Formed": "2009-01-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Hallitus",
+        "Sector": null,
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=02900&apireqlang=fi"
+                }
+              ],
+              "Name": "Kaupunginvaltuusto",
+              "ID": "02900",
+              "TypeId": "1",
+              "Existing": "true",
+              "Formed": "2009-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": null,
+      "Composition": [
+        {
+          "links": [],
+          "Name": "Aku Ankka",
+          "DeputyOf": null,
+          "Role": "Varajäsen",
+          "ID": "a.ankka"
+        },
+        {
+          "links": [],
+          "Name": "Roope Ankka",
+          "DeputyOf": null,
+          "Role": "Puheenjohtaja",
+          "ID": "r.ankka"
+        },
+        {
+          "links": [],
+          "Name": "Tupu",
+          "DeputyOf": null,
+          "Role": "Varapuheenjohtaja",
+          "ID": "tupu"
+        },
+        {
+          "links": [],
+          "Name": "Lupu",
+          "DeputyOf": "Tuuli Kousa",
+          "Role": "Jäsen",
+          "ID": "lupu"
+        },
+        {
+          "links": [],
+          "Name": "Hupu",
+          "DeputyOf": null,
+          "Role": "Jäsen",
+          "ID": "hupu"
+        }
+      ]
+    },
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Liikuntapaikkap\u00e4\u00e4llikk\u00f6",
+        "ID": "U4804002020VH1",
+        "TypeId": "12",
+        "Existing": "true",
+        "Formed": "2017-06-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Viranhaltija",
+        "Sector": {
+          "links": [],
+          "SectorID": "U480400",
+          "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+          "PendingCases": 0
+        },
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/organization?orgid=U4804002020\u0026apireqlang=fi"
+                }
+              ],
+              "Name": "Liikuntapaikat",
+              "ID": "U4804002020",
+              "TypeId": "9",
+              "Existing": "true",
+              "Formed": "2017-06-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": {
+        "links": [],
+        "SectorID": "U480400",
+        "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+        "PendingCases": 0
+      },
+      "Composition": []
+    },
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Ulkoilupalvelup\u00e4\u00e4llikk\u00f6",
+        "ID": "U4804002030VH1",
+        "TypeId": "12",
+        "Existing": "true",
+        "Formed": "2017-06-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Viranhaltija",
+        "Sector": {
+          "links": [],
+          "SectorID": "U480400",
+          "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+          "PendingCases": 0
+        },
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/organization?orgid=U4804002030\u0026apireqlang=fi"
+                }
+              ],
+              "Name": "Ulkoilupalvelut",
+              "ID": "U4804002030",
+              "TypeId": "9",
+              "Existing": "true",
+              "Formed": "2017-06-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": {
+        "links": [],
+        "SectorID": "U480400",
+        "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+        "PendingCases": 0
+      },
+      "Composition": []
+    },
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Nuorisoty\u00f6n aluep\u00e4\u00e4llikk\u00f6",
+        "ID": "U4804003010VH1",
+        "TypeId": "12",
+        "Existing": "true",
+        "Formed": "2017-06-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Viranhaltija",
+        "Sector": {
+          "links": [],
+          "SectorID": "U480400",
+          "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+          "PendingCases": 0
+        },
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/organization?orgid=U4804003010\u0026apireqlang=fi"
+                }
+              ],
+              "Name": "It\u00e4inen nuorisoty\u00f6",
+              "ID": "U4804003010",
+              "TypeId": "9",
+              "Existing": "true",
+              "Formed": "2017-06-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": {
+        "links": [],
+        "SectorID": "U480400",
+        "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+        "PendingCases": 0
+      },
+      "Composition": []
+    },
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Nuorisoty\u00f6n aluep\u00e4\u00e4llikk\u00f6",
+        "ID": "U4804003020VH1",
+        "TypeId": "12",
+        "Existing": "true",
+        "Formed": "2017-06-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Viranhaltija",
+        "Sector": {
+          "links": [],
+          "SectorID": "U480400",
+          "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+          "PendingCases": 0
+        },
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/organization?orgid=U4804003020\u0026apireqlang=fi"
+                }
+              ],
+              "Name": "L\u00e4ntinen nuorisoty\u00f6",
+              "ID": "U4804003020",
+              "TypeId": "9",
+              "Existing": "true",
+              "Formed": "2017-06-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": {
+        "links": [],
+        "SectorID": "U480400",
+        "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+        "PendingCases": 0
+      },
+      "Composition": []
+    },
+    {
+      "Organization": {
+        "links": [],
+        "Name": "Kumppanuusp\u00e4\u00e4llikk\u00f6",
+        "ID": "U4804003040VH1",
+        "TypeId": "12",
+        "Existing": "true",
+        "Formed": "2025-01-01T00:00:00.000",
+        "Dissolved": "2100-01-01T00:00:00.000",
+        "Type": "Viranhaltija",
+        "Sector": {
+          "links": [],
+          "SectorID": "U480400",
+          "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+          "PendingCases": 0
+        },
+        "OrganizationLevelAbove": {
+          "organizations": [
+            {
+              "links": [
+                {
+                  "rel": "self",
+                  "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/organization?orgid=U4804003040\u0026apireqlang=fi"
+                }
+              ],
+              "Name": "Kumppanuusyksikk\u00f6",
+              "ID": "U4804003040",
+              "TypeId": "9",
+              "Existing": "true",
+              "Formed": "2025-01-01T00:00:00.000",
+              "Dissolved": "2100-01-01T00:00:00.000"
+            }
+          ],
+          "count": 1,
+          "links": []
+        },
+        "OrganizationLevelBelow": {
+          "organizations": [],
+          "count": 0,
+          "links": []
+        },
+        "IsDecisionMaker": true
+      },
+      "Sector": {
+        "links": [],
+        "SectorID": "U480400",
+        "Sector": "Kulttuurin ja vapaa-ajan toimiala",
+        "PendingCases": 0
+      },
+      "Composition": []
+    }
+  ],
+  "count": 6,
+  "links": [
+    {
+      "rel": "self",
+      "href": "https:\/\/ahjo.hel.fi:9802\/ahjorest\/v1\/agents\/decisionmakers?q=null\u0026start=null\u0026changedsince=2025-10-09T13:37:47Z\u0026changedbefore=\u0026apireqlang=fi"
+    }
+  ]
+}

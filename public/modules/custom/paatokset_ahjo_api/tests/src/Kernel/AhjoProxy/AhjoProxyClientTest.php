@@ -15,8 +15,9 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoHandling;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoRecord;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationInfo;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
-use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationNode;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -87,33 +88,33 @@ class AhjoProxyClientTest extends KernelTestBase {
     ]);
 
     $organization = $sut->getOrganization('fi', '00001');
-    $this->assertInstanceOf(OrganizationNode::class, $organization);
+    $this->assertInstanceOf(Organization::class, $organization);
 
     // Hard coded to match the json file.
     $this->assertCount(1, $organization->children);
     $this->assertNull($organization->parent);
-    $this->assertEquals('00001', $organization->organization->id);
-    $this->assertEquals(OrganizationType::CITY, $organization->organization->type);
-    $this->assertEquals('Helsingin kaupunki', $organization->organization->name);
+    $this->assertEquals('00001', $organization->info->id);
+    $this->assertEquals(OrganizationType::CITY, $organization->info->type);
+    $this->assertEquals('Helsingin kaupunki', $organization->info->name);
     $this->assertCount(1, $organization->children);
 
     foreach ($organization->children as $child) {
-      $this->assertInstanceOf(Organization::class, $child);
+      $this->assertInstanceOf(OrganizationInfo::class, $child);
     }
 
     $organization = $sut->getOrganization('fi', '02900');
-    $this->assertInstanceOf(OrganizationNode::class, $organization);
+    $this->assertInstanceOf(Organization::class, $organization);
 
     // Hard coded to match the json file.
     $this->assertCount(1, $organization->children);
     $this->assertNotNull($organization->parent);
-    $this->assertEquals('02900', $organization->organization->id);
-    $this->assertEquals(OrganizationType::COUNCIL, $organization->organization->type);
-    $this->assertEquals('Kaupunginvaltuusto', $organization->organization->name);
+    $this->assertEquals('02900', $organization->info->id);
+    $this->assertEquals(OrganizationType::COUNCIL, $organization->info->type);
+    $this->assertEquals('Kaupunginvaltuusto', $organization->info->name);
     $this->assertCount(1, $organization->children);
 
     foreach ($organization->children as $child) {
-      $this->assertInstanceOf(Organization::class, $child);
+      $this->assertInstanceOf(OrganizationInfo::class, $child);
       $this->assertFalse($child->existing);
     }
 
@@ -236,6 +237,49 @@ class AhjoProxyClientTest extends KernelTestBase {
     $this->expectException(AhjoProxyException::class);
     $this->expectExceptionMessage('Cases data not found in response.');
     iterator_to_array($sut->getCases('fi', $handledAfter, $handledBefore, $interval));
+  }
+
+  /**
+   * Tests ahjo proxy client multiple decisionmakers.
+   */
+  public function testGetDecisionmakers(): void {
+    $sut = $this->getSut([
+      new Response(200, [], file_get_contents(dirname(__DIR__, 3) . '/fixtures/decisionmakers.json')),
+      new Response(200, [], json_encode(['decisionMakers' => []])),
+      new Response(200, [], json_encode(['invalid' => 'response'])),
+    ]);
+
+    // Test successful response.
+    $handledBefore = new \DateTimeImmutable('2024-03-03');
+    $handledAfter = new \DateTimeImmutable('2024-01-01');
+    $interval = new \DateInterval('P1Y');
+    $casesGenerator = $sut->getDecisionmakers('fi', $handledAfter, $handledBefore, $interval);
+
+    $this->assertInstanceOf(\Generator::class, $casesGenerator);
+
+    $decisionmakers = iterator_to_array($casesGenerator);
+    $this->assertCount(6, $decisionmakers);
+
+    // Verify all items are Decisionmaker instances.
+    foreach ($decisionmakers as $decisionmaker) {
+      $this->assertInstanceOf(Decisionmaker::class, $decisionmaker);
+    }
+
+    // Verify first case properties (from decisionmakers.json fixture).
+    $firstDecisionmaker = $decisionmakers[0];
+    $this->assertEquals('00400', $firstDecisionmaker->organization->info->id);
+    $this->assertEquals('Kaupunginhallitus', $firstDecisionmaker->organization->info->name);
+    $this->assertTrue($firstDecisionmaker->organization->info->existing);
+    $this->assertCount(5, $firstDecisionmaker->composition);
+
+    // Test empty response.
+    $emptyGenerator = $sut->getDecisionmakers('fi', $handledAfter, $handledBefore, $interval);
+    $empty = iterator_to_array($emptyGenerator);
+    $this->assertCount(0, $empty);
+
+    // Test invalid response.
+    $this->expectException(AhjoProxyException::class);
+    iterator_to_array($sut->getDecisionmakers('fi', $handledAfter, $handledBefore, $interval));
   }
 
   /**

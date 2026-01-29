@@ -90,10 +90,10 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
         $parent = $response->parent;
 
         // Root organization is allowed not to have a parent.
-        if (!$parent && $response->organization->id !== self::ROOT_ORGANIZATION_ID) {
+        if (!$parent && $response->info->id !== self::ROOT_ORGANIZATION_ID) {
           // Skip if the organization is dissolved. Example 🐙:
           // https://paatokset.hel.fi/fi/ahjo-proxy/organization/single/01101.
-          if (!$response->organization->existing) {
+          if (!$response->info->existing) {
             continue;
           }
 
@@ -104,10 +104,10 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
 
         // Process current organization.
         $rows[] = [
-          'id' => $response->organization->id,
-          'name' => $response->organization->name,
-          'existing' => $response->organization->existing,
-          'type' => $response->organization->type->value,
+          'id' => $response->info->id,
+          'name' => $response->info->name,
+          'existing' => $response->info->existing,
+          'type' => $response->info->type->value,
           'langcode' => $langcode,
           'organization_above' => $parent?->id ?? NULL,
         ];
@@ -123,9 +123,9 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
             'id' => $child->id,
             'name' => $child->name,
             'existing' => $child->existing,
-            'type' => $response->organization->type->value,
+            'type' => $response->info->type->value,
             'langcode' => $langcode,
-            'organization_above' => $response->organization->id,
+            'organization_above' => $response->info->id,
           ];
         }
       }

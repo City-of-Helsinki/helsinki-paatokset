@@ -4,47 +4,61 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\AhjoProxy\DTO;
 
-use Drupal\Component\Utility\Unicode;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
+use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
 
 /**
- * Ahjo organization DTO.
+ * Response from the organization endpoint.
+ *
+ * This represents a node in the organization tree.
+ * Compared to organization DTO, this includes children and the parent.
  */
-readonly class Organization {
+final readonly class Organization {
 
+  /**
+   * Constructs a new instance.
+   *
+   * @param OrganizationInfo $info
+   *   Current organization.
+   * @param OrganizationInfo|null $parent
+   *   Parent organization (NULL for root organization).
+   * @param array<OrganizationInfo> $children
+   *   Child organizations.
+   * @param array $sector
+   *   Organization sector (?).
+   */
   public function __construct(
-    public string $id,
-    public string $name,
-    public bool $existing,
-    public \DateTimeImmutable $formed,
-    public \DateTimeImmutable $dissolved,
-    public OrganizationType $type,
-    public ?string $typeLabel = NULL,
+    public OrganizationInfo $info,
+    public ?OrganizationInfo $parent = NULL,
+    public array $children = [],
+    public array $sector = [],
   ) {
   }
 
   /**
    * Construct self from deserialized Ahjo response.
    *
-   * @throws \ValueError
-   * @throws \DateMalformedStringException
+   * @throws \Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException
    */
   public static function fromAhjoObject(\stdClass $object): self {
-    $name = $object->ID;
+    try {
+      $parents = array_map(static fn ($item) => OrganizationInfo::fromAhjoObject($item), $object->OrganizationLevelAbove->organizations);
 
-    if ($object->Name ?? FALSE) {
-      $name = Unicode::truncate($object->Name, '255', TRUE, TRUE);
+      // As far as I know, an organization should never have
+      // more than one parent. However, the data type is array.
+      if (count($parents) > 1) {
+        throw new AhjoProxyException('Organization has more than one parent.');
+      }
+
+      return new self(
+        OrganizationInfo::fromAhjoObject($object),
+        array_first($parents),
+        array_map(static fn($item) => OrganizationInfo::fromAhjoObject($item), $object->OrganizationLevelBelow->organizations),
+        (array) $object->Sector ?? []
+      );
     }
-
-    return new self(
-      $object->ID,
-      $name,
-      filter_var($object->Existing, FILTER_VALIDATE_BOOLEAN),
-      new \DateTimeImmutable($object->Formed),
-      new \DateTimeImmutable($object->Dissolved),
-      OrganizationType::tryFrom((int) $object->TypeId) ?? OrganizationType::UNKNOWN,
-      $object->Type ?? NULL,
-    );
+    catch (\ValueError | \DateMalformedStringException $e) {
+      throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
   }
 
 }
