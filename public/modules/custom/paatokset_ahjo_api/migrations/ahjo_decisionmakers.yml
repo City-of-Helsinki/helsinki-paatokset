@@ -6,66 +6,14 @@ dependencies:
       - paatokset_ahjo_api
       - paatokset_ahjo_proxy
 id: ahjo_decisionmakers
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags:
   - ahjo_api
   - ahjo_api_decisionmakers
 migration_group: ahjo_api
 label: 'Ahjo API - Decisionmakers'
-deriver: Drupal\paatokset_ahjo_api\Plugin\Deriver\AhjoApiMigrationDeriver
 source:
-  plugin: url
+  plugin: ahjo_api_decisionmakers
   track_changes: true
-  data_fetcher_plugin: http
-  data_parser_plugin: json
-  authentication:
-    plugin: paatokset_local_key_auth
-  item_selector: decisionMakers
-  fields:
-    -
-      name: title
-      label: Title
-      selector: Organization/Name
-    -
-      name: decisionmaker_id
-      label: Decisionmaker ID
-      selector: Organization/ID
-    -
-      name: decisionmaker_type_id
-      label: Type ID
-      selector: Organization/TypeId
-    -
-      name: decisionmaker_type
-      label: Decisionmaker type
-      selector: Organization/Type
-    -
-      name: existing
-      label: Currently existing decisionmaker
-      selector: Organization/Existing
-    -
-      name: formed
-      label: Date and time formed
-      selector: Organization/Formed
-    -
-      name: dissolved
-      label: Date and time dissolved
-      selector: Organization/Dissolved
-    -
-      name: is_decisionmaker
-      label: Is Decisionmaker
-      selector: Organization/IsDecisionMaker
-    -
-      name: sector
-      label: Sector
-      selector: Organization/Sector
-    -
-      name: organization_above
-      label: Organization Level Above
-      selector: Organization/OrganizationLevelAbove
-  ids:
-    decisionmaker_id:
-      type: string
   constants:
     title_field: title
     title_override_field: field_override_title
@@ -79,7 +27,7 @@ process:
   nid:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_policymaker_nid
-    source: decisionmaker_id
+    source: id
   title:
     plugin: callback
     callable: _paatokset_ahjo_api_get_existing_value_with_override
@@ -89,30 +37,27 @@ process:
       - 'constants/title_override_field'
       - 'title'
       - '@langcode'
-      - 'decisionmaker_id'
+      - 'id'
   field_ahjo_title:
     plugin: default_value
     source: title
-    default_value: decisionmaker_id
-  field_policymaker_id: decisionmaker_id
-  field_organization_type: decisionmaker_type
-  field_organization_type_id: decisionmaker_type_id
-  field_policymaker_existing:
-    plugin: callback
-    callable: _paatokset_ahjo_api_string_to_boolean
-    source: existing
+    default_value: id
+  field_policymaker_id: id
+  field_organization_type: type_label
+  field_organization_type_id: type
+  field_policymaker_existing: existing
   field_policymaker_formed:
     plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.v'
+    from_format: 'U'
     to_format: 'Y-m-d\TH:i:s'
-    from_timezone: Europe/Helsinki
+    from_timezone: UTC
     to_timezone: UTC
     source: formed
   field_policymaker_dissolved:
     plugin: format_date
-    from_format: 'Y-m-d\TH:i:s.v'
+    from_format: 'U'
     to_format: 'Y-m-d\TH:i:s'
-    from_timezone: Europe/Helsinki
+    from_timezone: UTC
     to_timezone: UTC
     source: dissolved
   field_is_decisionmaker: is_decisionmaker
@@ -124,14 +69,7 @@ process:
     -
       plugin: callback
       callable: json_encode
-  field_dm_org_name:
-    -
-      plugin: array_shift
-      source: organization_above/organizations
-    -
-      plugin: extract
-      index:
-        - Name
+  field_dm_org_name: parent_name
 destination:
   plugin: 'entity:node'
 migration_dependencies:

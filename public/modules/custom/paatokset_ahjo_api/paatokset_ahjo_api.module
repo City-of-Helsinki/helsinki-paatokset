@@ -724,17 +724,19 @@ function _paatokset_ahjo_api_lookup_meeting_nid(string $meeting_id): ?string {
  *   Existing nid, if found.
  */
 function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?string {
-  $query = Drupal::entityQuery('node')
-    ->accessCheck(TRUE)
+  $ids = Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
     ->condition('type', 'policymaker')
     ->condition('field_policymaker_id', $decisionmaker_id)
     ->range(0, 1)
-    ->latestRevision();
-  $ids = $query->execute();
+    ->latestRevision()
+    ->execute();
+
   if (empty($ids)) {
     return NULL;
   }
-  return reset($ids);
+
+  return array_first($ids);
 }
 
 /**
