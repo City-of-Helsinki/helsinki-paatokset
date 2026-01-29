@@ -17,10 +17,24 @@ final class RouteProvider {
    */
   private const array ENDPOINTS = [
     'cases' => '/cases',
-    'singleCase' => '/cases/{case}',
+    'case_single' => '/cases/{case}',
+    'trustees' => '/agents/positionoftrust',
     'trustee' => '/agents/positionoftrust/{trustee}',
-    'organization' => '/organization',
-    'decisionmaker' => '/organization/decisionmakingorganizations',
+    'organizations' => '/organization',
+    // Guess, not sure if `organization` endpoint exists:
+    'organization' => '/organization/{organization}',
+    'decisionmakingorganizations' => '/organization/decisionmakingorganizations',
+    // Guess, not sure if `decisionmakingorganization` endpoint exists:
+    'decisionmakingorganization' => '/organization/decisionmakingorganizations/{decisionmaker}',
+    'decisionmakers' => '/agents/decisionmakers',
+    // Guess, not sure if `decisionmaker` endpoint exists:
+    'decisionmaker' => '/agents/decisionmakers/{decisionmaker}',
+    'record' => '/records/{record}',
+    'decisions' => '/decisions',
+    'decision' => '/decisions/{decision}',
+    'meetings' => '/meetings',
+    'meeting' => '/meetings/{meeting}',
+    'agenda_item' => '/meetings/{meeting}/agendaitems/{item}',
   ];
 
   /**
