@@ -11,7 +11,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -270,7 +270,7 @@ class AhjoAggregatorCommands extends DrushCommands {
     }
 
     $this->logger->info('Received ' . count($data[$list_key]) . ' results.');
-    $this->fileRepository->writeData(json_encode($data), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $this->fileRepository->writeData(json_encode($data), 'public://' . $filename, FileExists::Replace);
     $this->logger->info('Stores data into public://' . $filename);
   }
 
@@ -2484,7 +2484,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $file_path = $this->moduleExtensionList->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
       $file_contents = file_get_contents($file_path);
       if (!empty($file_contents)) {
-        $this->fileRepository->writeData($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
+        $this->fileRepository->writeData($file_contents, 'public://' . $file, FileExists::Replace);
         $this->logger->info('Saved file into public://' . $file);
       }
       else {

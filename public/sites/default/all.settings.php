@@ -17,6 +17,8 @@ $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_RE
 // Search operator guide node id.
 $config['paatokset_search.settings']['operator_guide_node_id'] = getenv('OPERATOR_GUIDE_NODE_ID');
 
+$config['paatokset_ahjo_api.settings']['ahjo_endpoint'] = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
+
 // AD role mapping.
 $config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
   [
