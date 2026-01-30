@@ -1,112 +1,108 @@
 {
-  "cases": [
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216?apireqlang=sv"
+    }
+  ],
+  "CaseIDLabel": "HEL 2025-001216",
+  "Title": "Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus",
+  "Created": "2025-01-22T19:46:13.000",
+  "Acquired": "2025-01-22T18:00:00.000",
+  "ClassificationCode": "00 00 03",
+  "ClassificationTitle": "Valtuuston aloitetoiminta",
+  "Status": "Ratkaistu",
+  "Language": "fi",
+  "PublicityClass": "Julkinen",
+  "SecurityReasons": [],
+  "Handlings": [
     {
       "links": [
         {
           "rel": "self",
-          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216?apireqlang=sv"
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216/handlings/1?apireqlang=sv"
         }
       ],
-      "CaseIDLabel": "HEL 2025-001216",
-      "Title": "Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus",
-      "Created": "2025-01-22T19:46:13.000",
-      "Acquired": "2025-01-22T18:00:00.000",
-      "ClassificationCode": "00 00 03",
-      "ClassificationTitle": "Valtuuston aloitetoiminta",
-      "Status": "Ratkaistu",
-      "Language": "fi",
-      "PublicityClass": "Julkinen",
-      "SecurityReasons": [],
-      "Handlings": [
+      "WorkSequenceNumber": 1,
+      "Sector": "Keskushallinto",
+      "Status": "Päättynyt",
+      "Created": "2025-01-23T11:21:17.543",
+      "DateNearestDeadline": "",
+      "SectorID": "U50"
+    },
+    {
+      "links": [
         {
-          "links": [
-            {
-              "rel": "self",
-              "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216/handlings/1?apireqlang=sv"
-            }
-          ],
-          "WorkSequenceNumber": 1,
-          "Sector": "Keskushallinto",
-          "Status": "Päättynyt",
-          "Created": "2025-01-23T11:21:17.543",
-          "DateNearestDeadline": "",
-          "SectorID": "U50"
-        },
-        {
-          "links": [
-            {
-              "rel": "self",
-              "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216/handlings/2?apireqlang=sv"
-            }
-          ],
-          "WorkSequenceNumber": 2,
-          "Sector": "Keskushallinto",
-          "Status": "Päättynyt",
-          "Created": "2025-08-26T12:37:31.827",
-          "DateNearestDeadline": "",
-          "SectorID": "U50"
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/cases/HEL-2025-001216/handlings/2?apireqlang=sv"
         }
       ],
-      "Records": [
-        {
-          "links": [
-            {
-              "rel": "self",
-              "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B85DFE41B-B655-419F-B7A4-35F41CC8AB06%7D"
-            }
-          ],
-          "Title": "Kaupunkiympäristölautakunnan lausunto kaupunginhallitukselle Mai Kivelän ym. valtuustoaloitteesta koskien Haltialan kotieläintilan muuttamista eläinsuojelukeskukseksi",
-          "AttachmentNumber": null,
-          "PublicityClass": "Julkinen",
-          "SecurityReasons": null,
-          "VersionSeriesId": "{2D4215DF-7A81-C9A1-B00F-95B2ED200004}",
-          "NativeId": "{85DFE41B-B655-419F-B7A4-35F41CC8AB06}",
-          "Type": "esitys",
-          "FileURI": "https://ahjojulkaisu.hel.fi/2D4215DF-7A81-C9A1-B00F-95B2ED200004.pdf",
-          "Language": "fi",
-          "PersonalData": "Sisältää henkilötietoja",
-          "Issued": ""
-        },
-        {
-          "links": [
-            {
-              "rel": "self",
-              "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BD61B5074-B206-C457-B626-9918BF700003%7D"
-            }
-          ],
-          "Title": "Ledamoten Mai Kiveläs motion om att omvandla Tomtbacka gård till ett djurskyddscenter",
-          "AttachmentNumber": null,
-          "PublicityClass": "Julkinen",
-          "SecurityReasons": null,
-          "VersionSeriesId": "{B57E4234-720A-CB8B-9DCF-9913CCB00006}",
-          "NativeId": "{D61B5074-B206-C457-B626-9918BF700003}",
-          "Type": "esitys",
-          "FileURI": "https://ahjojulkaisu.hel.fi/B57E4234-720A-CB8B-9DCF-9913CCB00006.pdf",
-          "Language": "sv",
-          "PersonalData": "Sisältää henkilötietoja",
-          "Issued": ""
-        },
-        {
-          "links": [
-            {
-              "rel": "self",
-              "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B1FFF7A3A-506E-4CE7-9EC0-63BF21CF8C7D%7D"
-            }
-          ],
-          "Title": "Kaupunkiympäristölautakunnan lausunto kaupunginhallitukselle Mai Kivelän ym. valtuustoaloitteesta koskien Haltialan kotieläintilan muuttamista eläinsuojelukeskukseksi",
-          "AttachmentNumber": null,
-          "PublicityClass": "Julkinen",
-          "SecurityReasons": null,
-          "VersionSeriesId": "{308CCFA5-990D-C649-9C50-9610CE40000A}",
-          "NativeId": "{1FFF7A3A-506E-4CE7-9EC0-63BF21CF8C7D}",
-          "Type": "päätös",
-          "FileURI": "https://ahjojulkaisu.hel.fi/308CCFA5-990D-C649-9C50-9610CE40000A.pdf",
-          "Language": "fi",
-          "PersonalData": "Sisältää henkilötietoja",
-          "Issued": "2025-04-07T03:00:00.000"
-        }
-      ],
-      "CaseID": "HEL-2025-001216"
+      "WorkSequenceNumber": 2,
+      "Sector": "Keskushallinto",
+      "Status": "Päättynyt",
+      "Created": "2025-08-26T12:37:31.827",
+      "DateNearestDeadline": "",
+      "SectorID": "U50"
     }
-  ]
+  ],
+  "Records": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B85DFE41B-B655-419F-B7A4-35F41CC8AB06%7D"
+        }
+      ],
+      "Title": "Kaupunkiympäristölautakunnan lausunto kaupunginhallitukselle Mai Kivelän ym. valtuustoaloitteesta koskien Haltialan kotieläintilan muuttamista eläinsuojelukeskukseksi",
+      "AttachmentNumber": null,
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "VersionSeriesId": "{2D4215DF-7A81-C9A1-B00F-95B2ED200004}",
+      "NativeId": "{85DFE41B-B655-419F-B7A4-35F41CC8AB06}",
+      "Type": "esitys",
+      "FileURI": "https://ahjojulkaisu.hel.fi/2D4215DF-7A81-C9A1-B00F-95B2ED200004.pdf",
+      "Language": "fi",
+      "PersonalData": "Sisältää henkilötietoja",
+      "Issued": ""
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BD61B5074-B206-C457-B626-9918BF700003%7D"
+        }
+      ],
+      "Title": "Ledamoten Mai Kiveläs motion om att omvandla Tomtbacka gård till ett djurskyddscenter",
+      "AttachmentNumber": null,
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "VersionSeriesId": "{B57E4234-720A-CB8B-9DCF-9913CCB00006}",
+      "NativeId": "{D61B5074-B206-C457-B626-9918BF700003}",
+      "Type": "esitys",
+      "FileURI": "https://ahjojulkaisu.hel.fi/B57E4234-720A-CB8B-9DCF-9913CCB00006.pdf",
+      "Language": "sv",
+      "PersonalData": "Sisältää henkilötietoja",
+      "Issued": ""
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7B1FFF7A3A-506E-4CE7-9EC0-63BF21CF8C7D%7D"
+        }
+      ],
+      "Title": "Kaupunkiympäristölautakunnan lausunto kaupunginhallitukselle Mai Kivelän ym. valtuustoaloitteesta koskien Haltialan kotieläintilan muuttamista eläinsuojelukeskukseksi",
+      "AttachmentNumber": null,
+      "PublicityClass": "Julkinen",
+      "SecurityReasons": null,
+      "VersionSeriesId": "{308CCFA5-990D-C649-9C50-9610CE40000A}",
+      "NativeId": "{1FFF7A3A-506E-4CE7-9EC0-63BF21CF8C7D}",
+      "Type": "päätös",
+      "FileURI": "https://ahjojulkaisu.hel.fi/308CCFA5-990D-C649-9C50-9610CE40000A.pdf",
+      "Language": "fi",
+      "PersonalData": "Sisältää henkilötietoja",
+      "Issued": "2025-04-07T03:00:00.000"
+    }
+  ],
+  "CaseID": "HEL-2025-001216"
 }

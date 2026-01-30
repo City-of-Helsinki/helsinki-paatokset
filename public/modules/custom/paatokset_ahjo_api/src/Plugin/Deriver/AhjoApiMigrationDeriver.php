@@ -21,17 +21,6 @@ class AhjoApiMigrationDeriver extends DeriverBase {
       'single',
     ];
 
-    if ($base_plugin_definition['id'] === 'ahjo_decisionmakers') {
-      $derivatives = [
-        'all',
-        'all_sv',
-        'latest',
-        'latest_sv',
-        'single',
-        'single_sv',
-      ];
-    }
-
     if ($base_plugin_definition['id'] === 'ahjo_meetings') {
       $derivatives[] = 'cancelled';
     }
@@ -123,14 +112,6 @@ class AhjoApiMigrationDeriver extends DeriverBase {
         'all' => '/ahjo-proxy/aggregated/decisions_all',
         'latest' => '/ahjo-proxy/aggregated/decisions_latest',
         'single' => '/ahjo-proxy/decisions/single',
-      ],
-      'ahjo_decisionmakers' => [
-        'all' => '/ahjo-proxy/aggregated/decisionmakers',
-        'all_sv' => '/ahjo-proxy/aggregated/decisionmakers_sv',
-        'latest' => '/ahjo-proxy/aggregated/decisionmakers_latest',
-        'latest_sv' => '/ahjo-proxy/aggregated/decisionmakers_latest_sv',
-        'single' => '/ahjo-proxy/organization/single',
-        'single_sv' => '/ahjo-proxy/organization/single',
       ],
       'ahjo_trustees' => [
         'all' => '/ahjo-proxy/aggregated/trustees_fi',

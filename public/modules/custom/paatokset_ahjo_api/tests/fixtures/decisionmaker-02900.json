@@ -1,0 +1,27 @@
+{
+  "organizations": [
+    {
+      "Name": "Kaupunginvaltuusto",
+      "ID": "02900",
+      "TypeId": "1",
+      "Existing": "true",
+      "Formed": "2009-01-01T00:00:00.000",
+      "Dissolved": "2100-01-01T00:00:00.000",
+      "Composition": [
+        {
+          "Name": "Aku Ankka",
+          "DeputyOf": null,
+          "Role": "Varajäsen",
+          "ID": "a.ankka"
+        },
+        {
+          "Name": "Roope Ankka",
+          "DeputyOf": null,
+          "Role": "Puheenjohtaja",
+          "ID": "r.ankka"
+        }
+      ]
+    }
+  ],
+  "count": 1
+}

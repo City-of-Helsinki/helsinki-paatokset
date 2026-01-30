@@ -29,26 +29,6 @@ parameters:
       path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/AhjoCallbackCommands.php
 
     -
-      message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\AhjoOrgCompositionSource\\:\\:getDefaultQuery\\(\\) has invalid return type Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
-
-    -
-      message: "#^PHPDoc tag @param for parameter \\$org with type Drupal\\\\node\\\\NodeInterfac is not subtype of native type Drupal\\\\node\\\\NodeInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
-
-    -
-      message: "#^PHPDoc tag @return with type Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface is not subtype of native type Drupal\\\\Core\\\\Entity\\\\Query\\\\QueryInterface\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
-
-    -
-      message: "#^Parameter \\$org of method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\migrate\\\\source\\\\AhjoOrgCompositionSource\\:\\:fetchOrgData\\(\\) has invalid type Drupal\\\\node\\\\NodeInterfac\\.$#"
-      count: 1
-      path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoOrgCompositionSource.php
-
-    -
       message: "#^Unsafe usage of new static\\(\\)\\.$#"
       count: 1
       path: public/modules/custom/paatokset_ahjo_api/src/Plugin/migrate/source/AhjoSourceBase.php

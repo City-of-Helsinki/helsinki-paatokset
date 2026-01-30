@@ -123,4 +123,61 @@ class AhjoImportCommandsTest extends KernelTestBase {
     $this->assertEquals(AhjoImportCommands::EXIT_SUCCESS, $result);
   }
 
+  /**
+   * Tests decisionmaker migration.
+   */
+  public function testRunDecisionmakerMigration(): void {
+    $migrationDriver = $this->prophesize(AhjoMigrationDriver::class);
+    $client = $this->prophesize(AhjoProxyClientInterface::class);
+    $queue = $this->prophesize(AhjoQueueManager::class);
+
+    $migrationDriver->import(Argument::any(), 'ahjo_decisionmakers')
+      ->shouldBeCalled()
+      ->willReturn(MigrationInterface::RESULT_COMPLETED);
+
+    $sut = new AhjoImportCommands(
+      $migrationDriver->reveal(),
+      $client->reveal(),
+      $queue->reveal(),
+    );
+
+    $this->assertEquals(AhjoImportCommands::EXIT_SUCCESS, $sut->runDecisionmakerMigration());
+
+    $migrationDriver->import(Argument::any(), 'ahjo_decisionmakers')
+      ->shouldBeCalled()
+      ->willReturn(MigrationInterface::RESULT_FAILED);
+
+    $sut = new AhjoImportCommands(
+      $migrationDriver->reveal(),
+      $client->reveal(),
+      $queue->reveal(),
+    );
+
+    $this->assertEquals(AhjoImportCommands::EXIT_FAILURE, $sut->runDecisionmakerMigration());
+  }
+
+  /**
+   * Tests composition migration.
+   */
+  public function testRunCompositionMigration(): void {
+    $migrationDriver = $this->prophesize(AhjoMigrationDriver::class);
+    $client = $this->prophesize(AhjoProxyClientInterface::class);
+    $queue = $this->prophesize(AhjoQueueManager::class);
+
+    $migrationDriver->import(Argument::that(function ($settings) {
+      $config = $settings->toSourceConfiguration();
+      return $config['orgs'] === 'all';
+    }), 'ahjo_org_composition')
+      ->shouldBeCalled()
+      ->willReturn(MigrationInterface::RESULT_COMPLETED);
+
+    $sut = new AhjoImportCommands(
+      $migrationDriver->reveal(),
+      $client->reveal(),
+      $queue->reveal(),
+    );
+
+    $this->assertEquals(AhjoImportCommands::EXIT_SUCCESS, $sut->runCompositionMigration());
+  }
+
 }
