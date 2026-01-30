@@ -52,7 +52,7 @@ class SearchManager {
       'description' => $defaultTexts->get('decision_search_description.value'),
     ];
 
-    $build = $type === 'decisions' ? [
+    $build = $type === 'decisions' || $type === 'policymakers' ? [
       '#search_element' => [
         '#type' => 'html_tag',
         '#tag' => 'div',

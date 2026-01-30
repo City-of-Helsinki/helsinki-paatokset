@@ -50,15 +50,16 @@ final class PolicymakerSearchBlock extends BlockBase implements ContainerFactory
    * {@inheritDoc}
    */
   public function build(): array {
-    return [
+    $build = $this->searchManager->build('policymakers');
+
+    return array_merge($build, [
       '#theme' => 'policymaker_search_block',
       '#lead_in' => _paatokset_ahjo_api_render_default_text(
         $this->configFactory
           ->get('paatokset_ahjo_api.default_texts')
           ->get('policymakers_search_description') ?? []
       ),
-      '#search' => $this->searchManager->build('policymakers'),
-    ];
+    ]);
   }
 
 }

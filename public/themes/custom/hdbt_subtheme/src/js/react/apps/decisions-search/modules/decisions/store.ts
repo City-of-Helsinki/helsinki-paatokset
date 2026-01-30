@@ -11,7 +11,21 @@ import { SortOptions } from './enum/SortOptions';
 
 const clearEvent = new Event(Events.DECISIONS_CLEAR_ALL);
 
-const defaultState = {
+type SelectOption = { label: string | undefined; value: string };
+
+interface SearchState {
+  [Components.CATEGORY]: SelectOption[];
+  [Components.DECISIONMAKER]: SelectOption[];
+  [Components.FROM]: string | undefined;
+  [Components.BODIES]: boolean;
+  [Components.PAGE]: number;
+  [Components.SEARCHBAR]: string | undefined;
+  [Components.SORT]: string;
+  [Components.TO]: string | undefined;
+  [Components.TRUSTEES]: boolean;
+}
+
+const defaultState: SearchState = {
   [Components.CATEGORY]: [],
   [Components.DECISIONMAKER]: [],
   [Components.FROM]: undefined,
@@ -26,51 +40,77 @@ const defaultState = {
 const initialParams = new URLSearchParams(window.location.search);
 export const initialParamsAtom = atom(initialParams);
 
-type aggType = { [string]: estypes.AggregationsBuckets };
-export const aggsAtom = atom<aggType | undefined>(undefined, (_get, set, aggs: aggType) => {
-  const initialState = { ...defaultState };
+type aggType = { [key: string]: estypes.AggregationsAggregate };
+const aggsBaseAtom = atom<aggType | undefined>(undefined);
+export const aggsAtom = atom(
+  (get) => get(aggsBaseAtom),
+  (_get, set, aggs: aggType) => {
+    const initialState = { ...defaultState };
 
-  Object.entries(defaultState).forEach(([key, value]) => {
-    if (key === Components.CATEGORY && initialParams.get(key)?.length && aggs?.[key]?.buckets?.length) {
-      const selectedOptions = initialParams
-        .get(key)
-        .split(',')
-        .filter((param) => aggs[key].buckets.some((bucket: estypes.AggregationsAggregateBase) => bucket.key === param));
-      if (selectedOptions.length) {
-        initialState[key] = selectedOptions.map((option) => ({ label: categoryToLabel(option), value: option }));
+    Object.entries(defaultState).forEach(([key, value]) => {
+      if (
+        key === Components.CATEGORY &&
+        initialParams.get(key)?.length &&
+        (aggs?.[key] as estypes.AggregationsStringTermsAggregate)?.buckets?.length
+      ) {
+        const categoryParam = initialParams.get(key);
+        const categoryAgg = aggs[key] as estypes.AggregationsStringTermsAggregate;
+        const buckets = categoryAgg.buckets as estypes.AggregationsStringTermsBucket[];
+        const selectedOptions = categoryParam!
+          .split(',')
+          .filter((param) => buckets.some((bucket) => bucket.key === param));
+        if (selectedOptions.length) {
+          (initialState as Record<string, unknown>)[key] = selectedOptions.map((option) => ({
+            label: categoryToLabel(option),
+            value: option,
+          }));
+        }
+      } else if (
+        key === Components.DECISIONMAKER &&
+        initialParams.get(key)?.length &&
+        (aggs?.[key] as estypes.AggregationsStringTermsAggregate)?.buckets?.length
+      ) {
+        const paramsValue = initialParams.get(key)?.split(',');
+        const decisionMakerAgg = aggs[key] as estypes.AggregationsStringTermsAggregate;
+        const buckets = decisionMakerAgg.buckets as estypes.AggregationsStringTermsBucket[];
+        const selectedOptions = buckets.filter((bucket) => paramsValue?.includes(bucket.key as string));
+        if (selectedOptions.length) {
+          (initialState as Record<string, unknown>)[key] = selectedOptions
+            .filter(
+              (option) =>
+                (option as Record<string, estypes.AggregationsStringTermsAggregate>)[PolicymakerIndex.TITLE]?.buckets
+                  ?.length,
+            )
+            .map((option) => {
+              const titleAgg = (option as Record<string, estypes.AggregationsStringTermsAggregate>)[
+                PolicymakerIndex.TITLE
+              ];
+              const titleBuckets = titleAgg?.buckets as estypes.AggregationsStringTermsBucket[] | undefined;
+              return { label: titleBuckets?.[0]?.key as string | undefined, value: option.key as string };
+            });
+        }
+      } else {
+        const param = initialParams.get(key);
+        if (typeof value === 'boolean' && param === 'true') {
+          initialState[key] = true;
+        } else if (param !== null) {
+          initialState[key] = param;
+        }
       }
-    } else if (key === Components.DECISIONMAKER && initialParams.get(key)?.length && aggs?.[key]?.buckets?.length) {
-      const paramsValue = initialParams.get(key)?.split(',');
-      const selectedOptions = aggs[key].buckets.filter((bucket) => paramsValue?.includes(bucket.key));
-      if (selectedOptions.length) {
-        initialState[key] = selectedOptions
-          .filter((option) => option[PolicymakerIndex.TITLE]?.buckets.length)
-          .map((option) => ({ label: option[PolicymakerIndex.TITLE]?.buckets[0]?.key, value: option.key }));
-      }
-    } else {
-      const param = initialParams.get(key);
-      if (typeof value === 'boolean' && param === 'true') {
-        initialState[key] = true;
-      } else if (param !== null) {
-        initialState[key] = param;
-      }
-    }
-  });
+    });
 
-  set(searchStateAtom, initialState);
-  set(submittedStateAtom, initialState);
-  set(aggsAtom, aggs);
-});
+    set(searchStateAtom, initialState);
+    set(submittedStateAtom, initialState);
+    set(aggsBaseAtom, aggs);
+  },
+);
 const stateToURLParams = (state: typeof defaultState) => {
   const params = new URLSearchParams();
   Object.entries({ ...state }).forEach(([key, value]) => {
     if (Array.isArray(value) && value.length) {
-      params.append(
-        key,
-        value.map((item) => item.value),
-      );
+      params.append(key, value.map((item: { value: string }) => item.value).join(','));
     } else if (typeof value === 'string' || typeof value === 'number') {
-      params.set(key, value);
+      params.set(key, String(value));
     } else if (typeof value === 'boolean' && value === true) {
       params.set(key, 'true');
     }
@@ -86,11 +126,12 @@ const stateToURLParams = (state: typeof defaultState) => {
   window.history.pushState({}, '', url.toString());
 };
 
-export const searchStateAtom = atom<typeof defaultState | undefined>(undefined);
-export const submittedStateAtom = atom<typeof defaultState | undefined>(
-  undefined,
-  (_get, set, newValue: typeof defaultState) => {
-    set(submittedStateAtom, newValue);
+export const searchStateAtom = atom<SearchState | undefined>(undefined);
+const submittedBaseAtom = atom<SearchState | undefined>(undefined);
+export const submittedStateAtom = atom(
+  (get) => get(submittedBaseAtom),
+  (_get, set, newValue: SearchState) => {
+    set(submittedBaseAtom, newValue);
     set(searchStateAtom, newValue);
     stateToURLParams(newValue);
   },
@@ -139,8 +180,8 @@ export const getCategoryAtom = atom((get) => {
   return state[Components.CATEGORY];
 });
 
-export const setCategoryAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
-  const state = { ...get(searchStateAtom) };
+export const setCategoryAtom = atom(null, (get, set, value: SelectOption[]) => {
+  const state = { ...get(searchStateAtom) } as SearchState;
   state[Components.CATEGORY] = value;
   set(searchStateAtom, state);
 });
@@ -198,8 +239,8 @@ export const getDecisionMakersAtom = atom((get) => {
   return state[Components.DECISIONMAKER];
 });
 
-export const setDecisionMakersAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
-  const state = { ...get(searchStateAtom) };
+export const setDecisionMakersAtom = atom(null, (get, set, value: SelectOption[]) => {
+  const state = { ...get(searchStateAtom) } as SearchState;
   state[Components.DECISIONMAKER] = value;
   set(searchStateAtom, state);
 });
