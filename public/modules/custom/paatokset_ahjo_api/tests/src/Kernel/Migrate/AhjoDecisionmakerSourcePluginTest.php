@@ -107,7 +107,7 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
         [
           [
             'id' => '02900',
-            'title' => 'Kaupunginvaltuusto',
+            'name' => 'Kaupunginvaltuusto',
             'existing' => TRUE,
             'type_label' => 'Valtuusto',
             'parent_name' => 'Helsingin kaupunki',
@@ -133,42 +133,42 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
         [
           [
             'id' => '00400',
-            'title' => 'Kaupunginhallitus',
+            'name' => 'Kaupunginhallitus',
             'existing' => TRUE,
             'type_label' => 'Hallitus',
             'parent_name' => 'Kaupunginvaltuusto',
           ],
           [
             'id' => 'U4804002020VH1',
-            'title' => 'Liikuntapaikkapäällikkö',
+            'name' => 'Liikuntapaikkapäällikkö',
             'existing' => TRUE,
             'type_label' => 'Viranhaltija',
             'parent_name' => 'Liikuntapaikat',
           ],
           [
             'id' => 'U4804002030VH1',
-            'title' => 'Ulkoilupalvelupäällikkö',
+            'name' => 'Ulkoilupalvelupäällikkö',
             'existing' => TRUE,
             'type_label' => 'Viranhaltija',
             'parent_name' => 'Ulkoilupalvelut',
           ],
           [
             'id' => 'U4804003010VH1',
-            'title' => 'Nuorisotyön aluepäällikkö',
+            'name' => 'Nuorisotyön aluepäällikkö',
             'existing' => TRUE,
             'type_label' => 'Viranhaltija',
             'parent_name' => 'Itäinen nuorisotyö',
           ],
           [
             'id' => 'U4804003020VH1',
-            'title' => 'Nuorisotyön aluepäällikkö',
+            'name' => 'Nuorisotyön aluepäällikkö',
             'existing' => TRUE,
             'type_label' => 'Viranhaltija',
             'parent_name' => 'Läntinen nuorisotyö',
           ],
           [
             'id' => 'U4804003040VH1',
-            'title' => 'Kumppanuuspäällikkö',
+            'name' => 'Kumppanuuspäällikkö',
             'existing' => TRUE,
             'type_label' => 'Viranhaltija',
             'parent_name' => 'Kumppanuusyksikkö',

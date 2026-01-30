@@ -19,7 +19,6 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
  *    after: '-1 week'       # Start dale (defaults to '-3 months')
  *    before: 'now'          # End date (defaults to 'now')
  *    interval: 'P1W'        # Date interval for batching (defaults to 1 month)
- *    langcode: ['fi', 'sv'] # Languages to fetch (defaults to 'fi' and 'sv')
  * @endcode
  *
  * Example (ID list mode):
@@ -33,39 +32,20 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
  * @endcode
  */
 #[MigrateSource(id: 'ahjo_api_decisionmakers')]
-final class AhjoDecisionmakerSource extends AhjoSourceBase {
+final class AhjoDecisionmakerSource extends OrganizationSourceBase {
 
   /**
    * {@inheritDoc}
    */
   public function fields(): array {
-    return [
-      'id' => 'Organization ID',
-      'title' => 'Organization name',
-      'existing' => 'Whether the organization currently exists',
+    return parent::fields() + [
       'formed' => 'Organization formed timestamp (Unix timestamp)',
       'dissolved' => 'Organization dissolved timestamp (Unix timestamp)',
-      'type' => 'Organization type ID',
       'type_label' => 'Organization type label',
       'is_decisionmaker' => 'Whether the organization is a decisionmaker',
       'sector' => 'Organization sector (array)',
       'parent_name' => 'Parent organization name',
       'composition' => 'Organization composition (JSON string)',
-      'langcode' => 'Language code',
-    ];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getIds(): array {
-    return [
-      'id' => [
-        'type' => 'string',
-      ],
-      'langcode' => [
-        'type' => 'string',
-      ],
     ];
   }
 
@@ -73,7 +53,7 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
    * {@inheritDoc}
    */
   protected function initializeIterator(): \Iterator {
-    foreach ($this->configuration['langcode'] ?? ['fi', 'sv'] as $langcode) {
+    foreach (self::ALL_LANGCODES as $langcode) {
       // If an idlist is provided, fetch only those specific cases.
       // Note: source plugins can't access --idlist from migrate:import command.
       if (!empty($this->configuration['idlist'])) {
@@ -156,7 +136,7 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
 
     return [
       'id' => $info->id,
-      'title' => $info->name,
+      'name' => $info->name,
       'existing' => $info->existing,
       'formed' => $info->formed->getTimestamp(),
       'dissolved' => $info->dissolved->getTimestamp(),
@@ -165,6 +145,7 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
       'is_decisionmaker' => $info->isDecisionMaker,
       'sector' => $org->sector,
       'parent_name' => $org->parent?->name,
+      'organization_above' => $org->parent?->id,
       'composition' => json_encode($decisionmaker->composition),
       'langcode' => $decisionmaker->langcode,
     ];

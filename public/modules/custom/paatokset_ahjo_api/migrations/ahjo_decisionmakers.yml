@@ -33,12 +33,12 @@ process:
       - '@nid'
       - 'constants/title_field'
       - 'constants/title_override_field'
-      - 'title'
+      - 'name'
       - '@langcode'
       - 'id'
   field_ahjo_title:
     plugin: default_value
-    source: title
+    source: name
     default_value: id
   field_policymaker_id: id
   field_organization_type: type_label

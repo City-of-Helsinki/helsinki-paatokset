@@ -18,45 +18,12 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
  * @endcode
  */
 #[MigrateSource(id: 'ahjo_api_organizations')]
-final class AhjoOrganizationSource extends AhjoSourceBase {
+final class AhjoOrganizationSource extends OrganizationSourceBase {
 
   /**
    * The root id of the whole organization.
    */
   public const string ROOT_ORGANIZATION_ID = '00001';
-
-  /**
-   * Organization translations supported by Ahjo.
-   */
-  private const array ALL_LANGCODES = ['fi', 'sv'];
-
-  /**
-   * {@inheritDoc}
-   */
-  public function fields(): array {
-    return [
-      'id' => 'Organization ID',
-      'name' => 'Organization name',
-      'existing' => 'If the organisation is not dissolved',
-      'organization_above' => 'ID of the parent organization',
-      'type' => 'Organization type ID',
-      'langcode' => 'Langcode',
-    ];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getIds(): array {
-    return [
-      'id' => [
-        'type' => 'string',
-      ],
-      'langcode' => [
-        'type' => 'string',
-      ],
-    ];
-  }
 
   /**
    * {@inheritDoc}
