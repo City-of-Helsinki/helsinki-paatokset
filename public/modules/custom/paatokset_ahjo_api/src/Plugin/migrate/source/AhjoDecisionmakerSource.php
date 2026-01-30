@@ -26,7 +26,7 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
  * @code
  *  source:
  *    plugin: ahjo_api_decisionmakers
- *    idlist:             # List of specific case IDs to fetch
+ *    idlist:             # List of specific org IDs to fetch
  *      - '00400'
  *      - '02900'
  * @endcode

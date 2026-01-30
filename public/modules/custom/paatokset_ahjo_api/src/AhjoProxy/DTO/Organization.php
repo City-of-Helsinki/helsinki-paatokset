@@ -41,7 +41,8 @@ final readonly class Organization {
    */
   public static function fromAhjoObject(\stdClass $object): self {
     try {
-      $parents = array_map(static fn ($item) => OrganizationInfo::fromAhjoObject($item), $object->OrganizationLevelAbove->organizations);
+      $parentOrgs = $object->OrganizationLevelAbove->organizations ?? [];
+      $parents = array_map(static fn ($item) => OrganizationInfo::fromAhjoObject($item), $parentOrgs);
 
       // As far as I know, an organization should never have
       // more than one parent. However, the data type is array.
@@ -49,11 +50,13 @@ final readonly class Organization {
         throw new AhjoProxyException('Organization has more than one parent.');
       }
 
+      $childOrgs = $object->OrganizationLevelBelow->organizations ?? [];
+
       return new self(
         OrganizationInfo::fromAhjoObject($object),
         array_first($parents),
-        array_map(static fn($item) => OrganizationInfo::fromAhjoObject($item), $object->OrganizationLevelBelow->organizations),
-        (array) $object->Sector ?? []
+        array_map(static fn($item) => OrganizationInfo::fromAhjoObject($item), $childOrgs),
+        (array) ($object->Sector ?? [])
       );
     }
     catch (\ValueError | \DateMalformedStringException $e) {

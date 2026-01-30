@@ -124,7 +124,10 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    * {@inheritdoc}
    */
   public function getDecisionmaker(string $langcode, string $id): Decisionmaker {
-    $response = $this->makeRequest('/agents/decisionmakers', [
+    // Ahjo does not seem to have a dedicated endpoint for decisionmakers.
+    // The `/organization/decisionmakingorganizations` endpoints return
+    // slightly different data than the `/agents/decisionmakers` endpoint.
+    $response = $this->makeRequest('/organization/decisionmakingorganizations', [
       'query' => [
         'orgid' => strtoupper($id),
         'apireqlang' => $langcode,
