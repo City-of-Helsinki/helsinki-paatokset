@@ -80,6 +80,9 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
         // Source data.
         [
           'api' => [
+            // fi.
+            '{"decisionMakers": []}',
+            // sv.
             '{"decisionMakers": []}',
           ],
         ],
@@ -92,7 +95,6 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
           'after' => '2025-01-01',
           'before' => '2025-01-08',
           'interval' => 'P7D',
-          'langcode' => ['fi'],
         ],
       ],
       'idlist mode' => [
@@ -100,6 +102,7 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
         [
           'api' => [
             // getOrganization for 02900.
+            file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
             file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
           ],
         ],
@@ -111,6 +114,15 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
             'existing' => TRUE,
             'type_label' => 'Valtuusto',
             'parent_name' => 'Helsingin kaupunki',
+            'langcode' => 'fi',
+          ],
+          [
+            'id' => '02900',
+            'name' => 'Kaupunginvaltuusto',
+            'existing' => TRUE,
+            'type_label' => 'Valtuusto',
+            'parent_name' => 'Helsingin kaupunki',
+            'langcode' => 'sv',
           ],
         ],
         // Expected count.
@@ -118,15 +130,16 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
         // Configuration.
         [
           'idlist' => ['02900'],
-          'langcode' => ['fi'],
         ],
       ],
       'date mode' => [
         // Source data.
         [
           'api' => [
-            // getDecisionmakers returns list.
+            // getDecisionmakers for fi.
             file_get_contents(__DIR__ . '/../../../fixtures/decisionmakers.json'),
+            // getDecisionmakers for sv.
+            '{"decisionMakers": []}',
           ],
         ],
         // Expected data - 6 decisionmakers from decisionmakers.json.
@@ -181,7 +194,6 @@ class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
           'after' => '2025-01-01',
           'before' => '2025-01-08',
           'interval' => 'P7D',
-          'langcode' => ['fi'],
         ],
       ],
     ];

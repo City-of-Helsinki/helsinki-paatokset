@@ -58,7 +58,7 @@ final class AhjoDecisionmakerSource extends OrganizationSourceBase {
       // Note: source plugins can't access --idlist from migrate:import command.
       if (!empty($this->configuration['idlist'])) {
         yield from $this->fetchDecisionmakersById($this->configuration['idlist'], $langcode);
-        return;
+        continue;
       }
 
       // Otherwise, use date-based search.
