@@ -4209,16 +4209,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.16.31",
+            "version": "6.16.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "de93e0584acc1e9e8db79ce2354506e862d2aa18"
+                "reference": "2f6bfdaa845f27f49b77490dcf37c5ebc67ba6c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/de93e0584acc1e9e8db79ce2354506e862d2aa18",
-                "reference": "de93e0584acc1e9e8db79ce2354506e862d2aa18",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/2f6bfdaa845f27f49b77490dcf37c5ebc67ba6c3",
+                "reference": "2f6bfdaa845f27f49b77490dcf37c5ebc67ba6c3",
                 "shasum": ""
             },
             "require": {
@@ -4237,10 +4237,10 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.16.31",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.16.32",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2026-01-27T09:07:05+00:00"
+            "time": "2026-01-30T12:09:09+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -6518,17 +6518,17 @@
         },
         {
             "name": "drupal/role_delegation",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/role_delegation.git",
-                "reference": "8.x-1.5"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/role_delegation-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "cdd9d5646708511b893de98c46c8bbf578109961"
+                "url": "https://ftp.drupal.org/files/projects/role_delegation-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "792971461a3b86cb8f6937d0eecd3745899bb7bf"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
@@ -6536,8 +6536,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1768413123",
+                    "version": "8.x-1.6",
+                    "datestamp": "1769768673",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
