@@ -16,7 +16,7 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
  * @code
  *  source:
  *    plugin: ahjo_api_decisionmakers
- *    after: '-1 week'       # Start dale (defaults to '-3 months')
+ *    after: '-1 week'       # Start dale (defaults to '-6 months')
  *    before: 'now'          # End date (defaults to 'now')
  *    interval: 'P1W'        # Date interval for batching (defaults to 1 month)
  * @endcode
