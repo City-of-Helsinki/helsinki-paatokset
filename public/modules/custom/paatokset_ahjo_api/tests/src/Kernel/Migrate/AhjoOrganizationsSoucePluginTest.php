@@ -75,6 +75,7 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
       ),
       $this->container->get(EnvironmentResolverInterface::class),
       $this->container->get(ConfigFactoryInterface::class),
+      $this->container->get('logger.channel.paatokset_ahjo_api'),
     ));
 
     parent::testSource($source_data, $expected_data, $expected_count, $configuration, $high_water);

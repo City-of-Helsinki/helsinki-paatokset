@@ -12,22 +12,31 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjoCase;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\AhjojulkaisuDocument;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Chairmanship;
+use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
-use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationNode;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Ahjo proxy API client.
+ *
+ * Requests made by this client are handled by AhjoProxyController
+ * running on the production environment.
+ *
+ * @see \Drupal\paatokset_ahjo_api\AhjoProxy\Controller\AhjoProxyController
  */
 readonly class AhjoProxyClient implements AhjoProxyClientInterface {
 
   public function __construct(
-    private ClientInterface $client,
-    private EnvironmentResolverInterface $environmentResolver,
-    private ConfigFactoryInterface $configFactory,
+    protected ClientInterface $client,
+    protected EnvironmentResolverInterface $environmentResolver,
+    protected ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    protected LoggerInterface $logger,
   ) {
   }
 
@@ -35,96 +44,62 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    * {@inheritDoc}
    */
   public function getTrustee(string $langcode, string $trusteeId): Trustee {
-    $response = $this->makeRequest("/trustees/single/$trusteeId", [
+    $response = $this->makeRequest(sprintf('/agents/positionoftrust/%s', strtoupper($trusteeId)), [
       'query' => [
         'apireqlang' => $langcode,
       ],
     ]);
 
-    if (!$object = array_first($response->trustees)) {
-      throw new AhjoProxyException('Trustee not found.');
-    }
-
     return new Trustee(
-      $object->ID,
-      $object->Name,
-      $object->CouncilGroup,
-      array_map(AhjojulkaisuDocument::class . '::fromAhjoObject', $object->Initiatives),
-      array_map(AhjojulkaisuDocument::class . '::fromAhjoObject', $object->Resolutions),
+      $response->ID,
+      $response->Name,
+      $response->CouncilGroup,
+      array_map(AhjojulkaisuDocument::class . '::fromAhjoObject', $response->Initiatives),
+      array_map(AhjojulkaisuDocument::class . '::fromAhjoObject', $response->Resolutions),
       array_map(static fn ($document) => new Chairmanship(
         $document->Position,
         $document->OrganizationName,
         $document->OrganizationID,
-      ), $object->Chairmanships)
+      ), $response->Chairmanships)
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getOrganization(string $langcode, string $id): OrganizationNode {
-    $response = $this->makeRequest("/organization/single/$id", [
+  public function getOrganization(string $langcode, string $id): Organization {
+    $response = $this->makeRequest("/organization", [
       'query' => [
+        'orgid' => $id,
         'apireqlang' => $langcode,
       ],
     ]);
 
-    if (!$object = array_first($response->decisionMakers)?->Organization) {
-      throw new AhjoProxyException('Organization not found.');
-    }
-
-    $parents = array_map(static fn ($item) => Organization::fromAhjoObject($item), $object->OrganizationLevelAbove->organizations);
-
-    // As far as I know, an organization should never have
-    // more than one parent. However, the data type is array.
-    if (count($parents) > 1) {
-      throw new AhjoProxyException('Organization has more than one parent.');
-    }
-
-    try {
-      return new OrganizationNode(
-        Organization::fromAhjoObject($object),
-        array_first($parents),
-        array_map(static fn($item) => Organization::fromAhjoObject($item), $object->OrganizationLevelBelow->organizations),
-        (array) $object->Sector
-      );
-    }
-    catch (\ValueError | \DateMalformedStringException $e) {
-      throw new AhjoProxyException($e->getMessage(), previous: $e);
-    }
+    return Organization::fromAhjoObject($response);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCase(string $langcode, string $id): AhjoCase {
-    $response = $this->makeRequest("/cases/single/$id", [
+    $response = $this->makeRequest(sprintf('/cases/%s', strtoupper($id)), [
       'query' => [
         'apireqlang' => $langcode,
       ],
     ]);
 
-    if (!$object = array_first($response->cases)) {
-      throw new AhjoProxyException('Case not found.');
-    }
-
-    try {
-      return AhjoCase::fromAhjoObject($object);
-    }
-    catch (\DateMalformedStringException $e) {
-      throw new AhjoProxyException($e->getMessage(), previous: $e);
-    }
+    return AhjoCase::fromAhjoObject($response);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): iterable {
-    for ($current = $handledAfter; $current < $handledBefore; $current = $next) {
-      $next = $current->add($interval);
-      if ($next > $handledBefore) {
-        $next = $handledBefore;
-      }
+    foreach (new DateRangeIterator($handledAfter, $handledBefore, $interval) as [$current, $next]) {
+      $this->logger->info('Fetching cases handled between @changedAfter and @changedBefore', [
+        '@changedAfter' => $current->format('Y-m-d H:i:s'),
+        '@changedBefore' => $next->format('Y-m-d H:i:s'),
+      ]);
 
       $response = $this->makeRequest('/cases', [
         'query' => [
@@ -139,13 +114,65 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
         throw new AhjoProxyException('Cases data not found in response.');
       }
 
-      try {
-        foreach ($response->cases as $caseObject) {
-          yield AhjoCase::fromAhjoObject($caseObject);
-        }
+      foreach ($response->cases as $caseObject) {
+        yield AhjoCase::fromAhjoObject($caseObject);
       }
-      catch (\DateMalformedStringException $e) {
-        throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDecisionmaker(string $langcode, string $id): Decisionmaker {
+    $response = $this->makeRequest('/agents/decisionmakers', [
+      'query' => [
+        'orgid' => strtoupper($id),
+        'apireqlang' => $langcode,
+      ],
+    ]);
+
+    if (!empty($response->organizations) && is_array($response->organizations)) {
+      foreach ($response->organizations as $decisionMaker) {
+        return new Decisionmaker(
+          Organization::fromAhjoObject($decisionMaker),
+          $decisionMaker->Composition ?? [],
+          $langcode,
+        );
+      }
+    }
+
+    throw new AhjoProxyException('Decisionmakers data not found in response.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDecisionmakers(string $langcode, \DateTimeImmutable $changedAfter, \DateTimeImmutable $changedBefore, \DateInterval $interval): iterable {
+    foreach (new DateRangeIterator($changedAfter, $changedBefore, $interval) as [$current, $next]) {
+      $this->logger->info('Fetching decisionmakers changed between @changedAfter and @changedBefore (@langcode)', [
+        '@changedAfter' => $current->format('Y-m-d H:i:s'),
+        '@changedBefore' => $next->format('Y-m-d H:i:s'),
+        '@langcode' => $langcode,
+      ]);
+
+      $response = $this->makeRequest('/agents/decisionmakers', [
+        'query' => [
+          'apireqlang' => $langcode,
+          'changedbefore' => $next->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+          'changedsince' => $current->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+        ],
+      ]);
+
+      if (!isset($response->decisionMakers) || !is_array($response->decisionMakers)) {
+        throw new AhjoProxyException('Decisionmakers data not found in response.');
+      }
+
+      foreach ($response->decisionMakers as $decisionMaker) {
+        yield new Decisionmaker(
+          Organization::fromAhjoObject($decisionMaker->Organization),
+          $decisionMaker->Composition ?? [],
+          $langcode,
+        );
       }
     }
   }
@@ -160,7 +187,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    *
    * @throws \Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException
    */
-  private function makeRequest(string $endpoint, array $options = []): \stdClass {
+  protected function makeRequest(string $endpoint, array $options = []): \stdClass {
     try {
       // Ahjo proxy is only active in production.
       $prod = $this->environmentResolver->getEnvironment(
@@ -180,7 +207,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
 
     try {
       $response = $this->client
-        ->request('GET', sprintf('%s/ahjo-proxy%s', $prod->getBaseUrl(), $endpoint), NestedArray::mergeDeep($options, [
+        ->request('GET', sprintf('%s/ahjo-proxy/v2%s', $prod->getBaseUrl(), $endpoint), NestedArray::mergeDeep($options, [
           'headers' => [
             'User-Agent' => "Ahjo proxy $env",
             'api-key' => $apiKey,

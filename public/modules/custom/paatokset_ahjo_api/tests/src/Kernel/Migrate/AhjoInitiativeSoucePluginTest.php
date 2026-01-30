@@ -137,6 +137,7 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
         ),
         $this->container->get(EnvironmentResolverInterface::class),
         $this->container->get(ConfigFactoryInterface::class),
+        $this->container->get('logger.channel.paatokset_ahjo_api'),
       ));
     }
 

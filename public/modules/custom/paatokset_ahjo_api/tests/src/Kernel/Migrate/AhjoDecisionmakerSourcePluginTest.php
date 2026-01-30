@@ -19,9 +19,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * Tests migrate source plugin.
  *
- * @covers \Drupal\paatokset_ahjo_api\Plugin\migrate\source\AhjoCaseSource
+ * @covers \Drupal\paatokset_ahjo_api\Plugin\migrate\source\AhjoDecisionmakerSource
  */
-class AhjoCaseSourcePluginTest extends MigrateSourceTestBase {
+class AhjoDecisionmakerSourcePluginTest extends MigrateSourceTestBase {
 
   use ApiTestTrait;
   use EnvironmentResolverTrait;
@@ -43,8 +43,6 @@ class AhjoCaseSourcePluginTest extends MigrateSourceTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    $this->installEntitySchema('ahjo_case');
 
     // Replace environment resolver.
     $environmentResolver = $this->getEnvironmentResolver(
@@ -82,7 +80,10 @@ class AhjoCaseSourcePluginTest extends MigrateSourceTestBase {
         // Source data.
         [
           'api' => [
-            '{"cases": []}',
+            // fi.
+            '{"decisionMakers": []}',
+            // sv.
+            '{"decisionMakers": []}',
           ],
         ],
         // Expected data.
@@ -100,69 +101,90 @@ class AhjoCaseSourcePluginTest extends MigrateSourceTestBase {
         // Source data.
         [
           'api' => [
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
+            // getOrganization for 02900.
+            file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
+            file_get_contents(__DIR__ . '/../../../fixtures/organizations-02900.json'),
           ],
         ],
         // Expected data.
         [
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
-            'classificationCode' => '00 00 03',
-            'classificationTitle' => 'Valtuuston aloitetoiminta',
-            'status' => 'Ratkaistu',
-            'language' => 'fi',
-            'publicityClass' => 'Julkinen',
+            'id' => '02900',
+            'name' => 'Kaupunginvaltuusto',
+            'existing' => TRUE,
+            'type_label' => 'Valtuusto',
+            'parent_name' => 'Helsingin kaupunki',
+            'langcode' => 'fi',
+          ],
+          [
+            'id' => '02900',
+            'name' => 'Kaupunginvaltuusto',
+            'existing' => TRUE,
+            'type_label' => 'Valtuusto',
+            'parent_name' => 'Helsingin kaupunki',
+            'langcode' => 'sv',
           ],
         ],
         // Expected count.
         -1,
         // Configuration.
         [
-          'idlist' => ['HEL-2025-001216'],
+          'idlist' => ['02900'],
         ],
       ],
       'date mode' => [
         // Source data.
         [
           'api' => [
-            // First call: getCases returns list.
-            file_get_contents(__DIR__ . '/../../../fixtures/cases.json'),
-            // Subsequent calls: getCase for each case.
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
-            file_get_contents(__DIR__ . '/../../../fixtures/case.json'),
+            // getDecisionmakers for fi.
+            file_get_contents(__DIR__ . '/../../../fixtures/decisionmakers.json'),
+            // getDecisionmakers for sv.
+            '{"decisionMakers": []}',
           ],
         ],
-        // Expected data - 5 cases from cases.json, each fetched individually.
+        // Expected data - 6 decisionmakers from decisionmakers.json.
         [
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
+            'id' => '00400',
+            'name' => 'Kaupunginhallitus',
+            'existing' => TRUE,
+            'type_label' => 'Hallitus',
+            'parent_name' => 'Kaupunginvaltuusto',
           ],
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
+            'id' => 'U4804002020VH1',
+            'name' => 'Liikuntapaikkapäällikkö',
+            'existing' => TRUE,
+            'type_label' => 'Viranhaltija',
+            'parent_name' => 'Liikuntapaikat',
           ],
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
+            'id' => 'U4804002030VH1',
+            'name' => 'Ulkoilupalvelupäällikkö',
+            'existing' => TRUE,
+            'type_label' => 'Viranhaltija',
+            'parent_name' => 'Ulkoilupalvelut',
           ],
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
+            'id' => 'U4804003010VH1',
+            'name' => 'Nuorisotyön aluepäällikkö',
+            'existing' => TRUE,
+            'type_label' => 'Viranhaltija',
+            'parent_name' => 'Itäinen nuorisotyö',
           ],
           [
-            'id' => 'HEL-2025-001216',
-            'caseIdLabel' => 'HEL 2025-001216',
-            'title' => 'Valtuustoaloite, Haltialan kotieläintilasta eläinsuojelukeskus',
+            'id' => 'U4804003020VH1',
+            'name' => 'Nuorisotyön aluepäällikkö',
+            'existing' => TRUE,
+            'type_label' => 'Viranhaltija',
+            'parent_name' => 'Läntinen nuorisotyö',
+          ],
+          [
+            'id' => 'U4804003040VH1',
+            'name' => 'Kumppanuuspäällikkö',
+            'existing' => TRUE,
+            'type_label' => 'Viranhaltija',
+            'parent_name' => 'Kumppanuusyksikkö',
           ],
         ],
         // Expected count.
