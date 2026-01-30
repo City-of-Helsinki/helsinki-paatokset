@@ -70,7 +70,7 @@ final readonly class MigrateSettings {
       before: $options['before'] ?? NULL,
       interval: $options['interval'] ?? NULL,
       update: (bool) $options['update'],
-      queue: (bool) $options['queue'],
+      queue: (bool) $options['queue'] ?? FALSE,
     );
   }
 
