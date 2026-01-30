@@ -729,7 +729,6 @@ function _paatokset_ahjo_api_lookup_policymaker_nid(string $decisionmaker_id): ?
     ->condition('type', 'policymaker')
     ->condition('field_policymaker_id', $decisionmaker_id)
     ->range(0, 1)
-    ->latestRevision()
     ->execute();
 
   if (empty($ids)) {

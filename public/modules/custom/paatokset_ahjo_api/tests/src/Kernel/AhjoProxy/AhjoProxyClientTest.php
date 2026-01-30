@@ -26,6 +26,7 @@ use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Psr\Log\LoggerInterface;
 
 /**
  * Kernel tests for Ahjo proxy client.
@@ -291,10 +292,13 @@ class AhjoProxyClientTest extends KernelTestBase {
       EnvironmentEnum::Test->value
     );
 
+    $logger = $this->prophesize(LoggerInterface::class);
+
     return new AhjoProxyClient(
       $this->createMockHttpClient($responses),
       $environmentResolver,
       $this->container->get(ConfigFactoryInterface::class),
+      $logger->reveal(),
     );
   }
 

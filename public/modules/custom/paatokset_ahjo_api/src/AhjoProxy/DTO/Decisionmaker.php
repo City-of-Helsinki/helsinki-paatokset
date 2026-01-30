@@ -16,6 +16,7 @@ final readonly class Decisionmaker {
   public function __construct(
     public Organization $organization,
     public array $composition,
+    public string $langcode,
   ) {
   }
 

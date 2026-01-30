@@ -18,6 +18,8 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Ahjo proxy API client.
@@ -33,6 +35,8 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
     protected ClientInterface $client,
     protected EnvironmentResolverInterface $environmentResolver,
     protected ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
+    protected LoggerInterface $logger,
   ) {
   }
 
@@ -92,6 +96,11 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    */
   public function getCases(string $langcode, \DateTimeImmutable $handledAfter, \DateTimeImmutable $handledBefore, \DateInterval $interval): iterable {
     foreach (new DateRangeIterator($handledAfter, $handledBefore, $interval) as [$current, $next]) {
+      $this->logger->info('Fetching cases handled between @changedAfter and @changedBefore', [
+        '@changedAfter' => $current->format('Y-m-d H:i:s'),
+        '@changedBefore' => $next->format('Y-m-d H:i:s'),
+      ]);
+
       $response = $this->makeRequest('/cases', [
         'query' => [
           'apireqlang' => $langcode,
@@ -127,6 +136,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
         return new Decisionmaker(
           Organization::fromAhjoObject($decisionMaker),
           $decisionMaker->Composition ?? [],
+          $langcode,
         );
       }
     }
@@ -139,6 +149,12 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
    */
   public function getDecisionmakers(string $langcode, \DateTimeImmutable $changedAfter, \DateTimeImmutable $changedBefore, \DateInterval $interval): iterable {
     foreach (new DateRangeIterator($changedAfter, $changedBefore, $interval) as [$current, $next]) {
+      $this->logger->info('Fetching decisionmakers changed between @changedAfter and @changedBefore (@langcode)', [
+        '@changedAfter' => $current->format('Y-m-d H:i:s'),
+        '@changedBefore' => $next->format('Y-m-d H:i:s'),
+        '@langcode' => $langcode,
+      ]);
+
       $response = $this->makeRequest('/agents/decisionmakers', [
         'query' => [
           'apireqlang' => $langcode,
@@ -155,6 +171,7 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
         yield new Decisionmaker(
           Organization::fromAhjoObject($decisionMaker->Organization),
           $decisionMaker->Composition ?? [],
+          $langcode,
         );
       }
     }

@@ -21,9 +21,7 @@ process:
   type:
     plugin: default_value
     default_value: policymaker
-  langcode:
-    plugin: default_value
-    default_value: fi
+  langcode: langcode
   nid:
     plugin: callback
     callable: _paatokset_ahjo_api_lookup_policymaker_nid
@@ -72,6 +70,7 @@ process:
   field_dm_org_name: parent_name
 destination:
   plugin: 'entity:node'
+  translations: true
 migration_dependencies:
   required:
     - ahjo_organizations

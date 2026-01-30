@@ -51,6 +51,7 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
       'sector' => 'Organization sector (array)',
       'parent_name' => 'Parent organization name',
       'composition' => 'Organization composition (JSON string)',
+      'langcode' => 'Language code',
     ];
   }
 
@@ -60,6 +61,9 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
   public function getIds(): array {
     return [
       'id' => [
+        'type' => 'string',
+      ],
+      'langcode' => [
         'type' => 'string',
       ],
     ];
@@ -100,6 +104,11 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
       }
 
       foreach ($decisionmakers as $decisionmaker) {
+        $this->logger->info("Importing @id (@language)", [
+          "@id" => $decisionmaker->organization->info->id,
+          "@language" => $langcode,
+        ]);
+
         yield $this->flattenDecisionmaker($decisionmaker);
       }
     }
@@ -130,7 +139,8 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
         // endpoint does not return composition. The composition is migrated
         // separately with ahjo_org_composition migration, so we ignore the
         // composition here and only return the organization endpoint data.
-        []
+        [],
+        $language,
       );
 
       yield $this->flattenDecisionmaker($decisionmakerData);
@@ -156,6 +166,7 @@ final class AhjoDecisionmakerSource extends AhjoSourceBase {
       'sector' => $org->sector,
       'parent_name' => $org->parent?->name,
       'composition' => json_encode($decisionmaker->composition),
+      'langcode' => $decisionmaker->langcode,
     ];
   }
 
