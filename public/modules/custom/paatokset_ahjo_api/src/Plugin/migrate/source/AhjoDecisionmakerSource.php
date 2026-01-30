@@ -54,7 +54,7 @@ final class AhjoDecisionmakerSource extends OrganizationSourceBase {
    */
   protected function initializeIterator(): \Iterator {
     foreach (self::ALL_LANGCODES as $langcode) {
-      // If an idlist is provided, fetch only those specific cases.
+      // If an idlist is provided, fetch only those specific decisionmakers.
       // Note: source plugins can't access --idlist from migrate:import command.
       if (!empty($this->configuration['idlist'])) {
         yield from $this->fetchDecisionmakersById($this->configuration['idlist'], $langcode);
@@ -63,7 +63,6 @@ final class AhjoDecisionmakerSource extends OrganizationSourceBase {
 
       // Otherwise, use date-based search.
       try {
-        // Search cases that were handled at least a week ago.
         $after = new \DateTimeImmutable($this->configuration['after'] ?? '-6 month');
         $before = new \DateTimeImmutable($this->configuration['before'] ?? 'now');
         $interval = new \DateInterval($this->configuration['interval'] ?? 'P1M');
