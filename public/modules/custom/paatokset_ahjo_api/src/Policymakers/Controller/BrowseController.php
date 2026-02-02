@@ -97,6 +97,17 @@ class BrowseController extends ControllerBase {
   }
 
   /**
+   * Title callback for policymaker browse page.
+   */
+  public function title(Organization|null $org): string|TranslatableMarkup {
+    if ($org) {
+      return $org->label();
+    }
+
+    return new TranslatableMarkup('Browse decisionmakers');
+  }
+
+  /**
    * Build the policymaker browse page at root level.
    *
    * Root level is a special case: We don't follow the city
