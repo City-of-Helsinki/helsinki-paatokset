@@ -22,8 +22,8 @@ final class PolicymakerBrowserHeroBlock extends BlockBase implements ContainerFa
    * {@inheritdoc}
    */
   public function build() : array {
-    $title = new TranslatableMarkup('Browse policymakers');
-    $description = new TranslatableMarkup('Browse the current policymakers.');
+    $title = new TranslatableMarkup('Browse policymakers',  [], ['context' => 'Policymaker browser']);
+    $description = new TranslatableMarkup('Browse existing bodies and authorities.', [], ['context' => 'Policymaker browser']);
     $build['policymaker_browser_hero_block'] = [
       '#theme' => 'policymaker_browser_hero_block',
       '#hero_title' => $title,

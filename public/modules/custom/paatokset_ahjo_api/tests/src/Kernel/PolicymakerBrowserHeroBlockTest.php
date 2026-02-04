@@ -59,7 +59,7 @@ class PolicymakerBrowserHeroBlockTest extends KernelTestBase {
     $this->assertArrayHasKey('#theme', $content);
     $this->assertEquals('policymaker_browser_hero_block', $content['#theme']);
     $this->assertEquals('Browse policymakers', (string) $content['#hero_title']);
-    $this->assertEquals('Browse the current policymakers.', (string) $content['#hero_description']);
+    $this->assertEquals('Browse existing bodies and authorities.', (string) $content['#hero_description']);
   }
 
 }
