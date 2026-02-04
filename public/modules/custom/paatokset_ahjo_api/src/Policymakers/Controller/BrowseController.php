@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Policymakers\Controller;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
@@ -25,7 +26,10 @@ class BrowseController extends ControllerBase {
 
   use AutowireTrait;
 
-  public function __construct(private readonly PolicymakerService $policymakerService) {
+  public function __construct(
+    private readonly PolicymakerService $policymakerService,
+    private readonly EntityRepositoryInterface $entityRepository,
+  ) {
   }
 
   /**
@@ -46,18 +50,18 @@ class BrowseController extends ControllerBase {
     }
 
     $children = $org->getChildOrganizations();
+    $children = array_map(fn ($org) => $this->entityRepository->getTranslationFromContext($org), $children);
 
     $policymakers = $this->loadPolicymakers([$org->id(), ...array_keys($children)]);
 
     $tags = [];
-
     foreach ($policymakers as $id => $policymaker) {
       $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
     }
 
     $breadcrumb = '';
 
-    if ($parent = $org->getParentOrganization()) {
+    if ($parent = $this->entityRepository->getTranslationFromContext($org->getParentOrganization())) {
       // Special case for the first organizations:
       // link directly to the root level.
       if ($parent->id() == '00001') {
@@ -90,6 +94,17 @@ class BrowseController extends ControllerBase {
     $cache->applyTo($build);
 
     return $build;
+  }
+
+  /**
+   * Title callback for policymaker browse page.
+   */
+  public function title(Organization|null $org): string|TranslatableMarkup {
+    if ($org) {
+      return $org->label();
+    }
+
+    return new TranslatableMarkup('Browse decisionmakers');
   }
 
   /**
