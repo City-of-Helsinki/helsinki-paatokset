@@ -18,8 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     throw new Error('Root id missing for decisions search app');
   }
 
-  console.log('rootElement', rootElement)
-
   const type = rootElement.dataset.type || 'decisions';
   const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       searchContainer = <DecisionsContainer url={elasticUrl} />;
       break;
     case 'policymakers':
-      searchContainer = <PolicymakerContainer url={elasticUrl} />;
+      searchContainer = <PolicymakerContainer />;
       break;
     // case 'frontpage':
     //   searchContainer = <FrontpageContainer url={elasticUrl} />;

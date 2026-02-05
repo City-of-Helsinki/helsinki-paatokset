@@ -39,12 +39,20 @@ export const SelectionsContainer = () => {
     }
   }
 
+  if (!selections.length) {
+    return null;
+  }
+
   return (
-    <SelectionsWrapper
-      showClearButton={selections.length > 0 || Boolean(submittedState?.[Components.SEARCHBAR]?.length)}
-      resetForm={resetForm}
-    >
-      {selections}
-    </SelectionsWrapper>
+    <div className='decisions-search-selected-filters'>
+      <div className='decisions-search-selected-filters__container'>
+        <span className='decisions-search-selected-filters__filter-label'>
+          {`${Drupal.t('Filters', {}, { context: 'Policymakers search' })}:`}
+        </span>
+        <SelectionsWrapper showClearButton={selections.length > 0} resetForm={resetForm}>
+          {selections}
+        </SelectionsWrapper>
+      </div>
+    </div>
   );
 };

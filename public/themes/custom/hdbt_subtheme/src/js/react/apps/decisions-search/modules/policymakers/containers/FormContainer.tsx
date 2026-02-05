@@ -6,24 +6,27 @@ import { SectorFilter } from '../components/SectorFilter';
 import { SelectionsContainer } from './SelectionsContainer';
 import { updateQueryAtom } from '../store';
 
-export const FormContainer = ({ url }: { url: string }) => {
+export const FormContainer = () => {
   const updateQuery = useSetAtom(updateQueryAtom);
 
   return (
     // biome-ignore lint/a11y/useSemanticElements: matches decisions pattern
     <form
-      className='hdbt-search--react__form-container'
+      className='hdbt-search--react__form-container container'
       onSubmit={(e) => {
         e.preventDefault();
         updateQuery();
       }}
       role='search'
     >
-      <SearchBar url={url} />
+      <SearchBar />
       <div className='hdbt-search--react__dropdown-filters'>
         <SectorFilter />
       </div>
-      <Button className='hdbt-search--react__submit-button' type='submit'>
+      <Button
+        className='hdbt-search--react__submit-button hdbt-search--react__submit-button--policymakers'
+        type='submit'
+      >
         {Drupal.t('Search', {}, { context: 'React search: submit button label' })}
       </Button>
       <SelectionsContainer />

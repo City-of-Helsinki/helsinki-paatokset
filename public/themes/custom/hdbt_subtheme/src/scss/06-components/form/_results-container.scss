@@ -57,8 +57,13 @@
 
 .policymaker-search-results__container {
   padding-block-end: $spacing-double;
+  padding-block-start: $spacing-double;
 
   >div:first-child {
     width: 100%;
   }
+}
+
+.policymaker-search-results .hdbt-search--react__results--title {
+  @include font('lead');
 }

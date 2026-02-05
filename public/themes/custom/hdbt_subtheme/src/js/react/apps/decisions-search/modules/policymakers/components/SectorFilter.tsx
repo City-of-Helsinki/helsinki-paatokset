@@ -21,7 +21,7 @@ export const SectorFilter = () => {
 
   return (
     <Select
-      className='hdbt-search__dropdown'
+      className='hdbt-search__dropdown hdbt-search__dropdown--full-width'
       disabled={!aggs}
       id={Components.SECTOR}
       multiSelect
@@ -29,9 +29,9 @@ export const SectorFilter = () => {
       options={options}
       onChange={setSectors}
       texts={{
-        label: Drupal.t('Field', {}, { context: 'Policymakers search: sector filter' }),
+        label: Drupal.t('Division', {}, { context: 'Policymakers search' }),
         language: getCurrentLanguage(window.drupalSettings.path.currentLanguage),
-        placeholder: Drupal.t('All fields', {}, { context: 'Policymakers search: sector filter' }),
+        placeholder: Drupal.t('Choose division', {}, { context: 'Policymakers search' }),
       }}
       theme={defaultMultiSelectTheme}
       value={value}

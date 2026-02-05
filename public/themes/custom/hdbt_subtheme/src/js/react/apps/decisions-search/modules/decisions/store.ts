@@ -56,10 +56,10 @@ export const aggsAtom = atom(
         const categoryParam = initialParams.get(key);
         const categoryAgg = aggs[key] as estypes.AggregationsStringTermsAggregate;
         const buckets = categoryAgg.buckets as estypes.AggregationsStringTermsBucket[];
-        const selectedOptions = categoryParam!
-          .split(',')
+        const selectedOptions = categoryParam
+          ?.split(',')
           .filter((param) => buckets.some((bucket) => bucket.key === param));
-        if (selectedOptions.length) {
+        if (selectedOptions?.length) {
           (initialState as Record<string, unknown>)[key] = selectedOptions.map((option) => ({
             label: categoryToLabel(option),
             value: option,

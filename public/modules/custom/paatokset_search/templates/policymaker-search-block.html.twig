@@ -1,6 +1,6 @@
 {% embed "@hdbt/misc/lead-in.twig" with { content: lead_in } %}{% endembed %}
-<div class="paatokset-search--policymaker">
-  <div class="paatokset-search-wrapper">
+<article class="paatokset-search--policymaker">
+  {% block component_content %}
     {{ search_element|render }}
-  </div>
-</div>
+  {% endblock component_content %}
+</article>

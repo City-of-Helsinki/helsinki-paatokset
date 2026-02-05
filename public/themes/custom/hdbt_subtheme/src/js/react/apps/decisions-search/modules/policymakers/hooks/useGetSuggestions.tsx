@@ -7,22 +7,10 @@ export const useGetSuggestions = async (searchTerm: string | undefined, url: str
     return [];
   }
 
-  const { currentLanguage } = drupalSettings.path;
-
   const query = {
     query: {
       bool: {
-        filter: [
-          { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
-          {
-            bool: {
-              should: [
-                { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: currentLanguage } },
-                { term: { [PolicymakerIndex.HAS_TRANSLATION]: false } },
-              ],
-            },
-          },
-        ],
+        filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
         should: [
           { wildcard: { [`${PolicymakerIndex.TITLE}.keyword`]: `*${searchTerm}*` } },
           { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}.keyword`]: `*${searchTerm}*` } },

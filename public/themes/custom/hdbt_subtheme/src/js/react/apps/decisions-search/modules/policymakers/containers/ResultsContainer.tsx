@@ -8,15 +8,17 @@ import { ResultsWrapper } from '@/react/common/ResultsWrapper';
 import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { ResultCard } from '../components/ResultCard';
 import { usePolicymakersQuery } from '../hooks/usePolicymakersQuery';
-import { aggsAtom, getPageAtom, initializedAtom, setPageAtom } from '../store';
+import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, searchActiveAtom, setPageAtom } from '../store';
 
-export const ResultsContainer = ({ url }: { url: string }) => {
+export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
   const currentPage = useAtomValue(getPageAtom);
   const setPage = useSetAtom(setPageAtom);
   const query = usePolicymakersQuery();
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
+  const searchActive = useAtomValue(searchActiveAtom);
+  const url = useAtomValue(getElasticUrlAtom);
 
   const fetcher = useCallback(
     (key: string) =>
@@ -28,7 +30,10 @@ export const ResultsContainer = ({ url }: { url: string }) => {
     [url],
   );
 
-  const { data, error, isLoading, isValidating } = useSWR(query, fetcher, { revalidateOnFocus: false });
+  // Pass null key to SWR when search not active to prevent fetching
+  const { data, error, isLoading, isValidating } = useSWR(searchActive ? query : null, fetcher, {
+    revalidateOnFocus: false,
+  });
 
   const loading = isLoading || !aggs;
 
@@ -37,6 +42,11 @@ export const ResultsContainer = ({ url }: { url: string }) => {
       setInitialized(true);
     }
   }, [loading, isValidating, readInitialized, setInitialized]);
+
+  // Don't render results if search is not active
+  if (!searchActive) {
+    return null;
+  }
 
   const resultItemCallBack = (item: estypes.SearchHit<PolicyMaker>) => {
     return (
@@ -68,19 +78,25 @@ export const ResultsContainer = ({ url }: { url: string }) => {
 
     return Drupal.formatPlural(
       total,
-      '1 decision-maker',
-      '@count decision-makers',
-      {},
-      { context: 'Policymakers search' },
+      '1 result',
+      '@count results',
+      {
+        '@count': total.toString(),
+      },
+      { context: 'React search: Generic results text' },
     );
   };
 
   return (
-    <ResultsWrapper
-      {...{ currentPage, data, error, getHeaderText, resultItemCallBack, setPage }}
-      isLoading={loading}
-      shouldScroll={readInitialized()}
-      size={10}
-    />
+    <div className='decisions-search-results policymaker-search-results'>
+      <div className='policymaker-search-results__container container'>
+        <ResultsWrapper
+          {...{ currentPage, data, error, getHeaderText, resultItemCallBack, setPage }}
+          isLoading={loading}
+          shouldScroll={readInitialized()}
+          size={10}
+        />
+      </div>
+    </div>
   );
 };

@@ -1,5 +1,4 @@
 import { IconArrowRight, IconAngleRight } from 'hds-react';
-import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 
 type ResultCardProps = {
   color_class?: string[];
@@ -54,7 +53,7 @@ export const ResultCard = ({
   url,
   organization_hierarchy,
 }: ResultCardProps) => {
-  const colorClass = color_class?.[0] || '';
+  const colorClass = color_class?.[0] ? `var(--${color_class[0]})` : '';
   const cardTitle = trustee_name?.[0] || title?.[0] || '';
   const cardUrl = url?.[0] ? getLocalizedUrl(url[0]) : '';
 

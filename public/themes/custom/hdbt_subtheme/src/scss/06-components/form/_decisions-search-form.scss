@@ -183,3 +183,12 @@
 .decisions-search-submit-button--mobile {
   margin-bottom: $spacing-double;
 }
+
+.hdbt-search--react__submit-button.hdbt-search--react__submit-button--policymakers {
+  margin-bottom: 0;
+}
+
+.hdbt-search--react__dropdown-filters .hdbt-search__dropdown--full-width {
+  max-width: unset;
+  width: 100%;
+}

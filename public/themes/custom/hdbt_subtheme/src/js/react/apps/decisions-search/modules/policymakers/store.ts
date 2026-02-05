@@ -2,6 +2,15 @@ import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
 import { Components } from './enum/Components';
 
+const ROOT_ID = 'paatokset_search';
+
+const getElasticUrl = () => {
+  const rootElement = document.getElementById(ROOT_ID);
+  return rootElement?.dataset.url || '';
+};
+
+export const getElasticUrlAtom = atom(getElasticUrl());
+
 type SelectOption = { label: string | undefined; value: string };
 
 interface SearchState {
@@ -19,6 +28,12 @@ const defaultState: SearchState = {
 const initialParams = new URLSearchParams(window.location.search);
 export const initialParamsAtom = atom(initialParams);
 
+// Check if URL has search-related params (s or sector, not just page)
+const hasSearchParams = initialParams.has(Components.SEARCHBAR) || initialParams.has(Components.SECTOR);
+
+// Track if results should be shown
+export const searchActiveAtom = atom<boolean>(hasSearchParams);
+
 type aggType = { [key: string]: estypes.AggregationsAggregate };
 const aggsBaseAtom = atom<aggType | undefined>(undefined);
 export const aggsAtom = atom(
@@ -35,10 +50,10 @@ export const aggsAtom = atom(
         const sectorParam = initialParams.get(key);
         const sectorAgg = aggs[key] as estypes.AggregationsStringTermsAggregate;
         const buckets = sectorAgg.buckets as estypes.AggregationsStringTermsBucket[];
-        const selectedOptions = sectorParam!
-          .split(',')
+        const selectedOptions = sectorParam
+          ?.split(',')
           .filter((param) => buckets.some((bucket) => bucket.key === param));
-        if (selectedOptions.length) {
+        if (selectedOptions?.length) {
           (initialState as Record<string, unknown>)[key] = selectedOptions.map((option) => ({
             label: option,
             value: option,
@@ -103,6 +118,11 @@ export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultS
   const searchState = get(searchStateAtom);
   const submittedState = get(submittedStateAtom);
   const newState = { ...searchState, [Components.PAGE]: 1 };
+
+  // Activate search on first submit
+  if (!get(searchActiveAtom)) {
+    set(searchActiveAtom, true);
+  }
 
   // Only update if state actually changed
   if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {

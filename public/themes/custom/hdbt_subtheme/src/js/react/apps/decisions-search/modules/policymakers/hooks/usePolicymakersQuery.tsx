@@ -10,17 +10,9 @@ export const usePolicymakersQuery = (): string => {
 
   return useMemo(() => {
     const { currentLanguage } = drupalSettings.path;
-
     const filter: estypes.QueryDslQueryContainer[] = [
       { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
-      {
-        bool: {
-          should: [
-            { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: currentLanguage } },
-            { term: { [PolicymakerIndex.HAS_TRANSLATION]: false } },
-          ],
-        },
-      },
+      { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: currentLanguage } },
     ];
 
     const should: estypes.QueryDslQueryContainer[] = [];
@@ -39,8 +31,9 @@ export const usePolicymakersQuery = (): string => {
 
     const query: estypes.QueryDslQueryContainer = { bool: { filter } };
 
-    if (should.length) {
-      query.bool!.should = should;
+    if (should.length && query.bool) {
+      query.bool.should = should;
+      query.bool.minimum_should_match = 1;
     }
 
     const size = 10;
@@ -50,7 +43,7 @@ export const usePolicymakersQuery = (): string => {
       query,
       from: size * (page - 1),
       size,
-      sort: [{ [PolicymakerIndex.TITLE]: 'asc' }],
+      sort: [{ [`${PolicymakerIndex.TITLE}.keyword`]: 'asc' }],
     };
 
     return JSON.stringify(result);
