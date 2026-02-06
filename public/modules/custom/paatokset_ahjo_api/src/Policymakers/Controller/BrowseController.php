@@ -61,7 +61,9 @@ class BrowseController extends ControllerBase {
 
     $breadcrumb = '';
 
-    if ($parent = $this->entityRepository->getTranslationFromContext($org->getParentOrganization())) {
+    if ($parent = $org->getParentOrganization()) {
+      $parent = $this->entityRepository->getTranslationFromContext($parent) ?: $parent;
+
       // Special case for the first organizations:
       // link directly to the root level.
       if ($parent->id() == '00001') {
@@ -100,8 +102,8 @@ class BrowseController extends ControllerBase {
    * Title callback for policymaker browse page.
    */
   public function title(Organization|null $org): string|TranslatableMarkup {
-    if ($org) {
-      return $org->label();
+    if ($label = $org?->label()) {
+      return $label;
     }
 
     return new TranslatableMarkup('Browse decisionmakers');
@@ -124,10 +126,16 @@ class BrowseController extends ControllerBase {
 
     $policymakers = $this->loadPolicymakers($rootIds);
 
+    $tags = [];
+    foreach ($policymakers as $id => $policymaker) {
+      $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
+    }
+
     $build = [
       '#theme' => 'policymaker_browser',
       '#children' => $children,
       '#policymakers' => $policymakers,
+      '#tags' => $tags,
     ];
 
     $cache = new CacheableMetadata();

@@ -38,6 +38,7 @@ class BrowseControllerTest extends AhjoEntityKernelTestBase {
       'id' => '00400',
       'label' => 'Kaupunginhallitus',
       'existing' => 1,
+      'num_children' => 1,
     ]);
     $organization->save();
 

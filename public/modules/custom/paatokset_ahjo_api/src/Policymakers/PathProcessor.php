@@ -44,7 +44,7 @@ class PathProcessor implements InboundPathProcessorInterface, OutboundPathProces
         $rest = substr($path, strlen($pattern));
 
         // Capture policymaker slug from the path.
-        $policymaker = preg_match('/^\/([\p{Ll}\d-]+)/u', $rest, $matches) ? '/' . $matches[1] : '';
+        $policymaker = preg_match('/^\/([\p{L}\d-]+)/u', $rest, $matches) ? '/' . $matches[1] : '';
 
         // Return the English path that the browse controller expects.
         return '/decisionmakers/browse-decisionmakers' . $policymaker;
@@ -61,7 +61,7 @@ class PathProcessor implements InboundPathProcessorInterface, OutboundPathProces
    * {@inheritDoc}
    */
   public function processOutbound($path, &$options = [], ?Request $request = NULL, ?BubbleableMetadata $bubbleable_metadata = NULL): string {
-    if (preg_match('/\/decisionmakers\/browse-decisionmakers(\/[\p{Ll}0-9-]+)?$/u', $path, $matches)) {
+    if (preg_match('/\/decisionmakers\/browse-decisionmakers(\/[\p{L}\d-]+)?$/u', $path, $matches)) {
       if (isset($options['language'])) {
         $langcode = $options['language'];
 
