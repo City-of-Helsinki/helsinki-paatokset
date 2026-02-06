@@ -77,6 +77,7 @@ final class AhjoOrganizationSource extends OrganizationSourceBase {
           'type' => $response->info->type->value,
           'langcode' => $langcode,
           'organization_above' => $parent?->id ?? NULL,
+          'num_children' => count($response->children),
         ];
 
         // Process child organizations.
@@ -93,6 +94,8 @@ final class AhjoOrganizationSource extends OrganizationSourceBase {
             'type' => $response->info->type->value,
             'langcode' => $langcode,
             'organization_above' => $response->info->id,
+            // Will be updated when child is processed separately.
+            'num_children' => 0,
           ];
         }
       }
