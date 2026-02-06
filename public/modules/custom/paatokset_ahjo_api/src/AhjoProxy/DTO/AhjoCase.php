@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\AhjoProxy\DTO;
 
+use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
+
 /**
  * Ahjo case DTO.
  */
@@ -64,25 +66,29 @@ final readonly class AhjoCase {
    * @return self
    *   AhjoCase instance.
    *
-   * @throws \DateMalformedStringException
-   *   If date strings cannot be parsed.
+   * @throws \Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException
    */
   public static function fromAhjoObject(\stdClass $object): self {
-    return new self(
-      $object->CaseID,
-      $object->CaseIDLabel,
-      $object->Title,
-      $object->Created ? new \DateTimeImmutable($object->Created) : NULL,
-      $object->Acquired ? new \DateTimeImmutable($object->Acquired) : NULL,
-      $object->ClassificationCode,
-      $object->ClassificationTitle,
-      $object->Status,
-      $object->Language,
-      $object->PublicityClass,
-      $object->SecurityReasons ?? [],
-      array_map(AhjoHandling::class . '::fromAhjoObject', $object->Handlings ?? []),
-      array_map(AhjoRecord::class . '::fromAhjoObject', $object->Records ?? []),
-    );
+    try {
+      return new self(
+        $object->CaseID,
+        $object->CaseIDLabel,
+        $object->Title,
+        $object->Created ? new \DateTimeImmutable($object->Created) : NULL,
+        $object->Acquired ? new \DateTimeImmutable($object->Acquired) : NULL,
+        $object->ClassificationCode,
+        $object->ClassificationTitle,
+        $object->Status,
+        $object->Language,
+        $object->PublicityClass,
+        $object->SecurityReasons ?? [],
+        array_map(AhjoHandling::class . '::fromAhjoObject', $object->Handlings ?? []),
+        array_map(AhjoRecord::class . '::fromAhjoObject', $object->Records ?? []),
+      );
+    }
+    catch (\DateMalformedStringException $e) {
+      throw new AhjoProxyException($e->getMessage(), previous: $e);
+    }
   }
 
 }

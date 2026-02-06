@@ -11,7 +11,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -183,95 +183,6 @@ class AhjoAggregatorCommands extends DrushCommands {
 
       drush_backend_batch_process();
     }
-  }
-
-  /**
-   * Gets and stores a single request from Ahjo API.
-   *
-   * @param string $endpoint
-   *   Endpoint to get data from.
-   * @param array $options
-   *   Additional options for the command.
-   */
-  #[Command(name: 'ahjo-proxy:get', aliases: ['ap:get'])]
-  #[Usage(name: 'ahjo-proxy:get', description: 'Stores all decisionmakers into decisionmakers.json.')]
-  #[Usage(name: 'ahjo-proxy:get decisionmakers --start=021100VH1 --filename=decisionmakers_021100VH1.json', description: 'Stores decisionmakers under the 021100VH1 organisation.')]
-  #[Option('changedsince', 'Custom timestamp for fetching data.')]
-  #[Option('changedbefore', 'Custom timestamp for fetching data.')]
-  #[Option('filename', 'Filename to use instead of default. Can be used to split/batch results.')]
-  #[Option('langcode', 'Langcode to get data for.')]
-  public function get(
-    string $endpoint,
-    array $options = [
-      'dataset' => NULL,
-      'start' => NULL,
-      'end' => NULL,
-      'changedsince' => NULL,
-      'changedbefore' => NULL,
-      'handledsince' => NULL,
-      'handledbefore' => NULL,
-      'langcode' => NULL,
-      'filename' => NULL,
-    ],
-  ): void {
-    $data = [];
-    $list_key = $this->getListKey($endpoint);
-
-    $dataset = $options['dataset'] ?? 'all';
-
-    if ($dataset === 'latest') {
-      $week_ago = strtotime("-1 week");
-      $timestamp = date('Y-m-d\TH:i:s\Z', $week_ago);
-    }
-
-    $query_string = '';
-    if (!empty($options['start'])) {
-      $query_string .= 'start=' . $options['start'];
-    }
-    if (!empty($options['end'])) {
-      $query_string .= '&end=' . $options['end'];
-    }
-    if (!empty($options['changedsince'])) {
-      $query_string .= '&changedsince=' . $options['changedsince'];
-    }
-    elseif ($endpoint === 'decisionmakers' && $dataset === 'latest') {
-      $query_string .= '&changedsince=' . $timestamp;
-    }
-
-    if (!empty($options['handledsince'])) {
-      $query_string .= '&handledsince=' . $options['handledsince'];
-    }
-
-    if (!empty($options['changedbefore'])) {
-      $query_string .= '&changedbefore=' . $options['changedbefore'];
-    }
-    if (!empty($options['handledbefore'])) {
-      $query_string .= '&handledbefore=' . $options['handledbefore'];
-    }
-    if (!empty($options['langcode'])) {
-      $query_string .= '&apireqlang=' . $options['langcode'];
-    }
-
-    $this->logger->info('Fetching from ' . $endpoint . ' with query string: ' . $query_string);
-
-    $data = $this->ahjoProxy->getData($endpoint, $query_string);
-
-    if (!empty($options['filename'])) {
-      $filename = $options['filename'];
-      $this->logger->info('Using filename: ' . $filename);
-    }
-    else {
-      $filename = $endpoint . '.json';
-    }
-
-    if (empty($data[$list_key])) {
-      $this->logger->info('Empty result.');
-      return;
-    }
-
-    $this->logger->info('Received ' . count($data[$list_key]) . ' results.');
-    $this->fileRepository->writeData(json_encode($data), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
-    $this->logger->info('Stores data into public://' . $filename);
   }
 
   /**
@@ -2484,7 +2395,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       $file_path = $this->moduleExtensionList->getPath('paatokset_ahjo_proxy') . '/static/' . $file;
       $file_contents = file_get_contents($file_path);
       if (!empty($file_contents)) {
-        $this->fileRepository->writeData($file_contents, 'public://' . $file, FileSystemInterface::EXISTS_REPLACE);
+        $this->fileRepository->writeData($file_contents, 'public://' . $file, FileExists::Replace);
         $this->logger->info('Saved file into public://' . $file);
       }
       else {

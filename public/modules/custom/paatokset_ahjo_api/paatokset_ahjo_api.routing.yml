@@ -309,3 +309,6 @@ paatokset_ahjo_api.browse_policymakers:
     parameters:
       org:
         type: entity:ahjo_organization
+
+route_callbacks:
+  - '\Drupal\paatokset_ahjo_api\AhjoProxy\Routing\RouteProvider::routes'

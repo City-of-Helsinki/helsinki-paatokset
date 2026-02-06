@@ -8,7 +8,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Url;
@@ -651,11 +651,11 @@ class AhjoProxy {
 
     $messenger = \Drupal::messenger();
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $ahjo_proxy->fileRepository->writeData(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode([$results['list_key'] => $results['items']]), 'public://' . $filename, FileExists::Replace);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileExists::Replace);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
@@ -714,11 +714,11 @@ class AhjoProxy {
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $ahjo_proxy->fileRepository->writeData(json_encode($results['items']), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['items']), 'public://' . $filename, FileExists::Replace);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileExists::Replace);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
@@ -787,11 +787,11 @@ class AhjoProxy {
 
     /** @var \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjo_proxy */
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $ahjo_proxy->fileRepository->writeData(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode(['trustees' => $results['items']]), 'public://' . $filename, FileExists::Replace);
     $messenger->addMessage('Aggregated data saved into public://' . $filename);
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
-    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_' . $filename, FileExists::Replace);
     if (!empty($results['failed'])) {
       $messenger->addMessage('Data for failed items saved into public://failed_' . $filename);
     }
@@ -1870,7 +1870,7 @@ class AhjoProxy {
 
     // Save failed array into filesystem even if it's empty so we can wipe it.
     $ahjo_proxy = \Drupal::service('paatokset_ahjo_proxy');
-    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_motions.json', FileSystemInterface::EXISTS_REPLACE);
+    $ahjo_proxy->fileRepository->writeData(json_encode($results['failed']), 'public://failed_motions.json', FileExists::Replace);
     if (!empty($results['failed'])) {
       \Drupal::messenger()->addMessage('Data for failed items saved into public://failed_motions.json');
     }
