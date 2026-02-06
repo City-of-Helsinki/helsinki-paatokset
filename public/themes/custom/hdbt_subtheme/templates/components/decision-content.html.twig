@@ -95,6 +95,22 @@
             content: accordion.content,
           } %}
         {% endfor %}
+        {% set appeal_issued_date = selectedDecision.getIssuedTime() %}
+        {% if appeal_issued_date or decision_content.appeal_info %}
+          {% set appeal_content %}
+            {% if appeal_issued_date %}
+            <p class="issue__decision-date">
+              {{ 'This decision was published on <strong>@date</strong>' | t({'@date': appeal_issued_date.getTimestamp() | format_date('date') }) }}
+            </p>
+            {% endif %}
+            {{ decision_content.appeal_info }}
+          {% endset %}
+          {% include '@hdbt/component/accordion.twig' ignore missing with {
+            heading_level: 'h3',
+            heading: 'Appeal process' | t,
+            content: appeal_content
+          } %}
+        {% endif %}
       {% endblock component_content %}
     {% endembed %}
   </div>

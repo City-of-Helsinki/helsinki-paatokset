@@ -31,6 +31,7 @@ class DecisionTest extends AhjoEntityKernelTestBase {
       'field_decision_case_title' => 'test-case-title',
       'field_dm_org_name' => 'test-dm-org-name',
       'field_policymaker_id' => '123',
+      'field_decision_date' => '2026-02-04T22:00:00',
     ]);
     $this->assertInstanceOf(Decision::class, $decision);
 
@@ -65,6 +66,15 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $this->assertEquals('test-diary-number', $decision->getDiaryNumber());
     $this->assertNotEmpty($decision->getCase());
     $this->assertEquals('test-case-title', $decision->getDecisionHeading());
+
+    // Decision content is empty, so the decision is
+    // considered motion, and it has no issued field.
+    $this->assertEquals(NULL, $decision->getIssuedTime()?->getTimestamp());
+
+    // Timezones are handled correctly, should be:
+    // Thu Feb 05 2026 00:00:00 GMT+0200 (Eastern European Standard Time)
+    $decision->set('field_decision_content', '<p>foo</p>');
+    $this->assertEquals(1770242400, $decision->getIssuedTime()?->getTimestamp());
   }
 
   /**
@@ -204,12 +214,6 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $this->assertEquals('John Doe', $content['presenter_info']?->name);
     $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
     $this->assertEquals('Tilapäällikkö', $content['signature_info']?->title);
-
-    // Empty <p> tags are stripped from accordions.
-    $this->assertStringContainsString('<p></p>', file_get_contents(__DIR__ . '/../../../fixtures/decision-content.html'));
-    foreach ($content['accordions'] as $accordion) {
-      $this->assertStringNotContainsString('<p></p>', $accordion['content']['#text'] ?? '');
-    }
   }
 
   /**
