@@ -59,7 +59,7 @@ readonly class LanguageSwitcher {
         continue;
       }
 
-      if ($route_name === 'entity.ahjo_case.canonical') {
+      if (in_array($route_name, ['entity.ahjo_case.canonical', 'paatokset_ahjo_api.browse_policymakers'])) {
         $url = $link['url'];
       }
       // This relies on the `#untranslated` key set by
@@ -230,6 +230,7 @@ readonly class LanguageSwitcher {
     $routes = [
       'entity.node.canonical',
       'entity.ahjo_case.canonical',
+      'paatokset_ahjo_api.browse_policymakers',
     ];
 
     if (in_array($route_name, $routes)) {

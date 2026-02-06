@@ -68,21 +68,18 @@ class PathProcessor implements InboundPathProcessorInterface, OutboundPathProces
         if ($options['language'] instanceof LanguageInterface) {
           $langcode = $options['language']->getId();
         }
-      }
-      else {
-        $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      }
 
-      try {
-        $translated = match($langcode) {
-          'fi' => '/paattajat/selaa-paattajia',
-          'sv' => '/beslutsfattare/bladra-bland-beslutsfattare',
-          // No need to alter the English path here.
-        };
+        try {
+          $translated = match($langcode) {
+            'fi' => '/paattajat/selaa-paattajia',
+            'sv' => '/beslutsfattare/bladra-bland-beslutsfattare',
+            // No need to alter the English path here.
+          };
 
-        return $translated . ($matches[1] ?? '');
-      }
-      catch (\UnhandledMatchError) {
+          return $translated . ($matches[1] ?? '');
+        }
+        catch (\UnhandledMatchError) {
+        }
       }
     }
 
