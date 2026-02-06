@@ -49,10 +49,12 @@
                   {{ tag }}
                 </div>
 
-                <a href="{{url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() })}}" class="policymaker-browser__child__expand">
-                  <span class="visually-hidden">{{ 'Go to a lower level from @organization'|t({'@organization': organization.label()}, {'context': 'Policymaker browser'}) }}</span>
-                </a>
-
+                {# Draw link to lower level in the browser if the child is not leaf node in the org tree. #}
+                {% if organization.getNumberOfChildren() > 0 %}
+                  <a href="{{url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() })}}" class="policymaker-browser__child__expand">
+                    <span class="visually-hidden">{{ 'Go to a lower level from @organization'|t({'@organization': organization.label()}, {'context': 'Policymaker browser'}) }}</span>
+                  </a>
+                {% endif %}
               </li>
             {% endfor %}
           </ul>
