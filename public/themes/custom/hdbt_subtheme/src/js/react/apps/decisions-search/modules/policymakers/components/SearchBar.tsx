@@ -3,6 +3,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 
 import { getElasticUrlAtom, getSearchTermAtom, setSearchTermAtom, updateQueryAtom } from '../store';
 import { useGetSuggestions } from '../hooks/useGetSuggestions';
+import { defaultSearchInputStyle } from '@/react/common/constants/searchInputStyle';
 
 export const SearchBar = () => {
   const searchTerm = useAtomValue(getSearchTermAtom);
@@ -15,6 +16,7 @@ export const SearchBar = () => {
     <SearchInput
       className='hdbt-search__filter hdbt-search--react__text-field'
       getSuggestions={() => suggestions}
+      hideSearchButton
       label={Drupal.t(
         'Which body, office holder or councillor are you looking for?',
         {},
@@ -24,6 +26,7 @@ export const SearchBar = () => {
       onSubmit={onSubmit}
       placeholder={Drupal.t('Search with a Finnish keyword, eg. pormestari', {}, { context: 'Policymakers search' })}
       searchButtonAriaLabel={Drupal.t('Search', {}, { context: 'React search: submit button label' })}
+      style={defaultSearchInputStyle}
       suggestionKeyField='value'
       suggestionLabelField='value'
       value={searchTerm || ''}

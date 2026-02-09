@@ -14,14 +14,16 @@ export const SectorFilter = () => {
   const sectorAgg = aggs?.[Components.SECTOR] as estypes.AggregationsStringTermsAggregate | undefined;
   const buckets = sectorAgg?.buckets as estypes.AggregationsStringTermsBucket[] | undefined;
 
-  const options = buckets?.map((bucket) => ({
-    label: bucket.key as string,
-    value: bucket.key as string,
-  }));
+  const options = buckets
+    ?.map((bucket) => ({
+      label: bucket.key as string,
+      value: bucket.key as string,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label)) as { label: string; value: string }[] | undefined;
 
   return (
     <Select
-      className='hdbt-search__dropdown hdbt-search__dropdown--full-width'
+      className='hdbt-search__dropdown policymaker-dropdown'
       disabled={!aggs}
       id={Components.SECTOR}
       multiSelect

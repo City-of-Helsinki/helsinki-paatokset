@@ -23,10 +23,7 @@ export const FormContainer = () => {
       <div className='hdbt-search--react__dropdown-filters'>
         <SectorFilter />
       </div>
-      <Button
-        className='hdbt-search--react__submit-button hdbt-search--react__submit-button--policymakers'
-        type='submit'
-      >
+      <Button className='hdbt-search--react__submit-button policymaker-submit-button' type='submit'>
         {Drupal.t('Search', {}, { context: 'React search: submit button label' })}
       </Button>
       <SelectionsContainer />

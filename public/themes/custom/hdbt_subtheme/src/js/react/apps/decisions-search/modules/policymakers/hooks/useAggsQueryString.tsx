@@ -2,10 +2,15 @@ import { PolicymakerIndex } from '../../decisions/enum/IndexFields';
 import { Components } from '../enum/Components';
 
 export const useAggsQueryString = () => {
+  const { currentLanguage } = drupalSettings.path;
+
   const query = {
     query: {
       bool: {
-        filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
+        filter: [
+          { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
+          { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: currentLanguage } },
+        ],
       },
     },
     aggs: {
