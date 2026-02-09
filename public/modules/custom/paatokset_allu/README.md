@@ -1,30 +1,28 @@
 # Paatokset allu
 
-__This integration is work in progress__
-
 Integration to Urban Environment Divisions Allu system. Allu contains decisions documents related to public area usage in Helsinki.
 
 Allu API documentation: https://allu.kaupunkiymparisto.fi/external/swagger-ui/index.html.
 
 Relevant parts for paatokset is search endpoints for decision and approval documents. Paatokset runs a migration
-([@todo UHF-10567](https://helsinkisolutionoffice.atlassian.net/browse/UHF-10567)) which imports metadata about
-decision files from these search endpoints to Drupal entities. These entities are indexed to elasticsearch
-([@todo UHF-10975](https://helsinkisolutionoffice.atlassian.net/browse/UHF-10975)), which
-is to render frontend search component ([@todo UHF-10566](https://helsinkisolutionoffice.atlassian.net/browse/UHF-10566)).
+([`drush migrate:import allu_*`](../../../../docker/openshift/crons/allu.sh)) which imports metadata about
+decision files from these search endpoints to Drupal. These entities are indexed to elasticsearch, which
+is to render frontend [search component](../../../themes/custom/hdbt_subtheme/src/js/react/apps/allu-decisions-search).
 
-The PDF files are not publicly accessible from Allu, since the api requires authentication, so the public links
-proxy the files from Allu API.
+The PDF files are not imported to Drupal. The files are not publicly accessible from Allu (the api requires
+authentication), so the [routes Drupal](./src/Entity/Routing/EntityRouteProvider.php) proxy the files from Allu API.
+
+Available routes:
+- `/allu/document/{id}/download`
+- `/allu/document/{id}/approval/{type}/download`
+
+New data is fetched to Drupal every hour.
 
 ## Migrations
 
-Allu documents are imported with a Drupal migration. The migration imports documents that have been created within one week
-and older content can be imported with a Drush command. Under the hood, the Drush command just runs the same migration with
-different parameters.
-
-Add following to your .env file:
-```
-ALLU_BASE_URL=https://staging.allu.kaupunkiymparisto.fi
-```
+Allu documents are imported with a Drupal migration. The migration imports documents that have been created within one week.
+Older content can be imported with a Drush command. Under the hood, the Drush command just runs the same migration with
+customizable timeframe.
 
 Import most recent documents:
 ```shell
@@ -38,7 +36,11 @@ drush allu:run-allu-migration allu_decisions --after="-5 year" --update
 ```
 Check all available parameters with `--help` option.
 
-## Configuration
+## Manual updates
+
+If there are mistakes in Allu data, synchronize Drupal with the API by running the migrations with `--update` flag manually. Note that Drupal does not store the PDF files, so any changed to the PDF files will be visible immediately.
+
+### Required configuration
 
 Using this integration locally requires allu credentials in your `local.settings.php` file. The value can be found from [Confluence](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
 ```php
@@ -53,10 +55,11 @@ $config['helfi_api_base.api_accounts']['vault'][] = [
 ];
 ```
 
-Optionally, configure Allu base URL to use production environement.
+Configure Allu base URL to use production environment.
 ```php
 // local.settings.php
-$config['paatokset_allu.settings']['base_url'] = 'https://allu.kaupunkiymparisto.fi';
+$config['paatokset_allu.settings']['base_url'] = 'https://staging.allu.kaupunkiymparisto.fi';
+# $config['paatokset_allu.settings']['base_url'] = 'https://allu.kaupunkiymparisto.fi';
 ```
 
 

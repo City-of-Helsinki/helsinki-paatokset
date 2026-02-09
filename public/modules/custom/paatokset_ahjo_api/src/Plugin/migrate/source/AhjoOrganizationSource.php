@@ -18,45 +18,12 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
  * @endcode
  */
 #[MigrateSource(id: 'ahjo_api_organizations')]
-final class AhjoOrganizationSource extends AhjoSourceBase {
+final class AhjoOrganizationSource extends OrganizationSourceBase {
 
   /**
    * The root id of the whole organization.
    */
   public const string ROOT_ORGANIZATION_ID = '00001';
-
-  /**
-   * Organization translations supported by Ahjo.
-   */
-  private const array ALL_LANGCODES = ['fi', 'sv'];
-
-  /**
-   * {@inheritDoc}
-   */
-  public function fields(): array {
-    return [
-      'id' => 'Organization ID',
-      'name' => 'Organization name',
-      'existing' => 'If the organisation is not dissolved',
-      'organization_above' => 'ID of the parent organization',
-      'type' => 'Organization type ID',
-      'langcode' => 'Langcode',
-    ];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getIds(): array {
-    return [
-      'id' => [
-        'type' => 'string',
-      ],
-      'langcode' => [
-        'type' => 'string',
-      ],
-    ];
-  }
 
   /**
    * {@inheritDoc}
@@ -90,10 +57,10 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
         $parent = $response->parent;
 
         // Root organization is allowed not to have a parent.
-        if (!$parent && $response->organization->id !== self::ROOT_ORGANIZATION_ID) {
+        if (!$parent && $response->info->id !== self::ROOT_ORGANIZATION_ID) {
           // Skip if the organization is dissolved. Example 🐙:
           // https://paatokset.hel.fi/fi/ahjo-proxy/organization/single/01101.
-          if (!$response->organization->existing) {
+          if (!$response->info->existing) {
             continue;
           }
 
@@ -104,10 +71,10 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
 
         // Process current organization.
         $rows[] = [
-          'id' => $response->organization->id,
-          'name' => $response->organization->name,
-          'existing' => $response->organization->existing,
-          'type' => $response->organization->type->value,
+          'id' => $response->info->id,
+          'name' => $response->info->name,
+          'existing' => $response->info->existing,
+          'type' => $response->info->type->value,
           'langcode' => $langcode,
           'organization_above' => $parent?->id ?? NULL,
         ];
@@ -123,9 +90,9 @@ final class AhjoOrganizationSource extends AhjoSourceBase {
             'id' => $child->id,
             'name' => $child->name,
             'existing' => $child->existing,
-            'type' => $response->organization->type->value,
+            'type' => $response->info->type->value,
             'langcode' => $langcode,
-            'organization_above' => $response->organization->id,
+            'organization_above' => $response->info->id,
           ];
         }
       }
