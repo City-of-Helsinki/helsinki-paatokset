@@ -7,6 +7,9 @@ services:
       - --sort_buffer_size=4096k
   app:
     environment:
+      ALLU_USERNAME: ${ALLU_USERNAME}
+      ALLU_BASE_URL: ${ALLU_BASE_URL}
+      ALLU_PASSWORD: ${ALLU_PASSWORD}
       DRUPAL_REVERSE_PROXY_ADDRESS: helsinki-paatokset.docker.so
       OPERATOR_GUIDE_NODE_ID: 220913
     env_file:
