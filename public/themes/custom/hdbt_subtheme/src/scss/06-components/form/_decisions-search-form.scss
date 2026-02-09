@@ -55,10 +55,6 @@
   }
 }
 
-.paatokset-search--policymaker {
-  margin-top: $spacing-triple;
-}
-
 /* stylelint-disable selector-id-pattern */
 #paatokset_search {
   .wrapper {
@@ -182,13 +178,4 @@
 
 .decisions-search-submit-button--mobile {
   margin-bottom: $spacing-double;
-}
-
-.hdbt-search--react__submit-button.policymaker-submit-button {
-  margin-bottom: 0;
-}
-
-.hdbt-search--react__dropdown-filters .policymaker-dropdown {
-  max-width: unset;
-  width: 100%;
 }
