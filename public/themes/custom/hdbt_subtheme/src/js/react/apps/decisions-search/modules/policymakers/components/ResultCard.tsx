@@ -75,7 +75,7 @@ export const ResultCard = ({
   };
 
   return (
-    <article className='policymaker-search-result-card'>
+    <div className='policymaker-search-result-card'>
       <a href={cardUrl} data-color-class={colorClass} className='policymaker-row__link'>
         <span className='policymaker-row__color' style={{ backgroundColor: colorClass }} />
         <div className='policymaker-row__title'>
@@ -87,6 +87,6 @@ export const ResultCard = ({
         </div>
         <IconArrowRight className='hel-icon' />
       </a>
-    </article>
+    </div>
   );
 };
