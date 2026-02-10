@@ -1,1 +1,0 @@
-// File for type declarations
