@@ -77,7 +77,7 @@ class SearchManager {
         ],
       ],
     ];
- 
+
     if ($classes) {
       $build['#attributes']['class'] = $classes;
     }
