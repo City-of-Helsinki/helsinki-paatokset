@@ -10,7 +10,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_search\SearchManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Block for policymaker search.
