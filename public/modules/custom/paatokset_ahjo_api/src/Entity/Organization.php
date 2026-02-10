@@ -114,11 +114,25 @@ class Organization extends RemoteEntityBase implements EntityPublishedInterface,
       ])
       ->setDescription(new TranslatableMarkup('Parent organization.'));
 
+    $fields['num_children'] = BaseFieldDefinition::create('integer')
+      ->setLabel(new TranslatableMarkup('Number of child organizations'))
+      ->setRequired(TRUE)
+      ->setDefaultValue(0)
+      ->setReadOnly(TRUE)
+      ->setTranslatable(FALSE);
+
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(new TranslatableMarkup('Changed'))
       ->setDescription(new TranslatableMarkup('The time that this organization was last saved.'));
 
     return $fields;
+  }
+
+  /**
+   * Get the number of child organizations this org has.
+   */
+  public function getNumberOfChildren(): int {
+    return intval($this->get('num_children')->value ?? 0);
   }
 
   /**

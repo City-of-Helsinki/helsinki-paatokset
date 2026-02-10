@@ -113,3 +113,31 @@ msgstr "Tutkimus- ja kehittämistoiminta"
 msgctxt "Ahjo cases"
 msgid "Business and employment services"
 msgstr "Elinkeino- ja työvoimapalvelut"
+
+msgctxt "Policymaker browser"
+msgid "Browse policymakers"
+msgstr "Selaa päättäjiä"
+
+msgctxt "Policymaker browser"
+msgid "Browse existing bodies and authorities."
+msgstr "Selaa nykyisiä toimielimiä ja viranhaltijoita."
+
+msgctxt "Policymaker browser"
+msgid "Browse decision-makers by the City's organisation"
+msgstr "Selaa päättäjiä kaupungin organisaation mukaan"
+
+msgctxt "Policymaker browser"
+msgid "Search decision-makers by browsing the City's organisational chart."
+msgstr "Etsi päättäjiä selaamalla kaupungin organisaatiokaaviota."
+
+msgctxt "Policymaker browser"
+msgid "You may also search for decision-makers with the search function."
+msgstr "Voit etsiä päättäjiä myös haulla."
+
+msgctxt "Policymaker browser"
+msgid "Go to the page Search decisions-makers"
+msgstr "Siirry Etsi päättäjiä -sivulle"
+
+msgctxt "Policymaker browser"
+msgid "Go to a lower level from @organization"
+msgstr "Siirry alemmalle tasolle kohdasta @organization"

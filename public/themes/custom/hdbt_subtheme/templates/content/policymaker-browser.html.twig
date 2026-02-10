@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Default tempalte for policymaker browser.
+ *
+ * Available variables:
+ * - policymaker: Currently selected organization level.
+ * - children: Child organizations of current policymaker.
+#}
+
+<article>
+  <div class="components components--computed">
+    {% embed "@hdbt/misc/component.twig" with
+      {
+        component_title: "Browse decision-makers by the City's organisation"|t({}, {'context': 'Policymaker browser'}),
+        component_classes: [
+          'component--policymaker-browser',
+          'component--full-width',
+        ],
+      }
+    %}
+      {% block component_content %}
+        <p>{{ "Search decision-makers by browsing the City's organisational chart."|t({}, {'context': 'Policymaker browser'}) }}</p>
+        <p>
+          {{ 'You may also search for decision-makers with the search function.'|t({}, {'context': 'Policymaker browser'}) }}
+          <a href="{{url('<front>')}}">{{ 'Go to the page Search decisions-makers'|t({}, {'context': 'Policymaker browser'}) }}</a>.
+        </p>
+        <div class="policymaker-browser">
+          {% if breadcrumb %}
+            <div class="policymaker-browser__breadcrumb">
+              {% include '@hdbt/misc/icon.twig' with {icon: 'angle-left', class: 'policymaker-browser__breadcrumb-arrow hds-breadcrumb__back-arrow'} %}{{ breadcrumb }}
+            </div>
+          {% endif %}
+          <h3 class="policymaker-browser__current-level">{{ organization.label() }}</h3>
+
+          <ul class="policymaker-browser__children">
+            {% for organization in children %}
+              <li class="policymaker-browser__child">
+                {% set tag = tags[organization.id()] ?? null %}
+                {% set policymaker = policymakers[organization.id()] ?? null %}
+                <div class="policymaker-browser__child__header">
+                  <h4 class="policymaker-browser__child-title">
+                    {% if policymaker %}
+                      {{ link(organization.label(), policymaker.getUrl(), { 'class':['policymaker-browser__child-title-link'] }) }}
+                    {% else %}
+                      {{ organization.label() }}
+                    {% endif %}
+                  </h4>
+                  {{ tag }}
+                </div>
+
+                {# Draw link to lower level in the browser if the child is not leaf node in the org tree. #}
+                {% if organization.getNumberOfChildren() > 0 %}
+                  <a href="{{url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() })}}" class="policymaker-browser__child__expand">
+                    <span class="visually-hidden">{{ 'Go to a lower level from @organization'|t({'@organization': organization.label()}, {'context': 'Policymaker browser'}) }}</span>
+                  </a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endblock component_content %}
+    {% endembed %}
+  </div>
+</article>

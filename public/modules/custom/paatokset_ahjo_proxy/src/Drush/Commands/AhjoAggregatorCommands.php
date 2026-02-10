@@ -421,7 +421,7 @@ class AhjoAggregatorCommands extends DrushCommands {
       ->sort('field_meeting_date', 'DESC')
       ->latestRevision();
 
-    if (!empty(['start'])) {
+    if (!empty($options['start'])) {
       $query->condition('field_meeting_date', $options['start'], '>');
     }
 
