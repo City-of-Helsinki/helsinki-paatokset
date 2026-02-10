@@ -52,7 +52,7 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
     $block = PolicymakerSearchBlock::create($this->container, [], '', ['provider' => 'paatokset_search']);
     $build = $block->build();
 
-    $this->assertSame('policymakers', $build['#search']['#attributes']['data-type']);
+    $this->assertSame('policymakers', $build['#search_element']['#attributes']['data-type']);
     $this->assertSame('Policymakers search description', $build['#lead_in']['#text']);
     $this->assertSame('processed_text', $build['#lead_in']['#type']);
     $this->assertSame('plain_text', $build['#lead_in']['#format']);

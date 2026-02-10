@@ -108,9 +108,9 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $manager = $this->container->get(SearchManager::class);
 
-    $build = $manager->build('policymakers');
+    $url = $manager->getOperatorGuideUrl();
 
-    $this->assertEquals('/node/' . $node->id(), $build['#attributes']['data-operator-guide-url']);
+    $this->assertEquals('/node/' . $node->id(), $url);
   }
 
   /**
@@ -134,9 +134,9 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $manager = $this->container->get(SearchManager::class);
 
-    $build = $manager->build('policymakers');
+    $url = $manager->getOperatorGuideUrl();
 
-    $this->assertEmpty($build['#attributes']['data-operator-guide-url']);
+    $this->assertEmpty($url);
   }
 
   /**
