@@ -30,9 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     case 'policymakers':
       searchContainer = <PolicymakerContainer />;
       break;
-    // case 'frontpage':
-    //   searchContainer = <FrontpageContainer url={elasticUrl} />;
-    //   break;
     default:
       searchContainer = <DecisionsContainer url={elasticUrl} />;
   }
