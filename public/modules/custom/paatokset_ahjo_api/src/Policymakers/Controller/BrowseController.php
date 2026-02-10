@@ -123,6 +123,7 @@ class BrowseController extends ControllerBase {
       ->entityTypeManager()
       ->getStorage('ahjo_organization')
       ->loadMultiple($rootIds);
+    $children = array_map(fn ($org) => $this->entityRepository->getTranslationFromContext($org), $children);
 
     $policymakers = $this->loadPolicymakers($rootIds);
 
@@ -167,6 +168,8 @@ class BrowseController extends ControllerBase {
       ->condition('field_policymaker_id', $ids, 'IN')
       ->execute();
 
+    $entityRepository = $this->entityRepository;
+
     // Load all policymakers that are present on this page.
     // Arrange the policymakers by their ahjo id for easy
     // access on the template.
@@ -175,8 +178,8 @@ class BrowseController extends ControllerBase {
         ->entityTypeManager()
         ->getStorage('node')
         ->loadMultiple($policymakerIds),
-      static function (array $array, Policymaker $policymaker) {
-        $array[$policymaker->getPolicymakerId()] = $policymaker;
+      function (array $array, Policymaker $policymaker) use ($entityRepository) {
+        $array[$policymaker->getPolicymakerId()] = $entityRepository->getTranslationFromContext($policymaker);
         return $array;
       },
       []
