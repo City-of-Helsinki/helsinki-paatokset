@@ -353,3 +353,31 @@ msgstr "Yli 10 000 päätöstä"
 
 msgid "@trustee is @policymaker"
 msgstr "@trustee on @policymaker"
+
+msgctxt "Policymakers search"
+msgid "Which body, office holder or councillor are you looking for?"
+msgstr "Mitä toimielintä, viranhaltijaa tai valtuutettua etsit?"
+
+msgctxt "Policymakers search"
+msgid "Search with a Finnish keyword, eg. pormestari"
+msgstr "Etsi hakusanalla, esim. elinkeinojaosto tai kaupungingeodeetti"
+
+msgctxt "Policymakers search"
+msgid "Division"
+msgstr "Toimiala"
+
+msgctxt "Policymakers search"
+msgid "Choose division"
+msgstr "Valitse toimiala"
+
+msgctxt "Policymakers search"
+msgid "Filters"
+msgstr "Rajaus"
+
+msgctxt "React search: submit button label"
+msgid "Search"
+msgstr "Hae"
+
+msgctxt "React search: clear selections"
+msgid "Clear selections"
+msgstr "Tyhjennä valinnat"
