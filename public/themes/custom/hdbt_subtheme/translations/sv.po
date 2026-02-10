@@ -8,6 +8,9 @@ msgid_plural "Announcements and notifications"
 msgstr[0] "kungörelse eller annons"
 msgstr[1] "kungörelser och annonser"
 
+msgid "Download decision (pdf)"
+msgstr "Ladda ner utskriftsversion (pdf)"
+
 msgctxt "Announcements and notifications list"
 msgid "No results"
 msgstr "Inga resultat"

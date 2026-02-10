@@ -14,19 +14,20 @@ enum OrganizationType: int {
    */
   const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
 
-  case TRUSTEE = 19;
-  case OFFICE_HOLDER = 12;
   case COUNCIL = 1;
   case BOARD = 2;
-  case COMMITTEE = 5;
-  case WORKING_COMMITTEE = 15;
   case DIVISION = 4;
-  case TEAM = 20;
-  case BUREAU = 8;
-  case UNIT = 14;
+  case COMMITTEE = 5;
   case SECTOR = 7;
+  case BUREAU = 8;
+  case DEPARTMENT = 9;
+  case OFFICE_HOLDER = 12;
   case CITY = 13;
+  case UNIT = 14;
+  case WORKING_COMMITTEE = 15;
   case SERVICE_PACKAGE = 17;
+  case TRUSTEE = 19;
+  case TEAM = 20;
   case UNKNOWN = -1;
 
   /**

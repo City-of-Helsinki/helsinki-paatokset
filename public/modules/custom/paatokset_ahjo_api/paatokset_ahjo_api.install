@@ -255,3 +255,18 @@ function paatokset_ahjo_api_update_11002(): void {
     $newFieldInstance->save();
   });
 }
+
+/**
+ * UHF-12565: Add num_children field to ahjo_organization entity.
+ */
+function paatokset_ahjo_api_update_11003(): void {
+  $fieldDefinition = BaseFieldDefinition::create('integer')
+    ->setLabel(new TranslatableMarkup('Number of child organizations'))
+    ->setRequired(TRUE)
+    ->setDefaultValue(0)
+    ->setReadOnly(TRUE)
+    ->setTranslatable(FALSE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('num_children', 'ahjo_organization', 'paatokset_ahjo_api', $fieldDefinition);
+}

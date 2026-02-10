@@ -93,3 +93,31 @@ msgstr "Forskning och utveckling"
 msgctxt "Ahjo cases"
 msgid "Business and employment services"
 msgstr "Näringslivs- och arbetskraftstjänster"
+
+msgctxt "Policymaker browser"
+msgid "Browse policymakers"
+msgstr "Blädra bland beslutsfattare"
+
+msgctxt "Policymaker browser"
+msgid "Browse existing bodies and authorities."
+msgstr "Bläddra bland nuvarande organ och tjänsteinnehavare."
+
+msgctxt "Policymaker browser"
+msgid "Browse decision-makers by the City's organisation"
+msgstr "Bläddra bland beslutsfattare enligt stadens organisation"
+
+msgctxt "Policymaker browser"
+msgid "Search decision-makers by browsing the City's organisational chart."
+msgstr "Sök beslutsfattare med hjälp av stadens organisationsschema."
+
+msgctxt "Policymaker browser"
+msgid "You may also search for decision-makers with the search function."
+msgstr "Du kan även söka beslutsfattare med sökningsfunktionen."
+
+msgctxt "Policymaker browser"
+msgid "Go to the page Search decisions-makers"
+msgstr "Gå till sidan Sök beslutsfattare"
+
+msgctxt "Policymaker browser"
+msgid "Go to a lower level from @organization"
+msgstr "Gå till en lägre nivå från @organization"

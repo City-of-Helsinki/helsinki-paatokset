@@ -19,6 +19,7 @@ process:
   id: id
   existing: existing
   type: type
+  num_children: num_children
   organization_above:
     -
       plugin: skip_on_empty
