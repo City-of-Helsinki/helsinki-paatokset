@@ -32,17 +32,14 @@ export const ResultCard = ({ address, approval_type, document_created, document_
   const getUrl = () => {
     const approvalType = approval_type.toString();
 
-    if (
-      approvalType === 'WORK_FINISHED' ||
-      approvalType === 'OPERATIONAL_CONDITION'
-    ) {
-      const { currentLanguage } = drupalSettings.path
+    if (approvalType === 'WORK_FINISHED' || approvalType === 'OPERATIONAL_CONDITION') {
+      const { currentLanguage } = drupalSettings.path;
 
       return `/${currentLanguage}/allu/document/${id}/approval/${approvalType}/download`;
     }
 
     return url?.[0] ?? '';
-  }
+  };
 
   return (
     <CardItem

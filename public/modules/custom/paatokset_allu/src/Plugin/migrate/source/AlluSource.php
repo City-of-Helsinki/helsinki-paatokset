@@ -55,7 +55,7 @@ final class AlluSource extends SourcePluginBase implements ContainerFactoryPlugi
    */
   public function getDocuments(DocumentType $documentType): \Generator {
     try {
-      $after = new \DateTimeImmutable($this->configuration['after'] ?? '-1 week');
+      $after = new \DateTimeImmutable($this->configuration['after'] ?? '-1 year');
       $before = new \DateTimeImmutable($this->configuration['before'] ?? 'now');
 
       $interval = new \DateInterval('P1M');
