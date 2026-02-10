@@ -12,11 +12,11 @@ export const useGetSuggestions = async (searchTerm: string | undefined, url: str
       bool: {
         filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
         should: [
-          { wildcard: { [`${PolicymakerIndex.TITLE}.keyword`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}.keyword`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.TRUSTEE_NAME}.keyword`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.FIELD_FIRST_NAME}.keyword`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.FIELD_LAST_NAME}.keyword`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.TITLE}`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.TRUSTEE_NAME}`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.FIELD_FIRST_NAME}`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.FIELD_LAST_NAME}`]: `*${searchTerm}*` } },
         ],
         minimum_should_match: 1,
       },

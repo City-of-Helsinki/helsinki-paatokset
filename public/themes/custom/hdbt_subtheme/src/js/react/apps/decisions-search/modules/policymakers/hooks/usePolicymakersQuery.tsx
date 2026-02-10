@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { PolicymakerIndex } from '../../decisions/enum/IndexFields';
 import { Components } from '../enum/Components';
 import { submittedStateAtom } from '../store';
+import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 
 export const usePolicymakersQuery = (): string => {
   const submittedState = useAtomValue(submittedStateAtom);
@@ -17,8 +18,14 @@ export const usePolicymakersQuery = (): string => {
 
     const should: estypes.QueryDslQueryContainer[] = [];
 
-    const searchTerm = submittedState?.[Components.SEARCHBAR]?.trim();
+    const searchTerm = submittedState?.[Components.SEARCHBAR]?.toString().trim();
     if (searchTerm?.length) {
+      getBaseSearchTermQuery(searchTerm, [
+        `${PolicymakerIndex.TITLE}^5`,
+        `${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}^2`,
+      ]).forEach((item) => {
+        should.push(item);
+      });
       should.push({ wildcard: { [`${PolicymakerIndex.TITLE}.keyword`]: `*${searchTerm}*` } });
     }
 
@@ -39,11 +46,14 @@ export const usePolicymakersQuery = (): string => {
     const size = 10;
     const page = submittedState?.[Components.PAGE] || 1;
 
+    const alphabeticalSort = { [`${PolicymakerIndex.TITLE}.keyword`]: 'asc' };
+    const sort = searchTerm ? [{ _score: 'desc', ...alphabeticalSort }] : [alphabeticalSort];
+
     const result = {
       query,
       from: size * (page - 1),
       size,
-      sort: [{ [`${PolicymakerIndex.TITLE}.keyword`]: 'asc' }],
+      sort,
     };
 
     return JSON.stringify(result);
