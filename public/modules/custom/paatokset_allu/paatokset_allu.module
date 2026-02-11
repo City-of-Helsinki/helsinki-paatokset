@@ -8,7 +8,6 @@
 declare(strict_types=1);
 
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
-use Drupal\search_api\IndexInterface;
 
 /**
  * Implements hook_preprocess_paragraph__HOOK().
