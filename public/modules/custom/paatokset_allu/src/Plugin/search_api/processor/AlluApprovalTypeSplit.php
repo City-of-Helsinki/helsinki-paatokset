@@ -2,8 +2,11 @@
 
 namespace Drupal\paatokset_allu\Plugin\search_api\processor;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\paatokset_allu\Entity\Document;
 use Drupal\search_api\Item\Item;
 use Drupal\search_api\Processor\ProcessorPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Splits items into one per approval_type value.
@@ -24,7 +27,31 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
  *   }
  * )
  */
-class AlluApprovalTypeSplit extends ProcessorPluginBase {
+final class AlluApprovalTypeSplit extends ProcessorPluginBase {
+
+  /**
+   * Constructs a new AlluApprovalTypeSplit object.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -45,12 +72,14 @@ class AlluApprovalTypeSplit extends ProcessorPluginBase {
       }
 
       $entity = $item->getOriginalObject()->getValue();
-      $approvals = \Drupal::entityTypeManager()
+      $approvals = $this->entityTypeManager
         ->getStorage('paatokset_allu_approval')
         ->loadByProperties(['document' => $entity->id()]);
 
       $types = [];
       foreach ($approvals as $approval) {
+        assert($approval instanceof Document);
+
         $type = $approval->get('type')->value;
         if ($type && !in_array($type, $types)) {
           $types[] = $type;
