@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_search;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -36,7 +37,7 @@ class SearchManager {
    *
    * @param string $type
    *   The type of search page. Should one of the following:
-   *   'decisions', 'policymakers' or 'frontpage'.
+   *   'decisions' or 'policymakers'.
    * @param array $classes
    *   The classes to add to the search page.
    *
@@ -44,15 +45,18 @@ class SearchManager {
    *   The render array.
    */
   public function build($type, $classes = []): array {
-    $proxyUrl = $this->configFactory->get('elastic_proxy.settings')->get('elastic_proxy_url') ?: '';
-    $operatorGuideUrl = $this->getOperatorGuideUrl();
+    $proxySettings = $this->configFactory->get('elastic_proxy.settings');
+    $proxyUrl = $proxySettings->get('elastic_proxy_url') ?: '';
     $defaultTexts = $this->configFactory->get('paatokset_ahjo_api.default_texts');
+    $cache = new CacheableMetadata();
+    $cache->addCacheableDependency($proxySettings);
+    $cache->addCacheableDependency($defaultTexts);
 
     $defaultTexts = [
       'description' => $defaultTexts->get('decision_search_description.value'),
     ];
 
-    $build = $type === 'decisions' ? [
+    $build = [
       '#search_element' => [
         '#type' => 'html_tag',
         '#tag' => 'div',
@@ -72,34 +76,19 @@ class SearchManager {
           ],
         ],
       ],
-    ] : [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'id' => 'paatokset_search',
-        'data-type' => $type,
-        'data-url' => $proxyUrl,
-        'data-operator-guide-url' => $operatorGuideUrl,
-      ],
-      '#attached' => [
-        'library' => [
-          'hdbt_subtheme/decisions-search-old',
-        ],
-        'drupalSettings' => [
-          'paatokset_search' => [
-            'default_texts' => $defaultTexts,
-          ],
-        ],
-      ],
     ];
 
     if ($classes) {
       $build['#attributes']['class'] = $classes;
     }
 
-    if ($sentryDsnReact = $this->configFactory->get('paatokset_search.settings')->get('sentry_dsn_react')) {
+    $searchSettings = $this->configFactory->get('paatokset_search.settings');
+    $cache->addCacheableDependency($searchSettings);
+    if ($sentryDsnReact = $searchSettings->get('sentry_dsn_react')) {
       $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react'] = $sentryDsnReact;
     }
+
+    $cache->applyTo($build);
 
     return $build;
   }

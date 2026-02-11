@@ -27,8 +27,6 @@ final class RouteProvider {
     // Guess, not sure if `decisionmakingorganization` endpoint exists:
     'decisionmakingorganization' => '/organization/decisionmakingorganizations/{decisionmaker}',
     'decisionmakers' => '/agents/decisionmakers',
-    // Guess, not sure if `decisionmaker` endpoint exists:
-    'decisionmaker' => '/agents/decisionmakers/{decisionmaker}',
     'record' => '/records/{record}',
     'decisions' => '/decisions',
     'decision' => '/decisions/{decision}',

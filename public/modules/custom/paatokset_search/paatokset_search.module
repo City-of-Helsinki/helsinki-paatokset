@@ -55,7 +55,7 @@ function paatokset_search_theme(): array {
     'policymaker_search_block' => [
       'variables' => [
         'lead_in' => [],
-        'search' => [],
+        'search_element' => [],
       ],
     ],
     'frontpage_search_hero_block' => [

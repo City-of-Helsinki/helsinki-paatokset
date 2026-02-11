@@ -14,6 +14,8 @@ export type PolicyMaker = {
   organization_hierarchy: string[];
   status: boolean[];
   title: string[];
+  trustee_name: string[];
+  trustee_title: string[];
   uid: number[];
   search_api_id: string[];
   search_api_datasource: string[];

@@ -43,20 +43,6 @@ decisions-search:
     - core/drupalSettings
     - core/drupal
 
-# This lives for a while until all modules are rewritten
-decisions-search-old:
-  version: 1.0.0
-  js:
-    dist/js/decisions-search-old.min.js: {
-      attributes: {
-        preprocess: false,
-        minified: true
-      }
-    }
-  dependencies:
-    - core/drupalSettings
-    - core/drupal
-
 # Replace select elements with react apps.
 helfi_select:
   version: HELFI_DEPLOYMENT_IDENTIFIER

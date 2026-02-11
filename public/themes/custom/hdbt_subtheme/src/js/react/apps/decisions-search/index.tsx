@@ -3,8 +3,9 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { GhostList } from '@/react/common/GhostList';
 import ResultsError from '@/react/common/ResultsError';
-import initSentry from '../decisions-search-old/common/Sentry';
+import initSentry from '@/react/common/helpers/Sentry';
 import { DecisionsContainer } from './modules/decisions/DecisionsContainer';
+import { PolicymakerContainer } from './modules/policymakers/PolicymakerContainer';
 
 initSentry();
 
@@ -20,16 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const type = rootElement.dataset.type || 'decisions';
   const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
+  let searchContainer: React.ReactElement;
+
   switch (type) {
     case 'decisions':
       searchContainer = <DecisionsContainer url={elasticUrl} />;
       break;
-    // case 'policymakers':
-    //   searchContainer = <PolicymakersContainer url={elasticUrl} />;
-    //   break;
-    // case 'frontpage':
-    //   searchContainer = <FrontpageContainer url={elasticUrl} />;
-    //   break;
+    case 'policymakers':
+      searchContainer = <PolicymakerContainer />;
+      break;
     default:
       searchContainer = <DecisionsContainer url={elasticUrl} />;
   }

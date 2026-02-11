@@ -1,0 +1,25 @@
+uuid: bd15a01b-3aa0-43fc-b30b-eff619cb4eda
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_policymakerbrowerheroblock
+theme: hdbt_subtheme
+region: before_content
+weight: 0
+provider: null
+plugin: policymaker_browser_hero_block
+settings:
+  id: policymaker_browser_hero_block
+  label: 'Policymaker Brower Hero Block'
+  label_display: '0'
+  provider: paatokset_ahjo_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paattajat/selaa-paattajia\r\n/paattajat/selaa-paattajia/*\r\n/decisionmakers/browse-decisionmakers\r\n/decisionmakers/browse-decisionmakers/*\r\n/beslutsfattare/bladra-bland-beslutsfattare\r\n/beslutsfattare/bladra-bland-beslutsfattare/*"

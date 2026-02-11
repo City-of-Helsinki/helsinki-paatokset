@@ -31,10 +31,8 @@
     "diff": "^8.0.3"
   },
   "dependencies": {
-    "@appbaseio/reactivesearch": "^3.25.0",
     "@biomejs/biome": "^2.2.4",
     "@elastic/elasticsearch": "^8.17.1",
-    "@emotion/styled-base": "^10.3.0",
     "@hdbt/theme-builder": "file:../../contrib/hdbt/theme-builder",
     "@react-aria/visually-hidden": "^3.8.22",
     "@sentry/react": "^10.1.0",
@@ -42,8 +40,6 @@
     "@types/node": "^22.0.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
     "@vitest/browser": "^3.0.8",
     "@vitest/coverage-v8": "^3.0.8",
     "backstopjs": "^6.3.25",

@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
@@ -444,6 +445,30 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
   }
 
   /**
+   * Get decision issued time.
+   *
+   * Decision does not have an issued date if it does not have
+   * a case number or if it is a motion (decision content) is
+   * empty.
+   */
+  public function getIssuedTime(): ?\DateTimeImmutable {
+    $has_case_id = !$this->get('field_diary_number')->isEmpty();
+    $has_decision = !$this->get('field_decision_content')->isEmpty();
+
+    if ($has_case_id && $has_decision && !$this->get('field_decision_date')->isEmpty()) {
+      return new \DateTimeImmutable(
+        $this->get('field_decision_date')->value,
+        // API returns dates in the local timezone, but the migration
+        // converts them to UTC. In our database, all dates are stored
+        // in UTC.
+        new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE)
+      );
+    }
+
+    return NULL;
+  }
+
+  /**
    * Parse decision content and motion data from HTML.
    *
    * @return array
@@ -461,7 +486,6 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       ];
     }
 
-    $has_case_id = !$this->get('field_diary_number')->isEmpty();
     $has_decision = !$this->get('field_decision_content')->isEmpty();
 
     // Parse content from decision HTML. If the
@@ -558,28 +582,12 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
       }
     }
 
-    // Add decision IssuedDate (not DecisionDate) to appeal process accordion.
-    // Do not display for motions, only for decisions.
-    $appeal_content = NULL;
-    if ($has_case_id && $has_decision && !$this->get('field_decision_date')->isEmpty()) {
-      $decision_timestamp = strtotime($this->get('field_decision_date')->value);
-      $decision_date = date('d.m.Y', $decision_timestamp);
-      $appeal_content = '<p class="issue__decision-date">' . new TranslatableMarkup('This decision was published on <strong>@date</strong>', ['@date' => $decision_date]) . '</p>';
-    }
-
     // Appeal information. Only display for decisions (if content is available).
     if ($has_decision && $appealInfo = $parser->getAppealInfo()) {
-      $appeal_content .= $appealInfo;
-    }
-
-    if ($appeal_content) {
-      $output['accordions'][] = [
-        'heading' => new TranslatableMarkup('Appeal process'),
-        'content' => [
-          '#type' => 'processed_text',
-          '#format' => 'decision_html',
-          '#text' => $appeal_content,
-        ],
+      $output['appeal_info'] = [
+        '#type' => 'processed_text',
+        '#format' => 'decision_html',
+        '#text' => $appealInfo,
       ];
     }
 

@@ -301,7 +301,7 @@ paatokset_ahjo_api.browse_policymakers:
   path: '/decisionmakers/browse-decisionmakers/{org}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\BrowseController::build'
-    _title: 'Browse decisionmakers'
+    _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\BrowseController::title'
     org: ~
   requirements:
     _permission: 'access content'

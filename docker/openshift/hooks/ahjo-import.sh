@@ -34,10 +34,6 @@ echo "Aggregating data for council members: $(date)"
 drush ahjo-proxy:get-trustees positionsoftrust.json fi -v
 drush ahjo-proxy:get-trustees positionsoftrust.json sv -v
 
-echo "Aggregating latest decisionmaker changes: $(date)"
-drush ap:get decisionmakers --dataset=latest --filename=decisionmakers_latest.json -v
-drush ap:get decisionmakers --dataset=latest --langcode=sv --filename=decisionmakers_latest_sv.json -v
-
 if [ ${APP_ENV} = 'production' ] || [ ${APP_ENV} = 'staging' ]; then
   echo "Running aggregation and retry queues: $(date)"
   drush queue:run ahjo_api_aggregation_queue --time-limit=3600 -v
@@ -59,10 +55,9 @@ drush migrate-reset-status ahjo_initiatives
 drush migrate:import ahjo_initiatives --no-progress --interval 3600
 
 echo "Migrating data for decisionmakers: $(date)"
-drush migrate-reset-status ahjo_decisionmakers:latest
-drush migrate-reset-status ahjo_decisionmakers:latest_sv
-drush migrate-import ahjo_decisionmakers:latest --update --no-progress
-drush migrate-import ahjo_decisionmakers:latest_sv --update --no-progress
+drush migrate-reset-status ahjo_decisionmakers
+drush migrate-import ahjo_decisionmakers --no-progress
+
 drush migrate-reset-status ahjo_org_composition
 drush migrate-import ahjo_org_composition --no-progress
 
