@@ -54,9 +54,6 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
 
     $this->setUpMockContainer();
 
-    $this->processor = new AlluApprovalTypeSplit([], 'allu_approval_type_split', []);
-    $this->index = $this->createMock(IndexInterface::class);
-
     $this->approvalStorage = $this->createMock(EntityStorageInterface::class);
 
     $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
@@ -64,6 +61,9 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
       ->with('paatokset_allu_approval')
       ->willReturn($this->approvalStorage);
     $this->container->set('entity_type.manager', $entityTypeManager);
+
+    $this->processor = new AlluApprovalTypeSplit([], 'allu_approval_type_split', [], $this->container->get('entity_type.manager'));
+    $this->index = $this->createMock(IndexInterface::class);
 
     $loggerFactory = $this->createMock(LoggerChannelFactoryInterface::class);
     $loggerFactory->method('get')
