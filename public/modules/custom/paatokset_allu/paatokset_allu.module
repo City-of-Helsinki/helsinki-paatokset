@@ -25,20 +25,3 @@ function paatokset_allu_helfi_paragraph_types() {
     new ParagraphTypeCollection('node', 'page', 'field_content', 'allu_decisions_search', 19),
   ];
 }
-
-/**
- * Implements hook_search_api_elasticsearch_documents_alter().
- */
-function paatokset_allu_search_api_elasticsearch_documents_alter(array &$documents, IndexInterface $index, array $items) {
-  if ($index->id() !== 'allu') {
-    return;
-  }
-
-  // Ensure split item IDs are preserved as Elasticsearch document IDs.
-  foreach ($documents as $item_id => &$document) {
-    if (strpos($item_id, ':') !== FALSE) {
-      // This is a split item, use the full ID as the _id.
-      $document['_id'] = $item_id;
-    }
-  }
-}
