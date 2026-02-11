@@ -30,7 +30,7 @@ export const ResultCard = ({ address, approval_type, document_created, document_
   };
 
   const getUrl = () => {
-    const approvalType = approval_type.toString();
+    const approvalType = approval_type?.toString();
 
     if (approvalType === 'WORK_FINISHED' || approvalType === 'OPERATIONAL_CONDITION') {
       const { currentLanguage } = drupalSettings.path;
