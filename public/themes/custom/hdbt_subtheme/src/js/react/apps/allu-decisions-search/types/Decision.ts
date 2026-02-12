@@ -12,6 +12,7 @@ export type Decision = {
     | 'EVENT'
     | 'SHORT_TERM_RENTAL'
   >;
+  id: [string];
   label: [string];
   search_api_datasource: [string];
   search_api_id: [string];

@@ -2,7 +2,7 @@ import CardItem from '@/react/common/Card';
 import { matchTypeLabel } from '../helpers';
 import type { Decision } from '../types/Decision';
 
-export const ResultCard = ({ address, approval_type, document_created, document_type, label, url }: Decision) => {
+export const ResultCard = ({ address, approval_type, document_created, document_type, id, label, url }: Decision) => {
   const getCardTitle = () => {
     const result = matchTypeLabel(document_type[0]);
     return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
@@ -29,6 +29,18 @@ export const ResultCard = ({ address, approval_type, document_created, document_
     return address[0];
   };
 
+  const getUrl = () => {
+    const approvalType = approval_type?.toString();
+
+    if (approvalType === 'WORK_FINISHED' || approvalType === 'OPERATIONAL_CONDITION') {
+      const { currentLanguage } = drupalSettings.path;
+
+      return `/${currentLanguage}/allu/document/${id}/approval/${approvalType}/download`;
+    }
+
+    return url?.[0] ?? '';
+  };
+
   return (
     <CardItem
       cardModifierClass='card--border'
@@ -38,7 +50,7 @@ export const ResultCard = ({ address, approval_type, document_created, document_
           : []
       }
       cardTitle={getCardTitle()}
-      cardUrl={url?.[0] ?? ''}
+      cardUrl={getUrl()}
       location={getFullAddress()}
       locationLabel={Drupal.t('Address', {}, { context: 'Allu decision search' })}
       time={getTime()}

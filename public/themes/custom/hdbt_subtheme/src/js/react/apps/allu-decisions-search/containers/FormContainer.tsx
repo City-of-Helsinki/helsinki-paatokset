@@ -9,6 +9,7 @@ import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { selectionsAtom, setSelectionsAtom } from '../store';
 import type { Selections } from '../types/Selections';
 import { useEffect } from 'react';
+import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
 
 export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: string; value: string }> }) => {
   const selections = useAtomValue(selectionsAtom);
@@ -76,6 +77,7 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           noTags
           onChange={setType}
           options={typeOptions || []}
+          theme={defaultMultiSelectTheme}
           texts={{
             label: Drupal.t('Type of decision', {}, { context: 'Allu decision search' }),
             placeholder: Drupal.t('All types', {}, { context: 'Allu decision search' }),
