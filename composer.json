@@ -30,7 +30,6 @@
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.8",
-        "dmore/chrome-mink-driver": "^2.8",
         "drupal/core-dev": "^11",
         "jangregor/phpstan-prophecy": "^1.0",
         "phpstan/phpstan-deprecation-rules": "^1.1",
