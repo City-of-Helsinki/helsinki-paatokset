@@ -381,3 +381,11 @@ msgstr "Hae"
 msgctxt "React search: clear selections"
 msgid "Clear selections"
 msgstr "Tyhjennä valinnat"
+
+msgctxt "Allu decision search"
+msgid "Work complete"
+msgstr "Työ valmis"
+
+msgctxt "Allu decision search"
+msgid "Operational condition"
+msgstr "Toiminnallinen kunto"
