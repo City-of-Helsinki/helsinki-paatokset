@@ -833,7 +833,7 @@ class PolicymakerService {
    *   Formatted meeting title.
    */
   public function getMeetingTitle(NodeInterface $meeting): string {
-    $policymaker_title = $this->policymaker->get('field_ahjo_title')->value;
+    $policymaker_title = $this->policymaker?->get('field_ahjo_title')->value ?? '';
     $meeting_timestamp = strtotime($meeting->get('field_meeting_date')->value);
     $meetingNumber = $meeting->get('field_meeting_sequence_number')->value;
     $meetingYear = date('Y', $meeting_timestamp);
