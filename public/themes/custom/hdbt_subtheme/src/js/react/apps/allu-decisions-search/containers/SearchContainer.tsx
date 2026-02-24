@@ -7,12 +7,11 @@ import { FormContainer } from './FormContainer';
 import { ResultsContainer } from './ResultsContainer';
 import useTimeoutFetch from '@/react/common/hooks/useTimeoutFetch';
 import { formQuery, matchTypeLabel } from '../helpers';
-import { selectionsAtom, urlAtom } from '../store';
-
-const DATA_ENDPOINT = `${drupalSettings.helfi_react_search.elastic_proxy_url}/paatokset_allu`;
+import { selectionsAtom, urlAtom, getElasticUrlAtom } from '../store';
 
 export const SearchContainer = () => {
   const url = useAtomValue(urlAtom);
+  const elasticUrl = useAtomValue(getElasticUrlAtom);
   const typeOptions = useRef(undefined);
   const readSelections = useAtomCallback(useCallback((get) => get(selectionsAtom), []));
 
@@ -21,7 +20,7 @@ export const SearchContainer = () => {
 
     if (typeOptions.current) {
       // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
-      const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_search`, {
+      const response = await useTimeoutFetch(`${elasticUrl}/paatokset_allu/_search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(queryBody),
@@ -35,7 +34,7 @@ export const SearchContainer = () => {
     // Include aggs request to get filter options
     const ndjsonHeader = '{}';
     // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
-    const response = await useTimeoutFetch(`${DATA_ENDPOINT}/_msearch`, {
+    const response = await useTimeoutFetch(`${elasticUrl}/paatokset_allu/_msearch`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-ndjson' },
       body: `${ndjsonHeader}\n${JSON.stringify({
@@ -56,7 +55,9 @@ export const SearchContainer = () => {
     return results;
   };
 
-  const { data, error, isLoading } = useSWR(url || DATA_ENDPOINT, fetcher, { revalidateOnFocus: false });
+  const { data, error, isLoading } = useSWR(url || `${elasticUrl}/paatokset_allu`, fetcher, {
+    revalidateOnFocus: false,
+  });
 
   return (
     <>

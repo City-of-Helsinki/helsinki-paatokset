@@ -2,10 +2,22 @@ import CardItem from '@/react/common/Card';
 import { matchTypeLabel } from '../helpers';
 import type { Decision } from '../types/Decision';
 
-export const ResultCard = ({ address, approval_type, document_created, document_type, label, url }: Decision) => {
+export const ResultCard = ({ address, approval_type, document_created, document_type, id, label, url }: Decision) => {
+  const approvalType = approval_type?.toString();
+
   const getCardTitle = () => {
     const result = matchTypeLabel(document_type[0]);
-    return `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
+    const title = `${result}, ${Drupal.t('identifier', {}, { context: 'Allu decision search' })} ${label[0]} (pdf)`;
+
+    if (approvalType === 'WORK_FINISHED') {
+      return `${title}, ${Drupal.t('Work complete', {}, { context: 'Allu decision search' }).toLowerCase()}`;
+    }
+
+    if (approvalType === 'OPERATIONAL_CONDITION') {
+      return `${title}, ${Drupal.t('Operational condition', {}, { context: 'Allu decision search' }).toLowerCase()}`;
+    }
+
+    return title;
   };
 
   const getTime = () => {
@@ -29,6 +41,16 @@ export const ResultCard = ({ address, approval_type, document_created, document_
     return address[0];
   };
 
+  const getUrl = () => {
+    if (approvalType === 'WORK_FINISHED' || approvalType === 'OPERATIONAL_CONDITION') {
+      const { currentLanguage } = drupalSettings.path;
+
+      return `/${currentLanguage}/allu/document/${id}/approval/${approvalType}/download`;
+    }
+
+    return url?.[0] ?? '';
+  };
+
   return (
     <CardItem
       cardModifierClass='card--border'
@@ -38,7 +60,7 @@ export const ResultCard = ({ address, approval_type, document_created, document_
           : []
       }
       cardTitle={getCardTitle()}
-      cardUrl={url?.[0] ?? ''}
+      cardUrl={getUrl()}
       location={getFullAddress()}
       locationLabel={Drupal.t('Address', {}, { context: 'Allu decision search' })}
       time={getTime()}

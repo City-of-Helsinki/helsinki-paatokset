@@ -69,3 +69,13 @@ export const urlAtom = atom((get) => {
 
   return params.toString();
 });
+
+declare const ELASTIC_DEV_URL: string | undefined;
+
+const getElasticUrl = () => {
+  const devUrl = typeof ELASTIC_DEV_URL !== 'undefined' ? ELASTIC_DEV_URL : '';
+
+  return devUrl || drupalSettings?.helfi_react_search?.elastic_proxy_url || '';
+};
+
+export const getElasticUrlAtom = atom(getElasticUrl());
