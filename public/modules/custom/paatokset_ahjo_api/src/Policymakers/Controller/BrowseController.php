@@ -116,7 +116,7 @@ class BrowseController extends ControllerBase {
    * a bit.
    */
   public function buildRoot(): array {
-    $rootIds = ['02900', '00400'];
+    $rootIds = ['02900'];
 
     $children = $this
       ->entityTypeManager()
