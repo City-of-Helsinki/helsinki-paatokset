@@ -8,7 +8,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
@@ -59,24 +58,20 @@ class BrowseController extends ControllerBase {
       $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
     }
 
-    $breadcrumb = '';
+    $breadcrumb_org_id = NULL;
+    $breadcrumb_label = NULL;
 
     if ($parent = $org->getParentOrganization()) {
       $parent = $this->entityRepository->getTranslationFromContext($parent) ?: $parent;
 
       // Special case for the first organizations:
-      // link directly to the root level.
+      // link directly to the root level (no org parameter).
       if ($parent->id() == '00001') {
-        $breadcrumb = Link::createFromRoute(new TranslatableMarkup('City of Helsinki'), 'paatokset_ahjo_api.browse_policymakers', [], [
-          'attributes' => ['class' => ['policymaker-browser__breadcrumb__link']],
-        ]);
+        $breadcrumb_label = new TranslatableMarkup('City of Helsinki');
       }
       else {
-        $breadcrumb = Link::createFromRoute($parent->label(), 'paatokset_ahjo_api.browse_policymakers', [
-          'org' => $parent->id(),
-        ], [
-          'attributes' => ['class' => ['policymaker-browser__breadcrumb__link']],
-        ]);
+        $breadcrumb_org_id = $parent->id();
+        $breadcrumb_label = $parent->label();
       }
     }
 
@@ -85,8 +80,12 @@ class BrowseController extends ControllerBase {
       '#organization' => $org,
       '#children' => $children,
       '#policymakers' => $policymakers,
-      '#breadcrumb' => $breadcrumb,
+      '#breadcrumb_org_id' => $breadcrumb_org_id,
+      '#breadcrumb_label' => $breadcrumb_label,
       '#tags' => $tags,
+      '#attached' => [
+        'library' => ['core/drupal.htmx'],
+      ],
     ];
 
     $cache = new CacheableMetadata();
@@ -137,6 +136,9 @@ class BrowseController extends ControllerBase {
       '#children' => $children,
       '#policymakers' => $policymakers,
       '#tags' => $tags,
+      '#attached' => [
+        'library' => ['core/drupal.htmx'],
+      ],
     ];
 
     $cache = new CacheableMetadata();
