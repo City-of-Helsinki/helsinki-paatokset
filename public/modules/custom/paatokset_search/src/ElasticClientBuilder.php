@@ -15,7 +15,7 @@ use Elastic\Elasticsearch\Client;
 final readonly class ElasticClientBuilder {
 
   public function __construct(
-    private EntityTYpeManagerInterface $entityTypeManager,
+    private EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
