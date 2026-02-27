@@ -1,4 +1,18 @@
- {{ description.children|render }}
+{% set texts = [
+  'The City of Helsinki primarily conducts its decision-making in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only.' | t({}, {'context': 'Decisions search'}),
+  'Enter a keyword in the search field to find a specific decision. Results can be filtered by date, topic and decision-maker.' | t({}, {'context': 'Decisions search'}),
+  'If several decisions have been made on the same issue, the search result will initially show only the best match. To view the entire decision-making history associated with the issue, click to open the decision.' | t({}, {'context': 'Decisions search'}),
+] %}
+
+{% set description %}
+  {% for p in texts %}
+    <p>{{ p }}</p>
+  {% endfor %}
+  {% if operator_guide_url %}
+    <a href="{{ operator_guide_url }}">{{ "Read the instructions for refining your search." | t({}, {'context': 'Decisions search'}) }}</a>
+  {% endif %}
+{% endset %}
+
 <article>
   <div class="components components--computed">
     {% embed "@hdbt/misc/component.twig" with
@@ -8,7 +22,7 @@
         'component--react-search',
         ],
         component_description: description,
-        component_title: 'Filter search results'|trans({}, {'context': 'Decisions search'})
+        component_title: 'Filter search results'|t({}, {'context': 'Decisions search'})
       }
     %}
       {% block component_content %}

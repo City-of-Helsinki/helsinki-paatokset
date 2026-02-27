@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Drupal\paatokset_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\paatokset_search\SearchManager;
 use Elastic\Elasticsearch\Client;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -31,33 +29,11 @@ class SearchController extends ControllerBase {
    */
   public function decisions(): array {
     $baseBuild = $this->searchManager->build('decisions', ['paatokset-search--decisions']);
-    $description = [
-      $this->t('The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only.', [], ['context' => 'Decisions search']),
-      $this->t('Enter a keyword in the search field to find a specific decision. Results can be filtered by date, topic and decision-maker.', [], ['context' => 'Decisions search']),
-      $this->t('If several decisions have been made on the same issue, the search result will initially show only the best match. To view the entire decision-making history associated with the issue, click to open the decision.', [], ['context' => 'Decisions search']),
-    ];
 
-    $build = array_merge($baseBuild, [
-      '#description' => [
-        '#type' => 'container',
-        '#children' => array_map(fn ($text) => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $text,
-        ], $description),
-      ],
+    return array_merge($baseBuild, [
+      '#operator_guide_url' => $this->searchManager->getOperatorGuideUrl(),
       '#theme' => 'decisions_search',
     ]);
-
-    $operatorGuideUrl = $this->searchManager->getOperatorGuideUrl();
-    if (!empty($operatorGuideUrl)) {
-      $build['#description']['#children'][] = (new Link(
-        $this->t('Read the instructions for refining your search.', [], ['context' => 'Decisions search']),
-        Url::fromUserInput($operatorGuideUrl),
-      ))->toRenderable();
-    }
-
-    return $build;
   }
 
   /**
