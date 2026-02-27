@@ -2,30 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Adds a field to indicate if there are more decisions for the same case.
- *
- * @SearchApiProcessor(
- *   id = "more_decisions",
- *   label = @Translation("More decisions"),
- *   description = @Translation("Adds a field to indicate if there are more decisions for the same case."),
- *   stages = {
- *    "add_properties" = 0
- *   },
- *   locked = false,
- *   hidden = false,
- * )
  */
+#[SearchApiProcessor(
+  id: 'more_decisions',
+  label: new TranslatableMarkup('More decisions'),
+  description: new TranslatableMarkup('Adds a field to indicate if there are more decisions for the same case.'),
+  stages: [
+    'add_properties' => 0,
+  ],
+)]
 final class MoreDecisions extends ProcessorPluginBase {
 
   /**
@@ -44,7 +43,7 @@ final class MoreDecisions extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
+    return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
