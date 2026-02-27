@@ -3,20 +3,10 @@ services:
     autoconfigure: true
     autowire: true
 
-  Drupal\paatokset_search\EventSubscriber\PrepareIndex:
-    tags:
-      - { name: 'event_subscriber' }
-  Drupal\paatokset_search\EventSubscriber\ItemsIndexed:
-    arguments: ['@cache_tags.invalidator']
-    tags:
-      - { name: 'event_subscriber' }
-
   Drupal\paatokset_search\SearchManager: ~
-
-  Drupal\paatokset_search\DecisionReindexer: ~
 
   Drupal\paatokset_search\ElasticClientBuilder: ~
 
-  paatokest_search.elastic_client:
+  paatokset_search.elastic_client:
     class: Elastic\Elasticsearch\Client
     factory: [ '@Drupal\paatokset_search\ElasticClientBuilder', 'create' ]

@@ -7,7 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoAdmin;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\paatokset_ahjo_api\AhjoAdmin\UpdateForm;
+use Drupal\paatokset_ahjo_api\AhjoAdmin\Form\UpdateForm;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;

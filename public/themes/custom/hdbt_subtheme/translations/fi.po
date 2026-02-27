@@ -214,7 +214,7 @@ msgid "The City of Helsinki uses Finnish in its decision-making. You can browse 
 msgstr "Päätökset-palvelusta löydät Helsingin kaupunginvaltuuston, kaupunginhallituksen, lautakuntien ja viranhaltijoiden päätökset. Voit myös tutustua kaupungin päätöksenteon kulkuun ja aloittaa muutoksenhaun päätökseen."
 
 msgctxt "Decisions search"
-msgid "The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
+msgid "The City of Helsinki primarily conducts its decision-making in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
 msgstr "Voit etsiä kaupungin päätöksiä hakusanalla. Voit rajata tuloksia ajankohdan, aiheen ja päättäjän mukaan."
 
 msgctxt "Decisions search"

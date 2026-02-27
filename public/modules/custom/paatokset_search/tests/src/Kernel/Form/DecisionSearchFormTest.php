@@ -8,10 +8,14 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_search\Form\DecisionSearchForm;
 use Drupal\paatokset_search\SearchManager;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the decision search form.
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_search')]
 class DecisionSearchFormTest extends KernelTestBase {
 
   /**

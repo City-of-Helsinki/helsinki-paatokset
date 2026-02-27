@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\EventSubscriber;
+namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
@@ -12,20 +12,13 @@ use Drupal\search_api\IndexInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * {@inheritdoc}
- *
  * What does this do?
  *
  * @todo is this still required?
+ * @todo figure out (and document) where these cache tags are used.
  */
 class ItemsIndexed implements EventSubscriberInterface {
 
-  /**
-   * Class constructor.
-   *
-   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cacheInvalidator
-   *   Cache invalidator.
-   */
   public function __construct(
     protected CacheTagsInvalidatorInterface $cacheInvalidator,
   ) {
@@ -49,16 +42,11 @@ class ItemsIndexed implements EventSubscriberInterface {
   public function itemsIndexed(ItemsIndexedEvent $event): void {
     $index = $event->getIndex();
 
-    // Cache tag handling for office holder decisions.
-    if ($index->id() === 'decisions') {
-      $tags = $this->getCacheTagsForOfficeHolderDecisions($event, $index);
-    }
-    elseif ($index->id() === 'meetings') {
-      $tags = $this->getCacheTagsForMeetings($event, $index);
-    }
-    else {
-      return;
-    }
+    $tags = match ($index->id()) {
+      'decisions' => $this->getCacheTagsForOfficeHolderDecisions($event, $index),
+      'meetings' => $this->getCacheTagsForMeetings($event, $index),
+      default => [],
+    };
 
     if (!empty($tags)) {
       $this->cacheInvalidator->invalidateTags($tags);

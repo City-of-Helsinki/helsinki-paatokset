@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\Form;
+namespace Drupal\paatokset_ahjo_api\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;

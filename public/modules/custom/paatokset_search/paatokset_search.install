@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for paatokset_search.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Remove city_hall_id and trustee_organization_type_id config keys.
+ */
+function paatokset_search_update_11001(): void {
+  $config = \Drupal::configFactory()->getEditable('paatokset_search.settings');
+  $config->clear('city_hall_id');
+  $config->clear('trustee_organization_type_id');
+  $config->save();
+}

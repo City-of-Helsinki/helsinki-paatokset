@@ -6,7 +6,6 @@ namespace Drupal\paatokset_search\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\DependencyInjection\AutowiredInstanceTrait;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -20,8 +19,6 @@ use Drupal\paatokset_search\Form\DecisionSearchForm;
   admin_label: new TranslatableMarkup('Frontpage Search Hero Block'),
 )]
 final class FrontpageSearchHeroBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  use AutowiredInstanceTrait;
 
   public function __construct(
     array $configuration,
