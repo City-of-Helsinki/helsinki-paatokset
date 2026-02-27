@@ -1,47 +1,43 @@
 <?php
 
-namespace Drupal\paatokset_ahjo_api\Form;
+namespace Drupal\paatokset_ahjo_api\AhjoAdmin\Form;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Settings form for Policymaker label settings.
- *
- * @package Drupal\paatokset_ahjo_api\Form
  */
-class PolicymakerLabelSettingsForm extends ConfigFormBase {
+final class PolicymakerLabelSettingsForm extends ConfigFormBase {
 
   /**
    * The database.
-   *
-   * @var \Drupal\Core\Database\Connection
    */
-  protected $database;
+  protected Connection $database;
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
+  public static function create(ContainerInterface $container): self {
     $instance = parent::create($container);
-    $instance->database = $container->get('database');
+    $instance->database = $container->get(Connection::class);
     return $instance;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'paatokset_policymaker_label_settings';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEditableConfigNames() {
+  public function getEditableConfigNames(): array {
     return [
       'paatokset_ahjo_api.policymaker_labels',
     ];
@@ -50,9 +46,7 @@ class PolicymakerLabelSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('paatokset_ahjo_api.policymaker_labels');
-
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $labels = $this->getPolicymakerLabels();
     $languages = [
       'fi' => 'Finnish',
@@ -70,32 +64,13 @@ class PolicymakerLabelSettingsForm extends ConfigFormBase {
       foreach ($languages as $code => $lang) {
         $form[$key . '_details'][$key . '_' . $code] = [
           '#type' => 'textfield',
-          '#default_value' => $config->get($key . '_' . $code),
           '#title' => $lang,
+          '#config_target' => "paatokset_ahjo_api.policymaker_labels:{$key}_{$code}",
         ];
       }
     }
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    $labels = $this->getPolicymakerLabels();
-    $config = $this->config('paatokset_ahjo_api.policymaker_labels');
-    $languages = ['fi', 'sv', 'en'];
-
-    foreach ($labels as $key => $value) {
-      foreach ($languages as $langcode) {
-        $config->set($key . '_' . $langcode, $form_state->getValue($key . '_' . $langcode));
-      }
-    }
-
-    $config->save();
   }
 
   /**

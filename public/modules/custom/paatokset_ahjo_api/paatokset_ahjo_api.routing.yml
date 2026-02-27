@@ -2,7 +2,7 @@ paatokset_ahjo_api.ahjo_update_form:
   path: 'admin/ahjo/update-entity/{node}'
   defaults:
     _title: 'Update ahjo entity'
-    _form: '\Drupal\paatokset_ahjo_api\AhjoAdmin\UpdateForm'
+    _form: \Drupal\paatokset_ahjo_api\AhjoAdmin\Form\UpdateForm
   requirements:
     _permission: 'administer paatokset'
     node: \d+
@@ -14,7 +14,7 @@ paatokset_ahjo_api.ahjo_update_form:
 paatokset_ahjo_api.default_texts:
   path: '/admin/config/system/default-texts'
   defaults:
-    _form: \Drupal\paatokset_ahjo_api\Form\DefaultTextSettingsForm
+    _form: \Drupal\paatokset_ahjo_api\AhjoAdmin\Form\DefaultTextSettingsForm
     _title: 'Default text element settings.'
   requirements:
     _permission: 'administer paatokset'
@@ -22,7 +22,7 @@ paatokset_ahjo_api.default_texts:
 paatokset_ahjo_api.policymaker_labels:
   path: '/admin/config/system/policymaker-labels'
   defaults:
-    _form: \Drupal\paatokset_ahjo_api\Form\PolicymakerLabelSettingsForm
+    _form: \Drupal\paatokset_ahjo_api\AhjoAdmin\Form\PolicymakerLabelSettingsForm
     _title: 'Translate policymaker labels.'
   requirements:
     _permission: 'administer paatokset'
@@ -30,7 +30,7 @@ paatokset_ahjo_api.policymaker_labels:
 paatokset_ahjo_api.disallowed_prefixes:
   path: '/admin/config/system/disallowed-decision-prefices'
   defaults:
-    _form: \Drupal\paatokset_ahjo_api\Form\DisallowedDecisionsPrefixesForm
+    _form: \Drupal\paatokset_ahjo_api\AhjoAdmin\Form\DisallowedDecisionsPrefixesForm
     _title: 'Disallowed Decision prefixes.'
   requirements:
     _permission: 'administer paatokset'
