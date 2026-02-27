@@ -15,16 +15,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  */
 class SearchManager {
 
-  /**
-   * Constructor.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   */
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     private readonly LanguageManagerInterface $languageManager,
@@ -44,7 +34,7 @@ class SearchManager {
    * @return array
    *   The render array.
    */
-  public function build($type, $classes = []): array {
+  public function build(string $type, array $classes = []): array {
     $proxySettings = $this->configFactory->get('elastic_proxy.settings');
     $proxyUrl = $proxySettings->get('elastic_proxy_url') ?: '';
     $defaultTexts = $this->configFactory->get('paatokset_ahjo_api.default_texts');
