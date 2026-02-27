@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\paatokset_search\SearchManager;
 use Elastic\Elasticsearch\Client;
@@ -50,11 +51,10 @@ class SearchController extends ControllerBase {
 
     $operatorGuideUrl = $this->searchManager->getOperatorGuideUrl();
     if (!empty($operatorGuideUrl)) {
-      $build['#description']['#children'][] = [
-        '#type' => 'link',
-        '#title' => $this->t('Read the instructions for refining your search.', [], ['context' => 'Decisions search']),
-        '#url' => Url::fromUserInput($operatorGuideUrl),
-      ];
+      $build['#description']['#children'][] = (new Link(
+        $this->t('Read the instructions for refining your search.', [], ['context' => 'Decisions search']),
+        Url::fromUserInput($operatorGuideUrl),
+      ))->toRenderable();
     }
 
     return $build;

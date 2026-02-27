@@ -86,6 +86,9 @@ class SearchManager {
   /**
    * Get operator guide URL.
    *
+   * NOTE: This does not bubble cache tags, so
+   * changing the guide URL requires cache clear.
+   *
    * @return string
    *   The operator guide URL or empty string if the node does not exist or
    *   user does not have access.
@@ -98,11 +101,10 @@ class SearchManager {
     $operatorGuideNode = $operatorGuideNodeId
       ? $this->entityTypeManager->getStorage('node')->load($operatorGuideNodeId)
       : NULL;
-    $operatorGuideUrl = $operatorGuideNode instanceof NodeInterface && $operatorGuideNode->access('view')
+
+    return $operatorGuideNode instanceof NodeInterface && $operatorGuideNode->access('view')
       ? $operatorGuideNode->toUrl('canonical', ['language' => $currentLanguage])->toString()
       : '';
-
-    return $operatorGuideUrl;
   }
 
 }
