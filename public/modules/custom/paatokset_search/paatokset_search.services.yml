@@ -17,6 +17,6 @@ services:
 
   Drupal\paatokset_search\ElasticClientBuilder: ~
 
-  paatokest_search.elastic_client:
+  paatokset_search.elastic_client:
     class: Elastic\Elasticsearch\Client
     factory: [ '@Drupal\paatokset_search\ElasticClientBuilder', 'create' ]

@@ -65,7 +65,7 @@ class SearchControllerTest extends KernelTestBase {
       ->setHttpClient($mock)
       ->build();
 
-    $this->container->set('paatokest_search.elastic_client', $client);
+    $this->container->set('paatokset_search.elastic_client', $client);
 
     $this->installEntitySchema('user');
     $this->setUpCurrentUser(permissions: ['access content']);

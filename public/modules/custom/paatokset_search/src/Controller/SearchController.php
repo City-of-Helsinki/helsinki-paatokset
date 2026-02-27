@@ -20,7 +20,7 @@ class SearchController extends ControllerBase {
 
   public function __construct(
     private readonly SearchManager $searchManager,
-    #[Autowire('paatokest_search.elastic_client')]
+    #[Autowire('paatokset_search.elastic_client')]
     private readonly Client $elasticClient,
   ) {
   }
