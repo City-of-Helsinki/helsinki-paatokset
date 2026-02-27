@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 
 /**
@@ -74,28 +73,4 @@ function paatokset_search_theme(): array {
       ],
     ],
   ];
-}
-
-/**
- * Implements hook_entity_update().
- */
-function paatokset_search_entity_update(EntityInterface $entity): void {
-  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
-    ->onEntityChange($entity);
-}
-
-/**
- * Implements hook_entity_insert().
- */
-function paatokset_search_entity_insert(EntityInterface $entity): void {
-  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
-    ->onEntityChange($entity);
-}
-
-/**
- * Implements hook_entity_delete().
- */
-function paatokset_search_entity_delete(EntityInterface $entity): void {
-  \Drupal::service('Drupal\paatokset_search\DecisionReindexer')
-    ->onEntityChange($entity);
 }

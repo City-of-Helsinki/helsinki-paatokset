@@ -13,8 +13,6 @@ services:
 
   Drupal\paatokset_search\SearchManager: ~
 
-  Drupal\paatokset_search\DecisionReindexer: ~
-
   Drupal\paatokset_search\ElasticClientBuilder: ~
 
   paatokset_search.elastic_client:
