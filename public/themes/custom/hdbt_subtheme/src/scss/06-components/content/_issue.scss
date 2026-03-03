@@ -92,8 +92,8 @@
     font-weight: $font-weight-bold;
     padding: $spacing-and-half 0;
 
-    & > a,
-    & > div {
+    &>a,
+    &>div {
       display: flex;
     }
 
@@ -315,23 +315,14 @@
       padding-top: 0;
     }
 
-    table td {
-      background-color: $color-black-5;
-      display: block;
-
-      div {
-        margin: 0;
-      }
-
-      @include breakpoint($breakpoint-s) {
-        display: table-cell;
-      }
+    table td div {
+      margin: 0;
     }
   }
 }
 
 // Decision history adjustments.
-h4.decision-history-title + h5.decision-history-title {
+h4.decision-history-title+h5.decision-history-title {
   margin-top: $spacing;
 }
 

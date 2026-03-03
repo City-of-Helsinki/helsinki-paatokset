@@ -64,7 +64,7 @@
 </div>
 
 <div class="issue-content__container">
-  <div{{ content_attributes.addClass('issue-content') }}>
+  <div{{ content_attributes.addClass('issue-content', 'imported-content') }}>
     {% if decision_content.decided_in_this_meeting %}
       <div class="issue__in_this_meeting">
         {{ decision_content.decided_in_this_meeting }}
