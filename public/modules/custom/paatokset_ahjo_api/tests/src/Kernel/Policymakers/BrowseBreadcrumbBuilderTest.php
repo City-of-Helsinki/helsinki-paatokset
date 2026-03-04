@@ -16,10 +16,16 @@ use Symfony\Component\Routing\Route;
 #[Group('paatokset_ahjo_api')]
 class BrowseBreadcrumbBuilderTest extends KernelTestBase {
 
+  /**
+   * Returns the breadcrumb builder service.
+   */
   private function builder(): BrowseBreadcrumbBuilder {
     return $this->container->get(BrowseBreadcrumbBuilder::class);
   }
 
+  /**
+   * Creates a route match object for testing.
+   */
   private function routeMatch(string $routeName, array $params = []): RouteMatch {
     $placeholders = implode('/', array_map(fn ($k) => "{{$k}}", array_keys($params)));
     $path = $placeholders ? "/test/$placeholders" : '/test';
@@ -40,7 +46,7 @@ class BrowseBreadcrumbBuilderTest extends KernelTestBase {
   /**
    * Tests breadcrumb at root level (no org parameter).
    *
-   * Root shows only Home — the page title already reads "Browse decisionmakers".
+   * Root shows only Home, the page title already reads "Browse decisionmakers".
    */
   public function testBuildRoot(): void {
     $breadcrumb = $this->builder()->build($this->routeMatch('paatokset_ahjo_api.browse_policymakers'));
