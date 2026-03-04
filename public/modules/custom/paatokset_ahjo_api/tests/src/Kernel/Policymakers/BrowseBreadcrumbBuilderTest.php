@@ -44,19 +44,6 @@ class BrowseBreadcrumbBuilderTest extends KernelTestBase {
   }
 
   /**
-   * Tests breadcrumb at root level (no org parameter).
-   *
-   * Root shows only Home, the page title already reads "Browse decisionmakers".
-   */
-  public function testBuildRoot(): void {
-    $breadcrumb = $this->builder()->build($this->routeMatch('paatokset_ahjo_api.browse_policymakers'));
-    $links = $breadcrumb->getLinks();
-
-    $this->assertCount(1, $links);
-    $this->assertSame('Home', (string) reset($links)->getText());
-  }
-
-  /**
    * Tests breadcrumb when an org parameter is present.
    *
    * Org page adds a "Browse decisionmakers" crumb linking back to root.

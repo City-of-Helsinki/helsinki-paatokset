@@ -35,18 +35,12 @@ class BrowseBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
 
     $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
-
-    // When viewing a specific organization, add a link back to the root
-    // browse page. At root level the page title already says
-    // "Browse decisionmakers", so no extra crumb is needed.
-    if ($route_match->getParameter('org')) {
-      $breadcrumb->addLink(
-        Link::createFromRoute(
-          $this->t('Browse decisionmakers'),
-          'paatokset_ahjo_api.browse_policymakers',
-        )
-      );
-    }
+    $breadcrumb->addLink(
+      Link::createFromRoute(
+        $this->t('Browse decisionmakers'),
+        'paatokset_ahjo_api.browse_policymakers',
+      )
+    );
 
     $breadcrumb->addCacheContexts(['languages:language_interface', 'url.path']);
 
