@@ -60,6 +60,10 @@ services:
 
   Drupal\paatokset_ahjo_api\Queue\AhjoMigrationDriver: ~
 
+  Drupal\paatokset_ahjo_api\Policymakers\BrowseBreadcrumbBuilder:
+    tags:
+      - { name: breadcrumb_builder, priority: 1100 }
+
   Drupal\paatokset_ahjo_api\Policymakers\PathProcessor:
     tags:
       - { name: path_processor_inbound, priority: 200 }
