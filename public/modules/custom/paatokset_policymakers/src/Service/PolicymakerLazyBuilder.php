@@ -33,50 +33,6 @@ class PolicymakerLazyBuilder implements TrustedCallbackInterface {
   public static function trustedCallbacks(): array {
     return [
       'policymakersAccordions',
-      'policymakersCards',
-    ];
-  }
-
-  /**
-   * Lazybuilder render for city council and board cards.
-   *
-   * @return array
-   *   The render array.
-   */
-  public function policymakersCards(): array {
-    $council = $this->policymakerService->getPolicyMaker(PolicymakerService::CITY_COUNCIL_DM_ID);
-    $board = $this->policymakerService->getPolicyMaker('00400');
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-
-    $cache_tags = [];
-    $cards = [];
-    foreach ([$council, $board] as $node) {
-      if (!$node instanceof NodeInterface) {
-        continue;
-      }
-
-      $cache_tags[] = 'node:' . $node->id();
-
-      $title = $node->get('title')->value;
-
-      assert($node instanceof Policymaker);
-
-      $cards[] = [
-        'title' => $title,
-        'ahjo_title' => $this->policymakerService->getPolicymakerTypeFromNode($node),
-        'link' => $this->policymakerService->getPolicymakerRoute($node, $currentLanguage),
-        'image' => $node->get('field_policymaker_image')->view('default'),
-        'organization_color' => $node->getPolicymakerClass(),
-      ];
-    }
-
-    return [
-      '#theme' => 'policymaker_cards',
-      '#cards' => $cards,
-      '#cache' => [
-        'max-age' => Cache::PERMANENT,
-        'tags' => $cache_tags,
-      ],
     ];
   }
 
