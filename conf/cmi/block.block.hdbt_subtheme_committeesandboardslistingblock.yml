@@ -16,10 +16,15 @@ plugin: committees_and_boards_listing
 settings:
   id: committees_and_boards_listing
   label: 'Committees and Boards Listing Block'
-  label_display: visible
+  label_display: '0'
   provider: paatokset_ahjo_api
 visibility:
   request_path:
     id: request_path
     negate: false
     pages: "/paatoksenteko/lautakunnat-ja-johtokunnat\r\n/beslutsfattande/namnder-och-direktioner\r\n/decision-making/committees-and-boards"
+  response_status:
+    id: response_status
+    negate: false
+    status_codes:
+      - 200

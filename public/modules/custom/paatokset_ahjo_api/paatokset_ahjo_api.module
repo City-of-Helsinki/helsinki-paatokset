@@ -111,10 +111,10 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'base hook' => 'entity',
       'template' => 'block/block--frontpage-calendar',
     ],
-    // @todo remove once new browse page is in place.
-    'block__committees_and_boards_listing' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--committees-and-boards-listing',
+    'committees_and_boards_listing' => [
+      'variables' => [
+        'committees_and_boards' => [],
+      ],
     ],
     'block__decision_tree' => [
       'base hook' => 'entity',
