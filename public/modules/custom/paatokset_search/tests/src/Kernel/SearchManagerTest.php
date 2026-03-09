@@ -9,12 +9,14 @@ use Drupal\paatokset_search\SearchManager;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\Entity\NodeType;
 use Drupal\user\RoleInterface;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests search manager.
- *
- * @coversDefaultClass \Drupal\paatokset_search\SearchManager
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_search')]
 class SearchManagerTest extends EntityKernelTestBase {
 
   use NodeCreationTrait {
@@ -25,17 +27,11 @@ class SearchManagerTest extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_api_base',
+    'helfi_react_search',
     'paatokset_search',
     'node',
     'user',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $configSchemaCheckerExclusions = [
-    'elastic_proxy.settings',
-    'paatokset_search.settings',
   ];
 
   /**
@@ -67,10 +63,6 @@ class SearchManagerTest extends EntityKernelTestBase {
 
   /**
    * Tests search manager build with defaults.
-   *
-   * @covers ::__construct
-   * @covers ::build
-   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithDefaults(): void {
     $this->setConfiguration([
@@ -91,10 +83,6 @@ class SearchManagerTest extends EntityKernelTestBase {
 
   /**
    * Tests search manager build with operator guide.
-   *
-   * @covers ::__construct
-   * @covers ::build
-   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithOperatorGuide(): void {
     $node = $this->drupalCreateNode([
@@ -115,10 +103,6 @@ class SearchManagerTest extends EntityKernelTestBase {
 
   /**
    * Tests search manager build with unpublished operator guide.
-   *
-   * @covers ::__construct
-   * @covers ::build
-   * @covers ::getOperatorGuideUrl
    */
   public function testBuildWithUnpublishedOperatorGuide(): void {
     $node = $this->drupalCreateNode([

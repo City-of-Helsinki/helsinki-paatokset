@@ -13,10 +13,14 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests search controller.
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_search')]
 class SearchControllerTest extends KernelTestBase {
 
   use ApiTestTrait;
@@ -65,7 +69,7 @@ class SearchControllerTest extends KernelTestBase {
       ->setHttpClient($mock)
       ->build();
 
-    $this->container->set('paatokest_search.elastic_client', $client);
+    $this->container->set('paatokset_search.elastic_client', $client);
 
     $this->installEntitySchema('user');
     $this->setUpCurrentUser(permissions: ['access content']);

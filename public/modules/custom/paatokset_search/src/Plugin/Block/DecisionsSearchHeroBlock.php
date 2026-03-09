@@ -20,7 +20,7 @@ final class DecisionsSearchHeroBlock extends BlockBase {
   /**
    * {@inheritDoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#theme' => 'decisions_search_hero_block',
       '#hero_title' => $this->t('Search decisions', [], ['context' => 'Decisions search']),

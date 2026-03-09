@@ -315,17 +315,8 @@
       padding-top: 0;
     }
 
-    table td {
-      background-color: $color-black-5;
-      display: block;
-
-      div {
-        margin: 0;
-      }
-
-      @include breakpoint($breakpoint-s) {
-        display: table-cell;
-      }
+    table td div {
+      margin: 0;
     }
   }
 }

@@ -25,10 +25,25 @@
           {{ 'You may also search for decision-makers with the search function.'|t({}, {'context': 'Policymaker browser'}) }}
           <a href="{{ search_link }}">{{ 'Go to the page Search decisions-makers'|t({}, {'context': 'Policymaker browser'}) }}</a>.
         </p>
-        <div class="policymaker-browser">
-          {% if breadcrumb %}
+        <div class="policymaker-browser" id="policymaker-browser">
+          {% if breadcrumb_label %}
+            {% if breadcrumb_org_id %}
+              {% set breadcrumb_url = path('paatokset_ahjo_api.browse_policymakers', { org: breadcrumb_org_id }) %}
+            {% else %}
+              {% set breadcrumb_url = path('paatokset_ahjo_api.browse_policymakers') %}
+            {% endif %}
             <div class="policymaker-browser__breadcrumb">
-              {% include '@hdbt/misc/icon.twig' with {icon: 'angle-left', class: 'policymaker-browser__breadcrumb-arrow hds-breadcrumb__back-arrow'} %}{{ breadcrumb }}
+              {% include '@hdbt/misc/icon.twig' with {icon: 'angle-left', class: 'policymaker-browser__breadcrumb-arrow hds-breadcrumb__back-arrow'} %}
+              <a href="{{ breadcrumb_url }}"
+                 class="policymaker-browser__breadcrumb__link"
+                 hx-get="{{ breadcrumb_url }}"
+                 hx-target="#policymaker-browser"
+                 hx-select="#policymaker-browser"
+                 hx-swap="outerHTML"
+                 hx-push-url="true"
+                 data-hx-drupal-only-main-content>
+                {{ breadcrumb_label }}
+              </a>
             </div>
           {% endif %}
           <h3 class="policymaker-browser__current-level">{{ organization.label() }}</h3>
@@ -51,7 +66,15 @@
 
                 {# Draw link to lower level in the browser if the child is not leaf node in the org tree. #}
                 {% if organization.getNumberOfChildren() > 0 %}
-                  <a href="{{url('paatokset_ahjo_api.browse_policymakers', { org: organization.id() })}}" class="policymaker-browser__child__expand">
+                  {% set drill_url = path('paatokset_ahjo_api.browse_policymakers', { org: organization.id() }) %}
+                  <a href="{{ drill_url }}"
+                     class="policymaker-browser__child__expand"
+                     hx-get="{{ drill_url }}"
+                     hx-target="#policymaker-browser"
+                     hx-select="#policymaker-browser"
+                     hx-swap="outerHTML"
+                     hx-push-url="true"
+                     data-hx-drupal-only-main-content>
                     <span class="visually-hidden">{{ 'Go to a lower level from @organization'|t({'@organization': organization.label()}, {'context': 'Policymaker browser'}) }}</span>
                   </a>
                 {% endif %}

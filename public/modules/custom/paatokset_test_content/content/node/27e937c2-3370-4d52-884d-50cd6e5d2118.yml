@@ -1,0 +1,163 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 27e937c2-3370-4d52-884d-50cd6e5d2118
+  bundle: decision
+  default_langcode: fi
+default:
+  revision_uid:
+    -
+      target_id: 0
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 0
+  title:
+    -
+      value: 'Test: Kaupunginvaltuuston kokousajat vuonna 2026'
+  created:
+    -
+      value: 1760611599
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  hide_sidebar_navigation:
+    -
+      value: false
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /asia/hel-2025-015674/4cfc9573-4f15-c369-b43b-9a7803f00002
+      langcode: fi
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  published_at:
+    -
+      value: 1760611599
+  field_attachments_checked:
+    -
+      value: true
+  field_classification_code:
+    -
+      value: '00 00 02'
+  field_classification_title:
+    -
+      value: 'Luottamus- ja toimielinten kokoonpano ja toiminta'
+  field_dates_checked:
+    -
+      value: true
+  field_decision_case_title:
+    -
+      value: 'Kokousajat 2026, kaupunginvaltuusto'
+  field_decision_content:
+    -
+      value: '<html lang="fi"><head><META content="text/html; charset=UTF-8" http-equiv="Content-Type"><META name="DhId" content="{9324907C-570B-CDD9-9AD6-9A7809C00000}"><META name="ThisHTMLGenerated" content="2025-11-12T14:31:05.473+02:00"><title>Kaupunginvaltuuston kokousajat vuonna 2026</title></head><body><div class="paatos"><div class="Otsikonviite"></div><div class="Asiapykala">§ 247</div><h1 class="AsiaOtsikko">Kaupunginvaltuuston kokousajat vuonna 2026</h1><div class="DnroTmuoto">HEL 2025-015674 T 00 00 02</div><div class="Viite"></div><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Päätös</h3><div><p>Kaupunginvaltuusto päätti pitää kokouksensa vuonna 2026 seuraavasti:</p><div><div><table><colgroup><col width="12.8%"><col width="14.97%"><col width="16.05%"><col width="11.93%"><col width="44.25%"></colgroup><tbody><tr><td><div><em>nro</em></div></td><td><div><em>viikko </em></div></td><td><div><em>päivä</em></div></td><td><div><em>klo</em></div></td><td><div><em></em>&nbsp;</div></td></tr><tr><td><div>1</div></td><td><div>4</div></td><td><div>21.1.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>2</div></td><td><div>6</div></td><td><div>4.2.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>3</div></td><td><div>9</div></td><td><div>25.2.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>4</div></td><td><div>11</div></td><td><div>11.3.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>5</div></td><td><div>13</div></td><td><div>25.3.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>6</div></td><td><div>15</div></td><td><div>8.4.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>7</div></td><td><div>17</div></td><td><div>22.4.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>8</div></td><td><div>19</div></td><td><div>6.5.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>9</div></td><td><div>22</div></td><td><div>27.5.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>10</div></td><td><div>24</div></td><td><div>10.6.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>11</div></td><td><div>25</div></td><td><div>17.6.</div></td><td><div>16</div></td><td><div>tilinpäätös</div></td></tr><tr><td><div>12</div></td><td><div>35</div></td><td><div>26.8.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>13</div></td><td><div>37</div></td><td><div>9.9.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>14</div></td><td><div>39</div></td><td><div>23.9.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>15</div></td><td><div>41</div></td><td><div>7.10.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>16</div></td><td><div>43</div></td><td><div>21.10.</div></td><td><div>18</div></td><td><div>kyselytunti</div></td></tr><tr><td><div>17</div></td><td><div>45</div></td><td><div>4.11.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>18</div></td><td><div>47</div></td><td><div>18.11.</div></td><td><div>16</div></td><td><div>talousarvio</div></td></tr><tr><td><div>19</div></td><td><div>49</div></td><td><div>2.12.</div></td><td><div>18</div></td><td><div>&nbsp;</div></td></tr><tr><td><div>20</div></td><td><div>51</div></td><td><div>16.12.</div></td><td><div>16</div></td><td><div>&nbsp;</div></td></tr></tbody></table></div></div></div></div><h3 class="EsittelijaTiedot">Esittelijä</h3><div></div><div>Kaupunginvaltuuston puheenjohtaja</div><h3 class="LisatiedotOtsikko">Lisätiedot</h3><p>Helmi Kehä, hallintosuunnittelija, puhelin: 09 310 56863<div>helmi.keha@hel.fi</div></p><h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3><h4>MUUTOKSENHAKUKIELTO</h4><p>Tähän päätökseen ei saa hakea muutosta, koska päätös koskee asian valmistelua tai täytäntöönpanoa.</p><p>Sovellettava lainkohta: Kuntalaki 136 § </p><h3 class="OtteetOtsikko">Otteet</h3><table><thead><tr><th>Ote</th><th>Otteen liitteet</th></tr></thead><tbody><tr><td>Kokouksissa läsnäolo- ja puheoikeutetut</td><td><div></div></td></tr><tr><td>Kaupunginvaltuuston jäsenet ja varajäsenet</td><td><div></div></td></tr></tbody></table></div></body></html>'
+      format: plain_text
+  field_decision_content_parsed:
+    -
+      value: "<h3 class=\"SisaltoOtsikko\">Päätös</h3><p>Kaupunginvaltuusto päätti pitää kokouksensa vuonna 2026 seuraavasti:</p>nroviikko päiväklo\_1421.1.18\_264.2.18kyselytunti3925.2.18\_41111.3.18\_51325.3.18kyselytunti6158.4.18\_71722.4.18\_8196.5.18kyselytunti92227.5.18\_102410.6.18kyselytunti112517.6.16tilinpäätös123526.8.18\_13379.9.18kyselytunti143923.9.18\_15417.10.18\_164321.10.18kyselytunti17454.11.18\_184718.11.16talousarvio19492.12.18\_205116.12.16\_"
+      format: full_html
+  field_decision_date:
+    -
+      value: '2025-10-30T00:00:00'
+  field_decision_history_pdf:
+    -
+      value: 'null'
+  field_decision_meeting:
+    -
+      value: '{"Name": "Kaupunginvaltuuston kokous", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/meetings/02900202514?apireqlang=fi"}], "Location": "Valtuustosali, Aleksanterinkatu 20", "MeetingID": "02900202514", "DateMeeting": "2025-10-22T18:00:00.000", "DecisionMaker": "Kaupunginvaltuusto", "AgendaPublished": null, "DecisionMakerId": "02900", "MinutesPublished": null}'
+  field_decision_minutes_pdf:
+    -
+      value: '{"Type": "pöytäkirja", "Title": "Kaupunginvaltuusto pöytäkirja 22.10.2025/16, julkinen, julkaisujärjestelmä", "links": [], "Issued": "2025-10-30T02:00:00.000", "FileURI": "https://ahjojulkaisu.hel.fi/1EC47B2D-8DE1-C02D-84C9-9A2EF1300000.pdf", "Language": "fi", "NativeId": "{88F3B439-AEF8-C6D1-9089-9A7807D00003}", "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "SecurityReasons": null, "VersionSeriesId": "{1EC47B2D-8DE1-C02D-84C9-9A2EF1300000}", "AttachmentNumber": null}'
+  field_decision_motion:
+    -
+      value: '<html lang="fi"><head><META content="text/html; charset=UTF-8" http-equiv="Content-Type"><META name="DhId" content="{9324907C-570B-CDD9-9AD6-9A7809C00000}"><META name="ThisHTMLGenerated" content="2025-11-12T14:31:05.676+02:00"><title>Kaupunginvaltuuston kokousajat vuonna 2026</title></head><body><div class="esitys"><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Päätösehdotus</h3><div><p>Päätös on ehdotuksen mukainen.</p></div></div><div class="SisaltoSektio"><h3 class="SisaltoOtsikko">Esittelijän perustelut</h3><div><p>Kuntalain (410/2015) 94 §:n 1 momentin mukaan valtuusto kokoontuu päättäminään aikoina ja myös silloin, kun valtuuston puheenjohtaja katsoo sen tarpeelliseksi. Saman pykälän 2 momentin mukaan valtuusto on kutsuttava koolle myös kunnanhallituksen tai vähintään neljäsosan valtuutetuista sitä pyytäessä ilmoittamansa asian käsittelyä varten.</p><p>Puheenjohtaja voi hallintosäännön 29 luvun 2 §:n 3 momentin mukaan peruuttaa kokouksen tai muuttaa kokouksen alkamisaikaa päätettynä kokouspäivänä asioiden vähäisen määrän tai muun erityisen syyn vuoksi.</p><p>Kaupunginvaltuuston kokouskutsu lähetetään sähköisesti vähintään neljä päivää ennen kokousta, samalla julkaistaan kokouksen esityslista yleisessä tietoverkossa.</p><p>Kaupunginvaltuuston pöytäkirja siihen liitettyine oikaisuvaatimusohjeineen tai valitusosoituksineen pidetään tarkastamisen jälkeen nähtävänä yleisessä tietoverkossa kuntalain 140 §:n mukaisesti.</p></div></div><h3 class="EsittelijaTiedot">Esittelijä</h3><div></div><div>Kaupunginvaltuuston puheenjohtaja</div><h3 class="LisatiedotOtsikko">Lisätiedot</h3><p>Helmi Kehä, hallintosuunnittelija, puhelin: 09 310 56863<div>helmi.keha@hel.fi</div></p><h3 class="MuutoksenhakuOtsikko">Muutoksenhaku</h3><p>Muutoksenhakukielto, valmistelu tai täytäntöönpano</p><h3 class="OtteetOtsikko">Otteet</h3><table><thead><tr><th>Ote</th><th>Otteen liitteet</th></tr></thead><tbody><tr><td>Kokouksissa läsnäolo- ja puheoikeutetut</td><td><div></div></td></tr><tr><td>Kaupunginvaltuuston jäsenet ja varajäsenet</td><td><div></div></td></tr></tbody></table></div></body></html>'
+      format: plain_text
+  field_decision_motion_parsed:
+    -
+      value: '<h3 class="SisaltoOtsikko">Päätösehdotus</h3><p>Päätös on ehdotuksen mukainen.</p><h3 class="SisaltoOtsikko">Esittelijän perustelut</h3><p>Kuntalain (410/2015) 94 §:n 1 momentin mukaan valtuusto kokoontuu päättäminään aikoina ja myös silloin, kun valtuuston puheenjohtaja katsoo sen tarpeelliseksi. Saman pykälän 2 momentin mukaan valtuusto on kutsuttava koolle myös kunnanhallituksen tai vähintään neljäsosan valtuutetuista sitä pyytäessä ilmoittamansa asian käsittelyä varten.</p><p>Puheenjohtaja voi hallintosäännön 29 luvun 2 §:n 3 momentin mukaan peruuttaa kokouksen tai muuttaa kokouksen alkamisaikaa päätettynä kokouspäivänä asioiden vähäisen määrän tai muun erityisen syyn vuoksi.</p><p>Kaupunginvaltuuston kokouskutsu lähetetään sähköisesti vähintään neljä päivää ennen kokousta, samalla julkaistaan kokouksen esityslista yleisessä tietoverkossa.</p><p>Kaupunginvaltuuston pöytäkirja siihen liitettyine oikaisuvaatimusohjeineen tai valitusosoituksineen pidetään tarkastamisen jälkeen nähtävänä yleisessä tietoverkossa kuntalain 140 §:n mukaisesti.</p>'
+      format: full_html
+  field_decision_native_id:
+    -
+      value: '{4CFC9573-4F15-C369-B43B-9A7803F00002}'
+  field_decision_organization:
+    -
+      value: '{"ID": "02900", "Name": "Kaupunginvaltuusto", "Type": "Valtuusto", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=02900&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "Sector": null, "TypeId": "1", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000", "OrganizationLevelAbove": {"count": 1, "links": [], "organizations": [{"ID": "00001", "Name": "Helsingin kaupunki", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00001&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00001&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "13", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}, "OrganizationLevelBelow": {"count": 1, "links": [], "organizations": [{"ID": "00400", "Name": "Kaupunginhallitus", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400&apireqlang=fi"}, {"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/organization?orgid=00400&apireqlang=fi"}], "Formed": "2009-01-01T00:00:00.000", "TypeId": "2", "Existing": "true", "Dissolved": "2100-01-01T00:00:00.000"}]}}'
+  field_decision_record:
+    -
+      value: '{"Type": "päätös", "Title": "Kaupunginvaltuuston kokousajat vuonna 2026", "links": [{"rel": "self", "href": "https://ahjo.hel.fi:9802/ahjorest/v1/records/%7BE759DE80-F39A-470D-A380-649582F240DE%7D"}], "Agents": [{"ID": "RANTAANU", "Name": "Rantalainen, Anu", "Role": "mainCreator", "Email": "anu.rantalainen@hel.fi", "Title": "hallintosihteeri", "links": [], "agentId": "RANTAANU"}], "Issued": "2025-10-30T02:00:00.000", "Created": "2025-10-29T09:44:29.457", "FileURI": "https://ahjojulkaisu.hel.fi/A69DA75E-17AE-C2AC-A442-9A2EECE00002.pdf", "Acquired": "", "Language": "fi", "NativeId": "{E759DE80-F39A-470D-A380-649582F240DE}", "MeetingID": "02900202514", "Reference": null, "AgendaPoint": "4", "DateMeeting": "2025-10-22T03:00:00.000", "Description": null, "PersonalData": "Sisältää henkilötietoja", "PublicityClass": "Julkinen", "PublicReference": null, "SecurityReasons": null, "VersionSeriesId": "{A69DA75E-17AE-C2AC-A442-9A2EECE00002}", "AttachmentNumber": null}'
+  field_decision_section:
+    -
+      value: 247
+  field_decision_series_id:
+    -
+      value: '{A69DA75E-17AE-C2AC-A442-9A2EECE00002}'
+  field_diary_number:
+    -
+      value: HEL-2025-015674
+  field_diary_number_label:
+    -
+      value: 'HEL 2025-015674'
+  field_dm_org_above_name:
+    -
+      value: 'Helsingin kaupunki'
+  field_dm_org_name:
+    -
+      value: Kaupunginvaltuusto
+  field_full_title:
+    -
+      value: 'Kaupunginvaltuuston kokousajat vuonna 2026'
+  field_hide_decision_content:
+    -
+      value: false
+  field_is_decision:
+    -
+      value: true
+  field_meeting_date:
+    -
+      value: '2025-10-22T15:00:00'
+  field_meeting_id:
+    -
+      value: '02900202514'
+  field_meeting_sequence_number:
+    -
+      value: 16
+  field_minutes_checked:
+    -
+      value: true
+  field_organization_type:
+    -
+      value: Valtuusto
+  field_outdated_document:
+    -
+      value: false
+  field_policymaker_id:
+    -
+      value: '02900'
+  field_record_language_checked:
+    -
+      value: true
+  field_status_checked:
+    -
+      value: true
+  field_top_category_name:
+    -
+      value: Hallintoasiat
+  field_unique_id:
+    -
+      value: HEL-2025-015674-02900202514-247-4-02900

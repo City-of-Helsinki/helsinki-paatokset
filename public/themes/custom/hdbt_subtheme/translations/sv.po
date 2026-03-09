@@ -230,7 +230,7 @@ msgid "The City of Helsinki uses Finnish in its decision-making. You can browse 
 msgstr "Helsingfors stads huvudspråk för beslutsfattande är finska. Stadsfullmäktiges beslut finns dock på svenska i tjänsten. Tjänsten Beslut samlar ihop Helsingfors stads beslutsfattande. I tjänsten finns bland annat beslut som fattats av Helsingfors stadsfullmäktige, stadsstyrelsen, nämnderna och tjänsteinnehavarna."
 
 msgctxt "Decisions search"
-msgid "The City of Helsinki primarily conducts its decision-making  in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
+msgid "The City of Helsinki primarily conducts its decision-making in Finnish and Swedish. Although you can browse this service in English, the decision-making documents themselves are available in Finnish and Swedish only."
 msgstr "Du kan söka stadens beslut med ett sökord. Du kan begränsa resultaten enligt tidpunkt, ämne och beslutsfattare."
 
 msgctxt "Decisions search"

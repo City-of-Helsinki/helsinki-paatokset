@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_ahjo_api\AhjoAdmin;
+namespace Drupal\paatokset_ahjo_api\AhjoAdmin\Form;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\FormBase;
