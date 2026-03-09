@@ -83,7 +83,7 @@ class BrowseController extends ControllerBase {
       '#breadcrumb_org_id' => $breadcrumb_org_id,
       '#breadcrumb_label' => $breadcrumb_label,
       '#tags' => $tags,
-      '#search_link' => $search_link,
+      '#search_link' => $this->getSearchLink(),
       '#attached' => [
         'library' => ['core/drupal.htmx'],
       ],
@@ -132,20 +132,12 @@ class BrowseController extends ControllerBase {
       $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
     }
 
-    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
-
-    $search_link = match($langcode) {
-      'fi' => '/fi/paatoksenteko/etsi-paattajia',
-      'sv' => '/sv/beslutsfattande/sok-beslutsfattare',
-      default => '/en/decision-making/search-decision-makers',
-    };
-
     $build = [
       '#theme' => 'policymaker_browser',
       '#children' => $children,
       '#policymakers' => $policymakers,
       '#tags' => $tags,
-      '#search_link' => $search_link,
+      '#search_link' => $this->getSearchLink(),
       '#attached' => [
         'library' => ['core/drupal.htmx'],
       ],
@@ -196,6 +188,19 @@ class BrowseController extends ControllerBase {
       },
       []
     );
+  }
+
+  /**
+   * Link to search page.
+   */
+  private function getSearchLink(): string {
+    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+
+    return match($langcode) {
+      'fi' => '/fi/paatoksenteko/etsi-paattajia',
+      'sv' => '/sv/beslutsfattande/sok-beslutsfattare',
+      default => '/en/decision-making/search-decision-makers',
+    };
   }
 
 }

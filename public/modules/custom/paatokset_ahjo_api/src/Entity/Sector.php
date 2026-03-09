@@ -7,7 +7,9 @@ namespace Drupal\paatokset_ahjo_api\Entity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
+ * Organization sector.
  *
+ * Sectors are child organizations of the Helsinki City Board.
  */
 enum Sector: string {
 
@@ -15,8 +17,7 @@ enum Sector: string {
   case UrbanEnvironmentDivision = 'U541000';
   case CentralAdministration = 'U50';
   case CultureAndLeisureDivision = 'U480400';
-  /**
- * I think this division might be dissolved. */
+  // I think this division might be dissolved.
   case SocialServicesAndHealthcareDivision = 'U320200';
   case SocialServicesHealthcareAndRescueServicesDivision = 'U321200';
 

@@ -89,8 +89,8 @@ class PathProcessorTest extends KernelTestBase {
         '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige' => ['org' => 'stadsfullmäktige'],
       ],
       'en' => [
-        '/decisionmakers/browse-decision-makers' => [],
-        '/decisionmakers/browse-decision-makers/city-council' => ['org' => 'city-council'],
+        '/decision-making/browse-decision-makers' => [],
+        '/decision-making/browse-decision-makers/city-council' => ['org' => 'city-council'],
       ],
     ];
 
