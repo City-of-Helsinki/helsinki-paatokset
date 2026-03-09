@@ -112,9 +112,9 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
       'template' => 'block/block--frontpage-calendar',
     ],
     // @todo remove once new browse page is in place.
-    'block__policymaker_listing' => [
+    'block__committees_and_boards_listing' => [
       'base hook' => 'entity',
-      'template' => 'block/block--policymaker-listing',
+      'template' => 'block/block--committees-and-boards-listing',
     ],
     'block__decision_tree' => [
       'base hook' => 'entity',
@@ -326,37 +326,6 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
   $variables['open_minutes'] = t('Open minutes');
   $variables['open_meeting_calendar'] = t('Open meeting calendar');
   $variables['meetings'] = $all_meetings;
-}
-
-/**
- * Preprocess policymaker listing block.
- *
- * @todo remove once new browse page is in place.
- */
-function paatokset_ahjo_api_preprocess_block__policymaker_listing(array &$variables): void {
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#block__policymaker_listing'])) {
-    $variables['entity'] = $variables['elements']['#block__policymaker_listing'];
-  }
-
-  $variables['title'] = $variables['elements']['content']['label'];
-
-  $variables['cards'] = [
-    '#lazy_builder' => [
-      'policymakers_lazy_builder:policymakersCards', [],
-    ],
-    '#create_placeholder' => TRUE,
-  ];
-
-  $variables['accordions'] = [
-    '#lazy_builder' => [
-      'policymakers_lazy_builder:policymakersAccordions', [],
-    ],
-    '#create_placeholder' => TRUE,
-  ];
 }
 
 /**

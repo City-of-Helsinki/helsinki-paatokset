@@ -6,28 +6,26 @@ namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Provides Policymaker listing Block.
- *
- * @todo remove once new browse page is in place.
+ * Provides a 'CommitteesAndBoardsBlock' block.
  */
 #[Block(
-  id: 'policymaker_listing',
-  admin_label: new TranslatableMarkup('Paatokset policymaker listing'),
-  category: new TranslatableMarkup('Paatokset custom blocks'),
+  id: "committees_and_boards_listing",
+  admin_label: new TranslatableMarkup("Committees and Boards Listing Block"),
 )]
-class PolicymakerListingBlock extends BlockBase {
+final class CommitteesAndBoardsListingBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
 
   /**
    * {@inheritDoc}
    */
   public function build(): array {
     return [
-      'label' => $this->t('Browse policymakers'),
       '#attributes' => [
-        'class' => ['policymaker-listing'],
+        'class' => ['committees-and-boards-listing'],
       ],
     ];
   }

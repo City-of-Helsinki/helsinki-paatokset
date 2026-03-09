@@ -106,7 +106,7 @@ class BrowseController extends ControllerBase {
       return $label;
     }
 
-    return new TranslatableMarkup('Browse decisionmakers');
+    return new TranslatableMarkup('Browse decision-makers');
   }
 
   /**

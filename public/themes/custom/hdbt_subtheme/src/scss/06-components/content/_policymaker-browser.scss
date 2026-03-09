@@ -1,0 +1,5 @@
+.component--policymaker-browser {
+  .component__content p {
+    @include font('body');
+  }
+}
