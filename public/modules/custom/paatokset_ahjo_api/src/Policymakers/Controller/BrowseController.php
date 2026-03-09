@@ -132,11 +132,20 @@ class BrowseController extends ControllerBase {
       $tags[$id] = $this->policymakerService->getPolicymakerTag($policymaker);
     }
 
+    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+
+    $search_link = match($langcode) {
+      'fi' => '/fi/paatoksenteko/etsi-paattajia',
+      'sv' => '/sv/beslutsfattande/sok-beslutsfattare',
+      default => '/en/decision-making/search-decision-makers',
+    };
+
     $build = [
       '#theme' => 'policymaker_browser',
       '#children' => $children,
       '#policymakers' => $policymakers,
       '#tags' => $tags,
+      '#search_link' => $search_link,
     ];
 
     $cache = new CacheableMetadata();

@@ -148,6 +148,7 @@ function paatokset_ahjo_api_theme($existing, $type, $theme, $path): array {
         'policymakers' => NULL,
         'breadcrumb' => NULL,
         'tags' => NULL,
+        'search_link' => NULL,
       ],
     ],
     'policymaker_browser_hero_block' => [
