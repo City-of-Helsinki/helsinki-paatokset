@@ -39,7 +39,7 @@ class BrowseBreadcrumbBuilder implements BreadcrumbBuilderInterface {
 
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-    $route =  match($langcode) {
+    $route = match($langcode) {
       'fi' => '/fi/paatoksenteko',
       'sv' => '/sv/beslutsfattande',
       default => '/en/decision-making',
