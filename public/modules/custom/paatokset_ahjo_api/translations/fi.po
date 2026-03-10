@@ -6,6 +6,9 @@ msgstr ""
 msgid "Browse decision-makers"
 msgstr "Selaa päättäjiä"
 
+msgid "Decision-making"
+msgstr "Päätöksenteko"
+
 msgid "See table with voting results"
 msgstr "Katso äänestystulos taulukkona"
 

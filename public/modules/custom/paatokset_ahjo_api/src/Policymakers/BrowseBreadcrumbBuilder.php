@@ -9,11 +9,12 @@ use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 
 /**
  * Builds a static breadcrumb for the policymaker browse route.
  *
- * The breadcrumb always stops at "Browse decisionmakers", regardless of
+ * The breadcrumb always stops at "Browse decision-makers", regardless of
  * which organization is being viewed. Organization-level navigation is
  * handled by the policymaker browser component itself.
  */
@@ -35,9 +36,25 @@ class BrowseBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
 
     $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
+
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    $route =  match($langcode) {
+      'fi' => '/fi/paatoksenteko',
+      'sv' => '/sv/beslutsfattande',
+      default => '/en/decision-making',
+    };
+
+    $breadcrumb->addLink(
+      Link::fromTextAndUrl(
+      $this->t('Decision-making'),
+      Url::fromUserInput($route)
+      )
+    );
+
     $breadcrumb->addLink(
       Link::createFromRoute(
-        $this->t('Browse decisionmakers'),
+        $this->t('Browse decision-makers'),
         'paatokset_ahjo_api.browse_policymakers',
       )
     );
