@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_search\Kernel\Plugin\Block;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_search\Plugin\Block\PolicymakerSearchBlock;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests policymaker search block.
- *
- * @coversDefaultClass \Drupal\paatokset_search\Plugin\Block\PolicymakerSearchBlock
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_search')]
 class PolicymakerSearchBlockTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
-    'block',
     'paatokset_search',
-    'paatokset_ahjo_api',
-    'helfi_api_base',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
   ];
 
   /**
@@ -44,9 +39,6 @@ class PolicymakerSearchBlockTest extends KernelTestBase {
 
   /**
    * Tests block render.
-   *
-   * @covers ::create
-   * @covers ::build
    */
   public function testBuild(): void {
     $block = PolicymakerSearchBlock::create($this->container, [], '', ['provider' => 'paatokset_search']);

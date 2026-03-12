@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\Processor;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Plugin\search_api\processor\SpecialStatus;
+use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\AhjoSearchApiKernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests special_status search_api processor.
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_ahjo_api')]
 class SpecialStatusTest extends AhjoSearchApiKernelTestBase {
-
-  /**
-   * {@inheritDoc}
-   */
-  protected static $modules = [
-    'paatokset_helsinki_kanava',
-  ];
 
   /**
    * {@inheritdoc}
@@ -42,39 +39,27 @@ class SpecialStatusTest extends AhjoSearchApiKernelTestBase {
   /**
    * Tests color class processor.
    */
-  public function testProcessor() {
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
-    $storage = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('node');
-
-    $this->config('paatokset_helsinki_kanava.settings')
-      ->set('city_council_id', '123')
-      ->set('city_hall_id', '234')
-      ->set('trustee_organization_type_id', '345')
-      ->save();
-
-    $decision = $storage->create([
+  public function testProcessor(): void {
+    $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
-      'field_policymaker_id' => '123',
+      'field_policymaker_id' => PolicymakerService::CITY_COUNCIL_DM_ID,
     ]);
 
-    $this->assertInstanceOf(Decision::class, $decision);
-
     $id = Utility::createCombinedId('entity:node', $decision->id() . ':' . $decision->language()->getId());
-    $item = $this->container
+
+    $fields = $this->container
       ->get('search_api.fields_helper')
-      ->createItemFromObject($this->index, $decision->getTypedData(), $id);
-    $fields = $item->getFields();
+      ->createItemFromObject($this->index, $decision->getTypedData(), $id)
+      ->getFields();
 
     $this->assertEquals([SpecialStatus::CITY_COUNCIL], $fields['test_special_status']->getValues());
 
-    $decision->set('field_policymaker_id', '234');
-
-    $item = $this->container
+    $decision->set('field_policymaker_id', PolicymakerService::CITY_BOARD_DM_ID);
+    $fields = $this->container
       ->get('search_api.fields_helper')
-      ->createItemFromObject($this->index, $decision->getTypedData(), $id);
-    $fields = $item->getFields();
+      ->createItemFromObject($this->index, $decision->getTypedData(), $id)
+      ->getFields();
 
     $this->assertEquals([SpecialStatus::CITY_HALL], $fields['test_special_status']->getValues());
   }

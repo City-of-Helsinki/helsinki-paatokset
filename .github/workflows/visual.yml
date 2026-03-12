@@ -30,7 +30,7 @@ jobs:
       THEME_FOLDER: public/themes/custom/hdbt_subtheme
       REPORT_REPO: helsinki-paatokset-visual-regression
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           repository: druidfi/stonehenge
 
@@ -63,11 +63,11 @@ jobs:
       - name: Download latest dump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh run download -n latest.sql
+        run: gh run download -n dump.sql
 
       - name: Install Drupal
         run: |
-          docker compose exec app bash -c '$(drush sql:connect) < latest.sql'
+          docker compose exec app bash -c '$(drush sql:connect) < dump.sql'
           docker compose exec app bash -c "drush deploy"
           docker compose exec app bash -c "drush en paatokset_test_content -y"
 

@@ -6,32 +6,18 @@ namespace Drupal\Tests\paatokset_search\Kernel\Plugin\Block;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset_search\Plugin\Block\DecisionsSearchHeroBlock;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests decisions search hero block.
- *
- * @coversDefaultClass \Drupal\paatokset_search\Plugin\Block\DecisionsSearchHeroBlock
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paatokset_search')]
 class DecisionsSearchHeroBlockTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'block',
-    'paatokset_search',
-    'paatokset_ahjo_api',
-    'helfi_api_base',
-    'path_alias',
-    'pathauto',
-    'token',
-    'migrate',
-  ];
-
-  /**
    * Tests block render.
-   *
-   * @covers ::build
    */
   public function testBuild(): void {
     $block = new DecisionsSearchHeroBlock([], '', ['provider' => 'paatokset_search']);

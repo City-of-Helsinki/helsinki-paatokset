@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\EventSubscriber;
+namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\elasticsearch_connector\Event\AlterSettingsEvent;

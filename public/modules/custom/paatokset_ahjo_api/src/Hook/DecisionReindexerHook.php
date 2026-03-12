@@ -2,27 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search;
+namespace Drupal\paatokset_ahjo_api\Hook;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
 /**
  * Reindexes decisions when their parent case is updated.
  */
-class DecisionReindexer {
+final readonly class DecisionReindexerHook {
 
-  /**
-   * Constructs a new CaseUpdated.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   */
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
   ) {
+  }
+
+  /**
+   * Implements hook_entity_update().
+   */
+  #[Hook('entity_update')]
+  public function update(EntityInterface $entity): void {
+    $this->onEntityChange($entity);
+  }
+
+  /**
+   * Implements hook_entity_insert().
+   */
+  #[Hook('entity_insert')]
+  public function insert(EntityInterface $entity): void {
+    $this->onEntityChange($entity);
+  }
+
+  /**
+   * Implements hook_entity_delete().
+   */
+  #[Hook('entity_delete')]
+  public function delete(EntityInterface $entity): void {
+    $this->onEntityChange($entity);
   }
 
   /**
@@ -31,11 +52,12 @@ class DecisionReindexer {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity that was changed.
    */
-  public function onEntityChange(EntityInterface $entity): void {
-    if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'case') {
+  private function onEntityChange(EntityInterface $entity): void {
+    if (!$entity instanceof CaseBundle) {
       return;
     }
 
+    /** @todo find a way to use CaseBundle::getAllDecisions. */
     $decisions = $this->getRelatedDecisions($entity);
     if (empty($decisions)) {
       return;
@@ -48,7 +70,9 @@ class DecisionReindexer {
 
     $datasource_id = 'entity:node';
     foreach ($decisions as $decision) {
-      $index->trackItemsUpdated($datasource_id, [$decision['id'] . ':' . $decision['langcode']]);
+      $index->trackItemsUpdated($datasource_id, [
+        ContentEntity::formatItemId('node', $decision['id'], $decision['langcode']),
+      ]);
     }
   }
 
@@ -61,7 +85,7 @@ class DecisionReindexer {
    * @return array
    *   An array of decision IDs and their language codes.
    */
-  protected function getRelatedDecisions(EntityInterface $case): array {
+  private function getRelatedDecisions(EntityInterface $case): array {
     if (!$case instanceof CaseBundle) {
       return [];
     }
@@ -75,7 +99,10 @@ class DecisionReindexer {
 
     $decision_ids = $query->execute();
 
-    $nodes = $this->entityTypeManager->getStorage('node')->loadMultiple($decision_ids);
+    $nodes = $this->entityTypeManager
+      ->getStorage('node')
+      ->loadMultiple($decision_ids);
+
     $result = [];
     foreach ($nodes as $node) {
       $result[] = [
@@ -87,12 +114,9 @@ class DecisionReindexer {
   }
 
   /**
-   * Gets the decisions search index.
-   *
-   * @return \Drupal\search_api\IndexInterface|null
-   *   The index or NULL if not found.
+   * Gets the decisions search index or NULL if not found.
    */
-  protected function getDecisionsIndex(): ?IndexInterface {
+  private function getDecisionsIndex(): ?IndexInterface {
     try {
       /** @var \Drupal\search_api\IndexInterface $index */
       $index = $this->entityTypeManager
@@ -100,7 +124,7 @@ class DecisionReindexer {
         ->load('decisions');
       return $index;
     }
-    catch (\Exception $e) {
+    catch (PluginException) {
       return NULL;
     }
   }

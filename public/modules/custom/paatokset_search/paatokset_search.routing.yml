@@ -22,16 +22,6 @@ paatokset_search.decisions.en:
   requirements:
     _access: 'TRUE'
 
-paatokset_search.settings_form:
-  path: '/admin/config/paatokset_search/settings'
-  defaults:
-    _form: '\Drupal\paatokset_search\Form\PaatoksetSearchForm'
-    _title: 'Paatokset Search settings'
-  requirements:
-    _permission: 'access administration pages'
-  options:
-    _admins_route: TRUE
-
 paatokset_search.autocomplete:
   path: '/api/v1/paatokset-autocomplete'
   defaults:

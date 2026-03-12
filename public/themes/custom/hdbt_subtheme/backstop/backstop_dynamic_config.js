@@ -127,6 +127,10 @@ function getConfig(hostname, protocol, type) {
       label: 'Decision - confidential',
       url: `/fi/asia/hel-2024-014058/147213c7-b063-40fc-a319-c91d5b846623`,
     },
+    {
+      label: 'Decision - tables',
+      url: `/fi/asia/hel-2025-015674/4cfc9573-4f15-c369-b43b-9a7803f00002`,
+    },
   ];
 
   return {

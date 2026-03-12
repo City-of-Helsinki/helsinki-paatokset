@@ -270,3 +270,12 @@ function paatokset_ahjo_api_update_11003(): void {
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('num_children', 'ahjo_organization', 'paatokset_ahjo_api', $fieldDefinition);
 }
+
+/**
+ * Add langcode to `paatokset_ahjo_api.default_texts`.
+ */
+function paatokset_ahjo_api_update_11004(): void {
+  $cfg = \Drupal::configFactory()->getEditable('paatokset_ahjo_api.default_texts');
+  $cfg->set('langcode', 'en');
+  $cfg->save();
+}

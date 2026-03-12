@@ -2,24 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Drupal\paatokset_search\Plugin\search_api\processor;
+namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
  * Alters the organization type field in indexed data.
  *
- * @SearchApiProcessor(
- *   id = "organization_type_fallback",
- *   label = @Translation("Organization type fallback"),
- *   description = @Translation("Uses policymaker org type as fallback if one is not set."),
- *   stages = {
- *     "preprocess_index" = -10,
- *   },
- *   locked = false,
- *   hidden = false,
- * )
+ * This processor probably targets `search_api.index.decisions`
+ * index. The index has organization type field:
+ *
+ * ```
+ * organization_type:
+ *   label: 'Organization type'
+ *   datasource_id: 'entity:node'
+ *   property_path: field_organization_type
+ *   type: string
+ *   dependencies:
+ *     config:
+ *       - field.storage.node.field_organization_type
+ * ```
  */
+#[SearchApiProcessor(
+  id: 'organization_type_fallback',
+  label: new TranslatableMarkup('Organization type fallback'),
+  description: new TranslatableMarkup('Uses policymaker org type as fallback if one is not set.'),
+  stages: [
+    'preprocess_index' => -10,
+  ],
+)]
 class OrganizationType extends ProcessorPluginBase {
 
   /**

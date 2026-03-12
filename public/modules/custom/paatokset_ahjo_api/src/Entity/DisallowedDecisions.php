@@ -12,7 +12,7 @@ use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\DisallowedDecisionsListBuilder;
 use Drupal\paatokset_ahjo_api\DisallowedDecisionsStorageManager;
-use Drupal\paatokset_ahjo_api\Form\DisallowedDecisionsForm;
+use Drupal\paatokset_ahjo_api\Entity\Form\DisallowedDecisionsForm;
 
 /**
  * Defines the Disallowed Decisions entity.
