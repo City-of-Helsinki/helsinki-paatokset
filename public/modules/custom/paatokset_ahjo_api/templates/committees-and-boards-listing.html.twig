@@ -1,0 +1,26 @@
+{#
+ * @file
+ * Template for Committees and Boards listing block.
+ *
+ * Available variables:
+ * - title: Block title.
+ * - committees_and_boards: List of committees and boards to be listed.
+ *
+ * @see template_preprocess_block__committees_and_boards_listing()
+#}
+<div {{attributes}}>
+  {% for committee_or_board in committees_and_boards %}
+    {% if committee_or_board.sector %}
+      <h2 class="committees-and-boards-listing__title">{{ committee_or_board.sector.getLabel() }}</h2>
+    {% endif %}
+    {% if committee_or_board.links %}
+      <ul class="committees-and-boards-listing__list">
+        {% for link in committee_or_board.links %}
+          <li class="committees-and-boards-listing__item">
+            {{ link }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+</div>

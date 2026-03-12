@@ -1,0 +1,30 @@
+uuid: 90120d0c-a144-42c1-9376-9fced9f5cbf4
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_ahjo_api
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_committeesandboardslistingblock
+theme: hdbt_subtheme
+region: content_lower
+weight: -12
+provider: null
+plugin: committees_and_boards_listing
+settings:
+  id: committees_and_boards_listing
+  label: 'Committees and Boards Listing Block'
+  label_display: '0'
+  provider: paatokset_ahjo_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paatoksenteko/lautakunnat-ja-johtokunnat\r\n/beslutsfattande/namnder-och-direktioner\r\n/decision-making/committees-and-boards"
+  response_status:
+    id: response_status
+    negate: false
+    status_codes:
+      - 200

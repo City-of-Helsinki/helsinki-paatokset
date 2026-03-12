@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Policymakers;
 
 use Drupal\Core\Routing\RouteMatch;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\language\ConfigurableLanguageManagerInterface;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\paatokset_ahjo_api\Policymakers\BrowseBreadcrumbBuilder;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
@@ -15,6 +18,30 @@ use Symfony\Component\Routing\Route;
  */
 #[Group('paatokset_ahjo_api')]
 class BrowseBreadcrumbBuilderTest extends KernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'language',
+    'path_alias',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+
+    // Install path alias schema required by Url::fromUserInput().
+    $this->installEntitySchema('path_alias');
+
+    // Install language configuration.
+    $this->installConfig(['language']);
+
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+    ConfigurableLanguage::createFromLangcode('sv')->save();
+  }
 
   /**
    * Returns the breadcrumb builder service.
@@ -44,27 +71,42 @@ class BrowseBreadcrumbBuilderTest extends KernelTestBase {
   }
 
   /**
-   * Tests breadcrumb when an org parameter is present.
-   *
-   * Org page adds a "Browse decisionmakers" crumb linking back to root.
+   * Tests breadcrumb structure.
    */
-  public function testBuildWithOrg(): void {
-    $breadcrumb = $this->builder()->build(
-      $this->routeMatch('paatokset_ahjo_api.browse_policymakers', ['org' => 'some-org'])
-    );
-    $links = array_values($breadcrumb->getLinks());
+  public function testBuild(): void {
+    $languageManager = $this->container->get(LanguageManagerInterface::class);
+    $this->assertInstanceOf(ConfigurableLanguageManagerInterface::class, $languageManager);
 
-    $this->assertCount(2, $links);
-    $this->assertSame('Home', (string) $links[0]->getText());
-    $this->assertSame('Browse decisionmakers', (string) $links[1]->getText());
-    $this->assertSame('paatokset_ahjo_api.browse_policymakers', $links[1]->getUrl()->getRouteName());
+    foreach (['fi', 'sv', 'en'] as $langcode) {
+      $languageManager->setCurrentLanguage(ConfigurableLanguage::load($langcode));
+
+      $breadcrumb = $this->builder()->build(
+        $this->routeMatch('paatokset_ahjo_api.browse_policymakers')
+      );
+
+      $links = array_values($breadcrumb->getLinks());
+
+      $this->assertCount(3, $links);
+
+      $this->assertSame('Home', (string) $links[0]->getText());
+      $this->assertSame('Decision-making', (string) $links[1]->getText());
+      $this->assertSame('Browse decision-makers', (string) $links[2]->getText());
+
+      $this->assertSame(
+        'paatokset_ahjo_api.browse_policymakers',
+        $links[2]->getUrl()->getRouteName()
+      );
+    }
   }
 
   /**
    * Tests that the required cache contexts are declared.
    */
   public function testCacheContexts(): void {
-    $breadcrumb = $this->builder()->build($this->routeMatch('paatokset_ahjo_api.browse_policymakers'));
+    $breadcrumb = $this->builder()->build(
+      $this->routeMatch('paatokset_ahjo_api.browse_policymakers')
+    );
+
     $contexts = $breadcrumb->getCacheContexts();
 
     $this->assertContains('languages:language_interface', $contexts);
