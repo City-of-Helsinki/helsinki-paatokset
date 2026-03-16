@@ -28,11 +28,8 @@ const defaultState: SearchState = {
 const initialParams = new URLSearchParams(window.location.search);
 export const initialParamsAtom = atom(initialParams);
 
-// Check if URL has search-related params (s or sector, not just page)
-const hasSearchParams = initialParams.has(Components.SEARCHBAR) || initialParams.has(Components.SECTOR);
-
 // Track if results should be shown
-export const searchActiveAtom = atom<boolean>(hasSearchParams);
+export const searchActiveAtom = atom(true);
 
 type aggType = { [key: string]: estypes.AggregationsAggregate };
 const aggsBaseAtom = atom<aggType | undefined>(undefined);
