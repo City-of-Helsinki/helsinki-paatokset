@@ -14,7 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  */
 #[Block(
   id: "policymaker_browser_hero_block",
-  admin_label: new TranslatableMarkup("Policymaker Brower Hero Block"),
+  admin_label: new TranslatableMarkup("Policymaker Browser Hero Block"),
 )]
 final class PolicymakerBrowserHeroBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
