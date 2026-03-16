@@ -3,8 +3,11 @@
 msgid ""
 msgstr ""
 
-msgid "Browse decisionmakers"
+msgid "Browse decision-makers"
 msgstr "Selaa päättäjiä"
+
+msgid "Decision-making"
+msgstr "Päätöksenteko"
 
 msgid "See table with voting results"
 msgstr "Katso äänestystulos taulukkona"
@@ -141,3 +144,27 @@ msgstr "Siirry Etsi päättäjiä -sivulle"
 msgctxt "Policymaker browser"
 msgid "Go to a lower level from @organization"
 msgstr "Siirry alemmalle tasolle kohdasta @organization"
+
+msgctxt "Sector names"
+msgid "Education Division"
+msgstr "Kasvatuksen ja koulutuksen toimiala"
+
+msgctxt "Sector names"
+msgid "Urban Environment Division"
+msgstr "Kaupunkiympäristön toimiala"
+
+msgctxt "Sector names"
+msgid "Central Administration"
+msgstr "Keskushallinto"
+
+msgctxt "Sector names"
+msgid "Culture and Leisure Division"
+msgstr "Kulttuurin ja vapaa-ajan toimiala"
+
+msgctxt "Sector names"
+msgid "Social Services and Health Care Division"
+msgstr "Sosiaali- ja terveystoimiala"
+
+msgctxt "Sector names"
+msgid "Social Services, Health Care and Rescue Services Division"
+msgstr "Sosiaali-, terveys- ja pelastustoimiala"

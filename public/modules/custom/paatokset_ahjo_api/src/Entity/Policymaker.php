@@ -210,6 +210,20 @@ class Policymaker extends Node implements AhjoEntityInterface {
   }
 
   /**
+   * Get policymaker sector.
+   *
+   * Policymaker might not have a sector (e.g. city board that
+   * is above the sectors in the organization tree).
+   */
+  public function getSector(): ?Sector {
+    if ($sector = json_decode($this->get('field_dm_sector')->value)) {
+      return Sector::tryFrom($sector->SectorID);
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get policymaker url.
    *
    * Twig sandbox forbids toURL method, which is required

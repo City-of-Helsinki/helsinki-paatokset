@@ -37,18 +37,6 @@ function paatokset_policymakers_node_delete(EntityInterface $entity) {
  */
 function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
   return [
-    'policymaker_cards' => [
-      'variables' => [
-        'cards' => [],
-      ],
-      'path' => $path . '/templates/component',
-    ],
-    'policymaker_accordions' => [
-      'variables' => [
-        'accordions' => [],
-      ],
-      'path' => $path . '/templates/component',
-    ],
     'node__policymaker' => [
       'render element' => 'elements',
       'template' => 'node--policymaker',
