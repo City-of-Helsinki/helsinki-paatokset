@@ -22,6 +22,9 @@ use Drupal\paatokset_ahjo_api\Entity\Trustee;
 #[MigrateSource(id: 'ahjo_api_initiatives')]
 final class AhjoInitiativeSource extends AhjoSourceBase {
 
+  // Track used keys to avoid duplicates.
+  protected array $trusteeTimestamps = [];
+  
   /**
    * {@inheritDoc}
    */
@@ -42,6 +45,7 @@ final class AhjoInitiativeSource extends AhjoSourceBase {
     return [
       'Trustee' => ['type' => 'string'],
       'Date' => ['type' => 'string'],
+      'Index' => ['type' => 'integer'],
     ];
   }
 
@@ -76,14 +80,40 @@ final class AhjoInitiativeSource extends AhjoSourceBase {
         ]);
       }
 
-      yield from array_map(static fn ($initiative) => [
+      yield from array_map(fn ($initiative) => [
         'Title' => $initiative->title,
         'Date' => $initiative->date->getTimestamp(),
         'FileURI' => $initiative->url,
         'Trustee' => $ahjoData->id,
         'Trustee_NID' => $trustee->id(),
+        'Index' => $this->getIndex($ahjoData->id, $initiative->date->getTimestamp()),
       ], $ahjoData->initiatives);
     }
   }
 
+  /**
+   * Get a index for the initiative.
+   * 
+   * This is usually 0, but if there are multiple initiatives for a single
+   * trustee with identical timestamps, it will be incremented to make sure
+   * we have a unique id field combination for all.
+   *
+   * @param string $trusteeId
+   *   The ID of the trustee.
+   * @param int $timestamp
+   *   The timestamp of the initiative.
+   *
+   * @return int
+   *   The index for the initiative.
+   */
+  protected function getIndex(string $trusteeId, int $timestamp): int {
+    $key = "{$trusteeId}:{$timestamp}";
+    if (isset($this->trusteeTimestamps[$key])) {
+      $this->trusteeTimestamps[$key]++;
+    }
+    else {
+      $this->trusteeTimestamps[$key] = 0;
+    }
+    return $this->trusteeTimestamps[$key];
+  }
 }

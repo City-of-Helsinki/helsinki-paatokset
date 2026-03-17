@@ -12,6 +12,9 @@ use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
 use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldConfigInterface;
+use Drupal\migrate\MigrateExecutable;
+use Drupal\migrate\MigrateMessage;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\field\Entity\FieldConfig;
@@ -278,4 +281,53 @@ function paatokset_ahjo_api_update_11004(): void {
   $cfg = \Drupal::configFactory()->getEditable('paatokset_ahjo_api.default_texts');
   $cfg->set('langcode', 'en');
   $cfg->save();
+}
+
+/**
+ * Recreate ahjo_initiatives migration map after source id field changes.
+ */
+function paatokset_ahjo_api_update_11006(): void {
+  $migration_plugin_manager = \Drupal::service('plugin.manager.migration');
+  $migration = $migration_plugin_manager->createInstance('ahjo_initiatives');
+  assert($migration instanceof MigrationInterface || $migration === FALSE);
+
+  if ($migration === FALSE) {
+    return;
+  }
+
+  // Reset migration status.
+  $status = $migration->getStatus();
+  if ($status !== MigrationInterface::STATUS_IDLE) {
+    $migration->setStatus(MigrationInterface::STATUS_IDLE);
+  }
+
+  // Rollback: removes destination entities using the current map.
+  // If the map schema no longer matches getIds() (e.g. after id change),
+  // rollback can fail; we then delete initiatives manually and still drop tables.
+  try {
+    $executable = new MigrateExecutable($migration, new MigrateMessage());
+    $executable->rollback();
+  }
+  catch (\Throwable $e) {
+    $storage = \Drupal::entityTypeManager()->getStorage('ahjo_initiative');
+    $ids = $storage->getQuery()->accessCheck(FALSE)->execute();
+    if (!empty($ids)) {
+      $entities = $storage->loadMultiple($ids);
+      $storage->delete($entities);
+    }
+  }
+
+  // Drop map and message tables so they are recreated with the new id schema.
+  try {
+    $migration->getIdMap()->destroy();
+  }
+  catch (\Throwable $e) {
+  }
+
+  // Re-import initiatives.
+  $migration = $migration_plugin_manager->createInstance('ahjo_initiatives');
+  if ($migration !== FALSE) {
+    $executable = new MigrateExecutable($migration, new MigrateMessage());
+    $executable->import();
+  }
 }
