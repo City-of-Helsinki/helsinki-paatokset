@@ -286,7 +286,7 @@ function paatokset_ahjo_api_update_11004(): void {
 /**
  * Recreate ahjo_initiatives migration map after source id field changes.
  */
-function paatokset_ahjo_api_update_11006(): void {
+function paatokset_ahjo_api_update_11005(): void {
   $migration_plugin_manager = \Drupal::service('plugin.manager.migration');
   $migration = $migration_plugin_manager->createInstance('ahjo_initiatives');
   assert($migration instanceof MigrationInterface || $migration === FALSE);
@@ -314,6 +314,13 @@ function paatokset_ahjo_api_update_11006(): void {
     if (!empty($ids)) {
       $entities = $storage->loadMultiple($ids);
       $storage->delete($entities);
+    }
+
+    // Reset migration status again, as it will be stuck to rollback if we end
+    // up here.
+    $status = $migration->getStatus();
+    if ($status !== MigrationInterface::STATUS_IDLE) {
+      $migration->setStatus(MigrationInterface::STATUS_IDLE);
     }
   }
 
