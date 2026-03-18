@@ -65,19 +65,19 @@ class MeetingController extends ControllerBase {
       );
     }
 
-    $data = [
-      'data' => $meetings,
-      '#cache' => [
-        'max-age' => -1,
-        'contexts' => [
-          'url',
-        ],
-        'tags' => ['search_api_list:meetings'],
-      ],
-    ];
+    $cache = new CacheableMetadata();
+    $cache->addCacheContexts(['url']);
 
-    $response = new CacheableJsonResponse($data);
-    $response->addCacheableDependency(CacheableMetadata::createFromRenderArray($data));
+    if (empty($meetings)) {
+      $cache->setCacheMaxAge(60);
+    }
+    else {
+      $cache->setCacheMaxAge(-1);
+      $cache->addCacheTags(['search_api_list:meetings']);
+    }
+
+    $response = new CacheableJsonResponse(['data' => $meetings]);
+    $response->addCacheableDependency($cache);
     return $response;
   }
 
