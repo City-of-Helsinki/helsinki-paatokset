@@ -279,3 +279,11 @@ function paatokset_ahjo_api_update_11004(): void {
   $cfg->set('langcode', 'en');
   $cfg->save();
 }
+
+/**
+ * Re-fetch ahjo initiatives.
+ */
+function paatokset_ahjo_api_update_11005(): void {
+  \Drupal::database()->schema()->dropTable('migrate_map_ahjo_initiatives');
+  \Drupal::database()->schema()->dropTable('migrate_message_ahjo_initiatives');
+}
