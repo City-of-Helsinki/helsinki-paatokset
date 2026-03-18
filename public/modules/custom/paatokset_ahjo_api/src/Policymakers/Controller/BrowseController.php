@@ -197,9 +197,9 @@ class BrowseController extends ControllerBase {
     $langcode = $this->languageManager()->getCurrentLanguage()->getId();
 
     return match($langcode) {
-      'fi' => '/fi/paatoksenteko/etsi-paattajia',
-      'sv' => '/sv/beslutsfattande/sok-beslutsfattare',
-      default => '/en/decision-making/search-decision-makers',
+      'fi' => '/fi/paattajat/etsi-paattajia',
+      'sv' => '/sv/beslutsfattare/sok-beslutsfattare',
+      default => '/en/decisionmakers/search-decision-makers',
     };
   }
 

@@ -15,6 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
@@ -84,17 +85,20 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       return [];
     }
 
+    $policymaker = $this->policymakerService->getPolicymaker();
+    $parentOrgId = $policymaker->getOrganization()->getParentOrganization()?->getAhjoId();
+
     return [
       '#theme' => 'policymaker_side_navigation',
       '#items' => $this->items,
       '#currentPath' => $this->currentPath,
       '#menu_attributes' => new Attribute(['class' => 'menu']),
       '#menu_link_parent' => [
-        'title' => $this->t('Decisionmakers'),
+        'title' => $this->t('Browse policymakers'),
         'url' => match ($this->currentLang) {
-          'fi' => Url::fromRoute('policymakers.fi'),
-          'sv' => Url::fromRoute('policymakers.sv'),
-          'en' => Url::fromRoute('policymakers.en'),
+          'fi' => Url::fromUserInput('/fi/paattajat/selaa-paattajia/' . $parentOrgId),
+          'sv' => Url::fromUserInput('/sv/beslutsfattare/sok-beslutsfattare/' . $parentOrgId),
+          'en' => Url::fromUserInput('/en/decisionmakers/browse-decisionmakers/' . $parentOrgId),
         },
       ],
       '#attached' => [

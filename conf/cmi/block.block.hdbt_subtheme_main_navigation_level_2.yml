@@ -38,4 +38,4 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: "/paatoksenteko\r\n/beslutsfattande\r\n/decision-making\r\n/paatoksenteko/etsi-paattajia\r\n/beslutsfattande/sok-beslutsfattare\r\n/decision-making/search-decisions-makers"
+    pages: "/paattajat\r\n/beslutsfattare\r\n/decisionmakers\r\n/paattajat/etsi-paattajia\r\n/beslutsfattare/sok-beslutsfattare\r\n/decisionmakers/search-decisions-makers"
