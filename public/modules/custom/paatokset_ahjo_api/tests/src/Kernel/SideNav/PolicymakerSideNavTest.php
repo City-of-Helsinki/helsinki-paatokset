@@ -147,7 +147,7 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
     // Custom menu link paragraph is present.
     $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
     $build = $sut->build();
-    $this->assertEquals('policymakers.en', $build['#menu_link_parent']['url']?->getRouteName() ?? '');
+    $this->assertEquals('/en/decisionmakers/browse-decisionmakers/', $build['#menu_link_parent']['url']?->toString() ?? '');
     $this->assertMenuItems([
       // Link to current policymaker.
       $policymaker->toUrl('canonical')->toString(),
