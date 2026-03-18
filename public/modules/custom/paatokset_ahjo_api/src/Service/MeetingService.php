@@ -113,6 +113,7 @@ class MeetingService {
     }
 
     try {
+      $query->setOption('search_api_bypass_access', TRUE);
       $results = $query->execute();
     }
     catch (\Throwable $exception) {
