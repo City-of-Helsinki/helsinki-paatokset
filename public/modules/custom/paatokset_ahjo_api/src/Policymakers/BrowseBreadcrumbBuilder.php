@@ -52,9 +52,9 @@ class BrowseBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $route = match($langcode) {
-      'fi' => '/fi/paatoksenteko',
-      'sv' => '/sv/beslutsfattande',
-      default => '/en/decision-making',
+      'fi' => '/fi/paattajat',
+      'sv' => '/sv/beslutsfattare',
+      default => '/en/decisionmakers',
     };
 
     $breadcrumb->addLink(

@@ -22,7 +22,7 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/paatoksenteko/lautakunnat-ja-johtokunnat\r\n/beslutsfattande/namnder-och-direktioner\r\n/decision-making/committees-and-boards"
+    pages: "/paattajat/lautakunnat-ja-johtokunnat\r\n/beslutsfattare/namnder-och-direktioner\r\n/decisionmakers/committees-and-boards"
   response_status:
     id: response_status
     negate: false

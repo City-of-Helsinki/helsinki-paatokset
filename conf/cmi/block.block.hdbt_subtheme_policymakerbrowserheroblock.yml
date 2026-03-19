@@ -22,4 +22,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/decision-making/browse-decision-makers\r\n/decision-making/browse-decision-makers/*"
+    pages: "/decisionmakers/browse-decision-makers\r\n/decisionmakers/browse-decision-makers/*"

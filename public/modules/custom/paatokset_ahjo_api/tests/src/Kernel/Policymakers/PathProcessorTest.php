@@ -50,16 +50,16 @@ class PathProcessorTest extends KernelTestBase {
 
     $tests = [
       'fi' => [
-        '/decision-making/browse-decision-makers' => '/paatoksenteko/selaa-paattajia',
-        '/decision-making/browse-decision-makers/kaupunginvaltuusto' => '/paatoksenteko/selaa-paattajia/kaupunginvaltuusto',
+        '/decisionmakers/browse-decision-makers' => '/paattajat/selaa-paattajia',
+        '/decisionmakers/browse-decision-makers/kaupunginvaltuusto' => '/paattajat/selaa-paattajia/kaupunginvaltuusto',
       ],
       'sv' => [
-        '/decision-making/browse-decision-makers' => '/beslutsfattare/bladra-bland-beslutsfattare',
-        '/decision-making/browse-decision-makers/stadsfullmäktige' => '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige',
+        '/decisionmakers/browse-decision-makers' => '/beslutsfattare/bladra-bland-beslutsfattare',
+        '/decisionmakers/browse-decision-makers/stadsfullmäktige' => '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige',
       ],
       'en' => [
-        '/decision-making/browse-decision-makers' => '/decision-making/browse-decision-makers',
-        '/decision-making/browse-decision-makers/city-council' => '/decision-making/browse-decision-makers/city-council',
+        '/decisionmakers/browse-decision-makers' => '/decisionmakers/browse-decision-makers',
+        '/decisionmakers/browse-decision-makers/city-council' => '/decisionmakers/browse-decision-makers/city-council',
       ],
     ];
 
@@ -81,16 +81,16 @@ class PathProcessorTest extends KernelTestBase {
 
     $tests = [
       'fi' => [
-        '/paatoksenteko/selaa-paattajia' => [],
-        '/paatoksenteko/selaa-paattajia/kaupunginvaltuusto' => ['org' => 'kaupunginvaltuusto'],
+        '/paattajat/selaa-paattajia' => [],
+        '/paattajat/selaa-paattajia/kaupunginvaltuusto' => ['org' => 'kaupunginvaltuusto'],
       ],
       'sv' => [
         '/beslutsfattare/bladra-bland-beslutsfattare' => [],
         '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige' => ['org' => 'stadsfullmäktige'],
       ],
       'en' => [
-        '/decision-making/browse-decision-makers' => [],
-        '/decision-making/browse-decision-makers/city-council' => ['org' => 'city-council'],
+        '/decisionmakers/browse-decision-makers' => [],
+        '/decisionmakers/browse-decision-makers/city-council' => ['org' => 'city-council'],
       ],
     ];
 
