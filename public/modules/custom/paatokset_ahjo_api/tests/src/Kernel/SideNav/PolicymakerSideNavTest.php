@@ -6,7 +6,6 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\SideNav;
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
@@ -119,7 +118,6 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
       'field_policymaker_id' => 'PM001',
     ]);
     $policymaker->save();
-
 
     Organization::create([
       'id' => '123',
