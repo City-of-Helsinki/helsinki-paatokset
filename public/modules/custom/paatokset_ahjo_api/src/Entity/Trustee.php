@@ -72,6 +72,7 @@ class Trustee extends Node implements AhjoUpdatableInterface {
       ->sort('id', 'DESC')
       ->execute();
 
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Initiative[] */
     return $result ? $storage->loadMultiple($result) : [];
   }
 
