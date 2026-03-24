@@ -58,6 +58,8 @@ if ($ahjo_webhook_secret = getenv('AHJO_WEBHOOK_SECRET')) {
   $config['helfi_api_base.api_accounts']['accounts'][] = [
     'username' => 'ahjo-webhook',
     'password' => $ahjo_webhook_secret,
+    'api_key' => $ahjo_webhook_secret,
+    'roles' => ['elevated_api_user'],
   ];
 }
 

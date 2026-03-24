@@ -1,9 +1,6 @@
 administer paatokset:
   title: 'Administer Päätökset site'
 
-access ahjo subscriber:
-  title: 'Write to ahjo subscriber queue'
-
 administer ahjo openid:
   title: 'Administer Ahjo OpenID settings.'
 access ahjo openid token:
