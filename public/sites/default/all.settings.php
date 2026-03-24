@@ -54,6 +54,13 @@ if (getenv('ALLU_BASE_URL')) {
   $config['paatokset_allu.settings']['base_url'] = getenv('ALLU_BASE_URL');
 }
 
+if ($ahjo_webhook_secret = getenv('AHJO_WEBHOOK_SECRET')) {
+  $config['helfi_api_base.api_accounts']['accounts'][] = [
+    'username' => 'ahjo-webhook',
+    'password' => $ahjo_webhook_secret,
+  ];
+}
+
 $additionalEnvVars = [
   // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-9640.
   // 'ALLU_USERNAME',
