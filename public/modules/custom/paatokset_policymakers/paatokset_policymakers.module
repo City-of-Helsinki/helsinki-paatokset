@@ -37,18 +37,6 @@ function paatokset_policymakers_node_delete(EntityInterface $entity) {
  */
 function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
   return [
-    'policymaker_cards' => [
-      'variables' => [
-        'cards' => [],
-      ],
-      'path' => $path . '/templates/component',
-    ],
-    'policymaker_accordions' => [
-      'variables' => [
-        'accordions' => [],
-      ],
-      'path' => $path . '/templates/component',
-    ],
     'node__policymaker' => [
       'render element' => 'elements',
       'template' => 'node--policymaker',
@@ -192,6 +180,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     $ids = $storage
       ->getQuery()
       ->accessCheck()
+      ->condition('status', 1)
       ->condition('field_policymaker_id', $policymaker->getAhjoId())
       ->condition('field_is_decision', TRUE)
       // Sort by date and section number.

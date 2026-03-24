@@ -298,7 +298,7 @@ paatokset_ahjo_openid.token:
     no_cache: TRUE
 
 paatokset_ahjo_api.browse_policymakers:
-  path: '/decisionmakers/browse-decisionmakers/{org}'
+  path: '/decisionmakers/browse-decision-makers/{org}'
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\BrowseController::build'
     _title_callback: '\Drupal\paatokset_ahjo_api\Policymakers\Controller\BrowseController::title'

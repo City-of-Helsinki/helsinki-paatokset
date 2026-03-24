@@ -50,16 +50,16 @@ class PathProcessorTest extends KernelTestBase {
 
     $tests = [
       'fi' => [
-        '/decisionmakers/browse-decisionmakers' => '/paattajat/selaa-paattajia',
-        '/decisionmakers/browse-decisionmakers/kaupunginvaltuusto' => '/paattajat/selaa-paattajia/kaupunginvaltuusto',
+        '/decisionmakers/browse-decision-makers' => '/paattajat/selaa-paattajia',
+        '/decisionmakers/browse-decision-makers/kaupunginvaltuusto' => '/paattajat/selaa-paattajia/kaupunginvaltuusto',
       ],
       'sv' => [
-        '/decisionmakers/browse-decisionmakers' => '/beslutsfattare/bladra-bland-beslutsfattare',
-        '/decisionmakers/browse-decisionmakers/stadsfullmäktige' => '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige',
+        '/decisionmakers/browse-decision-makers' => '/beslutsfattare/bladra-bland-beslutsfattare',
+        '/decisionmakers/browse-decision-makers/stadsfullmäktige' => '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige',
       ],
       'en' => [
-        '/decisionmakers/browse-decisionmakers' => '/decisionmakers/browse-decisionmakers',
-        '/decisionmakers/browse-decisionmakers/city-council' => '/decisionmakers/browse-decisionmakers/city-council',
+        '/decisionmakers/browse-decision-makers' => '/decisionmakers/browse-decision-makers',
+        '/decisionmakers/browse-decision-makers/city-council' => '/decisionmakers/browse-decision-makers/city-council',
       ],
     ];
 
@@ -89,8 +89,8 @@ class PathProcessorTest extends KernelTestBase {
         '/beslutsfattare/bladra-bland-beslutsfattare/stadsfullmäktige' => ['org' => 'stadsfullmäktige'],
       ],
       'en' => [
-        '/decisionmakers/browse-decisionmakers' => [],
-        '/decisionmakers/browse-decisionmakers/city-council' => ['org' => 'city-council'],
+        '/decisionmakers/browse-decision-makers' => [],
+        '/decisionmakers/browse-decision-makers/city-council' => ['org' => 'city-council'],
       ],
     ];
 

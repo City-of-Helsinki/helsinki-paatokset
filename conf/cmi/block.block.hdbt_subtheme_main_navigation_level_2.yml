@@ -23,10 +23,10 @@ settings:
   provider: menu_block_current_language
   level: 2
   expand_all_items: true
-  depth: 0
+  depth: null
   translation_providers:
-    views: views
     menu_link_content: menu_link_content
+    views: views
     default: '0'
 visibility:
   'entity_bundle:node':
@@ -38,4 +38,4 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: "/paattajat\r\n/beslutsfattare\r\n/decisionmakers"
+    pages: "/paattajat\r\n/beslutsfattare\r\n/decisionmakers\r\n/paattajat/etsi-paattajia\r\n/beslutsfattare/sok-beslutsfattare\r\n/decisionmakers/search-decisions-makers"

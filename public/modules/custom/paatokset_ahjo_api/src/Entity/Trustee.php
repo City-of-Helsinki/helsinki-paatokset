@@ -62,12 +62,18 @@ class Trustee extends Node implements AhjoUpdatableInterface {
    *   Initiatives made by the trustee.
    */
   public function getInitiatives(): array {
+    $storage = \Drupal::entityTypeManager()->getStorage('ahjo_initiative');
+
+    $result = $storage
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('trustee_nid', $this->id())
+      ->sort('date', 'DESC')
+      ->sort('id', 'DESC')
+      ->execute();
+
     /** @var \Drupal\paatokset_ahjo_api\Entity\Initiative[] */
-    return \Drupal::entityTypeManager()
-      ->getStorage('ahjo_initiative')
-      ->loadByProperties([
-        'trustee_nid' => $this->id(),
-      ]);
+    return $result ? $storage->loadMultiple($result) : [];
   }
 
 }

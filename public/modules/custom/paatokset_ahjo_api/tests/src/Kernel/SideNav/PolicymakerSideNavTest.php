@@ -10,6 +10,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerMobileNav;
 use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerSideNav;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -37,6 +38,7 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('ahjo_organization');
 
     ParagraphsType::create([
       'id' => 'custom_content_links',
@@ -113,8 +115,27 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
     $policymaker = Policymaker::create([
       'title' => 'Kaupunginvaltuusto',
       'field_organization_type' => 'valtuusto',
+      'field_policymaker_id' => 'PM001',
     ]);
     $policymaker->save();
+
+    Organization::create([
+      'id' => '123',
+      'title' => 'Test parent organization',
+      'type' => 1,
+      'existing' => 1,
+      'organization_above' => NULL,
+    ])->save();
+
+    Organization::create([
+      'id' => 'PM001',
+      'title' => 'Test organization',
+      'type' => 1,
+      'existing' => 1,
+      'organization_above' => '123',
+    ])->save();
+
+    $this->assertNotEmpty($policymaker->getOrganization());
     $routeMatch
       ->getParameter('node')
       ->willReturn($policymaker);
@@ -147,7 +168,7 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
     // Custom menu link paragraph is present.
     $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
     $build = $sut->build();
-    $this->assertEquals('policymakers.en', $build['#menu_link_parent']['url']?->getRouteName() ?? '');
+    $this->assertEquals('/en/decisionmakers/browse-decisionmakers/123', $build['#menu_link_parent']['url']?->toString() ?? '');
     $this->assertMenuItems([
       // Link to current policymaker.
       $policymaker->toUrl('canonical')->toString(),
