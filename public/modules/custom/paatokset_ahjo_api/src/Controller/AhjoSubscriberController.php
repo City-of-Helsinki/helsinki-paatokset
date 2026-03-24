@@ -9,7 +9,6 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\AhjoCallbackQueueWorker;
 use Drupal\paatokset_ahjo_api\Queue\SubscriberQueueEnum;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +27,11 @@ final class AhjoSubscriberController extends ControllerBase {
    *   Queue factory.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    *   The logger.
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
-   *   Ahjo proxy service.
    */
   public function __construct(
     private readonly QueueFactory $queueFactory,
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerChannelInterface $logger,
-    private readonly AhjoProxy $ahjoProxy,
   ) {
   }
 
@@ -89,12 +85,6 @@ final class AhjoSubscriberController extends ControllerBase {
         '@update_type' => $update_type,
         '@created' => $created,
       ]);
-    }
-
-    // Can cache clearing happen in queue worker?
-    $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
-    if ($id === 'meetings') {
-      $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
     }
 
     return new JsonResponse($data);

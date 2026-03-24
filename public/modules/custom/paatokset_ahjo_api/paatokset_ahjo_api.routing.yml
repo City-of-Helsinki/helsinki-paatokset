@@ -123,8 +123,10 @@ paatokset_ahjo_api.subscriber:
   defaults:
     _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::callback'
   requirements:
-    _permission: 'access content'
+    _permission: 'access ahjo subscriber'
   methods: [GET, POST]
+  options:
+    _auth: ['cookie', 'key_auth']
 
 paatokset_ahjo_api.queue_list:
   path: 'ahjo_api/callback-queue/{id}'
