@@ -10,7 +10,7 @@ import { SelectionsContainer } from './SelectionsContainer';
 import { TrusteeFilter } from '../components/TrusteeFilter';
 import { BodiesFilter } from '../components/BodiesFilter';
 
-export const FormContainer = ({ url }: { url: string }) => {
+export const FormContainer = () => {
   const updateQuery = useSetAtom(updateQueryAtom);
 
   return (
@@ -23,11 +23,11 @@ export const FormContainer = ({ url }: { url: string }) => {
       }}
       role='search'
     >
-      <SearchBar url={url} />
+      <SearchBar />
       <div className='hdbt-search--react__dropdown-filters'>
         <DateFilter />
         <CategoryFilter />
-        <DMSelect url={url} />
+        <DMSelect />
       </div>
       <div className='react-search__checkbox-filter-container'>
         <fieldset className='hdbt-search--react__fieldset'>

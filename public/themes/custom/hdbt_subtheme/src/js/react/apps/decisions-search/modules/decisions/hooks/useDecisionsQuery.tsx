@@ -31,10 +31,14 @@ const fields = [
   DecisionIndex.UNIQUE_ISSUE_ID,
 ];
 
-export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQueryContainer => {
+export const useDecisionsQuery = (customSearchTerm?: string): Record<string, unknown> | string | null => {
   const submittedState = useAtomValue(submittedStateAtom);
 
   return useMemo(() => {
+    if (!submittedState) {
+      return null;
+    }
+
     const filter: estypes.QueryDslQueryContainer[] = [{ exists: { field: DecisionIndex.MEETING_DATE } }];
     const should: estypes.QueryDslQueryContainer[] = [];
 
@@ -42,11 +46,11 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
       if (customSearchTerm) {
         return customSearchTerm;
       }
-      return submittedState[Components.SEARCHBAR] && submittedState[Components.SEARCHBAR].trim();
+      return submittedState[Components.SEARCHBAR]?.toString().trim();
     };
 
     const searchTerm = getSearchTerm();
-    if (searchTerm?.length) {
+    if (searchTerm?.toString().length) {
       getBaseSearchTermQuery(searchTerm, dataFields).forEach((item) => should.push(item));
       getAdvancedBoostQuery(searchTerm, DecisionIndex.SUBJECT).forEach((item) => should.push(item));
       [DecisionIndex.DECISION_CONTENT, DecisionIndex.DECISION_MOTION].forEach((field) =>
@@ -59,29 +63,30 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
     }
 
     const categoryFilter = submittedState[Components.CATEGORY];
-    if (categoryFilter.length) {
-      filter.push({ terms: { top_category_code: categoryFilter.map((category) => category.value) } });
+    if (Array.isArray(categoryFilter) && categoryFilter.length) {
+      filter.push({
+        terms: { top_category_code: categoryFilter.map((category: { value: string }) => category.value) },
+      });
     }
 
     const fromFilter = submittedState[Components.FROM];
     const toFilter = submittedState[Components.TO];
-    const dateQuery = { range: { meeting_date: {} } };
+    const dateRange: { gte?: string; lte?: string } = {};
 
-    [fromFilter, toFilter].forEach((date, index) => {
-      if (date) {
-        dateQuery.range.meeting_date[index === 0 ? 'gte' : 'lte'] = DateTime.fromFormat(date, HDS_DATE_FORMAT).toFormat(
-          'yyyy-MM-dd',
-        );
-      }
-    });
+    if (typeof fromFilter === 'string' && fromFilter) {
+      dateRange.gte = DateTime.fromFormat(fromFilter, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+    }
+    if (typeof toFilter === 'string' && toFilter) {
+      dateRange.lte = DateTime.fromFormat(toFilter, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+    }
 
-    if (dateQuery.range.meeting_date.gte || dateQuery.range.meeting_date.lte) {
-      filter.push(dateQuery);
+    if (dateRange.gte || dateRange.lte) {
+      filter.push({ range: { meeting_date: dateRange } });
     }
 
     const dmSelection = submittedState[Components.DECISIONMAKER];
-    if (dmSelection.length) {
-      filter.push({ terms: { [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm) => dm.value) } });
+    if (Array.isArray(dmSelection) && dmSelection.length) {
+      filter.push({ terms: { [DecisionIndex.POLICYMAKER_ID]: dmSelection.map((dm: { value: string }) => dm.value) } });
     }
 
     [Components.BODIES, Components.TRUSTEES].forEach((component) => {
@@ -101,17 +106,18 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
       }
     });
 
-    const query: estypes.QueryDslQueryContainer = { bool: { filter } };
-
+    const boolQuery: estypes.QueryDslBoolQuery = { filter };
     if (should.length) {
-      query.bool.should = should;
-      query.bool.minimum_should_match = 1;
+      boolQuery.should = should;
+      boolQuery.minimum_should_match = 1;
     }
+    const query: estypes.QueryDslQueryContainer = { bool: boolQuery };
 
     const size = 10;
-    const page = submittedState.page || 1;
+    const pageValue = submittedState[Components.PAGE];
+    const page = (typeof pageValue === 'number' ? pageValue : undefined) || 1;
 
-    const sort = [];
+    const sort: Array<Record<string, string>> = [];
     const sortSelection = submittedState[Components.SORT];
     switch (sortSelection) {
       case SortOptions.OLDEST:
@@ -128,7 +134,7 @@ export const useDecisionsQuery = (customSearchTerm: string): estypes.QueryDslQue
 
     const { currentLanguage } = drupalSettings.path;
     const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
-    const innerHitSort = [
+    const innerHitSort: Array<Record<string, unknown>> = [
       {
         _script: {
           type: 'number',

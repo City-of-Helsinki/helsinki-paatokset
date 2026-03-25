@@ -1,5 +1,7 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
+
+declare const ELASTIC_DEV_URL: string | undefined;
 import { DateTime } from 'luxon';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
@@ -191,7 +193,7 @@ export const getFromAtom = atom((get) => {
   return state[Components.FROM];
 });
 
-export const setFromAtom = atom(null, (get, set, value: string) => {
+export const setFromAtom = atom(null, (get, set, value: string | undefined) => {
   const state = { ...get(searchStateAtom) };
   state[Components.FROM] = value;
   set(searchStateAtom, state);
@@ -202,7 +204,7 @@ export const getToAtom = atom((get) => {
   return state[Components.TO];
 });
 
-export const setToAtom = atom(null, (get, set, value: string) => {
+export const setToAtom = atom(null, (get, set, value: string | undefined) => {
   const state = { ...get(searchStateAtom) };
   state[Components.TO] = value;
   set(searchStateAtom, state);
@@ -257,6 +259,17 @@ export const setSortAtom = atom(null, (get, set, value: [{ label: string; value:
 });
 
 export const initializedAtom = atom<boolean>(false);
+
+const ROOT_ID = 'paatokset_search';
+
+const getElasticUrl = () => {
+  const devUrl = typeof ELASTIC_DEV_URL !== 'undefined' ? ELASTIC_DEV_URL : '';
+  if (devUrl) return devUrl;
+  const rootElement = document.getElementById(ROOT_ID);
+  return rootElement?.dataset.url || '';
+};
+
+export const getElasticUrlAtom = atom(getElasticUrl());
 
 export const getTrusteesFilterAtom = atom((get) => {
   const state = { ...get(searchStateAtom) };
