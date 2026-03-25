@@ -1,9 +1,12 @@
 import type { estypes } from '@elastic/elasticsearch';
+import { useAtomValue } from 'jotai';
 import type { Decision } from '../../../common/types/Decision';
 import { DecisionIndex } from '../enum/IndexFields';
+import { getElasticUrlAtom } from '../store';
 import { useDecisionsQuery } from './useDecisionsQuery';
 
-export const useGetSuggestions = async (searchTerm: string, url: string) => {
+export const useGetSuggestions = async (searchTerm: string) => {
+  const url = useAtomValue(getElasticUrlAtom);
   const baseQuery = useDecisionsQuery(searchTerm);
 
   if (!searchTerm || !searchTerm.length || searchTerm.length < 2) {

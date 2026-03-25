@@ -9,10 +9,11 @@ import type { Decision } from '../../../common/types/Decision';
 import { ResultCard } from '../components/ResultCard';
 import { ResultsSort } from '../components/ResultsSort';
 import { useDecisionsQuery } from '../hooks/useDecisionsQuery';
-import { aggsAtom, getPageAtom, initializedAtom, setPageAtom } from '../store';
+import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, setPageAtom } from '../store';
 
-export const ResultsContainer = ({ url }: { url: string }) => {
+export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
+  const url = useAtomValue(getElasticUrlAtom);
   const currentPage = useAtomValue(getPageAtom);
   const setPage = useSetAtom(setPageAtom);
   const query = useDecisionsQuery();
