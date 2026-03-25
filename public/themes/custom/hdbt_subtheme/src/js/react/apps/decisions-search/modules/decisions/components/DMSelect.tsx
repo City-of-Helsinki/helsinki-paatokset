@@ -1,6 +1,6 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { Select, type SelectData, useSelectStorage } from 'hds-react';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, useEffect } from 'react';
 import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
@@ -10,7 +10,7 @@ import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
 import { Events } from '../enum/Events';
 import { PolicymakerIndex } from '../enum/IndexFields';
-import { getDecisionMakersAtom, setDecisionMakersAtom } from '../store';
+import { getDecisionMakersAtom, getElasticUrlAtom, setDecisionMakersAtom } from '../store';
 
 const dataFields = ['title', 'trustee_name', 'field_last_name', 'field_first_name'];
 
@@ -52,7 +52,8 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
   },
 });
 
-export const DMSelect = ({ url }: { url: string }) => {
+export const DMSelect = () => {
+  const url = useAtomValue(getElasticUrlAtom);
   const setDecisionMakers = useSetAtom(setDecisionMakersAtom);
   const getDMSelectValue = useAtomCallback(useCallback((get) => get(getDecisionMakersAtom)));
 
