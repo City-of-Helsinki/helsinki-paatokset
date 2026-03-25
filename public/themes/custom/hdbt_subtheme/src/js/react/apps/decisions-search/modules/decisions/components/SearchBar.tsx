@@ -4,10 +4,10 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { getSearchTermAtom, setSearchTermAtom, updateQueryAtom } from '../store';
 import { useGetSuggestions } from '../hooks/useGetSuggestions';
 
-export const SearchBar = ({ url }: { url: string }) => {
+export const SearchBar = () => {
   const searchTerm = useAtomValue(getSearchTermAtom);
   const setSearchTerm = useSetAtom(setSearchTermAtom);
-  const suggestions = useGetSuggestions(searchTerm, url);
+  const suggestions = useGetSuggestions(searchTerm);
   const onSubmit = useSetAtom(updateQueryAtom);
 
   return (

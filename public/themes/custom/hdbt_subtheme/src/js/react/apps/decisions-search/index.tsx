@@ -19,19 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const type = rootElement.dataset.type || 'decisions';
-  const elasticUrl = rootElement.dataset.url || 'http://localhost:9200';
 
   let searchContainer: React.ReactElement;
 
   switch (type) {
     case 'decisions':
-      searchContainer = <DecisionsContainer url={elasticUrl} />;
+      searchContainer = <DecisionsContainer />;
       break;
     case 'policymakers':
       searchContainer = <PolicymakerContainer />;
       break;
     default:
-      searchContainer = <DecisionsContainer url={elasticUrl} />;
+      searchContainer = <DecisionsContainer />;
   }
 
   ReactDOM.render(

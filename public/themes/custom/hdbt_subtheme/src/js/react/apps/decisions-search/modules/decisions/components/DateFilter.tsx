@@ -1,15 +1,15 @@
 import { Button, ButtonPresetTheme, Checkbox, DateInput, IconMinus, SelectionGroup } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { useState } from 'react';
+import { type MouseEvent, useState } from 'react';
 import { DateTime } from 'luxon';
 
 import { Components } from '../enum/Components';
 import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import Collapsible from '@/react/common/Collapsible';
-import { DatePicker } from './DatePicker';
 import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 import { DateSelection } from '../enum/DateSelection';
+import { DatePicker } from './DatePicker';
 
 export const DateFilter = () => {
   const from = useAtomValue(getFromAtom);
@@ -37,12 +37,12 @@ export const DateFilter = () => {
     return titleString;
   };
 
-  const handleDatePick = (value, callable) => {
+  const handleDatePick = (value: string, callable: (value: string) => void) => {
     callable(value);
   };
 
-  const handleSelectionClick = (e: MouseEvent<HTMLInputElement>) => {
-    if (e.target.checked === false) {
+  const handleSelectionClick = (e: MouseEvent) => {
+    if ((e.target as HTMLInputElement).checked === false) {
       setFrom(undefined);
       setTo(undefined);
       return;
@@ -79,27 +79,24 @@ export const DateFilter = () => {
               <div className='date-filter__fields-container'>
                 <DateInput
                   autoFocus
+                  id={Components.FROM}
                   label={Drupal.t('Start date', {}, { context: 'Decisions search' })}
                   language={drupalSettings.path.currentLanguage}
                   name={Components.FROM}
                   onChange={(value) => handleDatePick(value, setFrom)}
-                  value={from}
+                  value={from?.toString()}
                 />
                 <IconMinus className='date-filter__fields-divider' />
                 <DateInput
+                  id={Components.TO}
                   label={Drupal.t('End date', {}, { context: 'Decisions search' })}
                   language={drupalSettings.path.currentLanguage}
                   name={Components.TO}
                   onChange={(value) => handleDatePick(value, setTo)}
-                  value={to}
+                  value={to?.toString()}
                 />
+                <DatePicker from={from} to={to?.toString()} setFrom={setFrom} setTo={setTo} />
               </div>
-              <DatePicker
-                from={from}
-                setFrom={(value) => handleDatePick(value, setFrom)}
-                setTo={(value) => handleDatePick(value, setTo)}
-                to={to}
-              />
             </div>
           </div>
         ) : (
