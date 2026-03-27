@@ -34,6 +34,9 @@ final class AhjoTokenCommands extends Command {
     parent::__construct();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   protected function execute(InputInterface $input, OutputInterface $output): int {
     try {
       $this->ahjoOpenId->refreshAuthToken();
