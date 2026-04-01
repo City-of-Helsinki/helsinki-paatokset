@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# We don't care if ahjo token expires in non-production environment.
+# @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-12814
+if [ "$APP_ENV" != "production" ]; then
+  echo "Skipping ahjo refresh script on $APP_ENV"
+  exit 0
+fi
+
 while true
 do
   # Renew auth and refresh tokens every 60 minutes.
