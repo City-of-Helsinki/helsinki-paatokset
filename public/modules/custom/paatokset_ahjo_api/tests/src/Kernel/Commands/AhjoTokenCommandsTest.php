@@ -11,14 +11,13 @@ use Drupal\paatokset_ahjo_api\Drush\Commands\AhjoTokenCommands;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Tests ahjo token commands.
  */
 class AhjoTokenCommandsTest extends KernelTestBase {
-
-  use PropertyTrait;
 
   /**
    * Tests token refresh command.
@@ -32,7 +31,10 @@ class AhjoTokenCommandsTest extends KernelTestBase {
     $openId->refreshAuthToken()
       ->shouldBeCalled()
       ->willReturn(new AhjoAuthToken('123', time() + 3600, '456'));
-    $this->assertEquals(AhjoTokenCommands::EXIT_SUCCESS, $sut->refreshAuthToken());
+
+    $tester = new CommandTester($sut);
+    $tester->execute([]);
+    $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
   }
 
   /**
@@ -46,13 +48,13 @@ class AhjoTokenCommandsTest extends KernelTestBase {
     // Should log an error message.
     $logger->log("error", Argument::any(), Argument::any())->shouldBeCalled();
 
-    $logger = $this->prophesize(LoggerInterface::class);
-    $sut->setLogger($logger->reveal());
-
     // Should refresh the token.
     $openId->refreshAuthToken()
       ->willThrow(new AhjoOpenIdException('test exception'));
-    $this->assertEquals(AhjoTokenCommands::EXIT_FAILURE, $sut->refreshAuthToken());
+
+    $tester = new CommandTester($sut);
+    $tester->execute([]);
+    $this->assertEquals(Command::FAILURE, $tester->getStatusCode());
   }
 
 }
