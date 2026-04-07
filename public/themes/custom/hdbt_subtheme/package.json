@@ -24,12 +24,14 @@
     "The following packages were updated manually.",
     "Remove this section once the dependencies have been updated in their respective upstream packages.",
     {
+      "brace-expansion": ">=5.0.5, dependency of minimatch",
       "diff": "^8.0.3, dependency of backstopjs",
       "minimatch": ">=10.2.1, dependency of hds-core (eslint)",
       "yauzl": "^3.2.1, dependency of backstopjs"
     }
   ],
   "overrides": {
+    "brace-expansion": "^5.0.5",
     "diff": "^8.0.3",
     "minimatch": "^10.2.1",
     "yauzl": "^3.2.1"

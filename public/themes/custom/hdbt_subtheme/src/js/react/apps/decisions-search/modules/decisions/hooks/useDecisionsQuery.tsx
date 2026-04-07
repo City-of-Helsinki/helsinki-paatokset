@@ -114,8 +114,8 @@ export const useDecisionsQuery = (customSearchTerm?: string): Record<string, unk
     const query: estypes.QueryDslQueryContainer = { bool: boolQuery };
 
     const size = 10;
-    const pageValue = submittedState[Components.PAGE];
-    const page = (typeof pageValue === 'number' ? pageValue : undefined) || 1;
+    const pageValue = Number(submittedState[Components.PAGE]);
+    const page = Number.isNaN(pageValue) || pageValue < 1 ? 1 : pageValue;
 
     const sort: Array<Record<string, string>> = [];
     const sortSelection = submittedState[Components.SORT];
