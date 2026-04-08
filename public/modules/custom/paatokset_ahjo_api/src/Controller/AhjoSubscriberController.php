@@ -7,7 +7,8 @@ namespace Drupal\paatokset_ahjo_api\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\QueueFactory;
-use Drupal\paatokset_ahjo_proxy\AhjoProxy;
+use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\AhjoCallbackQueueWorker;
+use Drupal\paatokset_ahjo_api\Queue\SubscriberQueueEnum;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class AhjoSubscriberController extends ControllerBase {
 
-  public const QUEUE_NAME = 'ahjo_api_subscriber_queue';
-
   /**
    * Constructor.
    *
@@ -28,14 +27,11 @@ final class AhjoSubscriberController extends ControllerBase {
    *   Queue factory.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    *   The logger.
-   * @param \Drupal\paatokset_ahjo_proxy\AhjoProxy $ahjoProxy
-   *   Ahjo proxy service.
    */
   public function __construct(
     private readonly QueueFactory $queueFactory,
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerChannelInterface $logger,
-    private readonly AhjoProxy $ahjoProxy,
   ) {
   }
 
@@ -51,10 +47,20 @@ final class AhjoSubscriberController extends ControllerBase {
    *   JSON response for debugging.
    */
   public function callback(Request $request, string $id): JsonResponse {
-    $queue = $this->queueFactory->get(self::QUEUE_NAME);
-
     $content = json_decode($request->getContent());
     $created = (int) (new \DateTime('NOW'))->format('U');
+
+    if (isset($content->updatetype)) {
+      $update_type = (string) $content->updatetype;
+    }
+    else {
+      $update_type = 'unknown';
+    }
+
+    // Push all items to default queue unless we have a specific queue for
+    // this type of event.
+    $queueEnum = SubscriberQueueEnum::tryFrom(sprintf('%s.%s', $id, $update_type)) ?? SubscriberQueueEnum::Default;
+    $queue = $this->queueFactory->get($queueEnum->getQueueName());
 
     $data = [
       'id' => $id,
@@ -66,19 +72,12 @@ final class AhjoSubscriberController extends ControllerBase {
     $item_id = $queue->createItem($data);
     $data['item_id'] = $item_id;
 
-    if (isset($content->updatetype)) {
-      $update_type = (string) $content->updatetype;
-    }
-    else {
-      $update_type = 'unknown';
-    }
     if (isset($content->id)) {
       $entity_id = (string) $content->id;
     }
     else {
       $entity_id = 'unknown';
     }
-
     if ($item_id) {
       $this->logger->info('Added item to @id queue: @entity_id (@update_type) on @created.', [
         '@id' => $id,
@@ -86,12 +85,6 @@ final class AhjoSubscriberController extends ControllerBase {
         '@update_type' => $update_type,
         '@created' => $created,
       ]);
-    }
-
-    // Can cache clearing happen in queue worker?
-    $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
-    if ($id === 'meetings') {
-      $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
     }
 
     return new JsonResponse($data);
@@ -110,7 +103,7 @@ final class AhjoSubscriberController extends ControllerBase {
     $data = [];
     $items = [];
 
-    $queue = $this->queueFactory->get(self::QUEUE_NAME);
+    $queue = $this->queueFactory->get(AhjoCallbackQueueWorker::QUEUE_NAME);
 
     while ($item = $queue->claimItem()) {
       if ($id === 'all' || (isset($item->data) && $item->data['id'] === $id)) {
