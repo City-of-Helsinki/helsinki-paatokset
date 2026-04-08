@@ -10,7 +10,6 @@ display:
           label: Otsikko
         type:
           label: Sisältötyyppi
-          separator: ', '
         name:
           label: Kirjoittaja
         status:
@@ -22,7 +21,6 @@ display:
           label: Päivitetty
         langcode:
           label: Kieli
-          separator: ', '
         operations:
           label: Toimenpiteet
       pager:
