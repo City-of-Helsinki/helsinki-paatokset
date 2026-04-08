@@ -19,9 +19,9 @@ final class KeyAuth extends KeyAuthBase {
    * {@inheritdoc}
    */
   public function getKey(Request $request) : false|string {
-    // Remove webhook sends 'Token' header.
+    // AHJO send requests using Token header.
     if ($request->headers->has('Token')) {
-      return $request->headers->get('Token', '');
+      return $request->headers->get('Token') ?: FALSE;
     }
     return parent::getKey($request);
   }

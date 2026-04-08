@@ -14,8 +14,10 @@ use Drupal\paatokset_ahjo_api\Queue\QueueWorkerBase;
 )]
 final class DecisionRemovedQueueWorker extends QueueWorkerBase {
 
-  public function processItem($data) {
+  /**
+   * {@inheritdoc}
+   */
+  public function processItem(mixed $data): void {
   }
 
 }
-

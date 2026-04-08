@@ -28,22 +28,6 @@ class AhjoQueueWorkerBase extends QueueWorkerBase {
   }
 
   /**
-   * Invalidates the cache for proxy.
-   *
-   * @param string $id
-   *   The action ID, for example 'decisions'.
-   * @param string $entity_id
-   *   The entity ID.
-   */
-  private function invalidateCacheForProxy(string $id, string $entity_id): void {
-    // Can cache clearing happen in queue worker?
-    $this->ahjoProxy->invalidateCacheForProxy($id, $entity_id);
-    if ($id === 'meetings') {
-      $this->ahjoProxy->invalidateAgendaItemsCache($entity_id);
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function processItem(mixed $data): void {
@@ -104,7 +88,11 @@ class AhjoQueueWorkerBase extends QueueWorkerBase {
     }
 
     $status = $this->ahjoProxy->migrateSingleEntity($data['id'], $entity);
-    $this->invalidateCacheForProxy($data['id'], $entity);
+
+    $this->ahjoProxy->invalidateCacheForProxy($data['id'], $entity);
+    if ($id === 'meetings') {
+      $this->ahjoProxy->invalidateAgendaItemsCache($entity);
+    }
 
     if ($status !== 1) {
       // Check if item should be moved to retry or error queue.
