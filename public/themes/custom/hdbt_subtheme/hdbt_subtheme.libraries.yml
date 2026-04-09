@@ -18,7 +18,7 @@ paatokset_submenu:
     dist/js/paatokset_submenus.min.js: {}
 
 allu-decisions-search:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/allu-decisions-search.min.js: {
       attributes: {
@@ -31,7 +31,7 @@ allu-decisions-search:
     - core/drupal
 
 decisions-search:
-  version: 2.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/decisions-search.min.js: {
       attributes: {
