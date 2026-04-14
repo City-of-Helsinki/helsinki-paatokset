@@ -1,19 +1,19 @@
 {
   "extends": "../../contrib/hdbt/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "@/react/common/*": ["../../contrib/hdbt/src/js/react/common/*"],
       "@/common/types/*": ["../../contrib/hdbt/src/js/types/*"],
       "@/types/*": ["../../contrib/hdbt/src/js/types/*"],
-      "react": ["../../contrib/hdbt/node_modules/react"],
+      "react": ["../../contrib/hdbt/node_modules/@types/react"],
+      "react/jsx-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-runtime"],
+      "react/jsx-dev-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-dev-runtime"],
       "react/*": ["../../contrib/hdbt/node_modules/react/*"],
-      "react-dom": ["../../contrib/hdbt/node_modules/react-dom"],
-      "react-dom/*": ["../../contrib/hdbt/node_modules/react-dom/*"],
-      "*": ["node_modules/*", "../../contrib/hdbt/node_modules/*"]
+      "react-dom": ["../../contrib/hdbt/node_modules/@types/react-dom"],
+      "react-dom/*": ["../../contrib/hdbt/node_modules/@types/react-dom/*", "../../contrib/hdbt/node_modules/react-dom/*"],
+      "*": ["./node_modules/*", "../../contrib/hdbt/node_modules/*"]
     },
-    "downlevelIteration": true,
-    "moduleResolution": "node",
     "typeRoots": [
       "./node_modules/@types",
       "./src/js/types",
