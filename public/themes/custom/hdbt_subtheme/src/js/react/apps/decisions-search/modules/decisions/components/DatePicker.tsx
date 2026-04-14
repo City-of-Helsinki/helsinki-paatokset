@@ -1,42 +1,45 @@
 import { formatHDSDate, parseHDSDate } from '@/react/common/helpers/dateUtils';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
 import Calendar from 'react-calendar';
+import type { LooseValue } from 'react-calendar/dist/shared/types.js';
 
-const isValidDate = (_date) => true;
+const isValidDate = (_date: unknown) => true;
 
 type Props = {
   // biome-ignore lint/complexity/noBannedTypes: @todo UHF-12501
   setTo: Function;
   // biome-ignore lint/complexity/noBannedTypes: @todo UHF-12501
   setFrom: Function;
-  from: string;
-  to: string;
+  from?: string;
+  to?: string;
 };
 
 export const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
-  const onSelect = (value: Array<Date>) => {
-    if (value[0]) {
+  const onSelect = (value: LooseValue) => {
+    if (!Array.isArray(value)) return;
+    if (value[0] instanceof Date) {
       setFrom(formatHDSDate(value[0]));
     }
-    if (value[1]) {
+    if (value[1] instanceof Date) {
       setTo(formatHDSDate(value[1]));
     } else {
       setTo(undefined);
     }
   };
 
-  const getValue = () => {
-    const value = [null, null];
+  const getValue = (): LooseValue => {
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
 
     if (from && isValidDate(from)) {
-      value[0] = parseHDSDate(from);
+      startDate = parseHDSDate(from);
     }
 
     if (to && isValidDate(to)) {
-      value[1] = parseHDSDate(to);
+      endDate = parseHDSDate(to);
     }
 
-    return value;
+    return [startDate, endDate];
   };
 
   return (

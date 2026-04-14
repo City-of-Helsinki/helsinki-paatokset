@@ -89,7 +89,6 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           helperText={Drupal.t('Eg. 5.11.2024 - 10.11.2024', {}, { context: 'Allu decision search' })}
           id='date-range-select'
           label={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
-          title={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
           setStart={(d?: string) => {
             if (endDisabled && d) {
               setDates({ start: d, end: d });

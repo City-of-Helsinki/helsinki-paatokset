@@ -1,5 +1,5 @@
 import type { estypes } from '@elastic/elasticsearch';
-import { Select, type SelectData, useSelectStorage } from 'hds-react';
+import { Select, useSelectStorage } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, useEffect } from 'react';
@@ -17,7 +17,7 @@ const dataFields = ['title', 'trustee_name', 'field_last_name', 'field_first_nam
 const { currentLanguage } = drupalSettings.path;
 const preferredLanguage = currentLanguage === 'sv' ? 'sv' : 'fi';
 
-const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
+const getQuery = (searchTerm: string): Record<string, unknown> => ({
   _source: false,
   collapse: {
     field: PolicymakerIndex.FIELD_POLICYMAKER_ID,
@@ -55,7 +55,7 @@ const getQuery = (searchTerm): estypes.QueryDslQueryContainer => ({
 export const DMSelect = () => {
   const url = useAtomValue(getElasticUrlAtom);
   const setDecisionMakers = useSetAtom(setDecisionMakersAtom);
-  const getDMSelectValue = useAtomCallback(useCallback((get) => get(getDecisionMakersAtom)));
+  const getDMSelectValue = useAtomCallback(useCallback((get) => get(getDecisionMakersAtom), []));
 
   const onChange = (selectedOptions: Array<{ label: string; value: string }>) => {
     setDecisionMakers(selectedOptions);
@@ -65,11 +65,7 @@ export const DMSelect = () => {
     }));
   };
 
-  const getDecisionMakers = async (
-    searchTerm: string,
-    _selectedOptions: Array<{ label: string; value: string }>,
-    _data: SelectData,
-  ) => {
+  const getDecisionMakers = async (searchTerm: string, _selectedOptions: unknown[], _data: unknown) => {
     const response = await fetch(`${url}/paatokset_policymakers/_search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -77,19 +73,19 @@ export const DMSelect = () => {
     });
 
     const json = await response.json();
-    const result = [];
+    const result: { options?: Array<{ label: string; value: string }> } = {};
 
     if (json?.hits?.hits) {
       result.options = json.hits.hits
         .filter(
           (hit: estypes.SearchHit<PolicyMaker>) =>
-            hit.inner_hits?.current_language?.hits.hits?.[0].fields[PolicymakerIndex.FIELD_POLICYMAKER_ID],
+            hit.inner_hits?.current_language?.hits.hits?.[0]?.fields?.[PolicymakerIndex.FIELD_POLICYMAKER_ID],
         )
-        .map((hit) => {
-          const innerHit = hit.inner_hits.current_language.hits.hits[0];
+        .map((hit: estypes.SearchHit<PolicyMaker>) => {
+          const innerHit = hit.inner_hits?.current_language?.hits.hits[0];
           return {
-            value: innerHit.fields[PolicymakerIndex.FIELD_POLICYMAKER_ID].toString(),
-            label: innerHit.fields[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE].toString(),
+            value: String(innerHit?.fields?.[PolicymakerIndex.FIELD_POLICYMAKER_ID]),
+            label: String(innerHit?.fields?.[PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE]),
           };
         });
     }
@@ -106,7 +102,10 @@ export const DMSelect = () => {
     onChange,
     onSearch: getDecisionMakers,
     open: false,
-    options: getDMSelectValue().map((dm) => ({ ...dm, selected: true })),
+    options: (getDMSelectValue() as Array<{ label: string | undefined; value: string }>).map((dm) => ({
+      ...dm,
+      selected: true,
+    })),
   });
 
   const clearAllSelections = () => {
@@ -114,7 +113,7 @@ export const DMSelect = () => {
   };
 
   const updateSelections = () => {
-    updateSelectionsInStorage(selectStorage, getDMSelectValue());
+    updateSelectionsInStorage(selectStorage, getDMSelectValue() as Array<{ label: string; value: string }>);
   };
 
   useEffect(() => {
@@ -127,15 +126,23 @@ export const DMSelect = () => {
     };
   });
 
+  const props = selectStorage.getProps();
+  const { children, ...restProps } = props;
+
+  const filteredChildren = Array.isArray(children)
+    ? children.filter((child): child is Exclude<typeof child, undefined> => child !== undefined)
+    : children;
+
   return (
     <Select
+      {...restProps}
+      children={filteredChildren}
       className='hdbt-search__dropdown'
       texts={{
         label: Drupal.t('Decision-maker / Division', {}, { context: 'Decisions search' }),
         placeholder: Drupal.t('All decision-makers and divisions', {}, { context: 'Decisions search' }),
       }}
       theme={defaultMultiSelectTheme}
-      {...selectStorage.getProps()}
     />
   );
 };

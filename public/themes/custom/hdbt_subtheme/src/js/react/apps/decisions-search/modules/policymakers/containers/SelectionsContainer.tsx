@@ -3,7 +3,14 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import FilterButton from '@/react/common/FilterButton';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { Components } from '../enum/Components';
-import { resetStateAtom, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
+import {
+  resetStateAtom,
+  type SearchState,
+  searchStateAtom,
+  type SelectOption,
+  submittedStateAtom,
+  updateQueryAtom,
+} from '../store';
 
 export const SelectionsContainer = () => {
   const submittedState = useAtomValue(submittedStateAtom);
@@ -13,14 +20,17 @@ export const SelectionsContainer = () => {
 
   const selections: React.ReactNode[] = [];
 
-  const removeArrayItem = (key: string, value: string) => {
+  const removeArrayItem = (key: keyof Pick<SearchState, typeof Components.SECTOR>, value: string) => {
+    if (!submittedState) return;
+
     const state = { ...submittedState };
-    const existingItems = [...(state[key as keyof typeof state] as { label: string; value: string }[])];
+    const existingItems = [...(state[key] as SelectOption[])];
+
     const index = existingItems.findIndex((item) => item.value === value);
     if (index > -1) {
       existingItems.splice(index, 1);
     }
-    (state as Record<string, unknown>)[key] = existingItems;
+    state[key] = existingItems;
     setState(state);
     updateQuery(state);
   };

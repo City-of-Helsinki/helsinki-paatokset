@@ -10,6 +10,7 @@
       "react/jsx-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-runtime"],
       "react/jsx-dev-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-dev-runtime"],
       "react/*": ["../../contrib/hdbt/node_modules/react/*"],
+      "hds-react/components/select/utils": ["../../contrib/hdbt/node_modules/hds-react/components/dropdownComponents/select/utils"],
       "react-dom": ["../../contrib/hdbt/node_modules/@types/react-dom"],
       "react-dom/*": ["../../contrib/hdbt/node_modules/@types/react-dom/*", "../../contrib/hdbt/node_modules/react-dom/*"],
       "*": ["./node_modules/*", "../../contrib/hdbt/node_modules/*"]
@@ -24,6 +25,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.d.ts",
     "../../contrib/hdbt/src/js/types"
   ]
 }
