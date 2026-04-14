@@ -2,9 +2,11 @@ import type { estypes } from '@elastic/elasticsearch';
 import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { PolicymakerIndex } from '../../decisions/enum/IndexFields';
 
-export const useGetSuggestions = async (searchTerm: string | undefined, url: string) => {
-  if (!searchTerm || searchTerm.length < 2) {
-    return [];
+const emptyResult = { options: [] };
+
+export const fetchSuggestions = async (searchTerm: string | undefined, url: string) => {
+  if (!searchTerm?.length) {
+    return emptyResult;
   }
 
   const query = {
@@ -37,11 +39,12 @@ export const useGetSuggestions = async (searchTerm: string | undefined, url: str
   const json = await response.json();
 
   if (json.hits?.hits) {
-    return json.hits.hits.map((hit: estypes.SearchHit<PolicyMaker>) => {
+    const options = json.hits.hits.map((hit: estypes.SearchHit<PolicyMaker>) => {
       const title = hit.fields?.decisionmaker_combined_title?.[0] || hit.fields?.title?.[0] || '';
-      return { value: title };
+      return { value: title, label: title };
     });
+    return { options };
   }
 
-  return [];
+  return emptyResult;
 };

@@ -144,7 +144,7 @@ export const resetStateAtom = atom(null, (_get, set) => {
   window.dispatchEvent(clearEvent);
 });
 
-export const updateQueryAtom = atom(null, (get, set, _newValue: typeof defaultState) => {
+export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultState) => {
   const searchState = get(searchStateAtom);
   const submittedState = get(submittedStateAtom);
   const newState = { ...searchState, page: 1 };

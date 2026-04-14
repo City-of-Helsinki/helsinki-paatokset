@@ -1,35 +1,47 @@
 import type { estypes } from '@elastic/elasticsearch';
-import { useAtomValue } from 'jotai';
 import type { Decision } from '../../../common/types/Decision';
 import { DecisionIndex } from '../enum/IndexFields';
-import { getElasticUrlAtom } from '../store';
-import { useDecisionsQuery } from './useDecisionsQuery';
 
-export const useGetSuggestions = async (searchTerm: string) => {
-  const url = useAtomValue(getElasticUrlAtom);
-  const baseQuery = useDecisionsQuery(searchTerm);
+const emptyResult = { options: [] };
 
-  if (!searchTerm || !searchTerm.length || searchTerm.length < 2) {
-    return [];
+export const fetchSuggestions = async (searchTerm: string, url: string) => {
+  if (!searchTerm?.length) {
+    return emptyResult;
   }
 
-  const { _aggs, _collapse, _size, _from, ...rest } = baseQuery;
-  const suggestionQuery = { ...rest };
-
-  suggestionQuery.collapse = { field: `${[DecisionIndex.SUBJECT]}.keyword` };
-  suggestionQuery.fields = [DecisionIndex.SUBJECT];
+  const query = {
+    query: {
+      bool: {
+        filter: [{ exists: { field: DecisionIndex.MEETING_DATE } }],
+        should: [
+          { match_phrase_prefix: { [DecisionIndex.SUBJECT]: searchTerm } },
+          { match: { [DecisionIndex.SUBJECT]: { query: searchTerm, boost: 2 } } },
+        ],
+        minimum_should_match: 1,
+      },
+    },
+    collapse: { field: `${DecisionIndex.SUBJECT}.keyword` },
+    _source: false,
+    fields: [DecisionIndex.SUBJECT],
+    size: 5,
+    from: 0,
+  };
 
   const response = await fetch(`${url}/paatokset_decisions/_search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...suggestionQuery, size: 5, from: 0 }),
+    body: JSON.stringify(query),
   });
 
   const json = await response.json();
 
   if (json.hits?.hits) {
-    return json.hits.hits.map((hit: estypes.SearchHit<Decision>) => ({ value: hit.fields.subject.toString() }));
+    const options = json.hits.hits.map((hit: estypes.SearchHit<Decision>) => {
+      const subject = (hit.fields?.[DecisionIndex.SUBJECT] as string[] | undefined)?.[0] ?? '';
+      return { value: subject, label: subject };
+    });
+    return { options };
   }
 
-  return [];
+  return emptyResult;
 };
