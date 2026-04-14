@@ -17,7 +17,7 @@
     "lint": "npm-run-all --parallel lint:scss lint:js validate-ts -s",
     "full-reference": "node --env-file ../../../../.env backstop/backstop_dynamic_config full reference",
     "full-test": "node --env-file ../../../../.env backstop/backstop_dynamic_config full test",
-    "validate-ts": "tsc --noEmit 2>&1 | grep -v 'hdbt' || true" 
+    "validate-ts": "npx --prefix ../../contrib/hdbt tsc --noEmit 2>&1 | grep -v 'hdbt' || true" 
   },
   "@comment dependencies": [
     "The following packages were updated manually.",
