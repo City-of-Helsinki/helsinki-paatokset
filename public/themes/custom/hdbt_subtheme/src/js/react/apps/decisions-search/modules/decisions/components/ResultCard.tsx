@@ -1,8 +1,7 @@
-import { DateTime } from 'luxon';
 import { IconAlertCircle, IconLayers, IconUser } from 'hds-react';
 
 import type { Decision } from '../../../common/types/Decision';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { formatHDSDateUTC } from '@/react/common/helpers/dateUtils';
 import CardItem, { Metarow } from '@/react/common/Card';
 import { OrganizationTypes } from '../enum/OrganizationTypes';
 import type TagType from '@/common/types/TagType';
@@ -27,13 +26,13 @@ export const ResultCard = ({
       return '';
     }
 
-    const date = DateTime.fromISO(meeting_date.toString(), { zone: 'utc' });
+    const date = new Date(meeting_date.toString());
 
-    if (!date.isValid) {
+    if (Number.isNaN(date.getTime())) {
       return '';
     }
 
-    return date.toFormat(HDS_DATE_FORMAT);
+    return formatHDSDateUTC(date);
   };
 
   const getCategoryTag = () => {

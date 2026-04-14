@@ -1,4 +1,4 @@
-import { format, parse } from 'date-fns';
+import { formatHDSDate, parseHDSDate } from '@/react/common/helpers/dateUtils';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
 import Calendar from 'react-calendar';
 
@@ -16,10 +16,10 @@ type Props = {
 export const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
   const onSelect = (value: Array<Date>) => {
     if (value[0]) {
-      setFrom(format(value[0], 'd.M.y'));
+      setFrom(formatHDSDate(value[0]));
     }
     if (value[1]) {
-      setTo(format(value[1], 'd.M.y'));
+      setTo(formatHDSDate(value[1]));
     } else {
       setTo(undefined);
     }
@@ -29,11 +29,11 @@ export const DatePicker = ({ from, to, setFrom, setTo }: Props) => {
     const value = [null, null];
 
     if (from && isValidDate(from)) {
-      value[0] = parse(from, 'd.M.y', new Date());
+      value[0] = parseHDSDate(from);
     }
 
     if (to && isValidDate(to)) {
-      value[1] = parse(to, 'd.M.y', new Date());
+      value[1] = parseHDSDate(to);
     }
 
     return value;

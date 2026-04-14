@@ -1,6 +1,5 @@
 import type { estypes } from '@elastic/elasticsearch';
-import { DateTime } from 'luxon';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { endOfDay, parseHDSDate, startOfDay } from '@/react/common/helpers/dateUtils';
 import type { Selections } from './types/Selections';
 
 /**
@@ -80,10 +79,12 @@ export const formQuery = (selections: Selections) => {
   const range: estypes.QueryDslRangeQuery = {};
 
   if (selections.start) {
-    range.gte = DateTime.fromFormat(selections.start, HDS_DATE_FORMAT).startOf('day').toUnixInteger().toString();
+    const start = parseHDSDate(selections.start);
+    if (start) range.gte = Math.floor(startOfDay(start).getTime() / 1000).toString();
   }
   if (selections.end) {
-    range.lte = DateTime.fromFormat(selections.end, HDS_DATE_FORMAT).endOf('day').toUnixInteger().toString();
+    const end = parseHDSDate(selections.end);
+    if (end) range.lte = Math.floor(endOfDay(end).getTime() / 1000).toString();
   }
 
   if (Object.keys(range).length && body?.query?.bool) {

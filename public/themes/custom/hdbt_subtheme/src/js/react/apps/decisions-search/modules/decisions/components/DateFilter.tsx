@@ -1,12 +1,11 @@
 import { Button, ButtonPresetTheme, Checkbox, DateInput, IconMinus, SelectionGroup } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { type MouseEvent, useState } from 'react';
-import { DateTime } from 'luxon';
+import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
 
 import { Components } from '../enum/Components';
 import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import Collapsible from '@/react/common/Collapsible';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 import { DateSelection } from '../enum/DateSelection';
 import { DatePicker } from './DatePicker';
@@ -49,18 +48,18 @@ export const DateFilter = () => {
     }
 
     const value = (e.target as HTMLInputElement).id;
-    const now = DateTime.now();
-    setTo(now.toFormat(HDS_DATE_FORMAT));
+    const now = new Date();
+    setTo(formatHDSDate(now));
 
     switch (value) {
       case DateSelection.PAST_WEEK:
-        setFrom(now.minus({ weeks: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addDays(now, -7)));
         break;
       case DateSelection.PAST_MONTH:
-        setFrom(now.minus({ months: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addMonths(now, -1)));
         break;
       case DateSelection.PAST_YEAR:
-        setFrom(now.minus({ years: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addYears(now, -1)));
         break;
     }
   };

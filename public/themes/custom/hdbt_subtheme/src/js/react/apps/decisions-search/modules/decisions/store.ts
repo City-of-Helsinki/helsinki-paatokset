@@ -2,8 +2,7 @@ import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
 
 declare const ELASTIC_DEV_URL: string | undefined;
-import { DateTime } from 'luxon';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
 import { Components } from './enum/Components';
 import { DateSelection } from './enum/DateSelection';
@@ -218,18 +217,18 @@ export const getDateSelectionAtom = atom((get) => {
     return undefined;
   }
 
-  const now = DateTime.now();
+  const now = new Date();
 
-  if (to !== now.toFormat(HDS_DATE_FORMAT)) {
+  if (to !== formatHDSDate(now)) {
     return undefined;
   }
 
   switch (from) {
-    case now.minus({ weeks: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addDays(now, -7)):
       return DateSelection.PAST_WEEK;
-    case now.minus({ months: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addMonths(now, -1)):
       return DateSelection.PAST_MONTH;
-    case now.minus({ years: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addYears(now, -1)):
       return DateSelection.PAST_YEAR;
     default:
       return undefined;
