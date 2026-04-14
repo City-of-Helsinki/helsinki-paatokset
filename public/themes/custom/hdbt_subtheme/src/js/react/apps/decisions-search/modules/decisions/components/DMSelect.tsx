@@ -138,11 +138,11 @@ export const DMSelect = () => {
       {...restProps}
       children={filteredChildren}
       className='hdbt-search__dropdown'
+      theme={defaultMultiSelectTheme}
       texts={{
         label: Drupal.t('Decision-maker / Division', {}, { context: 'Decisions search' }),
         placeholder: Drupal.t('All decision-makers and divisions', {}, { context: 'Decisions search' }),
       }}
-      theme={defaultMultiSelectTheme}
     />
   );
 };
