@@ -5,12 +5,21 @@ import { getElasticUrlAtom, getSearchTermAtom, setSearchTermAtom, updateQueryAto
 import { fetchSuggestions } from '../hooks/useGetSuggestions';
 import { defaultSearchInputTheme } from '@/react/common/constants/searchInputStyle';
 import { type ChangeEvent, useCallback, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const SearchBar = () => {
   const searchTerm = useAtomValue(getSearchTermAtom);
   const setSearchTerm = useSetAtom(setSearchTermAtom);
   const url = useAtomValue(getElasticUrlAtom);
   const onSubmit = useSetAtom(updateQueryAtom);
+
+  const initialSearchTermRef = useRef(searchTerm);
+  useEffect(() => {
+    const initial = initialSearchTermRef.current;
+    if (initial) {
+      setSearchTerm(initial);
+    }
+  }, [setSearchTerm]);
 
   const [props] = useState({
     className: 'hdbt-search__filter hdbt-search__search-input',

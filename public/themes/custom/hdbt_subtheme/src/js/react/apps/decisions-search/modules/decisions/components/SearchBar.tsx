@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 
 import { getElasticUrlAtom, getSearchTermAtom, setSearchTermAtom, updateQueryAtom } from '../store';
 import { fetchSuggestions } from '../hooks/useGetSuggestions';
-import { type ChangeEvent, useCallback, useState } from 'react';
+import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { defaultSearchInputTheme } from '@/react/common/constants/searchInputStyle';
 
 export const SearchBar = () => {
@@ -11,6 +11,14 @@ export const SearchBar = () => {
   const setSearchTerm = useSetAtom(setSearchTermAtom);
   const url = useAtomValue(getElasticUrlAtom);
   const onSubmit = useSetAtom(updateQueryAtom);
+
+  const initialSearchTermRef = useRef(searchTerm);
+  useEffect(() => {
+    const initial = initialSearchTermRef.current;
+    if (initial) {
+      setSearchTerm(initial);
+    }
+  }, [setSearchTerm]);
 
   const [props] = useState({
     className: 'hdbt-search__filter hdbt-search__search-input',
