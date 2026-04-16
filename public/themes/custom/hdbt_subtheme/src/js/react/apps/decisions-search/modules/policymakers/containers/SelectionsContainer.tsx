@@ -6,8 +6,8 @@ import { Components } from '../enum/Components';
 import {
   resetStateAtom,
   type SearchState,
-  searchStateAtom,
   type SelectOption,
+  searchStateAtom,
   submittedStateAtom,
   updateQueryAtom,
 } from '../store';

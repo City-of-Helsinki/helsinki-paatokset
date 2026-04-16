@@ -1,10 +1,10 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import FilterButton from '@/react/common/FilterButton';
-import { resetStateAtom, type SearchState, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { Components } from '../enum/Components';
 import { Events } from '../enum/Events';
+import { resetStateAtom, type SearchState, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
 
 type SelectOption = { label: string | undefined; value: string };
 

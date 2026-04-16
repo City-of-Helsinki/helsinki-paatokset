@@ -12,12 +12,12 @@
     "postinstall": "npm --prefix ../../contrib/hdbt install --no-audit --progress=false --loglevel=silent",
     "lint:scss": "npx --prefix ../../contrib/hdbt/theme-builder postcss \"$INIT_CWD/src/scss/**/*.scss\" --syntax postcss-scss --use css-declaration-sorter --replace --no-map && npm run lint:stylelint --loglevel=silent",
     "lint:stylelint": "npx --prefix ../../contrib/hdbt/theme-builder stylelint \"$INIT_CWD/src/scss/**/*.scss\" --config ../../contrib/hdbt/theme-builder/.stylelintrc.yaml --fix",
-    "lint:js": "biome lint src/js/",
+    "lint:js": "biome check --write --assist-enabled=true src/js/",
     "format:js": "biome format --write src/js/",
     "lint": "npm-run-all --parallel lint:scss lint:js validate-ts -s",
     "full-reference": "node --env-file ../../../../.env backstop/backstop_dynamic_config full reference",
     "full-test": "node --env-file ../../../../.env backstop/backstop_dynamic_config full test",
-    "validate-ts": "npx --prefix ../../contrib/hdbt tsc --noEmit 2>&1 | grep -v 'hdbt' || true" 
+    "validate-ts": "npx --prefix ../../contrib/hdbt tsc --noEmit 2>&1 | grep -v 'hdbt' || true"
   },
   "@comment dependencies": [
     "The following packages were updated manually.",

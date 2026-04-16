@@ -1,4 +1,4 @@
-import { IconArrowRight, IconAngleRight } from 'hds-react';
+import { IconAngleRight, IconArrowRight } from 'hds-react';
 
 type ResultCardProps = {
   color_class?: string[];

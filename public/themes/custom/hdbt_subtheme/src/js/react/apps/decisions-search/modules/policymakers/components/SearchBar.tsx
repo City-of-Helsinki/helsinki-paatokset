@@ -1,11 +1,9 @@
 import { Search } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-
-import { getElasticUrlAtom, getSearchTermAtom, setSearchTermAtom, updateQueryAtom } from '../store';
-import { fetchSuggestions } from '../hooks/useGetSuggestions';
+import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { defaultSearchInputTheme } from '@/react/common/constants/searchInputStyle';
-import { type ChangeEvent, useCallback, useState } from 'react';
-import { useEffect, useRef } from 'react';
+import { fetchSuggestions } from '../hooks/useGetSuggestions';
+import { getElasticUrlAtom, getSearchTermAtom, setSearchTermAtom, updateQueryAtom } from '../store';
 
 export const SearchBar = () => {
   const searchTerm = useAtomValue(getSearchTermAtom);
@@ -31,7 +29,11 @@ export const SearchBar = () => {
         { context: 'Policymakers search' },
       ),
       language: window.drupalSettings.path.currentLanguage || 'fi',
-      placeholder: Drupal.t('Search with a Finnish keyword, eg. pormestari', {}, { context: 'Policymakers search' }),
+      searchPlaceholder: Drupal.t(
+        'Search with a Finnish keyword, eg. pormestari',
+        {},
+        { context: 'Policymakers search' },
+      ),
       searchButtonAriaLabel: Drupal.t('Search', {}, { context: 'React search: submit button label' }),
     },
     theme: defaultSearchInputTheme,

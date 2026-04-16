@@ -1,13 +1,12 @@
 import { Button, ButtonPresetTheme, Checkbox, DateInput, IconMinus, SelectionGroup } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { type MouseEvent, useState } from 'react';
-import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
-
-import { Components } from '../enum/Components';
-import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import Collapsible from '@/react/common/Collapsible';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
+import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
+import { Components } from '../enum/Components';
 import { DateSelection } from '../enum/DateSelection';
+import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import { DatePicker } from './DatePicker';
 
 export const DateFilter = () => {

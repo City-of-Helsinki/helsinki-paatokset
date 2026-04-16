@@ -1,10 +1,9 @@
 import { IconAlertCircle, IconLayers, IconUser } from 'hds-react';
-
-import type { Decision } from '../../../common/types/Decision';
-import { formatHDSDateUTC } from '@/react/common/helpers/dateUtils';
-import CardItem, { Metarow } from '@/react/common/Card';
-import { OrganizationTypes } from '../enum/OrganizationTypes';
 import type TagType from '@/common/types/TagType';
+import CardItem, { Metarow } from '@/react/common/Card';
+import { formatHDSDateUTC } from '@/react/common/helpers/dateUtils';
+import type { Decision } from '../../../common/types/Decision';
+import { OrganizationTypes } from '../enum/OrganizationTypes';
 import { Policymakers } from '../enum/Policymakers';
 
 export const ResultCard = ({

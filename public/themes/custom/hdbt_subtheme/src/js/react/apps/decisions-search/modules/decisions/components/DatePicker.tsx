@@ -1,7 +1,7 @@
-import { formatHDSDate, parseHDSDate } from '@/react/common/helpers/dateUtils';
 import { IconAngleLeft, IconAngleRight } from 'hds-react';
 import Calendar from 'react-calendar';
 import type { LooseValue } from 'react-calendar/dist/shared/types.js';
+import { formatHDSDate, parseHDSDate } from '@/react/common/helpers/dateUtils';
 
 const isValidDate = (_date: unknown) => true;
 

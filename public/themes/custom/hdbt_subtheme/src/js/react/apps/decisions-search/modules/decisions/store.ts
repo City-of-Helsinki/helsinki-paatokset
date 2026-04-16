@@ -2,6 +2,8 @@ import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
 
 declare const ELASTIC_DEV_URL: string | undefined;
+
+import type { OptionType } from '@/common/types/OptionType';
 import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
 import { Components } from './enum/Components';
@@ -9,7 +11,6 @@ import { DateSelection } from './enum/DateSelection';
 import { Events } from './enum/Events';
 import { PolicymakerIndex } from './enum/IndexFields';
 import { SortOptions } from './enum/SortOptions';
-import type { OptionType } from '@/common/types/OptionType';
 
 const clearEvent = new Event(Events.DECISIONS_CLEAR_ALL);
 

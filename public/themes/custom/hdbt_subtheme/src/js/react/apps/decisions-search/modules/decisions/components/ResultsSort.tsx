@@ -1,11 +1,10 @@
 import { Select } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-
-import { getCurrentLanguage } from '@/react/common/helpers/GetCurrentLanguage';
-import { getSortAtom, setSortAtom } from '../store';
-import { SortOptions } from '../enum/SortOptions';
-import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
 import type OptionType from '@/common/types/OptionType';
+import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
+import { getCurrentLanguage } from '@/react/common/helpers/GetCurrentLanguage';
+import { SortOptions } from '../enum/SortOptions';
+import { getSortAtom, setSortAtom } from '../store';
 
 export const ResultsSort = () => {
   const value = useAtomValue(getSortAtom);

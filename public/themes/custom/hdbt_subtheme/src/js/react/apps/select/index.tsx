@@ -1,10 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { ErrorBoundary } from '@sentry/react';
 import { Select } from 'hds-react';
-
-import ResultsError from '@/react/common/ResultsError';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
+import ResultsError from '@/react/common/ResultsError';
 
 Drupal.behaviors.helfiSelect = {
   attach: (context: HTMLElement) => {
