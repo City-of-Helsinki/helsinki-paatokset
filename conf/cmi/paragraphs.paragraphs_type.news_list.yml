@@ -1,7 +1,12 @@
-uuid: d7a03c56-fab1-41c0-9547-69ca88824859
+uuid: 8ebbf225-e710-49e4-9490-8d69114b58d1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_news
+  module:
+    - external_entities
+    - paragraphs
 _core:
   default_config_hash: GqSJkJJNFYj7_Yrzletng06pW-sS9r0nS5BeDi8Q69w
 id: news_list

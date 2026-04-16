@@ -1,16 +1,15 @@
-uuid: dcfd32aa-0e38-4ebc-b397-313dc2332486
+uuid: 4c5d5765-e436-4d83-91d8-928e5e0362a0
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_category_event
     - field.field.paragraph.event_list.field_event_list_category_hobby
+    - field.field.paragraph.event_list.field_event_count
     - field.field.paragraph.event_list.field_event_list_description
     - field.field.paragraph.event_list.field_event_list_free_text
     - field.field.paragraph.event_list.field_event_list_keywords
-    - field.field.paragraph.event_list.field_event_list_keywords_filter
     - field.field.paragraph.event_list.field_event_list_place
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_list_type
@@ -22,6 +21,7 @@ dependencies:
     - paragraphs.paragraphs_type.event_list
   module:
     - helfi_react_search
+    - link
     - select2
     - text
 _core:
@@ -31,11 +31,41 @@ targetEntityType: paragraph
 bundle: event_list
 mode: default
 content:
+  field_event_list_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_list_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_list_type:
+    type: options_buttons
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_event_count:
     type: options_select
     weight: 3
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_event_list_free_text:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_event_list_category_event:
     type: select2
@@ -51,37 +81,13 @@ content:
     settings:
       width: 100%
     third_party_settings: {  }
-  field_event_list_description:
-    type: text_textarea
-    weight: 1
-    region: content
-    settings:
-      rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-  field_event_list_free_text:
-    type: string_textfield
-    weight: 4
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_event_list_keywords:
     type: linked_events_select2
     weight: 7
     region: content
     settings:
       endpoint: keyword
-      query: 'data_source=yso&has_upcoming_events=True'
-    third_party_settings: {  }
-  field_event_list_keywords_filter:
-    type: linked_events_select2
-    weight: 14
-    region: content
-    settings:
-      endpoint: keyword
-      query: 'data_source=yso&has_upcoming_events=True'
+      query: data_source=yso&has_upcoming_events=True
     third_party_settings: {  }
   field_event_list_place:
     type: linked_events_select2
@@ -90,20 +96,6 @@ content:
     settings:
       endpoint: place
       query: sort=name
-    third_party_settings: {  }
-  field_event_list_title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_event_list_type:
-    type: options_buttons
-    weight: 2
-    region: content
-    settings: {  }
     third_party_settings: {  }
   field_event_location:
     type: boolean_checkbox
@@ -115,13 +107,6 @@ content:
   field_event_time:
     type: boolean_checkbox
     weight: 10
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_free_events:
-    type: boolean_checkbox
-    weight: 13
     region: content
     settings:
       display_label: true
@@ -140,7 +125,21 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  field_free_events:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_event_list_keywords_filter:
+    type: linked_events_select2
+    weight: 14
+    region: content
+    settings:
+      endpoint: keyword
+      query: data_source=yso&has_upcoming_events=True
+    third_party_settings: {  }
 hidden:
   created: true
-  field_api_url: true
   status: true

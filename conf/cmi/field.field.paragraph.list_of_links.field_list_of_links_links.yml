@@ -1,11 +1,10 @@
-uuid: 757245b7-ea61-4421-b5a1-fb325edbf5a4
+uuid: 62e47d93-7b45-4209-97bf-4f1e1e955009
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_list_of_links_links
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.list_of_links_item
   module:
     - entity_reference_revisions
 _core:
@@ -23,11 +22,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    target_bundles:
-      list_of_links_item: list_of_links_item
+    target_bundles: {  }
     negate: 0
-    target_bundles_drag_drop:
-      list_of_links_item:
-        weight: 0
-        enabled: true
+    target_bundles_drag_drop: {  }
 field_type: entity_reference_revisions

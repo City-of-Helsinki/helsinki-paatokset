@@ -19,5 +19,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_values: {  }
+  allowed_values_function: helfi_react_search_event_list_allowed_hobby_categories
 field_type: list_string

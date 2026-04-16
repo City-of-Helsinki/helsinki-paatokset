@@ -1,19 +1,11 @@
-uuid: 31405508-3b0f-40d6-8137-3c5c24e97e31
+uuid: 591c90c8-42a5-4760-9a8c-b4bc6a309138
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.event_list.field_api_url
     - field.field.paragraph.event_list.field_event_count
-    - field.field.paragraph.event_list.field_event_list_category_event
-    - field.field.paragraph.event_list.field_event_list_category_hobby
     - field.field.paragraph.event_list.field_event_list_description
-    - field.field.paragraph.event_list.field_event_list_free_text
-    - field.field.paragraph.event_list.field_event_list_keywords
-    - field.field.paragraph.event_list.field_event_list_keywords_filter
-    - field.field.paragraph.event_list.field_event_list_place
     - field.field.paragraph.event_list.field_event_list_title
-    - field.field.paragraph.event_list.field_event_list_type
     - field.field.paragraph.event_list.field_event_location
     - field.field.paragraph.event_list.field_event_time
     - field.field.paragraph.event_list.field_free_events
@@ -103,12 +95,4 @@ content:
     weight: 4
     region: content
 hidden:
-  field_api_url: true
-  field_event_list_category_event: true
-  field_event_list_category_hobby: true
-  field_event_list_free_text: true
-  field_event_list_keywords: true
-  field_event_list_keywords_filter: true
-  field_event_list_place: true
-  field_event_list_type: true
   search_api_excerpt: true
