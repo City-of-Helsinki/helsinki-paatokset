@@ -9,16 +9,18 @@ export const fetchSuggestions = async (searchTerm: string | undefined, url: stri
     return emptyResult;
   }
 
+  const normalizedSearchTerm = searchTerm.toLowerCase().replace(/\s+/g, '*');
+
   const query = {
     query: {
       bool: {
         filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
         should: [
-          { wildcard: { [`${PolicymakerIndex.TITLE}`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.TRUSTEE_NAME}`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.FIELD_FIRST_NAME}`]: `*${searchTerm}*` } },
-          { wildcard: { [`${PolicymakerIndex.FIELD_LAST_NAME}`]: `*${searchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.TITLE}`]: `*${normalizedSearchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}`]: `*${normalizedSearchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.TRUSTEE_NAME}`]: `*${normalizedSearchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.FIELD_FIRST_NAME}`]: `*${normalizedSearchTerm}*` } },
+          { wildcard: { [`${PolicymakerIndex.FIELD_LAST_NAME}`]: `*${normalizedSearchTerm}*` } },
         ],
         minimum_should_match: 1,
       },
