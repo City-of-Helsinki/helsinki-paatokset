@@ -42,9 +42,8 @@ export const SearchBar = () => {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
-      onSubmit();
     },
-    [setSearchTerm, onSubmit],
+    [setSearchTerm],
   );
 
   const handleSearch = useCallback((searchValue: string) => fetchSuggestions(searchValue, url), [url]);
