@@ -296,7 +296,7 @@ msgstr "Alla kungörelser och meddelanden"
 
 msgctxt "Announcements and notifications list"
 msgid "Notice! <a hreflang="fi" href="@link">Notices of building control permit decisions</a> can only be found on their own page."
-msgstr "Observera! <a hreflang="fi" href=@link">Kungörelser om byggnadstillståndsbeslutet</a> finns endast på deras egen sida."
+msgstr "Observera! <a hreflang="fi" href="@link">Kungörelser om byggnadstillståndsbeslutet</a> finns endast på deras egen sida."
 
 msgctxt "Announcements and notifications list"
 msgid "Filter announcements and notifications"
