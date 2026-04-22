@@ -1,3 +1,4 @@
 disable_email_sending: true
 user_expire: true
+user_delete: true
 use_mock_responses: false
