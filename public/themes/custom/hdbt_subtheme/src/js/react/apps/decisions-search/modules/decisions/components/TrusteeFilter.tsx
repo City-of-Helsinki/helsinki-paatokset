@@ -1,9 +1,8 @@
 import { Checkbox } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-
+import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 import { Components } from '../enum/Components';
 import { getTrusteesFilterAtom, setTrusteesFilterAtom } from '../store';
-import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 
 export const TrusteeFilter = () => {
   const value = useAtomValue(getTrusteesFilterAtom);

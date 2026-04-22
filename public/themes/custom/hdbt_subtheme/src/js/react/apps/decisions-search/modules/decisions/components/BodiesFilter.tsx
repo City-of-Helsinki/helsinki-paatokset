@@ -1,9 +1,8 @@
 import { Checkbox } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-
+import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 import { Components } from '../enum/Components';
 import { getBodiesFilterAtom, setBodiesFilterAtom } from '../store';
-import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 
 export const BodiesFilter = () => {
   const value = useAtomValue(getBodiesFilterAtom);

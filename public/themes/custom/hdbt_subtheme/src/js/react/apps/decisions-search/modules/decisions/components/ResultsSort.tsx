@@ -1,10 +1,10 @@
 import { Select } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-
-import { getCurrentLanguage } from '@/react/common/helpers/GetCurrentLanguage';
-import { getSortAtom, setSortAtom } from '../store';
-import { SortOptions } from '../enum/SortOptions';
+import type OptionType from '@/common/types/OptionType';
 import { defaultSelectTheme } from '@/react/common/constants/selectTheme';
+import { getCurrentLanguage } from '@/react/common/helpers/GetCurrentLanguage';
+import { SortOptions } from '../enum/SortOptions';
+import { getSortAtom, setSortAtom } from '../store';
 
 export const ResultsSort = () => {
   const value = useAtomValue(getSortAtom);
@@ -16,11 +16,14 @@ export const ResultsSort = () => {
     { label: Drupal.t('Oldest first', {}, { context: 'Decisions search' }), value: SortOptions.OLDEST },
   ];
 
+  const handleChange = (selectedOptions: OptionType[]) => {
+    onChange(selectedOptions);
+  };
+
   return (
     <Select
       className='hdbt-search__dropdown'
-      label={Drupal.t('Sort by')}
-      {...{ options, onChange, value }}
+      {...{ options, onChange: handleChange, value }}
       texts={{
         label: Drupal.t('Sort search results', {}, { context: 'HELfi Rekry job search' }),
         language: getCurrentLanguage(window.drupalSettings.path.currentLanguage),

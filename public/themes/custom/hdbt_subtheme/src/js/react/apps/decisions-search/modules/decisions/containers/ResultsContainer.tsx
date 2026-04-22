@@ -43,17 +43,13 @@ export const ResultsContainer = () => {
   const resultItemCallBack = (item: estypes.SearchHit<Decision>) => {
     if (!item.inner_hits?.preferred_version?.hits.hits[0]) {
       console.error('No preferred version found for decision with unique_issue_id:', item._id);
-      return null;
+      return <div className='result-item-error' />;
     }
 
     const preferred_version = item.inner_hits.preferred_version.hits.hits[0];
+    const fields = (preferred_version.fields ?? {}) as Decision;
 
-    return (
-      <ResultCard
-        key={preferred_version.fields.id.toString()}
-        {...item.inner_hits.preferred_version.hits.hits[0].fields}
-      />
-    );
+    return <ResultCard key={String((fields?.id as string[])?.[0])} {...fields} />;
   };
 
   const getCustomTotal = () => {
@@ -80,6 +76,7 @@ export const ResultsContainer = () => {
       {...{ currentPage, customTotal, data, error, getHeaderText, resultItemCallBack, setPage, sortElement }}
       isLoading={loading}
       shouldScroll={readInitialized()}
+      size={10}
     />
   );
 };

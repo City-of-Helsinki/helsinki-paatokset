@@ -1,9 +1,8 @@
 // biome-ignore-all lint/suspicious/useIterableCallbackReturn: @todo UHF-12501
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue } from 'jotai';
-import { DateTime } from 'luxon';
 import { useMemo } from 'react';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+import { parseHDSDate, toLocalISO } from '@/react/common/helpers/dateUtils';
 import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
 import { getAdvancedBoostQuery, getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
@@ -74,10 +73,12 @@ export const useDecisionsQuery = (customSearchTerm?: string): Record<string, unk
     const dateRange: { gte?: string; lte?: string } = {};
 
     if (typeof fromFilter === 'string' && fromFilter) {
-      dateRange.gte = DateTime.fromFormat(fromFilter, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+      const from = parseHDSDate(fromFilter);
+      if (from) dateRange.gte = toLocalISO(from).slice(0, 10);
     }
     if (typeof toFilter === 'string' && toFilter) {
-      dateRange.lte = DateTime.fromFormat(toFilter, HDS_DATE_FORMAT).toFormat('yyyy-MM-dd');
+      const to = parseHDSDate(toFilter);
+      if (to) dateRange.lte = toLocalISO(to).slice(0, 10);
     }
 
     if (dateRange.gte || dateRange.lte) {

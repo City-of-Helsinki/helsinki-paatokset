@@ -12,9 +12,11 @@ export const CategoryFilter = () => {
   const value = useAtomValue(getCategoryAtom);
   const setCategories = useSetAtom(setCategoryAtom);
 
-  const options = aggs?.[Components.CATEGORY]?.buckets
-    .map((agg: estypes.Aggregation) => ({ label: categoryToLabel(agg.key), value: agg.key }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+  const categoryAgg = aggs?.[Components.CATEGORY] as estypes.AggregationsStringTermsAggregate | undefined;
+  const buckets = categoryAgg?.buckets as estypes.AggregationsStringTermsBucket[] | undefined;
+  const options = buckets
+    ?.map((bucket) => ({ label: categoryToLabel(bucket.key as string), value: bucket.key as string }))
+    .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
 
   return (
     <Select

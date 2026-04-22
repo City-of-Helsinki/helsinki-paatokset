@@ -1,10 +1,10 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue } from 'jotai';
 import { useMemo } from 'react';
+import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { PolicymakerIndex } from '../../decisions/enum/IndexFields';
 import { Components } from '../enum/Components';
 import { submittedStateAtom } from '../store';
-import { getBaseSearchTermQuery } from '../../../common/utils/Query';
 
 export const usePolicymakersQuery = (): string => {
   const submittedState = useAtomValue(submittedStateAtom);
