@@ -418,6 +418,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
   // Unset policymaker side navi.
   else {
     unset($variables['page']['sidebar_first']['policymakersidenavigation']);
+    unset($variables['page']['before_content']['policymakermobilenavigation']);
   }
 }
 
