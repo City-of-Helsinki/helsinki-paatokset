@@ -404,11 +404,12 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     // Some `page` nodes are injected into policymaker side nav, e.g.
     // https://paatokset.hel.fi/fi/paattajat/kaupunginvaltuusto/aloitteet.
     // Policymaker sidenavigation is set to be visible only on trustee
-    // and policymaker pages, in order to fix an issue with normal sidebar navigation.
-    // We need to force it to be visible on these `page` nodes as well.
+    // and policymaker pages, in order to fix an issue with normal sidebar
+    // navigation. We need to force it to be visible on these `page`
+    // nodes as well.
     /** @var \Drupal\node\NodeInterface $node */
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (!$node instanceof \Drupal\node\NodeInterface) {
+    if (!$node instanceof NodeInterface) {
       $variables['policymaker_navigation'] = TRUE;
     }
 
