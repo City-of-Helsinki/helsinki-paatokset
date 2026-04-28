@@ -1,0 +1,13 @@
+{%
+  set classes = [
+  title_display == 'after' ? 'option',
+  title_display == 'invisible' ? 'visually-hidden',
+  required ? 'js-form-required',
+  required ? 'form-required',
+  element['#element_type'] ? element['#element_type'],
+  'hds-text-input__label',
+]
+%}
+{% if title is not empty or required -%}
+  <label{{ attributes.addClass(classes) }}>{{ title }}</label>
+{%- endif %}
