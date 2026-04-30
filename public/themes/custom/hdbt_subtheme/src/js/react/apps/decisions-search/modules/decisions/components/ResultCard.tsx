@@ -1,39 +1,34 @@
-import { DateTime } from 'luxon';
 import { IconAlertCircle, IconLayers, IconUser } from 'hds-react';
-
-import type { Decision } from '../../../common/types/Decision';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
-import CardItem, { Metarow } from '@/react/common/Card';
-import { OrganizationTypes } from '../enum/OrganizationTypes';
 import type TagType from '@/common/types/TagType';
+import CardItem, { Metarow } from '@/react/common/Card';
+import { formatHDSDateUTC } from '@/react/common/helpers/dateUtils';
+import type { Decision } from '../../../common/types/Decision';
+import { OrganizationTypes } from '../enum/OrganizationTypes';
 import { Policymakers } from '../enum/Policymakers';
 
 export const ResultCard = ({
-  _category_name,
   decision_url,
   field_is_decision,
   field_policymaker_id,
-  _has_multiple_decisions = false,
   issue_subject,
   meeting_date,
   more_decisions,
   organization_name,
   organization_type,
   subject,
-  _unique_issue_id,
 }: Decision) => {
   const getDate = () => {
     if (!meeting_date.toString().length) {
       return '';
     }
 
-    const date = DateTime.fromISO(meeting_date.toString(), { zone: 'utc' });
+    const date = new Date(meeting_date.toString());
 
-    if (!date.isValid) {
+    if (Number.isNaN(date.getTime())) {
       return '';
     }
 
-    return date.toFormat(HDS_DATE_FORMAT);
+    return formatHDSDateUTC(date);
   };
 
   const getCategoryTag = () => {
@@ -77,7 +72,7 @@ export const ResultCard = ({
         content={organization_name}
       />,
     ],
-    bottom: [] as React.ReactNode[],
+    bottom: [] as React.ReactElement[],
   };
 
   if (
@@ -110,8 +105,8 @@ export const ResultCard = ({
     <CardItem
       cardCategoryTag={getCategoryTag()}
       cardTags={getMotionTag()}
-      cardTitle={subject || issue_subject}
-      cardUrl={decision_url}
+      cardTitle={subject?.[0] || issue_subject?.[0]}
+      cardUrl={decision_url?.[0]}
       customMetaRows={metaRows}
       date={getDate()}
     />

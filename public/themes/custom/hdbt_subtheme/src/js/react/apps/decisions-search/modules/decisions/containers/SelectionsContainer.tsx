@@ -1,10 +1,12 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import FilterButton from '@/react/common/FilterButton';
-import { resetStateAtom, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
-import { Components, DATE_SELECTION } from '../enum/Components';
+import { Components } from '../enum/Components';
 import { Events } from '../enum/Events';
+import { resetStateAtom, type SearchState, searchStateAtom, submittedStateAtom, updateQueryAtom } from '../store';
+
+type SelectOption = { label: string | undefined; value: string };
 
 const clearDMEvent = new Event(Events.DECISIONS_CLEAR_SINGLE_DM);
 
@@ -14,16 +16,14 @@ export const SelectionsContainer = () => {
   const upateQuery = useSetAtom(updateQueryAtom);
   const resetForm = useSetAtom(resetStateAtom);
 
-  const selections = [];
+  if (!submittedState) return null;
 
-  const removeArrayItem = (key: string, value: string) => {
+  const selections: React.ReactNode[] = [];
+
+  const removeArrayItem = (key: keyof Pick<SearchState, 'category' | 'dm'>, value: string) => {
     const state = { ...submittedState };
-    const existingItem = [...state[key]];
-    existingItem.splice(
-      state[key].findIndex((item) => item.value === value),
-      1,
-    );
-    state[key] = existingItem;
+    const existingItems = (state[key] as SelectOption[]).filter((item: SelectOption) => item.value !== value);
+    state[key] = existingItems;
     setState(state);
     upateQuery(state);
 
@@ -32,14 +32,14 @@ export const SelectionsContainer = () => {
     }
   };
 
-  const unsetStateItem = (key: string) => {
+  const unsetStateItem = (key: keyof Pick<SearchState, 'from' | 'to' | 's'>) => {
     const state = { ...submittedState };
     state[key] = undefined;
     setState(state);
     upateQuery(state);
   };
 
-  const setStateItemToFalse = (key: string) => {
+  const setStateItemToFalse = (key: keyof Pick<SearchState, 'bodies' | 'trustees'>) => {
     const state = { ...submittedState };
     state[key] = false;
     setState(state);
@@ -49,29 +49,52 @@ export const SelectionsContainer = () => {
   Object.entries({ ...submittedState })
     .filter(
       ([key]) =>
-        ![Components.TO, Components.FROM, Components.PAGE, Components.SEARCHBAR, Components.SORT].includes(key),
+        !(
+          [
+            Components.TO,
+            Components.FROM,
+            Components.PAGE,
+            Components.SEARCHBAR,
+            Components.SORT,
+          ] as (keyof SearchState)[]
+        ).includes(key as keyof SearchState),
     )
     .forEach(([key, value], index) => {
-      if (Array.isArray(value) && value.length) {
-        value.forEach((option: string) => {
+      const typedKey = key as keyof SearchState;
+
+      if (Array.isArray(value) && value.length && (key === Components.CATEGORY || key === Components.DECISIONMAKER)) {
+        value.forEach((option: SelectOption) => {
           selections.push(
             <FilterButton
               key={`${key}-${option.value}`}
-              clearSelection={() => removeArrayItem(key, option.value)}
-              value={option.label}
+              clearSelection={() =>
+                removeArrayItem(typedKey as keyof Pick<SearchState, 'category' | 'dm'>, option.value)
+              }
+              value={option.label || ''}
             />,
           );
         });
-      } else if (typeof value === 'string') {
+      } else if (
+        typeof value === 'string' &&
+        (key === Components.FROM || key === Components.TO || key === Components.SEARCHBAR)
+      ) {
         selections.push(
-          <FilterButton key={`${key}-${value}`} clearSelection={() => unsetStateItem(key)} value={value} />,
+          <FilterButton
+            key={`${key}-${value}`}
+            clearSelection={() => unsetStateItem(typedKey as keyof Pick<SearchState, 'from' | 'to' | 's'>)}
+            value={value || ''}
+          />,
         );
-      } else if (typeof value === 'boolean' && value === true) {
+      } else if (
+        typeof value === 'boolean' &&
+        value === true &&
+        (key === Components.BODIES || key === Components.TRUSTEES)
+      ) {
         selections.push(
           <FilterButton
             // biome-ignore lint/suspicious/noArrayIndexKey: @todo UHF-12501
             key={`${key}-${value}-${index}`}
-            clearSelection={() => setStateItemToFalse(key)}
+            clearSelection={() => setStateItemToFalse(typedKey as keyof Pick<SearchState, 'bodies' | 'trustees'>)}
             value={
               key === Components.BODIES
                 ? Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search' })
@@ -98,7 +121,6 @@ export const SelectionsContainer = () => {
           const state = { ...submittedState };
           state[Components.FROM] = undefined;
           state[Components.TO] = undefined;
-          state[DATE_SELECTION] = undefined;
           setState(state);
           upateQuery(state);
         }}
@@ -109,7 +131,7 @@ export const SelectionsContainer = () => {
 
   return (
     <SelectionsWrapper
-      showClearButton={selections.length || submittedState[Components.SEARCHBAR]?.length}
+      showClearButton={selections.length > 0 || (submittedState[Components.SEARCHBAR]?.length ?? 0) > 0}
       resetForm={resetForm}
     >
       {selections}

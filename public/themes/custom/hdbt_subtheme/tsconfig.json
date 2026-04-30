@@ -1,35 +1,31 @@
 {
+  "extends": "../../contrib/hdbt/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "@/react/common/*": ["../../contrib/hdbt/src/js/react/common/*"],
       "@/common/types/*": ["../../contrib/hdbt/src/js/types/*"],
       "@/types/*": ["../../contrib/hdbt/src/js/types/*"],
+      "react": ["../../contrib/hdbt/node_modules/@types/react"],
+      "react/jsx-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-runtime"],
+      "react/jsx-dev-runtime": ["../../contrib/hdbt/node_modules/@types/react/jsx-dev-runtime"],
+      "react/*": ["../../contrib/hdbt/node_modules/react/*"],
+      "hds-react/components/select/utils": ["../../contrib/hdbt/node_modules/hds-react/components/dropdownComponents/select/utils"],
+      "react-dom": ["../../contrib/hdbt/node_modules/@types/react-dom"],
+      "react-dom/*": ["../../contrib/hdbt/node_modules/@types/react-dom/*", "../../contrib/hdbt/node_modules/react-dom/*"],
+      "*": ["./node_modules/*", "../../contrib/hdbt/node_modules/*"]
     },
-    "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": false,
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/js/types",
+      "../../contrib/hdbt/node_modules/@types",
+      "../../contrib/hdbt/src/js/types"
+    ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "../../contrib/hdbt/src/js/types"
   ]
 }

@@ -2,14 +2,13 @@
 import { Button, ButtonPresetTheme, Select, TextInput } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { RESET } from 'jotai/utils';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
+import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
 import { DateRangeSelect } from '@/react/common/DateRangeSelect';
 import FilterButton from '@/react/common/FilterButton';
 import SelectionsWrapper from '@/react/common/SelectionsWrapper';
 import { selectionsAtom, setSelectionsAtom } from '../store';
 import type { Selections } from '../types/Selections';
-import { useEffect } from 'react';
-import { defaultMultiSelectTheme } from '@/react/common/constants/selectTheme';
 
 export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: string; value: string }> }) => {
   const selections = useAtomValue(selectionsAtom);
@@ -89,7 +88,6 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
           helperText={Drupal.t('Eg. 5.11.2024 - 10.11.2024', {}, { context: 'Allu decision search' })}
           id='date-range-select'
           label={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
-          title={Drupal.t('Date of decision', {}, { context: 'Allu decision search' })}
           setStart={(d?: string) => {
             if (endDisabled && d) {
               setDates({ start: d, end: d });
