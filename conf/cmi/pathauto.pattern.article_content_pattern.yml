@@ -2,6 +2,8 @@ uuid: 2cb9da06-fa9e-4f70-9a83-e0a737f380d3
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.article
   module:
     - node
 _core:
@@ -9,12 +11,11 @@ _core:
 id: article_content_pattern
 label: 'Article content pattern'
 type: 'canonical_entities:node'
-pattern: '[node:menu-link:parents:join-path]/[node:title]'
+pattern: '/[node:menu-link:parents:join-path]/[node:title]'
 selection_criteria:
   5fa83dfe-7dd4-4d07-ad89-3d3e03c8a052:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 5fa83dfe-7dd4-4d07-ad89-3d3e03c8a052
     context_mapping:
       node: node
     bundles:

@@ -2,18 +2,19 @@ uuid: c02fb707-e189-4242-be7a-fedd4fd878dd
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.meeting
   module:
     - language
     - node
 id: meetings_path
 label: 'Meetings path'
 type: 'canonical_entities:node'
-pattern: 'kokoukset/[node:field_meeting_id]'
+pattern: '/kokoukset/[node:field_meeting_id]'
 selection_criteria:
   0b8bbe5f-2d67-4c48-a0d3-77b076b1551f:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 0b8bbe5f-2d67-4c48-a0d3-77b076b1551f
     context_mapping:
       node: node
     bundles:
@@ -21,7 +22,6 @@ selection_criteria:
   2b942e27-381f-4686-9dc2-45bdcbbc99c4:
     id: language
     negate: false
-    uuid: 2b942e27-381f-4686-9dc2-45bdcbbc99c4
     context_mapping:
       language: 'node:langcode:language'
     langcodes:
