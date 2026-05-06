@@ -2,6 +2,8 @@ uuid: 5a7b4f4a-07ae-48a8-8a0f-fcb68a055a29
 langcode: en
 status: true
 dependencies:
+  config:
+    - taxonomy.vocabulary.keywords
   module:
     - language
     - taxonomy
@@ -13,7 +15,6 @@ selection_criteria:
   a3d89c04-088f-43e8-a84d-a6f1be433c59:
     id: 'entity_bundle:taxonomy_term'
     negate: false
-    uuid: a3d89c04-088f-43e8-a84d-a6f1be433c59
     context_mapping:
       taxonomy_term: taxonomy_term
     bundles:
@@ -21,7 +22,6 @@ selection_criteria:
   17af4941-36b8-414e-8a21-a9fe0b04031b:
     id: language
     negate: false
-    uuid: 17af4941-36b8-414e-8a21-a9fe0b04031b
     context_mapping:
       language: 'taxonomy_term:langcode:language'
     langcodes:

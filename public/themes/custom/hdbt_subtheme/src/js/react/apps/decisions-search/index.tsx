@@ -2,8 +2,8 @@ import { ErrorBoundary } from '@sentry/react';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { GhostList } from '@/react/common/GhostList';
-import ResultsError from '@/react/common/ResultsError';
 import initSentry from '@/react/common/helpers/Sentry';
+import ResultsError from '@/react/common/ResultsError';
 import { DecisionsContainer } from './modules/decisions/DecisionsContainer';
 import { PolicymakerContainer } from './modules/policymakers/PolicymakerContainer';
 

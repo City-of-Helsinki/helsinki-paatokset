@@ -1,9 +1,8 @@
+import { ErrorBoundary } from '@sentry/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ErrorBoundary } from '@sentry/react';
-
-import { SearchContainer } from './containers/SearchContainer';
 import ResultsError from '@/react/common/ResultsError';
+import { SearchContainer } from './containers/SearchContainer';
 
 const rootSelector = 'allu-decisions-search';
 const rootElement = document.getElementById(rootSelector);

@@ -2,8 +2,9 @@ import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
 
 declare const ELASTIC_DEV_URL: string | undefined;
-import { DateTime } from 'luxon';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
+
+import type { OptionType } from '@/common/types/OptionType';
+import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
 import { categoryToLabel } from '../../common/utils/CategoryToLabel';
 import { Components } from './enum/Components';
 import { DateSelection } from './enum/DateSelection';
@@ -15,7 +16,7 @@ const clearEvent = new Event(Events.DECISIONS_CLEAR_ALL);
 
 type SelectOption = { label: string | undefined; value: string };
 
-interface SearchState {
+export interface SearchState {
   [Components.CATEGORY]: SelectOption[];
   [Components.DECISIONMAKER]: SelectOption[];
   [Components.FROM]: string | undefined;
@@ -93,10 +94,14 @@ export const aggsAtom = atom(
         }
       } else {
         const param = initialParams.get(key);
-        if (typeof value === 'boolean' && param === 'true') {
+        if (
+          typeof value === 'boolean' &&
+          param === 'true' &&
+          (key === Components.BODIES || key === Components.TRUSTEES)
+        ) {
           initialState[key] = true;
-        } else if (param !== null) {
-          initialState[key] = param;
+        } else if (param !== null && Object.hasOwn(initialState, key)) {
+          (initialState as Record<string, unknown>)[key] = param;
         }
       }
     });
@@ -144,10 +149,10 @@ export const resetStateAtom = atom(null, (_get, set) => {
   window.dispatchEvent(clearEvent);
 });
 
-export const updateQueryAtom = atom(null, (get, set, _newValue: typeof defaultState) => {
+export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultState) => {
   const searchState = get(searchStateAtom);
   const submittedState = get(submittedStateAtom);
-  const newState = { ...searchState, page: 1 };
+  const newState = searchState ? { ...searchState, [Components.PAGE]: 1 } : { ...defaultState, [Components.PAGE]: 1 };
 
   // Only update if state actually changed
   if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {
@@ -155,32 +160,27 @@ export const updateQueryAtom = atom(null, (get, set, _newValue: typeof defaultSt
   }
 });
 
-export const getSearchTermAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.SEARCHBAR];
-});
+export const getSearchTermAtom = atom((get) => get(searchStateAtom)?.[Components.SEARCHBAR]);
 
 export const setSearchTermAtom = atom(null, (get, set, value: string | undefined) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.SEARCHBAR] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.SEARCHBAR]: value }
+    : { ...defaultState, [Components.SEARCHBAR]: value };
   set(searchStateAtom, state);
 });
 
-export const getPageAtom = atom((get) => {
-  const state = { ...get(submittedStateAtom) };
-  return state[Components.PAGE];
-});
+export const getPageAtom = atom((get) => get(submittedStateAtom)?.[Components.PAGE] ?? 1);
 
 export const setPageAtom = atom(null, (get, set, value: number) => {
-  const state = { ...get(submittedStateAtom) };
-  state[Components.PAGE] = value;
+  const currentState = get(submittedStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.PAGE]: value }
+    : { ...defaultState, [Components.PAGE]: value };
   set(submittedStateAtom, state);
 });
 
-export const getCategoryAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.CATEGORY];
-});
+export const getCategoryAtom = atom((get) => get(searchStateAtom)?.[Components.CATEGORY] ?? []);
 
 export const setCategoryAtom = atom(null, (get, set, value: SelectOption[]) => {
   const state = { ...get(searchStateAtom) } as SearchState;
@@ -188,25 +188,23 @@ export const setCategoryAtom = atom(null, (get, set, value: SelectOption[]) => {
   set(searchStateAtom, state);
 });
 
-export const getFromAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.FROM];
-});
+export const getFromAtom = atom((get) => get(searchStateAtom)?.[Components.FROM]);
 
 export const setFromAtom = atom(null, (get, set, value: string | undefined) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.FROM] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.FROM]: value }
+    : { ...defaultState, [Components.FROM]: value };
   set(searchStateAtom, state);
 });
 
-export const getToAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.TO];
-});
+export const getToAtom = atom((get) => get(searchStateAtom)?.[Components.TO]);
 
 export const setToAtom = atom(null, (get, set, value: string | undefined) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.TO] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.TO]: value }
+    : { ...defaultState, [Components.TO]: value };
   set(searchStateAtom, state);
 });
 
@@ -218,28 +216,25 @@ export const getDateSelectionAtom = atom((get) => {
     return undefined;
   }
 
-  const now = DateTime.now();
+  const now = new Date();
 
-  if (to !== now.toFormat(HDS_DATE_FORMAT)) {
+  if (to !== formatHDSDate(now)) {
     return undefined;
   }
 
   switch (from) {
-    case now.minus({ weeks: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addDays(now, -7)):
       return DateSelection.PAST_WEEK;
-    case now.minus({ months: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addMonths(now, -1)):
       return DateSelection.PAST_MONTH;
-    case now.minus({ years: 1 }).toFormat(HDS_DATE_FORMAT):
+    case formatHDSDate(addYears(now, -1)):
       return DateSelection.PAST_YEAR;
     default:
       return undefined;
   }
 });
 
-export const getDecisionMakersAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.DECISIONMAKER];
-});
+export const getDecisionMakersAtom = atom((get) => get(searchStateAtom)?.[Components.DECISIONMAKER] ?? []);
 
 export const setDecisionMakersAtom = atom(null, (get, set, value: SelectOption[]) => {
   const state = { ...get(searchStateAtom) } as SearchState;
@@ -247,14 +242,13 @@ export const setDecisionMakersAtom = atom(null, (get, set, value: SelectOption[]
   set(searchStateAtom, state);
 });
 
-export const getSortAtom = atom((get) => {
-  const state = { ...get(submittedStateAtom) };
-  return state[Components.SORT];
-});
+export const getSortAtom = atom((get) => get(submittedStateAtom)?.[Components.SORT] ?? SortOptions.RELEVANCE);
 
-export const setSortAtom = atom(null, (get, set, value: [{ label: string; value: string }]) => {
-  const state = { ...get(submittedStateAtom) };
-  state[Components.SORT] = value[0].value;
+export const setSortAtom = atom(null, (get, set, value: OptionType[]) => {
+  const currentState = get(submittedStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.SORT]: value[0]?.value.toString() ?? SortOptions.RELEVANCE }
+    : { ...defaultState, [Components.SORT]: value[0]?.value.toString() ?? SortOptions.RELEVANCE };
   set(submittedStateAtom, state);
 });
 
@@ -271,24 +265,22 @@ const getElasticUrl = () => {
 
 export const getElasticUrlAtom = atom(getElasticUrl());
 
-export const getTrusteesFilterAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.TRUSTEES];
-});
+export const getTrusteesFilterAtom = atom((get) => get(searchStateAtom)?.[Components.TRUSTEES] ?? false);
 
 export const setTrusteesFilterAtom = atom(null, (get, set, value: boolean) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.TRUSTEES] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.TRUSTEES]: value }
+    : { ...defaultState, [Components.TRUSTEES]: value };
   set(searchStateAtom, state);
 });
 
-export const getBodiesFilterAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.BODIES];
-});
+export const getBodiesFilterAtom = atom((get) => get(searchStateAtom)?.[Components.BODIES] ?? false);
 
 export const setBodiesFilterAtom = atom(null, (get, set, value: boolean) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.BODIES] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.BODIES]: value }
+    : { ...defaultState, [Components.BODIES]: value };
   set(searchStateAtom, state);
 });

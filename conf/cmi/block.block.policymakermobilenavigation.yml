@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
     - paatokset_ahjo_api
     - system
   theme:
@@ -24,11 +23,3 @@ visibility:
     id: request_path
     negate: false
     pages: "/paattajat/*\r\n/beslutsfattare/*\r\n/decisionmakers/*\r\n"
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      policymaker: policymaker
-      trustee: trustee

@@ -16,21 +16,6 @@ parameters:
 			path: public/modules/custom/paatokset/paatokset.module
 
 		-
-			message: "#^Method Drupal\\\\paatokset\\\\Element\\\\Select\\:\\:getInfo\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/src/Element/Select.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset\\\\Element\\\\Select\\:\\:processHelfiSelect\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/src/Element/Select.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset\\\\Element\\\\Select\\:\\:processHelfiSelect\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/src/Element/Select.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset\\\\EventSubscriber\\\\ExceptionSubscriber\\:\\:getHandledFormats\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset/src/EventSubscriber/ExceptionSubscriber.php
@@ -104,36 +89,6 @@ parameters:
 			message: "#^Method Drupal\\\\paatokset\\\\Plugin\\\\views\\\\filter\\\\YearFilter\\:\\:valueForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset/src/Plugin/views/filter/YearFilter.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\paatokset\\\\Kernel\\\\Element\\\\SelectTest\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest\\.php\\:60\\:\\:__construct\\(\\) has parameter \\$renderArray with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest\\.php\\:60\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest\\.php\\:60\\:\\:buildForm\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest\\.php\\:60\\:\\:submitForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest\\.php\\:60\\:\\:submitForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset/tests/src/Kernel/Element/SelectTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$data of method Drupal\\\\paatokset\\\\Lupapiste\\\\ItemsStorage\\:\\:deserialize\\(\\) expects string, string\\|false given\\.$#"

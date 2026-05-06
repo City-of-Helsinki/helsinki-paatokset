@@ -1,13 +1,12 @@
-import { useCallback, useRef } from 'react';
-import useSWR from 'swr';
 import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-
-import { FormContainer } from './FormContainer';
-import { ResultsContainer } from './ResultsContainer';
+import { useCallback, useRef } from 'react';
+import useSWR from 'swr';
 import useTimeoutFetch from '@/react/common/hooks/useTimeoutFetch';
 import { formQuery, matchTypeLabel } from '../helpers';
-import { selectionsAtom, urlAtom, getElasticUrlAtom } from '../store';
+import { getElasticUrlAtom, selectionsAtom, urlAtom } from '../store';
+import { FormContainer } from './FormContainer';
+import { ResultsContainer } from './ResultsContainer';
 
 export const SearchContainer = () => {
   const url = useAtomValue(urlAtom);

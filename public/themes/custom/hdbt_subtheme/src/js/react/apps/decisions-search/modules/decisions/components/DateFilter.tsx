@@ -1,14 +1,12 @@
 import { Button, ButtonPresetTheme, Checkbox, DateInput, IconMinus, SelectionGroup } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { type MouseEvent, useState } from 'react';
-import { DateTime } from 'luxon';
-
-import { Components } from '../enum/Components';
-import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import Collapsible from '@/react/common/Collapsible';
-import { HDS_DATE_FORMAT } from '@/react/common/enum/HDSDateFormat';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
+import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
+import { Components } from '../enum/Components';
 import { DateSelection } from '../enum/DateSelection';
+import { getDateSelectionAtom, getFromAtom, getToAtom, setFromAtom, setToAtom } from '../store';
 import { DatePicker } from './DatePicker';
 
 export const DateFilter = () => {
@@ -49,18 +47,18 @@ export const DateFilter = () => {
     }
 
     const value = (e.target as HTMLInputElement).id;
-    const now = DateTime.now();
-    setTo(now.toFormat(HDS_DATE_FORMAT));
+    const now = new Date();
+    setTo(formatHDSDate(now));
 
     switch (value) {
       case DateSelection.PAST_WEEK:
-        setFrom(now.minus({ weeks: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addDays(now, -7)));
         break;
       case DateSelection.PAST_MONTH:
-        setFrom(now.minus({ months: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addMonths(now, -1)));
         break;
       case DateSelection.PAST_YEAR:
-        setFrom(now.minus({ years: 1 }).toFormat(HDS_DATE_FORMAT));
+        setFrom(formatHDSDate(addYears(now, -1)));
         break;
     }
   };
@@ -73,74 +71,76 @@ export const DateFilter = () => {
         title={getTitle()}
         label={Drupal.t('Date', {}, { context: 'Decisions search' })}
       >
-        {calendarActive ? (
-          <div className='date-filter__datepicker-wrapper'>
-            <div className='date-filter__datepicker-container'>
-              <div className='date-filter__fields-container'>
-                <DateInput
-                  autoFocus
-                  id={Components.FROM}
-                  label={Drupal.t('Start date', {}, { context: 'Decisions search' })}
-                  language={drupalSettings.path.currentLanguage}
-                  name={Components.FROM}
-                  onChange={(value) => handleDatePick(value, setFrom)}
-                  value={from?.toString()}
-                />
-                <IconMinus className='date-filter__fields-divider' />
-                <DateInput
-                  id={Components.TO}
-                  label={Drupal.t('End date', {}, { context: 'Decisions search' })}
-                  language={drupalSettings.path.currentLanguage}
-                  name={Components.TO}
-                  onChange={(value) => handleDatePick(value, setTo)}
-                  value={to?.toString()}
-                />
-                <DatePicker from={from} to={to?.toString()} setFrom={setFrom} setTo={setTo} />
+        <div>
+          {calendarActive ? (
+            <div className='date-filter__datepicker-wrapper'>
+              <div className='date-filter__datepicker-container'>
+                <div className='date-filter__fields-container'>
+                  <DateInput
+                    autoFocus
+                    id={Components.FROM}
+                    label={Drupal.t('Start date', {}, { context: 'Decisions search' })}
+                    language={drupalSettings.path.currentLanguage}
+                    name={Components.FROM}
+                    onChange={(value) => handleDatePick(value, setFrom)}
+                    value={from?.toString()}
+                  />
+                  <IconMinus className='date-filter__fields-divider' />
+                  <DateInput
+                    id={Components.TO}
+                    label={Drupal.t('End date', {}, { context: 'Decisions search' })}
+                    language={drupalSettings.path.currentLanguage}
+                    name={Components.TO}
+                    onChange={(value) => handleDatePick(value, setTo)}
+                    value={to?.toString()}
+                  />
+                  <DatePicker from={from} to={to?.toString()} setFrom={setFrom} setTo={setTo} />
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className='date-filter__predefined-ranges-wrapper'>
-            <div className='date-filter__predefined-ranges-container'>
-              <SelectionGroup>
-                <Checkbox
-                  id={DateSelection.PAST_WEEK}
-                  label={Drupal.t('Past week', {}, { context: 'Decisions search' })}
-                  name='past_week'
-                  checked={dateSelection === DateSelection.PAST_WEEK}
-                  onClick={handleSelectionClick}
-                  style={defaultCheckboxStyle}
-                />
-                <Checkbox
-                  id={DateSelection.PAST_MONTH}
-                  label={Drupal.t('Past month', {}, { context: 'Decisions search' })}
-                  name='past_month'
-                  checked={dateSelection === DateSelection.PAST_MONTH}
-                  onClick={handleSelectionClick}
-                  style={defaultCheckboxStyle}
-                />
-                <Checkbox
-                  id={DateSelection.PAST_YEAR}
-                  label={Drupal.t('Past year', {}, { context: 'Decisions search' })}
-                  name='past_year'
-                  checked={dateSelection === DateSelection.PAST_YEAR}
-                  onClick={handleSelectionClick}
-                  style={defaultCheckboxStyle}
-                />
-              </SelectionGroup>
+          ) : (
+            <div className='date-filter__predefined-ranges-wrapper'>
+              <div className='date-filter__predefined-ranges-container'>
+                <SelectionGroup>
+                  <Checkbox
+                    id={DateSelection.PAST_WEEK}
+                    label={Drupal.t('Past week', {}, { context: 'Decisions search' })}
+                    name='past_week'
+                    checked={dateSelection === DateSelection.PAST_WEEK}
+                    onClick={handleSelectionClick}
+                    style={defaultCheckboxStyle}
+                  />
+                  <Checkbox
+                    id={DateSelection.PAST_MONTH}
+                    label={Drupal.t('Past month', {}, { context: 'Decisions search' })}
+                    name='past_month'
+                    checked={dateSelection === DateSelection.PAST_MONTH}
+                    onClick={handleSelectionClick}
+                    style={defaultCheckboxStyle}
+                  />
+                  <Checkbox
+                    id={DateSelection.PAST_YEAR}
+                    label={Drupal.t('Past year', {}, { context: 'Decisions search' })}
+                    name='past_year'
+                    checked={dateSelection === DateSelection.PAST_YEAR}
+                    onClick={handleSelectionClick}
+                    style={defaultCheckboxStyle}
+                  />
+                </SelectionGroup>
+              </div>
             </div>
-          </div>
-        )}
-        <Button
-          className='date-filter__inner-control'
-          onClick={() => setCalendarActive(!calendarActive)}
-          type='button'
-          theme={ButtonPresetTheme.Black}
-        >
-          {calendarActive
-            ? Drupal.t('Back', {}, { context: 'Decisions search' })
-            : Drupal.t('Choose range', {}, { context: 'Decisions search' })}
-        </Button>
+          )}
+          <Button
+            className='date-filter__inner-control'
+            onClick={() => setCalendarActive(!calendarActive)}
+            type='button'
+            theme={ButtonPresetTheme.Black}
+          >
+            {calendarActive
+              ? Drupal.t('Back', {}, { context: 'Decisions search' })
+              : Drupal.t('Choose range', {}, { context: 'Decisions search' })}
+          </Button>
+        </div>
       </Collapsible>
     </div>
   );

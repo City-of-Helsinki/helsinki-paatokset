@@ -11,9 +11,9 @@ const getElasticUrl = () => {
 
 export const getElasticUrlAtom = atom(getElasticUrl());
 
-type SelectOption = { label: string | undefined; value: string };
+export type SelectOption = { label: string | undefined; value: string };
 
-interface SearchState {
+export interface SearchState {
   [Components.SEARCHBAR]: string | undefined;
   [Components.SECTOR]: SelectOption[];
   [Components.PAGE]: number;
@@ -114,7 +114,7 @@ export const resetStateAtom = atom(null, (_get, set) => {
 export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultState) => {
   const searchState = get(searchStateAtom);
   const submittedState = get(submittedStateAtom);
-  const newState = { ...searchState, [Components.PAGE]: 1 };
+  const newState = searchState ? { ...searchState, [Components.PAGE]: 1 } : defaultState;
 
   // Activate search on first submit
   if (!get(searchActiveAtom)) {
@@ -133,8 +133,11 @@ export const getSearchTermAtom = atom((get) => {
 });
 
 export const setSearchTermAtom = atom(null, (get, set, value: string | undefined) => {
-  const state = { ...get(searchStateAtom) };
-  state[Components.SEARCHBAR] = value;
+  const currentState = get(searchStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.SEARCHBAR]: value }
+    : { ...defaultState, [Components.SEARCHBAR]: value };
+
   set(searchStateAtom, state);
 });
 
@@ -144,15 +147,14 @@ export const getPageAtom = atom<number>((get) => {
 });
 
 export const setPageAtom = atom(null, (get, set, value: number) => {
-  const state = { ...get(submittedStateAtom) };
-  state[Components.PAGE] = value;
+  const currentState = get(submittedStateAtom);
+  const state = currentState
+    ? { ...currentState, [Components.PAGE]: value }
+    : { ...defaultState, [Components.PAGE]: value };
   set(submittedStateAtom, state);
 });
 
-export const getSectorAtom = atom((get) => {
-  const state = { ...get(searchStateAtom) };
-  return state[Components.SECTOR];
-});
+export const getSectorAtom = atom((get) => get(searchStateAtom)?.[Components.SECTOR] ?? []);
 
 export const setSectorAtom = atom(null, (get, set, value: SelectOption[]) => {
   const state = { ...get(searchStateAtom) } as SearchState;

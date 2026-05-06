@@ -8,6 +8,6 @@ export const Components = {
   SORT: 'sort',
   TO: 'to',
   TRUSTEES: 'trustees',
-};
+} as const;
 
 export const DATE_SELECTION = 'date-selection';

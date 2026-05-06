@@ -2,18 +2,19 @@ uuid: 9c68e3d9-fdc4-465b-ae4a-7ad5b281704a
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.trustee
   module:
     - language
     - node
 id: trustee_pattern_sv
 label: 'Trustee pattern SV'
 type: 'canonical_entities:node'
-pattern: 'beslutsfattare/[node:field_trustee_id]'
+pattern: '/beslutsfattare/[node:field_trustee_id]'
 selection_criteria:
   c047e503-e10c-4863-be03-46e440558521:
     id: 'entity_bundle:node'
     negate: false
-    uuid: c047e503-e10c-4863-be03-46e440558521
     context_mapping:
       node: node
     bundles:
@@ -21,7 +22,6 @@ selection_criteria:
   bb4c8e4e-530b-4cc7-aa86-d3f8c4467f9e:
     id: language
     negate: false
-    uuid: bb4c8e4e-530b-4cc7-aa86-d3f8c4467f9e
     context_mapping:
       language: 'node:langcode:language'
     langcodes:
