@@ -7,7 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Controller;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController;
+use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\AhjoCallbackQueueWorker;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
@@ -100,7 +100,7 @@ class CallbackTest extends AhjoEntityKernelTestBase {
     $count = $this->container->get('database')
       ->select('queue', 'q')
       ->condition('q.item_id', $content['item_id'])
-      ->condition('q.name', AhjoSubscriberController::QUEUE_NAME)
+      ->condition('q.name', AhjoCallbackQueueWorker::QUEUE_NAME)
       ->countQuery()
       ->execute()
       ->fetchField();

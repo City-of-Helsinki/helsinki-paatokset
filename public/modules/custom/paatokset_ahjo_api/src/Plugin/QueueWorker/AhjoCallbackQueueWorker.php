@@ -11,8 +11,10 @@ use Drupal\paatokset_ahjo_api\Queue\AhjoQueueWorkerBase;
 /**
  * Processes cron queue.
  */
-#[QueueWorker(id: 'ahjo_api_subscriber_queue', title: new TranslatableMarkup('Ahjo Callback Queue Worker'))]
+#[QueueWorker(id: self::QUEUE_NAME, title: new TranslatableMarkup('Ahjo Callback Queue Worker'))]
 class AhjoCallbackQueueWorker extends AhjoQueueWorkerBase {
+
+  public const string QUEUE_NAME = 'ahjo_api_subscriber_queue';
 
   /**
    * {@inheritDoc}

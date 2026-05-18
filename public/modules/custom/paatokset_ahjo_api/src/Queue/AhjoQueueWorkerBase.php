@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Queue;
 
 use Drupal\Core\Logger\LoggerChannelInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\paatokset_ahjo_proxy\AhjoProxy;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Processes cron queue.
  */
-class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+class AhjoQueueWorkerBase extends QueueWorkerBase {
 
   final public function __construct(
     array $configuration,
@@ -24,24 +22,9 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     protected AhjoProxy $ahjoProxy,
     protected AhjoMigrationDriver $migrationDriver,
     protected AhjoQueueManager $queueManager,
-    protected LoggerChannelInterface $logger,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')] protected LoggerChannelInterface $logger,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('paatokset_ahjo_proxy'),
-      $container->get(AhjoMigrationDriver::class),
-      $container->get(AhjoQueueManager::class),
-      $container->get('logger.channel.paatokset_ahjo_api'),
-    );
   }
 
   /**
@@ -55,7 +38,6 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     }
 
     $content = $data['content'];
-
     $result = $this->migrationDriver->import($content->toMigrateSettings(), $content->migration);
 
     if ($result != MigrationInterface::RESULT_COMPLETED) {
@@ -91,7 +73,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
    */
   public function processLegacyItem(mixed $data): void {
     $operation = $data['content']->updatetype ?? NULL;
-    $entity = $data['content']->id ?? NULL;
+    $entity = $data['content']->id ?? '';
 
     if (!$entity || !$operation) {
       $this->logger->info('Empty callback from @queue queue, deleting.', [
@@ -106,6 +88,11 @@ class AhjoQueueWorkerBase extends QueueWorkerBase implements ContainerFactoryPlu
     }
 
     $status = $this->ahjoProxy->migrateSingleEntity($data['id'], $entity);
+
+    $this->ahjoProxy->invalidateCacheForProxy($data['id'], $entity);
+    if ($id === 'meetings') {
+      $this->ahjoProxy->invalidateAgendaItemsCache($entity);
+    }
 
     if ($status !== 1) {
       // Check if item should be moved to retry or error queue.
