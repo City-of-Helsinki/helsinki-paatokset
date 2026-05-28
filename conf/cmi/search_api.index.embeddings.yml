@@ -49,7 +49,7 @@ field_settings:
     property_path: search_api_url
     type: string
     configuration:
-      absolute: false
+      absolute: true
 datasource_settings:
   'entity:node':
     bundles:
