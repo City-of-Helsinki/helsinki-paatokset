@@ -22,7 +22,6 @@ use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -75,7 +74,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     $parentOrgId = $policymaker->getOrganization()?->getParentOrganization()?->getAhjoId();
 
     $url = Url::fromRoute('paatokset_ahjo_api.browse_policymakers', ['org' => $parentOrgId], [
-      'language' => $this->languageManager->getCurrentLanguage()
+      'language' => $this->languageManager->getCurrentLanguage(),
     ]);
 
     return [
