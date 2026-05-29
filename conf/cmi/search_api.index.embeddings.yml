@@ -56,9 +56,7 @@ datasource_settings:
       default: false
       selected:
         - landing_page
-        - news_item
         - page
-        - policymaker
     languages:
       default: true
       selected: {  }
