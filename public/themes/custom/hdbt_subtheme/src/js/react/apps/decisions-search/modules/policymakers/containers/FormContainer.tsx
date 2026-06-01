@@ -1,10 +1,10 @@
-import { useSetAtom } from 'jotai';
 import { Button } from 'hds-react';
+import { useSetAtom } from 'jotai';
 
 import { SearchBar } from '../components/SearchBar';
 import { SectorFilter } from '../components/SectorFilter';
-import { SelectionsContainer } from './SelectionsContainer';
 import { updateQueryAtom } from '../store';
+import { SelectionsContainer } from './SelectionsContainer';
 
 export const FormContainer = () => {
   const updateQuery = useSetAtom(updateQueryAtom);

@@ -1,0 +1,53 @@
+uuid: 84f37aaa-ed59-4137-b988-5200bb4c56c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card_teaser
+    - field.field.node.article.field_author
+    - field.field.node.article.field_content
+    - field.field.node.article.field_keywords
+    - field.field.node.article.field_lead
+    - field.field.node.article.field_liftup_image
+    - field.field.node.article.field_metatags
+    - node.type.article
+  module:
+    - user
+_core:
+  default_config_hash: iP63ruNj8P30AR0u-V9j_M03qHUEpzx-qneyWJtGvNw
+id: node.article.card_teaser
+targetEntityType: node
+bundle: article
+mode: card_teaser
+content:
+  published_at:
+    type: timestamp
+    label: hidden
+    settings:
+      date_format: publication_date_format
+      custom_date_format: ''
+      timezone: ''
+      tooltip:
+        date_format: long
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
+        description: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_author: true
+  field_content: true
+  field_keywords: true
+  field_lead: true
+  field_liftup_image: true
+  field_metatags: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  toc_enabled: true

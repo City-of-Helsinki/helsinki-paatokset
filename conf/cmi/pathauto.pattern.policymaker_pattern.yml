@@ -2,18 +2,19 @@ uuid: 6ac66458-7aef-4724-9216-e583217dbf66
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.policymaker
   module:
     - language
     - node
 id: policymaker_pattern
 label: 'Policymaker pattern'
 type: 'canonical_entities:node'
-pattern: 'paattajat/[node:field_ahjo_title]'
+pattern: '/paattajat/[node:field_ahjo_title]'
 selection_criteria:
   7a3f122a-f9c0-4f61-af33-9bb71b1b09cb:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 7a3f122a-f9c0-4f61-af33-9bb71b1b09cb
     context_mapping:
       node: node
     bundles:
@@ -21,7 +22,6 @@ selection_criteria:
   bc4ba327-ef30-4eb9-9f3d-072cca16dddb:
     id: language
     negate: false
-    uuid: bc4ba327-ef30-4eb9-9f3d-072cca16dddb
     context_mapping:
       language: 'node:langcode:language'
     langcodes:

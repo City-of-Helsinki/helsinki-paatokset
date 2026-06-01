@@ -409,7 +409,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['move_before_content'] = TRUE;
     $variables['has_section_nav'] = TRUE;
 
-    // Force pm sidebar and mobile navi to be visible.
+    // Force policymaker sidebar and mobile navi to be visible.
     $variables['policymaker_navigation'] = TRUE;
 
     // Unset main navigation.
@@ -418,6 +418,7 @@ function paatokset_policymakers_preprocess_page(&$variables) {
   // Unset policymaker side navi.
   else {
     unset($variables['page']['sidebar_first']['policymakersidenavigation']);
+    unset($variables['page']['before_content']['policymakermobilenavigation']);
   }
 }
 

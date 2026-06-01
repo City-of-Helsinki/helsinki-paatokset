@@ -1,13 +1,14 @@
+import { useAtom, useAtomValue } from 'jotai';
 import useSWRImmutable from 'swr/immutable';
-import { useAtom } from 'jotai';
 
 import { FormContainer } from './containers/FormContainer';
 import { ResultsContainer } from './containers/ResultsContainer';
-import { aggsAtom } from './store';
 import { useAggsQueryString } from './hooks/useAggsQueryString';
+import { aggsAtom, getElasticUrlAtom } from './store';
 
-export const DecisionsContainer = ({ url }: { url: string }) => {
+export const DecisionsContainer = () => {
   const [aggs, setAggs] = useAtom(aggsAtom);
+  const url = useAtomValue(getElasticUrlAtom);
   const aggsQueryString = useAggsQueryString();
 
   const fetcher = async () => {
@@ -55,8 +56,8 @@ export const DecisionsContainer = ({ url }: { url: string }) => {
 
   return (
     <>
-      <FormContainer url={url} />
-      <ResultsContainer url={url} />
+      <FormContainer />
+      <ResultsContainer />
     </>
   );
 };

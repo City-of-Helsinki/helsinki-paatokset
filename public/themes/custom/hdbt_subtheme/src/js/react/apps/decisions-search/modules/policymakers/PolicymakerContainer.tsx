@@ -1,10 +1,10 @@
-import useSWRImmutable from 'swr/immutable';
 import { useAtom, useAtomValue } from 'jotai';
+import useSWRImmutable from 'swr/immutable';
 
 import { FormContainer } from './containers/FormContainer';
 import { ResultsContainer } from './containers/ResultsContainer';
-import { aggsAtom, getElasticUrlAtom } from './store';
 import { useAggsQueryString } from './hooks/useAggsQueryString';
+import { aggsAtom, getElasticUrlAtom } from './store';
 
 export const PolicymakerContainer = () => {
   const [aggs, setAggs] = useAtom(aggsAtom);

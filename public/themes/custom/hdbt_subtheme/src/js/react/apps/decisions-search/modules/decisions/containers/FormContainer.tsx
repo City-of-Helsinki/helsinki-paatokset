@@ -1,16 +1,15 @@
-import { useSetAtom } from 'jotai';
 import { Button } from 'hds-react';
-
-import { SearchBar } from '../components/SearchBar';
-import { updateQueryAtom } from '../store';
+import { useSetAtom } from 'jotai';
+import { BodiesFilter } from '../components/BodiesFilter';
 import { CategoryFilter } from '../components/CategoryFilter';
 import { DateFilter } from '../components/DateFilter';
 import { DMSelect } from '../components/DMSelect';
-import { SelectionsContainer } from './SelectionsContainer';
+import { SearchBar } from '../components/SearchBar';
 import { TrusteeFilter } from '../components/TrusteeFilter';
-import { BodiesFilter } from '../components/BodiesFilter';
+import { updateQueryAtom } from '../store';
+import { SelectionsContainer } from './SelectionsContainer';
 
-export const FormContainer = ({ url }: { url: string }) => {
+export const FormContainer = () => {
   const updateQuery = useSetAtom(updateQueryAtom);
 
   return (
@@ -23,11 +22,11 @@ export const FormContainer = ({ url }: { url: string }) => {
       }}
       role='search'
     >
-      <SearchBar url={url} />
+      <SearchBar />
       <div className='hdbt-search--react__dropdown-filters'>
         <DateFilter />
         <CategoryFilter />
-        <DMSelect url={url} />
+        <DMSelect />
       </div>
       <div className='react-search__checkbox-filter-container'>
         <fieldset className='hdbt-search--react__fieldset'>

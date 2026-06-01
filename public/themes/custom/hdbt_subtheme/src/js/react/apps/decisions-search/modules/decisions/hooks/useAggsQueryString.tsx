@@ -11,7 +11,8 @@ export const useAggsQueryString = () => {
 
   const categoryQuery = { aggs: categoryAggs, query: { match_all: {} }, size: 0 };
 
-  if (!initialParams.get(Components.DECISIONMAKER)?.length) {
+  const decisionMakerId = initialParams.get(Components.DECISIONMAKER);
+  if (!decisionMakerId?.length) {
     return JSON.stringify(categoryQuery);
   }
 
@@ -35,7 +36,7 @@ export const useAggsQueryString = () => {
       query: {
         bool: {
           filter: [
-            { terms: { [DecisionIndex.POLICYMAKER_ID]: initialParams.get(Components.DECISIONMAKER).split(',') } },
+            { terms: { [DecisionIndex.POLICYMAKER_ID]: decisionMakerId.split(',') } },
             { term: { _index: 'paatokset_policymakers' } },
             { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: drupalSettings.path.currentLanguage } },
           ],

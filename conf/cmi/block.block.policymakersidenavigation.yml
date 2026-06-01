@@ -17,7 +17,7 @@ settings:
   id: policymaker_side_nav
   label: 'Policymaker side navigation'
   label_display: '0'
-  provider: paatokset_submenus
+  provider: paatokset_ahjo_api
 visibility:
   request_path:
     id: request_path
