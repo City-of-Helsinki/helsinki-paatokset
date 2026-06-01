@@ -42,8 +42,8 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
   #[Command(name: 'paatokset:decisions:delete')]
   public function databaseCleanup(?string $dateFrom = NULL): int {
 
-    if (getenv('APP_ENV') !== 'local') {
-      $this->io()->writeln('Stopping execution. APP_ENV is not "local" or is missing.');
+    if (!in_array(getenv('APP_ENV'), ['local', 'testing'], TRUE)) {
+      $this->io()->writeln('Stopping execution. APP_ENV is not "local" or "testing".');
       return DrushCommands::EXIT_SUCCESS;
     }
 
