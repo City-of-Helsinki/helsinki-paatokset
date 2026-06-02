@@ -48,7 +48,7 @@ final class AhjoSubscriberController extends ControllerBase {
 
     // Push all items to default queue unless we have a specific queue for
     // this type of event.
-    $queueEnum = SubscriberQueueEnum::tryFrom(sprintf('%s.%s', $id, $update_type)) ?? SubscriberQueueEnum::Default;
+    $queueEnum = SubscriberQueueEnum::tryFrom(strtolower(sprintf('%s.%s', $id, $update_type))) ?? SubscriberQueueEnum::Default;
     $queue = $this->queueFactory->get($queueEnum->getQueueName());
 
     $data = [
