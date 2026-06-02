@@ -1136,29 +1136,11 @@ class CaseService {
     }
 
     if (isset($params['decision_id'])) {
-      $decision_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $params['decision_id']);
-      if (!str_starts_with($decision_id, '{')) {
-        $decision_id = '{' . $decision_id;
-      }
-
-      if (!str_ends_with($decision_id, '}')) {
-        $decision_id .= '}';
-      }
-
-      $query->condition('field_decision_native_id', $decision_id);
+      $query->condition('field_decision_native_id', Decision::bracketNativeId($params['decision_id']));
     }
 
     if (isset($params['version_id'])) {
-      $version_id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $params['version_id']);
-      if (!str_starts_with($version_id, '{')) {
-        $version_id = '{' . $version_id;
-      }
-
-      if (!str_ends_with($version_id, '}')) {
-        $version_id .= '}';
-      }
-
-      $query->condition('field_decision_series_id', $version_id);
+      $query->condition('field_decision_series_id', Decision::bracketNativeId($params['version_id']));
     }
 
     if (isset($params['unique_id'])) {
