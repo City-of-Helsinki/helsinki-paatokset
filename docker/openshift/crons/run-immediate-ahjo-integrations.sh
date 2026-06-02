@@ -8,6 +8,7 @@ do
   drush migrate-reset-status ahjo_decisions:single
   echo "Running Ahjo API callback queue: $(date)"
   drush queue:run ahjo_api_subscriber_queue --time-limit=240 -v
+  drush queue:run 'Drupal\paatokset_ahjo_api\Plugin\QueueWorker\DecisionRemovedQueueWorker' --time-limit=240
   echo "Generating motions from meeting data: $(date)"
   drush ahjo-proxy:get-motions -v
   drush ahjo-proxy:parse-decision-content --limit=100 -v
