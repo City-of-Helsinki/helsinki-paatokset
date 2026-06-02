@@ -26,6 +26,8 @@ abstract class QueueWorkerBase extends CoreQueueWorkerBase implements ContainerF
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(
     ContainerInterface $container,

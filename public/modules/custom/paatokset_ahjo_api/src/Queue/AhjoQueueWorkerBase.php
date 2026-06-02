@@ -90,7 +90,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase {
     $status = $this->ahjoProxy->migrateSingleEntity($data['id'], $entity);
 
     $this->ahjoProxy->invalidateCacheForProxy($data['id'], $entity);
-    if ($id === 'meetings') {
+    if ($data['id'] === 'meetings') {
       $this->ahjoProxy->invalidateAgendaItemsCache($entity);
     }
 

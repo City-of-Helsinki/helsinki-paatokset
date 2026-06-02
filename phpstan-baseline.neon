@@ -1386,11 +1386,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Queue/AhjoQueueWorkerBase.php
 
 		-
-			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Queue\\\\AhjoQueueWorkerBase\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Queue/AhjoQueueWorkerBase.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Routing\\\\CaseOrDecisionConverter\\:\\:convert\\(\\) has parameter \\$defaults with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Routing/CaseOrDecisionConverter.php
