@@ -11,11 +11,13 @@ use Drupal\paatokset_ahjo_api\Queue\AhjoQueueManager;
 use Drupal\paatokset_ahjo_api\Queue\Item;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests AhjoQueueManager service.
  */
 #[Group('paatokset_ahjo_api')]
+#[RunTestsInSeparateProcesses]
 class AhjoQueueManagerTest extends KernelTestBase {
 
   /**

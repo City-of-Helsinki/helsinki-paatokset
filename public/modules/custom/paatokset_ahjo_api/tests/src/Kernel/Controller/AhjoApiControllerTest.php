@@ -9,11 +9,15 @@ use Drupal\Core\Url;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests case controller.
  */
+#[Group('paatokset_ahjo_api')]
+#[RunTestsInSeparateProcesses]
 class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
 
   use ApiTestTrait;
