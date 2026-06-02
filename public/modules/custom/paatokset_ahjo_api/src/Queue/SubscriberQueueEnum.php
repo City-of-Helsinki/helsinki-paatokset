@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Queue;
 
-use Drupal\helfi_paatokset_ahjo_api\Plugin\QueueWorker\DecisionRemovedQueueWorker;
+use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\DecisionRemovedQueueWorker;
 use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\AhjoCallbackQueueWorker;
 
 /**

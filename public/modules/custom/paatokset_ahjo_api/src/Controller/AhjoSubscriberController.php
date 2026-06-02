@@ -7,7 +7,6 @@ namespace Drupal\paatokset_ahjo_api\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Queue\QueueFactory;
-use Drupal\paatokset_ahjo_api\Plugin\QueueWorker\AhjoCallbackQueueWorker;
 use Drupal\paatokset_ahjo_api\Queue\SubscriberQueueEnum;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;

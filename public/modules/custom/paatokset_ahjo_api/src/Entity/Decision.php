@@ -37,6 +37,37 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
   }
 
   /**
+   * Normalizes an Ahjo GUID to the braced form used in storage.
+   *
+   * Strips non-printable characters and ensures the value is wrapped in curly
+   * braces, matching how decision native and series IDs are stored in
+   * field_decision_native_id / field_decision_series_id. Use this when
+   * building entity queries against those fields.
+   *
+   * This is the inverse of self::getNormalizedNativeId(), which strips the
+   * braces for use in URLs.
+   *
+   * @param string $id
+   *   Raw native or series id (e.g. from a callback payload or route param).
+   *
+   * @return string
+   *   The id wrapped in curly braces.
+   */
+  public static function bracketNativeId(string $id): string {
+    $id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $id) ?? '';
+
+    if (!str_starts_with($id, '{')) {
+      $id = '{' . $id;
+    }
+
+    if (!str_ends_with($id, '}')) {
+      $id .= '}';
+    }
+
+    return $id;
+  }
+
+  /**
    * Get normalized decision native id.
    *
    * Removes brackets from native ID and converts to lowercase.
