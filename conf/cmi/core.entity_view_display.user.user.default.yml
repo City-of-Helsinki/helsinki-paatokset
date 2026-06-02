@@ -1,0 +1,20 @@
+uuid: e9575de7-c84d-43c9-ad77-b5e4f6ce84c7
+langcode: fi
+status: true
+dependencies:
+  module:
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  user_content:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  langcode: true
+  member_for: true
+  search_api_excerpt: true
