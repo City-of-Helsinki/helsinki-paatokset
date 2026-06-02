@@ -128,14 +128,6 @@ paatokset_ahjo_api.subscriber:
   options:
     _auth: ['cookie', 'key_auth']
 
-paatokset_ahjo_api.queue_list:
-  path: 'ahjo_api/callback-queue/{id}'
-  defaults:
-    _controller: '\Drupal\paatokset_ahjo_api\Controller\AhjoSubscriberController::listQueue'
-    id: all
-  requirements:
-    _permission: 'administer paatokset'
-
 paatokset_ahjo_api.case_ajax:
   path: 'ahjo_api/case/{case_id}/{decision}'
   defaults:

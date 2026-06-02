@@ -15,19 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * AHJO subscriber controller.
- *
- * @package Drupal\paatokset_ahjo_api\Controller
  */
 final class AhjoSubscriberController extends ControllerBase {
 
-  /**
-   * Constructor.
-   *
-   * @param \Drupal\Core\Queue\QueueFactory $queueFactory
-   *   Queue factory.
-   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The logger.
-   */
   public function __construct(
     private readonly QueueFactory $queueFactory,
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
@@ -85,37 +75,6 @@ final class AhjoSubscriberController extends ControllerBase {
         '@update_type' => $update_type,
         '@created' => $created,
       ]);
-    }
-
-    return new JsonResponse($data);
-  }
-
-  /**
-   * List subscriber queue contents.
-   *
-   * @param string $id
-   *   Subscriber callback ID to filter (decisions, meetings, etc).
-   *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   Queue contents.
-   */
-  public function listQueue(string $id): JsonResponse {
-    $data = [];
-    $items = [];
-
-    $queue = $this->queueFactory->get(AhjoCallbackQueueWorker::QUEUE_NAME);
-
-    while ($item = $queue->claimItem()) {
-      if ($id === 'all' || (isset($item->data) && $item->data['id'] === $id)) {
-        $data[] = $item;
-      }
-
-      $items[] = $item;
-    }
-
-    // Release claimed items.
-    foreach ($items as $item) {
-      $queue->releaseItem(($item));
     }
 
     return new JsonResponse($data);
