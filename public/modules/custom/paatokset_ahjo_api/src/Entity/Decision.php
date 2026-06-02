@@ -54,7 +54,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
    *   The id wrapped in curly braces.
    */
   public static function bracketNativeId(string $id): string {
-    $id = preg_replace('/[^\pL\pN\pP\pS\pZ]/u', '', $id) ?? '';
+    $id = preg_replace('/[^\p{L}\p{N}\p{P}\p{S}\p{Z}]/u', '', $id) ?? '';
 
     if (!str_starts_with($id, '{')) {
       $id = '{' . $id;
