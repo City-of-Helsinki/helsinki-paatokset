@@ -142,6 +142,36 @@ display:
             field_identifier: ''
           exposed: false
           granularity: second
+        title:
+          id: title
+          table: paatokset_ahjo_initiative
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: ahjo_initiative
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        id:
+          id: id
+          table: paatokset_ahjo_initiative
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: ahjo_initiative
+          entity_field: id
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments: {  }
       filters:
         date_year:
