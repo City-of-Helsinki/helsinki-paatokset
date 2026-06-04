@@ -19,6 +19,11 @@ $config['paatokset_search.settings']['operator_guide_node_id'] = getenv('OPERATO
 
 $config['paatokset_ahjo_api.settings']['ahjo_endpoint'] = 'https://ahjo.hel.fi:9802/ahjorest/v1/';
 
+// Site-specific additions to helfi_search.settings:ignored_classes.
+$settings['helfi_search_additional_ignored_classes'] = [
+  'policymaker-members',
+];
+
 // AD role mapping.
 $config['openid_connect.client.tunnistamo']['settings']['ad_roles'] = [
   [

@@ -7,8 +7,10 @@ namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -19,7 +21,7 @@ use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -47,32 +49,16 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly RouteProviderInterface $routeProvider,
     private readonly PolicymakerService $policymakerService,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerInterface $logger,
-    private readonly string $currentLang,
-    private readonly string $currentPath,
+    private readonly LanguageManagerInterface $languageManager,
+    private readonly CurrentPathStack $currentPath,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     // Warning: these cause side effects:
     $this->policymakerService->setPolicyMakerByPath();
     $this->items = $this->getItems();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('menu.link_tree'),
-      $container->get('router.route_provider'),
-      $container->get(PolicymakerService::class),
-      $container->get('logger.channel.paatokset_ahjo_api'),
-      $container->get('language_manager')->getCurrentLanguage()->getId(),
-      $container->get('path.current')->getPath()
-    );
   }
 
   /**
@@ -85,20 +71,20 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     }
 
     $policymaker = $this->policymakerService->getPolicymaker();
-    $parentOrgId = $policymaker->getOrganization()->getParentOrganization()?->getAhjoId();
+    $parentOrgId = $policymaker->getOrganization()?->getParentOrganization()?->getAhjoId();
+
+    $url = Url::fromRoute('paatokset_ahjo_api.browse_policymakers', ['org' => $parentOrgId], [
+      'language' => $this->languageManager->getCurrentLanguage(),
+    ]);
 
     return [
       '#theme' => 'policymaker_side_navigation',
       '#items' => $this->items,
-      '#currentPath' => $this->currentPath,
+      '#currentPath' => $this->currentPath->getPath(),
       '#menu_attributes' => new Attribute(['class' => 'menu']),
       '#menu_link_parent' => [
         'title' => $this->t('Browse policymakers'),
-        'url' => match ($this->currentLang) {
-          'fi' => Url::fromUserInput('/fi/paattajat/selaa-paattajia/' . $parentOrgId),
-          'sv' => Url::fromUserInput('/sv/beslutsfattare/sok-beslutsfattare/' . $parentOrgId),
-          'en' => Url::fromUserInput('/en/decisionmakers/browse-decisionmakers/' . $parentOrgId),
-        },
+        'url' => $url,
       ],
       '#attached' => [
         'library' => [
@@ -202,8 +188,10 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
       return $items;
     }
 
-    $routes = PolicymakerRoutes::getRoutes($this->currentLang, $orgType);
-    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($this->currentLang);
+    $currentLang = $this->languageManager->getCurrentLanguage()->getId();
+
+    $routes = PolicymakerRoutes::getRoutes($currentLang, $orgType);
+    $policymaker_org = $policymaker->getPolicymakerOrganizationFromUrl($currentLang);
     foreach ($routes as $key => $name) {
       try {
         $route = $this->routeProvider->getRouteByName($name);
@@ -241,7 +229,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   protected function getMenuLinks(NodeInterface $policymaker): array {
     $policymaker_url = $policymaker->toUrl()->toString();
 
-    $localizedDmRoute = 'policymakers.' . $this->currentLang;
+    $localizedDmRoute = 'policymakers.' . $this->languageManager->getCurrentLanguage()->getId();
     if (!$this->policymakerService->routeExists($localizedDmRoute)) {
       return [];
     }
@@ -316,8 +304,10 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
 
       $entity = $link->field_referenced_content->entity;
 
-      if ($entity->hasTranslation($this->currentLang)) {
-        $entity = $entity->getTranslation($this->currentLang);
+      $currentLang = $this->languageManager->getCurrentLanguage()->getId();
+
+      if ($entity->hasTranslation($currentLang)) {
+        $entity = $entity->getTranslation($currentLang);
       }
 
       $items[] = [

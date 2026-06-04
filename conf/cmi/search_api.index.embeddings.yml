@@ -1,0 +1,95 @@
+uuid: 56f074ce-8e2d-406f-91a3-7852ad88c97d
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.etusivu
+  module:
+    - helfi_platform_config
+    - helfi_react_search
+    - helfi_search
+    - node
+    - paatokset_ahjo_api
+    - publication_date
+id: embeddings
+name: 'Vector embeddings'
+description: ''
+read_only: false
+field_settings:
+  embeddings_text_embedding_3_large:
+    label: 'Embeddings (text-embedding-3-large)'
+    property_path: embeddings_text_embedding_3_large
+    type: embeddings
+  embeddings_text_embedding_3_small:
+    label: 'Embeddings (text-embedding-3-small)'
+    property_path: embeddings_text_embedding_3_small
+    type: embeddings
+  entity_bundle:
+    label: 'Entity bundle'
+    property_path: helfi_entity_bundle
+    type: string
+  entity_type:
+    label: 'Entity type'
+    property_path: search_api_entity_type
+    type: string
+  label:
+    label: 'Entity label'
+    property_path: helfi_entity_label
+    type: string
+  published_at:
+    label: Published
+    datasource_id: 'entity:node'
+    property_path: published_at
+    type: date
+    dependencies:
+      module:
+        - publication_date
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
+    configuration:
+      absolute: true
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - landing_page
+        - page
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  color_class: {  }
+  custom_value: {  }
+  decision_url: {  }
+  decisionmaker_combined_title: {  }
+  entity_status: {  }
+  entity_type: {  }
+  has_translation: {  }
+  helfi_entity_label: {  }
+  helfi_search_embeddings: {  }
+  language_with_fallback: {  }
+  main_image_url: {  }
+  project_execution_schedule: {  }
+  project_plan_schedule: {  }
+  rendered_item: {  }
+  sector_id: {  }
+  special_status: {  }
+  top_category_id: {  }
+  trustee_name: {  }
+  trustee_title: {  }
+  unique_issue_id: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 5
+  delete_on_fail: true
+  index_directly: false
+  track_changes_in_references: true
+  helfi_platform_config_multisite: true
+server: etusivu
