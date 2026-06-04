@@ -896,22 +896,12 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerMobileNav.php
 
 		-
-			message: "#^Match expression does not handle remaining value\\: string$#"
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Block\\\\PolicymakerSideNav\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
 
 		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Block\\\\PolicymakerSideNav\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Block\\\\PolicymakerSideNav\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
 
