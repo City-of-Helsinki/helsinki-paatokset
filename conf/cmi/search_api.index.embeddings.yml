@@ -36,6 +36,10 @@ field_settings:
     label: 'Entity label'
     property_path: helfi_entity_label
     type: string
+  metatag_title:
+    label: 'Metatag title'
+    property_path: helfi_metatag_title
+    type: string
   published_at:
     label: Published
     datasource_id: 'entity:node'
@@ -71,6 +75,7 @@ processor_settings:
   entity_type: {  }
   has_translation: {  }
   helfi_entity_label: {  }
+  helfi_metatag_title: {  }
   helfi_search_embeddings: {  }
   language_with_fallback: {  }
   main_image_url: {  }
