@@ -10,6 +10,7 @@ use Drupal\key_auth\KeyAuthInterface;
 use Drupal\paatokset_ahjo_api\EventSubscriber\CspMeetingsCalendarSubscriber;
 use Drupal\helfi_platform_config\HelfiPlatformConfigServiceProvider;
 use Drupal\paatokset_ahjo_api\KeyAuth\KeyAuth;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * A service provider.
@@ -41,6 +42,7 @@ final class PaatoksetAhjoApiServiceProvider extends ServiceProviderBase {
       }
       $definition = $container->getDefinition($service);
       $definition->setClass(KeyAuth::class);
+      $definition->setArgument(2, new Reference('logger.channel.paatokset_ahjo_api'));
     }
   }
 
