@@ -11,7 +11,6 @@ use Drupal\paatokset_ahjo_api\Queue\SubscriberQueueEnum;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * AHJO subscriber controller.
@@ -50,18 +49,6 @@ final class AhjoSubscriberController extends ControllerBase {
     // Push all items to default queue unless we have a specific queue for
     // this type of event.
     $queueEnum = SubscriberQueueEnum::tryFrom(strtolower(sprintf('%s.%s', $id, $update_type))) ?? SubscriberQueueEnum::Default;
-
-    // @todo do not allow delete requests for now
-    // until we fix ahjo authentication.
-    $headers = [];
-    foreach ($request->headers->all() as $key => $value) {
-      $headers[] = $key . ': ' . implode(',', $value);
-    }
-    $this->logger->info('Ahjo headers: ' . implode(',', $headers));
-    if ($queueEnum === SubscriberQueueEnum::DecisionRemoved) {
-      throw new AccessDeniedHttpException();
-    }
-
     $queue = $this->queueFactory->get($queueEnum->getQueueName());
 
     $data = [
