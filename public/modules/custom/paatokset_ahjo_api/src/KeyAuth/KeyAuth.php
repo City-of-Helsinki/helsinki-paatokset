@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\key_auth\KeyAuth as KeyAuthBase;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,6 +22,7 @@ final class KeyAuth extends KeyAuthBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     EntityTypeManagerInterface $entity_type_manager,
+    #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerChannelInterface $logger,
   ) {
     parent::__construct($config_factory, $entity_type_manager);
