@@ -62,7 +62,7 @@ class CallbackTest extends AhjoEntityKernelTestBase {
    * \Drupal\Tests\paatokset_ahjo_api\Kernel\Queue\AhjoQueueWorkerCacheTest.
    */
   public function testCallback(): void {
-    $this->setUpCurrentUser(permissions: ['access ahjo documents']);
+    $this->setUpCurrentUser(permissions: ['access content']);
 
     $response = $this->makeCallback('meetings', [
       'id' => '123',
