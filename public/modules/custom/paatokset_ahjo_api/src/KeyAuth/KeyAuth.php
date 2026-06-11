@@ -19,14 +19,9 @@ final class KeyAuth extends KeyAuthBase {
    * {@inheritdoc}
    */
   public function getKey(Request $request) : false|string {
-    // AHJO sends requests using an 'Authorization: Token <token>' header.
-    $authorization = $request->headers->get('Authorization', '');
-    if (preg_match('/^Token (.+)$/i', $authorization, $matches)) {
-      return $matches[1] ?: FALSE;
-    }
-    // Fall back to a plain 'Token: <token>' header.
-    if ($request->headers->has('Token')) {
-      return $request->headers->get('Token') ?: FALSE;
+    // AHJO sends the key in 'Authorization' header.
+    if ($authorization = $request->headers->get('Authorization')) {
+      return $authorization;
     }
     return parent::getKey($request);
   }
