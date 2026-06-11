@@ -40,7 +40,9 @@ final class PaatoksetAhjoApiServiceProvider extends ServiceProviderBase {
         continue;
       }
       $definition = $container->getDefinition($service);
-      $definition->setClass(KeyAuth::class);
+      $definition
+        ->setClass(KeyAuth::class)
+        ->setAutowired(TRUE);
     }
   }
 
