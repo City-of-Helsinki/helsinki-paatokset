@@ -75,6 +75,7 @@ processor_settings:
   entity_type: {  }
   has_translation: {  }
   helfi_entity_label: {  }
+  helfi_metatag_noindex: {  }
   helfi_metatag_title: {  }
   helfi_search_embeddings: {  }
   language_with_fallback: {  }
