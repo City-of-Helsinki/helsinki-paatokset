@@ -218,7 +218,7 @@ class DevelopmentDatabaseCleanerCommandTest extends UnitTestCase {
 
   /**
    * Mocks node storage that returns and deletes the given node ids.
-   * 
+   *
    * @phpstan-param list<int> $nodeIds
    *
    * @phpstan-return \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\EntityStorageInterface>
