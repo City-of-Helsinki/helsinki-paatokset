@@ -7,45 +7,66 @@ namespace Drupal\paatokset_ahjo_api\Drush\Commands;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drush\Attributes\Command;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drush\Commands\AutowireTrait;
-use Drush\Commands\DrushCommands;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * A drush command to clean up database for development purpose.
  */
-final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
+#[AsCommand(
+  name: self::NAME,
+  description: 'Deletes old decision nodes from the database.',
+)]
+final class DevelopmentDatabaseCleanerCommand extends Command {
 
   use AutowireTrait;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
-   */
+  public const NAME = 'paatokset:decisions:delete';
+
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
     parent::__construct();
   }
 
   /**
-   * Deletes the old decisions.
-   *
-   * @param ?string $dateFrom
-   *   Decisions older than given date will be removed from database.
-   *
-   * @return int
-   *   The exit code.
+   * {@inheritdoc}
    */
-  #[Command(name: 'paatokset:decisions:delete')]
-  public function databaseCleanup(?string $dateFrom = NULL): int {
+  protected function configure(): void {
+    $this->addArgument(
+      'date-from',
+      InputArgument::OPTIONAL,
+      'Decisions older than given date will be removed from database.',
+    );
+  }
 
-    if (getenv('APP_ENV') !== 'local') {
-      $this->io()->writeln('Stopping execution. APP_ENV is not "local" or is missing.');
-      return DrushCommands::EXIT_SUCCESS;
+  /**
+   * {@inheritdoc}
+   */
+  protected function execute(InputInterface $input, OutputInterface $output): int {
+    try {
+      $appEnv = $this->environmentResolver->getActiveEnvironmentName();
     }
+    catch (\InvalidArgumentException) {
+      $output->writeln('Stopping execution. No active environment found.');
+      return self::SUCCESS;
+    }
+
+    // Only allowed in local and test environments.
+    if (!in_array($appEnv, [EnvironmentEnum::Local->value, EnvironmentEnum::Test->value], TRUE)) {
+      $output->writeln('Stopping execution. App environment is not "local" or "test".');
+      return self::SUCCESS;
+    }
+
+    /** @var ?string $dateFrom */
+    $dateFrom = $input->getArgument('date-from');
 
     $nodeStorage = $this->entityTypeManager->getStorage('node');
     $query = $nodeStorage->getQuery()->accessCheck(FALSE);
@@ -67,7 +88,7 @@ final class DevelopmentDatabaseCleanerCommand extends DrushCommands {
       }
     }
 
-    return DrushCommands::EXIT_SUCCESS;
+    return self::SUCCESS;
   }
 
 }
