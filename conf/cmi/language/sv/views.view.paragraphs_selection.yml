@@ -1,0 +1,22 @@
+display:
+  default:
+    display_title: Förvald
+    display_options:
+      fields:
+        id:
+          separator: ', '
+        label:
+          separator: ', '
+      pager:
+        options:
+          tags:
+            next: Nästa
+            previous: Föregående
+          expose:
+            offset_label: Kompensera
+      filters:
+        label:
+          expose:
+            label: Titel
+  entity_reference:
+    display_title: Objektsreferens
