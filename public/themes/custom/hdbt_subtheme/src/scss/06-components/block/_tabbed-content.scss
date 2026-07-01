@@ -157,13 +157,13 @@
   color: $color-white;
 }
 
-@media (max-width = calc($breakpoint-s - $spacing-double)) {
+@media (width <= calc($breakpoint-s - $spacing-double)) {
   .desktopTd {
     display: none;
   }
 }
 
-@media (min-width = calc($breakpoint-s - $spacing-double)) {
+@media (width >= calc($breakpoint-s - $spacing-double)) {
   .mobileTd {
     display: none;
   }
