@@ -16,8 +16,6 @@ class AlluSourcePlugin extends DeriverBase {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition): array {
-    assert(is_array($base_plugin_definition));
-
     $map = [
       DocumentType::DECISION->name,
       DocumentType::APPROVAL->name,

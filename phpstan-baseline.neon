@@ -506,6 +506,33 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
 
 		-
+			message: """
+				#^Call to method __construct\\(\\) of deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
+
+		-
+			message: """
+				#^Call to method view\\(\\) of deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
+			count: 2
+			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
+
+		-
+			message: """
+				#^Class Drupal\\\\paatokset_ahjo_api\\\\Controller\\\\CaseNodeViewController extends deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
+
+		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Controller\\\\CaseNodeViewController\\:\\:case\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
@@ -941,6 +968,11 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/DebugDataItem/AhjoToken.php
 
 		-
+			message: "#^Cannot access offset 'id' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver/AhjoApiMigrationDeriver.php
+
+		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Deriver\\\\AhjoApiMigrationDeriver\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver/AhjoApiMigrationDeriver.php
@@ -957,6 +989,11 @@ parameters:
 
 		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Deriver\\\\AhjoApiMigrationDeriver\\:\\:getDerivativeValues\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver/AhjoApiMigrationDeriver.php
+
+		-
+			message: "#^Parameter \\#1 \\$base_plugin_definition of method Drupal\\\\paatokset_ahjo_api\\\\Plugin\\\\Deriver\\\\AhjoApiMigrationDeriver\\:\\:getDerivativeValues\\(\\) expects array, array\\|\\(ArrayAccess&Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\) given\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Deriver/AhjoApiMigrationDeriver.php
 
@@ -2981,6 +3018,11 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Entity/Routing/EntityRouteProvider.php
 
 		-
+			message: "#^Cannot access offset 'document' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset_allu/src/Plugin/Deriver/AlluSourcePlugin.php
+
+		-
 			message: "#^Method Drupal\\\\paatokset_allu\\\\Plugin\\\\Deriver\\\\AlluSourcePlugin\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_allu/src/Plugin/Deriver/AlluSourcePlugin.php
@@ -3667,6 +3709,33 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Drupal\\\\node\\\\NodeInterface\\:\\:\\$title\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
+
+		-
+			message: """
+				#^Call to method __construct\\(\\) of deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
+			count: 1
+			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
+
+		-
+			message: """
+				#^Call to method view\\(\\) of deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
+			count: 1
+			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
+
+		-
+			message: """
+				#^Class Drupal\\\\paatokset_policymakers\\\\Controller\\\\PolicymakerNodeViewController extends deprecated class Drupal\\\\node\\\\Controller\\\\NodeViewController\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\Core\\\\Entity\\\\Controller\\\\EntityViewController instead\\.$#
+			"""
 			count: 1
 			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
 

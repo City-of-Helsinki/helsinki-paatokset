@@ -15,8 +15,6 @@ class AhjoApiMigrationDeriver extends DeriverBase {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition): array {
-    assert(is_array($base_plugin_definition));
-
     $derivatives = [
       'all',
       'latest',

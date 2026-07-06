@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Drupal\paatokset_policymakers\Controller;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
-use Drupal\Core\Entity\Controller\EntityViewController;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\Controller\NodeViewController;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,17 +20,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Defines a controller to render a single node.
  */
-class PolicymakerNodeViewController extends EntityViewController {
+class PolicymakerNodeViewController extends NodeViewController {
 
   use AutowireTrait;
 
   public function __construct(
     EntityTypeManagerInterface $entityTypeManager,
     RendererInterface $renderer,
+    AccountInterface $currentUser,
+    EntityRepositoryInterface $entityRepository,
     private readonly PolicymakerService $policymakerService,
     private readonly LanguageManagerInterface $languageManager,
   ) {
-    parent::__construct($entityTypeManager, $renderer);
+    parent::__construct($entityTypeManager, $renderer, $currentUser, $entityRepository);
   }
 
   /**
