@@ -1,16 +1,16 @@
+favicon:
+  use_default: true
 features:
-  node_user_picture: false
   comment_user_picture: true
   comment_user_verification: true
-  favicon: 1
-favicon:
-  use_default: 1
-enable_darkmode: 0
+  favicon: true
+  node_user_picture: false
 preset_accent_color: light_blue
-accent_color: ''
 preset_focus_color: gin
-focus_color: ''
-high_contrast_mode: 0
+enable_darkmode: false
 classic_toolbar: horizontal
-icon_default: 1
+high_contrast_mode: false
+accent_color: ''
+focus_color: ''
+icon_default: true
 icon_upload: ''
