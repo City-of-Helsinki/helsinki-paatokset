@@ -104,6 +104,7 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
       ->getParameter('node')
       ->willReturn(NULL);
     $routeMatch->getParameters()->willReturn(new ParameterBag());
+    $routeMatch->getRouteObject()->willReturn(NULL);
 
     $this->container->set('current_route_match', $routeMatch->reveal());
 
@@ -190,6 +191,7 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
       ->getParameter('node')
       ->willReturn(NULL);
     $routeMatch->getParameters()->willReturn(new ParameterBag());
+    $routeMatch->getRouteObject()->willReturn(NULL);
 
     $this->container->set('current_route_match', $routeMatch->reveal());
 
