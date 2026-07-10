@@ -29,10 +29,14 @@ display:
           label: Lohkot
         langcode:
           label: Kieli
+        count:
+          label: Käytössä
         changed:
           label: Muuttunut
         operations:
           label: Toimenpiteet
+        status:
+          label: Julkaistu
       filters:
         label:
           expose:
