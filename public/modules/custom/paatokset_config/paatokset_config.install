@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Contains installation hooks for paatokset_config module.
+ */
+
+/**
  * Install missing announcement TPR unit/service fields.
  */
 function paatokset_config_update_11001(): void {
