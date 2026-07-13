@@ -5,6 +5,8 @@
  * Contains installation hooks for paatokset_config module.
  */
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+
 /**
  * Install missing announcement TPR unit/service fields.
  */
@@ -48,6 +50,7 @@ function paatokset_config_update_11001(): void {
 
     $entityTypeId = $configManager->getEntityTypeIdByName($configuration);
     $storage = $entityTypeManager->getStorage($entityTypeId);
+    assert($storage instanceof ConfigEntityStorageInterface);
     $storage->createFromStorageRecord($data)->save();
   }
 }
