@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
     - field.field.node.policymaker.field_override_title
+    - field.field.node.policymaker.field_policymaker_content
     - field.field.node.policymaker.field_policymaker_dissolved
     - field.field.node.policymaker.field_policymaker_existing
     - field.field.node.policymaker.field_policymaker_formed
@@ -33,6 +34,7 @@ dependencies:
     - field.field.node.policymaker.field_sector_name
     - node.type.policymaker
   module:
+    - entity_reference_revisions
     - json_field
     - options
     - text
@@ -54,8 +56,9 @@ content:
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_city_council_division:
     type: boolean
@@ -65,37 +68,39 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   field_custom_organization_type:
     type: string
     label: above
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   field_decisions_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_dm_org_name:
     type: string
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_documents_description:
     type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   field_meeting_composition:
     type: json
@@ -110,22 +115,23 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_organization_color_code:
     type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   field_organization_type:
     type: string
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_override_title:
     type: boolean
@@ -135,7 +141,16 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 14
+    weight: 15
+    region: content
+  field_policymaker_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
     region: content
   field_policymaker_image:
     type: entity_reference_entity_view
@@ -144,7 +159,7 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_policymaker_summary:
     type: text_default
@@ -158,15 +173,16 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_sector_name:
     type: string
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
 hidden:
   field_contacts: true

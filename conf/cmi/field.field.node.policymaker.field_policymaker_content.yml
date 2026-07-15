@@ -1,0 +1,151 @@
+uuid: 019bd78d-a76f-4696-a812-8a5449e7d496
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_policymaker_content
+    - node.type.policymaker
+    - paragraphs.paragraphs_type.news_list
+  module:
+    - entity_reference_revisions
+id: node.policymaker.field_policymaker_content
+field_name: field_policymaker_content
+entity_type: node
+bundle: policymaker
+label: 'Policymaker content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      news_list: news_list
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 42
+        enabled: false
+      accordion_item:
+        weight: 43
+        enabled: false
+      allu_decisions_search:
+        weight: 44
+        enabled: false
+      banner:
+        weight: 45
+        enabled: false
+      chart:
+        weight: 46
+        enabled: false
+      columns:
+        weight: 47
+        enabled: false
+      contact_card:
+        weight: 48
+        enabled: false
+      contact_card_listing:
+        weight: 49
+        enabled: false
+      content_cards:
+        weight: 50
+        enabled: false
+      curated_event_list:
+        weight: 51
+        enabled: false
+      custom_content_links:
+        weight: 52
+        enabled: false
+      event_list:
+        weight: 53
+        enabled: false
+      from_library:
+        weight: 54
+        enabled: false
+      gallery:
+        weight: 55
+        enabled: false
+      gallery_slide:
+        weight: 56
+        enabled: false
+      hearings:
+        weight: 57
+        enabled: false
+      hero:
+        weight: 58
+        enabled: false
+      image:
+        weight: 59
+        enabled: false
+      liftup_with_image:
+        weight: 60
+        enabled: false
+      list_of_links:
+        weight: 61
+        enabled: false
+      list_of_links_item:
+        weight: 62
+        enabled: false
+      map:
+        weight: 63
+        enabled: false
+      meetings_calendar:
+        weight: 64
+        enabled: false
+      news_list:
+        weight: 65
+        enabled: true
+      number_highlights:
+        weight: 66
+        enabled: false
+      pdf_listing:
+        weight: 67
+        enabled: false
+      phasing:
+        weight: 68
+        enabled: false
+      phasing_item:
+        weight: 69
+        enabled: false
+      popular_service_item:
+        weight: 71
+        enabled: false
+      popular_services:
+        weight: 70
+        enabled: false
+      remote_video:
+        weight: 72
+        enabled: false
+      service_list:
+        weight: 73
+        enabled: false
+      service_list_search:
+        weight: 74
+        enabled: false
+      sidebar_text:
+        weight: 75
+        enabled: false
+      social_media_link:
+        weight: 76
+        enabled: false
+      target_group_link_item:
+        weight: 78
+        enabled: false
+      target_group_links:
+        weight: 77
+        enabled: false
+      text:
+        weight: 79
+        enabled: false
+      unit_accessibility_information:
+        weight: 80
+        enabled: false
+      unit_contact_card:
+        weight: 81
+        enabled: false
+      unit_search:
+        weight: 82
+        enabled: false
+field_type: entity_reference_revisions
