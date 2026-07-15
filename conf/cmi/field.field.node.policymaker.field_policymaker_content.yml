@@ -12,7 +12,7 @@ id: node.policymaker.field_policymaker_content
 field_name: field_policymaker_content
 entity_type: node
 bundle: policymaker
-label: 'Policymaker content'
+label: Content
 description: ''
 required: false
 translatable: false
