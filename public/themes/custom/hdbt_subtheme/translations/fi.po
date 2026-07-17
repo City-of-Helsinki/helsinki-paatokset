@@ -374,9 +374,15 @@ msgctxt "Policymakers search"
 msgid "Filters"
 msgstr "Rajaus"
 
+msgctxt "Policymakers search"
+msgid "1 decision maker"
+msgid_plural "@count decision makers"
+msgstr[0] "1 päättäjä"
+msgstr[1] "@count päättäjää"
+
 msgctxt "React search: submit button label"
 msgid "Search"
-msgstr "Hae"
+msgstr "Etsi"
 
 msgctxt "React search: clear selections"
 msgid "Clear selections"
