@@ -42,11 +42,19 @@ function paatokset_search_theme(): array {
       ],
       'template' => 'decisions-search-hero-block',
     ],
-    'policymaker_search_block' => [
+    'policymaker_search' => [
       'variables' => [
         'lead_in' => [],
         'search_element' => [],
       ],
+      'template' => 'policymaker-search',
+    ],
+    'policymaker_search_hero_block' => [
+      'variables' => [
+        'hero_description' => NULL,
+        'hero_title' => NULL,
+      ],
+      'template' => 'policymaker-search-hero-block',
     ],
     'frontpage_search_hero_block' => [
       'variables' => [

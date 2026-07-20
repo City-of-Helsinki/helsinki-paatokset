@@ -99,7 +99,7 @@ export const ResultsContainer = () => {
       {
         '@count': total.toString(),
       },
-      { context: 'Policymakers search' },
+      { context: 'Policymaker search' },
     );
   };
 

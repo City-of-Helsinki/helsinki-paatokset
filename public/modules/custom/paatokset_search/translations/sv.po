@@ -37,3 +37,11 @@ msgstr "@selectedItem @position av @count är markerad"
 msgctxt "Policymaker search"
 msgid "Limit search results"
 msgstr "Begränsa sökningen"
+
+msgctxt "Policymaker search"
+msgid "Search decision-makers"
+msgstr "Sök beslutsfattare"
+
+msgctxt "Policymaker search"
+msgid "Search for a decision-making body, office holder or councillor."
+msgstr "Du kan söka efter ett organ, en tjänsteinnehavare eller en fullmäktigeledamot."

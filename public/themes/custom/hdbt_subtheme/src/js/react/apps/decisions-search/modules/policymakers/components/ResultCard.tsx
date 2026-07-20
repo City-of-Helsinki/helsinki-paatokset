@@ -13,10 +13,10 @@ type ResultCardProps = {
 
 const getTranslatedTrusteeTitle = (trusteeTitle: string): string => {
   if (trusteeTitle === 'Councillor') {
-    return Drupal.t('Councillor', {}, { context: 'Policymakers search' });
+    return Drupal.t('Councillor', {}, { context: 'Policymaker search' });
   }
   if (trusteeTitle === 'Deputy councillor') {
-    return Drupal.t('Deputy councillor', {}, { context: 'Policymakers search' });
+    return Drupal.t('Deputy councillor', {}, { context: 'Policymaker search' });
   }
   return trusteeTitle;
 };
@@ -66,7 +66,7 @@ export const ResultCard = ({
           <Metarow
             key='organization-hierarchy'
             icon='sitemap'
-            label={Drupal.t('Organisation structure', {}, { context: 'Policymakers search' })}
+            label={Drupal.t('Organisation structure', {}, { context: 'Policymaker search' })}
             content={
               <span className='policymaker-search-result-card__hierarchy'>
                 {organization_hierarchy.map((org) => (
