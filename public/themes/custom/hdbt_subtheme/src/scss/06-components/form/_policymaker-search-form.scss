@@ -2,3 +2,15 @@
   max-width: unset;
   width: 100%;
 }
+
+.policymaker-search-result-card__hierarchy__item {
+  &::after {
+    @include pseudo-icon('angle-right', 18px, currentColor, inline-block);
+    margin-block-start: -1px; // Fix alignment slightly.
+    vertical-align: middle;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
+}

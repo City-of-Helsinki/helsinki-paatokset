@@ -380,6 +380,10 @@ msgid_plural "@count decision makers"
 msgstr[0] "1 päättäjä"
 msgstr[1] "@count päättäjää"
 
+msgctxt "Policymakers search"
+msgid "Organisation structure"
+msgstr "Organisaatiorakenne"
+
 msgctxt "React search: submit button label"
 msgid "Search"
 msgstr "Etsi"

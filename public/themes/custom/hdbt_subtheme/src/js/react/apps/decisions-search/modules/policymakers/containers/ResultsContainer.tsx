@@ -13,6 +13,7 @@ import ResultsError from '@/react/common/ResultsError';
 import ResultsHeader from '@/react/common/ResultsHeader';
 import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { ResultCard } from '../components/ResultCard';
+
 import { usePolicymakersQuery } from '../hooks/usePolicymakersQuery';
 import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, searchActiveAtom, setPageAtom } from '../store';
 
@@ -116,7 +117,8 @@ export const ResultsContainer = () => {
           {results.map((item: estypes.SearchHit<PolicyMaker>) => (
             <ResultCard
               key={item._id}
-              color_class={item._source?.color_class}
+              field_organization_type={item._source?.field_organization_type}
+              field_policymaker_id={item._source?.field_policymaker_id}
               title={item._source?.title}
               trustee_name={item._source?.trustee_name as string[] | undefined}
               trustee_title={item._source?.trustee_title as string[] | undefined}

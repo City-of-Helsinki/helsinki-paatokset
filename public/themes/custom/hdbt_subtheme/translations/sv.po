@@ -395,6 +395,10 @@ msgid_plural "@count decision makers"
 msgstr[0] "1 beslutsfattare"
 msgstr[1] "@count beslutsfattare"
 
+msgctxt "Policymakers search"
+msgid "Organisation structure"
+msgstr "Organisationsstruktur"
+
 msgctxt "React search: submit button label"
 msgid "Search"
 msgstr "Sök"

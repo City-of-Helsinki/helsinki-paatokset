@@ -33,3 +33,7 @@ msgstr "Det finns ett resultat tillgängligt."
 msgctxt "Frontpage decision search"
 msgid "@selectedItem @position of @count is highlighted"
 msgstr "@selectedItem @position av @count är markerad"
+
+msgctxt "Policymaker search"
+msgid "Limit search results"
+msgstr "Begränsa sökningen"

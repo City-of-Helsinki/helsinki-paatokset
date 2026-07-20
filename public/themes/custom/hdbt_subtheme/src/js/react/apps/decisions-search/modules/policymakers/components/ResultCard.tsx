@@ -1,7 +1,9 @@
-import { IconAngleRight, IconArrowRight } from 'hds-react';
+import CardItem, { Metarow } from '@/react/common/Card';
+import { getOrganizationCategoryTag } from '../../../common/utils/getOrganizationCategoryTag';
 
 type ResultCardProps = {
-  color_class?: string[];
+  field_organization_type?: string[];
+  field_policymaker_id?: string[];
   title?: string[];
   trustee_name?: string[];
   trustee_title?: string[];
@@ -46,47 +48,47 @@ const getLocalizedUrl = (url: string): string => {
 };
 
 export const ResultCard = ({
-  color_class,
+  field_organization_type,
+  field_policymaker_id,
   title,
   trustee_name,
   trustee_title,
   url,
   organization_hierarchy,
 }: ResultCardProps) => {
-  const colorClass = color_class?.[0] ? `var(--${color_class[0]})` : '';
   const cardTitle = trustee_name?.[0] || title?.[0] || '';
   const cardUrl = url?.[0] ? getLocalizedUrl(url[0]) : '';
+  const categoryTag = getOrganizationCategoryTag(field_policymaker_id?.[0], field_organization_type?.[0]);
 
-  const renderOrganizationHierarchy = () => {
-    if (!organization_hierarchy?.length) {
-      return null;
-    }
-
-    return (
-      <div className='policymaker-row__sub-title'>
-        {organization_hierarchy.map((org, index) => (
-          <span key={org}>
-            {index !== 0 && <IconAngleRight />}
-            {org}
-          </span>
-        ))}
-      </div>
-    );
-  };
+  const organizationHierarchy = organization_hierarchy?.length
+    ? {
+        bottom: [
+          <Metarow
+            key='organization-hierarchy'
+            icon='sitemap'
+            label={Drupal.t('Organisation structure', {}, { context: 'Policymakers search' })}
+            content={
+              <span className='policymaker-search-result-card__hierarchy'>
+                {organization_hierarchy.map((org) => (
+                  <span key={org} className='policymaker-search-result-card__hierarchy__item'>
+                    {org}
+                  </span>
+                ))}
+              </span>
+            }
+          />,
+        ],
+      }
+    : undefined;
 
   return (
-    <div className='policymaker-search-result-card'>
-      <a href={cardUrl} data-color-class={colorClass} className='policymaker-row__link'>
-        <span className='policymaker-row__color' style={{ backgroundColor: colorClass }} />
-        <div className='policymaker-row__title'>
-          {cardTitle}
-          {trustee_title?.[0] && (
-            <div className='policymaker-row__sub-title'>{getTranslatedTrusteeTitle(trustee_title[0])}</div>
-          )}
-          {renderOrganizationHierarchy()}
-        </div>
-        <IconArrowRight className='hel-icon' />
-      </a>
-    </div>
+    <CardItem
+      cardCategoryTag={categoryTag}
+      cardDescription={trustee_title?.[0] ? getTranslatedTrusteeTitle(trustee_title[0]) : undefined}
+      cardModifierClass='policymaker-search-result-card'
+      cardTitle={cardTitle}
+      cardUrl={cardUrl}
+      customMetaRows={organizationHierarchy}
+    />
   );
 };
