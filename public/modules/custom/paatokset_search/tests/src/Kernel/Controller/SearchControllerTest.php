@@ -30,9 +30,15 @@ class SearchControllerTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_api_base',
+    'json_field',
+    'migrate',
     'paatokset_ahjo_api',
     'paatokset_search',
+    'path_alias',
+    'pathauto',
     'system',
+    'token',
     'user',
   ];
 
