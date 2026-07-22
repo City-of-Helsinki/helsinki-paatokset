@@ -126,7 +126,10 @@
         {{ node.field_ahjo_summary.value | check_markup('full_html') }}
       {% endif %}
     </div>
+
+    {{ content.field_policymaker_content }}
   </section>
+
 
   {% if live_stream %}
     <section class="policymaker-live-sream policymaker-content" id="policymaker-live-stream">

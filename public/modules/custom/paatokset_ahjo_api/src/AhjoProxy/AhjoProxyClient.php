@@ -219,7 +219,8 @@ readonly class AhjoProxyClient implements AhjoProxyClientInterface {
 
       $body = $response->getBody()->getContents();
 
-      return Utils::jsonDecode($body);
+      // @todo Deprecation.
+      return Utils::jsonDecode($body, FALSE);
     }
     catch (GuzzleException $e) {
       throw new AhjoProxyException($e->getMessage(), previous: $e);

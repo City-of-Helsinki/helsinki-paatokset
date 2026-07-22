@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.policymaker.field_organization_type
     - field.field.node.policymaker.field_organization_type_id
     - field.field.node.policymaker.field_override_title
+    - field.field.node.policymaker.field_policymaker_content
     - field.field.node.policymaker.field_policymaker_dissolved
     - field.field.node.policymaker.field_policymaker_existing
     - field.field.node.policymaker.field_policymaker_formed
@@ -63,7 +64,7 @@ third_party_settings:
       label: 'Integration data'
       region: content
       parent_name: ''
-      weight: 4
+      weight: 3
       format_type: details
       format_settings:
         classes: ''
@@ -82,7 +83,7 @@ third_party_settings:
       label: 'Basic information'
       region: content
       parent_name: ''
-      weight: 5
+      weight: 4
       format_type: details
       format_settings:
         classes: ''
@@ -117,7 +118,7 @@ third_party_settings:
       label: 'Organization label'
       region: content
       parent_name: ''
-      weight: 3
+      weight: 2
       format_type: details
       format_settings:
         classes: ''
@@ -148,7 +149,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 17
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -161,6 +162,7 @@ content:
       formatter_type: basic_string
       formatter_settings: null
       show_description: true
+      error_validation: false
     third_party_settings: {  }
   field_ahjo_title:
     type: readonly_field_widget
@@ -187,6 +189,7 @@ content:
         string:
           link_to_entity: false
       show_description: false
+      error_validation: false
     third_party_settings: {  }
   field_city_council_division:
     type: boolean_checkbox
@@ -227,7 +230,7 @@ content:
     third_party_settings: {  }
   field_decisions_description:
     type: text_textarea
-    weight: 14
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -324,10 +327,28 @@ content:
     third_party_settings: {  }
   field_override_title:
     type: boolean_checkbox
-    weight: 2
+    weight: 1
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  field_policymaker_content:
+    type: paragraphs
+    weight: 5
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
     third_party_settings: {  }
   field_policymaker_dissolved:
     type: datetime_default
@@ -357,6 +378,7 @@ content:
       formatter_type: null
       formatter_settings: null
       show_description: false
+      error_validation: false
     third_party_settings: {  }
   field_policymaker_image:
     type: media_library_widget
@@ -375,7 +397,7 @@ content:
     third_party_settings: {  }
   field_recording_description:
     type: text_textarea
-    weight: 15
+    weight: 16
     region: content
     settings:
       rows: 5
@@ -404,18 +426,18 @@ content:
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 15
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   simple_sitemap:
-    weight: 16
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 14
+    weight: 12
     region: content
     settings:
       display_label: true
@@ -430,7 +452,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 18
+    weight: 16
     region: content
     settings:
       match_operator: CONTAINS
@@ -439,7 +461,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 13
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

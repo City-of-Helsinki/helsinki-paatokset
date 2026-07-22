@@ -11,6 +11,8 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\file\FileInterface;
+use Drupal\media\MediaInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Entity\Initiative;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
@@ -70,6 +72,25 @@ function hdbt_subtheme_theme_suggestions_media_alter(array &$suggestions, array 
   $entity = $variables['elements']['#media'];
   if (!empty($entity->view) && $entity->view->storage->id()) {
     $suggestions[] = 'media__view__' . $entity->view->storage->id();
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Provides a Url object for the discussion minutes file link so it is encoded
+ * exactly once. The pre-encoded string from Twig's file_url() would be
+ * re-encoded when passed through link()/Url::fromUri() (e.g. %20 -> %2520).
+ */
+function hdbt_subtheme_preprocess_media__view__policymaker_discussion_minutes(array &$variables): void {
+  $media = $variables['media'] ?? $variables['elements']['#media'] ?? NULL;
+  if (!$media instanceof MediaInterface) {
+    return;
+  }
+
+  $file = $media->get('field_document')->entity;
+  if ($file instanceof FileInterface) {
+    $variables['document_url'] = \Drupal::service('file_url_generator')->generate($file->getFileUri());
   }
 }
 
