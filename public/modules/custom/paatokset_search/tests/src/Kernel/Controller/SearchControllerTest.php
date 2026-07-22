@@ -103,6 +103,7 @@ class SearchControllerTest extends KernelTestBase {
     $this->container->set('paatokset_search.elastic_client', $client);
 
     $this->installEntitySchema('user');
+    $this->installEntitySchema('path_alias');
     $this->setUpCurrentUser(permissions: ['access content']);
 
     $request = $this->getMockedRequest(Url::fromRoute('paatokset_search.autocomplete')->toString(), parameters: ['q' => 'test']);
