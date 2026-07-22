@@ -15,7 +15,8 @@ export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
   const url = useAtomValue(getElasticUrlAtom);
   const currentPage = useAtomValue(getPageAtom);
-  const setPage = useSetAtom(setPageAtom);
+  const setPageValue = useSetAtom(setPageAtom);
+  const setPage = (page: string) => setPageValue(Number(page));
   const query = useDecisionsQuery();
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
