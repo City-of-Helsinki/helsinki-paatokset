@@ -22,7 +22,8 @@ const SIZE = 10;
 export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
   const currentPage = useAtomValue(getPageAtom);
-  const setPage = useSetAtom(setPageAtom);
+  const setPageValue = useSetAtom(setPageAtom);
+  const setPage = (page: string) => setPageValue(Number(page));
   const query = usePolicymakersQuery();
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
