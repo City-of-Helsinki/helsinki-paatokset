@@ -9,7 +9,6 @@ use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\DecisionType;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -69,7 +68,7 @@ class Client {
 
       $content = $response->getBody()->getContents();
 
-      return array_map(fn ($decision) => $decision + ['type' => $type->value], Utils::jsonDecode($content, TRUE));
+      return array_map(fn ($decision) => $decision + ['type' => $type->value], json_decode($content, TRUE));
     }
     catch (GuzzleException $e) {
       throw new AlluException($e->getMessage(), $e->getCode(), $e);
@@ -103,7 +102,7 @@ class Client {
         ],
       ]);
 
-      return Utils::jsonDecode($response->getBody()->getContents(), TRUE);
+      return json_decode($response->getBody()->getContents(), TRUE);
 
     }
     catch (GuzzleException $e) {
