@@ -421,7 +421,20 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/AhjoOpenId/Controller/AhjoOpenIdController.php
 
 		-
+			message: """
+				#^Call to deprecated method jsonDecode\\(\\) of class GuzzleHttp\\\\Utils\\:
+				Utils\\:\\:jsonDecode\\(\\) will be removed in guzzlehttp/guzzle\\:8\\.0\\. Use PHP's json_decode\\(\\) instead\\.$#
+			"""
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
+
+		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\AhjoProxy\\\\AhjoProxyClient\\:\\:makeRequest\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
+
+		-
+			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\AhjoProxy\\\\AhjoProxyClient\\:\\:makeRequest\\(\\) should return stdClass but returns array\\|bool\\|float\\|int\\|object\\|string\\|null\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
 
