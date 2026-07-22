@@ -22,7 +22,6 @@ use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -545,7 +544,7 @@ class AhjoProxy {
     $file_contents = file_get_contents($file->getFileUri());
 
     if ($file_contents) {
-      $data = Utils::jsonDecode($file_contents, TRUE);
+      $data = json_decode($file_contents, TRUE);
       return $data ?? [];
     }
     return [];
@@ -2262,7 +2261,7 @@ class AhjoProxy {
       }
 
       $content = (string) $response->getBody();
-      $content = Utils::jsonDecode($content, TRUE);
+      $content = json_decode($content, TRUE);
       $this->setCache($url, $content);
 
       return $content ?? [];

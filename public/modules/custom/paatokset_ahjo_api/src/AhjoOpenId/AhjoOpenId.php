@@ -11,7 +11,6 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -143,7 +142,7 @@ class AhjoOpenId implements LoggerAwareInterface {
       ]);
 
       $body = $request->getBody()->getContents();
-      $data = Utils::jsonDecode($body);
+      $data = json_decode($body);
 
       try {
         $token = AhjoAuthToken::fromAhjoResponse($data);
