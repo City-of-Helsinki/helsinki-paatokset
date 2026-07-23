@@ -30,9 +30,9 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
   ];
 
   /**
-   * @var \Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker
-   *
    * The tracker.
+   *
+   * @var \Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker
    */
   protected CustomBasicTracker $tracker;
 
