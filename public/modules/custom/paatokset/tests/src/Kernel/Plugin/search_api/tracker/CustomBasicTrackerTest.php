@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\paatokset\Kernel\search_api;
 
-use Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker;
 use Drupal\search_api\Entity\Index;
-use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
