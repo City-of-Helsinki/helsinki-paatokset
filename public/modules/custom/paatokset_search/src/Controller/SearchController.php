@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * Controller class for decisions search page.
+ * Controller class for decisions and policymaker search pages.
  */
 class SearchController extends ControllerBase {
 
@@ -25,7 +25,10 @@ class SearchController extends ControllerBase {
   }
 
   /**
-   * Return markup for search page.
+   * Return markup for decisions search page.
+   *
+   * @return array<string, mixed>
+   *   Markup for the decisions search page.
    */
   public function decisions(): array {
     $baseBuild = $this->searchManager->build('decisions', ['paatokset-search--decisions']);
@@ -33,6 +36,23 @@ class SearchController extends ControllerBase {
     return array_merge($baseBuild, [
       '#operator_guide_url' => $this->searchManager->getOperatorGuideUrl(),
       '#theme' => 'decisions_search',
+    ]);
+  }
+
+  /**
+   * Return markup for policymaker search page.
+   *
+   * @return array<string, mixed>
+   *   Markup for the policymaker search page.
+   */
+  public function policymakers(): array {
+    $baseBuild = $this->searchManager->build('policymakers');
+
+    return array_merge($baseBuild, [
+      '#theme' => 'policymaker_search',
+      '#lead_in' => _paatokset_ahjo_api_render_default_text(
+        $this->config('paatokset_ahjo_api.default_texts')->get('policymakers_search_description') ?? []
+      ),
     ]);
   }
 

@@ -3,11 +3,11 @@ import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue } from 'jotai';
 import { useMemo } from 'react';
 import { parseHDSDate, toLocalISO } from '@/react/common/helpers/dateUtils';
+import { OrganizationTypes } from '../../../common/enum/OrganizationTypes';
 import { isOperatorSearch } from '../../../common/utils/OperatorSearch';
 import { getAdvancedBoostQuery, getBaseSearchTermQuery } from '../../../common/utils/Query';
 import { Components } from '../enum/Components';
 import { DecisionIndex } from '../enum/IndexFields';
-import { OrganizationTypes } from '../enum/OrganizationTypes';
 import { SortOptions } from '../enum/SortOptions';
 import { submittedStateAtom } from '../store';
 

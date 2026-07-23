@@ -1,0 +1,25 @@
+uuid: 40f09b74-1473-41e7-914c-7d45a6cf1d97
+langcode: en
+status: true
+dependencies:
+  module:
+    - paatokset_search
+    - system
+  theme:
+    - hdbt_subtheme
+id: hdbt_subtheme_policymakersearchheroblock
+theme: hdbt_subtheme
+region: before_content
+weight: 0
+provider: null
+plugin: policymaker_search_hero_block
+settings:
+  id: policymaker_search_hero_block
+  label: 'Policymaker Search Hero Block'
+  label_display: '0'
+  provider: paatokset_search
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/paattajat/etsi-paattajia\r\n/beslutsfattare/sok-beslutsfattare\r\n/decisionmakers/search-decisions-makers"
