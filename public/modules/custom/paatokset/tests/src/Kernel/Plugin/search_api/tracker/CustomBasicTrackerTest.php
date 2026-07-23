@@ -30,20 +30,6 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
   ];
 
   /**
-   * The tracker.
-   *
-   * @var \Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker
-   */
-  protected CustomBasicTracker $tracker;
-
-  /**
-   * The search index used for this test.
-   *
-   * @var \Drupal\search_api\IndexInterface
-   */
-  protected IndexInterface $index;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
@@ -54,23 +40,22 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
     $this->installEntitySchema('search_api_task');
 
     $this->installConfig(['search_api']);
-
-    $this->index = Index::create([
-      'id' => 'index',
-      'tracker_settings' => [
-        'custom_basic_tracker' => [],
-      ],
-    ]);
-
-    $this->tracker = $this->index->getTrackerInstance();
-    $this->timeService = new TestTimeService();
-    $this->tracker->setTimeService($this->timeService);
   }
 
   /**
    * Tests tracking order reversed LIFO.
    */
-  public function testTracking() {
+  public function testTracking(): void {
+    $index = Index::create([
+      'id' => 'index',
+      'tracker_settings' => [
+        'custom_basic_tracker' => [],
+      ],
+    ]);
+    $tracker = $index->getTrackerInstance();
+    $timeService = new TestTimeService();
+    $tracker->setTimeService($timeService);
+
     $nodes = [];
     for ($i = 0; $i <= 2; $i++) {
       $nodes[] = $this->createNode([
@@ -81,10 +66,10 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
         'field_diary_number' => "HEL-$i",
       ]);
       $nodes[$i]->save();
-      $this->timeService->advanceTime();
+      $timeService->advanceTime();
     }
 
-    $this->index->trackItemsInserted(
+    $index->trackItemsInserted(
       'entity',
       array_map(
         fn ($item) => Utility::createCombinedId('entity', $item->id()),
@@ -92,11 +77,11 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
       )
     );
 
-    $total = $this->index->getTrackerInstanceIfAvailable()->getTotalItemsCount();
+    $total = $index->getTrackerInstanceIfAvailable()->getTotalItemsCount();
     $this->assertEquals(3, $total);
 
     // Check that the last created item is first in order.
-    $indexingOrder = $this->index->getTrackerInstanceIfAvailable()->getRemainingItems();
+    $indexingOrder = $index->getTrackerInstanceIfAvailable()->getRemainingItems();
     $this->assertTrue(str_contains($indexingOrder[0], '3'));
     $this->assertTrue(str_contains($indexingOrder[1], '2'));
     $this->assertTrue(str_contains($indexingOrder[2], '1'));
