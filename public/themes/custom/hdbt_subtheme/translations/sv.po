@@ -390,8 +390,8 @@ msgid "Filters"
 msgstr "Avgränsa"
 
 msgctxt "Policymaker search"
-msgid "1 decision maker"
-msgid_plural "@count decision makers"
+msgid "1 decision-maker"
+msgid_plural "@count decision-makers"
 msgstr[0] "1 beslutsfattare"
 msgstr[1] "@count beslutsfattare"
 

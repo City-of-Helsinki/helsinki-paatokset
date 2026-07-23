@@ -95,8 +95,8 @@ export const ResultsContainer = () => {
 
     return Drupal.formatPlural(
       total,
-      '1 decision maker',
-      '@count decision makers',
+      '1 decision-maker',
+      '@count decision-makers',
       {
         '@count': total.toString(),
       },

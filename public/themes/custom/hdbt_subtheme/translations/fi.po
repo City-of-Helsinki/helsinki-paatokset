@@ -375,8 +375,8 @@ msgid "Filters"
 msgstr "Rajaus"
 
 msgctxt "Policymaker search"
-msgid "1 decision maker"
-msgid_plural "@count decision makers"
+msgid "1 decision-maker"
+msgid_plural "@count decision-makers"
 msgstr[0] "1 päättäjä"
 msgstr[1] "@count päättäjää"
 
