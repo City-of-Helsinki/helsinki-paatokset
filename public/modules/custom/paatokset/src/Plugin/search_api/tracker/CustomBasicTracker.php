@@ -3,6 +3,7 @@
 namespace Drupal\paatokset\Plugin\search_api\tracker;
 
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\search_api\Attribute\SearchApiTracker;
@@ -46,6 +47,10 @@ class CustomBasicTracker extends TrackerPluginBase implements PluginFormInterfac
    * {@inheritdoc}
    */
   public function defaultConfiguration(): array {
+    return [];
+  }
+
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     return [];
   }
 

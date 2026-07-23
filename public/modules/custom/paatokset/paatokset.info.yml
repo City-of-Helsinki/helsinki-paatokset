@@ -5,5 +5,6 @@ package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:serialization
+  - search_api:search_api
 'interface translation project': paatokset
 'interface translation server pattern': modules/custom/paatokset/translations/%language.po
