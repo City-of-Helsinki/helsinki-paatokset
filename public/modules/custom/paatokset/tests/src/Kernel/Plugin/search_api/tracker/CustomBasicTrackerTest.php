@@ -2,11 +2,9 @@
 
 namespace Drupal\Tests\paatokset\Kernel\search_api;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexInterface;
-
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
@@ -21,15 +19,18 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
 
   use NodeCreationTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'search_api',
     'system',
     'serialization',
-    'paatokset'
+    'paatokset',
   ];
 
   /**
-   * @var \Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker $tracker
+   * @var \Drupal\paatokset\Plugin\search_api\tracker\CustomBasicTracker
    */
   protected CustomBasicTracker $tracker;
 
@@ -39,7 +40,6 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
    * @var \Drupal\search_api\IndexInterface
    */
   protected IndexInterface $index;
-
 
   /**
    * {@inheritdoc}
@@ -70,8 +70,7 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
    */
   public function testTracking() {
     $nodes = [];
-    for($i = 0; $i <= 2; $i++) {
-
+    for ($i = 0; $i <= 2; $i++) {
       $nodes[] = $this->createNode([
         'type' => 'node',
         'title' => $i,

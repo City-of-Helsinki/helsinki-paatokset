@@ -50,6 +50,9 @@ class CustomBasicTracker extends TrackerPluginBase implements PluginFormInterfac
     return [];
   }
 
+  /**
+   *
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     return [];
   }
