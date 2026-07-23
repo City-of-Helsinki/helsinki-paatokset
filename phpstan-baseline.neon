@@ -3823,16 +3823,6 @@ parameters:
 			path: public/modules/custom/paatokset_search/src/Controller/SearchController.php
 
 		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Controller\\\\SearchController\\:\\:decisions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Controller/SearchController.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Controller\\\\SearchController\\:\\:policymakers\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Controller/SearchController.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset_search\\\\Element\\\\TextfieldAutocomplete\\:\\:getInfo\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_search/src/Element/TextfieldAutocomplete.php
@@ -3881,11 +3871,6 @@ parameters:
 			message: "#^Method Drupal\\\\paatokset_search\\\\Plugin\\\\Block\\\\FrontpageSearchHeroBlock\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_search/src/Plugin/Block/FrontpageSearchHeroBlock.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Plugin\\\\Block\\\\PolicymakerSearchHeroBlock\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Plugin/Block/PolicymakerSearchHeroBlock.php
 
 		-
 			message: "#^Method Drupal\\\\paatokset_search\\\\SearchManager\\:\\:build\\(\\) has parameter \\$classes with no value type specified in iterable type array\\.$#"

@@ -25,7 +25,10 @@ class SearchController extends ControllerBase {
   }
 
   /**
-   * Return markup for search page.
+   * Return markup for decisions search page.
+   *
+   * @return array<string, mixed>
+   *   Markup for the decisions search page.
    */
   public function decisions(): array {
     $baseBuild = $this->searchManager->build('decisions', ['paatokset-search--decisions']);
@@ -38,6 +41,9 @@ class SearchController extends ControllerBase {
 
   /**
    * Return markup for policymaker search page.
+   *
+   * @return array<string, mixed>
+   *   Markup for the policymaker search page.
    */
   public function policymakers(): array {
     $baseBuild = $this->searchManager->build('policymakers');

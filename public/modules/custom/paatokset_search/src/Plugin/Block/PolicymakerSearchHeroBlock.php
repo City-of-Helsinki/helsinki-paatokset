@@ -19,6 +19,9 @@ final class PolicymakerSearchHeroBlock extends BlockBase {
 
   /**
    * {@inheritDoc}
+   *
+   * @return array<string, mixed>
+   *   Render array for the policymaker search hero block.
    */
   public function build(): array {
     return [
