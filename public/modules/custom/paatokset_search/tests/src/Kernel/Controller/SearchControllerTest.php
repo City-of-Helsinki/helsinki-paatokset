@@ -30,8 +30,15 @@ class SearchControllerTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'helfi_api_base',
+    'json_field',
+    'migrate',
+    'paatokset_ahjo_api',
     'paatokset_search',
+    'path_alias',
+    'pathauto',
     'system',
+    'token',
     'user',
   ];
 
@@ -47,6 +54,30 @@ class SearchControllerTest extends KernelTestBase {
     $build = $controller->decisions();
 
     $this->assertNotEmpty($build);
+  }
+
+  /**
+   * Tests policymaker search page render.
+   */
+  public function testPolicymakers(): void {
+    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config->set('policymakers_search_description', [
+      'value' => 'Policymaker search description',
+      'format' => 'plain_text',
+    ]);
+    $config->save();
+
+    $client = ClientBuilder::create()
+      ->setHttpClient($this->createMockHttpClient([]))
+      ->build();
+
+    $controller = new SearchController($this->container->get(SearchManager::class), $client);
+    $build = $controller->policymakers();
+
+    $this->assertSame('policymakers', $build['#search_element']['#attributes']['data-type']);
+    $this->assertSame('Policymaker search description', $build['#lead_in']['#text']);
+    $this->assertSame('processed_text', $build['#lead_in']['#type']);
+    $this->assertSame('plain_text', $build['#lead_in']['#format']);
   }
 
   /**
@@ -72,6 +103,7 @@ class SearchControllerTest extends KernelTestBase {
     $this->container->set('paatokset_search.elastic_client', $client);
 
     $this->installEntitySchema('user');
+    $this->installEntitySchema('path_alias');
     $this->setUpCurrentUser(permissions: ['access content']);
 
     $request = $this->getMockedRequest(Url::fromRoute('paatokset_search.autocomplete')->toString(), parameters: ['q' => 'test']);

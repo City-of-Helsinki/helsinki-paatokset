@@ -12,7 +12,7 @@ export const FormContainer = () => {
   return (
     // biome-ignore lint/a11y/useSemanticElements: matches decisions pattern
     <form
-      className='hdbt-search--react__form-container container'
+      className='hdbt-search--react__form-container'
       onSubmit={(e) => {
         e.preventDefault();
         updateQuery();
