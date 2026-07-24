@@ -17,7 +17,6 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
