@@ -66,6 +66,21 @@ parameters:
 			path: public/modules/custom/paatokset/src/Plugin/DebugDataItem/LupapisteApiAvailability.php
 
 		-
+			message: "#^Method Drupal\\\\paatokset\\\\Plugin\\\\search_api\\\\tracker\\\\CustomBasicTracker\\:\\:buildConfigurationForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset/src/Plugin/search_api/tracker/CustomBasicTracker.php
+
+		-
+			message: "#^Method Drupal\\\\paatokset\\\\Plugin\\\\search_api\\\\tracker\\\\CustomBasicTracker\\:\\:buildConfigurationForm\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset/src/Plugin/search_api/tracker/CustomBasicTracker.php
+
+		-
+			message: "#^Method Drupal\\\\paatokset\\\\Plugin\\\\search_api\\\\tracker\\\\CustomBasicTracker\\:\\:defaultConfiguration\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset/src/Plugin/search_api/tracker/CustomBasicTracker.php
+
+		-
 			message: "#^Cannot call method id\\(\\) on Drupal\\\\Core\\\\Entity\\\\EntityType\\|false\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset/src/Plugin/views/filter/YearFilter.php
@@ -104,6 +119,16 @@ parameters:
 			message: "#^Property Drupal\\\\Tests\\\\paatokset\\\\Kernel\\\\Lupapiste\\\\ItemsStorageTest\\:\\:\\$cacheTagsInvalidator with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
 			count: 1
 			path: public/modules/custom/paatokset/tests/src/Kernel/Lupapiste/ItemsStorageTest.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\search_api\\\\Tracker\\\\TrackerInterface\\:\\:setTimeService\\(\\)\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset/tests/src/Kernel/Plugin/search_api/tracker/CustomBasicTrackerTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$raw_id of static method Drupal\\\\search_api\\\\Utility\\\\Utility\\:\\:createCombinedId\\(\\) expects string, int\\|string\\|null given\\.$#"
+			count: 1
+			path: public/modules/custom/paatokset/tests/src/Kernel/Plugin/search_api/tracker/CustomBasicTrackerTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$timestamp of function date expects int\\|null, int\\|false given\\.$#"
