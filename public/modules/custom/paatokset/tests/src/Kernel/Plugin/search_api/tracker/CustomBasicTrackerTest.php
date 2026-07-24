@@ -32,8 +32,6 @@ class CustomBasicTrackerTest extends AhjoEntityKernelTestBase {
    */
   public function setUp(): void {
     parent::setUp();
-
-    // xdebug_break();
     $this->installSchema('search_api', ['search_api_item']);
     $this->installEntitySchema('search_api_task');
 
