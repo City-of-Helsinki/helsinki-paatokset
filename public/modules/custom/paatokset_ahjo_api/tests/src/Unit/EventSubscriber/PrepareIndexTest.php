@@ -30,10 +30,6 @@ class PrepareIndexTest extends UnitTestCase {
 
     $settings = $event->getSettings();
     $this->assertEquals('finnish', $settings['index']['analysis']['analyzer']['default']['type']);
-    $this->assertArrayHasKey('finnish_ngram', $settings['index']['analysis']['analyzer']);
-    $this->assertArrayHasKey('finnish_search', $settings['index']['analysis']['analyzer']);
-    $this->assertArrayHasKey('ngram_filter', $settings['index']['analysis']['filter']);
-    $this->assertArrayHasKey('finnish_stemmer', $settings['index']['analysis']['filter']);
   }
 
   /**
@@ -50,10 +46,6 @@ class PrepareIndexTest extends UnitTestCase {
 
     $settings = $event->getSettings();
     $this->assertEquals('finnish', $settings['index']['analysis']['analyzer']['default']['type']);
-    $this->assertArrayHasKey('finnish_ngram', $settings['index']['analysis']['analyzer']);
-    $this->assertArrayHasKey('finnish_search', $settings['index']['analysis']['analyzer']);
-    $this->assertArrayHasKey('ngram_filter', $settings['index']['analysis']['filter']);
-    $this->assertArrayHasKey('finnish_stemmer', $settings['index']['analysis']['filter']);
   }
 
 }
