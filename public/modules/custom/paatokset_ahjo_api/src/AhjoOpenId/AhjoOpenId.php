@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\AhjoOpenId;
 
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
-use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
