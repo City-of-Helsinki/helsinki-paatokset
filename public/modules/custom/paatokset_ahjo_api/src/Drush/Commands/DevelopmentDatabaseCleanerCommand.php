@@ -14,6 +14,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -45,12 +46,22 @@ final class DevelopmentDatabaseCleanerCommand extends Command {
       InputArgument::OPTIONAL,
       'Decisions older than given date will be removed from database.',
     );
+    $this->addOption(
+      name: 'timeout',
+      shortcut: 't',
+      description: 'Timeout in seconds. If the command takes longer than the timeout, it will be stopped.',
+      mode: InputOption::VALUE_REQUIRED,
+      default: 0,
+    );
   }
 
   /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output): int {
+    $start = time();
+    $timeout = (int) $input->getOption('timeout');
+
     try {
       $appEnv = $this->environmentResolver->getActiveEnvironmentName();
     }
@@ -82,9 +93,16 @@ final class DevelopmentDatabaseCleanerCommand extends Command {
       ->range(0, 100);
 
     while ($ids = $query->execute()) {
+      if ($timeout > 0 && time() - $start > $timeout) {
+        $output->writeln('Stopping execution. Timeout reached.');
+        return self::SUCCESS;
+      }
+
       foreach ($ids as $id) {
         $node = $nodeStorage->load($id);
-        $node->delete();
+        if ($node) {
+          $node->delete();
+        }
       }
     }
 
