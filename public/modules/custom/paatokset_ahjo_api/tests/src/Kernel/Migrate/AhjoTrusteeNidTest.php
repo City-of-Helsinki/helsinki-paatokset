@@ -11,7 +11,6 @@ use Drupal\migrate\Row;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Plugin\migrate\process\AhjoTrusteeNid;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
@@ -24,8 +23,6 @@ use Psr\Log\LoggerInterface;
 #[Group('paatokset_ahjo_api')]
 #[RunTestsInSeparateProcesses]
 class AhjoTrusteeNidTest extends AhjoEntityKernelTestBase {
-
-  use UserCreationTrait;
 
   /**
    * Empty source values return NULL and do not touch the id map.
@@ -153,14 +150,14 @@ class AhjoTrusteeNidTest extends AhjoEntityKernelTestBase {
     $migration->getIdMap()->willReturn($idMap->reveal());
 
     $logger ??= $this->prophesize(LoggerInterface::class);
+    $this->container->set('logger.channel.paatokset_ahjo_api', $logger->reveal());
 
-    $plugin = new AhjoTrusteeNid(
+    $plugin = AhjoTrusteeNid::create(
+      $this->container,
       [],
       'ahjo_trustee_nid',
       [],
       $migration->reveal(),
-      $this->container->get('entity_type.manager'),
-      $logger->reveal(),
     );
 
     $executable = $this->prophesize(MigrateExecutableInterface::class)->reveal();
