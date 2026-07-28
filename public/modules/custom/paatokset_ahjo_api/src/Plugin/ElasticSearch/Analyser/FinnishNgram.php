@@ -18,6 +18,9 @@ final class FinnishNgram extends AnalyserBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array<string, mixed>
+   *   Elasticsearch index settings.
    */
   public function getSettings(): array {
     return [
