@@ -13,6 +13,7 @@ use Drupal\paatokset_ahjo_api\Plugin\migrate\process\AhjoTrusteeNid;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
@@ -21,6 +22,7 @@ use Psr\Log\LoggerInterface;
  * Tests the `ahjo_trustee_nid` process plugin.
  */
 #[Group('paatokset_ahjo_api')]
+#[RunTestsInSeparateProcesses]
 class AhjoTrusteeNidTest extends AhjoEntityKernelTestBase {
 
   use UserCreationTrait;
