@@ -75,8 +75,9 @@ export const ResultsContainer = () => {
   return (
     <ResultsWrapper
       {...{ currentPage, customTotal, data, error, getHeaderText, resultItemCallBack, setPage, sortElement }}
-      isLoading={loading}
-      shouldScroll={readInitialized()}
+      isValidating={loading}
+      queryString={JSON.stringify(query)}
+      trigger={JSON.stringify(query)}
       size={10}
     />
   );

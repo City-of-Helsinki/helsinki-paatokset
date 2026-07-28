@@ -1,8 +1,8 @@
 // biome-ignore-all lint/complexity/noUselessFragments: @todo UHF-12501
 import { useAtomValue, useSetAtom } from 'jotai';
-import { createRef, type SyntheticEvent } from 'react';
+import type { SyntheticEvent } from 'react';
 import { GhostList } from '@/react/common/GhostList';
-import useScrollToResults from '@/react/common/hooks/useScrollToResults';
+import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
 import Pagination from '@/react/common/Pagination';
 import ResultsEmpty from '@/react/common/ResultsEmpty';
 import ResultsError from '@/react/common/ResultsError';
@@ -15,23 +15,40 @@ import type { Decision } from '../types/Decision';
 export const ResultsContainer = ({
   data,
   error,
-  isLoading,
+  isValidating,
+  queryString,
+  trigger,
 }: {
   // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
   data: any;
   // biome-ignore lint/suspicious/noExplicitAny: @todo UHF-12501
   error: any;
-  isLoading: boolean;
+  isValidating: boolean;
+  queryString: string;
+  trigger: string | undefined;
 }) => {
   const setSelections = useSetAtom(setSelectionsAtom);
-  const scrollTarget = createRef<HTMLHeadingElement>();
   const currentPage = useAtomValue(getPageAtom);
   const size = 10;
 
-  useScrollToResults(scrollTarget, true);
+  const { scrollTarget, loadingHeaderRef, isSearching } = useSearchFocusManagement(
+    isValidating,
+    queryString,
+    data,
+    error,
+    trigger,
+  );
 
-  if (!data && isLoading) {
-    return <GhostList count={size} bordered />;
+  if (isSearching) {
+    return (
+      <div key='ghost' className='react-search__results'>
+        <ResultsHeader
+          resultText={Drupal.t('Searching for results...', {}, { context: 'React search: Fetching results title' })}
+          ref={loadingHeaderRef}
+        />
+        <GhostList count={size} bordered />
+      </div>
+    );
   }
 
   if (error) {
@@ -48,7 +65,7 @@ export const ResultsContainer = ({
   const addLastPage = total > size && total % size;
 
   return (
-    <div className='react-search__results'>
+    <div key='results' className='react-search__results'>
       <ResultsHeader
         resultText={
           <>

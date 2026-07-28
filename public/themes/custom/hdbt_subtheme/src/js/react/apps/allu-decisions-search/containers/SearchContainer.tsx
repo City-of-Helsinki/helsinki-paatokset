@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, useRef } from 'react';
 import useSWR from 'swr';
-import useTimeoutFetch from '@/react/common/hooks/useTimeoutFetch';
+import timeoutFetch from '@/react/common/helpers/TimeoutFetch';
 import { formQuery, matchTypeLabel } from '../helpers';
 import { getElasticUrlAtom, selectionsAtom, urlAtom } from '../store';
 import { FormContainer } from './FormContainer';
@@ -18,8 +18,7 @@ export const SearchContainer = () => {
     const queryBody = formQuery(readSelections());
 
     if (typeOptions.current) {
-      // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
-      const response = await useTimeoutFetch(`${elasticUrl}/paatokset_allu/_search`, {
+      const response = await timeoutFetch(`${elasticUrl}/paatokset_allu/_search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(queryBody),
@@ -32,8 +31,7 @@ export const SearchContainer = () => {
 
     // Include aggs request to get filter options
     const ndjsonHeader = '{}';
-    // biome-ignore lint/correctness/useHookAtTopLevel: @todo UHF-12501
-    const response = await useTimeoutFetch(`${elasticUrl}/paatokset_allu/_msearch`, {
+    const response = await timeoutFetch(`${elasticUrl}/paatokset_allu/_msearch`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-ndjson' },
       body: `${ndjsonHeader}\n${JSON.stringify({
@@ -54,14 +52,15 @@ export const SearchContainer = () => {
     return results;
   };
 
-  const { data, error, isLoading } = useSWR(url || `${elasticUrl}/paatokset_allu`, fetcher, {
+  const queryString = url || `${elasticUrl}/paatokset_allu`;
+  const { data, error, isValidating } = useSWR(queryString, fetcher, {
     revalidateOnFocus: false,
   });
 
   return (
     <>
       <FormContainer typeOptions={typeOptions.current} />
-      <ResultsContainer {...{ data, error, isLoading }} />
+      <ResultsContainer {...{ data, error, isValidating, queryString, trigger: url }} />
     </>
   );
 };
