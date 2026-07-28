@@ -28,16 +28,6 @@ class AhjoTrusteeNidTest extends AhjoEntityKernelTestBase {
   use UserCreationTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    // The plugin looks up trustees with accessCheck(TRUE).
-    $this->setCurrentUser($this->createUser(['access content']));
-  }
-
-  /**
    * Empty source values return NULL and do not touch the id map.
    */
   public function testEmptyValue(): void {

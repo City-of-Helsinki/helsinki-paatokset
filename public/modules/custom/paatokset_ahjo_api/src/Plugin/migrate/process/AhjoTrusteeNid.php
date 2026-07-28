@@ -66,7 +66,7 @@ final class AhjoTrusteeNid extends ProcessPluginBase implements ContainerFactory
       $plugin_id,
       $plugin_definition,
       $migration,
-      $container->get('entity_type.manager'),
+      $container->get(EntityTypeManagerInterface::class),
       $container->get('logger.channel.paatokset_ahjo_api'),
     );
   }
@@ -106,7 +106,7 @@ final class AhjoTrusteeNid extends ProcessPluginBase implements ContainerFactory
     $ids = $this->entityTypeManager
       ->getStorage('node')
       ->getQuery()
-      ->accessCheck(TRUE)
+      ->accessCheck(FALSE)
       ->condition('type', 'trustee')
       ->condition('field_trustee_id', $agent_id)
       ->range(0, 1)
@@ -117,7 +117,7 @@ final class AhjoTrusteeNid extends ProcessPluginBase implements ContainerFactory
       return NULL;
     }
 
-    return (string) reset($ids);
+    return (string) array_first($ids);
   }
 
 }
