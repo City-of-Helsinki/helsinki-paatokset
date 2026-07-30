@@ -14,7 +14,15 @@ import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { ResultCard } from '../components/ResultCard';
 
 import { usePolicymakersQuery } from '../hooks/usePolicymakersQuery';
-import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, searchActiveAtom, setPageAtom } from '../store';
+import {
+  aggsAtom,
+  getElasticUrlAtom,
+  getPageAtom,
+  initializedAtom,
+  searchActiveAtom,
+  setPageAtom,
+  submittedStateAtom,
+} from '../store';
 
 const SIZE = 10;
 
@@ -24,6 +32,7 @@ export const ResultsContainer = () => {
   const setPageValue = useSetAtom(setPageAtom);
   const setPage = (page: string) => setPageValue(Number(page));
   const query = usePolicymakersQuery();
+  const submittedState = useAtomValue(submittedStateAtom);
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
   const searchActive = useAtomValue(searchActiveAtom);
@@ -50,7 +59,7 @@ export const ResultsContainer = () => {
     query,
     data,
     error,
-    query,
+    submittedState,
   );
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import type { Decision } from '../../../common/types/Decision';
 import { ResultCard } from '../components/ResultCard';
 import { ResultsSort } from '../components/ResultsSort';
 import { useDecisionsQuery } from '../hooks/useDecisionsQuery';
-import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, setPageAtom } from '../store';
+import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, setPageAtom, submittedStateAtom } from '../store';
 
 export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
@@ -18,6 +18,7 @@ export const ResultsContainer = () => {
   const setPageValue = useSetAtom(setPageAtom);
   const setPage = (page: string) => setPageValue(Number(page));
   const query = useDecisionsQuery();
+  const submittedState = useAtomValue(submittedStateAtom);
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
 
@@ -77,7 +78,7 @@ export const ResultsContainer = () => {
       {...{ currentPage, customTotal, data, error, getHeaderText, resultItemCallBack, setPage, sortElement }}
       isValidating={loading}
       queryString={JSON.stringify(query)}
-      trigger={JSON.stringify(query)}
+      trigger={submittedState}
       size={10}
     />
   );

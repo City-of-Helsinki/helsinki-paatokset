@@ -10,6 +10,7 @@ import { ResultsContainer } from './ResultsContainer';
 
 export const SearchContainer = () => {
   const url = useAtomValue(urlAtom);
+  const selections = useAtomValue(selectionsAtom);
   const elasticUrl = useAtomValue(getElasticUrlAtom);
   const typeOptions = useRef(undefined);
   const readSelections = useAtomCallback(useCallback((get) => get(selectionsAtom), []));
@@ -60,7 +61,7 @@ export const SearchContainer = () => {
   return (
     <>
       <FormContainer typeOptions={typeOptions.current} />
-      <ResultsContainer {...{ data, error, isValidating, queryString, trigger: url }} />
+      <ResultsContainer {...{ data, error, isValidating, queryString, trigger: selections }} />
     </>
   );
 };

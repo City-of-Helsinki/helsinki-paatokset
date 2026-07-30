@@ -11,6 +11,7 @@ import type Result from '@/types/Result';
 import { ResultCard } from '../components/ResultCard';
 import { getPageAtom, setSelectionsAtom } from '../store';
 import type { Decision } from '../types/Decision';
+import type { Selections } from '../types/Selections';
 
 export const ResultsContainer = ({
   data,
@@ -25,7 +26,7 @@ export const ResultsContainer = ({
   error: any;
   isValidating: boolean;
   queryString: string;
-  trigger: string | undefined;
+  trigger: Selections;
 }) => {
   const setSelections = useSetAtom(setSelectionsAtom);
   const currentPage = useAtomValue(getPageAtom);
