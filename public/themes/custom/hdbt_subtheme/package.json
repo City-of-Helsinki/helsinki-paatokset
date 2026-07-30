@@ -7,6 +7,7 @@
   "repository": "github:City-of-Helsinki/helsinki-paatokset",
   "scripts": {
     "dev": "node theme-builder.mjs --watch --dev",
+    "dev-with-remote-data": "ELASTIC_DEV_URL=https://paatokset-elastic-proxy.test.hel.ninja npm run dev",
     "build": "npm run format:js --loglevel=silent && npm run lint --loglevel=silent && npm run validate-ts && node theme-builder.mjs",
     "preinstall": "npx update-browserslist-db@latest --loglevel=silent",
     "postinstall": "npm --prefix ../../contrib/hdbt install --no-audit --progress=false --loglevel=silent",
