@@ -1,7 +1,8 @@
 // biome-ignore-all lint/complexity/noUselessFragments: @todo UHF-12501
 import { useAtomValue, useSetAtom } from 'jotai';
-import type { SyntheticEvent } from 'react';
+import { type SyntheticEvent, useRef } from 'react';
 import { GhostList } from '@/react/common/GhostList';
+import useScrollToFirstItem from '@/react/common/hooks/useScrollToFirstItem';
 import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
 import Pagination from '@/react/common/Pagination';
 import ResultsEmpty from '@/react/common/ResultsEmpty';
@@ -30,14 +31,23 @@ export const ResultsContainer = ({
   const setSelections = useSetAtom(setSelectionsAtom);
   const currentPage = useAtomValue(getPageAtom);
   const size = 10;
+  const resultsListRef = useRef<HTMLDivElement>(null);
 
-  const { scrollTarget, loadingHeaderRef, isSearching } = useSearchFocusManagement(
+  const scrollToFirstItem = useScrollToFirstItem(resultsListRef, isValidating);
+  const { scrollTarget, loadingHeaderRef, skipResultsFocusRef, isSearching } = useSearchFocusManagement(
     isValidating,
     queryString,
     data,
     error,
     trigger,
   );
+
+  const updatePage = (event: SyntheticEvent<HTMLButtonElement>, index: number) => {
+    event.preventDefault();
+    setSelections({ page: index.toString() }, true);
+    scrollToFirstItem();
+    skipResultsFocusRef.current = true;
+  };
 
   if (isSearching) {
     return (
@@ -81,17 +91,16 @@ export const ResultsContainer = ({
         ref={scrollTarget}
       />
       <div className='hdbt-search--react__results--container'>
-        {results.map(({ _source }: Result<Decision>) => (
-          <ResultCard key={_source.search_api_id[0]} {..._source} />
-        ))}
+        <div ref={resultsListRef}>
+          {results.map(({ _source }: Result<Decision>) => (
+            <ResultCard key={_source.search_api_id[0]} {..._source} />
+          ))}
+        </div>
         <Pagination
           currentPage={Number(currentPage) || 1}
           pages={5}
           totalPages={addLastPage ? pages + 1 : pages}
-          updatePage={(event: SyntheticEvent<HTMLButtonElement>, index: number) => {
-            event.preventDefault();
-            setSelections({ page: index.toString() }, true);
-          }}
+          updatePage={updatePage}
         />
       </div>
     </div>
