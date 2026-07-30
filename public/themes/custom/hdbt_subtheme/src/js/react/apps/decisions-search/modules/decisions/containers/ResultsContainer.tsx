@@ -1,10 +1,9 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
-import useScrollToFirstItem from '@/react/common/hooks/useScrollToFirstItem';
 import { ResultsWrapper } from '@/react/common/ResultsWrapper';
 import type { Decision } from '../../../common/types/Decision';
 import { ResultCard } from '../components/ResultCard';
@@ -17,8 +16,8 @@ export const ResultsContainer = () => {
   const url = useAtomValue(getElasticUrlAtom);
   const currentPage = useAtomValue(getPageAtom);
   const setPageValue = useSetAtom(setPageAtom);
+  const setPage = (page: string) => setPageValue(Number(page));
   const query = useDecisionsQuery();
-  const resultsListRef = useRef<HTMLDivElement>(null);
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
 
@@ -35,12 +34,6 @@ export const ResultsContainer = () => {
   const { data, error, isLoading, isValidating } = useSWR(query, fetcher, { revalidateOnFocus: false });
 
   const loading = isLoading || !aggs;
-  const scrollToFirstItem = useScrollToFirstItem(resultsListRef, loading || isValidating);
-
-  const setPage = (page: string) => {
-    setPageValue(Number(page));
-    scrollToFirstItem();
-  };
 
   useEffect(() => {
     if (!readInitialized() && !loading && !isValidating) {
@@ -81,17 +74,7 @@ export const ResultsContainer = () => {
 
   return (
     <ResultsWrapper
-      {...{
-        currentPage,
-        customTotal,
-        data,
-        error,
-        getHeaderText,
-        resultItemCallBack,
-        resultsListRef,
-        setPage,
-        sortElement,
-      }}
+      {...{ currentPage, customTotal, data, error, getHeaderText, resultItemCallBack, setPage, sortElement }}
       isValidating={loading}
       queryString={JSON.stringify(query)}
       trigger={JSON.stringify(query)}

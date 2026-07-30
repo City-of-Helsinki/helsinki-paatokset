@@ -1,8 +1,7 @@
 // biome-ignore-all lint/complexity/noUselessFragments: @todo UHF-12501
 import { useAtomValue, useSetAtom } from 'jotai';
-import { type SyntheticEvent, useRef } from 'react';
+import type { SyntheticEvent } from 'react';
 import { GhostList } from '@/react/common/GhostList';
-import useScrollToFirstItem from '@/react/common/hooks/useScrollToFirstItem';
 import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
 import Pagination from '@/react/common/Pagination';
 import ResultsEmpty from '@/react/common/ResultsEmpty';
@@ -31,10 +30,8 @@ export const ResultsContainer = ({
   const setSelections = useSetAtom(setSelectionsAtom);
   const currentPage = useAtomValue(getPageAtom);
   const size = 10;
-  const resultsListRef = useRef<HTMLDivElement>(null);
 
-  const scrollToFirstItem = useScrollToFirstItem(resultsListRef, isValidating);
-  const { scrollTarget, loadingHeaderRef, skipResultsFocusRef, isSearching } = useSearchFocusManagement(
+  const { scrollTarget, loadingHeaderRef, resultsListRef, onPageChange, isSearching } = useSearchFocusManagement(
     isValidating,
     queryString,
     data,
@@ -45,8 +42,7 @@ export const ResultsContainer = ({
   const updatePage = (event: SyntheticEvent<HTMLButtonElement>, index: number) => {
     event.preventDefault();
     setSelections({ page: index.toString() }, true);
-    scrollToFirstItem();
-    skipResultsFocusRef.current = true;
+    onPageChange();
   };
 
   if (isSearching) {

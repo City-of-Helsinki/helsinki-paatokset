@@ -1,11 +1,10 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { type SyntheticEvent, useCallback, useEffect, useRef } from 'react';
+import { type SyntheticEvent, useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
 import { GhostList } from '@/react/common/GhostList';
-import useScrollToFirstItem from '@/react/common/hooks/useScrollToFirstItem';
 import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
 import Pagination from '@/react/common/Pagination';
 import ResultsEmpty from '@/react/common/ResultsEmpty';
@@ -29,7 +28,6 @@ export const ResultsContainer = () => {
   const setInitialized = useSetAtom(initializedAtom);
   const searchActive = useAtomValue(searchActiveAtom);
   const url = useAtomValue(getElasticUrlAtom);
-  const resultsListRef = useRef<HTMLDivElement>(null);
 
   const fetcher = useCallback(
     (key: string) =>
@@ -47,8 +45,7 @@ export const ResultsContainer = () => {
   });
 
   const loading = isLoading || !aggs;
-  const scrollToFirstItem = useScrollToFirstItem(resultsListRef, loading || isValidating);
-  const { scrollTarget, loadingHeaderRef, skipResultsFocusRef, isSearching } = useSearchFocusManagement(
+  const { scrollTarget, loadingHeaderRef, resultsListRef, onPageChange, isSearching } = useSearchFocusManagement(
     loading || isValidating,
     query,
     data,
@@ -119,8 +116,7 @@ export const ResultsContainer = () => {
   const updatePage = (e: SyntheticEvent<HTMLButtonElement>, index: number) => {
     e.preventDefault();
     setPage(index.toString());
-    scrollToFirstItem();
-    skipResultsFocusRef.current = true;
+    onPageChange();
   };
 
   return (
