@@ -43,6 +43,13 @@
     width: $spacing-double;
   }
 
+  .icon-container {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
   .icon-container--disabled {
     color: $color-silver-medium-light;
   }

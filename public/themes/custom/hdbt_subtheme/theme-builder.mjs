@@ -12,6 +12,7 @@ const outDir = path.resolve(__dirname, 'dist');
 const reactApps = {
   'allu-decisions-search': './src/js/react/apps/allu-decisions-search/index.tsx',
   'decisions-search': './src/js/react/apps/decisions-search/index.tsx',
+  'meeting-calendar': './src/js/react/apps/meeting-calendar/index.tsx',
 };
 
 // Vanilla JS files.

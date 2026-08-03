@@ -35,7 +35,7 @@ class MeetingsCalendarBlock extends BlockBase {
    * Get cache tags.
    */
   public function getCacheTags(): array {
-    return ['node_list:meeting'];
+    return ['node_list:meeting', 'config:elastic_proxy.settings'];
   }
 
   /**
