@@ -299,7 +299,6 @@ function template_preprocess_block__meetings_calendar(array &$variables) {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
   $variables['#attached']['library'][] = 'hdbt_subtheme/meeting-calendar';
-  $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = \Drupal::config('elastic_proxy.settings')->get('elastic_proxy_url');
 
   $params = [
     'from' => date("Y-m-d"),

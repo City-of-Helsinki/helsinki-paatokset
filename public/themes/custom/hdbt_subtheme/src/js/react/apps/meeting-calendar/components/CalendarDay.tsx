@@ -7,8 +7,6 @@ interface CalendarDayProps {
   isToday: boolean;
 }
 
-// Source strings and context kept identical to the previous Vue implementation
-// (js/meetings_calendar.js) so existing Drupal translations keep matching.
 const WEEKDAY_LABELS: Record<number, string> = {
   0: 'Sunday',
   1: 'Monday',

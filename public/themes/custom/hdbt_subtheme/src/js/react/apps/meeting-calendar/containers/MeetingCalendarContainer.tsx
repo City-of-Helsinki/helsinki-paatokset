@@ -5,8 +5,21 @@ import { CalendarGrid } from '../components/CalendarGrid';
 import { CalendarHeader } from '../components/CalendarHeader';
 import { getCalendarDates } from '../helpers/calendarDays';
 import { addCalendarMonths, subtractMonthsClamped } from '../helpers/date';
-import { fetchMeetings } from '../helpers/elastic';
-import type { CalendarDay } from '../types/Meeting';
+import type { CalendarDay, MeetingsByDate } from '../types/Meeting';
+
+const getPathPrefix = (): string => {
+  const settings = drupalSettings as unknown as { path?: { pathPrefix?: string } };
+  return settings.path?.pathPrefix ?? '';
+};
+
+const getMeetingsUrl = (fromDate: string): string =>
+  `${window.location.origin}/${getPathPrefix()}ahjo_api/meetings?from=${fromDate}`;
+
+const fetchMeetings = async (url: string): Promise<MeetingsByDate> => {
+  const response = await fetch(url);
+  const json = await response.json();
+  return json.data ?? {};
+};
 
 const today = new Date();
 const todayDate = formatHTMLDate(today);
@@ -15,14 +28,14 @@ const originStartMonth = addCalendarMonths(initialMonth, -12);
 
 // Two-stage load: a fast recent window first, then a full year in the background
 // so early navigation isn't blocked on the heavier query.
-const recentFromDate = subtractMonthsClamped(today, 3);
-const fullFromDate = subtractMonthsClamped(today, 12);
+const recentMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 3)));
+const fullMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 12)));
 
 export const MeetingCalendarContainer = () => {
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
 
-  const { data: recentMeetings } = useSWR('meeting-calendar-recent', () => fetchMeetings(recentFromDate));
-  const { data: fullMeetings } = useSWR('meeting-calendar-full', () => fetchMeetings(fullFromDate));
+  const { data: recentMeetings } = useSWR(recentMeetingsUrl, fetchMeetings);
+  const { data: fullMeetings } = useSWR(fullMeetingsUrl, fetchMeetings);
 
   const meetings = fullMeetings ?? recentMeetings;
   const isReady = Boolean(meetings);
