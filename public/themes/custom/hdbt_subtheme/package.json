@@ -43,9 +43,11 @@
     "@sentry/react": "^10.1.0",
     "backstopjs": "^6.3.25",
     "breakpoint-sass": "^3.0.0",
-    "glob": "^11.0.0",
+    "glob": "^13.0.0",
     "npm-run-all2": "^8.0.4",
+    "react": "file:../../contrib/hdbt/node_modules/react",
     "react-calendar": "^6.0.0",
+    "react-dom": "file:../../contrib/hdbt/node_modules/react-dom",
     "sass": "^1.89.2"
   },
   "browserslist": [
