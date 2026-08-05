@@ -1,12 +1,11 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { createRef, type SyntheticEvent, useCallback, useEffect, useRef } from 'react';
+import { type SyntheticEvent, useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
 import { GhostList } from '@/react/common/GhostList';
-import useScrollToFirstItem from '@/react/common/hooks/useScrollToFirstItem';
-import useScrollToResults from '@/react/common/hooks/useScrollToResults';
+import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
 import Pagination from '@/react/common/Pagination';
 import ResultsEmpty from '@/react/common/ResultsEmpty';
 import ResultsError from '@/react/common/ResultsError';
@@ -15,7 +14,15 @@ import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { ResultCard } from '../components/ResultCard';
 
 import { usePolicymakersQuery } from '../hooks/usePolicymakersQuery';
-import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, searchActiveAtom, setPageAtom } from '../store';
+import {
+  aggsAtom,
+  getElasticUrlAtom,
+  getPageAtom,
+  initializedAtom,
+  searchActiveAtom,
+  setPageAtom,
+  submittedStateAtom,
+} from '../store';
 
 const SIZE = 10;
 
@@ -25,12 +32,11 @@ export const ResultsContainer = () => {
   const setPageValue = useSetAtom(setPageAtom);
   const setPage = (page: string) => setPageValue(Number(page));
   const query = usePolicymakersQuery();
+  const submittedState = useAtomValue(submittedStateAtom);
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
   const searchActive = useAtomValue(searchActiveAtom);
   const url = useAtomValue(getElasticUrlAtom);
-  const scrollTarget = createRef<HTMLHeadingElement>();
-  const resultsListRef = useRef<HTMLDivElement>(null);
 
   const fetcher = useCallback(
     (key: string) =>
@@ -48,7 +54,13 @@ export const ResultsContainer = () => {
   });
 
   const loading = isLoading || !aggs;
-  const scrollToFirstItem = useScrollToFirstItem(resultsListRef, loading || isValidating);
+  const { scrollTarget, loadingHeaderRef, resultsListRef, onPageChange, isSearching } = useSearchFocusManagement(
+    loading || isValidating,
+    query,
+    data,
+    error,
+    submittedState,
+  );
 
   useEffect(() => {
     if (!readInitialized() && !loading && !isValidating) {
@@ -56,15 +68,21 @@ export const ResultsContainer = () => {
     }
   }, [loading, isValidating, readInitialized, setInitialized]);
 
-  useScrollToResults(scrollTarget, readInitialized());
-
   // Don't render results if search is not active
   if (!searchActive) {
     return null;
   }
 
-  if (!data && loading) {
-    return <GhostList count={SIZE} bordered />;
+  if (isSearching) {
+    return (
+      <div key='ghost' className='react-search__results'>
+        <ResultsHeader
+          resultText={Drupal.t('Searching for results...', {}, { context: 'React search: Fetching results title' })}
+          ref={loadingHeaderRef}
+        />
+        <GhostList count={SIZE} bordered />
+      </div>
+    );
   }
 
   if (error) {
@@ -106,12 +124,12 @@ export const ResultsContainer = () => {
 
   const updatePage = (e: SyntheticEvent<HTMLButtonElement>, index: number) => {
     e.preventDefault();
-    setPage(index);
-    scrollToFirstItem();
+    setPage(index.toString());
+    onPageChange();
   };
 
   return (
-    <div className='react-search__results'>
+    <div key='results' className='react-search__results'>
       <ResultsHeader resultText={getHeaderText()} ref={scrollTarget} />
       <div className='hdbt-search--react__results--container'>
         <div ref={resultsListRef}>
