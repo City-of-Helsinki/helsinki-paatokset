@@ -27,22 +27,27 @@
     }
   }
 
-  .hel-icon,
-  .icon-container {
-    cursor: pointer;
+  .hel-icon {
     height: $spacing-double;
     min-width: $spacing-double;
     width: $spacing-double;
   }
 
-  .icon-container {
-    appearance: none;
+  .meetings-calendar__month-button {
     background: none;
     border: 0;
+    height: 44px; // Minimum height for AAA level
     padding: 0;
+    width: 44px; // Minimum width for AAA level
+
+    &:focus,
+    &:active {
+      outline: 3px solid $color-black;
+      outline-offset: 2px;
+    }
   }
 
-  .icon-container--disabled {
+  .meetings-calendar__month-button--disabled {
     color: $color-silver-medium-light;
   }
 }
@@ -70,16 +75,6 @@
       right: 0;
     }
   }
-
-  .no-meetings {
-    background-color: $color-silver-light;
-    height: 100%;
-    padding: $spacing;
-
-    @include breakpoint($breakpoint-l) {
-      height: calc(100% - $spacing-double);
-    }
-  }
 }
 
 .meetings-calendar__grid {
@@ -95,7 +90,7 @@
   }
 }
 
-.meeting-row {
+.meetings-calendar__meeting {
   @include font('small');
   border-bottom: 1px dashed $color-black-60;
   padding: $spacing 0;
@@ -111,7 +106,7 @@
   }
 }
 
-.meeting-title {
+.meetings-calendar__meeting__title {
   @include font('small');
   font-weight: $font-weight-bold;
   margin-bottom: $spacing-half;
@@ -119,18 +114,18 @@
 }
 
 
-.meeting-start-time {
+.meetings-calendar__meeting__start-time {
   color: $color-black-60;
 }
 
-.meeting-row--cancelled {
-  .meeting-title,
-  .meeting-start-time {
+.meetings-calendar__meeting--cancelled {
+  .meetings-calendar__meeting__title,
+  .meetings-calendar__meeting__start-time {
     text-decoration: line-through;
   }
 }
 
-.date-header {
+.meetings-calendar__day__header {
   @include font('lead');
   border-bottom: 2px solid $color-black;
   display: flex;
@@ -142,20 +137,30 @@
 }
 
 .calendar-day__today {
-  .meeting-row {
+  .meetings-calendar__meeting {
     background-color: $color-gold-light;
     padding: $spacing;
   }
 
-  .date-header {
+  .meetings-calendar__day__header {
     border-color: $color-gold;
     color: $color-gold;
   }
 }
 
-.calendar-day__no-meetings {
-  .date-header {
+.meetings-calendar__day--no-meetings {
+  .meetings-calendar__day__header {
     border-color: $color-black-60;
     color: $color-black-60;
+  }
+
+  .meetings-calendar__meeting__title {
+    background-color: $color-silver-light;
+    height: 100%;
+    padding: $spacing;
+
+    @include breakpoint($breakpoint-l) {
+      height: calc(100% - $spacing-double);
+    }
   }
 }

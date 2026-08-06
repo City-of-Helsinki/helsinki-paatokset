@@ -24,14 +24,14 @@ const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
   const classes = [
     'meetings-calendar__day',
     isToday && 'calendar-day__today',
-    !hasMeetings && 'calendar-day__no-meetings',
+    !hasMeetings && 'meetings-calendar__day--no-meetings',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
     <li className={classes}>
-      <h3 className='date-header'>
+      <h3 className='meetings-calendar__day__header'>
         <span>{Drupal.t(WEEKDAY_LABELS[date.getDay()], {}, { context: 'Meeting calendar weekday.' })}</span>
         <span>{formatDayShort(date)}.</span>
       </h3>
@@ -44,7 +44,7 @@ const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
           />
         ))
       ) : (
-        <div className='no-meetings meeting-title'>{Drupal.t('No meetings')}</div>
+        <div className='meetings-calendar__meeting__title'>{Drupal.t('No meetings')}</div>
       )}
     </li>
   );
