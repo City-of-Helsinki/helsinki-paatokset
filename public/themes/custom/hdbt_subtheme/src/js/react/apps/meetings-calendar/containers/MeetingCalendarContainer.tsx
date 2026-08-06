@@ -1,3 +1,4 @@
+import { LoadingSpinner } from 'hds-react';
 import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { formatHTMLDate } from '@/react/common/helpers/dateUtils';
@@ -26,8 +27,6 @@ const todayDate = formatHTMLDate(today);
 const initialMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 const originStartMonth = addCalendarMonths(initialMonth, -12);
 
-// Two-stage load: a fast recent window first, then a full year in the background
-// so early navigation isn't blocked on the heavier query.
 const recentMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 3)));
 const fullMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 12)));
 
@@ -64,14 +63,8 @@ export const MeetingCalendarContainer = () => {
   };
 
   return (
-    <div className='meetings-calendar container'>
-      {!isReady && (
-        <div className='hds-loading-spinner'>
-          <div />
-          <div />
-          <div />
-        </div>
-      )}
+    <div className='container'>
+      {!isReady && <LoadingSpinner loadingText='' loadingFinishedText='' className='hds-loading-spinner' />}
       {isReady && (
         <>
           <CalendarHeader

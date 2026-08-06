@@ -1,13 +1,13 @@
 import { ErrorBoundary } from '@sentry/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import initSentry from '@/react/common/helpers/Sentry';
 import ResultsError from '@/react/common/ResultsError';
 import { MeetingCalendarContainer } from './containers/MeetingCalendarContainer';
 
 initSentry();
 
-const ROOT_ID = 'meeting-calendar';
+const ROOT_ID = 'meetings-calendar';
 
 const start = () => {
   const rootElement = document.getElementById(ROOT_ID);
@@ -17,13 +17,12 @@ const start = () => {
     return;
   }
 
-  ReactDOM.render(
+  createRoot(rootElement).render(
     <React.StrictMode>
       <ErrorBoundary fallback={<ResultsError error='Meeting calendar crashed' />}>
         <MeetingCalendarContainer />
       </ErrorBoundary>
     </React.StrictMode>,
-    rootElement,
   );
 };
 

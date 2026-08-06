@@ -1,20 +1,12 @@
-/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 .meetings-calendar {
   margin-top: $spacing-triple;
 
   @include breakpoint($breakpoint-l) {
     margin-top: $spacing-quadruple;
   }
-
-  .hds-loading-spinner {
-    left: unset;
-    margin: $spacing-quadruple auto;
-    position: relative;
-    top: unset;
-  }
 }
 
-.calendar-header {
+.meetings-calendar__header {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -55,7 +47,7 @@
   }
 }
 
-.calendar-day {
+.meetings-calendar__day {
   flex: 1;
   margin-top: 0;
   padding: $spacing;
@@ -90,7 +82,7 @@
   }
 }
 
-.days-grid {
+.meetings-calendar__grid {
   display: grid;
   gap: $spacing-double;
   list-style: none;
@@ -144,6 +136,7 @@
   display: flex;
   font-weight: $font-weight-medium;
   justify-content: space-between;
+  margin-top: 0;
   padding-bottom: $spacing-half;
   white-space: nowrap;
 }

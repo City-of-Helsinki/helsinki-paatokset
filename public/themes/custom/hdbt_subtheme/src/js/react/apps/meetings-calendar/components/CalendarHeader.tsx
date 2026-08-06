@@ -21,7 +21,7 @@ const MONTH_LABELS = [
 ];
 
 export const CalendarHeader = ({ selectedMonth, isPreviousDisabled, onPrevious, onNext }: CalendarHeaderProps) => (
-  <div className='calendar-header'>
+  <div className='meetings-calendar__header'>
     <button
       type='button'
       className={`icon-container${isPreviousDisabled ? ' icon-container--disabled' : ''}`}

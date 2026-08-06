@@ -298,7 +298,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 function template_preprocess_block__meetings_calendar(array &$variables) {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
-  $variables['#attached']['library'][] = 'hdbt_subtheme/meeting-calendar';
+  $variables['#attached']['library'][] = 'hdbt_subtheme/meetings-calendar';
 
   $params = [
     'from' => date("Y-m-d"),

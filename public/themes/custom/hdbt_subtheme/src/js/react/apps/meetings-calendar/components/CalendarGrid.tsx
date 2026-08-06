@@ -17,11 +17,15 @@ const WEEKDAY_LABELS: Record<number, string> = {
   6: 'Saturday',
 };
 
-export const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
+const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
   const date = parseLocalDate(day.date);
   const hasMeetings = day.meetings.length > 0;
 
-  const classes = ['calendar-day', isToday && 'calendar-day__today', !hasMeetings && 'calendar-day__no-meetings']
+  const classes = [
+    'meetings-calendar__day',
+    isToday && 'calendar-day__today',
+    !hasMeetings && 'calendar-day__no-meetings',
+  ]
     .filter(Boolean)
     .join(' ');
 
@@ -45,3 +49,16 @@ export const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
     </li>
   );
 };
+
+interface CalendarGridProps {
+  days: CalendarDayData[];
+  todayDate: string;
+}
+
+export const CalendarGrid = ({ days, todayDate }: CalendarGridProps) => (
+  <ul className='meetings-calendar__grid'>
+    {days.map((day) => (
+      <CalendarDay key={day.date} day={day} isToday={day.date === todayDate} />
+    ))}
+  </ul>
+);
