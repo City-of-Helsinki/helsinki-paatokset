@@ -1,7 +1,9 @@
+import * as Sentry from '@sentry/react';
 import { LoadingSpinner } from 'hds-react';
 import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { formatHTMLDate } from '@/react/common/helpers/dateUtils';
+import ResultsError from '@/react/common/ResultsError';
 import { CalendarGrid } from '../components/CalendarGrid';
 import { CalendarHeader } from '../components/CalendarHeader';
 import { getCalendarDates } from '../helpers/calendarDays';
@@ -18,6 +20,13 @@ const getMeetingsUrl = (fromDate: string): string =>
 
 const fetchMeetings = async (url: string): Promise<MeetingsByDate> => {
   const response = await fetch(url);
+
+  if (!response.ok) {
+    const error = new Error(`Meeting calendar request failed with status ${response.status}`);
+    Sentry.captureException(error);
+    throw error;
+  }
+
   const json = await response.json();
   return json.data ?? {};
 };
@@ -33,11 +42,13 @@ const fullMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(toda
 export const MeetingCalendarContainer = () => {
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
 
-  const { data: recentMeetings } = useSWR(recentMeetingsUrl, fetchMeetings);
-  const { data: fullMeetings } = useSWR(fullMeetingsUrl, fetchMeetings);
+  const { data: recentMeetings, error: recentError } = useSWR(recentMeetingsUrl, fetchMeetings);
+  const { data: fullMeetings, error: fullError } = useSWR(fullMeetingsUrl, fetchMeetings);
 
   const meetings = fullMeetings ?? recentMeetings;
   const isReady = Boolean(meetings);
+
+  const error = !meetings ? recentError || fullError : undefined;
 
   const isPreviousDisabled = addCalendarMonths(selectedMonth, -1) < originStartMonth;
 
@@ -64,7 +75,8 @@ export const MeetingCalendarContainer = () => {
 
   return (
     <div className='container'>
-      {!isReady && <LoadingSpinner loadingText='' loadingFinishedText='' className='hds-loading-spinner' />}
+      {error && <ResultsError error={error} />}
+      {!isReady && !error && <LoadingSpinner loadingText='' loadingFinishedText='' className='hds-loading-spinner' />}
       {isReady && (
         <>
           <CalendarHeader
