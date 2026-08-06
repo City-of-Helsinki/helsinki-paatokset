@@ -11,9 +11,3 @@ export interface Meeting {
 }
 
 export type MeetingsByDate = Record<string, Meeting[]>;
-
-export interface CalendarDay {
-  date: string;
-  isCurrentMonth: boolean;
-  meetings: Meeting[];
-}
