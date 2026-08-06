@@ -27,7 +27,7 @@ const buildCurrentMonthDays = (year: number, month: number): RawDay[] => {
 };
 
 // Leads in with the days from the previous month needed to fill the week the 1st falls in.
-// If the 1st falls on a weekend, no leading days are added - the weekend filter below removes
+// If the 1st falls on a weekend, no leading days are added. The weekend filter below removes
 // the 1st itself and the grid naturally starts on the following Monday.
 const buildPreviousMonthDays = (firstOfMonth: Date): RawDay[] => {
   const firstDayWeekday = firstOfMonth.getDay();
@@ -58,7 +58,7 @@ const buildNextMonthDays = (year: number, month: number): RawDay[] => {
   }));
 };
 
-/** Builds the Mon-Fri calendar grid for a given month, including the leading/trailing days needed to fill full weeks. */
+// Builds the Mon-Fri calendar grid for a given month, including the leading/trailing days needed to fill full weeks.
 export const getCalendarDates = (year: number, month: number): CalendarDayMeta[] => {
   const firstOfMonth = new Date(year, month - 1, 1);
   const days = [
