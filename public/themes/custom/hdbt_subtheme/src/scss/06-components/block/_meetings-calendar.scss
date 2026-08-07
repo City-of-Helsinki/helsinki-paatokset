@@ -1,20 +1,12 @@
-/* stylelint-disable max-nesting-depth -- @todo UHF-12501 */
 .meetings-calendar {
   margin-top: $spacing-triple;
 
   @include breakpoint($breakpoint-l) {
     margin-top: $spacing-quadruple;
   }
-
-  .hds-loading-spinner {
-    left: unset;
-    margin: $spacing-quadruple auto;
-    position: relative;
-    top: unset;
-  }
 }
 
-.calendar-header {
+.meetings-calendar__header {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -35,20 +27,32 @@
     }
   }
 
-  .hel-icon,
-  .icon-container {
-    cursor: pointer;
+  .hel-icon {
     height: $spacing-double;
     min-width: $spacing-double;
     width: $spacing-double;
   }
 
-  .icon-container--disabled {
+  .meetings-calendar__month-button {
+    background: none;
+    border: 0;
+    height: 44px; // Minimum height for AAA level
+    padding: 0;
+    width: 44px; // Minimum width for AAA level
+
+    &:focus,
+    &:active {
+      outline: 3px solid $color-black;
+      outline-offset: 2px;
+    }
+  }
+
+  .meetings-calendar__month-button--disabled {
     color: $color-silver-medium-light;
   }
 }
 
-.calendar-day {
+.meetings-calendar__day {
   flex: 1;
   margin-top: 0;
   padding: $spacing;
@@ -71,19 +75,9 @@
       right: 0;
     }
   }
-
-  .no-meetings {
-    background-color: $color-silver-light;
-    height: 100%;
-    padding: $spacing;
-
-    @include breakpoint($breakpoint-l) {
-      height: calc(100% - $spacing-double);
-    }
-  }
 }
 
-.days-grid {
+.meetings-calendar__grid {
   display: grid;
   gap: $spacing-double;
   list-style: none;
@@ -96,7 +90,7 @@
   }
 }
 
-.meeting-row {
+.meetings-calendar__meeting {
   @include font('small');
   border-bottom: 1px dashed $color-black-60;
   padding: $spacing 0;
@@ -112,7 +106,7 @@
   }
 }
 
-.meeting-title {
+.meetings-calendar__meeting__title {
   @include font('small');
   font-weight: $font-weight-bold;
   margin-bottom: $spacing-half;
@@ -120,42 +114,53 @@
 }
 
 
-.meeting-start-time {
+.meetings-calendar__meeting__start-time {
   color: $color-black-60;
 }
 
-.meeting-row--cancelled {
-  .meeting-title,
-  .meeting-start-time {
+.meetings-calendar__meeting--cancelled {
+  .meetings-calendar__meeting__title,
+  .meetings-calendar__meeting__start-time {
     text-decoration: line-through;
   }
 }
 
-.date-header {
+.meetings-calendar__day__header {
   @include font('lead');
   border-bottom: 2px solid $color-black;
   display: flex;
   font-weight: $font-weight-medium;
   justify-content: space-between;
+  margin-top: 0;
   padding-bottom: $spacing-half;
   white-space: nowrap;
 }
 
 .calendar-day__today {
-  .meeting-row {
+  .meetings-calendar__meeting {
     background-color: $color-gold-light;
     padding: $spacing;
   }
 
-  .date-header {
+  .meetings-calendar__day__header {
     border-color: $color-gold;
     color: $color-gold;
   }
 }
 
-.calendar-day__no-meetings {
-  .date-header {
+.meetings-calendar__day--no-meetings {
+  .meetings-calendar__day__header {
     border-color: $color-black-60;
     color: $color-black-60;
+  }
+
+  .meetings-calendar__meeting__title {
+    background-color: $color-silver-light;
+    height: 100%;
+    padding: $spacing;
+
+    @include breakpoint($breakpoint-l) {
+      height: calc(100% - $spacing-double);
+    }
   }
 }
