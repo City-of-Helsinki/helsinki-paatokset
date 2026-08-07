@@ -10,13 +10,8 @@ import { getCalendarDates } from '../helpers/calendarDays';
 import { addCalendarMonths, subtractMonthsClamped } from '../helpers/date';
 import type { CalendarDay, MeetingsByDate } from '../types/Meeting';
 
-const getPathPrefix = (): string => {
-  const settings = drupalSettings as unknown as { path?: { pathPrefix?: string } };
-  return settings.path?.pathPrefix ?? '';
-};
-
 const getMeetingsUrl = (fromDate: string): string =>
-  `${window.location.origin}/${getPathPrefix()}ahjo_api/meetings?from=${fromDate}`;
+  `${window.location.origin}/${drupalSettings.path.currentLanguage}/ahjo_api/meetings?from=${fromDate}`;
 
 const fetchMeetings = async (url: string): Promise<MeetingsByDate> => {
   const response = await fetch(url);
