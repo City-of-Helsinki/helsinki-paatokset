@@ -31,9 +31,9 @@ export const SectorFilter = () => {
       options={options}
       onChange={setSectors}
       texts={{
-        label: Drupal.t('Division', {}, { context: 'Policymakers search' }),
+        label: Drupal.t('Division', {}, { context: 'Policymaker search' }),
         language: getCurrentLanguage(window.drupalSettings.path.currentLanguage),
-        placeholder: Drupal.t('Choose division', {}, { context: 'Policymakers search' }),
+        placeholder: Drupal.t('Choose division', {}, { context: 'Policymaker search' }),
       }}
       theme={defaultMultiSelectTheme}
       value={value}

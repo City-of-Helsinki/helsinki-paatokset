@@ -2,9 +2,13 @@ import type { estypes } from '@elastic/elasticsearch';
 import { atom } from 'jotai';
 import { Components } from './enum/Components';
 
+declare const ELASTIC_DEV_URL: string | undefined;
+
 const ROOT_ID = 'paatokset_search';
 
 const getElasticUrl = () => {
+  const devUrl = typeof ELASTIC_DEV_URL !== 'undefined' ? ELASTIC_DEV_URL : '';
+  if (devUrl) return devUrl;
   const rootElement = document.getElementById(ROOT_ID);
   return rootElement?.dataset.url || '';
 };
@@ -113,7 +117,6 @@ export const resetStateAtom = atom(null, (_get, set) => {
 
 export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultState) => {
   const searchState = get(searchStateAtom);
-  const submittedState = get(submittedStateAtom);
   const newState = searchState ? { ...searchState, [Components.PAGE]: 1 } : defaultState;
 
   // Activate search on first submit
@@ -121,10 +124,7 @@ export const updateQueryAtom = atom(null, (get, set, _newValue?: typeof defaultS
     set(searchActiveAtom, true);
   }
 
-  // Only update if state actually changed
-  if (JSON.stringify(submittedState) !== JSON.stringify(newState)) {
-    set(submittedStateAtom, newState);
-  }
+  set(submittedStateAtom, newState);
 });
 
 export const getSearchTermAtom = atom((get) => {

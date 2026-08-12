@@ -184,6 +184,82 @@ class DevelopmentDatabaseCleanerCommandTest extends UnitTestCase {
   }
 
   /**
+   * Tests that execution stops when the timeout is reached.
+   */
+  public function testStopsWhenTimeoutReached(): void {
+    $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
+    $environmentResolver->getActiveEnvironmentName()->willReturn(EnvironmentEnum::Local->value);
+
+    $query = $this->prophesize(QueryInterface::class);
+    $query->accessCheck(FALSE)->willReturn($query->reveal());
+    $query->condition('type', 'decision')->willReturn($query->reveal());
+    $query->condition('field_decision_date', Argument::type('string'), '<')->willReturn($query->reveal());
+    $query->range(0, 100)->willReturn($query->reveal());
+    // Sleep past the timeout before returning the first batch.
+    $query->execute()->will(function (): array {
+      sleep(2);
+      return [1];
+    });
+
+    $nodeStorage = $this->prophesize(EntityStorageInterface::class);
+    $nodeStorage->getQuery()->willReturn($query->reveal());
+    $nodeStorage->load(Argument::any())->shouldNotBeCalled();
+
+    $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->getStorage('node')->willReturn($nodeStorage->reveal());
+
+    $tester = $this->createCommandTester(
+      $environmentResolver->reveal(),
+      $entityTypeManager->reveal(),
+    );
+
+    $tester->execute(['--timeout' => 1]);
+    $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+    $this->assertStringContainsString(
+      'Stopping execution. Timeout reached.',
+      $tester->getDisplay(),
+    );
+  }
+
+  /**
+   * Tests that non-positive timeout values are ignored.
+   */
+  #[DataProvider('nonPositiveTimeoutProvider')]
+  public function testIgnoresNonPositiveTimeout(int $timeout): void {
+    $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
+    $environmentResolver->getActiveEnvironmentName()->willReturn(EnvironmentEnum::Local->value);
+
+    $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->getStorage('node')->willReturn(
+      $this->mockNodeStorage([1, 2])->reveal(),
+    );
+
+    $tester = $this->createCommandTester(
+      $environmentResolver->reveal(),
+      $entityTypeManager->reveal(),
+    );
+
+    $tester->execute(['--timeout' => $timeout]);
+    $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+    $this->assertStringNotContainsString(
+      'Stopping execution. Timeout reached.',
+      $tester->getDisplay(),
+    );
+  }
+
+  /**
+   * Data provider for non-positive timeout values.
+   *
+   * @phpstan-return array<string, array{int}>
+   */
+  public static function nonPositiveTimeoutProvider(): array {
+    return [
+      'zero' => [0],
+      'negative' => [-1],
+    ];
+  }
+
+  /**
    * Asserts that matching decision nodes are deleted for given environment.
    */
   private function assertDecisionsAreDeleted(string $environment): void {

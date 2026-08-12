@@ -33,3 +33,16 @@ msgstr "Yksi päätösehdotus löytyi."
 msgctxt "Frontpage decision search"
 msgid "@selectedItem @position of @count is highlighted"
 msgstr "Vaihtoehto numero @position: @selectedItem korostettu. Vaihtoehtojen määrä: @count."
+
+msgctxt "Policymaker search"
+msgid "Limit search results"
+msgstr "Rajaa hakua"
+
+msgctxt "Policymaker search"
+msgid "Search decision-makers"
+msgstr "Etsi päättäjiä"
+
+msgctxt "Policymaker search"
+msgid "Search for a decision-making body, office holder or councillor."
+msgstr "Voit hakea toimielintä, viranhaltijaa tai valtuutettua."
+

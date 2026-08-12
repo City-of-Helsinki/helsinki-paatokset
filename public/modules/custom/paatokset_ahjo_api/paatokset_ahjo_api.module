@@ -298,7 +298,7 @@ function paatokset_ahjo_api_preprocess_block__frontpage_calendar(array &$variabl
 function template_preprocess_block__meetings_calendar(array &$variables) {
   $meetingService = \Drupal::service('paatokset_ahjo_meetings');
 
-  $variables['#attached']['library'][] = 'paatokset_ahjo_api/meetings_calendar';
+  $variables['#attached']['library'][] = 'hdbt_subtheme/meetings-calendar';
 
   $params = [
     'from' => date("Y-m-d"),
@@ -646,29 +646,6 @@ function _paatokset_ahjo_api_lookup_decision_nid(array $values): ?string {
   }
 
   return NULL;
-}
-
-/**
- * Lookup trustee nodes by Agent ID.
- *
- * @param string $agent_id
- *   Agent ID.
- *
- * @return string|null
- *   Existing nid, if found.
- */
-function _paatokset_ahjo_api_lookup_trustee_nid(string $agent_id): ?string {
-  $query = Drupal::entityQuery('node')
-    ->accessCheck(TRUE)
-    ->condition('type', 'trustee')
-    ->condition('field_trustee_id', $agent_id)
-    ->range(0, 1)
-    ->latestRevision();
-  $ids = $query->execute();
-  if (empty($ids)) {
-    return NULL;
-  }
-  return reset($ids);
 }
 
 /**

@@ -46,32 +46,6 @@ class PrepareIndex implements EventSubscriberInterface {
                 'default' => [
                   'type' => 'finnish',
                 ],
-                'finnish_ngram' => [
-                  'tokenizer' => 'standard',
-                  'filter' => [
-                    'lowercase',
-                    'finnish_stemmer',
-                    'ngram_filter',
-                  ],
-                ],
-                'finnish_search' => [
-                  'tokenizer' => 'standard',
-                  'filter' => [
-                    'lowercase',
-                    'finnish_stemmer',
-                  ],
-                ],
-              ],
-              'filter' => [
-                'ngram_filter' => [
-                  'type' => 'edge_ngram',
-                  'min_gram' => 3,
-                  'max_gram' => 15,
-                ],
-                'finnish_stemmer' => [
-                  'type' => 'stemmer',
-                  'language' => 'finnish',
-                ],
               ],
             ],
           ],

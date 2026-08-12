@@ -62,8 +62,7 @@ process:
     plugin: default_value
     default_value: fi
   nid:
-    plugin: callback
-    callable: _paatokset_ahjo_api_lookup_trustee_nid
+    plugin: ahjo_trustee_nid
     source: agent_id
   title:
     plugin: default_value
