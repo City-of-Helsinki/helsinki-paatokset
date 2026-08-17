@@ -446,20 +446,7 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/AhjoOpenId/Controller/AhjoOpenIdController.php
 
 		-
-			message: """
-				#^Call to deprecated method jsonDecode\\(\\) of class GuzzleHttp\\\\Utils\\:
-				Utils\\:\\:jsonDecode\\(\\) will be removed in guzzlehttp/guzzle\\:8\\.0\\. Use PHP's json_decode\\(\\) instead\\.$#
-			"""
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\AhjoProxy\\\\AhjoProxyClient\\:\\:makeRequest\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_ahjo_api\\\\AhjoProxy\\\\AhjoProxyClient\\:\\:makeRequest\\(\\) should return stdClass but returns array\\|bool\\|float\\|int\\|object\\|string\\|null\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/AhjoProxy/AhjoProxyClient.php
 
@@ -3848,11 +3835,6 @@ parameters:
 			path: public/modules/custom/paatokset_search/src/Controller/SearchController.php
 
 		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Controller\\\\SearchController\\:\\:decisions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Controller/SearchController.php
-
-		-
 			message: "#^Method Drupal\\\\paatokset_search\\\\Element\\\\TextfieldAutocomplete\\:\\:getInfo\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_search/src/Element/TextfieldAutocomplete.php
@@ -3901,16 +3883,6 @@ parameters:
 			message: "#^Method Drupal\\\\paatokset_search\\\\Plugin\\\\Block\\\\FrontpageSearchHeroBlock\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: public/modules/custom/paatokset_search/src/Plugin/Block/FrontpageSearchHeroBlock.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Plugin\\\\Block\\\\PolicymakerSearchBlock\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Plugin/Block/PolicymakerSearchBlock.php
-
-		-
-			message: "#^Method Drupal\\\\paatokset_search\\\\Plugin\\\\Block\\\\PolicymakerSearchBlock\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: public/modules/custom/paatokset_search/src/Plugin/Block/PolicymakerSearchBlock.php
 
 		-
 			message: "#^Method Drupal\\\\paatokset_search\\\\SearchManager\\:\\:build\\(\\) has parameter \\$classes with no value type specified in iterable type array\\.$#"

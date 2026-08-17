@@ -106,6 +106,9 @@ class AhjoOpenId implements LoggerAwareInterface {
    * @param array $formParameters
    *   Request parameters.
    *
+   * @return \Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken
+   *   The auth token.
+   *
    * @throws \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException
    */
   private function makeTokenRequest(array $formParameters): AhjoAuthToken {
@@ -142,12 +145,14 @@ class AhjoOpenId implements LoggerAwareInterface {
       ]);
 
       $body = $request->getBody()->getContents();
-      $data = json_decode($body);
-
       try {
+        $data = json_decode(
+          json: $body,
+          flags: JSON_THROW_ON_ERROR,
+        );
         $token = AhjoAuthToken::fromAhjoResponse($data);
       }
-      catch (\InvalidArgumentException $e) {
+      catch (\InvalidArgumentException | \Exception $e) {
         throw new AhjoOpenIdException('Invalid token response: ' . $body, previous: $e);
       }
 

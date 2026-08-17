@@ -22,6 +22,30 @@ paatokset_search.decisions.en:
   requirements:
     _access: 'TRUE'
 
+paatokset_search.policymaker.fi:
+  path: 'paattajat/etsi-paattajia'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::policymakers'
+    _title: 'Etsi päättäjiä'
+  requirements:
+    _access: 'TRUE'
+
+paatokset_search.policymaker.sv:
+  path: 'beslutsfattare/sok-beslutsfattare'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::policymakers'
+    _title: 'Sök beslutsfattare'
+  requirements:
+    _access: 'TRUE'
+
+paatokset_search.policymaker.en:
+  path: 'decisionmakers/search-decisions-makers'
+  defaults:
+    _controller: '\Drupal\paatokset_search\Controller\SearchController::policymakers'
+    _title: 'Search decision-makers'
+  requirements:
+    _access: 'TRUE'
+
 paatokset_search.autocomplete:
   path: '/api/v1/paatokset-autocomplete'
   defaults:

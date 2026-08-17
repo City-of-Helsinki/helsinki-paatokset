@@ -1,20 +1,38 @@
 import type { estypes } from '@elastic/elasticsearch';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { useCallback, useEffect } from 'react';
+import { type SyntheticEvent, useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
-import { ResultsWrapper } from '@/react/common/ResultsWrapper';
+import { GhostList } from '@/react/common/GhostList';
+import useSearchFocusManagement from '@/react/common/hooks/useSearchFocusManagement';
+import Pagination from '@/react/common/Pagination';
+import ResultsEmpty from '@/react/common/ResultsEmpty';
+import ResultsError from '@/react/common/ResultsError';
+import ResultsHeader from '@/react/common/ResultsHeader';
 import type { PolicyMaker } from '../../../common/types/PolicyMaker';
 import { ResultCard } from '../components/ResultCard';
+
 import { usePolicymakersQuery } from '../hooks/usePolicymakersQuery';
-import { aggsAtom, getElasticUrlAtom, getPageAtom, initializedAtom, searchActiveAtom, setPageAtom } from '../store';
+import {
+  aggsAtom,
+  getElasticUrlAtom,
+  getPageAtom,
+  initializedAtom,
+  searchActiveAtom,
+  setPageAtom,
+  submittedStateAtom,
+} from '../store';
+
+const SIZE = 10;
 
 export const ResultsContainer = () => {
   const aggs = useAtomValue(aggsAtom);
   const currentPage = useAtomValue(getPageAtom);
-  const setPage = useSetAtom(setPageAtom);
+  const setPageValue = useSetAtom(setPageAtom);
+  const setPage = (page: string) => setPageValue(Number(page));
   const query = usePolicymakersQuery();
+  const submittedState = useAtomValue(submittedStateAtom);
   const readInitialized = useAtomCallback(useCallback((get) => get(initializedAtom), []));
   const setInitialized = useSetAtom(initializedAtom);
   const searchActive = useAtomValue(searchActiveAtom);
@@ -36,6 +54,13 @@ export const ResultsContainer = () => {
   });
 
   const loading = isLoading || !aggs;
+  const { scrollTarget, loadingHeaderRef, resultsListRef, onPageChange, isSearching } = useSearchFocusManagement(
+    loading || isValidating,
+    query,
+    data,
+    error,
+    submittedState,
+  );
 
   useEffect(() => {
     if (!readInitialized() && !loading && !isValidating) {
@@ -48,19 +73,27 @@ export const ResultsContainer = () => {
     return null;
   }
 
-  const resultItemCallBack = (item: estypes.SearchHit<PolicyMaker>) => {
+  if (isSearching) {
     return (
-      <ResultCard
-        key={item._id}
-        color_class={item._source?.color_class}
-        title={item._source?.title}
-        trustee_name={item._source?.trustee_name as string[] | undefined}
-        trustee_title={item._source?.trustee_title as string[] | undefined}
-        url={item._source?.url}
-        organization_hierarchy={item._source?.organization_hierarchy}
-      />
+      <div key='ghost' className='react-search__results'>
+        <ResultsHeader
+          resultText={Drupal.t('Searching for results...', {}, { context: 'React search: Fetching results title' })}
+          ref={loadingHeaderRef}
+        />
+        <GhostList count={SIZE} bordered />
+      </div>
     );
-  };
+  }
+
+  if (error) {
+    return <ResultsError error={error} className='react-search__results' ref={scrollTarget} />;
+  }
+
+  if (!data?.hits?.hits.length) {
+    return <ResultsEmpty ref={scrollTarget} />;
+  }
+
+  const results = data.hits.hits;
 
   const getTotal = () => {
     if (typeof data?.hits?.total === 'number') {
@@ -70,6 +103,8 @@ export const ResultsContainer = () => {
   };
 
   const total = getTotal();
+  const pages = Math.floor(total / SIZE);
+  const addLastPage = total > SIZE && total % SIZE;
 
   const getHeaderText = () => {
     if (!total) {
@@ -78,23 +113,44 @@ export const ResultsContainer = () => {
 
     return Drupal.formatPlural(
       total,
-      '1 result',
-      '@count results',
+      '1 decision-maker',
+      '@count decision-makers',
       {
         '@count': total.toString(),
       },
-      { context: 'React search: Generic results text' },
+      { context: 'Policymaker search' },
     );
   };
 
+  const updatePage = (e: SyntheticEvent<HTMLButtonElement>, index: number) => {
+    e.preventDefault();
+    setPage(index.toString());
+    onPageChange();
+  };
+
   return (
-    <div className='decisions-search-results policymaker-search-results'>
-      <div className='policymaker-search-results__container container'>
-        <ResultsWrapper
-          {...{ currentPage, data, error, getHeaderText, resultItemCallBack, setPage }}
-          isLoading={loading}
-          shouldScroll={readInitialized()}
-          size={10}
+    <div key='results' className='react-search__results'>
+      <ResultsHeader resultText={getHeaderText()} ref={scrollTarget} />
+      <div className='hdbt-search--react__results--container'>
+        <div ref={resultsListRef}>
+          {results.map((item: estypes.SearchHit<PolicyMaker>) => (
+            <ResultCard
+              key={item._id}
+              field_organization_type={item._source?.field_organization_type}
+              field_policymaker_id={item._source?.field_policymaker_id}
+              title={item._source?.title}
+              trustee_name={item._source?.trustee_name as string[] | undefined}
+              trustee_title={item._source?.trustee_title as string[] | undefined}
+              url={item._source?.url}
+              organization_hierarchy={item._source?.organization_hierarchy}
+            />
+          ))}
+        </div>
+        <Pagination
+          currentPage={Number(currentPage)}
+          pages={5}
+          totalPages={addLastPage ? pages + 1 : pages}
+          updatePage={updatePage}
         />
       </div>
     </div>

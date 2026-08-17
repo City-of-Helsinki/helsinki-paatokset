@@ -1,10 +1,9 @@
 import { IconAlertCircle, IconLayers, IconUser } from 'hds-react';
-import type TagType from '@/common/types/TagType';
 import CardItem, { Metarow } from '@/react/common/Card';
 import { formatHDSDateUTC } from '@/react/common/helpers/dateUtils';
+import { Policymakers } from '../../../common/enum/Policymakers';
 import type { Decision } from '../../../common/types/Decision';
-import { OrganizationTypes } from '../enum/OrganizationTypes';
-import { Policymakers } from '../enum/Policymakers';
+import { getOrganizationCategoryTag } from '../../../common/utils/getOrganizationCategoryTag';
 
 export const ResultCard = ({
   decision_url,
@@ -29,38 +28,6 @@ export const ResultCard = ({
     }
 
     return formatHDSDateUTC(date);
-  };
-
-  const getCategoryTag = () => {
-    const tag: TagType = {};
-
-    const policymakerId = field_policymaker_id?.toString();
-    const type = organization_type?.toString();
-    if (policymakerId === Policymakers.CITY_COUNCIL) {
-      tag.color = 'copper';
-      tag.tag = Drupal.t('City Council', {}, { context: 'Decisions search' });
-    } else if (policymakerId === Policymakers.CITY_HALL) {
-      tag.color = undefined;
-      tag.tag = Drupal.t('City Hall', {}, { context: 'Decisions search' });
-    } else if (
-      type === OrganizationTypes.BOARD ||
-      type === OrganizationTypes.DIVISION ||
-      type === OrganizationTypes.OPERATIONAL_BOARD ||
-      type === OrganizationTypes.TEAM
-    ) {
-      tag.color = 'coat-of-arms';
-      tag.tag = Drupal.t('Committees and boards', {}, { context: 'Decisions search' });
-    } else if (type === OrganizationTypes.OFFICIAL) {
-      tag.color = 'gold';
-      tag.tag = Drupal.t('Officials', {}, { context: 'Decisions search' });
-    } else if (type === OrganizationTypes.TRUSTEE) {
-      tag.color = 'bus';
-      tag.tag = Drupal.t('Trustees', {}, { context: 'Decisions search' });
-    } else {
-      return undefined;
-    }
-
-    return tag;
   };
 
   const metaRows = {
@@ -103,7 +70,7 @@ export const ResultCard = ({
 
   return (
     <CardItem
-      cardCategoryTag={getCategoryTag()}
+      cardCategoryTag={getOrganizationCategoryTag(field_policymaker_id?.toString(), organization_type?.toString())}
       cardTags={getMotionTag()}
       cardTitle={subject?.[0] || issue_subject?.[0]}
       cardUrl={decision_url?.[0]}

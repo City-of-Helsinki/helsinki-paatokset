@@ -1,6 +1,6 @@
 import { ErrorBoundary } from '@sentry/react';
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { GhostList } from '@/react/common/GhostList';
 import initSentry from '@/react/common/helpers/Sentry';
 import ResultsError from '@/react/common/ResultsError';
@@ -33,12 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
       searchContainer = <DecisionsContainer />;
   }
 
-  ReactDOM.render(
+  createRoot(rootElement).render(
     <React.StrictMode>
       <ErrorBoundary fallback={<ResultsError />}>
         <Suspense fallback={<GhostList count={10} />}>{searchContainer}</Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
-    rootElement,
   );
 });

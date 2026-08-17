@@ -42,3 +42,16 @@ decisions-search:
   dependencies:
     - core/drupalSettings
     - core/drupal
+
+meetings-calendar:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/js/meetings-calendar.min.js: {
+      attributes: {
+        preprocess: false,
+        minified: true
+      }
+    }
+  dependencies:
+    - core/drupalSettings
+    - core/drupal

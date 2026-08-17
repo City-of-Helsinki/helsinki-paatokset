@@ -244,6 +244,7 @@ readonly class LanguageSwitcher {
       'paatokset_decision.',
       'paatokset_case.',
       'paatokset_search.decisions',
+      'paatokset_search.policymaker',
     ];
 
     // Disallow all other routes.
