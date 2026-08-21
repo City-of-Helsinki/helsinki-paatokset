@@ -40,6 +40,9 @@ abstract class AhjoEntityKernelTestBase extends KernelTestBase {
     // Install node types & fields.
     $this->installConfig('paatokset_ahjo_api');
 
+    // Install system config.
+    $this->installConfig('system');
+
     $this->installEntitySchema('ahjo_case');
 
     putenv('AHJO_PROXY_BASE_URL=https://ahjo-api-test');
