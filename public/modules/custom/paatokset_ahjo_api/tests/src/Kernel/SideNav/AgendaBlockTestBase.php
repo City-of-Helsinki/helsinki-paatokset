@@ -26,6 +26,7 @@ abstract class AgendaBlockTestBase extends KernelTestBase {
     'token',
     'node',
     'user',
+    'diff',
   ];
 
 }

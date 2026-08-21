@@ -35,6 +35,7 @@ class LupapisteRssBlockTest extends KernelTestBase {
     'system',
     'user',
     'paatokset',
+    'diff',
   ];
 
   /**

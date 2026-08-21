@@ -46,6 +46,7 @@ class AhjoOrgCompositionSourcePluginTest extends MigrateSourceTestBase {
     'text',
     'field',
     'datetime',
+    'diff',
   ];
 
   /**

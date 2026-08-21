@@ -46,6 +46,7 @@ class AhjoInitiativeSoucePluginTest extends MigrateSourceTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'diff',
   ];
 
   /**

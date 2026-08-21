@@ -36,6 +36,7 @@ class AhjoOrganizationsSoucePluginTest extends MigrateSourceTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'diff',
   ];
 
   /**

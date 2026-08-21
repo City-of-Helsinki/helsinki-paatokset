@@ -28,6 +28,7 @@ class SoucePluginTest extends MigrateSourceTestBase {
   protected static $modules = [
     'helfi_api_base',
     'paatokset_allu',
+    'diff',
   ];
 
   /**

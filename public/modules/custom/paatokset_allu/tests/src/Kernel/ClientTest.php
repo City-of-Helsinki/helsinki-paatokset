@@ -29,6 +29,7 @@ class ClientTest extends KernelTestBase {
   protected static $modules = [
     'helfi_api_base',
     'paatokset_allu',
+    'diff',
   ];
 
   /**

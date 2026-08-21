@@ -27,6 +27,7 @@ class DecisionSearchFormTest extends KernelTestBase {
     'helfi_platform_config',
     'paatokset_search',
     'system',
+    'diff',
   ];
 
   /**
