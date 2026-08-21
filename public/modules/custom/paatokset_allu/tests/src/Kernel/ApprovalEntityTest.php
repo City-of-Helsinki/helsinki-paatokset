@@ -33,6 +33,7 @@ class ApprovalEntityTest extends RemoteEntityAccessTestBase {
     'user',
     'helfi_api_base',
     'paatokset_allu',
+    'diff',
   ];
 
   /**

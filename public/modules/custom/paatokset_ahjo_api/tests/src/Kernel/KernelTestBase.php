@@ -28,6 +28,7 @@ abstract class KernelTestBase extends DrupalKernelTestBase {
     'pathauto',
     'token',
     'migrate',
+    'diff',
   ];
 
 }

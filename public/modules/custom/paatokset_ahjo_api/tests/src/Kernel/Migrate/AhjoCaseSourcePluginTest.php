@@ -36,6 +36,7 @@ class AhjoCaseSourcePluginTest extends MigrateSourceTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'diff',
   ];
 
   /**
