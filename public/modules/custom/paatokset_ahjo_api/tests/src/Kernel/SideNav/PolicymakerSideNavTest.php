@@ -17,6 +17,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Prophecy\Argument;
 
 /**
  * Tests PolicymakerSideNav block.
@@ -100,8 +101,9 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
    */
   public function testPolicymakerSideNav() {
     $routeMatch = $this->prophesize(RouteMatchInterface::class);
+    $routeMatch->getRouteName()->willReturn(NULL);
     $routeMatch
-      ->getParameter('node')
+      ->getParameter(Argument::any())
       ->willReturn(NULL);
     $routeMatch->getParameters()->willReturn(new ParameterBag());
     $routeMatch->getRouteObject()->willReturn(NULL);
