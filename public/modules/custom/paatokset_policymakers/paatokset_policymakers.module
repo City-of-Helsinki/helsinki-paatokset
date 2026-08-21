@@ -469,6 +469,10 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
 
   $route_name = \Drupal::routeMatch()->getRouteName();
 
+  if (!$route_name) {
+    return FALSE;
+  }
+
   return array_any(
     $allowed_routes,
     fn (string $allowed) => str_starts_with($route_name, $allowed)
