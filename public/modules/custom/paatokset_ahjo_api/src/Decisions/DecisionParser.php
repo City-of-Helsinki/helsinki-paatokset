@@ -133,6 +133,9 @@ readonly class DecisionParser {
    *     <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">Titteli</span><br>
    *     <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">123 4567</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
    *   </p>
+   *   <p>
+   *     <span class="LisatiedonantajanNimi">Toinen Henkilö</span>, ...
+   *   </p>
    * </section>
    * phpcs:enable
    * ```
@@ -146,9 +149,15 @@ readonly class DecisionParser {
    * <p>Etunimi Sukunimi, kaupunginsihteeri, puhelin: 09 310 12345
    * <div>etunimi.sukunimi@hel.fi</div>
    * </p>
+   * <p>Toinen Henkilö, kaupunginsihteeri, puhelin: 09 310 12346
+   * <div>toinen.henkilo@hel.fi</div>
+   * </p>
    * ...
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  public function getMoreInfoDetails(): ?MoreInfoDetails {
+  public function getMoreInfoDetails(): array {
     // Try the new format first.
     if ($result = $this->parseMoreInfoNewFormat()) {
       return $result;
@@ -167,41 +176,141 @@ readonly class DecisionParser {
    * - LisatiedonantajanTitteli: title
    * - LisatiedonantajanPuhelin: phone
    * - LisatiedonantajanSahkoposti: email.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  private function parseMoreInfoNewFormat(): ?MoreInfoDetails {
-    $name = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanNimi')]");
-    if ($name->length === 0) {
-      return NULL;
+  private function parseMoreInfoNewFormat(): array {
+    $result = [];
+
+    foreach ($this->getMoreInfoBlocks() as $block) {
+      $names = $this->query(".//*[contains(@class, 'LisatiedonantajanNimi')]", $block);
+      $titles = $this->query(".//*[contains(@class, 'LisatiedonantajanTitteli')]", $block);
+      $phones = $this->query(".//*[contains(@class, 'LisatiedonantajanPuhelin')]", $block);
+      $emails = $this->query(".//*[contains(@class, 'LisatiedonantajanSahkoposti')]", $block);
+
+      // Contacts are usually wrapped in their own paragraph, but if they are
+      // not, the fields of the nth contact are the nth of each field.
+      foreach ($names as $i => $name) {
+        $title = self::nodeText($titles[$i] ?? NULL);
+
+        $result[] = new MoreInfoDetails(
+          name: trim($name->textContent),
+          title: $title ? ucfirst($title) : '',
+          phone: self::nodeText($phones[$i] ?? NULL),
+          email: self::nodeText($emails[$i] ?? NULL),
+        );
+      }
     }
 
-    $title = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanTitteli')]");
-    $phone = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanPuhelin')]");
-    $email = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanSahkoposti')]");
+    return $result;
+  }
 
-    return new MoreInfoDetails(
-      name: trim($name->item(0)->textContent),
-      title: $title->length > 0 ? ucfirst(trim($title->item(0)->textContent)) : '',
-      phone: $phone->length > 0 ? trim($phone->item(0)->textContent) : NULL,
-      email: $email->length > 0 ? trim($email->item(0)->textContent) : NULL,
-    );
+  /**
+   * Get the elements that wrap the individual new format contacts.
+   *
+   * @return \DOMNode[]
+   *   Wrapping elements, each of which holds one or more contacts.
+   */
+  private function getMoreInfoBlocks(): array {
+    $blocks = [];
+
+    foreach ($this->query("//*[contains(@class, 'LisatiedonantajanNimi')]") as $node) {
+      $block = $this->query("ancestor::p[1]", $node)[0] ?? $node->parentNode;
+      if (!$block instanceof \DOMNode) {
+        continue;
+      }
+
+      // The same block can hold multiple contacts, so parse it only once.
+      foreach ($blocks as $seen) {
+        if ($seen->isSameNode($block)) {
+          continue 2;
+        }
+      }
+
+      $blocks[] = $block;
+    }
+
+    return $blocks;
   }
 
   /**
    * Parse more info using legacy format (without class names).
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  private function parseMoreInfoLegacyFormat(): ?MoreInfoDetails {
-    $more_info = $this->xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info->length > 0) {
-      $more_info_content = self::getHtmlContentUntilBreakingElement($more_info);
+  private function parseMoreInfoLegacyFormat(): array {
+    $heading = $this->query("//*[contains(@class, 'LisatiedotOtsikko')]")[0] ?? NULL;
+    if (!$heading) {
+      return [];
     }
 
-    if (!$more_info_content) {
-      return NULL;
+    $result = [];
+    foreach (self::getLegacyMoreInfoGroups($heading) as $group) {
+      if ($contact = self::parseLegacyMoreInfoGroup($group)) {
+        $result[] = $contact;
+      }
     }
 
+    return $result;
+  }
+
+  /**
+   * Split the legacy more info content into one chunk per contact.
+   *
+   * Each contact begins a new paragraph. The email address is rendered in a
+   * div, which the HTML parser moves next to the paragraph, so any element
+   * that is not a paragraph belongs to the contact that precedes it.
+   *
+   * @param \DOMNode $heading
+   *   The `LisatiedotOtsikko` heading.
+   *
+   * @return string[]
+   *   HTML content of each contact.
+   */
+  private static function getLegacyMoreInfoGroups(\DOMNode $heading): array {
+    $groups = [];
+
+    $current_item = $heading;
+    while ($current_item->nextSibling instanceof \DOMNode) {
+      // Iterate over to next sibling. This skips the first one.
+      $current_item = $current_item->nextSibling;
+
+      if (!$current_item instanceof \DOMElement) {
+        continue;
+      }
+
+      // H3 with a class is considered a breaking element.
+      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
+        break;
+      }
+      // More information section should stop before the signatures.
+      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
+        break;
+      }
+
+      // Strip empty nodes. Ahjo HTML seems to contain a lot of <p></p> tags.
+      if (empty($current_item->nodeValue)) {
+        continue;
+      }
+
+      if ($current_item->nodeName === 'p' || !$groups) {
+        $groups[] = '';
+      }
+
+      $groups[array_key_last($groups)] .= $current_item->ownerDocument->saveHTML($current_item);
+    }
+
+    return $groups;
+  }
+
+  /**
+   * Parse a single legacy format contact.
+   */
+  private static function parseLegacyMoreInfoGroup(string $html): ?MoreInfoDetails {
     // Replace all HTML tags with commas.
-    $result = preg_replace('/<[^>]+>/', ',', $more_info_content);
+    $result = preg_replace('/<[^>]+>/', ',', $html);
 
     // Remove leading and trailing commas/spaces.
     $result = trim($result, ", \t\n\r\0\x0B");
@@ -213,6 +322,10 @@ readonly class DecisionParser {
     // Split into array.
     $parts = array_map('trim', explode(',', $result));
 
+    if (empty($parts[0])) {
+      return NULL;
+    }
+
     // Make sure we have a phone number at index 2.
     $phone = NULL;
     if (isset($parts[2])) {
@@ -223,7 +336,7 @@ readonly class DecisionParser {
     }
 
     return new MoreInfoDetails(
-      name: $parts[0] ?? '',
+      name: $parts[0],
       title: isset($parts[1]) ? ucfirst($parts[1]) : '',
       phone: $phone,
       email: $parts[3] ?? NULL,
@@ -373,6 +486,32 @@ readonly class DecisionParser {
     $name = ucfirst($parts[1] ?? '') ?: NULL;
 
     return ($title || $name) ? new PresenterInfo($title, $name) : NULL;
+  }
+
+  /**
+   * Run an XPath query.
+   *
+   * @param string $expression
+   *   XPath expression to evaluate.
+   * @param \DOMNode|null $context
+   *   Optional context node the expression is relative to.
+   *
+   * @return \DOMNode[]
+   *   Matching nodes in document order.
+   */
+  private function query(string $expression, ?\DOMNode $context = NULL): array {
+    $result = $this->xpath->query($expression, $context);
+
+    return $result ? iterator_to_array($result) : [];
+  }
+
+  /**
+   * Get trimmed text content of a node, or NULL if it is empty or missing.
+   */
+  private static function nodeText(?\DOMNode $node): ?string {
+    $text = trim($node?->textContent ?? '');
+
+    return $text !== '' ? $text : NULL;
   }
 
   /**

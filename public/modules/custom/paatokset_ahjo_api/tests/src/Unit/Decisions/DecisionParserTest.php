@@ -38,17 +38,18 @@ class DecisionParserTest extends UnitTestCase {
     $parser = DecisionParser::parse($html);
     $result = $parser->getMoreInfoDetails();
 
-    $this->assertInstanceOf(MoreInfoDetails::class, $result);
-    $this->assertEquals('Etunimi Sukunimi', $result->name);
-    $this->assertEquals('Titteli', $result->title);
-    $this->assertEquals('09 310 12345', $result->phone);
-    $this->assertInstanceOf(Link::class, $result->getPhoneLink());
-    $this->assertEquals('09 310 12345', $result->getPhoneLink()->getText());
-    $this->assertEquals('tel:0931012345', $result->getPhoneLink()->getUrl()->getUri());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result->email);
-    $this->assertInstanceOf(Link::class, $result->getEmailLink());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result->getEmailLink()->getText());
-    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result->getEmailLink()->getUrl()->getUri());
+    $this->assertCount(1, $result);
+    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
+    $this->assertEquals('Etunimi Sukunimi', $result[0]->name);
+    $this->assertEquals('Titteli', $result[0]->title);
+    $this->assertEquals('09 310 12345', $result[0]->phone);
+    $this->assertInstanceOf(Link::class, $result[0]->getPhoneLink());
+    $this->assertEquals('09 310 12345', $result[0]->getPhoneLink()->getText());
+    $this->assertEquals('tel:0931012345', $result[0]->getPhoneLink()->getUrl()->getUri());
+    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->email);
+    $this->assertInstanceOf(Link::class, $result[0]->getEmailLink());
+    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getText());
+    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getUrl()->getUri());
   }
 
   /**
@@ -65,17 +66,18 @@ class DecisionParserTest extends UnitTestCase {
     $parser = DecisionParser::parse($html);
     $result = $parser->getMoreInfoDetails();
 
-    $this->assertInstanceOf(MoreInfoDetails::class, $result);
-    $this->assertEquals('Etunimi Sukunimi', $result->name);
-    $this->assertEquals('Kaupunginsihteeri', $result->title);
-    $this->assertEquals('09 310 12345', $result->phone);
-    $this->assertInstanceOf(Link::class, $result->getPhoneLink());
-    $this->assertEquals('09 310 12345', $result->getPhoneLink()->getText());
-    $this->assertEquals('tel:0931012345', $result->getPhoneLink()->getUrl()->getUri());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result->email);
-    $this->assertInstanceOf(Link::class, $result->getEmailLink());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result->getEmailLink()->getText());
-    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result->getEmailLink()->getUrl()->getUri());
+    $this->assertCount(1, $result);
+    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
+    $this->assertEquals('Etunimi Sukunimi', $result[0]->name);
+    $this->assertEquals('Kaupunginsihteeri', $result[0]->title);
+    $this->assertEquals('09 310 12345', $result[0]->phone);
+    $this->assertInstanceOf(Link::class, $result[0]->getPhoneLink());
+    $this->assertEquals('09 310 12345', $result[0]->getPhoneLink()->getText());
+    $this->assertEquals('tel:0931012345', $result[0]->getPhoneLink()->getUrl()->getUri());
+    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->email);
+    $this->assertInstanceOf(Link::class, $result[0]->getEmailLink());
+    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getText());
+    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getUrl()->getUri());
   }
 
   /**
@@ -86,7 +88,7 @@ class DecisionParserTest extends UnitTestCase {
 
     $parser = DecisionParser::parse($html);
 
-    $this->assertNull($parser->getMoreInfoDetails());
+    $this->assertEmpty($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
     $this->assertNull($parser->getModificationInfo());
@@ -101,7 +103,7 @@ class DecisionParserTest extends UnitTestCase {
   public function testParseWithNullHtml(): void {
     $parser = DecisionParser::parse(NULL);
 
-    $this->assertNull($parser->getMoreInfoDetails());
+    $this->assertEmpty($parser->getMoreInfoDetails());
     $this->assertNull($parser->getMainContent());
     $this->assertNull($parser->getSignatureInfo());
     $this->assertNull($parser->getModificationInfo());
@@ -126,13 +128,14 @@ class DecisionParserTest extends UnitTestCase {
     $parser = DecisionParser::parse($html);
     $result = $parser->getMoreInfoDetails();
 
-    $this->assertInstanceOf(MoreInfoDetails::class, $result);
-    $this->assertEquals('Only Name', $result->name);
-    $this->assertEquals('', $result->title);
-    $this->assertNull($result->phone);
-    $this->assertNull($result->email);
-    $this->assertNull($result->getEmailLink());
-    $this->assertNull($result->getPhoneLink());
+    $this->assertCount(1, $result);
+    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
+    $this->assertEquals('Only Name', $result[0]->name);
+    $this->assertEquals('', $result[0]->title);
+    $this->assertNull($result[0]->phone);
+    $this->assertNull($result[0]->email);
+    $this->assertNull($result[0]->getEmailLink());
+    $this->assertNull($result[0]->getPhoneLink());
   }
 
   /**
@@ -208,13 +211,14 @@ class DecisionParserTest extends UnitTestCase {
     $parser = DecisionParser::parse($html);
     $result = $parser->getMoreInfoDetails();
 
-    $this->assertInstanceOf(MoreInfoDetails::class, $result);
+    $this->assertCount(1, $result);
+    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
 
     // Area code is added to city phone numbers.
     // Production data contains phone numbers containing only "310".
-    $this->assertEquals('09 310', $result->phone);
+    $this->assertEquals('09 310', $result[0]->phone);
     // Drupal can't handle short phone numbers. Tests that the bug is mitigated.
-    $this->assertEquals('tel:0-9310', $result->getPhoneLink()->getUrl()->getUri());
+    $this->assertEquals('tel:0-9310', $result[0]->getPhoneLink()->getUrl()->getUri());
   }
 
   /**
