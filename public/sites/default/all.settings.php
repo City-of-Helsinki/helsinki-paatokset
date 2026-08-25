@@ -69,9 +69,8 @@ if ($ahjo_webhook_secret = getenv('AHJO_WEBHOOK_SECRET')) {
 }
 
 $additionalEnvVars = [
-  // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-9640.
-  // 'ALLU_USERNAME',
-  // 'ALLU_PASSWORD',
+  'ALLU_USERNAME',
+  'ALLU_PASSWORD',
   'DRUPAL_VARNISH_HOST',
   'DRUPAL_VARNISH_PORT',
   'REDIS_HOST',
