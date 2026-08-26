@@ -123,8 +123,6 @@ readonly class DecisionParser {
   /**
    * Get more info details.
    *
-   * More info details are presented in the following format:
-   *
    * ```
    * phpcs:disable
    * <section class="Lisatiedot">
@@ -183,55 +181,23 @@ readonly class DecisionParser {
   private function parseMoreInfoNewFormat(): array {
     $result = [];
 
-    foreach ($this->getMoreInfoBlocks() as $block) {
-      $names = $this->query(".//*[contains(@class, 'LisatiedonantajanNimi')]", $block);
-      $titles = $this->query(".//*[contains(@class, 'LisatiedonantajanTitteli')]", $block);
-      $phones = $this->query(".//*[contains(@class, 'LisatiedonantajanPuhelin')]", $block);
-      $emails = $this->query(".//*[contains(@class, 'LisatiedonantajanSahkoposti')]", $block);
+    // Each contact is rendered in its own paragraph.
+    foreach ($this->xpath->evaluate("//p[.//*[contains(@class, 'LisatiedonantajanNimi')]]") as $block) {
+      // Each field occurs at most once per paragraph.
+      $name = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanNimi')])", $block));
+      $title = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanTitteli')])", $block));
+      $phone = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanPuhelin')])", $block));
+      $email = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanSahkoposti')])", $block));
 
-      // Contacts are usually wrapped in their own paragraph, but if they are
-      // not, the fields of the nth contact are the nth of each field.
-      foreach ($names as $i => $name) {
-        $title = self::nodeText($titles[$i] ?? NULL);
-
-        $result[] = new MoreInfoDetails(
-          name: trim($name->textContent),
-          title: $title ? ucfirst($title) : '',
-          phone: self::nodeText($phones[$i] ?? NULL),
-          email: self::nodeText($emails[$i] ?? NULL),
-        );
-      }
+      $result[] = new MoreInfoDetails(
+        name: $name,
+        title: $title ? ucfirst($title) : '',
+        phone: $phone !== '' ? $phone : NULL,
+        email: $email !== '' ? $email : NULL,
+      );
     }
 
     return $result;
-  }
-
-  /**
-   * Get the elements that wrap the individual new format contacts.
-   *
-   * @return \DOMNode[]
-   *   Wrapping elements, each of which holds one or more contacts.
-   */
-  private function getMoreInfoBlocks(): array {
-    $blocks = [];
-
-    foreach ($this->query("//*[contains(@class, 'LisatiedonantajanNimi')]") as $node) {
-      $block = $this->query("ancestor::p[1]", $node)[0] ?? $node->parentNode;
-      if (!$block instanceof \DOMNode) {
-        continue;
-      }
-
-      // The same block can hold multiple contacts, so parse it only once.
-      foreach ($blocks as $seen) {
-        if ($seen->isSameNode($block)) {
-          continue 2;
-        }
-      }
-
-      $blocks[] = $block;
-    }
-
-    return $blocks;
   }
 
   /**
@@ -241,7 +207,7 @@ readonly class DecisionParser {
    *   Contacts in the order they appear in the document.
    */
   private function parseMoreInfoLegacyFormat(): array {
-    $heading = $this->query("//*[contains(@class, 'LisatiedotOtsikko')]")[0] ?? NULL;
+    $heading = $this->xpath->evaluate("//*[contains(@class, 'LisatiedotOtsikko')]")->item(0);
     if (!$heading) {
       return [];
     }
@@ -486,32 +452,6 @@ readonly class DecisionParser {
     $name = ucfirst($parts[1] ?? '') ?: NULL;
 
     return ($title || $name) ? new PresenterInfo($title, $name) : NULL;
-  }
-
-  /**
-   * Run an XPath query.
-   *
-   * @param string $expression
-   *   XPath expression to evaluate.
-   * @param \DOMNode|null $context
-   *   Optional context node the expression is relative to.
-   *
-   * @return \DOMNode[]
-   *   Matching nodes in document order.
-   */
-  private function query(string $expression, ?\DOMNode $context = NULL): array {
-    $result = $this->xpath->query($expression, $context);
-
-    return $result ? iterator_to_array($result) : [];
-  }
-
-  /**
-   * Get trimmed text content of a node, or NULL if it is empty or missing.
-   */
-  private static function nodeText(?\DOMNode $node): ?string {
-    $text = trim($node?->textContent ?? '');
-
-    return $text !== '' ? $text : NULL;
   }
 
   /**
