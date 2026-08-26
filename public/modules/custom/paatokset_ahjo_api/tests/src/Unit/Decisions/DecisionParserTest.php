@@ -27,7 +27,7 @@ class DecisionParserTest extends UnitTestCase {
    *
    * @param string $html
    *   Decision HTML content.
-   * @param array<mixed< $expected
+   * @param array<string, mixed>[] $expected
    *   Expected contacts.
    */
   #[DataProvider('moreInfoDetailsData')]
@@ -63,6 +63,9 @@ class DecisionParserTest extends UnitTestCase {
 
   /**
    * Data provider for testGetMoreInfoDetails.
+   *
+   * @return array<string, array{string, array<string, mixed>[]}>
+   *   Test cases.
    */
   public static function moreInfoDetailsData(): array {
     return [
