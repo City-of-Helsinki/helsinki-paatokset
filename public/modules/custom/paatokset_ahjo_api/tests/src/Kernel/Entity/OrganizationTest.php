@@ -24,6 +24,7 @@ class OrganizationTest extends RemoteEntityAccessTestBase {
     'pathauto',
     'token',
     'migrate',
+    'diff',
   ];
 
   /**

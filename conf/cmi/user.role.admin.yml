@@ -43,6 +43,7 @@ dependencies:
     - filter
     - hdbt_cookie_banner
     - helfi_api_base
+    - helfi_search
     - helfi_tpr
     - locale
     - media
@@ -97,6 +98,7 @@ permissions:
   - 'administer ahjo proxy'
   - 'administer blocks'
   - 'administer hdbt_cookie_banner'
+  - 'administer helfi_search'
   - 'administer menu'
   - 'administer nodes'
   - 'administer paatokset'

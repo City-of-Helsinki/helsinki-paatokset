@@ -32,6 +32,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     'paatokset_search',
     'node',
     'user',
+    'diff',
   ];
 
   /**

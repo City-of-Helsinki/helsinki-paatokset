@@ -37,6 +37,7 @@ class DatapumppuSourceTest extends KernelTestBase {
     'paatokset_datapumppu',
     'migrate',
     'system',
+    'diff',
   ];
 
   /**

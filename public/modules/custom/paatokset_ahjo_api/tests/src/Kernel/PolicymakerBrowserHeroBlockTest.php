@@ -31,6 +31,7 @@ class PolicymakerBrowserHeroBlockTest extends KernelTestBase {
     'path_alias',
     'pathauto',
     'token',
+    'diff',
   ];
 
   /**

@@ -40,6 +40,7 @@ class SearchControllerTest extends KernelTestBase {
     'system',
     'token',
     'user',
+    'diff',
   ];
 
   /**
