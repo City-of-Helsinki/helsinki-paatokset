@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Unit\Decisions;
 
-use Drupal\Core\Link;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\PresenterInfo;
@@ -13,7 +12,9 @@ use Drupal\paatokset_ahjo_api\Decisions\DTO\Signer;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SisaltoSection;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * Tests DecisionParser.
@@ -22,70 +23,200 @@ use PHPUnit\Framework\Attributes\Group;
 class DecisionParserTest extends UnitTestCase {
 
   /**
-   * Tests parsing more info with new format (class names on spans).
+   * Tests parsing more info details.
+   *
+   * @param string $html
+   *   Decision HTML content.
+   * @param array<mixed< $expected
+   *   Expected contacts.
    */
-  public function testGetMoreInfoDetailsNewFormat(): void {
-    $html = <<<HTML
-      <section class="Lisatiedot">
+  #[DataProvider('moreInfoDetailsData')]
+  public function testGetMoreInfoDetails(string $html, array $expected): void {
+    $result = DecisionParser::parse($html)->getMoreInfoDetails();
+
+    $this->assertCount(count($expected), $result);
+
+    foreach ($expected as $delta => $contact) {
+      $contact += [
+        'title' => '',
+        'phone' => NULL,
+        'email' => NULL,
+        'phone_uri' => NULL,
+        'email_uri' => NULL,
+      ];
+
+      $this->assertInstanceOf(MoreInfoDetails::class, $result[$delta]);
+      $this->assertEquals($contact['name'], $result[$delta]->name);
+      $this->assertEquals($contact['title'], $result[$delta]->title);
+      $this->assertEquals($contact['phone'], $result[$delta]->phone);
+      $this->assertEquals($contact['email'], $result[$delta]->email);
+
+      $phone_link = $result[$delta]->getPhoneLink();
+      $this->assertEquals($contact['phone_uri'], $phone_link?->getUrl()->getUri());
+      $this->assertEquals($contact['phone_uri'] ? $contact['phone'] : NULL, $phone_link?->getText());
+
+      $email_link = $result[$delta]->getEmailLink();
+      $this->assertEquals($contact['email_uri'], $email_link?->getUrl()->getUri());
+      $this->assertEquals($contact['email_uri'] ? $contact['email'] : NULL, $email_link?->getText());
+    }
+  }
+
+  /**
+   * Data provider for testGetMoreInfoDetails.
+   */
+  public static function moreInfoDetailsData(): array {
+    return [
+      'new format' => [
+        <<<HTML
+        <section class="Lisatiedot">
+          <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
+          <p>
+            <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
+            <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">09 310 12345</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
+          </p>
+        </section>
+        HTML,
+        [
+          [
+            'name' => 'Etunimi Sukunimi',
+            'title' => 'Titteli',
+            'phone' => '09 310 12345',
+            'phone_uri' => 'tel:0931012345',
+            'email' => 'etunimi.sukunimi@hel.fi',
+            'email_uri' => 'mailto:etunimi.sukunimi@hel.fi',
+          ],
+        ],
+      ],
+      'new format, multiple contacts' => [
+        <<<HTML
+        <section class="Lisatiedot">
+          <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
+          <p>
+            <span class="LisatiedonantajanNimi">Aku Ankka</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
+            <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">09 310 12345</span>, <span class="LisatiedonantajanSahkoposti">aku.ankka@hel.fi</span>
+          </p>
+          <p>
+            <span class="LisatiedonantajanNimi">Roope Ankka</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
+            <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">09 310 12346</span>, <span class="LisatiedonantajanSahkoposti">roope.ankka@hel.fi</span>
+          </p>
+        </section>
+        HTML,
+        [
+          [
+            'name' => 'Aku Ankka',
+            'title' => 'Titteli',
+            'phone' => '09 310 12345',
+            'phone_uri' => 'tel:0931012345',
+            'email' => 'aku.ankka@hel.fi',
+            'email_uri' => 'mailto:aku.ankka@hel.fi',
+          ],
+          [
+            'name' => 'Roope Ankka',
+            'title' => 'Titteli',
+            'phone' => '09 310 12346',
+            'phone_uri' => 'tel:0931012346',
+            'email' => 'roope.ankka@hel.fi',
+            'email_uri' => 'mailto:roope.ankka@hel.fi',
+          ],
+        ],
+      ],
+      'new format, only name' => [
+        <<<HTML
+        <section class="Lisatiedot">
+          <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
+          <p>
+            <span class="LisatiedonantajanNimi">Only Name</span>
+          </p>
+        </section>
+        HTML,
+        [
+          ['name' => 'Only Name'],
+        ],
+      ],
+      // Area code is added to city phone numbers. Production data contains
+      // phone numbers containing only "310". Drupal can't handle short phone
+      // numbers, so the link contains a visual separator.
+      'new format, phone number without area code' => [
+        <<<HTML
+        <section class="Lisatiedot">
+          <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
+          <p>
+            <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
+            <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">310</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
+          </p>
+        </section>
+        HTML,
+        [
+          [
+            'name' => 'Etunimi Sukunimi',
+            'title' => 'Titteli',
+            'phone' => '09 310',
+            'phone_uri' => 'tel:0-9310',
+            'email' => 'etunimi.sukunimi@hel.fi',
+            'email_uri' => 'mailto:etunimi.sukunimi@hel.fi',
+          ],
+        ],
+      ],
+      'legacy format' => [
+        <<<HTML
         <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
-        <p>
-          <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
-          <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">09 310 12345</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
+        <p>Etunimi Sukunimi, kaupunginsihteeri, puhelin: 09 310 12345
+        <div>etunimi.sukunimi@hel.fi</div>
         </p>
-      </section>
-    HTML;
-
-    $parser = DecisionParser::parse($html);
-    $result = $parser->getMoreInfoDetails();
-
-    $this->assertCount(1, $result);
-    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
-    $this->assertEquals('Etunimi Sukunimi', $result[0]->name);
-    $this->assertEquals('Titteli', $result[0]->title);
-    $this->assertEquals('09 310 12345', $result[0]->phone);
-    $this->assertInstanceOf(Link::class, $result[0]->getPhoneLink());
-    $this->assertEquals('09 310 12345', $result[0]->getPhoneLink()->getText());
-    $this->assertEquals('tel:0931012345', $result[0]->getPhoneLink()->getUrl()->getUri());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->email);
-    $this->assertInstanceOf(Link::class, $result[0]->getEmailLink());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getText());
-    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getUrl()->getUri());
+        HTML,
+        [
+          [
+            'name' => 'Etunimi Sukunimi',
+            'title' => 'Kaupunginsihteeri',
+            'phone' => '09 310 12345',
+            'phone_uri' => 'tel:0931012345',
+            'email' => 'etunimi.sukunimi@hel.fi',
+            'email_uri' => 'mailto:etunimi.sukunimi@hel.fi',
+          ],
+        ],
+      ],
+      'legacy format, multiple contacts' => [
+        <<<HTML
+        <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
+        <p>Aku Ankka, kaupunginsihteeri, puhelin: 09 310 12345
+        <div>aku.ankka@hel.fi</div>
+        </p>
+        <p>Roope Ankka, kaupunginsihteeri, puhelin: 09 310 12346
+        <div>roope.ankka@hel.fi</div>
+        </p>
+        HTML,
+        [
+          [
+            'name' => 'Aku Ankka',
+            'title' => 'Kaupunginsihteeri',
+            'phone' => '09 310 12345',
+            'phone_uri' => 'tel:0931012345',
+            'email' => 'aku.ankka@hel.fi',
+            'email_uri' => 'mailto:aku.ankka@hel.fi',
+          ],
+          [
+            'name' => 'Roope Ankka',
+            'title' => 'Kaupunginsihteeri',
+            'phone' => '09 310 12346',
+            'phone_uri' => 'tel:0931012346',
+            'email' => 'roope.ankka@hel.fi',
+            'email_uri' => 'mailto:roope.ankka@hel.fi',
+          ],
+        ],
+      ],
+      'no more info section' => [
+        '<div>Some other content</div>',
+        [],
+      ],
+    ];
   }
 
   /**
-   * Tests parsing more info with legacy format (plain text without classes).
+   * Tests that nothing is returned when the HTML has no decision content.
    */
-  public function testGetMoreInfoDetailsLegacyFormat(): void {
-    $html = <<<HTML
-      <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
-      <p>Etunimi Sukunimi, kaupunginsihteeri, puhelin: 09 310 12345
-      <div>etunimi.sukunimi@hel.fi</div>
-      </p>
-    HTML;
-
-    $parser = DecisionParser::parse($html);
-    $result = $parser->getMoreInfoDetails();
-
-    $this->assertCount(1, $result);
-    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
-    $this->assertEquals('Etunimi Sukunimi', $result[0]->name);
-    $this->assertEquals('Kaupunginsihteeri', $result[0]->title);
-    $this->assertEquals('09 310 12345', $result[0]->phone);
-    $this->assertInstanceOf(Link::class, $result[0]->getPhoneLink());
-    $this->assertEquals('09 310 12345', $result[0]->getPhoneLink()->getText());
-    $this->assertEquals('tel:0931012345', $result[0]->getPhoneLink()->getUrl()->getUri());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->email);
-    $this->assertInstanceOf(Link::class, $result[0]->getEmailLink());
-    $this->assertEquals('etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getText());
-    $this->assertEquals('mailto:etunimi.sukunimi@hel.fi', $result[0]->getEmailLink()->getUrl()->getUri());
-  }
-
-  /**
-   * Tests that NULL is returned when no content exists.
-   */
-  public function testNoContent(): void {
-    $html = '<div>Some other content</div>';
-
+  #[TestWith([NULL])]
+  #[TestWith(['<div>Some other content</div>'])]
+  public function testNoContent(?string $html): void {
     $parser = DecisionParser::parse($html);
 
     $this->assertEmpty($parser->getMoreInfoDetails());
@@ -95,47 +226,6 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertNull($parser->getAppealInfo());
     $this->assertNull($parser->getPresenterInfo());
     $this->assertEmpty($parser->getSections());
-  }
-
-  /**
-   * Tests parsing with NULL HTML input.
-   */
-  public function testParseWithNullHtml(): void {
-    $parser = DecisionParser::parse(NULL);
-
-    $this->assertEmpty($parser->getMoreInfoDetails());
-    $this->assertNull($parser->getMainContent());
-    $this->assertNull($parser->getSignatureInfo());
-    $this->assertNull($parser->getModificationInfo());
-    $this->assertNull($parser->getAppealInfo());
-    $this->assertNull($parser->getPresenterInfo());
-    $this->assertEmpty($parser->getSections());
-  }
-
-  /**
-   * Tests new format with missing optional fields.
-   */
-  public function testNewFormatWithMissingOptionalFields(): void {
-    $html = <<<HTML
-      <section class="Lisatiedot">
-        <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
-        <p>
-          <span class="LisatiedonantajanNimi">Only Name</span>
-        </p>
-      </section>
-    HTML;
-
-    $parser = DecisionParser::parse($html);
-    $result = $parser->getMoreInfoDetails();
-
-    $this->assertCount(1, $result);
-    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
-    $this->assertEquals('Only Name', $result[0]->name);
-    $this->assertEquals('', $result[0]->title);
-    $this->assertNull($result[0]->phone);
-    $this->assertNull($result[0]->email);
-    $this->assertNull($result[0]->getEmailLink());
-    $this->assertNull($result[0]->getPhoneLink());
   }
 
   /**
@@ -192,33 +282,6 @@ class DecisionParserTest extends UnitTestCase {
     $this->assertStringContainsString('Käsittely', $result);
     $this->assertStringContainsString('Decision content.', $result);
     $this->assertStringContainsString('Handling content.', $result);
-  }
-
-  /**
-   * Tests area code handling for city phone numbers.
-   */
-  public function testPhoneNumberAreaCode(): void {
-    $html = <<<HTML
-      <section class="Lisatiedot">
-        <h3 class="LisatiedotOtsikko">Lisätiedot</h3>
-        <p>
-          <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">titteli</span><br>
-          <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">310</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
-        </p>
-      </section>
-    HTML;
-
-    $parser = DecisionParser::parse($html);
-    $result = $parser->getMoreInfoDetails();
-
-    $this->assertCount(1, $result);
-    $this->assertInstanceOf(MoreInfoDetails::class, $result[0]);
-
-    // Area code is added to city phone numbers.
-    // Production data contains phone numbers containing only "310".
-    $this->assertEquals('09 310', $result[0]->phone);
-    // Drupal can't handle short phone numbers. Tests that the bug is mitigated.
-    $this->assertEquals('tel:0-9310', $result[0]->getPhoneLink()->getUrl()->getUri());
   }
 
   /**

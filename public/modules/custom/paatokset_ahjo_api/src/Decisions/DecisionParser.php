@@ -225,10 +225,6 @@ readonly class DecisionParser {
   /**
    * Split the legacy more info content into one chunk per contact.
    *
-   * Each contact begins a new paragraph. The email address is rendered in a
-   * div, which the HTML parser moves next to the paragraph, so any element
-   * that is not a paragraph belongs to the contact that precedes it.
-   *
    * @param \DOMNode $heading
    *   The `LisatiedotOtsikko` heading.
    *
@@ -251,7 +247,7 @@ readonly class DecisionParser {
       if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
         break;
       }
-      // More information section should stop before the signatures.
+      // More information section stops before the next section.
       if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
         break;
       }
