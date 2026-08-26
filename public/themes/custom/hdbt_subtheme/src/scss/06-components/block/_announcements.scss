@@ -1,0 +1,10 @@
+// Negate padding on policymaker page
+.policymaker-summary {
+  .block--announcements .container {
+    padding-inline: 0;
+
+    p {
+      @include font('small');
+    }
+  }
+}
