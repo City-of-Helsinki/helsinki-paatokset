@@ -30,7 +30,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * command can be removed.
  *
  * @see \Drupal\paatokset_ahjo_api\Decisions\DecisionParser::getMoreInfoDetails()
- * @see \Drupal\paatokset_ahjo_api\Queue\AhjoQueueWorkerBase::processLegacyItem()
  */
 #[AsCommand(
   name: self::NAME,
@@ -41,16 +40,6 @@ final class ReimportLegacyDecisionsCommand extends Command {
   use AutowireTrait;
 
   public const NAME = 'ahjo-api:decisions:reimport-legacy';
-
-  /**
-   * Heading that is present in both the legacy and the new format.
-   */
-  private const MORE_INFO_HEADING = 'LisatiedotOtsikko';
-
-  /**
-   * Span that only the new format has.
-   */
-  private const MORE_INFO_NAME = 'LisatiedonantajanNimi';
 
   /**
    * Queue that re-imports single Ahjo entities.
@@ -145,8 +134,8 @@ final class ReimportLegacyDecisionsCommand extends Command {
     $query->addField('c', 'entity_id', 'nid');
     $query->addField('n', 'field_decision_native_id_value', 'native_id');
     $query->condition('c.bundle', 'decision');
-    $query->condition('c.field_decision_content_value', '%' . $this->database->escapeLike(self::MORE_INFO_HEADING) . '%', 'LIKE');
-    $query->condition('c.field_decision_content_value', '%' . $this->database->escapeLike(self::MORE_INFO_NAME) . '%', 'NOT LIKE');
+    $query->condition('c.field_decision_content_value', '%LisatiedotOtsikko%', 'LIKE');
+    $query->condition('c.field_decision_content_value', '%LisatiedonantajanNimi%', 'NOT LIKE');
     $query->distinct();
     $query->orderBy('c.entity_id');
 
