@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\AhjoOpenId;
 
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\Lock\LockBackendInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoAuthToken;
@@ -17,17 +17,20 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Handler for AHJO API Open ID connector.
+ *
+ * The token must be stored in a storage without a static cache,
+ * so long-running processes always see the current token.
  */
 class AhjoOpenId implements LoggerAwareInterface {
 
   use LoggerAwareTrait;
 
-  public const string AHJO_AUTH_OLD = 'ahjo-auth-old';
+  public const string TOKEN_COLLECTION = 'paatokset_ahjo_api.auth_token';
 
   public function __construct(
     private readonly Settings $settings,
     private readonly ClientInterface $httpClient,
-    private readonly StateInterface $state,
+    private readonly KeyValueFactoryInterface $keyValueFactory,
     #[Autowire(service: 'lock')]
     private readonly LockBackendInterface $lock,
     private readonly EnvironmentResolverInterface $environmentResolver,
@@ -94,9 +97,16 @@ class AhjoOpenId implements LoggerAwareInterface {
   }
 
   /**
-   * Get ahjo token state key.
+   * Gets the key of the token inside the keyvalue collection.
    */
   private function getTokenKey(): string {
+    return $this->environmentResolver->getActiveEnvironmentName();
+  }
+
+  /**
+   * Gets the name of the lock guarding token refresh.
+   */
+  private function getLockName(): string {
     return sprintf('ahjo-auth-%s', $this->environmentResolver->getActiveEnvironmentName());
   }
 
@@ -114,26 +124,15 @@ class AhjoOpenId implements LoggerAwareInterface {
   private function makeTokenRequest(array $formParameters): AhjoAuthToken {
     $this->settings->assertValid();
 
-    $tokenKey = $this->getTokenKey();
+    $lockName = $this->getLockName();
 
     // Refresh tokens are invalidated the moment it is used.
     // It is critical that only one refresh attempt is made.
-    if (!$this->lock->acquire($tokenKey)) {
+    if (!$this->lock->acquire($lockName)) {
       throw new AhjoOpenIdException('Failed to acquire lock');
     }
 
     try {
-      // Clear the current token. The old token is stored in
-      // the state to help with debugging issues. The previous
-      // token is invalid after the refreshing, so it is not
-      // strictly necessary anymore. However, settings the current
-      // token to empty value makes it easier to detect that an
-      // invalid token is used, in case the refresh fails.
-      if ($old = $this->state->get($tokenKey)) {
-        $this->state->set(self::AHJO_AUTH_OLD, $old);
-        $this->state->set($tokenKey, '');
-      }
-
       $client_id = $this->settings->clientId;
       $client_secret = $this->settings->clientSecret;
 
@@ -156,15 +155,20 @@ class AhjoOpenId implements LoggerAwareInterface {
         throw new AhjoOpenIdException('Invalid token response: ' . $body, previous: $e);
       }
 
-      $this->state->set($tokenKey, json_encode($token));
+      // The token is persisted only on success. If the refresh fails, the
+      // previous token and its refresh token stay in place so the next
+      // refresh attempt can retry with the same refresh token.
+      $this->keyValueFactory
+        ->get(self::TOKEN_COLLECTION)
+        ->set($this->getTokenKey(), json_encode($token, JSON_THROW_ON_ERROR));
 
       return $token;
     }
-    catch (GuzzleException $e) {
+    catch (GuzzleException | \JsonException $e) {
       throw new AhjoOpenIdException($e->getMessage(), previous: $e);
     }
     finally {
-      $this->lock->release($tokenKey);
+      $this->lock->release($lockName);
     }
   }
 
@@ -185,12 +189,35 @@ class AhjoOpenId implements LoggerAwareInterface {
   }
 
   /**
+   * Reads the token from storage.
+   *
+   * @throws \InvalidArgumentException
+   */
+  private function readToken(): AhjoAuthToken {
+    return AhjoAuthToken::fromJson((string) $this->keyValueFactory->get(self::TOKEN_COLLECTION)->get($this->getTokenKey(), ''));
+  }
+
+  /**
    * Gets token DTO.
    *
    * @throws \InvalidArgumentException
    */
   private function getToken(): AhjoAuthToken {
-    return AhjoAuthToken::fromJson($this->state->get($this->getTokenKey(), ''));
+    try {
+      $token = $this->readToken();
+
+      if (!$token->isExpired()) {
+        return $token;
+      }
+    }
+    catch (\InvalidArgumentException) {
+      // Missing or malformed token. A refresh may be in progress.
+    }
+
+    // Wait for a possible in-flight refresh, then re-read.
+    $this->lock->wait($this->getLockName());
+
+    return $this->readToken();
   }
 
   /**
