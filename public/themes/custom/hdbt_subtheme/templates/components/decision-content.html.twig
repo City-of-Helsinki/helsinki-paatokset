@@ -140,7 +140,7 @@
 
   {% if decision_content.more_info %}
     <div class="issue__more-info">
-      <h3>{{ 'Ask for more info' | t }}</h3>
+      <h3>{% trans %}Ask for more info{% plural decision_content.more_info|length %}Ask for more info{% endtrans %}</h3>
       {% for contact in decision_content.more_info %}
         {% include "@hdbt/component/contact-card.twig" with {
           heading_level: 'h4',

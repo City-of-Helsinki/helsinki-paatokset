@@ -410,3 +410,8 @@ msgstr "Sök"
 msgctxt "React search: clear selections"
 msgid "Clear selections"
 msgstr "Rensa alla"
+
+msgid "Ask for more info"
+msgid_plural "Ask for more info"
+msgstr[0] "Mer information"
+msgstr[1] "Mer information"
