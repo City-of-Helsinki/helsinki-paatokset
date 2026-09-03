@@ -46,4 +46,3 @@ modules: false
 cron_monitor_id: ''
 profiles_sample_rate: null
 http_compression: true
-enable_logs: true

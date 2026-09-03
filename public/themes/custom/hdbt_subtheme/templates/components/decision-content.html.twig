@@ -140,14 +140,16 @@
 
   {% if decision_content.more_info %}
     <div class="issue__more-info">
-      <h3>{{ 'Ask for more info' | t }}</h3>
-      {% include "@hdbt/component/contact-card.twig" with {
-        heading_level: 'h4',
-        contact_name: decision_content.more_info.name,
-        contact_title: decision_content.more_info.title,
-        email: decision_content.more_info.getEmailLink(),
-        phone_number: decision_content.more_info.getPhoneLink(),
-      } %}
+      <h3>{% trans %}Ask for more info{% plural decision_content.more_info|length %}Ask for more info{% endtrans %}</h3>
+      {% for contact in decision_content.more_info %}
+        {% include "@hdbt/component/contact-card.twig" with {
+          heading_level: 'h4',
+          contact_name: contact.name,
+          contact_title: contact.title,
+          email: contact.getEmailLink(),
+          phone_number: contact.getPhoneLink(),
+        } %}
+      {% endfor %}
     </div>
   {% endif %}
 </div>

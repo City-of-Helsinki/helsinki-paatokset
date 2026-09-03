@@ -65,7 +65,6 @@ readonly class StatementService {
    *   Formatted title.
    */
   public function formatStatementTitle(Statement $statement): TranslatableMarkup {
-    // @phpstan-ignore-next-line.
     $startTime = $statement->get('start_time')->date;
     $startDate = $this->dateFormatter->format($startTime->getTimestamp(), 'custom', 'd.m.Y');
 
