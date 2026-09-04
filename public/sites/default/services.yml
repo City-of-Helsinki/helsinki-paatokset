@@ -1,5 +1,11 @@
 # Test services and overrides.
 parameters:
+  helfi_api_base.audit_log_entity_types:
+    # Disable node entity type to debug performance.
+    # https://helsinkisolutionoffice.atlassian.net/browse/UHF-13592
+    # - { entity_type: 'node' }
+    - { entity_type: 'user' }
+
   helfi_api_base.logger_enabled: false
   helfi_api_base.internal_domains:
     - 'paatokset.hel.fi'

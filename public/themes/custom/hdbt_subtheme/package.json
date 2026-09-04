@@ -9,7 +9,6 @@
     "dev": "node theme-builder.mjs --watch --dev",
     "dev-with-remote-data": "ELASTIC_DEV_URL=https://paatokset-elastic-proxy.test.hel.ninja npm run dev",
     "build": "npm run format:js --loglevel=silent && npm run lint --loglevel=silent && npm run validate-ts && node theme-builder.mjs",
-    "preinstall": "npx update-browserslist-db@latest --loglevel=silent",
     "postinstall": "npm --prefix ../../contrib/hdbt install --no-audit --progress=false --loglevel=silent",
     "lint:scss": "npx --prefix ../../contrib/hdbt/theme-builder postcss \"$INIT_CWD/src/scss/**/*.scss\" --syntax postcss-scss --use css-declaration-sorter --replace --no-map && npm run lint:stylelint --loglevel=silent",
     "lint:stylelint": "npx --prefix ../../contrib/hdbt/theme-builder stylelint \"$INIT_CWD/src/scss/**/*.scss\" --config ../../contrib/hdbt/theme-builder/.stylelintrc.yaml --fix",
@@ -24,16 +23,17 @@
     "The following packages were updated manually.",
     "Remove this section once the dependencies have been updated in their respective upstream packages.",
     {
-      "brace-expansion": ">=5.0.5, dependency of minimatch",
+      "backstopjs > puppeteer": ">=25.0.8, Backstop depends on a vulnerable version of puppeteer",
       "diff": "^8.0.3, dependency of backstopjs",
-      "minimatch": ">=10.2.1, dependency of hds-core (eslint)",
       "yauzl": "^3.2.1, dependency of backstopjs"
     }
   ],
   "overrides": {
-    "brace-expansion": "^5.0.5",
+    "backstopjs": {
+      "puppeteer": "^25.8.0"
+    },
     "diff": "^8.0.3",
-    "minimatch": "^10.2.1",
+    "qs": "^6.16.0",
     "yauzl": "^3.2.1"
   },
   "dependencies": {
@@ -50,9 +50,9 @@
     "react-dom": "file:../../contrib/hdbt/node_modules/react-dom",
     "sass": "^1.89.2"
   },
-  "browserslist": [
-    "last 3 major versions",
-    "> 1%",
-    "not dead"
-  ]
+  "allowScripts": {
+    "@parcel/watcher": false,
+    "fsevents": false,
+    "puppeteer": false
+  }
 }

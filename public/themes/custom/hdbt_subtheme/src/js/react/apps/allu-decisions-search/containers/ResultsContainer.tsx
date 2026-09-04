@@ -9,6 +9,7 @@ import ResultsError from '@/react/common/ResultsError';
 import ResultsHeader from '@/react/common/ResultsHeader';
 import type Result from '@/types/Result';
 import { ResultCard } from '../components/ResultCard';
+import { SIZE } from '../helpers';
 import { getPageAtom, setSelectionsAtom } from '../store';
 import type { Decision } from '../types/Decision';
 import type { Selections } from '../types/Selections';
@@ -30,7 +31,6 @@ export const ResultsContainer = ({
 }) => {
   const setSelections = useSetAtom(setSelectionsAtom);
   const currentPage = useAtomValue(getPageAtom);
-  const size = 10;
 
   const { scrollTarget, loadingHeaderRef, resultsListRef, onPageChange, isSearching } = useSearchFocusManagement(
     isValidating,
@@ -53,7 +53,7 @@ export const ResultsContainer = ({
           resultText={Drupal.t('Searching for results...', {}, { context: 'React search: Fetching results title' })}
           ref={loadingHeaderRef}
         />
-        <GhostList count={size} bordered />
+        <GhostList count={SIZE} bordered />
       </div>
     );
   }
@@ -68,8 +68,7 @@ export const ResultsContainer = ({
 
   const results = data.hits.hits;
   const total = data.hits.total.value;
-  const pages = Math.floor(total / size);
-  const addLastPage = total > size && total % size;
+  const totalPages = Math.ceil(total / SIZE);
 
   return (
     <div key='results' className='react-search__results'>
@@ -93,12 +92,14 @@ export const ResultsContainer = ({
             <ResultCard key={_source.search_api_id[0]} {..._source} />
           ))}
         </div>
-        <Pagination
-          currentPage={Number(currentPage) || 1}
-          pages={5}
-          totalPages={addLastPage ? pages + 1 : pages}
-          updatePage={updatePage}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={Number(currentPage) || 1}
+            pages={5}
+            totalPages={totalPages}
+            updatePage={updatePage}
+          />
+        )}
       </div>
     </div>
   );
