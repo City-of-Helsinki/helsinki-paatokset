@@ -69,7 +69,7 @@ final class YearFilter extends FilterPluginBase {
    * {@inheritDoc}
    */
   public function query(): void {
-    [$year] = $this->value;
+    $year = is_array($this->value) ? reset($this->value) : $this->value;
 
     if (empty($year)) {
       return;
