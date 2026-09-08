@@ -77,7 +77,8 @@ class Document extends ContentEntityBase implements DocumentInterface {
 
     $fields['address'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Address'))
-      ->setDescription(new TranslatableMarkup('Address that this document relates to.'));
+      ->setDescription(new TranslatableMarkup('Address that this document relates to.'))
+      ->setSetting('max_length', 1023);
 
     $fields['type'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Document type'))

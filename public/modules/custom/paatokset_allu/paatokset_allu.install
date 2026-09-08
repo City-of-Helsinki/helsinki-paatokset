@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for paatokset_allu module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Increase the length of the address field.
+ */
+function paatokset_allu_update_11001(): void {
+  $entityTypeId = 'paatokset_allu_document';
+  $fieldName = 'address';
+
+  $entityFieldManager = \Drupal::service(EntityFieldManagerInterface::class);
+  $entityFieldManager->clearCachedFieldDefinitions();
+  $definition = $entityFieldManager->getFieldStorageDefinitions($entityTypeId)[$fieldName];
+  assert($definition instanceof BaseFieldDefinition);
+
+  \Drupal::database()
+    ->schema()
+    ->changeField($entityTypeId, $fieldName, $fieldName, [
+      'type' => 'varchar',
+      'length' => $definition->getSetting('max_length'),
+      'not null' => FALSE,
+    ]);
+
+  $definition->setSetting('column_changes_handled', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->updateFieldStorageDefinition($definition);
+}
