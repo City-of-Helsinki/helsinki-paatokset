@@ -123,8 +123,6 @@ readonly class DecisionParser {
   /**
    * Get more info details.
    *
-   * More info details are presented in the following format:
-   *
    * ```
    * phpcs:disable
    * <section class="Lisatiedot">
@@ -132,6 +130,9 @@ readonly class DecisionParser {
    *   <p>
    *     <span class="LisatiedonantajanNimi">Etunimi Sukunimi</span>, <span class="LisatiedonantajanTitteli">Titteli</span><br>
    *     <span class="LisatiedotantajanPuhelinOtsikko">puhelin: </span><span class="LisatiedonantajanPuhelin">123 4567</span>, <span class="LisatiedonantajanSahkoposti">etunimi.sukunimi@hel.fi</span>
+   *   </p>
+   *   <p>
+   *     <span class="LisatiedonantajanNimi">Toinen Henkilö</span>, ...
    *   </p>
    * </section>
    * phpcs:enable
@@ -146,9 +147,15 @@ readonly class DecisionParser {
    * <p>Etunimi Sukunimi, kaupunginsihteeri, puhelin: 09 310 12345
    * <div>etunimi.sukunimi@hel.fi</div>
    * </p>
+   * <p>Toinen Henkilö, kaupunginsihteeri, puhelin: 09 310 12346
+   * <div>toinen.henkilo@hel.fi</div>
+   * </p>
    * ...
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  public function getMoreInfoDetails(): ?MoreInfoDetails {
+  public function getMoreInfoDetails(): array {
     // Try the new format first.
     if ($result = $this->parseMoreInfoNewFormat()) {
       return $result;
@@ -167,41 +174,105 @@ readonly class DecisionParser {
    * - LisatiedonantajanTitteli: title
    * - LisatiedonantajanPuhelin: phone
    * - LisatiedonantajanSahkoposti: email.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  private function parseMoreInfoNewFormat(): ?MoreInfoDetails {
-    $name = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanNimi')]");
-    if ($name->length === 0) {
-      return NULL;
+  private function parseMoreInfoNewFormat(): array {
+    $result = [];
+
+    // Each contact is rendered in its own paragraph.
+    foreach ($this->xpath->evaluate("//p[.//*[contains(@class, 'LisatiedonantajanNimi')]]") as $block) {
+      // Each field occurs at most once per paragraph.
+      $name = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanNimi')])", $block));
+      $title = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanTitteli')])", $block));
+      $phone = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanPuhelin')])", $block));
+      $email = trim((string) $this->xpath->evaluate("string(.//*[contains(@class, 'LisatiedonantajanSahkoposti')])", $block));
+
+      $result[] = new MoreInfoDetails(
+        name: $name,
+        title: $title ? ucfirst($title) : '',
+        phone: $phone !== '' ? $phone : NULL,
+        email: $email !== '' ? $email : NULL,
+      );
     }
 
-    $title = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanTitteli')]");
-    $phone = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanPuhelin')]");
-    $email = $this->xpath->query("//*[contains(@class, 'LisatiedonantajanSahkoposti')]");
-
-    return new MoreInfoDetails(
-      name: trim($name->item(0)->textContent),
-      title: $title->length > 0 ? ucfirst(trim($title->item(0)->textContent)) : '',
-      phone: $phone->length > 0 ? trim($phone->item(0)->textContent) : NULL,
-      email: $email->length > 0 ? trim($email->item(0)->textContent) : NULL,
-    );
+    return $result;
   }
 
   /**
    * Parse more info using legacy format (without class names).
+   *
+   * @return \Drupal\paatokset_ahjo_api\Decisions\DTO\MoreInfoDetails[]
+   *   Contacts in the order they appear in the document.
    */
-  private function parseMoreInfoLegacyFormat(): ?MoreInfoDetails {
-    $more_info = $this->xpath->query("//*[contains(@class, 'LisatiedotOtsikko')]");
-    $more_info_content = NULL;
-    if ($more_info->length > 0) {
-      $more_info_content = self::getHtmlContentUntilBreakingElement($more_info);
+  private function parseMoreInfoLegacyFormat(): array {
+    $heading = $this->xpath->evaluate("//*[contains(@class, 'LisatiedotOtsikko')]")->item(0);
+    if (!$heading) {
+      return [];
     }
 
-    if (!$more_info_content) {
-      return NULL;
+    $result = [];
+    foreach (self::getLegacyMoreInfoGroups($heading) as $group) {
+      if ($contact = self::parseLegacyMoreInfoGroup($group)) {
+        $result[] = $contact;
+      }
     }
 
+    return $result;
+  }
+
+  /**
+   * Split the legacy more info content into one chunk per contact.
+   *
+   * @param \DOMNode $heading
+   *   The `LisatiedotOtsikko` heading.
+   *
+   * @return string[]
+   *   HTML content of each contact.
+   */
+  private static function getLegacyMoreInfoGroups(\DOMNode $heading): array {
+    $groups = [];
+
+    $current_item = $heading;
+    while ($current_item->nextSibling instanceof \DOMNode) {
+      // Iterate over to next sibling. This skips the first one.
+      $current_item = $current_item->nextSibling;
+
+      if (!$current_item instanceof \DOMElement) {
+        continue;
+      }
+
+      // H3 with a class is considered a breaking element.
+      if ($current_item->nodeName === 'h3' && !empty($current_item->getAttribute('class'))) {
+        break;
+      }
+      // More information section stops before the next section.
+      if ($current_item->getAttribute('class') === 'SahkoinenAllekirjoitusSektio') {
+        break;
+      }
+
+      // Strip empty nodes. Ahjo HTML seems to contain a lot of <p></p> tags.
+      if (empty($current_item->nodeValue)) {
+        continue;
+      }
+
+      if ($current_item->nodeName === 'p' || !$groups) {
+        $groups[] = '';
+      }
+
+      $groups[array_key_last($groups)] .= $current_item->ownerDocument->saveHTML($current_item);
+    }
+
+    return $groups;
+  }
+
+  /**
+   * Parse a single legacy format contact.
+   */
+  private static function parseLegacyMoreInfoGroup(string $html): ?MoreInfoDetails {
     // Replace all HTML tags with commas.
-    $result = preg_replace('/<[^>]+>/', ',', $more_info_content);
+    $result = preg_replace('/<[^>]+>/', ',', $html);
 
     // Remove leading and trailing commas/spaces.
     $result = trim($result, ", \t\n\r\0\x0B");
@@ -213,6 +284,10 @@ readonly class DecisionParser {
     // Split into array.
     $parts = array_map('trim', explode(',', $result));
 
+    if (empty($parts[0])) {
+      return NULL;
+    }
+
     // Make sure we have a phone number at index 2.
     $phone = NULL;
     if (isset($parts[2])) {
@@ -223,7 +298,7 @@ readonly class DecisionParser {
     }
 
     return new MoreInfoDetails(
-      name: $parts[0] ?? '',
+      name: $parts[0],
       title: isset($parts[1]) ? ucfirst($parts[1]) : '',
       phone: $phone,
       email: $parts[3] ?? NULL,

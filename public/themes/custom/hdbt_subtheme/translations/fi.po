@@ -403,3 +403,8 @@ msgstr "Työ valmis"
 msgctxt "Allu decision search"
 msgid "Operational condition"
 msgstr "Toiminnallinen kunto"
+
+msgid "Ask for more info"
+msgid_plural "Ask for more info"
+msgstr[0] "Lisätietojen antaja"
+msgstr[1] "Lisätietojen antajat"

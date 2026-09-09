@@ -119,7 +119,7 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
               clearSelection={() => {
                 const filtered = selections.type?.filter((currentType) => currentType.value !== typeSelection.value);
                 const newValue = !filtered || !filtered.length ? undefined : filtered;
-                setSelections({ type: newValue }, true);
+                setSelections({ page: undefined, type: newValue }, true);
                 setType(newValue);
               }}
             />
@@ -127,7 +127,7 @@ export const FormContainer = ({ typeOptions }: { typeOptions?: Array<{ label: st
         {(selections.start || selections.end) && (
           <FilterButton
             clearSelection={() => {
-              setSelections({ start: undefined, end: undefined }, true);
+              setSelections({ start: undefined, end: undefined, page: undefined }, true);
               setDates({ start: undefined, end: undefined });
             }}
             value={`${selections.start || ''} - ${selections.end || ''}`}

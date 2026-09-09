@@ -5,6 +5,41 @@ import { Policymakers } from '../../../common/enum/Policymakers';
 import type { Decision } from '../../../common/types/Decision';
 import { getOrganizationCategoryTag } from '../../../common/utils/getOrganizationCategoryTag';
 
+// Decisions are rarely translated, so decision_url mostly points to the
+// content's original language. Rewrite it to use the current language's
+// prefix, path segment and query key instead, since the case/decision
+// route can render untranslated content with a translated UI.
+const casePathSegments: Record<string, string> = { fi: 'asia', sv: 'arende', en: 'case' };
+const decisionQueryKeys: Record<string, string> = { fi: 'paatos', sv: 'beslut', en: 'decision' };
+
+const getLocalizedUrl = (url: string): string => {
+  const { currentLanguage } = drupalSettings.path;
+
+  if (!/^\/(fi|sv|en)\//.test(url)) {
+    return url;
+  }
+
+  let localizedUrl = url.replace(/^\/(fi|sv|en)\//, `/${currentLanguage}/`);
+
+  const targetSegment = casePathSegments[currentLanguage] || casePathSegments.fi;
+  for (const segment of Object.values(casePathSegments)) {
+    if (localizedUrl.startsWith(`/${currentLanguage}/${segment}/`)) {
+      localizedUrl = localizedUrl.replace(`/${currentLanguage}/${segment}/`, `/${currentLanguage}/${targetSegment}/`);
+      break;
+    }
+  }
+
+  const targetQueryKey = decisionQueryKeys[currentLanguage] || decisionQueryKeys.fi;
+  for (const key of Object.values(decisionQueryKeys)) {
+    if (localizedUrl.includes(`?${key}=`)) {
+      localizedUrl = localizedUrl.replace(`?${key}=`, `?${targetQueryKey}=`);
+      break;
+    }
+  }
+
+  return localizedUrl;
+};
+
 export const ResultCard = ({
   decision_url,
   field_is_decision,
@@ -73,7 +108,7 @@ export const ResultCard = ({
       cardCategoryTag={getOrganizationCategoryTag(field_policymaker_id?.toString(), organization_type?.toString())}
       cardTags={getMotionTag()}
       cardTitle={subject?.[0] || issue_subject?.[0]}
-      cardUrl={decision_url?.[0]}
+      cardUrl={decision_url?.[0] ? getLocalizedUrl(decision_url[0]) : undefined}
       customMetaRows={metaRows}
       date={getDate()}
     />

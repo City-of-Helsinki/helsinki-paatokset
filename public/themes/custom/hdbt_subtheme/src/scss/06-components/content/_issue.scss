@@ -271,6 +271,11 @@
   .contact-card {
     width: 100%;
   }
+
+  // A decision can have multiple contacts.
+  .contact-card + .contact-card {
+    margin-top: $spacing-and-half;
+  }
 }
 
 .issue-ajax-error__container {

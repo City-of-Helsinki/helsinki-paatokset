@@ -2,6 +2,8 @@ import type { estypes } from '@elastic/elasticsearch';
 import { endOfDay, parseHDSDate, startOfDay } from '@/react/common/helpers/dateUtils';
 import type { Selections } from './types/Selections';
 
+export const SIZE = 10;
+
 /**
  * Convert type label to human readable.
  *
@@ -56,7 +58,6 @@ export const matchTypeValueFromLabel = (label: string) => {
  * Form query for Elastic.
  *
  * @param {object} selections - user filter selections
- * @param {boolean} includeAggs - wether to include aggs for filter options
  *
  * @return {object} - The result
  */
@@ -110,14 +111,19 @@ export const formQuery = (selections: Selections) => {
     body.query.bool.minimum_should_match = 1;
   }
 
-  const sort: estypes.SortCombinations[] = [{ document_created: { order: 'desc' } }];
+  const sort: estypes.SortCombinations[] = [{ document_created: { order: 'desc' } }, { id: { order: 'asc' } }];
 
-  const { page: _page, ...rest } = selections;
+  const { page, ...rest } = selections;
   if (Object.keys(rest).length) {
     sort.unshift({ _score: { order: 'desc' } });
   }
 
   body.sort = sort;
+
+  const currentPage = Math.max(1, Number(page) || 1);
+  body.from = (currentPage - 1) * SIZE;
+  body.size = SIZE;
+  body.track_total_hits = true;
 
   return body;
 };

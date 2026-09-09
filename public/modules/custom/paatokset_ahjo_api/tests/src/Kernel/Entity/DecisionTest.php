@@ -208,9 +208,13 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $decision->set('field_hide_decision_content', '0');
     $content = $decision->parseContent();
 
-    $this->assertEquals('Jane Doe', $content['more_info']?->name);
-    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']?->getEmailLink()?->getUrl()->toString());
-    $this->assertEquals('tel:0-9123', $content['more_info']?->getPhoneLink()?->getUrl()->toString());
+    $this->assertCount(2, $content['more_info']);
+    $this->assertEquals('Jane Doe', $content['more_info'][0]?->name);
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info'][0]?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9123', $content['more_info'][0]?->getPhoneLink()?->getUrl()->toString());
+    $this->assertEquals('Jane Doe', $content['more_info'][1]?->name);
+    $this->assertEquals('mailto:jane.doe@example.com', $content['more_info'][1]?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9124', $content['more_info'][1]?->getPhoneLink()?->getUrl()->toString());
     $this->assertEquals('John Doe', $content['presenter_info']?->name);
     $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
     $this->assertEquals('Tilapäällikkö', $content['signature_info']?->title);
@@ -241,9 +245,13 @@ class DecisionTest extends AhjoEntityKernelTestBase {
     $decision->set('field_hide_decision_content', '0');
     $content = $decision->parseContent();
 
-    $this->assertEquals('Jane Doe', $content['more_info']?->name);
-    $this->assertEquals('mailto:john.doe@example.com', $content['more_info']?->getEmailLink()?->getUrl()->toString());
-    $this->assertEquals('tel:0-9123', $content['more_info']?->getPhoneLink()?->getUrl()->toString());
+    $this->assertCount(2, $content['more_info']);
+    $this->assertEquals('Jane Doe', $content['more_info'][0]?->name);
+    $this->assertEquals('mailto:john.doe@example.com', $content['more_info'][0]?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9123', $content['more_info'][0]?->getPhoneLink()?->getUrl()->toString());
+    $this->assertEquals('Jane Doe', $content['more_info'][1]?->name);
+    $this->assertEquals('mailto:jane.doe@example.com', $content['more_info'][1]?->getEmailLink()?->getUrl()->toString());
+    $this->assertEquals('tel:0-9124', $content['more_info'][1]?->getPhoneLink()?->getUrl()->toString());
     $this->assertEquals('Aku Ankka', $content['signature_info']?->name);
     $this->assertEquals('Tehtävänimike', $content['signature_info']?->title);
   }

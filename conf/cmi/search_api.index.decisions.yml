@@ -268,8 +268,7 @@ processor_settings:
   trustee_title: {  }
   unique_issue_id: {  }
 tracker_settings:
-  default:
-    indexing_order: fifo
+  custom_basic_tracker: {  }
 options:
   cron_limit: 0
   delete_on_fail: true

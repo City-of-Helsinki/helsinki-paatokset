@@ -1,19 +1,21 @@
-{% set announcement_content %}
-  <p>{{ content.announcement.text }}</p>
-  <p>{{ content.announcement.link }}</p>
-{% endset %}
+{% if content.announcement %}
+  {% set announcement_content %}
+    <p>{{ content.announcement.text }}</p>
+    <p>{{ content.announcement.link }}</p>
+  {% endset %}
 
-<div class="block--announcements">
-  <div class="container">
-    {% include "@hdbt/misc/status-message.twig" with
-      {
-        type: 'info',
-        size: 'large',
-        title: 'Upcoming council meeting'|t,
-        messages: [
-          announcement_content,
-        ]
-      }
-    %}
+  <div class="block--announcements">
+    <div class="container">
+      {% include "@hdbt/misc/status-message.twig" with
+        {
+          type: 'info',
+          size: 'large',
+          title: 'Upcoming council meeting'|t,
+          messages: [
+            announcement_content,
+          ]
+        }
+      %}
+    </div>
   </div>
-</div>
+{% endif %}

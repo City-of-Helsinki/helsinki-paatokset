@@ -31,8 +31,8 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.8",
         "drupal/core-dev": "^11",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "phpstan/phpstan-deprecation-rules": "^1.1",
+        "jangregor/phpstan-prophecy": "^2",
+        "phpstan/phpstan-deprecation-rules": "^2",
         "weitzman/drupal-test-traits": "^2.0"
     },
     "conflict": {
