@@ -17,7 +17,7 @@ dependencies:
     - path
     - readonly_field_widget
 _core:
-  default_config_hash: _GWx3bjYkG2XbCSN2bsV91vFL-mF1Sbds_i7XWpMWnw
+  default_config_hash: rKrN7fJGgZ2SJFxFy0sNOjm0EPVg4DhQWoS5F57h0gQ
 id: tpr_service.tpr_service.default
 targetEntityType: tpr_service
 bundle: tpr_service
@@ -35,7 +35,7 @@ content:
     third_party_settings: {  }
   errand_services:
     type: readonly_field_widget
-    weight: 8
+    weight: 9
     region: content
     settings:
       label: above
@@ -90,7 +90,7 @@ content:
     third_party_settings: {  }
   field_metatags:
     type: metatag_firehose
-    weight: 10
+    weight: 11
     region: content
     settings:
       sidebar: false
@@ -116,7 +116,7 @@ content:
     third_party_settings: {  }
   field_upper_content:
     type: paragraphs
-    weight: 11
+    weight: 12
     region: content
     settings:
       title: Paragraph
@@ -166,7 +166,7 @@ content:
     third_party_settings: {  }
   links:
     type: readonly_field_widget
-    weight: 7
+    weight: 8
     region: content
     settings:
       label: above
@@ -204,7 +204,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
