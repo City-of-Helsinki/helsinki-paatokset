@@ -60,6 +60,3 @@ drush migrate-import ahjo_decisionmakers --no-progress
 
 drush migrate-reset-status ahjo_org_composition
 drush migrate-import ahjo_org_composition --no-progress
-
-echo "Checking for inactive decisionmakers: $(date)"
-drush ahjo-proxy:check-dm-status -v
