@@ -12,6 +12,7 @@ migration_group: ahjo_api
 label: 'Ahjo API - Initiatives'
 source:
   plugin: ahjo_api_initiatives
+  track_changes: true
 process:
   title: Title
   trustee_nid: Trustee_NID
