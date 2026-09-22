@@ -2995,18 +2995,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
 
 		-
-			message: '#^Access to an undefined property Drupal\\node\\NodeInterface\:\:\$field_decision_native_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-		-
-			message: '#^Access to an undefined property Drupal\\node\\NodeInterface\:\:\$field_full_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-		-
 			message: '#^Argument of an invalid type DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -3496,12 +3484,6 @@ parameters:
 			message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemInterface\:\:\$value\.$#'
 			identifier: property.notFound
 			count: 3
-			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
-
-		-
-			message: '#^Access to an undefined property Drupal\\node\\NodeInterface\:\:\$field_decision_native_id\.$#'
-			identifier: property.notFound
-			count: 1
 			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
 
 		-
@@ -4727,12 +4709,6 @@ parameters:
 			identifier: empty.variable
 			count: 1
 			path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
-
-		-
-			message: '#^Access to an undefined property Drupal\\node\\NodeInterface\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
 
 		-
 			message: '''
