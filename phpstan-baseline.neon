@@ -667,12 +667,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
 
 		-
-			message: '#^Property Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:\$caseService is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
 			message: '#^Parameter \#1 \$content of class Symfony\\Component\\HttpFoundation\\Response constructor expects string\|null, string\|false given\.$#'
 			identifier: argument.type
 			count: 1
