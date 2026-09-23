@@ -649,36 +649,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
 
 		-
-			message: '''
-				#^Call to method __construct\(\) of deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: method.deprecatedClass
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
-			message: '''
-				#^Call to method view\(\) of deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: method.deprecatedClass
-			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
-			message: '''
-				#^Class Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController extends deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: class.extendsDeprecatedClass
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:case\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -693,12 +663,6 @@ parameters:
 		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:decisionTitle\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
-			message: '#^Property Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:\$caseService is never read, only written\.$#'
-			identifier: property.onlyWritten
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
 
@@ -4709,36 +4673,6 @@ parameters:
 			identifier: empty.variable
 			count: 1
 			path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
-
-		-
-			message: '''
-				#^Call to method __construct\(\) of deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: method.deprecatedClass
-			count: 1
-			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
-
-		-
-			message: '''
-				#^Call to method view\(\) of deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: method.deprecatedClass
-			count: 1
-			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
-
-		-
-			message: '''
-				#^Class Drupal\\paatokset_policymakers\\Controller\\PolicymakerNodeViewController extends deprecated class Drupal\\node\\Controller\\NodeViewController\:
-				in drupal\:11\.4\.0 and is removed from drupal\:13\.0\.0\. Use
-				  \\Drupal\\Core\\Entity\\Controller\\EntityViewController instead\.$#
-			'''
-			identifier: class.extendsDeprecatedClass
-			count: 1
-			path: public/modules/custom/paatokset_policymakers/src/Controller/PolicymakerNodeViewController.php
 
 		-
 			message: '#^Method Drupal\\paatokset_policymakers\\Controller\\PolicymakerNodeViewController\:\:handleHeadLinks\(\) has no return type specified\.$#'
