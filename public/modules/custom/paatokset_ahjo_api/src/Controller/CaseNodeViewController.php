@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Controller;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\Controller\EntityViewController;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -19,41 +18,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class CaseNodeViewController extends EntityViewController {
 
-  /**
-   * Creates a CaseNodeViewController object.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The route match service.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\paatokset_ahjo_api\Service\CaseService $caseService
-   *   Case service.
-   */
+  use AutowireTrait;
+
   public function __construct(
     EntityTypeManagerInterface $entity_type_manager,
     RendererInterface $renderer,
     private readonly RouteMatchInterface $routeMatch,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly CaseService $caseService,
   ) {
     parent::__construct($entity_type_manager, $renderer);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('entity_type.manager'),
-      $container->get('renderer'),
-      $container->get('current_route_match'),
-      $container->get('language_manager'),
-      $container->get('paatokset_ahjo_cases')
-    );
   }
 
   /**
