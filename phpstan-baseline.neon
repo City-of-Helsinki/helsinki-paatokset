@@ -3247,12 +3247,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_proxy\\AhjoProxy\:\:processDmStatusCheck\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_proxy/src/AhjoProxy.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_proxy\\AhjoProxy\:\:processGroupItem\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -3433,12 +3427,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
 
 		-
-			message: '#^Access to an undefined property Drupal\\Core\\Entity\\FieldableEntityInterface\:\:\$field_policymaker_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
-
-		-
 			message: '#^Access to an undefined property Drupal\\Core\\Entity\\FieldableEntityInterface\:\:\$title\.$#'
 			identifier: property.notFound
 			count: 1
@@ -3465,12 +3453,6 @@ parameters:
 		-
 			message: '#^Method Drupal\\paatokset_ahjo_proxy\\Drush\\Commands\\AhjoAggregatorCommands\:\:checkDecisionAttachments\(\) has parameter \$options with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_proxy\\Drush\\Commands\\AhjoAggregatorCommands\:\:checkDecisionMakerStatus\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_proxy/src/Drush/Commands/AhjoAggregatorCommands.php
 
