@@ -3775,18 +3775,6 @@ parameters:
 			path: public/modules/custom/paatokset_allu/paatokset_allu.module
 
 		-
-			message: '#^Function paatokset_allu_preprocess_paragraph__allu_decisions_search\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_allu/paatokset_allu.module
-
-		-
-			message: '#^Function paatokset_allu_preprocess_paragraph__allu_decisions_search\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/paatokset_allu.module
-
-		-
 			message: '#^Method Drupal\\paatokset_allu\\Client\\Client\:\:approvals\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4901,12 +4889,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: public/modules/custom/paatokset_search/tests/src/Kernel/Form/DecisionSearchFormTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_search\\Kernel\\SearchManagerTest\:\:setConfiguration\(\) has parameter \$elastic_proxy with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_search/tests/src/Kernel/SearchManagerTest.php
 
 		-
 			message: '#^Method Drupal\\Tests\\paatokset_search\\Kernel\\SearchManagerTest\:\:setConfiguration\(\) has parameter \$paatokset_search with no value type specified in iterable type array\.$#'
