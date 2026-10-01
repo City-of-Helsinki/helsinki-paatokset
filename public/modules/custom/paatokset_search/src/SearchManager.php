@@ -6,6 +6,8 @@ namespace Drupal\paatokset_search;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\helfi_api_base\Environment\ActiveServiceTrait;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -15,10 +17,13 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  */
 class SearchManager {
 
+  use ActiveServiceTrait;
+
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     private readonly LanguageManagerInterface $languageManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -35,11 +40,10 @@ class SearchManager {
    *   The render array.
    */
   public function build(string $type, array $classes = []): array {
-    $proxySettings = $this->configFactory->get('elastic_proxy.settings');
-    $proxyUrl = $proxySettings->get('elastic_proxy_url') ?: '';
+    $proxyUrl = $this->getPublicElasticProxy()?->getAddress() ?? '';
     $defaultTexts = $this->configFactory->get('paatokset_ahjo_api.default_texts');
     $cache = new CacheableMetadata();
-    $cache->addCacheableDependency($proxySettings);
+    $cache->addCacheTags(['config:helfi_api_base.environment_resolver.settings']);
     $cache->addCacheableDependency($defaultTexts);
 
     $defaultTexts = [
