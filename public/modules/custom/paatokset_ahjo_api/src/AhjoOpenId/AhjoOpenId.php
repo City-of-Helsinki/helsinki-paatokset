@@ -190,7 +190,16 @@ class AhjoOpenId implements LoggerAwareInterface {
    * @throws \InvalidArgumentException
    */
   private function getToken(): AhjoAuthToken {
-    return AhjoAuthToken::fromJson($this->state->get($this->getTokenKey(), ''));
+    $tokenJson = $this->state->get($this->getTokenKey(), '');
+    try {
+      if (!json_validate($tokenJson, flags: JSON_THROW_ON_ERROR)) {
+        $this->logger->warning('Invalid auth token json');
+      }
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
+    }
+    return AhjoAuthToken::fromJson($tokenJson);
   }
 
   /**
