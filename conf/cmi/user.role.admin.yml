@@ -41,7 +41,6 @@ dependencies:
     - external_entities
     - file
     - filter
-    - hdbt_cookie_banner
     - helfi_api_base
     - helfi_search
     - helfi_tpr
@@ -97,7 +96,6 @@ permissions:
   - 'administer ahjo openid'
   - 'administer ahjo proxy'
   - 'administer blocks'
-  - 'administer hdbt_cookie_banner'
   - 'administer helfi_search'
   - 'administer menu'
   - 'administer nodes'
@@ -105,6 +103,7 @@ permissions:
   - 'administer paragraphs library'
   - 'administer pathauto'
   - 'administer redirects'
+  - 'administer site configuration'
   - 'administer sitemap settings'
   - 'administer tpr_service'
   - 'administer tpr_unit'

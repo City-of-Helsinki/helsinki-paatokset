@@ -12,7 +12,9 @@ dependencies:
     - field.field.paragraph.event_list.field_event_list_keywords
     - field.field.paragraph.event_list.field_event_list_keywords_filter
     - field.field.paragraph.event_list.field_event_list_layout
+    - field.field.paragraph.event_list.field_event_list_only_super
     - field.field.paragraph.event_list.field_event_list_place
+    - field.field.paragraph.event_list.field_event_list_target_group
     - field.field.paragraph.event_list.field_event_list_title
     - field.field.paragraph.event_list.field_event_list_type
     - field.field.paragraph.event_list.field_event_location
@@ -112,7 +114,9 @@ hidden:
   field_event_list_keywords: true
   field_event_list_keywords_filter: true
   field_event_list_layout: true
+  field_event_list_only_super: true
   field_event_list_place: true
+  field_event_list_target_group: true
   field_event_list_type: true
   field_search_term: true
   search_api_excerpt: true

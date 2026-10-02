@@ -151,6 +151,7 @@ if ($blob_storage_name = getenv('AZURE_BLOB_STORAGE_NAME')) {
     ],
   ];
   $config['helfi_azure_fs.settings']['use_blob_storage'] = TRUE;
+  $settings['file_additional_public_schemes'] = ['azure'];
   $settings['flysystem'] = $schemes;
 }
 
@@ -342,7 +343,7 @@ if (getenv('ELASTICSEARCH_ETUSIVU_URL')) {
 }
 
 // Supported values: https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels.
-$default_log_level = $env === 'production' ? 'info' : 'debug';
+$default_log_level = $env === 'local' ? 'debug' : 'info';
 $settings['helfi_api_base.log_level'] = getenv('LOG_LEVEL') ?: $default_log_level;
 
 // Turn sentry JS error tracking on if SENTRY_DSN_PUBLIC is defined.
@@ -368,15 +369,31 @@ if (getenv('OPENAI_KEY')) {
 // API key is managed by the Key module entity 'helfi_azure_openai' which reads
 // AZURE_OPENAI_API_KEY from the environment directly.
 // See: https://helsinkisolutionoffice.atlassian.net/browse/UHF-13110.
-if (getenv('AZURE_OPENAI_ENDPOINT') && getenv('AZURE_OPENAI_DEPLOYMENT_NAME')) {
-  $deployment = getenv('AZURE_OPENAI_DEPLOYMENT_NAME');
-  $config['ai.settings']['default_providers']['chat']['model_id'] = $deployment;
-  $config['ai.settings']['default_providers']['embeddings']['model_id'] = $deployment;
-  $config['ai.settings']['models']['azure']['chat'][$deployment] = [
-    'endpoint' => getenv('AZURE_OPENAI_ENDPOINT'),
+$azure_openai_tiers = [
+  'default' => ['AZURE_OPENAI_ENDPOINT', 'AZURE_OPENAI_DEPLOYMENT_NAME'],
+  'low' => ['AZURE_OPENAI_ENDPOINT_LOW', 'AZURE_OPENAI_DEPLOYMENT_LOW'],
+  'high' => ['AZURE_OPENAI_ENDPOINT_HIGH', 'AZURE_OPENAI_DEPLOYMENT_HIGH'],
+];
+
+foreach ($azure_openai_tiers as $azure_tier => [$azure_endpoint_var, $azure_deployment_var]) {
+  $azure_endpoint = getenv($azure_endpoint_var);
+  $azure_deployment = getenv($azure_deployment_var);
+
+  if (!$azure_endpoint || !$azure_deployment) {
+    continue;
+  }
+
+  $config['ai.settings']['models']['azure']['chat'][$azure_deployment] = [
+    'endpoint' => $azure_endpoint,
     'api_key' => 'helfi_azure_openai',
     'connect_header' => 'api-key',
   ];
+  $config['helfi_ai.settings']['model_tiers'][$azure_tier] = 'azure__' . $azure_deployment;
+
+  if ($azure_tier === 'default') {
+    $config['ai.settings']['default_providers']['chat']['model_id'] = $azure_deployment;
+    $config['ai.settings']['default_providers']['embeddings']['model_id'] = $azure_deployment;
+  }
 }
 
 // Hakuvahti:
@@ -423,7 +440,7 @@ if ($env !== 'production') {
   $config['stage_file_proxy.settings']['use_imagecache_root'] = TRUE;
 }
 
-if ($auditLogUrl = getenv('AUDIT_LOG_ES_URL')) {
+if ($auditLogIndex = getenv('AUDIT_LOG_ES_INDEX')) {
   // Resilient logger (audit log) configuration
   $auditLogConfig = [
     'sources' => [
@@ -439,13 +456,16 @@ if ($auditLogUrl = getenv('AUDIT_LOG_ES_URL')) {
   ];
   $auditLogConfig['targets'][] = [
     'class' => 'ResilientLogger\Targets\ElasticsearchLogTarget',
-    'es_url' => $auditLogUrl,
+    'es_url' => getenv('AUDIT_LOG_ES_URL') ?: '',
     'es_username' => getenv('AUDIT_LOG_ES_USERNAME') ?: '',
     'es_password' => getenv('AUDIT_LOG_ES_PASSWORD') ?: '',
-    'es_index' => getenv('AUDIT_LOG_ES_INDEX') ?: '',
+    'es_index' => $auditLogIndex ?: '',
   ];
   $settings['resilient_logger'] = $auditLogConfig;
 }
+
+// Disable audit logging for cli commands.
+$settings['auditlog_entity_hooks_disable'] = PHP_SAPI === 'cli';
 
 // Environment specific overrides.
 if (file_exists(__DIR__ . '/all.settings.php')) {
