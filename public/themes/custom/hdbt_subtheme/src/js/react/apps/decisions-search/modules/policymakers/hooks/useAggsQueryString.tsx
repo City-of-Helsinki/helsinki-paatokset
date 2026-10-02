@@ -9,7 +9,7 @@ export const useAggsQueryString = () => {
       bool: {
         filter: [
           { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
-          { term: { [PolicymakerIndex.SEARCH_API_LANGUAGE]: currentLanguage } },
+          { term: { [PolicymakerIndex.LANGUAGE_WITH_FALLBACK]: currentLanguage } },
         ],
       },
     },
