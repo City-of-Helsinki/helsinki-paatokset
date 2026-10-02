@@ -33,7 +33,7 @@ export const SectorFilter = () => {
       texts={{
         label: Drupal.t('Division', {}, { context: 'Policymaker search' }),
         language: getCurrentLanguage(window.drupalSettings.path.currentLanguage),
-        placeholder: Drupal.t('Choose division', {}, { context: 'Policymaker search' }),
+        placeholder: Drupal.t('All divisions', {}, { context: 'Policymaker search' }),
       }}
       theme={defaultMultiSelectTheme}
       value={value}

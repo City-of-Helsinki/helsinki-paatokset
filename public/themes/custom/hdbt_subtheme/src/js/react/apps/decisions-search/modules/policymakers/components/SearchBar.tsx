@@ -23,17 +23,9 @@ export const SearchBar = () => {
     className: 'hdbt-search__filter hdbt-search__search-input',
     hideSubmitButton: true,
     texts: {
-      label: Drupal.t(
-        'Which body, office holder or councillor are you looking for?',
-        {},
-        { context: 'Policymaker search' },
-      ),
+      label: Drupal.t('Body, title or name of councillor in Finnish', {}, { context: 'Policymaker search' }),
       language: window.drupalSettings.path.currentLanguage || 'fi',
-      searchPlaceholder: Drupal.t(
-        'Search with a Finnish keyword, eg. pormestari',
-        {},
-        { context: 'Policymaker search' },
-      ),
+      searchPlaceholder: Drupal.t('E.g. pormestari', {}, { context: 'Policymaker search' }),
       searchButtonAriaLabel: Drupal.t('Search', {}, { context: 'React search: submit button label' }),
     },
     theme: defaultSearchInputTheme,
