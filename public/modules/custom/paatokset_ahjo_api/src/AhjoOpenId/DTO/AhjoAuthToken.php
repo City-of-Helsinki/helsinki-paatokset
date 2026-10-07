@@ -60,20 +60,25 @@ final readonly class AhjoAuthToken {
    */
   public static function fromJson(string $json): self {
     try {
-      $data = json_decode($json, flags: JSON_THROW_ON_ERROR);
-
-      try {
-        /** @var self */
-        return (new \ReflectionClass(self::class))
-          ->newInstanceArgs((array) $data);
-      }
-      catch (\ReflectionException | \ArgumentCountError $e) {
-        throw new \InvalidArgumentException('Failed to create token: ' . $e->getMessage(), previous: $e);
-      }
+      [
+        'token' => $token,
+        'expires' => $expires,
+        'refreshToken' => $refreshToken,
+      ] = json_decode($json, flags: JSON_THROW_ON_ERROR);
     }
     catch (\JsonException $e) {
       throw new \InvalidArgumentException($e->getMessage(), previous: $e);
     }
+
+    if (!is_string($token) || !is_string($refreshToken)) {
+      throw new \InvalidArgumentException('Invalid token or refresh token data');
+    }
+
+    if (!is_int($expires)) {
+      throw new \InvalidArgumentException('Invalid expires data');
+    }
+
+    return new self($token, $expires, $refreshToken);
   }
 
 }
