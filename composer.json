@@ -60,7 +60,7 @@
         },
         "audit": {
             "abandoned": "report",
-            "ignore": ["GHSA-mg8j-w93w-xjgc"]
+            "ignore": ["CVE-2026-102601"]
         }
     },
     "extra": {
@@ -149,6 +149,7 @@
         ],
         "test-php": "vendor/bin/phpunit -c $PWD/phpunit.xml.dist",
         "lint-php": "vendor/bin/phpcs --ignore=*.js,*.css --standard=Drupal,DrupalPractice",
-        "analyze-php": "vendor/bin/phpstan analyze"
+        "analyze-php": "vendor/bin/phpstan analyze",
+        "pre-command-run": "bash tools/composer/require-container.sh"
     }
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_search\Kernel;
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\paatokset_search\SearchManager;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\Entity\NodeType;
 use Drupal\user\RoleInterface;
@@ -19,6 +22,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('paatokset_search')]
 class SearchManagerTest extends EntityKernelTestBase {
 
+  use EnvironmentResolverTrait;
   use NodeCreationTrait {
     createNode as drupalCreateNode;
   }
@@ -66,9 +70,8 @@ class SearchManagerTest extends EntityKernelTestBase {
    * Tests search manager build with defaults.
    */
   public function testBuildWithDefaults(): void {
+    $this->setActiveProject(Project::PAATOKSET, EnvironmentEnum::Local);
     $this->setConfiguration([
-      'elastic_proxy_url' => 'https://example.com',
-    ], [
       'sentry_dsn_react' => 'https://sentry.example.com',
     ]);
     $manager = $this->container->get(SearchManager::class);
@@ -78,7 +81,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     $this->assertContains('hdbt_subtheme/decisions-search', $build['#attached']['library']);
     $this->assertEquals('https://sentry.example.com', $build['#attached']['drupalSettings']['paatokset_react_search']['sentry_dsn_react']);
     $this->assertEquals('decisions', $build['#search_element']['#attributes']['data-type']);
-    $this->assertEquals('https://example.com', $build['#search_element']['#attributes']['data-url']);
+    $this->assertEquals('https://elastic-proxy-helsinki-paatokset.docker.so', $build['#search_element']['#attributes']['data-url']);
     $this->assertContains('test-class', $build['#attributes']['class']);
   }
 
@@ -92,7 +95,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $node->save();
 
-    $this->setConfiguration([], [
+    $this->setConfiguration([
       'operator_guide_node_id' => $node->id(),
     ]);
     $manager = $this->container->get(SearchManager::class);
@@ -114,7 +117,7 @@ class SearchManagerTest extends EntityKernelTestBase {
     ]);
     $node->save();
 
-    $this->setConfiguration([], [
+    $this->setConfiguration([
       'operator_guide_node_id' => $node->id(),
     ]);
     $manager = $this->container->get(SearchManager::class);
@@ -127,18 +130,10 @@ class SearchManagerTest extends EntityKernelTestBase {
   /**
    * Helper function to set configuration.
    *
-   * @param array $elastic_proxy
-   *   The elastic proxy configuration.
    * @param array $paatokset_search
    *   The paatokset search configuration.
    */
-  private function setConfiguration(array $elastic_proxy = [], array $paatokset_search = []): void {
-    $elastic_proxy_config = $this->config('elastic_proxy.settings');
-    foreach ($elastic_proxy as $key => $value) {
-      $elastic_proxy_config->set($key, $value);
-    }
-    $elastic_proxy_config->save();
-
+  private function setConfiguration(array $paatokset_search = []): void {
     $paatokset_search_config = $this->config('paatokset_search.settings');
     foreach ($paatokset_search as $key => $value) {
       $paatokset_search_config->set($key, $value);

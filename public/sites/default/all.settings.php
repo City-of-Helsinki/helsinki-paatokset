@@ -8,9 +8,6 @@
 $settings['http_client_config']['timeout'] = 240;
 ini_set('default_socket_timeout', 240);
 
-// Elastic proxy URL.
-$config['elastic_proxy.settings']['elastic_proxy_url'] = drupal_get_env(['REACT_APP_PROXY_URL', 'REACT_APP_ELASTIC_URL']);
-
 // Sentry DSN for React.
 $config['paatokset_search.settings']['sentry_dsn_react'] = getenv('SENTRY_DSN_REACT');
 
@@ -84,7 +81,6 @@ $additionalEnvVars = [
   // Project specific variables.
   'DRUPAL_REVERSE_PROXY_ADDRESS|AHJO_PROXY_BASE_URL',
   'LOCAL_PROXY_API_KEY',
-  'REACT_APP_PROXY_URL|REACT_APP_ELASTIC_URL',
   'ELASTICSEARCH_URL',
   'ELASTIC_USER',
   'ELASTIC_PASSWORD',
