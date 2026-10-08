@@ -9,7 +9,6 @@ use Drupal\elasticsearch_connector\Event\IndexParamsEvent;
 use Drupal\paatokset_allu\ApprovalType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 /**
  * Splits allu documents into decision and approval documents in Elastic.
  */
