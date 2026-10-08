@@ -20,6 +20,6 @@ display:
           sort_asc_label: Stigande
           sort_desc_label: Fallande
       filters:
-        field_meeting_date_year:
+        field_pdf_date_year:
           expose:
             label: År
