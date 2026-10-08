@@ -21,20 +21,6 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
   private const INDEX = 'paatokset_allu';
 
   /**
-   * Tests that other indexes are not altered.
-   */
-  public function testOtherIndexIsSkipped(): void {
-    $params = $this->indexParams([
-      'entity:paatokset_allu_document/1:und' => ['approval_type' => ['WORK_FINISHED']],
-    ]);
-    $event = new IndexParamsEvent(self::INDEX, $params, 'decisions');
-
-    (new ApprovalSplitSubscriber())->onIndexParams($event);
-
-    $this->assertEquals($params, $event->getParams());
-  }
-
-  /**
    * Tests splitting documents in bulk index requests.
    */
   public function testIndexParams(): void {

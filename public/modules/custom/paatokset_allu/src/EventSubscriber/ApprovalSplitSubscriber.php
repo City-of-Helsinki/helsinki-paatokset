@@ -12,7 +12,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Splits allu documents into decision and approval documents in Elastic.
- *
  */
 final class ApprovalSplitSubscriber implements EventSubscriberInterface {
 
