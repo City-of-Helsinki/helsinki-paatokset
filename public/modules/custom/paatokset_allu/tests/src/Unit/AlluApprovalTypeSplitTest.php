@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\TypedData\ComplexDataInterface;
+use Drupal\paatokset_allu\Entity\Approval;
 use Drupal\paatokset_allu\Plugin\search_api\processor\AlluApprovalTypeSplit;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
@@ -72,7 +73,7 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
   }
 
   /**
-   * Tests that non-document items and single-type items are not split.
+   * Tests that non-document items are not split.
    */
   public function testAlterItemsSkipsItemsThatDontNeedSplitting(): void {
     $items = $this->createTestItems(['entity:paatokset_allu_approval/1:und']);
@@ -84,9 +85,24 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
   }
 
   /**
-   * Tests that items with a single approval type are not split.
+   * Tests that documents without approvals are not split.
    */
-  public function testAlterItemsSkipsSingleApprovalType(): void {
+  public function testAlterItemsSkipsDocumentsWithoutApprovals(): void {
+    $items = $this->createTestItems(['entity:paatokset_allu_document/1:und']);
+
+    $this->approvalStorage->method('loadByProperties')
+      ->willReturn([]);
+
+    $this->processor->alterIndexedItems($items);
+
+    $this->assertCount(1, $items);
+    $this->assertNull($items['entity:paatokset_allu_document/1:und']->getExtraData('split_approval_type'));
+  }
+
+  /**
+   * Tests that a single approval type keeps the decision item.
+   */
+  public function testAlterItemsSplitsSingleApprovalType(): void {
     $items = $this->createTestItems(['entity:paatokset_allu_document/1:und']);
 
     $this->approvalStorage->method('loadByProperties')
@@ -94,8 +110,10 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
 
     $this->processor->alterIndexedItems($items);
 
-    $this->assertCount(1, $items);
-    $this->assertNull($items['entity:paatokset_allu_document/1:und']->getExtraData('split_approval_type'));
+    // Decision + 1 approval.
+    $this->assertCount(2, $items);
+    $this->assertEquals([], $items['entity:paatokset_allu_document/1:und']->getExtraData('split_approval_type'));
+    $this->assertEquals(['OPERATIONAL_CONDITION'], $items['entity:paatokset_allu_document/1:und__split_1']->getExtraData('split_approval_type'));
   }
 
   /**
@@ -117,16 +135,18 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
 
     $this->processor->alterIndexedItems($items);
 
-    // Original kept + 1 split added.
-    $this->assertCount(2, $items);
+    // Original kept as the decision + 1 split per approval type.
+    $this->assertCount(3, $items);
 
-    // Original item gets the first type.
+    // Original item represents the decision without approval types.
     $original = $items['entity:paatokset_allu_document/1:und'];
-    $this->assertEquals('OPERATIONAL_CONDITION', $original->getExtraData('split_approval_type'));
+    $this->assertEquals([], $original->getExtraData('split_approval_type'));
 
-    // Split item gets the second type and shares the original object.
-    $split = $items['entity:paatokset_allu_document/1:und__split_1'];
-    $this->assertEquals('WORK_FINISHED', $split->getExtraData('split_approval_type'));
+    $this->assertEquals(['OPERATIONAL_CONDITION'], $items['entity:paatokset_allu_document/1:und__split_1']->getExtraData('split_approval_type'));
+
+    // Split items get a single type and share the original object.
+    $split = $items['entity:paatokset_allu_document/1:und__split_2'];
+    $this->assertEquals(['WORK_FINISHED'], $split->getExtraData('split_approval_type'));
     $this->assertSame($original_object, $split->getOriginalObject(FALSE));
     $this->assertEquals('und', $split->getLanguage());
     $this->assertEquals('entity:paatokset_allu_document', $split->getDatasourceId());
@@ -153,14 +173,15 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
             $this->createApprovalEntity('WORK_FINISHED'),
           ];
         }
-        return [$this->createApprovalEntity('OPERATIONAL_CONDITION')];
+        return [];
       });
 
     $this->processor->alterIndexedItems($items);
 
-    // Approval (1) + document/1 split into 2 + document/2 unchanged (1) = 4.
-    $this->assertCount(4, $items);
+    // Approval (1) + document/1 split into 3 + document/2 unchanged (1) = 5.
+    $this->assertCount(5, $items);
     $this->assertArrayHasKey('entity:paatokset_allu_document/1:und__split_1', $items);
+    $this->assertArrayHasKey('entity:paatokset_allu_document/1:und__split_2', $items);
     $this->assertArrayNotHasKey('entity:paatokset_allu_document/2:und__split_1', $items);
   }
 
@@ -169,7 +190,7 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
    */
   public function testPreprocessSetsTargetType(): void {
     $item = new Item($this->index, 'entity:paatokset_allu_document/1:und');
-    $item->setExtraData('split_approval_type', 'WORK_FINISHED');
+    $item->setExtraData('split_approval_type', ['WORK_FINISHED']);
 
     $field = new Field($this->index, 'approval_type');
     $field->setType('string');
@@ -179,6 +200,23 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
     $this->processor->preprocessIndexItems([$item]);
 
     $this->assertEquals(['WORK_FINISHED'], $field->getValues());
+  }
+
+  /**
+   * Tests that preprocessIndexItems clears approval_type for decision items.
+   */
+  public function testPreprocessClearsDecisionItem(): void {
+    $item = new Item($this->index, 'entity:paatokset_allu_document/1:und');
+    $item->setExtraData('split_approval_type', []);
+
+    $field = new Field($this->index, 'approval_type');
+    $field->setType('string');
+    $field->setValues(['OPERATIONAL_CONDITION', 'WORK_FINISHED']);
+    $item->setField('approval_type', $field);
+
+    $this->processor->preprocessIndexItems([$item]);
+
+    $this->assertEquals([], $field->getValues());
   }
 
   /**
@@ -239,15 +277,15 @@ class AlluApprovalTypeSplitTest extends UnitTestCase {
    * @param string|null $type
    *   The approval type value.
    *
-   * @return \Drupal\Core\Entity\ContentEntityInterface
+   * @return \Drupal\paatokset_allu\Entity\Approval
    *   The mock approval entity.
    */
-  protected function createApprovalEntity(?string $type): ContentEntityInterface {
+  protected function createApprovalEntity(?string $type): Approval {
     // Use stdClass because the processor accesses ->value via __get() on the
     // real FieldItemList. Interface mocks don't provide __get().
     $field_item_list = (object) ['value' => $type];
 
-    $entity = $this->createMock(ContentEntityInterface::class);
+    $entity = $this->createMock(Approval::class);
     $entity->method('get')
       ->with('type')
       ->willReturn($field_item_list);
