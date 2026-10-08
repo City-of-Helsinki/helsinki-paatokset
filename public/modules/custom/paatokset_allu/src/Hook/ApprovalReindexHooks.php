@@ -15,7 +15,7 @@ use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
  * Reindexes allu documents when their approvals change.
  *
  * Approvals are indexed as part of their parent document (reverse entity
- * reference + AlluApprovalTypeSplit processor). Search API does not track
+ * reference + ApprovalSplitSubscriber). Search API does not track
  * changes through reverse references, so the parent document must be marked
  * for reindexing manually.
  */

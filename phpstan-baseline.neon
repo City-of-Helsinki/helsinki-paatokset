@@ -3895,30 +3895,6 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Plugin/migrate/source/AlluSource.php
 
 		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:__construct\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:alterIndexedItems\(\) has parameter \$items with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:create\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:preprocessIndexItems\(\) has parameter \$items with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\StreamedResponse'' and Symfony\\Component\\HttpFoundation\\StreamedResponse will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
 			count: 1
@@ -3953,18 +3929,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: public/modules/custom/paatokset_allu/tests/src/Kernel/SoucePluginTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_allu\\Unit\\AlluApprovalTypeSplitTest\:\:createTestItems\(\) return type has no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Unit/AlluApprovalTypeSplitTest.php
-
-		-
-			message: '#^Storing entity storage as a class property is not recommended\. Call Drupal\\Core\\Entity\\EntityTypeManagerInterface\:\:getStorage\(\) at the call\-site instead\.$#'
-			identifier: drupal.entityStoragePropertyAssignment
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Unit/AlluApprovalTypeSplitTest.php
 
 		-
 			message: '#^Method Drupal\\Tests\\paatokset_allu\\Unit\\ClientTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
