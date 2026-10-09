@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_allu\Unit;
 
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\elasticsearch_connector\Event\DeleteParamsEvent;
 use Drupal\elasticsearch_connector\Event\IndexParamsEvent;
+use Drupal\paatokset_allu\Entity\Approval;
 use Drupal\paatokset_allu\EventSubscriber\ApprovalSplitSubscriber;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -33,7 +36,13 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
       ],
     ]), 'allu');
 
-    (new ApprovalSplitSubscriber())->onIndexParams($event);
+    $this->createSubscriber([
+      // Document 2 has no approval dates: decision date is kept.
+      $this->createApproval(3, 'OPERATIONAL_CONDITION', 3000),
+      $this->createApproval(3, 'WORK_FINISHED', 3500),
+      // The latest approval of the same type wins.
+      $this->createApproval(3, 'WORK_FINISHED', 4000),
+    ])->onIndexParams($event);
 
     $this->assertEquals([
       // Approval items are not altered.
@@ -54,9 +63,15 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
       $this->indexAction('entity:paatokset_allu_document/3:und'),
       $this->source('entity:paatokset_allu_document/3:und'),
       $this->indexAction('entity:paatokset_allu_document/3:und__split_1'),
-      $this->source('entity:paatokset_allu_document/3:und__split_1', ['approval_type' => ['OPERATIONAL_CONDITION']]),
+      $this->source('entity:paatokset_allu_document/3:und__split_1', [
+        'approval_type' => ['OPERATIONAL_CONDITION'],
+        'document_created' => [3000],
+      ]),
       $this->indexAction('entity:paatokset_allu_document/3:und__split_2'),
-      $this->source('entity:paatokset_allu_document/3:und__split_2', ['approval_type' => ['WORK_FINISHED']]),
+      $this->source('entity:paatokset_allu_document/3:und__split_2', [
+        'approval_type' => ['WORK_FINISHED'],
+        'document_created' => [4000],
+      ]),
     ], $event->getParams()['body']);
   }
 
@@ -72,7 +87,7 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
       ],
     ]);
 
-    (new ApprovalSplitSubscriber())->onDeleteParams($event);
+    $this->createSubscriber()->onDeleteParams($event);
 
     $this->assertEquals([
       'index' => self::INDEX,
@@ -83,6 +98,47 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
         $this->deleteAction('entity:paatokset_allu_document/1:und__split_2'),
       ],
     ], $event->getParams());
+  }
+
+  /**
+   * Creates the subscriber with the given approvals in storage.
+   *
+   * @param \Drupal\paatokset_allu\Entity\Approval[] $approvals
+   *   The approvals.
+   */
+  private function createSubscriber(array $approvals = []): ApprovalSplitSubscriber {
+    $storage = $this->createMock(EntityStorageInterface::class);
+    $storage->method('loadByProperties')
+      ->willReturnCallback(static fn (array $properties) => array_filter(
+        $approvals,
+        static fn (Approval $approval) => in_array((string) $approval->get('document')->target_id, $properties['document'], TRUE),
+      ));
+
+    $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+    $entityTypeManager->method('getStorage')
+      ->with('paatokset_allu_approval')
+      ->willReturn($storage);
+
+    return new ApprovalSplitSubscriber($entityTypeManager);
+  }
+
+  /**
+   * Creates a mock approval.
+   */
+  private function createApproval(int $documentId, string $type, int $created): Approval {
+    // Use stdClass because field values are read via __get() on the real
+    // FieldItemList. Interface mocks don't provide __get().
+    $values = [
+      'document' => (object) ['target_id' => $documentId],
+      'type' => (object) ['value' => $type],
+      'created' => (object) ['value' => $created],
+    ];
+
+    $approval = $this->createMock(Approval::class);
+    $approval->method('get')
+      ->willReturnCallback(static fn (string $name) => $values[$name]);
+
+    return $approval;
   }
 
   /**
@@ -138,6 +194,7 @@ class ApprovalSplitSubscriberTest extends UnitTestCase {
     return $fields + [
       'search_api_id' => [$id],
       'label' => ['AL123'],
+      'document_created' => [1000],
     ];
   }
 

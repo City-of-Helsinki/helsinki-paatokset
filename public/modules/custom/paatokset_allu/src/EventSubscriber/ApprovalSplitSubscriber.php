@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_allu\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\elasticsearch_connector\Event\DeleteParamsEvent;
 use Drupal\elasticsearch_connector\Event\IndexParamsEvent;
 use Drupal\paatokset_allu\ApprovalType;
+use Drupal\paatokset_allu\Entity\Approval;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -23,6 +25,11 @@ final class ApprovalSplitSubscriber implements EventSubscriberInterface {
    * Item ID prefix for allu documents.
    */
   private const ITEM_ID_PREFIX = 'entity:paatokset_allu_document/';
+
+  public function __construct(
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+  ) {
+  }
 
   /**
    * {@inheritdoc}
@@ -64,7 +71,10 @@ final class ApprovalSplitSubscriber implements EventSubscriberInterface {
     $body = [];
 
     // Bulk body alternates between action and document source.
-    foreach (array_chunk($params['body'] ?? [], 2) as [$action, $document]) {
+    $pairs = array_chunk($params['body'] ?? [], 2);
+    $approvalDates = $this->getApprovalDates($pairs);
+
+    foreach ($pairs as [$action, $document]) {
       $id = $action['index']['_id'] ?? NULL;
       if (!is_string($id) || !$this->isDocumentItem($id)) {
         array_push($body, $action, $document);
@@ -79,8 +89,15 @@ final class ApprovalSplitSubscriber implements EventSubscriberInterface {
 
       foreach ($types as $delta => $type) {
         $splitId = self::getSplitId($id, $delta + 1);
+        $split = ['approval_type' => [$type], 'search_api_id' => [$splitId]];
+
+        // Approvals are dated by the approval, not by the decision.
+        if ($date = $approvalDates[$this->getEntityId($id)][$type] ?? NULL) {
+          $split['document_created'] = [$date];
+        }
+
         $body[] = ['index' => ['_id' => $splitId] + $action['index']];
-        $body[] = ['approval_type' => [$type], 'search_api_id' => [$splitId]] + $document;
+        $body[] = $split + $document;
       }
 
       // Remove split documents of approval types that no longer exist.
@@ -118,6 +135,56 @@ final class ApprovalSplitSubscriber implements EventSubscriberInterface {
 
     $params['body'] = $body;
     $event->setParams($params);
+  }
+
+  /**
+   * Gets approval dates for the documents in a bulk request.
+   *
+   * @param array<int, array<int, array<string, mixed>>> $pairs
+   *   Bulk body as action and document source pairs.
+   *
+   * @return array<string, array<string, int>>
+   *   The latest approval date keyed by document ID and approval type.
+   */
+  private function getApprovalDates(array $pairs): array {
+    $documentIds = [];
+    foreach ($pairs as [$action, $document]) {
+      $id = $action['index']['_id'] ?? NULL;
+      if (is_string($id) && $this->isDocumentItem($id) && !empty($document['approval_type'])) {
+        $documentIds[] = $this->getEntityId($id);
+      }
+    }
+
+    if (!$documentIds) {
+      return [];
+    }
+
+    $approvals = $this->entityTypeManager
+      ->getStorage('paatokset_allu_approval')
+      ->loadByProperties(['document' => $documentIds]);
+
+    $dates = [];
+    foreach ($approvals as $approval) {
+      assert($approval instanceof Approval);
+
+      $documentId = (string) $approval->get('document')->target_id;
+      $type = $approval->get('type')->value;
+      $created = (int) $approval->get('created')->value;
+
+      if ($type && $created) {
+        $dates[$documentId][$type] = max($dates[$documentId][$type] ?? 0, $created);
+      }
+    }
+
+    return $dates;
+  }
+
+  /**
+   * Gets the document entity ID from an allu document item ID.
+   */
+  private function getEntityId(string $id): string {
+    // Item IDs look like "entity:paatokset_allu_document/{id}:{langcode}".
+    return explode(':', substr($id, strlen(self::ITEM_ID_PREFIX)))[0];
   }
 
   /**
