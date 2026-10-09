@@ -13,3 +13,4 @@ services:
   Drupal\paatokset_allu\Client\Settings:
     factory: [ '@Drupal\paatokset_allu\Client\SettingsFactory', 'create' ]
 
+  Drupal\paatokset_allu\EventSubscriber\ApprovalSplitSubscriber: ~
