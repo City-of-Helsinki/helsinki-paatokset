@@ -12,11 +12,13 @@ use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api\IndexInterface;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests that approval changes reindex the parent document.
  */
 #[Group('paatokset_allu')]
+#[RunTestsInSeparateProcesses]
 class ApprovalReindexHooksTest extends KernelTestBase {
 
   /**
