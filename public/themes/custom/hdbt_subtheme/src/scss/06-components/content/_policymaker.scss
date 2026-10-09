@@ -191,6 +191,17 @@
   }
 }
 
+.paatokset_download-link-container .paatokset__link-plain {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: $spacing-and-half;
+
+  span {
+    margin-right: $spacing-three-quarters;
+  }
+}
+
 h1.minutes__header {
   @include font('h1');
   display: flex;

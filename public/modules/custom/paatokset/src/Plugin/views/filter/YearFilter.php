@@ -135,12 +135,27 @@ final class YearFilter extends FilterPluginBase {
     }
 
     foreach ($this->view->argument as $argument) {
+      $value = $argument->getValue();
+
+      // Missing arguments are ignored by the view, so ignore them here too.
+      if ($value === NULL) {
+        continue;
+      }
+
       if ($join = $argument->getJoin()) {
         $joins[$argument->table]["$baseTable.$baseField"][] = "$argument->table.$join->field";
       }
 
-      // Filter with contextual filters.
-      $query->condition("$argument->table.$argument->realField", $argument->getValue());
+      // Filter with contextual filters. Multiple values (1+2+3)
+      // are supported when the argument allows them.
+      if (!empty($argument->options['break_phrase'])) {
+        /** @var object{value: string[], operator: string} $break */
+        $break = $argument::breakString($value);
+        $query->condition("$argument->table.$argument->realField", $break->value, 'IN');
+      }
+      else {
+        $query->condition("$argument->table.$argument->realField", $value);
+      }
     }
 
     foreach ($this->view->relationship as $relationship) {

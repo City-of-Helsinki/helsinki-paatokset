@@ -19,3 +19,7 @@ display:
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
+      filters:
+        date_year:
+          expose:
+            label: År
