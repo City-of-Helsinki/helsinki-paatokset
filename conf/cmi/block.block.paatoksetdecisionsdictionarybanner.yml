@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paatokset_ahjo_api
+    - paatokset
     - system
   theme:
     - hdbt_subtheme
@@ -16,8 +16,9 @@ plugin: dictionary_banner
 settings:
   id: dictionary_banner
   label: 'Paatokset decisions dictionary banner'
-  label_display: visible
-  provider: paatokset_ahjo_api
+  label_display: '0'
+  provider: paatokset
+  dictionary_node_id: 690
 visibility:
   request_path:
     id: request_path

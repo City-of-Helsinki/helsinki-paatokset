@@ -5,3 +5,11 @@ paatokset.settings:
     redirect_403_page:
       type: string
       label: 'Redirect 403 page'
+
+block.settings.dictionary_banner:
+  type: block_settings
+  label: 'Dictionary banner block settings'
+  mapping:
+    dictionary_node_id:
+      type: integer
+      label: 'Dictionary page node ID'
