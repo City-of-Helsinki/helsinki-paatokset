@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Decision-making dictionary banner.
+ *
+ * Available variables:
+ * - dictionary_url: URL to the decision-making dictionary page.
+ */
+#}
+{% set context = {'context': 'Dictionary banner'} %}
+{% embed "@hdbt/misc/component.twig" with
+  {
+    component_classes: [
+      'component--banner',
+      'component--banner-align-left',
+      'component--dictionary-banner',
+      'component--dictionary-banner',
+    ],
+    component_content_class: 'banner',
+  }
+%}
+  {% block component_content %}
+    <div class="banner__content-wrapper">
+      <div class="banner__content">
+        <h2 class="banner__title">{{ 'Missing a term or contact info?'|t({}, context) }}</h2>
+        <div class="banner__desc">
+          <p>{{ 'The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary.'|t({}, context) }}</p>
+          <p>{{ link('To the Vocabulary'|t({}, context), dictionary_url, {'data-hds-component': 'button', 'data-hds-icon-start': 'info'}) }}</p>
+          <p>{{ "If you didn't find the contact information you were looking for above, try the City's Contacts-service."|t({}, context) }}</p>
+          <p>{{ link('Helsinki City Contacts'|t({}, context), 'https://numerot.hel.fi', {'data-hds-component': 'button', 'data-hds-icon-start': 'mobile'}) }}</p>
+        </div>
+      </div>
+    </div>
+  {% endblock component_content %}
+{% endembed %}
