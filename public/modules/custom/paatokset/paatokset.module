@@ -13,28 +13,6 @@ use Drupal\paatokset\Lupapiste\ItemsStorage;
 use Drupal\paatokset\Entity\Article;
 
 /**
- * Implements hook_theme().
- */
-function paatokset_theme() : array {
-  return [
-    'lupapiste_rss_list' => [
-      'variables' => [
-        'title' => NULL,
-        'content' => NULL,
-        'feed_link' => NULL,
-      ],
-      'template' => 'lupapiste-rss-list',
-    ],
-    'lupapiste_rss_item' => [
-      'variables' => [
-        'item' => NULL,
-      ],
-      'template' => 'lupapiste-rss-item',
-    ],
-  ];
-}
-
-/**
  * Implements hook_entity_bundle_info_alter().
  */
 function paatokset_entity_bundle_info_alter(array &$bundles): void {
