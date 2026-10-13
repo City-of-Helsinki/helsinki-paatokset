@@ -124,9 +124,6 @@ settings:
       service_list_search:
         weight: 74
         enabled: false
-      sidebar_text:
-        weight: 75
-        enabled: false
       social_media_link:
         weight: 76
         enabled: false
