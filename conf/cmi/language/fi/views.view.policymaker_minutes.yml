@@ -18,3 +18,7 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
+      filters:
+        field_meeting_date_year:
+          expose:
+            label: Vuosi

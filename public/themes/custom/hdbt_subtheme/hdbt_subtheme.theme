@@ -95,6 +95,18 @@ function hdbt_subtheme_preprocess_media__view__policymaker_discussion_minutes(ar
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_media__view__pdf_listing(array &$variables): void {
+  hdbt_subtheme_preprocess_media__view__policymaker_discussion_minutes($variables);
+
+  $media = $variables['media'] ?? $variables['elements']['#media'] ?? NULL;
+  if ($media instanceof MediaInterface && !$media->get('field_pdf_date')->isEmpty()) {
+    $variables['document_date'] = $media->get('field_pdf_date')->date->format('d.m.Y');
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables): void {

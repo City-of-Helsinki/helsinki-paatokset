@@ -127,6 +127,67 @@ class YearFilterTest extends ViewsKernelTestBase {
   }
 
   /**
+   * Tests that options respect contextual filters.
+   */
+  public function testOptionsWithArguments(): void {
+    // Missing argument is ignored.
+    $this->assertEquals(['2023' => '2023', '2024' => '2024'], $this->getOptionsWithArgument([], FALSE));
+
+    $this->assertEquals(['2024' => '2024'], $this->getOptionsWithArgument(['2'], FALSE));
+    $this->assertEquals(['2024' => '2024'], $this->getOptionsWithArgument(['2'], TRUE));
+    $this->assertEquals(['2023' => '2023', '2024' => '2024'], $this->getOptionsWithArgument(['1+2'], TRUE));
+  }
+
+  /**
+   * Gets year filter options with node ID contextual filter.
+   *
+   * @param string[] $args
+   *   View arguments.
+   * @param bool $breakPhrase
+   *   Whether the argument allows multiple values.
+   *
+   * @return array<string, string>
+   *   The year filter options.
+   */
+  private function getOptionsWithArgument(array $args, bool $breakPhrase): array {
+    $view = Views::getView('test_year_filter');
+    $view->setDisplay();
+    $view->setArguments($args);
+
+    $display = $view->displayHandlers->get('default');
+    $display->overrideOption('arguments', [
+      'nid' => [
+        'id' => 'nid',
+        'table' => 'node_field_data',
+        'field' => 'nid',
+        'plugin_id' => 'numeric',
+        'default_action' => 'ignore',
+        'break_phrase' => $breakPhrase,
+      ],
+    ]);
+    $display->overrideOption('filters', [
+      'created_year' => [
+        'id' => 'created_year',
+        'field' => 'created_year',
+        'table' => 'node_field_data',
+        'operator' => '=',
+        'exposed' => TRUE,
+        'expose' => [
+          'identifier' => 'year',
+        ],
+      ],
+    ]);
+
+    $view->initHandlers();
+
+    $formState = new FormState();
+    $form = [];
+    $view->filter['created_year']->buildExposedForm($form, $formState);
+
+    return $form['year']['#options'] ?? [];
+  }
+
+  /**
    * Creates nodes for testing.
    */
   private function createTestNodes(): void {
