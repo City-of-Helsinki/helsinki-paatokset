@@ -26,11 +26,5 @@ decision_search_description:
 policymakers_search_description:
   value: '<p>You can search for decision-makers with the division name or title (in Finnish). You can also search for councillors using the person’s name. You can narrow the search of decision-makers by division.</p><p>You can also browse decision-makers by the City’s organisation. Go to the page <a href="/en/decisionmakers/browse-decision-makers">Browse decision-makers</a>.</p>'
   format: full_html
-banner_text:
-  value: "<p>The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary.</p>\r\n\r\n<p><a class=\"hds-button hds-button--primary\" data-design=\"hds-button hds-button--primary\" data-link-text=\"To the Vocabulary\" href=\"/node/690\"><span class=\"hds-button__label\">To the Vocabulary</span></a></p>\r\n\r\n<p>If you didn't find the contact information you were looking for above, try the City's Contacts-service.</p>\r\n\r\n<p><a class=\"hds-button hds-button--secondary\" data-design=\"hds-button hds-button--secondary\" data-is-external=\"true\" data-link-text=\"Helsinki City Contacts\" data-protocol=\"https\" href=\"https://numerot.hel.fi\"><span class=\"hds-button__label\">Helsinki City Contacts</span></a></p>\r\n"
-  format: full_html
-banner_heading: 'Missing a term or contact info?'
-banner_label: ''
-banner_url: ''
 committees_boards_url: '/en/decisionmakers#committees-and-boards'
 office_holders_url: '/en/decisionmakers#office-holders:-central-administration'

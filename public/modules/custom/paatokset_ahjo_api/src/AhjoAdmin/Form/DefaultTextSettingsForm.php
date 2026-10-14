@@ -81,18 +81,6 @@ final class DefaultTextSettingsForm extends ConfigFormBase {
       '#open' => TRUE,
     ];
 
-    $form['banner'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Decision banner'),
-      '#open' => TRUE,
-    ];
-
-    $form['banner']['banner_heading'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Banner heading'),
-      '#config_target' => 'paatokset_ahjo_api.default_texts:banner_heading',
-    ];
-
     $form_defaults = [
       'alerts' => [
         'hidden_decisions_text' => $this->t('Hidden decisions text'),
@@ -109,9 +97,6 @@ final class DefaultTextSettingsForm extends ConfigFormBase {
         'decision_search_description' => $this->t('Decision search description'),
         'policymakers_search_description' => $this->t('Policy makers search description'),
       ],
-      'banner' => [
-        'banner_text' => $this->t('Banner content'),
-      ],
     ];
 
     $config = $this->config(self::SETTINGS);
@@ -125,18 +110,6 @@ final class DefaultTextSettingsForm extends ConfigFormBase {
         ];
       }
     }
-
-    $form['banner']['banner_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('CTA button label'),
-      '#config_target' => 'paatokset_ahjo_api.default_texts:banner_label',
-    ];
-
-    $form['banner']['banner_url'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('CTA button link'),
-      '#config_target' => 'paatokset_ahjo_api.default_texts:banner_url',
-    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -157,7 +130,6 @@ final class DefaultTextSettingsForm extends ConfigFormBase {
       'meeting_calendar_description',
       'decision_search_description',
       'policymakers_search_description',
-      'banner_text',
     ];
 
     $config = $this->config(self::SETTINGS);

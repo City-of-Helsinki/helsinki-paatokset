@@ -17,3 +17,4 @@ ignored_classes:
   - content-date
   - content-links
   - block--askem
+  - component--dictionary-banner

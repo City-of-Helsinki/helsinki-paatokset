@@ -30,21 +30,17 @@ class DefaultTextSettingsFormTest extends KernelTestBase {
     'meeting_calendar_description',
     'decision_search_description',
     'policymakers_search_description',
-    'banner_text',
   ];
 
   // Fields with simple text values.
   const array SIMPLE_TEXT_FIELDS = [
     'calendar_notice_text',
-    'banner_heading',
-    'banner_label',
   ];
 
   // Fields with URL values.
   const array URL_FIELDS = [
     'committees_boards_url',
     'office_holders_url',
-    'banner_url',
   ];
 
   /**
@@ -61,7 +57,6 @@ class DefaultTextSettingsFormTest extends KernelTestBase {
     $this->assertArrayHasKey('links', $form_array);
     $this->assertArrayHasKey('alerts', $form_array);
     $this->assertArrayHasKey('defaults', $form_array);
-    $this->assertArrayHasKey('banner', $form_array);
 
     // Assert that the config values are correctly saved.
     $assertions = [];
