@@ -1117,12 +1117,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/DecisionTreeBlock.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\DictionaryBannerBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/DictionaryBannerBlock.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\FrontpageCalendarBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
