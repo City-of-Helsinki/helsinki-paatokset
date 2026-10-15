@@ -31,12 +31,6 @@ function paatokset_theme() : array {
       ],
       'template' => 'lupapiste-rss-item',
     ],
-    'all_articles' => [
-      'variables' => [
-        'articles_by_year' => [],
-      ],
-      'template' => 'block/all-articles',
-    ],
   ];
 }
 
