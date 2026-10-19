@@ -38,8 +38,7 @@ field_settings:
     type: string
     configuration:
       type: union
-      separator: |
-
+      separator: ''
       fields: {  }
   approval_created:
     label: 'Authored on'
@@ -120,7 +119,6 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  allu_approval_type_split: {  }
   color_class: {  }
   custom_value: {  }
   decision_url: {  }

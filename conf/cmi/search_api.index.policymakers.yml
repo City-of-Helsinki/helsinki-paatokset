@@ -105,6 +105,10 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: has_translation
     type: boolean
+  language_with_fallback:
+    label: 'Language (with fallback)'
+    property_path: language_with_fallback
+    type: string
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants

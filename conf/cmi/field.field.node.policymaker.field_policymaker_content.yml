@@ -15,7 +15,7 @@ bundle: policymaker
 label: Content
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -123,9 +123,6 @@ settings:
         enabled: false
       service_list_search:
         weight: 74
-        enabled: false
-      sidebar_text:
-        weight: 75
         enabled: false
       social_media_link:
         weight: 76

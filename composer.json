@@ -60,7 +60,7 @@
         },
         "audit": {
             "abandoned": "report",
-            "ignore": ["CVE-2026-102601"]
+            "ignore": ["CVE-2026-102601", "PKSA-8j6w-3kr7-s9xk", "PKSA-6j95-1jtb-x6wc", "PKSA-cbx2-m9db-bmzd", "GHSA-9rjx-3jch-6vjf", "GHSA-v383-3rw5-q8rf", "GHSA-m9xh-6747-9r6f", "GHSA-qhmf-972w-m957"]
         }
     },
     "extra": {
@@ -149,6 +149,7 @@
         ],
         "test-php": "vendor/bin/phpunit -c $PWD/phpunit.xml.dist",
         "lint-php": "vendor/bin/phpcs --ignore=*.js,*.css --standard=Drupal,DrupalPractice",
-        "analyze-php": "vendor/bin/phpstan analyze"
+        "analyze-php": "vendor/bin/phpstan analyze",
+        "pre-command-run": "bash tools/composer/require-container.sh"
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\Request;
 
 if (PHP_SAPI === 'cli') {
@@ -116,20 +117,34 @@ $settings['file_temp_path'] = getenv('DRUPAL_TMP_PATH') ?: '/tmp';
 
 if ($reverse_proxy_address = getenv('DRUPAL_REVERSE_PROXY_ADDRESS')) {
   $reverse_proxy_address = explode(',', $reverse_proxy_address);
+  $reverse_proxy_trusted_headers = Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
 
-  if (isset($_SERVER['REMOTE_ADDR'])) {
+  if ($remote_address = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP)) {
     // The application sits behind multiple proxies in the OpenShift
     // environment. The nginx configuration uses ngx_http_realip_module to
     // set the correct headers for Drupal.
-    $reverse_proxy_address[] = $_SERVER['REMOTE_ADDR'];
+    $reverse_proxy_address[] = $remote_address;
+
+    // Without an internal proxy, like Varnish, in front of nginx, the remote
+    // address is already the client's IP and the rest of X-Forwarded-For
+    // comes from the client, so it can't be trusted.
+    if (IpUtils::checkIp($remote_address, IpUtils::PRIVATE_SUBNETS)) {
+      $reverse_proxy_trusted_headers |= Request::HEADER_X_FORWARDED_FOR;
+    }
   }
   $settings['reverse_proxy'] = TRUE;
   $settings['reverse_proxy_addresses'] = $reverse_proxy_address;
-  $settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
+  $settings['reverse_proxy_trusted_headers'] = $reverse_proxy_trusted_headers;
   $settings['reverse_proxy_host_header'] = 'X_FORWARDED_HOST';
 }
 
 if ($blob_storage_name = getenv('AZURE_BLOB_STORAGE_NAME')) {
+  $blob_storage_container = getenv('AZURE_BLOB_STORAGE_CONTAINER');
+  $blob_storage_token = drupal_get_env([
+    'AZURE_BLOB_STORAGE_SAS_TOKEN',
+    'BLOBSTORAGE_SAS_TOKEN',
+  ]);
+
   $schemes = [
     'azure' => [
       'driver' => 'helfi_azure',
@@ -139,11 +154,8 @@ if ($blob_storage_name = getenv('AZURE_BLOB_STORAGE_NAME')) {
           'AZURE_BLOB_STORAGE_KEY',
           'BLOBSTORAGE_ACCOUNT_KEY',
         ]),
-        'token' => drupal_get_env([
-          'AZURE_BLOB_STORAGE_SAS_TOKEN',
-          'BLOBSTORAGE_SAS_TOKEN',
-        ]),
-        'container' => getenv('AZURE_BLOB_STORAGE_CONTAINER'),
+        'token' => $blob_storage_token,
+        'container' => $blob_storage_container,
         'endpointSuffix' => 'core.windows.net',
         'protocol' => 'https',
       ],
@@ -151,6 +163,14 @@ if ($blob_storage_name = getenv('AZURE_BLOB_STORAGE_NAME')) {
     ],
   ];
   $config['helfi_azure_fs.settings']['use_blob_storage'] = TRUE;
+
+  $settings['helfi_azure_fs'] = [
+    'name' => $blob_storage_name,
+    'token' => $blob_storage_token,
+    'container' => $blob_storage_container,
+    'public_url_base' => sprintf('https://%s.blob.core.windows.net/%s', $blob_storage_name, $blob_storage_container),
+  ];
+
   $settings['file_additional_public_schemes'] = ['azure'];
   $settings['flysystem'] = $schemes;
 }
@@ -339,6 +359,12 @@ if (getenv('ELASTICSEARCH_ETUSIVU_URL')) {
     $config['search_api.server.etusivu']['backend_config']['connector'] = 'helfi_connector';
     $config['search_api.server.etusivu']['backend_config']['connector_config']['username'] = getenv('ELASTICSEARCH_ETUSIVU_WRITER_USER');
     $config['search_api.server.etusivu']['backend_config']['connector_config']['password'] = getenv('ELASTICSEARCH_ETUSIVU_WRITER_PASSWORD');
+
+    $config['helfi_api_base.api_accounts']['vault'][] = [
+      'id' => 'etusivu_elastic',
+      'plugin' => 'authorization_token',
+      'data' => base64_encode(getenv('ELASTICSEARCH_ETUSIVU_WRITER_USER') . ':' . getenv('ELASTICSEARCH_ETUSIVU_WRITER_PASSWORD')),
+    ];
   }
 }
 

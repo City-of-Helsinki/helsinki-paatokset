@@ -1,13 +1,13 @@
-uuid: 992c307a-d03b-4ac7-b22d-27eedf082411
+uuid: 639c774c-625a-4f51-b44c-7f4dcf55f0ec
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
 _core:
-  default_config_hash: '-tzGUlbCTV9LVJOwuIhAYK3oFwgnTWX5MHbepQ-Uslg'
-id: paragraph.field_sidebar_text_title
-field_name: field_sidebar_text_title
+  default_config_hash: mF-obCIxs-52LCa2fT8vOkYjw5X70mOUuhlycWrVTb4
+id: paragraph.field_event_list_audience
+field_name: field_event_list_audience
 entity_type: paragraph
 type: string
 settings:
@@ -16,7 +16,7 @@ settings:
   is_ascii: false
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

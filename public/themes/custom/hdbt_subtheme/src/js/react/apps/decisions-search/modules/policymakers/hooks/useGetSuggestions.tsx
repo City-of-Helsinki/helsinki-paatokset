@@ -9,12 +9,16 @@ export const fetchSuggestions = async (searchTerm: string | undefined, url: stri
     return emptyResult;
   }
 
+  const { currentLanguage } = drupalSettings.path;
   const normalizedSearchTerm = searchTerm.toLowerCase().replace(/\s+/g, '*');
 
   const query = {
     query: {
       bool: {
-        filter: [{ term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } }],
+        filter: [
+          { term: { [PolicymakerIndex.FIELD_POLICYMAKER_EXISTING]: true } },
+          { term: { [PolicymakerIndex.LANGUAGE_WITH_FALLBACK]: currentLanguage } },
+        ],
         should: [
           { wildcard: { [`${PolicymakerIndex.TITLE}`]: `*${normalizedSearchTerm}*` } },
           { wildcard: { [`${PolicymakerIndex.DECISIONMAKER_COMBINED_TITLE}`]: `*${normalizedSearchTerm}*` } },

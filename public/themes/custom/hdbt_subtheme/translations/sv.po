@@ -370,20 +370,20 @@ msgid "@trustee is @policymaker"
 msgstr "@trustee är @policymaker"
 
 msgctxt "Policymaker search"
-msgid "Which body, office holder or councillor are you looking for?"
-msgstr "Vilket organ, vilken tjänsteinnehavare eller fullmäktigeledamot söker du?"
+msgid "Body, title or name of councillor in Finnish"
+msgstr "Organ, tjänstebeteckning eller namn på fullmäktigeledamot"
 
 msgctxt "Policymaker search"
-msgid "Search with a Finnish keyword, eg. pormestari"
-msgstr "Skriv sökord, t.ex. borgmästare"
+msgid "E.g. pormestari"
+msgstr "T.ex. stadsmiljönämnden eller överläkare"
 
 msgctxt "Policymaker search"
 msgid "Division"
 msgstr "Sektor"
 
 msgctxt "Policymaker search"
-msgid "Choose division"
-msgstr "Välj sektor"
+msgid "All divisions"
+msgstr "Alla sektorer"
 
 msgctxt "Policymaker search"
 msgid "Filters"

@@ -12,6 +12,8 @@ display:
           action_title: Toiminto
         content_translation_outdated:
           label: 'Käännös vanhentunut'
+          settings:
+            format_custom_true: outdated
           separator: ', '
         title:
           label: Otsikko
@@ -34,8 +36,8 @@ display:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
           separator: ', '
-        changed:
-          label: Päivitetty
+        changed_at:
+          label: 'Käyttäjän tallentama'
           separator: ', '
         operations:
           label: Toimenpiteet

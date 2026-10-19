@@ -51,6 +51,7 @@ export const PolicymakerIndex = {
   FIELD_POLICYMAKER_ID: 'field_policymaker_id',
   FIELD_SECTOR_NAME: 'field_sector_name',
   HAS_TRANSLATION: 'has_translation',
+  LANGUAGE_WITH_FALLBACK: 'language_with_fallback',
   ORGANIZATION_HIERARCHY: 'organization_hierarchy',
   STATUS: 'status',
   TITLE: 'title',
