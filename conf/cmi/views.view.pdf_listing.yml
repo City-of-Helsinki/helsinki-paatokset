@@ -3,8 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.media.field_pdf_category
-    - field.storage.media.field_pdf_date
     - media.type.pdf_minutes_of_discussion
   module:
     - datetime
