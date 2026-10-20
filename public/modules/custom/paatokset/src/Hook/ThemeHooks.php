@@ -13,6 +13,9 @@ final class ThemeHooks {
 
   /**
    * Implements hook_theme().
+   *
+   * @return array<string, mixed>
+   *   Theme definitions.
    */
   #[Hook('theme')]
   public function theme(): array {

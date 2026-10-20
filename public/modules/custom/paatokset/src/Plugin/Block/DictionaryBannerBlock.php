@@ -22,6 +22,9 @@ final class DictionaryBannerBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array<string, mixed>
+   *   Default configuration.
    */
   public function defaultConfiguration(): array {
     return [
@@ -31,6 +34,14 @@ final class DictionaryBannerBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array<string, mixed>
+   *   The form.
    */
   public function blockForm($form, FormStateInterface $form_state): array {
     $form['dictionary_node_id'] = [
@@ -46,6 +57,11 @@ final class DictionaryBannerBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->configuration['dictionary_node_id'] = (int) $form_state->getValue('dictionary_node_id');
@@ -53,6 +69,9 @@ final class DictionaryBannerBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array<string, mixed>
+   *   Render array.
    */
   public function build(): array {
     if (!$nid = $this->configuration['dictionary_node_id']) {
