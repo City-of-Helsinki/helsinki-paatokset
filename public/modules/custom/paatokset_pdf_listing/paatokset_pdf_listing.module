@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\views\Views;
 
 /**
  * Implements hook_theme().
@@ -17,10 +17,6 @@ use Drupal\paragraphs\Entity\Paragraph;
 function paatokset_pdf_listing_theme($existing, $type, $theme, $path) {
   return [
     'paragraph__pdf_listing' => [
-      'variables' => [
-        'years' => [],
-        'documents' => [],
-      ],
       'render element' => 'elements',
       'template' => 'paragraph--pdf-listing',
       'path' => $path . '/templates/paragraph',
@@ -42,55 +38,57 @@ function paatokset_pdf_listing_preprocess_paragraph__pdf_listing(&$variables) {
     return;
   }
 
-  $tids = [];
-  foreach ($paragraph->get('field_pdf_category') as $field) {
-    $tids[] = $field->target_id;
+  $tids = array_column($paragraph->get('field_pdf_category')->getValue(), 'target_id');
+
+  $view = Views::getView('pdf_listing');
+  if (!$view) {
+    return;
   }
 
-  $query = \Drupal::entityQuery('media')
-    ->accessCheck(TRUE)
-    ->condition('bundle', 'pdf_minutes_of_discussion')
-    ->condition('status', 1)
-    ->sort('field_pdf_date', 'DESC')
-    ->sort('name', 'ASC')
-    ->latestRevision();
+  $view->setDisplay('default');
 
-  if (!empty($tids)) {
-    $query->condition('field_pdf_category', $tids, 'IN');
+  // Multiple listings on the same page must not share query parameters,
+  // otherwise selecting a year or a page would affect all of them.
+  $index = _paatokset_pdf_listing_get_index($paragraph);
+  if ($index > 0) {
+    $display = $view->getDisplay();
+
+    $filters = $display->getOption('filters');
+    $filters['field_pdf_date_year']['expose']['identifier'] = 'year_' . ($index + 1);
+    $display->overrideOption('filters', $filters);
+
+    $pager = $display->getOption('pager');
+    $pager['options']['id'] = $index;
+    $display->overrideOption('pager', $pager);
   }
 
-  $ids = $query->execute();
+  // Empty argument lists all categories.
+  $arguments = $tids ? [implode('+', $tids)] : [];
+  $build = $view->buildRenderable('default', $arguments);
+  $build['#cache']['keys'][] = 'pdf_listing_index:' . $index;
+  $variables['view'] = $build;
+}
 
-  $entities = Media::loadMultiple($ids);
-  $documents = [];
-  foreach ($entities as $entity) {
-    if (!$entity->hasField('field_pdf_date') || $entity->get('field_pdf_date')->isEmpty()) {
-      continue;
-    }
+/**
+ * Gets the position of the paragraph among PDF listings in its parent field.
+ */
+function _paatokset_pdf_listing_get_index(Paragraph $paragraph): int {
+  $parent = $paragraph->getParentEntity();
+  $field_name = $paragraph->get('parent_field_name')->value;
 
-    $timestamp = $entity->get('field_pdf_date')->date->getTimeStamp();
-    $year = date('Y', $timestamp);
-    $title = $entity->label() . ' (PDF)';
-    $date = date('d.m.Y', $timestamp);
-    $download_link = NULL;
-    if ($entity->get('field_document')->target_id) {
-      $file_id = $entity->get('field_document')->target_id;
-      $download_link = \Drupal::service('file_url_generator')->generateAbsoluteString(File::load($file_id)->getFileUri());
-    }
-
-    if (!$download_link) {
-      continue;
-    }
-
-    $documents[$year][] = [
-      'title' => $title,
-      'date' => $date,
-      'year' => $year,
-      'link' => $download_link,
-    ];
+  if (!$parent instanceof FieldableEntityInterface || !$field_name || !$parent->hasField($field_name)) {
+    return 0;
   }
 
-  $variables['#cache']['tags'][] = 'media_list:pdf_minutes_of_discussion';
-  $variables['years'] = array_keys($documents);
-  $variables['documents'] = $documents;
+  $index = 0;
+  foreach ($parent->get($field_name)->referencedEntities() as $sibling) {
+    if ($sibling->id() === $paragraph->id()) {
+      return $index;
+    }
+    if ($sibling->bundle() === 'pdf_listing') {
+      $index++;
+    }
+  }
+
+  return 0;
 }

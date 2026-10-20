@@ -1,0 +1,85 @@
+uuid: b0df4b49-c9ba-49a9-a18d-e6a96924a9e2
+langcode: en
+status: false
+dependencies:
+  config:
+    - field.storage.node.field_decision_date
+    - search_api.server.default
+  module:
+    - helfi_platform_config
+    - helfi_search
+    - node
+    - paatokset_ahjo_api
+    - search_api
+id: decision_embeddings
+name: 'Decision embeddings'
+description: 'Vector embeddings for decisions.'
+read_only: false
+field_settings:
+  decision_date:
+    label: 'Decision date'
+    datasource_id: 'entity:node'
+    property_path: field_decision_date
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_decision_date
+  decision_url:
+    label: 'Decision URL'
+    datasource_id: 'entity:node'
+    property_path: decision_url
+    type: string
+  embeddings_text_embedding_3_large:
+    label: 'Embeddings (text-embedding-3-large)'
+    property_path: embeddings_text_embedding_3_large
+    type: embeddings
+  entity_bundle:
+    label: 'Entity bundle'
+    property_path: helfi_entity_bundle
+    type: string
+  entity_type:
+    label: 'Entity type'
+    property_path: search_api_entity_type
+    type: string
+  label:
+    label: 'Entity label'
+    property_path: helfi_entity_label
+    type: text
+  markdown:
+    label: 'Page markdown'
+    property_path: helfi_search_markdown
+    type: text
+  url:
+    label: URI
+    property_path: search_api_url
+    type: text
+    configuration:
+      absolute: true
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - decision
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  decision_url: {  }
+  entity_status: {  }
+  entity_type: {  }
+  helfi_entity_label: {  }
+  helfi_search_embeddings: {  }
+  hidden_decisions:
+    weights:
+      preprocess_index: 100
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 50
+  delete_on_fail: true
+  index_directly: false
+  track_changes_in_references: true
+server: default

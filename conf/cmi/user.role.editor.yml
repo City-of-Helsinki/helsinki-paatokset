@@ -46,6 +46,7 @@ dependencies:
     - paragraphs_library
     - path
     - publication_date
+    - quick_node_clone
     - raven
     - redirect
     - scheduler
@@ -79,6 +80,8 @@ permissions:
   - 'administer url aliases'
   - 'cancel account'
   - 'change own username'
+  - 'clone landing_page content'
+  - 'clone page content'
   - 'create announcement content'
   - 'create article content'
   - 'create content translations'

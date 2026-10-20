@@ -7,12 +7,6 @@ parameters:
 			path: public/modules/custom/paatokset/paatokset.module
 
 		-
-			message: '#^Function paatokset_theme\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset/paatokset.module
-
-		-
 			message: '#^Function paatokset_views_data_alter\(\) has parameter \$data with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -309,18 +303,6 @@ parameters:
 		-
 			message: '#^Function paatokset_ahjo_api_preprocess_block__decision_tree\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__dictionary_banner\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__dictionary_banner\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
@@ -1115,12 +1097,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/DecisionTreeBlock.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\DictionaryBannerBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/DictionaryBannerBlock.php
 
 		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\FrontpageCalendarBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
@@ -3895,30 +3871,6 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Plugin/migrate/source/AlluSource.php
 
 		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:__construct\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:alterIndexedItems\(\) has parameter \$items with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:create\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
-			message: '#^Method Drupal\\paatokset_allu\\Plugin\\search_api\\processor\\AlluApprovalTypeSplit\:\:preprocessIndexItems\(\) has parameter \$items with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Plugin/search_api/processor/AlluApprovalTypeSplit.php
-
-		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\StreamedResponse'' and Symfony\\Component\\HttpFoundation\\StreamedResponse will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
 			count: 1
@@ -3953,18 +3905,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: public/modules/custom/paatokset_allu/tests/src/Kernel/SoucePluginTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_allu\\Unit\\AlluApprovalTypeSplitTest\:\:createTestItems\(\) return type has no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Unit/AlluApprovalTypeSplitTest.php
-
-		-
-			message: '#^Storing entity storage as a class property is not recommended\. Call Drupal\\Core\\Entity\\EntityTypeManagerInterface\:\:getStorage\(\) at the call\-site instead\.$#'
-			identifier: drupal.entityStoragePropertyAssignment
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Unit/AlluApprovalTypeSplitTest.php
 
 		-
 			message: '#^Method Drupal\\Tests\\paatokset_allu\\Unit\\ClientTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
@@ -4421,12 +4361,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_helsinki_kanava/tests/src/Kernel/AnnouncementBlockTest.php
-
-		-
-			message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemInterface\:\:\$target_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: public/modules/custom/paatokset_pdf_listing/paatokset_pdf_listing.module
 
 		-
 			message: '#^Function paatokset_pdf_listing_preprocess_paragraph__pdf_listing\(\) has no return type specified\.$#'
@@ -4946,6 +4880,12 @@ parameters:
 
 		-
 			message: '#^Function hdbt_subtheme_preprocess_media__view__policymaker_discussion_minutes\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
+
+		-
+			message: '#^Function hdbt_subtheme_preprocess_media__view__pdf_listing\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme

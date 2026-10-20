@@ -93,9 +93,6 @@ settings:
       service_list:
         weight: -23
         enabled: false
-      sidebar_text:
-        weight: -34
-        enabled: false
       social_media_link:
         weight: 46
         enabled: false

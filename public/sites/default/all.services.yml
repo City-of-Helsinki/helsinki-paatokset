@@ -1,0 +1,9 @@
+# Disabled for now, copy to local.services.yaml to test decision indexing.
+# TODO: https://helsinkisolutionoffice.atlassian.net/browse/UHF-13827
+#parameters:
+#  # Content that is allowed to produce vector embeddings. This replaces the
+#  # default from helfi_search.services.yml, so the defaults are repeated here.
+#  helfi_search.vectorized_entity_types:
+#    - { entity_type: 'node', bundles: ['page', 'landing_page', 'decision', 'policymaker'] }
+#    - { entity_type: 'tpr_service' }
+#    - { entity_type: 'tpr_unit' }
