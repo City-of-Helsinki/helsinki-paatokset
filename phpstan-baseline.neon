@@ -3763,24 +3763,6 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Client/Client.php
 
 		-
-			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Client/Client.php
-
-		-
-			message: '#^Parameter \#1 \$id of method Drupal\\paatokset_allu\\Client\\Client\:\:streamApproval\(\) expects string, int\|string\|null given\.$#'
-			identifier: argument.type
-			count: 2
-			path: public/modules/custom/paatokset_allu/src/Controller/Controller.php
-
-		-
-			message: '#^Parameter \#1 \$id of method Drupal\\paatokset_allu\\Client\\Client\:\:streamDecision\(\) expects string, int\|string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Controller/Controller.php
-
-		-
 			message: '#^Method Drupal\\paatokset_allu\\Drush\\Commands\\Commands\:\:runMigration\(\) has parameter \$options with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -3871,20 +3853,8 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Plugin/migrate/source/AlluSource.php
 
 		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\StreamedResponse'' and Symfony\\Component\\HttpFoundation\\StreamedResponse will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\paatokset_allu\\Kernel\\ClientTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
-
-		-
-			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
 			count: 1
 			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
 
