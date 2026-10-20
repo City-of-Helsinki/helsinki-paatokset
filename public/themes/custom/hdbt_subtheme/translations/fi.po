@@ -408,3 +408,23 @@ msgid "Ask for more info"
 msgid_plural "Ask for more info"
 msgstr[0] "Lisätietojen antaja"
 msgstr[1] "Lisätietojen antajat"
+
+msgctxt "Dictionary banner"
+msgid "Missing a term or contact info?"
+msgstr "Sanat tai yhteystieto hukassa?"
+
+msgctxt "Dictionary banner"
+msgid "The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary."
+msgstr "Päätöksenteon sanakirja selventää kaupungin päätöksentekoon liittyviä termejä."
+
+msgctxt "Dictionary banner"
+msgid "To the Vocabulary"
+msgstr "Siirry sanakirjaan"
+
+msgctxt "Dictionary banner"
+msgid "If you didn't find the contact information you were looking for above, try the City's Contacts-service."
+msgstr "Jos kaipaat yhteystietoa, mutta et löytänyt sitä yltä, kokeile yhteystietohakua."
+
+msgctxt "Dictionary banner"
+msgid "Helsinki City Contacts"
+msgstr "Kaupungin yhteystietohaku"

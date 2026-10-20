@@ -415,3 +415,23 @@ msgid "Ask for more info"
 msgid_plural "Ask for more info"
 msgstr[0] "Mer information"
 msgstr[1] "Mer information"
+
+msgctxt "Dictionary banner"
+msgid "Missing a term or contact info?"
+msgstr "Letar du efter en term eller kontaktinformation?"
+
+msgctxt "Dictionary banner"
+msgid "The key terms related to the City of Helsinki’s decision-making process are explained in the Decision-making vocabulary."
+msgstr "Ordboken för beslutsfattande öppnar upp centrala termer om beslutsfattande inom Helsingfors stad."
+
+msgctxt "Dictionary banner"
+msgid "To the Vocabulary"
+msgstr "Till ordboken"
+
+msgctxt "Dictionary banner"
+msgid "If you didn't find the contact information you were looking for above, try the City's Contacts-service."
+msgstr "Ytterligare kontaktuppgifter finns på stadens kontaktuppgiftssökning."
+
+msgctxt "Dictionary banner"
+msgid "Helsinki City Contacts"
+msgstr "Kontaktuppgiftssökning"
