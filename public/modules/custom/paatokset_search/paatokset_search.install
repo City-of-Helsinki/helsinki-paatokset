@@ -8,6 +8,18 @@
 declare(strict_types=1);
 
 /**
+ * Implements hook_update_dependencies().
+ */
+function paatokset_search_update_dependencies(): array {
+  // Add the parallel tracker columns before the index starts using it.
+  $dependencies['paatokset_search'][11002] = [
+    'search_api' => 8111,
+  ];
+
+  return $dependencies;
+}
+
+/**
  * Remove city_hall_id and trustee_organization_type_id config keys.
  */
 function paatokset_search_update_11001(): void {
@@ -15,4 +27,23 @@ function paatokset_search_update_11001(): void {
   $config->clear('city_hall_id');
   $config->clear('trustee_organization_type_id');
   $config->save();
+}
+
+/**
+ * UHF-13506: Use the customized parallel tracker on the decisions index.
+ */
+function paatokset_search_update_11002(): void {
+  // Both trackers use the same tracking table. Change the configuration
+  // directly, because saving the index would re-track all items.
+  $config = \Drupal::configFactory()->getEditable('search_api.index.decisions');
+
+  if ($config->isNew() || !array_key_exists('custom_basic_tracker', $config->get('tracker_settings') ?? [])) {
+    return;
+  }
+  $config->set('tracker_settings', [
+    'custom_parallel_tracker' => [
+      'indexing_order' => 'lifo',
+      'claim_timeout' => 60,
+    ],
+  ])->save();
 }
