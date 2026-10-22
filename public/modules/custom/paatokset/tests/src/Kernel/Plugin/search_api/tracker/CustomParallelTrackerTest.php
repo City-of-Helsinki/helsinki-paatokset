@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset\Kernel\search_api;
 
+use Drupal\paatokset\Plugin\search_api\tracker\CustomParallelTracker;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
@@ -52,7 +53,9 @@ class CustomParallelTrackerTest extends AhjoEntityKernelTestBase {
       ],
     ]);
     $timeService = new TestTimeService();
-    $this->index->getTrackerInstance()->setTimeService($timeService);
+    $tracker = $this->index->getTrackerInstance();
+    $this->assertInstanceOf(CustomParallelTracker::class, $tracker);
+    $tracker->setTimeService($timeService);
 
     $nodes = [];
     for ($i = 0; $i <= 2; $i++) {
@@ -70,7 +73,7 @@ class CustomParallelTrackerTest extends AhjoEntityKernelTestBase {
     $this->index->trackItemsInserted(
       'entity',
       array_map(
-        fn ($item) => Utility::createCombinedId('entity', $item->id()),
+        fn ($item) => Utility::createCombinedId('entity', (string) $item->id()),
         $nodes
       )
     );
@@ -100,8 +103,10 @@ class CustomParallelTrackerTest extends AhjoEntityKernelTestBase {
     $workers = [];
 
     foreach ([1, 2] as $key) {
-      $workers[$key] = $manager->createInstance('custom_parallel_tracker', ['#index' => $this->index]);
-      $this->assertTrue($workers[$key]->lock());
+      $worker = $manager->createInstance('custom_parallel_tracker', ['#index' => $this->index]);
+      $this->assertInstanceOf(CustomParallelTracker::class, $worker);
+      $this->assertTrue($worker->lock());
+      $workers[$key] = $worker;
     }
 
     $first = $workers[1]->getRemainingItems(1);

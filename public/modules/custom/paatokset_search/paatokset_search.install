@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 /**
  * Implements hook_update_dependencies().
+ *
+ * @phpstan-return array<string, array<int, array<string, int>>>
  */
 function paatokset_search_update_dependencies(): array {
   // Add the parallel tracker columns before the index starts using it.
