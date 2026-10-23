@@ -9,7 +9,7 @@
     "Every build, lint and format script below runs inside a disposable Node container via the sandbox command."
   ],
   "scripts": {
-    "preinstall": "rm -rf node_modules/@hdbt/theme-builder && npm install ../../contrib/hdbt/theme-builder --loglevel=silent",
+    "preinstall": "npm ci --prefix ../../contrib/hdbt --ignore-scripts --loglevel=silent && rm -rf node_modules/@hdbt/theme-builder && npm install ../../contrib/hdbt/theme-builder --loglevel=silent",
     "dev": "sandbox node theme-builder.mjs --watch --dev",
     "dev-with-remote-data": "HDBT_ELASTIC_DEV_URL=https://paatokset-elastic-proxy.test.hel.ninja npm run dev",
     "build": "sandbox sh -c 'npm run format:js --loglevel=silent && npm run lint --loglevel=silent && npm run validate-ts && node theme-builder.mjs'",
