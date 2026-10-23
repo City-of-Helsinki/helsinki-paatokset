@@ -19,6 +19,7 @@ use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\views\EntityViewsData;
@@ -200,8 +201,8 @@ class Organization extends RemoteEntityBase implements EntityPublishedInterface,
   /**
    * Gets the organization type.
    */
-  public function getOranizationType(): OrganizationType {
-    return OrganizationType::tryFrom($this->get('type')->value) ?? OrganizationType::UNKNOWN;
+  public function getOrganizationType(): OrganizationType {
+    return OrganizationType::tryFrom((int)$this->get('type')->value) ?? OrganizationType::UNKNOWN;
   }
 
   /**

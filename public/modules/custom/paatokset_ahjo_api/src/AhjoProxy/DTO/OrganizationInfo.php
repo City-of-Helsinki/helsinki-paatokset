@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\AhjoProxy\DTO;
 
 use Drupal\Component\Utility\Unicode;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 
 /**
  * Ahjo organization DTO.
