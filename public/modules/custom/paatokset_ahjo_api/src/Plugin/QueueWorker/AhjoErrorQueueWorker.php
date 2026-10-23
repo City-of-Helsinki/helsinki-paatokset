@@ -25,6 +25,7 @@ class AhjoErrorQueueWorker extends AhjoQueueWorkerBase implements LoggerAwareInt
     $content = $data['content'];
     if ($content && is_object($content)) {
       $id = $content->id ?? '';
+      // Check the error queue by running drush ahjo-callback:list-error-queue.
       $this->logger->alert("Item ID $id is being processed by error queue worker. Please check the error queue for any items.");
     }
 
