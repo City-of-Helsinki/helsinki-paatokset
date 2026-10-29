@@ -5266,16 +5266,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "5.4.4",
+            "version": "5.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "9129b195ca7c715438e4a504799bbf622933dd8c"
+                "reference": "983082f7a727127cd52807bb70be22c749405282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/9129b195ca7c715438e4a504799bbf622933dd8c",
-                "reference": "9129b195ca7c715438e4a504799bbf622933dd8c",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/983082f7a727127cd52807bb70be22c749405282",
+                "reference": "983082f7a727127cd52807bb70be22c749405282",
                 "shasum": ""
             },
             "require": {
@@ -5360,7 +5360,8 @@
                 "patches": {
                     "drupal/core": {
                         "[#UHF-13177, #3569803] htmx:beforeSwap fails with TypeError requestAssetsLoaded.get(...) is undefined": "./public/modules/contrib/helfi_platform_config/patches/3569803.patch",
-                        "[#UHF-12709] Patch 'Deleted and replaced ...' error messages": "./public/modules/contrib/helfi_platform_config/patches/UHF-12709-skip_deleted_and_replaced_log.patch",
+                        "[#UHF-12709, #3545595] Do not install language overrides for new languages during config sync (https://www.drupal.org/i/3545595)": "./public/modules/contrib/helfi_platform_config/patches/3545595.patch",
+                        "[#UHF-12709, #3633776] ConfigImporterBatch::process() adds the same import errors again on every batch call (https://www.drupal.org/i/3633776)": "./public/modules/contrib/helfi_platform_config/patches/3633776.patch",
                         "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "./public/modules/contrib/helfi_platform_config/patches/3091246.patch",
                         "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299)": "./public/modules/contrib/helfi_platform_config/patches/3163299-104-D10.patch",
                         "[#UHF-13408] Twig debug can influence rendering visually due to whitespace between tags (https://www.drupal.org/project/drupal/issues/3563677)": "./public/modules/contrib/helfi_platform_config/patches/drupal_core_strip_debug_mode_whitespaces_11.3.x.patch",
@@ -5420,10 +5421,10 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/5.4.4",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/5.4.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2026-10-27T08:22:58+00:00"
+            "time": "2026-10-29T11:57:40+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
