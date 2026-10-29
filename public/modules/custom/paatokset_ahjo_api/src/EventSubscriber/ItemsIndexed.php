@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\IndexInterface;

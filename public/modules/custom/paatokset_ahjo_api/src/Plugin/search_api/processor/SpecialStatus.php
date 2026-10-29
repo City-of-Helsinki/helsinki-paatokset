@@ -6,8 +6,8 @@ namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
