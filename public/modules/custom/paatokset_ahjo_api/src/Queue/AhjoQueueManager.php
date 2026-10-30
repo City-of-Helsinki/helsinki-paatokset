@@ -35,7 +35,7 @@ class AhjoQueueManager implements LoggerAwareInterface {
    *   NULL if item was already in queue, FALSE if the adding failed.
    */
   public function addItemToAhjoQueue(AhjoQueue $queue, string $id, string $type): string|false|null {
-    $errorLevel = $queue->value === 'ahjo_api_error_queue' ? 'error' : 'info' ;
+    $errorLevel = $queue->value === 'ahjo_api_error_queue' ? 'error' : 'info';
     // Attempt to reduce duplicates.
     if ($this->checkIfItemIsAlreadyInQueue($queue, $id, $type)) {
       return NULL;
