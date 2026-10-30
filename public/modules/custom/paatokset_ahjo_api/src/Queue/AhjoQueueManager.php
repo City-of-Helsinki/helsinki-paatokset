@@ -41,7 +41,7 @@ class AhjoQueueManager implements LoggerAwareInterface {
       return NULL;
     }
 
-    $this->logger?->{$$errorLevel}("Adding item $id to " . $queue->value);
+    $this->logger?->{$errorLevel}("Adding item $id to " . $queue->value);
 
     return $this->queue
       ->get($queue->value)
