@@ -12,15 +12,17 @@ use Drupal\paatokset_allu\Entity\Approval;
 use Drupal\paatokset_allu\Entity\Document;
 use Drupal\Tests\helfi_api_base\Kernel\Entity\Access\RemoteEntityAccessTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Kernel tests for document entity.
  */
 #[Group('paatokset_allu')]
+#[RunTestsInSeparateProcesses]
 class ApprovalEntityTest extends RemoteEntityAccessTestBase {
 
   use ProphecyTrait;
@@ -63,9 +65,9 @@ class ApprovalEntityTest extends RemoteEntityAccessTestBase {
 
     // Canonical route should return response from the API.
     $client
-      ->streamApproval($this->rmt->id(), ApprovalType::from($this->rmt->get('type')->value))
+      ->approvalDocument($this->rmt->get('document')->target_id, ApprovalType::from($this->rmt->get('type')->value))
       ->shouldBeCalled()
-      ->willReturn(new StreamedResponse(static function () {}));
+      ->willReturn(new GuzzleResponse(body: 'pdf'));
 
     $this->container->set(Client::class, $client->reveal());
 
@@ -84,8 +86,11 @@ class ApprovalEntityTest extends RemoteEntityAccessTestBase {
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
     $this->drupalSetUpCurrentUser(permissions: ['view remote entities']);
-    $this->processRequest($this->getMockedRequest($canonical));
-    $this->processRequest($this->getMockedRequest($direct));
+    foreach ([$canonical, $direct] as $url) {
+      $response = $this->processRequest($this->getMockedRequest($url));
+      $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+      $this->assertStringContainsString('filename=test-work_finished.pdf', $response->headers->get('Content-Disposition'));
+    }
   }
 
 }
