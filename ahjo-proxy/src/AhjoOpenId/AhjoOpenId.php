@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\AhjoOpenId;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,7 +19,6 @@ final readonly class AhjoOpenId {
     private Settings $settings,
     private TokenStorage $storage,
     private HttpClientInterface $httpClient,
-    private UrlGeneratorInterface $urlGenerator,
     private LoggerInterface $logger,
   ) {
   }
@@ -28,25 +26,26 @@ final readonly class AhjoOpenId {
   /**
    * Gets URL that starts the OpenID authorization code flow.
    *
+   * @param string $state
+   *   OpenID state.
+   *
+   * @todo Add PKCE if Ahjo supports it. The code verifier can be derived
+   *   from the state with HMAC, so the proxy stays stateless.
+   *
+   * @see \App\AhjoOpenId\StateSigner
+   *
    * @throws \App\AhjoOpenId\AhjoOpenIdException
    */
-  public function getAuthUrl(): string {
+  public function getAuthUrl(string $state): string {
     $this->settings->assertValid();
 
     return sprintf('%s?%s', $this->settings->authUrl, http_build_query([
       'client_id' => $this->settings->clientId,
       'scope' => $this->settings->scope,
       'response_type' => 'code',
-      'redirect_uri' => $this->getCallbackUrl(),
-      'state' => $this->storage->createState(),
+      'redirect_uri' => $this->settings->redirectUri,
+      'state' => $state,
     ]));
-  }
-
-  /**
-   * Validates OpenID state from the callback request.
-   */
-  public function validateState(string $state): bool {
-    return $this->storage->consumeState($state);
   }
 
   /**
@@ -66,7 +65,7 @@ final readonly class AhjoOpenId {
         'client_id' => $this->settings->clientId,
         'grant_type' => 'authorization_code',
         'code' => $code,
-        'redirect_uri' => $this->getCallbackUrl(),
+        'redirect_uri' => $this->settings->redirectUri,
       ]);
     }
 
@@ -166,13 +165,6 @@ final readonly class AhjoOpenId {
     finally {
       $lock->release();
     }
-  }
-
-  /**
-   * Gets absolute OpenID callback URL.
-   */
-  private function getCallbackUrl(): string {
-    return $this->urlGenerator->generate('openid_callback', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
   }
 
 }

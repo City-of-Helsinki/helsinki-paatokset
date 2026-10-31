@@ -19,12 +19,6 @@ final class TokenStorage {
 
   private const string TOKEN_FILE = 'ahjo-token.json';
   private const string OLD_TOKEN_FILE = 'ahjo-token.old.json';
-  private const string STATE_FILE = 'openid-state.json';
-
-  /**
-   * How long OpenID state is valid in seconds.
-   */
-  private const int STATE_TTL = 600;
 
   /**
    * The filesystem.
@@ -78,48 +72,6 @@ final class TokenStorage {
       $this->write(self::OLD_TOKEN_FILE, $content);
       $this->write(self::TOKEN_FILE, '');
     }
-  }
-
-  /**
-   * Creates and stores a new OpenID state value.
-   */
-  public function createState(): string {
-    $state = bin2hex(random_bytes(16));
-    $this->write(self::STATE_FILE, json_encode([
-      'state' => $state,
-      'created' => time(),
-    ], JSON_THROW_ON_ERROR));
-
-    return $state;
-  }
-
-  /**
-   * Validates and consumes OpenID state value.
-   *
-   * @return bool
-   *   TRUE if the state matches the stored state.
-   */
-  public function consumeState(string $state): bool {
-    $content = $this->read(self::STATE_FILE);
-    if (!$content) {
-      return FALSE;
-    }
-
-    // State can be used only once.
-    $this->filesystem->remove($this->path(self::STATE_FILE));
-
-    try {
-      $data = json_decode($content, TRUE, flags: JSON_THROW_ON_ERROR);
-    }
-    catch (\JsonException) {
-      return FALSE;
-    }
-
-    return is_array($data)
-      && is_string($data['state'] ?? NULL)
-      && is_int($data['created'] ?? NULL)
-      && $data['created'] + self::STATE_TTL >= time()
-      && hash_equals($data['state'], $state);
   }
 
   /**

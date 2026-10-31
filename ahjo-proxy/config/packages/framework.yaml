@@ -18,9 +18,19 @@ framework:
     http_client:
         default_options:
             timeout: 60
+    cache:
+        pools:
+            # OIDC signing keys.
+            oidc.cache:
+                adapter: cache.adapter.filesystem
 
 when@test:
     framework:
         test: true
         http_client:
             mock_response_factory: App\Tests\MockResponseFactory
+        cache:
+            pools:
+                # Test keys are generated for each test.
+                oidc.cache:
+                    adapter: cache.adapter.array

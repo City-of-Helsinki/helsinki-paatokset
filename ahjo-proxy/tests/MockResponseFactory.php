@@ -9,8 +9,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Mock response factory for the test http client.
- *
- * The state is static so it survives kernel reboots between requests.
  */
 final class MockResponseFactory {
 
@@ -20,6 +18,13 @@ final class MockResponseFactory {
    * @var array<array{method: string, url: string, options: array<string, mixed>}>
    */
   public static array $requests = [];
+
+  /**
+   * Fixed response bodies by URL.
+   *
+   * @var array<string, string>
+   */
+  public static array $fixedResponses = [];
 
   /**
    * Response factory.
@@ -43,6 +48,7 @@ final class MockResponseFactory {
    */
   public static function reset(): void {
     self::$requests = [];
+    self::$fixedResponses = [];
     self::$factory = NULL;
   }
 
@@ -57,6 +63,12 @@ final class MockResponseFactory {
    *   Request options.
    */
   public function __invoke(string $method, string $url, array $options = []): ResponseInterface {
+    if (isset(self::$fixedResponses[$url])) {
+      return new MockResponse(self::$fixedResponses[$url], [
+        'response_headers' => ['Content-Type' => 'application/json'],
+      ]);
+    }
+
     self::$requests[] = ['method' => $method, 'url' => $url, 'options' => $options];
 
     if (!self::$factory) {

@@ -15,6 +15,7 @@ final readonly class Settings {
     public string $clientId,
     public string $scope,
     public string $clientSecret,
+    public string $redirectUri,
   ) {
   }
 

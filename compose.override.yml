@@ -9,10 +9,12 @@ services:
     environment:
       DRUPAL_REVERSE_PROXY_ADDRESS: helsinki-paatokset.docker.so
       OPERATOR_GUIDE_NODE_ID: 220913
+      # Local Ahjo proxy v3. The API key must match the ahjo-proxy service.
+      AHJO_PROXY_V3_URL: "${AHJO_PROXY_V3_URL:-http://ahjo-proxy:8080}"
+      AHJO_PROXY_V3_API_KEY: "${AHJO_PROXY_V3_API_KEY:-local-ahjo-proxy-api-key}"
     env_file:
       - .env.local
-  # Ahjo proxy v3. Start with `make ahjo-proxy-up`.
-  # Secrets go to ahjo-proxy/.env.local.
+  # Ahjo proxy v3. Secrets go to ahjo-proxy/.env.local.
   # @see ahjo-proxy/README.md
   ahjo-proxy:
     container_name: "${COMPOSE_PROJECT_NAME}-ahjo-proxy"
@@ -26,6 +28,11 @@ services:
       XDEBUG_ENABLE: "${XDEBUG_ENABLE:-false}"
       XDEBUG_CONFIG: "${XDEBUG_CONFIG:-}"
       PHP_IDE_CONFIG: "serverName=ahjo-proxy-${DRUPAL_HOSTNAME}"
+      AHJO_PROXY_API_KEY: "${AHJO_PROXY_V3_API_KEY:-local-ahjo-proxy-api-key}"
+      AHJO_OPENID_REDIRECT_URI: "https://ahjo-proxy-${DRUPAL_HOSTNAME}/openid/callback"
+      OIDC_ISSUER: "${AHJO_PROXY_OIDC_ISSUER:-https://tunnistus.test.hel.ninja/auth/realms/helsinki-tunnistus}"
+      OIDC_ALLOWED_CLIENTS: "${AHJO_PROXY_OIDC_ALLOWED_CLIENTS:-paatokset-admin-ui-dev}"
+      OIDC_ALLOWED_AD_GROUPS: "${AHJO_PROXY_OIDC_ALLOWED_AD_GROUPS:-Drupal_Helfi_kaupunkitaso_paakayttajat,947058f4-697e-41bb-baf5-f69b49e5579a}"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -38,5 +45,3 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-ahjo-proxy.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-ahjo-proxy.loadbalancer.server.port=8080"
       - "traefik.docker.network=stonehenge-network"
-    profiles:
-      - ahjo-proxy

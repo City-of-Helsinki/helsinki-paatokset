@@ -79,10 +79,14 @@ final class ProxyControllerTest extends WebTestCase {
     $this->request('GET', '/organization/decisionmakingorganizations?orgid=02900');
     $this->assertResponseIsSuccessful();
 
+    $this->request('GET', '/cases/HEL-2025-007790/handlings/1');
+    $this->assertResponseIsSuccessful();
+
     $this->assertSame([
       'https://ahjo.test/ahjorest/v1/meetings/U02120202017/agendaitems/HEL-2025-007790',
       'https://ahjo.test/ahjorest/v1/records/%7B12345678-ABCD%7D',
       'https://ahjo.test/ahjorest/v1/organization/decisionmakingorganizations?orgid=02900',
+      'https://ahjo.test/ahjorest/v1/cases/HEL-2025-007790/handlings/1',
     ], array_column(MockResponseFactory::$requests, 'url'));
   }
 
@@ -143,7 +147,7 @@ final class ProxyControllerTest extends WebTestCase {
     self::setToken();
     MockResponseFactory::setResponse(new MockResponse('{}'));
 
-    foreach (['/', '/foo', '/cases/..', '/cases/%2E%2E', '/cases/foo%2Fbar', '/cases/1/2', '/document/123'] as $path) {
+    foreach (['/', '/foo', '/cases/..', '/cases/%2E%2E', '/cases/foo%2Fbar', '/cases/1/2', '/document/123', '/organization/02900', '/organization/decisionmakingorganizations/02900', '/agents/decisionmakers/02900'] as $path) {
       $this->request('GET', $path);
       $this->assertFalse($this->client->getResponse()->isSuccessful(), $path);
     }
