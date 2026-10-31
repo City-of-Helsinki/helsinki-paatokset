@@ -11,3 +11,32 @@ services:
       OPERATOR_GUIDE_NODE_ID: 220913
     env_file:
       - .env.local
+  # Ahjo proxy v3. Start with `make ahjo-proxy-up`.
+  # Secrets go to ahjo-proxy/.env.local.
+  # @see ahjo-proxy/README.md
+  ahjo-proxy:
+    container_name: "${COMPOSE_PROJECT_NAME}-ahjo-proxy"
+    image: "${DRUPAL_IMAGE:-ghcr.io/city-of-helsinki/drupal-web:8.5}"
+    volumes:
+      - ./ahjo-proxy:/app:delegated
+    working_dir: /app
+    environment:
+      WEBROOT: /app/public
+      APP_ENV: dev
+      XDEBUG_ENABLE: "${XDEBUG_ENABLE:-false}"
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG:-}"
+      PHP_IDE_CONFIG: "serverName=ahjo-proxy-${DRUPAL_HOSTNAME}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - internal
+      - stonehenge-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-ahjo-proxy.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-ahjo-proxy.rule=Host(`ahjo-proxy-${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-ahjo-proxy.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-ahjo-proxy.loadbalancer.server.port=8080"
+      - "traefik.docker.network=stonehenge-network"
+    profiles:
+      - ahjo-proxy

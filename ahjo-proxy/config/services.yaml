@@ -1,0 +1,29 @@
+parameters:
+    ahjo_proxy.token_storage_dir: '%env(resolve:TOKEN_STORAGE_DIR)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            string $ahjoEndpoint: '%env(AHJO_ENDPOINT)%'
+            string $apiKey: '%env(AHJO_PROXY_API_KEY)%'
+            string $storageDir: '%ahjo_proxy.token_storage_dir%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/AhjoOpenId/AhjoAuthToken.php'
+
+    App\AhjoOpenId\Settings:
+        arguments:
+            $authUrl: '%env(AHJO_OPENID_AUTH_URL)%'
+            $tokenUrl: '%env(AHJO_OPENID_TOKEN_URL)%'
+            $clientId: '%env(AHJO_OPENID_CLIENT_ID)%'
+            $scope: '%env(AHJO_OPENID_SCOPE)%'
+            $clientSecret: '%env(AHJO_OPENID_SECRET)%'
+
+when@test:
+    services:
+        App\Tests\MockResponseFactory: ~
