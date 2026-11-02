@@ -10,25 +10,32 @@ use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoProxyOpenIdClient;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\Form\AhjoProxyAuthForm;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\Settings;
+use Drupal\paatokset_ahjo_api\AhjoOpenId\StatusMessageTrait;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * AHJO Open ID page controller.
+ *
+ * @fixme Once v3 proxy is up, remove everything else from this page.
  */
 final class AhjoOpenIdController extends ControllerBase {
 
   use AutowireTrait;
+  use StatusMessageTrait;
 
   public function __construct(
     private readonly AhjoOpenId $ahjoOpenId,
     private readonly Settings $settings,
+    private readonly AhjoProxyOpenIdClient $proxyClient,
   ) {
   }
 
   /**
-   * Debug API.
+   * Legacy debug page.
    */
   public function index(): array {
     return [
@@ -39,11 +46,46 @@ final class AhjoOpenIdController extends ControllerBase {
       'auth_flow' => $this->getAuthFlowMarkup(),
       'div_2' => ['#markup' => '<hr>'],
       'token_info' => $this->getTokenInfo(),
+      'proxy' => $this->getProxyInfo(),
     ];
   }
 
   /**
-   * Get auth token.
+   * Gets Ahjo proxy (v3) token status and the form that starts the auth flow.
+   *
+   * @return array<string, mixed>
+   *   Render array.
+   */
+  private function getProxyInfo(): array {
+    $build = [
+      'divider' => ['#markup' => '<hr>'],
+      'title' => ['#markup' => '<h2>' . $this->t('Ahjo proxy') . '</h2>'],
+    ];
+
+    try {
+      $status = $this->proxyClient->getTokenStatus();
+      if (!$status->hasToken()) {
+        $build['token'] = $this->statusMessage('warning', $this->t('Token has not been set.'));
+      }
+      elseif ($status->isExpired()) {
+        $build['token'] = $this->statusMessage('error', $this->t('Token expired at %date.', ['%date' => date(DATE_ATOM, $status->expires)]));
+      }
+      else {
+        $build['token'] = $this->statusMessage('status', $this->t('Token is valid until %date.', ['%date' => date(DATE_ATOM, $status->expires)]));
+      }
+    }
+    catch (AhjoOpenIdException $e) {
+      Error::logException($this->getLogger('paatokset_ahjo_api'), $e);
+      $build['token'] = $this->statusMessage('error', $this->t('Ahjo proxy is unavailable. Try again later.'));
+    }
+
+    $build['form'] = $this->formBuilder()->getForm(AhjoProxyAuthForm::class);
+
+    return $build;
+  }
+
+  /**
+   * Legacy get auth token.
    */
   public function getToken(): array {
     $token = $this->ahjoOpenId->getAuthToken();
@@ -58,7 +100,7 @@ final class AhjoOpenIdController extends ControllerBase {
   }
 
   /**
-   * Get auth flow link.
+   * Legacy get auth flow link.
    *
    * @return array
    *   Markup array.
@@ -80,7 +122,7 @@ final class AhjoOpenIdController extends ControllerBase {
   }
 
   /**
-   * Get token info.
+   * Legacy get token info.
    *
    * @return array
    *   Markup array.
@@ -107,7 +149,7 @@ final class AhjoOpenIdController extends ControllerBase {
   }
 
   /**
-   * Authentication flow.
+   * Legacy authentication flow.
    *
    * @return array
    *   Markup array.
