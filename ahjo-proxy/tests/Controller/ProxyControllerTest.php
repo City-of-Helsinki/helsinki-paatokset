@@ -147,7 +147,20 @@ final class ProxyControllerTest extends WebTestCase {
     self::setToken();
     MockResponseFactory::setResponse(new MockResponse('{}'));
 
-    foreach (['/', '/foo', '/cases/..', '/cases/%2E%2E', '/cases/foo%2Fbar', '/cases/1/2', '/document/123', '/organization/02900', '/organization/decisionmakingorganizations/02900', '/agents/decisionmakers/02900'] as $path) {
+    $paths = [
+      '/',
+      '/foo',
+      '/cases/..',
+      '/cases/%2E%2E',
+      '/cases/foo%2Fbar',
+      '/cases/1/2',
+      '/document/123',
+      '/organization/02900',
+      '/organization/decisionmakingorganizations/02900',
+      '/agents/decisionmakers/02900',
+    ];
+
+    foreach ($paths as $path) {
       $this->request('GET', $path);
       $this->assertFalse($this->client->getResponse()->isSuccessful(), $path);
     }
