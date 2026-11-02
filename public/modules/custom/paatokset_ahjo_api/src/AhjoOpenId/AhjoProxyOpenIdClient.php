@@ -85,9 +85,6 @@ final readonly class AhjoProxyOpenIdClient {
   /**
    * Starts the OpenID flow.
    *
-   * Ahjo redirects the browser from the auth URL back to the proxy, which
-   * exchanges the code and stores the token.
-   *
    * @return string
    *   The Ahjo auth URL where the user should be redirected.
    *
@@ -112,13 +109,6 @@ final readonly class AhjoProxyOpenIdClient {
 
   /**
    * Makes an authenticated request to the proxy.
-   *
-   * @param string $method
-   *   Request method.
-   * @param string $path
-   *   Request path.
-   * @param bool $requireAdmin
-   *   Whether the request needs the access token of the current user.
    *
    * @throws \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException
    *   The exception code is the HTTP status of the proxy response, if any.

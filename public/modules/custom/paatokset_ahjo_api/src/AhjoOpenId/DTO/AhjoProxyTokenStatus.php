@@ -35,10 +35,7 @@ final readonly class AhjoProxyTokenStatus {
   }
 
   /**
-   * Constructs a new instance from the proxy response body.
-   *
-   * @param string $json
-   *   Json string.
+   * Constructs a new instance from the proxy response.
    *
    * @throws \InvalidArgumentException
    */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\AhjoOpenId\Form;
 
-use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -20,7 +19,6 @@ use Drupal\paatokset_ahjo_api\AhjoOpenId\StatusMessageTrait;
  */
 final class AhjoProxyAuthForm extends FormBase {
 
-  use AutowireTrait;
   use StatusMessageTrait;
 
   public function __construct(
