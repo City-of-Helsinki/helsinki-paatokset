@@ -85,8 +85,8 @@ final readonly class AhjoProxyOpenIdClient {
   /**
    * Starts the OpenID flow.
    *
-   * @return string
-   *   The Ahjo auth URL where the user should be redirected.
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Redirect to the Ahjo auth URL.
    *
    * @throws \Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenIdException
    */
