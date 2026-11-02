@@ -6,7 +6,6 @@ namespace Drupal\paatokset_ahjo_api\AhjoOpenId;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Drupal\Core\Url;
 use Drupal\helfi_tunnistamo\ReauthenticatorInterface;
 use Drupal\helfi_tunnistamo\TokenManagerInterface;
 use Drupal\paatokset_ahjo_api\AhjoOpenId\DTO\AhjoProxyTokenStatus;
