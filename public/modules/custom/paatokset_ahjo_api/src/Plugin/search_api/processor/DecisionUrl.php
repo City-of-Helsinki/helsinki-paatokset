@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -14,33 +17,32 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Computes the decision URL for the indexed decision.
- *
- * @SearchApiProcessor(
- *    id = "decision_url",
- *    label = @Translation("Decision URL"),
- *    description = @Translation("Computes decision URL for the document"),
- *    stages = {
- *      "add_properties" = 0
- *    },
- *    locked = true,
- *    hidden = true
- * )
  */
+#[SearchApiProcessor(
+  id: 'decision_url',
+  label: new TranslatableMarkup('Decision URL'),
+  description: new TranslatableMarkup('Computes decision URL for the document'),
+  stages: [
+    'add_properties' => 0
+  ],
+)]
 class DecisionUrl extends ProcessorPluginBase {
+
+  private const string PROPERTY_PATH = 'decision_url';
 
   /**
    * Case service.
-   *
-   * @var \Drupal\paatokset_ahjo_api\Service\CaseService
    */
-  private CaseService $caseService;
+  protected CaseService $caseService;
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<mixed> $configuration
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->caseService = $container->get('paatokset_ahjo_cases');
+    $instance->caseService = $container->get(CaseService::class);
 
     return $instance;
   }
@@ -48,7 +50,7 @@ class DecisionUrl extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array {
     $properties = [];
 
     if ($datasource) {
@@ -58,7 +60,7 @@ class DecisionUrl extends ProcessorPluginBase {
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ];
-      $properties['decision_url'] = new ProcessorProperty($definition);
+      $properties[self::PROPERTY_PATH] = new ProcessorProperty($definition);
     }
 
     return $properties;
@@ -66,15 +68,31 @@ class DecisionUrl extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\search_api\Item\ItemInterface<mixed> $item
    */
-  public function addFieldValues(ItemInterface $item) {
+  public function addFieldValues(ItemInterface $item): void {
     $datasourceId = $item->getDatasourceId();
-    if ($datasourceId === 'entity:node' && $decision = $item->getOriginalObject()->getValue()) {
-      $language = $decision->language();
-      $decisionUrl = $this->caseService->getDecisionUrlFromNode($decision, $language->getId());
-      $fields = $this->getFieldsHelper()->filterForPropertyPath($item->getFields(), 'entity:node', 'decision_url');
-      if ($decisionUrl instanceof Url && isset($fields['decision_url'])) {
-        $fields['decision_url']->addValue($decisionUrl->toString());
+    if ($datasourceId !== 'entity:node') {
+      return;
+    }
+
+    $node = $item->getOriginalObject()->getValue();
+    if (!$node instanceof Decision) {
+      return;
+    }
+
+    $decision = $node;
+
+    $language = $decision->language();
+    $decisionUrl = $this->caseService->getDecisionUrlFromNode($decision, $language->getId());
+
+    $fields = $this->getFieldsHelper()
+      ->filterForPropertyPath($item->getFields(), $item->getDatasourceId(), self::PROPERTY_PATH);
+
+    if ($decisionUrl instanceof Url) {
+      foreach ($fields as $field) {
+        $field->addValue($decisionUrl->toString());
       }
     }
   }
