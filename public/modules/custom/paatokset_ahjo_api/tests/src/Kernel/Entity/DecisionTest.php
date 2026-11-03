@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Entity;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\paatokset_ahjo_api\Entity\ConfidentialityInterface;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 
 /**

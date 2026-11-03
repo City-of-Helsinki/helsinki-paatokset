@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Plugin\migrate\source;
 
 use Drupal\migrate\Attribute\MigrateSource;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyException;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 
 /**
  * Source plugin for retrieving organization compositions.
