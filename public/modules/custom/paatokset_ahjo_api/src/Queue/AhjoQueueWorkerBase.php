@@ -97,7 +97,7 @@ class AhjoQueueWorkerBase extends QueueWorkerBase {
     if ($status !== 1) {
       // Check if item should be moved to retry or error queue.
       if ($this->moveToErrorQueue($data)) {
-        $this->logger->warning('Could not process @id from @queue, migration returned with status: @status. Moved to another queue.', [
+        $this->logger->error('Could not process @id from @queue, migration returned with status: @status. Moved to another queue.', [
           '@id' => $entity,
           '@queue' => $data['id'],
           '@status' => $status,
