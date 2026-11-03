@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Entity;
 
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_policymakers\Enum\PolicymakerRoutes;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
