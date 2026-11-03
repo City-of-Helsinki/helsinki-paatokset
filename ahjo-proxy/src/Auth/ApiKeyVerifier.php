@@ -6,9 +6,6 @@ namespace App\Auth;
 
 /**
  * Verifies the api key.
- *
- * The key is sent in the `api-key` header, like with Drupal key_auth
- * module that was used with the previous proxy versions.
  */
 final readonly class ApiKeyVerifier {
 

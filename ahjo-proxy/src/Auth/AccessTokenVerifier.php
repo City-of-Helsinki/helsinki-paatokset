@@ -15,27 +15,17 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * Verifies Helsinki profiili access tokens.
  *
  * Drupal sends the access token of the logged-in admin, which it gets from
- * helfi_tunnistamo. The token is verified against the issuer's signing keys,
- * so the proxy verify that user is allowed to perform actions. Three things
- * have to hold:
- *  - The token is signed by OIDC_ISSUER and has not expired.
- *  - The token was issued to one of the OIDC_ALLOWED_CLIENTS.
- *  - The token's ad_groups claim names one of the OIDC_ALLOWED_AD_GROUPS.
+ * helfi_tunnistamo. The token is verified against the issuer's signing keys.
  */
 final class AccessTokenVerifier {
 
   /**
    * How long the signing keys are cached, in seconds.
-   *
-   * Keys with an unknown kid are fetched immediately, so key rotation
-   * does not have to wait for this.
    */
   private const int KEYS_TTL = 3600;
 
   /**
    * Lazily initialized key set.
-   *
-   * The discovery document is read once, when the key set is created.
    */
   private ?CachedKeySet $keySet = NULL;
 
@@ -160,8 +150,6 @@ final class AccessTokenVerifier {
    * @throws \RuntimeException
    */
   private function getJwksUri(): string {
-    // Per OpenID Connect Discovery the path is appended to the issuer,
-    // which for a Keycloak realm already has one.
     $discoveryUrl = rtrim($this->oidcIssuer, '/') . '/.well-known/openid-configuration';
 
     try {

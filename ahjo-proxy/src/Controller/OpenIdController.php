@@ -34,16 +34,6 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 final readonly class OpenIdController {
 
-  /**
-   * ASCII art heading shown on every page.
-   */
-  private const string BANNER = <<<'ASCII'
-      ▘▘▘▘▗ ▘▘▌     ▗
-    ▛▌▀▌▀▌▜▘▛▌▙▘▛▘█▌▜▘
-    ▙▌█▌█▌▐▖▙▌▛▖▄▌▙▖▐▖
-    ▌
-    ASCII;
-
   public function __construct(
     private AhjoOpenId $ahjoOpenId,
     private StateSigner $stateSigner,
@@ -132,20 +122,18 @@ final readonly class OpenIdController {
    */
   private static function page(string $message, int $status = Response::HTTP_OK): Response {
     $message = htmlspecialchars($message, ENT_QUOTES | ENT_HTML5);
-    $banner = self::BANNER;
 
     $html = <<<HTML
       <!doctype html>
       <html lang="en">
       <head><meta charset="utf-8"><title>Ahjo proxy authentication</title></head>
-      <body><pre role="img" aria-label="Päätökset">{$banner}</pre><p>{$message}</p></body>
+      <body><p>{$message}</p></body>
       </html>
       HTML;
 
     return new Response($html, $status, [
       'Content-Type' => 'text/html; charset=UTF-8',
       'Cache-Control' => 'no-store',
-      // The URL contains the authorization code.
       'Referrer-Policy' => 'no-referrer',
       'Content-Security-Policy' => "default-src 'none'",
     ]);

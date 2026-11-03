@@ -8,8 +8,6 @@ use Firebase\JWT\JWT;
 
 /**
  * Provides a fake OIDC issuer and signed access tokens.
- *
- * Mirrors the test helpers of helfi-hakuvahti.
  */
 trait AuthTestTrait {
 

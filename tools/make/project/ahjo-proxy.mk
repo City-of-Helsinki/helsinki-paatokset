@@ -1,5 +1,3 @@
-# Ahjo proxy v3 (ahjo-proxy/).
-#
 # The service is defined in compose.override.yml and starts with `make up`.
 
 define ahjo_proxy_exec

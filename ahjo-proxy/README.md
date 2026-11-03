@@ -6,8 +6,7 @@ Paths and query strings are forwarded as-is, and Ahjo responses are returned as-
 ## Quick start
 
 The `ahjo-proxy` service is defined in the project's `compose.override.yml`
-and starts with `make up`. Drupal connects to it with the default local
-credentials defined there.
+and starts with `make up`.
 
 ```sh
 make ahjo-proxy-up             # start (and composer install)
@@ -47,21 +46,23 @@ The proxy is available at https://ahjo-proxy-helsinki-paatokset.docker.so.
   - `GET /councilgroups`
   - `GET /agents/decisionmakers`
 
-  The allowlist matches the GET endpoints of the Ahjo REST API schema (v1.4.0).
+The allowlist matches the GET endpoints of the Ahjo REST API schema (v1.4.0).
 
 `/openid` is meant to be called by Drupal when authenticating to Ahjo.
 See [Ahjo auth token](#ahjo-auth-token).
 
 ## Authentication
 
-- **`api-key`** allows calling the proxy.
+- **`api-key`** allows calling the proxy. Sent as a header or as a query
+  parameter (`?api-key=...`), like with the previous proxy versions. The query
+  parameter is not forwarded to Ahjo.
 - **`X-Access-Token`** required by `POST /openid` only.
   It is the Keycloak access token of the admin who is logged in to
   Drupal.
 
 ## Ahjo auth token
 
-Refresh tokens are single-use, so the token is stored in `TOKEN_STORAGE_DIR`,
+Refresh tokens are single-use. The token is stored in `TOKEN_STORAGE_DIR`,
 which must be a persistent volume.
 
 The token is set up once by a person with Ahjo credentials. Browser part
@@ -81,9 +82,6 @@ of the flow runs in the Drupal admin UI (`/admin/ahjo-open-id`, `paatokset_ahjo_
    code for a token with Ahjo, and stores it.
 6. `bin/console ahjo-proxy:refresh-token` keeps the token fresh. Run it
    periodically (e.g. hourly OpenShift CronJob).
-
-The callback request has no credentials, so the signed state is what authorizes
-it. Only authorized admins get a valid state, so the proxy needs no session.
 
 ```mermaid
 sequenceDiagram

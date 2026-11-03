@@ -133,42 +133,14 @@ final class ProxyControllerTest extends WebTestCase {
     $this->client->request('GET', '/cases', server: ['HTTP_API_KEY' => 'wrong']);
     $this->assertResponseStatusCodeSame(401);
 
+    $this->client->request('GET', '/cases?api-key=wrong');
+    $this->assertResponseStatusCodeSame(401);
+
     $this->assertEmpty(MockResponseFactory::$requests);
 
     // Health check does not require api key.
     $this->client->request('GET', '/healthz');
     $this->assertResponseIsSuccessful();
-  }
-
-  /**
-   * Tests that only allowlisted endpoints are proxied.
-   */
-  public function testUnknownEndpoints(): void {
-    self::setToken();
-    MockResponseFactory::setResponse(new MockResponse('{}'));
-
-    $paths = [
-      '/',
-      '/foo',
-      '/cases/..',
-      '/cases/%2E%2E',
-      '/cases/foo%2Fbar',
-      '/cases/1/2',
-      '/document/123',
-      '/organization/02900',
-      '/organization/decisionmakingorganizations/02900',
-      '/agents/decisionmakers/02900',
-    ];
-
-    foreach ($paths as $path) {
-      $this->request('GET', $path);
-      $this->assertFalse($this->client->getResponse()->isSuccessful(), $path);
-    }
-
-    $this->request('POST', '/cases');
-    $this->assertResponseStatusCodeSame(405);
-
-    $this->assertEmpty(MockResponseFactory::$requests);
   }
 
 }

@@ -9,13 +9,12 @@ services:
     environment:
       DRUPAL_REVERSE_PROXY_ADDRESS: helsinki-paatokset.docker.so
       OPERATOR_GUIDE_NODE_ID: 220913
-      # Local Ahjo proxy v3. The API key must match the ahjo-proxy service.
+      # Local Ahjo proxy. The API key must match the ahjo-proxy service.
       AHJO_PROXY_V3_URL: "${AHJO_PROXY_V3_URL:-http://ahjo-proxy:8080}"
       AHJO_PROXY_V3_API_KEY: "${AHJO_PROXY_V3_API_KEY:-local-ahjo-proxy-api-key}"
     env_file:
       - .env.local
-  # Ahjo proxy v3. Secrets go to ahjo-proxy/.env.local.
-  # @see ahjo-proxy/README.md
+
   ahjo-proxy:
     container_name: "${COMPOSE_PROJECT_NAME}-ahjo-proxy"
     image: "${DRUPAL_IMAGE:-ghcr.io/city-of-helsinki/drupal-web:8.5}"

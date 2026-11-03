@@ -29,9 +29,6 @@ final readonly class AhjoOpenId {
    * @param string $state
    *   OpenID state.
    *
-   * @todo Add PKCE if Ahjo supports it. The code verifier can be derived
-   *   from the state with HMAC, so the proxy stays stateless.
-   *
    * @see \App\AhjoOpenId\StateSigner
    *
    * @throws \App\AhjoOpenId\AhjoOpenIdException

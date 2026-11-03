@@ -25,16 +25,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * requests can be passed as-is to Ahjo API. The Ahjo responses are
  * returned as-is.
  *
- * Only allowlisted endpoints are proxied. The allowlist contains the GET
- * endpoints of Ahjo REST API schema v1.4.0. Requests must be authenticated
- * with an api key.
- *
  * If an upstream proxy is configured, requests are forwarded to it
  * instead of Ahjo. This simplifies Drupal configuration. Each Drupal
  * only talks to its own ahjo proxy, and if Ahjo configuration
  * is missing, requests are be forwarded to production.
- *
- * @see \App\Auth\RequireApiKey
  */
 #[RequireApiKey]
 final readonly class ProxyController {
@@ -101,8 +95,8 @@ final readonly class ProxyController {
       $headers = ['Authorization' => 'Bearer ' . $token];
     }
 
-    // Pass the path and the query string as-is.
-    $queryString = $request->server->getString('QUERY_STRING');
+    // Pass the path and the query string as-is, except for the api key.
+    $queryString = self::removeApiKey($request->server->getString('QUERY_STRING'));
     $url = rtrim($baseUrl, '/') . $request->getPathInfo() . ($queryString !== '' ? '?' . $queryString : '');
 
     try {
@@ -126,6 +120,18 @@ final readonly class ProxyController {
 
       return new JsonResponse(['error' => 'Ahjo request failed.'], Response::HTTP_BAD_GATEWAY);
     }
+  }
+
+  /**
+   * Removes the api key from a raw query string.
+   */
+  private static function removeApiKey(string $queryString): string {
+    $parts = array_filter(
+      explode('&', $queryString),
+      static fn (string $part) => urldecode(explode('=', $part, 2)[0]) !== 'api-key',
+    );
+
+    return implode('&', $parts);
   }
 
 }

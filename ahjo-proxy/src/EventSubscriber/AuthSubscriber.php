@@ -49,7 +49,9 @@ final readonly class AuthSubscriber implements EventSubscriberInterface {
     $attributes = $event->getAttributes();
     $request = $event->getRequest();
 
-    if (isset($attributes[RequireApiKey::class]) && !$this->apiKeyVerifier->verify($request->headers->get('api-key') ?? '')) {
+    // Previous proxy versions accepted the api key as a query parameter too.
+    $apiKey = $request->headers->get('api-key') ?? $request->query->getString('api-key');
+    if (isset($attributes[RequireApiKey::class]) && !$this->apiKeyVerifier->verify($apiKey)) {
       $event->setController(static fn () => new JsonResponse(['error' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED));
       return;
     }

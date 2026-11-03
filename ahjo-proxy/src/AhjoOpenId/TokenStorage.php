@@ -12,8 +12,8 @@ use Symfony\Component\Lock\Store\FlockStore;
 /**
  * File based storage for the Ahjo auth token.
  *
- * The storage directory should be on a persistent volume. Redis is not
- * used, because Drupal flushes the shared Redis on every deployment.
+ * We assume that only one process ever refreshes the tokens. Every other
+ * consumer only reads.
  */
 final class TokenStorage {
 
@@ -60,11 +60,6 @@ final class TokenStorage {
 
   /**
    * Clears the current token.
-   *
-   * The old token is kept to help with debugging issues. The previous
-   * token is invalid after refreshing, so it is not strictly necessary.
-   * However, clearing the current token makes it easier to detect that
-   * an invalid token is used, in case the refresh fails.
    */
   public function clearToken(): void {
     $content = $this->read(self::TOKEN_FILE);
