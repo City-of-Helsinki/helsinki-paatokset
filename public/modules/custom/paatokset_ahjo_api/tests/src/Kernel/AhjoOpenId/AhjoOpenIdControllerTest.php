@@ -81,6 +81,7 @@ class AhjoOpenIdControllerTest extends KernelTestBase {
     $this->assertEquals(403, $response->getStatusCode());
 
     $this->installEntitySchema('user');
+    $this->installSchema('user', ['users_data']);
     $this->createUser(['administer ahjo openid']);
     $response = $this->processRequest($request);
     $this->assertTrue($response->isSuccessful());

@@ -106,10 +106,11 @@ final class AhjoOpenIdController extends ControllerBase {
    *   Markup array.
    */
   private function getAuthFlowMarkup(): array {
-    if ($auth_url = $this->settings->getAuthUrl()) {
+    try {
+      $auth_url = $this->settings->getAuthUrl();
       $link_markup = '<p>' . $this->t('To start authentication flow, go to:') . ' <a href="' . $auth_url . '">' . $auth_url . '</a></p>';
     }
-    else {
+    catch (AhjoOpenIdException) {
       $link_markup = '<p>' . $this->t('Configuration needs to be added before authentication.') . '</p>';
     }
 
