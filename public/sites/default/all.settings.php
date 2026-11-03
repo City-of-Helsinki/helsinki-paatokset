@@ -52,6 +52,10 @@ $config['helfi_api_base.api_accounts']['vault'][] = [
 
 $config['paatokset_ahjo_api.settings']['proxy_api_key'] = getenv('LOCAL_PROXY_API_KEY');
 
+// Standalone Ahjo proxy (see ahjo-proxy/README.md).
+$config['paatokset_ahjo_api.settings']['proxy_v3_url'] = getenv('AHJO_PROXY_V3_URL');
+$config['paatokset_ahjo_api.settings']['proxy_v3_api_key'] = getenv('AHJO_PROXY_V3_API_KEY');
+
 if (getenv('ALLU_BASE_URL')) {
   $config['paatokset_allu.settings']['base_url'] = getenv('ALLU_BASE_URL');
 }

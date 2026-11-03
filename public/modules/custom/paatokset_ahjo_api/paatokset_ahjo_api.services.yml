@@ -56,6 +56,8 @@ services:
     class: Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId
   Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoOpenId: '@paatokset_ahjo_openid'
 
+  Drupal\paatokset_ahjo_api\AhjoOpenId\AhjoProxyOpenIdClient: ~
+
   Drupal\paatokset_ahjo_api\Queue\AhjoQueueManager: ~
 
   Drupal\paatokset_ahjo_api\Queue\AhjoMigrationDriver: ~
