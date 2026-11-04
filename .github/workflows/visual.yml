@@ -79,6 +79,7 @@ jobs:
         working-directory: ${{ env.THEME_FOLDER }}
         run: |
           npm i -g npm@latest
+          npm ci --prefix ../../contrib/hdbt --ignore-scripts
           npm install --ignore-scripts
 
         # Reference images are stored as Actions artifact, attempt to restore

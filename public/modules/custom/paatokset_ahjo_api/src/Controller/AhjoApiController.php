@@ -58,6 +58,7 @@ class AhjoApiController extends ControllerBase {
     $data = [
       'id' => $organization->id(),
       'title' => $organization->label(),
+      'type' => $organization->getOrganizationType()->value,
     ];
 
     $cacheMetadata->addCacheableDependency($organization);
