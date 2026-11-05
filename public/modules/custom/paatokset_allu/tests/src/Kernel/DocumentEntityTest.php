@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_allu\Kernel;
 
+use Drupal\Core\State\StateInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityInterface;
-use Drupal\paatokset_allu\Client\Client;
+use Drupal\paatokset_allu\Client\Settings;
+use Drupal\paatokset_allu\Client\TokenFactory;
 use Drupal\paatokset_allu\Entity\Document;
 use Drupal\Tests\helfi_api_base\Kernel\Entity\Access\RemoteEntityAccessTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\Attributes\Group;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Kernel tests for document entity.
  */
 #[Group('paatokset_allu')]
+#[RunTestsInSeparateProcesses]
 class DocumentEntityTest extends RemoteEntityAccessTestBase {
 
-  use ProphecyTrait;
   use ApiTestTrait;
 
   /**
@@ -48,14 +50,17 @@ class DocumentEntityTest extends RemoteEntityAccessTestBase {
    * Tests canonical route.
    */
   public function testCanonicalRoute(): void {
-    $client = $this->prophesize(Client::class);
+    $payload = base64_encode(json_encode(['exp' => time() + 3600], JSON_THROW_ON_ERROR));
 
-    // Canonical route should return response from the API.
-    $client->streamDecision($this->rmt->id())
-      ->shouldBeCalled()
-      ->willReturn(new StreamedResponse(static function () {}));
+    // Store a valid token so TokenFactory does not need to log in.
+    $this->container->get(StateInterface::class)
+      ->set(TokenFactory::TOKEN_STATE, "header.$payload.signature");
+    $this->container->set(Settings::class, new Settings('user', 'pass', 'https://allu.test'));
 
-    $this->container->set(Client::class, $client->reveal());
+    $this->container->set('http_client', $this->createMockHttpClient([
+      new GuzzleResponse(headers: ['Content-Length' => '3'], body: 'pdf'),
+      new GuzzleResponse(Response::HTTP_NOT_FOUND),
+    ]));
 
     $url = $this->rmt->toUrl()->toString();
     $response = $this->processRequest($this->getMockedRequest($url));
@@ -63,7 +68,20 @@ class DocumentEntityTest extends RemoteEntityAccessTestBase {
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
     $this->drupalSetUpCurrentUser(permissions: ['view remote entities']);
-    $this->processRequest($this->getMockedRequest($url));
+    $response = $this->processRequest($this->getMockedRequest($url));
+
+    $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    $this->assertEquals('application/pdf', $response->headers->get('Content-Type'));
+    $this->assertEquals('3', $response->headers->get('Content-Length'));
+    $this->assertStringContainsString('filename=test.pdf', $response->headers->get('Content-Disposition'));
+
+    ob_start();
+    $response->sendContent();
+    $this->assertEquals('pdf', ob_get_clean());
+
+    // API errors are not returned as PDF documents.
+    $response = $this->processRequest($this->getMockedRequest($url));
+    $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
   }
 
 }

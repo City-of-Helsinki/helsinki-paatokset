@@ -9,17 +9,12 @@ use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\DecisionType;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Allu API client.
  */
 class Client {
-
-  /**
-   * Cache control header for PDF documents.
-   */
-  public const DOCUMENT_CACHE_CONTROL = 'public, max-age=31536000, immutable';
 
   /**
    * Constructs a new instance.
@@ -111,64 +106,55 @@ class Client {
   }
 
   /**
-   * Get streamed response for decision document.
+   * Fetch decision document.
    *
    * @param string $id
    *   Application id.
    *
-   * @return \Symfony\Component\HttpFoundation\StreamedResponse
-   *   The response.
+   * @return \Psr\Http\Message\ResponseInterface
+   *   Successful API response with an unread PDF body stream.
+   *
+   * @throws \Drupal\paatokset_allu\AlluException
    */
-  public function streamDecision(string $id): StreamedResponse {
-    return new StreamedResponse($this->streamCallback("{$this->settings->baseUrl}/external/v2/documents/applications/$id/decision"), headers: [
-      'Content-Type' => 'application/pdf',
-      'Cache-Control' => self::DOCUMENT_CACHE_CONTROL,
-    ]);
+  public function decisionDocument(string $id): ResponseInterface {
+    try {
+      return $this->client->request('GET', "{$this->settings->baseUrl}/external/v2/documents/applications/$id/decision", [
+        'stream' => TRUE,
+        'headers' => [
+          'Authorization' => "Bearer {$this->tokenFactory->getToken()}",
+        ],
+      ]);
+    }
+    catch (GuzzleException $e) {
+      throw new AlluException($e->getMessage(), $e->getCode(), $e);
+    }
   }
 
   /**
-   * Get streamed response for approval document.
+   * Fetch approval document.
    *
    * @param string $id
    *   Application id.
    * @param \Drupal\paatokset_allu\ApprovalType $type
    *   Approval type.
    *
-   * @return \Symfony\Component\HttpFoundation\StreamedResponse
-   *   The response.
-   */
-  public function streamApproval(string $id, ApprovalType $type): StreamedResponse {
-    return new StreamedResponse($this->streamCallback("{$this->settings->baseUrl}/external/v2/documents/applications/$id/approval/{$type->name}"), headers: [
-      'Content-Type' => 'application/pdf',
-      'Cache-Control' => self::DOCUMENT_CACHE_CONTROL,
-    ]);
-  }
-
-  /**
-   * Get streamed response callback.
+   * @return \Psr\Http\Message\ResponseInterface
+   *   Successful API response with an unread PDF body stream.
    *
-   * @param string $url
-   *   Document URL.
-   *
-   * @return callable
-   *   Callback from streamed response.
+   * @throws \Drupal\paatokset_allu\AlluException
    */
-  private function streamCallback(string $url): callable {
-    return function () use ($url): void {
-      $resource = fopen('php://output', 'wb');
-
-      try {
-        $this->client->request('GET', $url, [
-          'sink' => $resource,
-          'headers' => [
-            'Authorization' => "Bearer {$this->tokenFactory->getToken()}",
-          ],
-        ]);
-      }
-      finally {
-        fclose($resource);
-      }
-    };
+  public function approvalDocument(string $id, ApprovalType $type): ResponseInterface {
+    try {
+      return $this->client->request('GET', "{$this->settings->baseUrl}/external/v2/documents/applications/$id/approval/{$type->name}", [
+        'stream' => TRUE,
+        'headers' => [
+          'Authorization' => "Bearer {$this->tokenFactory->getToken()}",
+        ],
+      ]);
+    }
+    catch (GuzzleException $e) {
+      throw new AlluException($e->getMessage(), $e->getCode(), $e);
+    }
   }
 
 }
