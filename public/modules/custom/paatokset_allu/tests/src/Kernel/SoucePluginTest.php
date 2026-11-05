@@ -7,16 +7,21 @@ namespace Drupal\Tests\paatokset_allu\Kernel;
 use Drupal\paatokset_allu\Client\Settings;
 use Drupal\paatokset_allu\Client\TokenFactory;
 use Drupal\paatokset_allu\DecisionType;
+use Drupal\paatokset_allu\Plugin\migrate\source\AlluSource;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\migrate\Kernel\MigrateSourceTestBase;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests migrate source plugin.
- *
- * @covers \Drupal\paatokset_allu\Plugin\migrate\source\AlluSource
  */
+#[CoversClass(AlluSource::class)]
+#[Group('paatokset_allu')]
+#[RunTestsInSeparateProcesses]
 class SoucePluginTest extends MigrateSourceTestBase {
 
   use ApiTestTrait;
