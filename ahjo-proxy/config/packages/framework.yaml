@@ -1,0 +1,36 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    http_method_override: false
+    handle_all_throwables: true
+    session: false
+    php_errors:
+        log: true
+    # Unknown endpoints are expected, don't log them as errors.
+    exceptions:
+        Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
+            log_level: info
+        Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException:
+            log_level: info
+    # The app runs behind the OpenShift router. Trusting forwarded headers
+    # is required for generating the correct (https) OpenID callback URL.
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+    http_client:
+        default_options:
+            timeout: 60
+    cache:
+        pools:
+            # OIDC signing keys.
+            oidc.cache:
+                adapter: cache.adapter.filesystem
+
+when@test:
+    framework:
+        test: true
+        http_client:
+            mock_response_factory: App\Tests\MockResponseFactory
+        cache:
+            pools:
+                # Test keys are generated for each test.
+                oidc.cache:
+                    adapter: cache.adapter.array

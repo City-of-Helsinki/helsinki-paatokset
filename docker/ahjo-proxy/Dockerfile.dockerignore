@@ -1,0 +1,8 @@
+# Build context is the repository root, but only ahjo-proxy is needed.
+*
+!ahjo-proxy
+ahjo-proxy/vendor
+ahjo-proxy/var
+ahjo-proxy/.phpunit.cache
+ahjo-proxy/.env.local
+ahjo-proxy/.env.*.local

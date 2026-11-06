@@ -1,0 +1,17 @@
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: php://stderr
+            level: '%env(LOG_LEVEL)%'
+            formatter: monolog.formatter.json
+            channels: ['!event']
+
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: php://stderr
+                level: debug
+                channels: ['!event']

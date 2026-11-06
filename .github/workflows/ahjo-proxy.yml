@@ -1,0 +1,40 @@
+on:
+  pull_request:
+    paths:
+      - 'ahjo-proxy/**'
+      - '.github/workflows/ahjo-proxy.yml'
+name: Ahjo proxy
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/city-of-helsinki/drupal-web:8.5
+      options: --hostname app --user 1001
+    defaults:
+      run:
+        working-directory: ahjo-proxy
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
+      # Locally, phpcs is run from the main project, which provides the Drupal
+      # coding standards. Install the same standards here.
+      - name: Install coding standards
+        run: |
+          mkdir -p "$RUNNER_TEMP/coder"
+          cd "$RUNNER_TEMP/coder"
+          composer init --no-interaction --name=ci/coder
+          composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --no-interaction --no-progress drupal/coder:^8.3
+
+      - name: PHPCS
+        run: "$RUNNER_TEMP/coder/vendor/bin/phpcs"
