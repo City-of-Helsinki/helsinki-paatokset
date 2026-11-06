@@ -1441,30 +1441,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/ColorClass.php
 
 		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:addFieldValues\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:addFieldValues\(\) has parameter \$item with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:create\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionmakerCombinedTitle\:\:addFieldValues\(\) has parameter \$item with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
 			identifier: missingType.iterableValue
 			count: 1
