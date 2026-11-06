@@ -183,7 +183,6 @@ processor_settings:
     weights:
       preprocess_query: -30
   custom_value: {  }
-  decision_url: {  }
   decisionmaker_combined_title: {  }
   decisionmaker_searchfield_data: {  }
   entity_status: {  }
