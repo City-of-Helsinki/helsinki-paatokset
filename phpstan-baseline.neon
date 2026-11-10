@@ -193,12 +193,6 @@ parameters:
 			path: public/modules/custom/paatokset/tests/src/Unit/Plugin/DebugDataItem/LupapisteApiAvailabilityTest.php
 
 		-
-			message: '#^Function _paatokset_ahjo_api_get_decision_variables\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function _paatokset_ahjo_api_get_existing_value\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -301,18 +295,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
 		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__decision_tree\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__frontpage_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function paatokset_ahjo_api_preprocess_html\(\) has parameter \$variables with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -325,36 +307,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
 		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$existing with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$path with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$theme with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$type with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -362,30 +314,6 @@ parameters:
 
 		-
 			message: '#^Function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_ahjo_case\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_ahjo_initiative\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_block__meetings_calendar\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_block__meetings_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
