@@ -107,8 +107,8 @@ readonly class LanguageSwitcher {
     if ($node->bundle() === 'policymaker') {
       return $this->policyMakerService->getPolicymakerRoute($node, $langCode);
     }
-    // Cases and decisions have path aliases in all languages.
-    // @see \Drupal\paatokset_ahjo_api\Routing\LanguageAliasGenerator
+    // Case and decision paths are localized by the path processor.
+    // @see \Drupal\paatokset_ahjo_api\Routing\DecisionPathProcessor
     elseif ($node instanceof CaseBundle) {
       return $node->toUrl();
     }

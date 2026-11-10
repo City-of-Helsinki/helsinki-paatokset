@@ -361,8 +361,8 @@ class CaseService {
     }
     catch (\InvalidArgumentException) {
       // Translation does not exist. Display the decision that we have with
-      // translated UI. Decisions have path aliases in all UI languages.
-      // @see \Drupal\paatokset_ahjo_api\Routing\LanguageAliasGenerator
+      // translated UI. The path is localized by the path processor.
+      // @see \Drupal\paatokset_ahjo_api\Routing\DecisionPathProcessor
     }
 
     return $decision->toUrl('canonical', $language ? ['language' => $language] : []);
@@ -542,6 +542,9 @@ class CaseService {
     $decisions = $case->getAllDecisions();
     $policymakers = $this->loadPolicymakers($decisions);
 
+    // Link untranslated decisions with the current UI language.
+    $language = $this->languageManager->getCurrentLanguage();
+
     $results = [];
     foreach ($decisions as $node) {
       // Policymakers are loaded beforehand to prevent N+1 query here.
@@ -552,7 +555,7 @@ class CaseService {
         'unique_id' => $node->field_unique_id->value,
         'langcode' => $node->language()->getId(),
         'native_id' => $node->getNormalizedNativeId(),
-        'url' => $node->toUrl()->toString(),
+        'url' => $node->toUrl('canonical', ['language' => $language])->toString(),
         'title' => $node->label(),
         'organization' => $node->field_dm_org_name->value,
         'organization_type' => $node->field_organization_type->value,

@@ -66,7 +66,7 @@ final class CaseController extends ControllerBase {
     ];
 
     $response = new CacheableJsonResponse([
-      'url' => $decision->toUrl()->toString(),
+      'url' => $decision->toUrl('canonical', ['language' => $this->languageManager()->getCurrentLanguage()])->toString(),
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,

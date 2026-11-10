@@ -27,8 +27,6 @@ services:
     tags:
       - { name: event_subscriber }
 
-  Drupal\paatokset_ahjo_api\Routing\LanguageAliasGenerator: ~
-
   Drupal\paatokset_ahjo_api\Routing\DecisionConverter:
     tags:
       - { name: paramconverter }
@@ -67,6 +65,14 @@ services:
     tags:
       - { name: path_processor_inbound, priority: 200 }
       - { name: path_processor_outbound }
+
+  # Runs after core AliasPathProcessor (inbound 100, outbound 300) to let real
+  # aliases win. Outbound must also run before the language prefix is added
+  # (PathProcessorLanguage, outbound 100), so the path is still /node/N.
+  Drupal\paatokset_ahjo_api\Routing\DecisionPathProcessor:
+    tags:
+      - { name: path_processor_inbound, priority: 90 }
+      - { name: path_processor_outbound, priority: 250 }
 
   Drupal\paatokset_ahjo_api\EventSubscriber\PrepareIndex: ~
   Drupal\paatokset_ahjo_api\EventSubscriber\ItemsIndexed: ~
