@@ -59,26 +59,29 @@ readonly class LanguageSwitcher {
         continue;
       }
 
+      $altUrl = NULL;
+
       if (in_array($route_name, ['entity.ahjo_case.canonical', 'paatokset_ahjo_api.browse_policymakers'])) {
-        $url = $link['url'];
+        $altUrl = $link['url'];
       }
       // This relies on the `#untranslated` key set by
       // hdbt_admin_tools. The hooks from hdbt_admin_tools must be run before
       // this code is run.
       elseif ($node instanceof NodeInterface && isset($link['#untranslated']) && $link['#untranslated']) {
-        $url = $this->getAltUrlsForNode($node, $langCode);
+        $altUrl = $this->getAltUrlsForNode($node, $langCode);
       }
       elseif ($route_name !== 'entity.node.canonical') {
-        $url = $this->getAltUrlsForRoutes($langCode, $currentLanguage);
+        $altUrl = $this->getAltUrlsForRoutes($langCode, $currentLanguage);
 
         // Set link as untranslated regardless if we get the localized URL.
         $links[$langCode]['#untranslated'] = TRUE;
       }
 
-      if ($url instanceof Url) {
+      if ($altUrl instanceof Url) {
         try {
-          $url->setOption('language', $link['language']);
-          $links[$langCode]['#override_url'] = $url->toString();
+          $altUrl = clone $altUrl;
+          $altUrl->setOption('language', $link['language']);
+          $links[$langCode]['#override_url'] = $altUrl->toString();
           $links[$langCode]['#lang_override'] = TRUE;
         }
         // Catch exceptions just in case.
@@ -104,18 +107,13 @@ readonly class LanguageSwitcher {
     if ($node->bundle() === 'policymaker') {
       return $this->policyMakerService->getPolicymakerRoute($node, $langCode);
     }
+    // Cases and decisions have path aliases in all languages.
+    // @see \Drupal\paatokset_ahjo_api\Routing\LanguageAliasGenerator
     elseif ($node instanceof CaseBundle) {
-      static $decisions = [];
-
-      // Optimization: cache guess results. This should avoid few database
-      // queries when this function is called for each language.
-      if (!($decision = $decisions[$node->id()] ?? NULL)) {
-        $decisions[$node->id()] = $decision = $this->caseService->guessDecisionFromPath($node);
-      }
-
-      return $this->caseService->getCaseUrlFromNode($node->getDiaryNumber(), $decision, $langCode);
+      return $node->toUrl();
     }
-    elseif ($node->bundle() === 'decision') {
+    elseif ($node instanceof Decision) {
+      // Link to the decision in the target language, if one exists.
       return $this->caseService->getDecisionUrlFromNode($node, $langCode);
     }
     elseif ($node->bundle() === 'trustee') {
@@ -137,46 +135,7 @@ readonly class LanguageSwitcher {
    *   Localized URL, if found.
    */
   private function getAltUrlsForRoutes(string $langCode, string $currentLanguage): ?Url {
-    static $decisions = [];
-
     $route_name = $this->routeMatch->getRouteName();
-
-    // Special case for getting case URLs.
-    // This is because we might want to get translated decision IDs.
-    if (str_starts_with($route_name, 'paatokset_case.')) {
-      // Case route item can be case or decision node.
-      // See paatokest_ahjo_api.routing.yml.
-      /** @var \Drupal\paatokset_ahjo_api\Entity\CaseBundle|\Drupal\paatokset_ahjo_api\Entity\Decision $caseOrDecision */
-      $caseOrDecision = $this->routeMatch->getParameter('case');
-
-      $diaryNumber = $caseOrDecision->get('field_diary_number')->value;
-
-      // Optimization: Cache guessing so we save on DB queries. This
-      // function will be called multiple time for different languages.
-      if (!($decision = $decisions[$caseOrDecision->id()] ?? NULL)) {
-        $decision = NULL;
-
-        if ($caseOrDecision instanceof Decision) {
-          $decision = $caseOrDecision;
-        }
-        elseif ($caseOrDecision instanceof CaseBundle) {
-          $decision = $this->caseService->guessDecisionFromPath($caseOrDecision);
-        }
-
-        // Save for later.
-        $decisions[$caseOrDecision->id()] = $decision;
-      }
-
-      // Some decisions do not have diary number (nor case).
-      // For example, "pöytäkirjan tarkastajien valinta".
-      // getDecisionUrlFromNode() has fallback logic for this case.
-      if (!$diaryNumber) {
-        return $this->caseService->getDecisionUrlFromNode($decision, $langCode);
-      }
-
-      return $this->caseService->getCaseUrlFromNode($diaryNumber, $decision, $langCode)
-        ?: $this->caseService->getDecisionUrlFromNode(NULL, $langCode);
-    }
 
     $localized_route = str_replace('.' . $currentLanguage, '.' . $langCode, $route_name);
 
@@ -203,11 +162,6 @@ readonly class LanguageSwitcher {
         else {
           $parameters[$key] = $value;
         }
-      }
-      elseif ($key === 'decision') {
-        assert($value instanceof Decision);
-        $nativeId = $value->getNormalizedNativeId();
-        $parameters[$key] = $nativeId;
       }
       else {
         $parameters[$key] = $value;
@@ -241,8 +195,6 @@ readonly class LanguageSwitcher {
     $partial_routes = [
       'policymakers.',
       'policymaker.',
-      'paatokset_decision.',
-      'paatokset_case.',
       'paatokset_search.decisions',
       'paatokset_search.policymaker',
     ];

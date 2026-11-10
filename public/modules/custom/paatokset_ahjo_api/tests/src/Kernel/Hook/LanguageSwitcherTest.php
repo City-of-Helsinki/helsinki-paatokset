@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Hook;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
-use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
+use Drupal\Tests\paatokset_ahjo_api\Kernel\DecisionPathPatternsTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
@@ -28,6 +26,7 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
 
   use PropertyTrait;
   use LanguageManagerTrait;
+  use DecisionPathPatternsTrait;
   use UserCreationTrait;
 
   /**
@@ -41,6 +40,9 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
     // Paatokset also relies on hdbt_admin_tools hooks being run before
     // paatokset_ahjo_api hooks.
     'hdbt_admin_tools',
+    'path',
+    // Token module requires filter for text field tokens.
+    'filter',
   ];
 
   /**
@@ -50,6 +52,8 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
     parent::setUp();
 
     $this->setupLanguages();
+    $this->installConfig(['pathauto']);
+    $this->createDecisionPathPatterns();
   }
 
   /**
@@ -103,7 +107,7 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
     // Entity id depends on route and entity type.
     // Without correct entity id for current url, access checks fail.
     $current_url = new Url($routeName, [
-      $routeParameter => $this->getEntityId($routeName, $entity),
+      $routeParameter => $entity->id(),
     ]);
 
     $manager = $this->languageManager();
@@ -115,37 +119,24 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
 
     foreach ($links->links as $langcode => $link) {
       // Alter hook sets #override_url for some links
-      // which is used in hdbt_subtheme templates.
-      $url = $link['#override_url'] ?? $link['url']?->toString();
+      // which is used in hdbt_subtheme templates. Other links
+      // use the current route in the link language.
+      $this->assertInstanceOf(Url::class, $link['url']);
+      $url = $link['#override_url'] ?? (clone $link['url'])
+        ->setOption('language', $link['language'])
+        ->toString();
 
       $this->assertEquals($tests[$langcode], $url);
     }
   }
 
   /**
-   * Get entity id.
-   */
-  private function getEntityId(string $route, EntityInterface $entity): string {
-    if ($route === 'entity.node.canonical') {
-      return $entity->id();
-    }
-
-    if ($entity instanceof CaseBundle) {
-      return $entity->get('field_diary_number')->value;
-    }
-    elseif ($entity instanceof Decision) {
-      return str_replace(['{', '}'], '', $entity->get('field_decision_native_id')->value);
-    }
-
-    throw new \InvalidArgumentException();
-  }
-
-  /**
    * Data provider for tests.
    */
   public static function languageSwitcherDataProvider(): array {
+    // URL language prefixes are not configured in kernel tests.
     return [
-      // Case without decisions, canonical route.
+      // Untranslated case.
       [
         // Current route.
         'entity.node.canonical',
@@ -156,31 +147,8 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
           'type' => 'case',
           'title' => 'Test case',
           'status' => '1',
-          'langcode' => 'en',
-          'field_diary_number' => '123',
-        ],
-        // Other entities in the db.
-        [],
-        // Tests.
-        [
-          'en' => '/node/1',
-          'fi' => '/asia/123',
-          'sv' => '/arende/123',
-        ],
-      ],
-      // Case with decisions, canonical route.
-      [
-        // Current route.
-        'entity.node.canonical',
-        // Route parameter name.
-        'node',
-        // Route parameter node.
-        [
-          'type' => 'case',
-          'title' => 'Test case',
-          'status' => '1',
-          'langcode' => 'en',
-          'field_diary_number' => '123',
+          'langcode' => 'fi',
+          'field_diary_number' => 'HEL-123',
         ],
         // Other entities in the db.
         [
@@ -188,30 +156,65 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
             'type' => 'decision',
             'title' => 'Test decision',
             'status' => '1',
-            'langcode' => 'en',
-            'field_decision_native_id' => '234',
-            'field_diary_number' => '123',
+            'langcode' => 'fi',
+            'field_decision_native_id' => '{234}',
+            'field_diary_number' => 'HEL-123',
           ],
         ],
         // Tests.
         [
-          'en' => '/node/1',
-          'fi' => '/asia/123?paatos=234',
-          'sv' => '/arende/123?beslut=234',
+          'en' => '/case/hel-123',
+          'fi' => '/asia/hel-123',
+          'sv' => '/arende/hel-123',
         ],
       ],
-      // Decision without case, case route.
+      // Decision with a Swedish version.
       [
         // Current route.
-        'paatokset_case.en',
+        'entity.node.canonical',
         // Route parameter name.
-        'case',
+        'node',
         // Route parameter node.
         [
           'type' => 'decision',
           'title' => 'Test decision',
           'status' => '1',
-          'langcode' => 'en',
+          'langcode' => 'fi',
+          'field_decision_native_id' => '{234}',
+          'field_diary_number' => 'HEL-123',
+          'field_unique_id' => 'unique-234',
+        ],
+        // Other entities in the db.
+        [
+          [
+            'type' => 'decision',
+            'title' => 'Test decision SV',
+            'status' => '1',
+            'langcode' => 'sv',
+            'field_decision_native_id' => '{345}',
+            'field_diary_number' => 'HEL-123',
+            'field_unique_id' => 'unique-234',
+          ],
+        ],
+        // Tests.
+        [
+          'en' => '/case/hel-123/234',
+          'fi' => '/asia/hel-123/234',
+          'sv' => '/arende/hel-123/345',
+        ],
+      ],
+      // Decision without case.
+      [
+        // Current route.
+        'entity.node.canonical',
+        // Route parameter name.
+        'node',
+        // Route parameter node.
+        [
+          'type' => 'decision',
+          'title' => 'Test decision',
+          'status' => '1',
+          'langcode' => 'fi',
           'field_decision_native_id' => '{234}',
         ],
         // Other entities in the db.

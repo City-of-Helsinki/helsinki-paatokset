@@ -41,7 +41,7 @@ class BreadcrumbTest extends AhjoEntityKernelTestBase {
       ->willReturn('dingdong');
 
     $caseService
-      ->guessDecisionFromPath($case)
+      ->getDefaultDecision($case)
       ->willReturn($decision->reveal());
 
     $this->container->set('paatokset_ahjo_cases', $caseService->reveal());

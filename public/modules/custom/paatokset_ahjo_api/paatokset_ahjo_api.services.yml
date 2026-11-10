@@ -27,17 +27,11 @@ services:
     tags:
       - { name: event_subscriber }
 
-  paatokset_ahjo_api.case_or_decision:
-    class: Drupal\paatokset_ahjo_api\Routing\CaseOrDecisionConverter
-    tags:
-      - { name: paramconverter }
-    arguments: [ "@paatokset_ahjo_cases" ]
+  Drupal\paatokset_ahjo_api\Routing\LanguageAliasGenerator: ~
 
-  paatokset_ahjo_api.decision:
-    class: Drupal\paatokset_ahjo_api\Routing\DecisionConverter
+  Drupal\paatokset_ahjo_api\Routing\DecisionConverter:
     tags:
       - { name: paramconverter }
-    arguments: [ "@paatokset_ahjo_cases" ]
 
   Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder: ~
 
@@ -76,3 +70,4 @@ services:
 
   Drupal\paatokset_ahjo_api\EventSubscriber\PrepareIndex: ~
   Drupal\paatokset_ahjo_api\EventSubscriber\ItemsIndexed: ~
+  Drupal\paatokset_ahjo_api\EventSubscriber\LegacyDecisionQueryRedirect: ~

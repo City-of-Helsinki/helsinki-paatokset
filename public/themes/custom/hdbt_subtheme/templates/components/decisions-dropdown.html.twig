@@ -42,23 +42,25 @@
             <li
               data-styleclass="border-left--{{ option.class }}"
               data-link="{{ option.native_id }}"
+              data-url="{{ option.url }}"
               aria-selected="true"
               tabindex="0"
               class="option selected border-left--{{ option.class }}"
               title="{{ option.label }}"
             >
-              <a class="paatokset__link-plain" href="?decision={{option.native_id|url_encode}}">{{ option.label }}</a>
+              <a class="paatokset__link-plain" href="{{ option.url }}">{{ option.label }}</a>
             </li>
           {% else %}
             <li
               data-styleclass="border-left--{{ option.class }}"
               data-link="{{ option.native_id }}"
+              data-url="{{ option.url }}"
               aria-selected="false"
               tabindex="0"
               class="option border-left--{{ option.class }}"
               title="{{ option.label }}"
             >
-              <a class="paatokset__link-plain" href="?decision={{ option.native_id|url_encode }}">{{ option.label }}</a>
+              <a class="paatokset__link-plain" href="{{ option.url }}">{{ option.label }}</a>
             </li>
           {% endif %}
         {% endfor %}

@@ -64,6 +64,8 @@ class CaseControllerTest extends AhjoEntityKernelTestBase {
 
     $body = json_decode($response->getContent(), TRUE);
     $this->assertNotEmpty($body['attachments']);
+    $this->assertEquals($decision->toUrl()->toString(), $body['url']);
+    $this->assertEquals($decision->toUrl()->toString(), $body['language_urls']['en']);
   }
 
   /**

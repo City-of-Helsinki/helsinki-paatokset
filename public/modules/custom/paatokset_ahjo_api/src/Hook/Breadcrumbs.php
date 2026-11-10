@@ -47,7 +47,7 @@ readonly class Breadcrumbs {
         return;
       }
 
-      $decision = $this->caseService->guessDecisionFromPath($case);
+      $decision = $this->caseService->getDefaultDecision($case);
 
       // Replace the link text if current route entity is case, the case service
       // has found a decision, and the decision has custom title field set.
@@ -61,14 +61,13 @@ readonly class Breadcrumbs {
         $newBreadcrumb->setLinks($links);
         // Merge cacheable metadata.
         $newBreadcrumb->addCacheTags($breadcrumb->getCacheTags())
-          ->addCacheContexts($breadcrumb->getCacheContexts());
+          ->addCacheContexts($breadcrumb->getCacheContexts())
+          // Default decision depends on the current language.
+          ->addCacheContexts(['languages:language_interface']);
 
         $breadcrumb = $newBreadcrumb;
       }
     }
-
-    // Why does this require query_args context?
-    $breadcrumb->addCacheContexts(['url.query_args']);
   }
 
 }

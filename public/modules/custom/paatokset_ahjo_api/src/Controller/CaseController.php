@@ -45,9 +45,7 @@ final class CaseController extends ControllerBase {
     $languages = $this->languageManager()->getLanguages();
     $language_urls = [];
     foreach ($languages as $langcode => $language) {
-      $lang_url = $this->caseService->getCaseUrlFromNode($decision->getDiaryNumber(), $decision, $langcode);
-      if ($lang_url) {
-        $lang_url->setOption('language', $language);
+      if ($lang_url = $this->caseService->getDecisionUrlFromNode($decision, $langcode)) {
         $language_urls[$langcode] = $lang_url->toString();
       }
     }
@@ -68,6 +66,7 @@ final class CaseController extends ControllerBase {
     ];
 
     $response = new CacheableJsonResponse([
+      'url' => $decision->toUrl()->toString(),
       'content' => $content,
       'language_urls' => $language_urls,
       'attachments' => $attachments,
