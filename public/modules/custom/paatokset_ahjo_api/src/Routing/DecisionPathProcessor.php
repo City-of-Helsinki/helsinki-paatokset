@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * Most decisions and cases exist only in Finnish. They only have a Finnish
  * path alias, e.g. /asia/hel-2025-019540/29049ff0-901a-4e59-a450-48a5b7b8fbc8.
- * We still want to display the Finnish content with Swedish UI, but untranslated
- * pages gets URLs like /sv/node/123.
+ * We still want to display the Finnish content with Swedish UI, but
+ * untranslated pages gets URLs like /sv/node/123.
  *
  * This processor translates URLs for nodes, so the original Finnish content is
  * always available from our nicer URLs.
