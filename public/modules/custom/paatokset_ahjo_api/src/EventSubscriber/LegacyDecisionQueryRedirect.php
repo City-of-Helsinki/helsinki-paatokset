@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Routing\LocalRedirectResponse;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -48,12 +49,23 @@ final class LegacyDecisionQueryRedirect implements EventSubscriberInterface {
   public function onRequest(RequestEvent $event): void {
     $request = $event->getRequest();
 
-    if (!$event->isMainRequest() || $request->attributes->get('_route') !== 'entity.node.canonical') {
+    if (!$event->isMainRequest()) {
       return;
     }
 
-    $case = $request->attributes->get('node');
-    if (!$case instanceof CaseBundle) {
+    $case = match ($request->attributes->get('_route')) {
+      'entity.node.canonical' => $request->attributes->get('node'),
+      'entity.ahjo_case.canonical' => $request->attributes->get('ahjo_case'),
+      default => NULL,
+    };
+
+    $diaryNumber = match (TRUE) {
+      $case instanceof CaseBundle => $case->getDiaryNumber(),
+      $case instanceof AhjoCase => (string) $case->id(),
+      default => NULL,
+    };
+
+    if (!$diaryNumber) {
       return;
     }
 
@@ -71,7 +83,6 @@ final class LegacyDecisionQueryRedirect implements EventSubscriberInterface {
       return;
     }
 
-    $diaryNumber = $case->getDiaryNumber();
     $decision = $this->caseService->getDecision($decisionId, $diaryNumber)
       ?? $this->caseService->getDecisionFromRedirect($diaryNumber, $decisionId);
 

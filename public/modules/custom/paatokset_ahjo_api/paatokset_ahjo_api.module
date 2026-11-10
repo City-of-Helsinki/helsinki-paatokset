@@ -934,7 +934,6 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
 
   // Case migration sets 'NO TITLE' as a default
   // value, if the case has no title in Ahjo.
-  // @fixme https://helsinkisolutionoffice.atlassian.net/browse/UHF-11625
   if (!$node instanceof CaseBundle || empty($metatag_attachments['#attached']['html_head'])) {
     return;
   }

@@ -589,12 +589,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/AhjoApiController.php
 
 		-
-			message: '#^Match expression does not handle remaining value\: string$#'
-			identifier: match.unhandled
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseController\:\:renderCaseAttachments\(\) never returns string so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -609,12 +603,6 @@ parameters:
 		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseController\:\:view\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
 
@@ -817,12 +805,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/DTO/MigrateSettings.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Entity\\AhjoCase\:\:getAhjoId\(\) should return string but returns int\|string\|null\.$#'
 			identifier: return.type
 			count: 1
@@ -844,12 +826,6 @@ parameters:
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Entity\\AhjoCase\:\:label\(\) should return string but returns Drupal\\Core\\StringTranslation\\TranslatableMarkup\|string\|null\.$#'
 			identifier: return.type
 			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
 
 		-
