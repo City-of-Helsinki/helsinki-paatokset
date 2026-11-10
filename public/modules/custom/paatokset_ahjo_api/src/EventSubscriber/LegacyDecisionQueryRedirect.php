@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\LocalRedirectResponse;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
+use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -30,6 +32,7 @@ final class LegacyDecisionQueryRedirect implements EventSubscriberInterface {
 
   public function __construct(
     private readonly CaseService $caseService,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -83,7 +86,7 @@ final class LegacyDecisionQueryRedirect implements EventSubscriberInterface {
       return;
     }
 
-    $decision = $this->caseService->getDecision($decisionId, $diaryNumber)
+    $decision = $this->loadDecision($decisionId, $diaryNumber)
       ?? $this->caseService->getDecisionFromRedirect($diaryNumber, $decisionId);
 
     // Display the case page if the decision is not found.
@@ -110,6 +113,26 @@ final class LegacyDecisionQueryRedirect implements EventSubscriberInterface {
     );
 
     $event->setResponse($response);
+  }
+
+  /**
+   * Loads a published decision by native ID and diary number.
+   */
+  private function loadDecision(string $decisionId, string $diaryNumber): ?NodeInterface {
+    $storage = $this->entityTypeManager->getStorage('node');
+
+    $ids = $storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('status', 1)
+      ->condition('type', 'decision')
+      ->condition('field_decision_native_id', Decision::bracketNativeId($decisionId))
+      ->condition('field_diary_number', $diaryNumber)
+      ->sort('field_meeting_date', 'DESC')
+      ->range(0, 1)
+      ->execute();
+
+    $node = $ids ? $storage->load(reset($ids)) : NULL;
+    return $node instanceof NodeInterface ? $node : NULL;
   }
 
 }

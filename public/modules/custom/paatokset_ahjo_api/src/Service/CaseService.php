@@ -52,36 +52,6 @@ class CaseService {
   }
 
   /**
-   * Get decision based on Native ID.
-   *
-   * @param string $decision_id
-   *   Decision's native ID.
-   * @param ?string $case_id
-   *   Optional case id for stricter query, maybe pointless?
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   Decision entity, if found.
-   */
-  public function getDecision(string $decision_id, ?string $case_id = NULL): ?NodeInterface {
-    $query = [
-      'decision_id' => $decision_id,
-      'limit' => 1,
-    ];
-
-    if (!is_null($case_id)) {
-      $query['case_id'] = $case_id;
-    }
-
-    $nodes = $this->decisionQuery($query);
-
-    if (empty($nodes)) {
-      return NULL;
-    }
-
-    return reset($nodes);
-  }
-
-  /**
    * Get decision node from redirect data.
    *
    * Decision native IDs may change. Redirects are created from the old paths.
@@ -165,8 +135,12 @@ class CaseService {
    *   URL for decision or motion, or NULL if not found.
    */
   public function getDecisionUrlByNativeId(string $id): ?Url {
-    $node = $this->getDecision($id);
+    $nodes = $this->decisionQuery([
+      'decision_id' => $id,
+      'limit' => 1,
+    ]);
 
+    $node = array_first($nodes);
     if ($node instanceof NodeInterface) {
       return $this->getDecisionUrlFromNode($node);
     }
@@ -745,15 +719,13 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
-   * @param bool $load_nodes
-   *   Load nodes or just return nids.
    *
-   * @return array
+   * @return \Drupal\node\NodeInterface[]
    *   List of case nodes.
    */
-  public function caseQuery(array $params, bool $load_nodes = TRUE): array {
+  public function caseQuery(array $params): array {
     $params['type'] = self::CASE_NODE_TYPE;
-    return $this->query($params, $load_nodes);
+    return $this->query($params);
   }
 
   /**
@@ -761,16 +733,14 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
-   * @param bool $load_nodes
-   *   Load nodes or just return nids.
    *
-   * @return array
-   *   List of decision nodes or nids.
+   * @return \Drupal\node\NodeInterface[]
+   *   List of decision nodes.
    */
-  public function decisionQuery(array $params, bool $load_nodes = TRUE): array {
+  public function decisionQuery(array $params): array {
     $params['type'] = self::DECISION_NODE_TYPE;
     $params['sort_by'] = 'field_meeting_date';
-    return $this->query($params, $load_nodes);
+    return $this->query($params);
   }
 
   /**
@@ -778,13 +748,11 @@ class CaseService {
    *
    * @param array $params
    *   Parameters for query.
-   * @param bool $load_nodes
-   *   Load nodes or just return node ids.
    *
-   * @return array
-   *   List of nodes or node ids.
+   * @return \Drupal\node\NodeInterface[]
+   *   List of nodes.
    */
-  private function query(array $params, bool $load_nodes = TRUE): array {
+  private function query(array $params): array {
     $sort = $params['sort'] ?? 'DESC';
     $sort_by = $params['sort_by'] ?? 'field_created';
 
@@ -841,10 +809,7 @@ class CaseService {
       return [];
     }
 
-    if (!$load_nodes) {
-      return $ids;
-    }
-
+    /** @var \Drupal\node\NodeInterface[] */
     return $storage->loadMultiple($ids);
   }
 

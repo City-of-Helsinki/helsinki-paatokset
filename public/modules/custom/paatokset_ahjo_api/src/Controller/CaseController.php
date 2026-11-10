@@ -116,8 +116,6 @@ final class CaseController extends ControllerBase {
    * Case canonical route controller.
    *
    * Case are not independent. They should always be displayed with a decision.
-   * Legacy decision query parameters are redirected by
-   * \Drupal\paatokset_ahjo_api\EventSubscriber\LegacyDecisionQueryRedirect.
    *
    * @return array
    *   A render array.
