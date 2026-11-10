@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Hook;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -332,12 +333,7 @@ class ThemeHooks {
     $decision = array_first($case->getAllDecisions());
 
     $this->setDecisionVariables($variables, $case, $decision);
-
-    // @fixme should not case all cases with node_list:decision.
-    $variables['#cache'] = [
-      'tags' => ['node_list:decision'],
-      'contexts' => ['languages:language_interface'],
-    ];
+    $this->addCaseCacheability($variables, $case->getDiaryNumber());
   }
 
   /**
@@ -350,15 +346,32 @@ class ThemeHooks {
     $decision = $variables['node'];
     assert($decision instanceof Decision);
 
-    $this->setDecisionVariables($variables, $decision->getCase(), $decision);
+    $case = $decision->getCase();
 
-    // @fixme should not case all decisions with node_list:decision & node_list:case.
-    $variables['#cache'] = [
-      'tags' => [
-        'node_list:decision',
-        'node_list:case',
-      ],
-    ];
+    $this->setDecisionVariables($variables, $case, $decision);
+    $this->addCaseCacheability($variables, $decision->getDiaryNumber(), $case);
+  }
+
+  /**
+   * Adds cacheability metadata for case and decision pages.
+   *
+   * @phpstan-param array<string, mixed> $variables
+   */
+  private function addCaseCacheability(array &$variables, string $diaryNumber, ?CaseBundle $case = NULL): void {
+    $cache = CacheableMetadata::createFromRenderArray($variables)
+      // CaseBundle::getAllDecisions() depends on the interface language.
+      ->addCacheContexts(['languages:language_interface']);
+
+    if ($diaryNumber) {
+      $cache->addCacheTags([CaseBundle::getCaseCacheTag($diaryNumber)]);
+    }
+
+    if ($case) {
+      $cache->addCacheableDependency($case);
+    }
+
+    // @phpstan-ignore parameterByRef.type
+    $cache->applyTo($variables);
   }
 
   /**

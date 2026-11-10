@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Hook;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 
@@ -21,38 +22,17 @@ readonly class Caching {
   }
 
   /**
-   * Implements hook_ENTITY_TYPE_insert().
+   * Implements hook_ENTITY_TYPE_insert(), _update() and _delete().
    */
   #[Hook('node_insert')]
-  public function insert(EntityInterface $entity): void {
-    if ($entity instanceof Decision) {
-      $this->invalidateDecisionCacheTags($entity);
-    }
-    elseif ($entity instanceof Meeting) {
-      $this->invalidateMeetingCacheTags($entity);
-    }
-  }
-
-  /**
-   * Implements hook_ENTITY_TYPE_update().
-   */
   #[Hook('node_update')]
-  public function update(EntityInterface $entity): void {
-    if ($entity instanceof Decision) {
-      $this->invalidateDecisionCacheTags($entity);
-    }
-    elseif ($entity instanceof Meeting) {
-      $this->invalidateMeetingCacheTags($entity);
-    }
-  }
-
-  /**
-   * Implements hook_ENTITY_TYPE_delete().
-   */
   #[Hook('node_delete')]
-  public function delete(EntityInterface $entity): void {
+  public function invalidate(EntityInterface $entity): void {
     if ($entity instanceof Decision) {
       $this->invalidateDecisionCacheTags($entity);
+    }
+    elseif ($entity instanceof CaseBundle) {
+      $this->invalidateCaseCacheTags($entity);
     }
     elseif ($entity instanceof Meeting) {
       $this->invalidateMeetingCacheTags($entity);
@@ -72,7 +52,14 @@ readonly class Caching {
     // This allows updating a list of decisions on the
     // case page as new decisions are added.
     if ($diary_number = $entity->getDiaryNumber()) {
-      $tags[] = 'ahjo_case:' . strtoupper($diary_number);
+      $tags[] = CaseBundle::getCaseCacheTag($diary_number);
+    }
+
+    // If the decision was moved to another case, the
+    // list of decisions on the old case changes too.
+    $original = $entity->getOriginal();
+    if ($original instanceof Decision && ($original_diary_number = $original->getDiaryNumber())) {
+      $tags[] = CaseBundle::getCaseCacheTag($original_diary_number);
     }
 
     if (!$entity->get('field_meeting_id')->isEmpty()) {
@@ -84,7 +71,30 @@ readonly class Caching {
     }
 
     if (!empty($tags)) {
-      $this->cacheTagsInvalidator->invalidateTags($tags);
+      $this->cacheTagsInvalidator->invalidateTags(array_values(array_unique($tags)));
+    }
+  }
+
+  /**
+   * Invalidates custom cache tags for cases.
+   *
+   * @param \Drupal\paatokset_ahjo_api\Entity\CaseBundle $entity
+   *   Entity to base cache invalidations on.
+   */
+  public function invalidateCaseCacheTags(CaseBundle $entity): void {
+    $tags = [];
+
+    if ($diary_number = $entity->getDiaryNumber()) {
+      $tags[] = CaseBundle::getCaseCacheTag($diary_number);
+    }
+
+    $original = $entity->getOriginal();
+    if ($original instanceof CaseBundle && ($original_diary_number = $original->getDiaryNumber())) {
+      $tags[] = CaseBundle::getCaseCacheTag($original_diary_number);
+    }
+
+    if (!empty($tags)) {
+      $this->cacheTagsInvalidator->invalidateTags(array_values(array_unique($tags)));
     }
   }
 
