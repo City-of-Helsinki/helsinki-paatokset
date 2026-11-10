@@ -8,14 +8,11 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 
 /**
  * Alters how cores breadcrumbs are rendered.
  */
 readonly class Breadcrumbs {
-
-  public function __construct(private CaseService $caseService) {}
 
   /**
    * Implements hook_system_breadcrumb_alter().
@@ -47,10 +44,10 @@ readonly class Breadcrumbs {
         return;
       }
 
-      $decision = $this->caseService->getDefaultDecision($case);
+      $decision = array_first($case->getAllDecisions());
 
-      // Replace the link text if current route entity is case, the case service
-      // has found a decision, and the decision has custom title field set.
+      // Replace the link text if current route entity is case, the case
+      // has a decision, and the decision has custom title field set.
       if ($heading = $decision?->getDecisionHeading()) {
         end($links)->setText($heading);
 

@@ -443,15 +443,16 @@ function _paatokset_ahjo_api_get_decision_variables(&$variables, ?CaseBundle $ca
 
 /**
  * Preprocess Case nodes.
+ *
+ * @phpstan-param array<mixed> $variables
  */
 function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
   $case = $variables['node'];
   assert($case instanceof CaseBundle);
 
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
-
-  $decision = $caseService->getDefaultDecision($case);
+  // Multiple decisions can relate to a single case. Pick the
+  // most recent decision and display it in case node page.
+  $decision = array_first($case->getAllDecisions());
 
   _paatokset_ahjo_api_get_decision_variables($variables, $case, $decision);
 
@@ -464,6 +465,8 @@ function paatokset_ahjo_api_preprocess_node__case__full(&$variables): void {
 
 /**
  * Preprocess Decision nodes.
+ *
+ * @phpstan-param array<mixed> $variables
  */
 function paatokset_ahjo_api_preprocess_node__decision__full(&$variables): void {
   $decision = $variables['node'];
@@ -936,10 +939,7 @@ function paatokset_ahjo_api_metatags_attachments_alter(array &$metatag_attachmen
     return;
   }
 
-  /** @var \Drupal\paatokset_ahjo_api\Service\CaseService $caseService */
-  $caseService = \Drupal::service('paatokset_ahjo_cases');
-
-  if (!$heading = $caseService->getDefaultDecision($node)?->getDecisionHeading()) {
+  if (!$heading = array_first($node->getAllDecisions())?->getDecisionHeading()) {
     return;
   }
 

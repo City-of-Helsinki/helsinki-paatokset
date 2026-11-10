@@ -35,13 +35,6 @@ class CaseService {
   const DECISION_NODE_TYPE = 'decision';
 
   /**
-   * Memoized default decisions keyed by case id and langcode.
-   *
-   * @var array<string, \Drupal\paatokset_ahjo_api\Entity\Decision|null>
-   */
-  private array $defaultDecisions = [];
-
-  /**
    * Creates a new CaseService.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
@@ -56,46 +49,6 @@ class CaseService {
     private readonly AliasRepositoryInterface $aliasRepository,
     private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
-  }
-
-  /**
-   * Get default decision for case.
-   *
-   * Prefers decisions in the current language.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\CaseBundle $case
-   *   Case node.
-   *
-   * @return \Drupal\paatokset_ahjo_api\Entity\Decision|null
-   *   Default (latest) decision entity, if found.
-   */
-  public function getDefaultDecision(CaseBundle $case): ?Decision {
-    $language = $this->languageManager->getCurrentLanguage()->getId();
-
-    $key = $case->id() . ':' . $language;
-    if (array_key_exists($key, $this->defaultDecisions)) {
-      return $this->defaultDecisions[$key];
-    }
-
-    $case_id = $case->getDiaryNumber();
-    $nodes = $this->decisionQuery([
-      'case_id' => $case_id,
-      'limit' => 1,
-      'langcode' => $language,
-    ]);
-
-    // If there isn't a decision for current language, retry without language.
-    if (empty($nodes)) {
-      $nodes = $this->decisionQuery([
-        'case_id' => $case_id,
-        'limit' => 1,
-      ]);
-    }
-
-    $decision = array_shift($nodes);
-    assert($decision === NULL || $decision instanceof Decision);
-
-    return $this->defaultDecisions[$key] = $decision;
   }
 
   /**

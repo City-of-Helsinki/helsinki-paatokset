@@ -319,18 +319,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
 		-
-			message: '#^Function paatokset_ahjo_api_preprocess_node__case__full\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_node__decision__full\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function paatokset_ahjo_api_preprocess_page\(\) has parameter \$variables with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -2267,18 +2255,6 @@ parameters:
 			identifier: argument.type
 			count: 3
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/EventSubscriber/ItemsIndexedTest.php
-
-		-
-			message: '#^Method Drupal\\Core\\Breadcrumb\\BreadcrumbBuilderInterface@anonymous/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest\.php\:71\:\:__construct\(\) has parameter \$links with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\BreadcrumbTest\:\:createBreadcrumbBuilder\(\) has parameter \$links with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$links\.$#'
