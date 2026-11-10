@@ -133,3 +133,7 @@ paatokset_ahjo_api.default_texts:
     office_holders_url:
       type: label
       label: 'Office holders URL'
+
+condition.plugin.paatokset_case_or_decision:
+  type: condition.plugin
+  mapping: {}
