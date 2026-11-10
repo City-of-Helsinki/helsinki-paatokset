@@ -15,11 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Localized paths for untranslated cases and decisions.
  *
- * Most decisions and cases exist only in Finnish, so they only have a Finnish
+ * Most decisions and cases exist only in Finnish. They only have a Finnish
  * path alias, e.g. /asia/hel-2025-019540/29049ff0-901a-4e59-a450-48a5b7b8fbc8.
- * Other languages gets ndoe URLs /sv/node/123. This processor URLs for
- * untranslated ndoes, so the content is available with translated
- * UI elements in, e.g., /sv/arende/hel-2025-019540/29049ff0-901a-4e59-....
+ * We still want to display the Finnish content with Swedish UI, but untranslated
+ * pages gets URLs like /sv/node/123.
+ *
+ * This processor translates URLs for nodes, so the original Finnish content is
+ * always available from our nicer URLs.
  *
  * @see \Drupal\path_alias\PathProcessor\AliasPathProcessor
  */
