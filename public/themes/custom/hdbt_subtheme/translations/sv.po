@@ -435,3 +435,6 @@ msgstr "Ytterligare kontaktuppgifter finns på stadens kontaktuppgiftssökning."
 msgctxt "Dictionary banner"
 msgid "Helsinki City Contacts"
 msgstr "Kontaktuppgiftssökning"
+
+msgid "Process history"
+msgstr "Beslutshistoria"

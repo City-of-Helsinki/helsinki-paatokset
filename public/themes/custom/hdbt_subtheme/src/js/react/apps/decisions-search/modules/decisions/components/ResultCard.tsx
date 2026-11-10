@@ -7,10 +7,9 @@ import { getOrganizationCategoryTag } from '../../../common/utils/getOrganizatio
 
 // Decisions are rarely translated, so decision_url mostly points to the
 // content's original language. Rewrite it to use the current language's
-// prefix, path segment and query key instead, since the case/decision
-// route can render untranslated content with a translated UI.
+// prefix and path segment instead. Decisions have path aliases in all
+// languages, so untranslated content is rendered with a translated UI.
 const casePathSegments: Record<string, string> = { fi: 'asia', sv: 'arende', en: 'case' };
-const decisionQueryKeys: Record<string, string> = { fi: 'paatos', sv: 'beslut', en: 'decision' };
 
 const getLocalizedUrl = (url: string): string => {
   const { currentLanguage } = drupalSettings.path;
@@ -25,14 +24,6 @@ const getLocalizedUrl = (url: string): string => {
   for (const segment of Object.values(casePathSegments)) {
     if (localizedUrl.startsWith(`/${currentLanguage}/${segment}/`)) {
       localizedUrl = localizedUrl.replace(`/${currentLanguage}/${segment}/`, `/${currentLanguage}/${targetSegment}/`);
-      break;
-    }
-  }
-
-  const targetQueryKey = decisionQueryKeys[currentLanguage] || decisionQueryKeys.fi;
-  for (const key of Object.values(decisionQueryKeys)) {
-    if (localizedUrl.includes(`?${key}=`)) {
-      localizedUrl = localizedUrl.replace(`?${key}=`, `?${targetQueryKey}=`);
       break;
     }
   }

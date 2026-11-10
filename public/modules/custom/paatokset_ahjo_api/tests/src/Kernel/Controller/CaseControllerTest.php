@@ -64,10 +64,14 @@ class CaseControllerTest extends AhjoEntityKernelTestBase {
 
     $body = json_decode($response->getContent(), TRUE);
     $this->assertNotEmpty($body['attachments']);
+    $this->assertEquals($decision->toUrl()->toString(), $body['url']);
+    $this->assertEquals($decision->toUrl()->toString(), $body['language_urls']['en']);
   }
 
   /**
-   * Tests ::view redirects to decision when query parameter is set.
+   * Tests legacy decision query parameter redirects to the decision.
+   *
+   * @see \Drupal\paatokset_ahjo_api\EventSubscriber\LegacyDecisionQueryRedirect
    */
   public function testRedirectsToDecision(): void {
     // Setup permissions.
@@ -109,7 +113,7 @@ class CaseControllerTest extends AhjoEntityKernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertInstanceOf(RedirectResponse::class, $response);
-    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertEquals(301, $response->getStatusCode());
     $this->assertStringContainsString('/node/', $response->getTargetUrl());
 
     $case = $caseStorage->create([
@@ -120,7 +124,8 @@ class CaseControllerTest extends AhjoEntityKernelTestBase {
     ]);
     $case->save();
 
-    // View throws 404 when decision query parameter doesn't match.
+    // Unknown decision falls through to the case view, which throws
+    // 404 because the case has no decisions.
     $url = Url::fromRoute('entity.ahjo_case.canonical', ['ahjo_case' => $case->id()], options: [
       'query' => ['decision' => 'does-not-exist'],
     ]);

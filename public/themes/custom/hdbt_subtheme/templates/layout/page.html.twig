@@ -14,7 +14,6 @@
 {% set page_classes = [
     node.getType() ? 'page-type--' ~ node.getType()|clean_class,
     'wrapper',
-    is_decision ? 'page-type--decision' : '',
     has_sidebar_first or has_sidebar_second or policymaker_navigation ? 'has-sidebar' : 'no-sidebar',
     has_sidebar_first or policymaker_navigation ? 'has-sidebar--first' : 'no-sidebar-first',
     has_sidebar_second ? 'has-sidebar--second' : 'no-sidebar-second',
