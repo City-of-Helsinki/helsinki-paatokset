@@ -2,7 +2,6 @@
 
 namespace Drupal\paatokset_ahjo_api\Service;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -10,7 +9,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\path_alias\AliasRepositoryInterface;
@@ -370,45 +368,6 @@ class CaseService {
   }
 
   /**
-   * Format decision label.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Decision $node
-   *   Decision node.
-   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker $policymaker
-   *   Policymaker used in the label.
-   *
-   * @return string
-   *   Formatted label.
-   */
-  public function formatDecisionLabel(Decision $node, ?Policymaker $policymaker): string {
-    // If policymaker node cannot be found, use value from decision node.
-    $org_label = $policymaker?->getPolicymakerName() ?? $node->getDecisionMakerOrgName();
-
-    $meeting_number = $node->field_meeting_sequence_number->value;
-    if (!$node->get('field_meeting_date')->isEmpty()) {
-      $decision_timestamp = strtotime($node->field_meeting_date->value);
-    }
-    else {
-      $decision_timestamp = NULL;
-    }
-
-    $decision_date = date('d.m.Y', $decision_timestamp);
-
-    if ($meeting_number) {
-      $decision_date = $meeting_number . '/' . $decision_date;
-    }
-
-    if ($org_label) {
-      $label = $org_label . ' ' . $decision_date;
-    }
-    else {
-      $label = $node->label() . ' ' . $decision_date;
-    }
-
-    return $label;
-  }
-
-  /**
    * Get policymakers for multiple decision.
    *
    * This is an optimization to avoid N+1 queries when
@@ -420,7 +379,7 @@ class CaseService {
    * @return array<string, Policymaker>
    *   Policymakers for given decisions keyed by policymaker ids.
    */
-  private function loadPolicymakers(array $decisions): array {
+  public function getPolicymakersForDecisions(array $decisions): array {
     $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
 
     // Load all policymakers in as few queries as possible.
@@ -454,44 +413,6 @@ class CaseService {
     }
 
     return $result;
-  }
-
-  /**
-   * Get decisions list for dropdown.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\CaseBundle $case
-   *   Case ID. Leave NULL to use active case.
-   *
-   * @return array
-   *   Dropdown contents.
-   */
-  public function getDecisionsList(CaseBundle $case): array {
-    $decisions = $case->getAllDecisions();
-    $policymakers = $this->loadPolicymakers($decisions);
-
-    // Link untranslated decisions with the current UI language.
-    $language = $this->languageManager->getCurrentLanguage();
-
-    $results = [];
-    foreach ($decisions as $node) {
-      // Policymakers are loaded beforehand to prevent N+1 query here.
-      $policymaker = $policymakers[$node->getPolicymakerId()] ?? NULL;
-
-      $results[] = [
-        'id' => $node->id(),
-        'unique_id' => $node->field_unique_id->value,
-        'langcode' => $node->language()->getId(),
-        'native_id' => $node->getNormalizedNativeId(),
-        'url' => $node->toUrl('canonical', ['language' => $language])->toString(),
-        'title' => $node->label(),
-        'organization' => $node->field_dm_org_name->value,
-        'organization_type' => $node->field_organization_type->value,
-        'label' => $this->formatDecisionLabel($node, $policymaker),
-        'class' => Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board'),
-      ];
-    }
-
-    return $results;
   }
 
   /**

@@ -15,9 +15,9 @@ use Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoEntityKernelTestBase;
 class CaseServiceTest extends AhjoEntityKernelTestBase {
 
   /**
-   * Tests decision list generation.
+   * Tests policymaker loading for decisions.
    */
-  public function testDecisionList(): void {
+  public function testPolicymakersForDecisions(): void {
     $sut = $this->container->get(CaseService::class);
 
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
@@ -61,7 +61,10 @@ class CaseServiceTest extends AhjoEntityKernelTestBase {
       'field_meeting_date' => '2018-01-01',
     ])->save();
 
-    $this->assertNotEmpty($sut->getDecisionsList($case));
+    $decisions = $case->getAllDecisions();
+    $this->assertCount(3, $decisions);
+    $policymakers = $sut->getPolicymakersForDecisions($decisions);
+    $this->assertEmpty($policymakers);
 
     $storage->create([
       'type' => 'policymaker',
@@ -78,11 +81,10 @@ class CaseServiceTest extends AhjoEntityKernelTestBase {
       'field_policymaker_id' => '4321',
     ])->save();
 
-    $list = $sut->getDecisionsList($case);
-    $this->assertNotEmpty($list);
-    foreach ($list as $item) {
-      $this->assertStringStartsWith('Test decision', $item['title']);
-    }
+    $policymakers = $sut->getPolicymakersForDecisions($decisions);
+    $this->assertEqualsCanonicalizing(['1234', '4321'], array_map('strval', array_keys($policymakers)));
+    $this->assertArrayHasKey('1234', $policymakers);
+    $this->assertEquals('Test policymaker 1', $policymakers['1234']->getPolicymakerName());
   }
 
 }

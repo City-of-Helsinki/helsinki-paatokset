@@ -397,10 +397,13 @@ class ThemeHooks {
     $variables['decision_section'] = $decision?->getFormattedDecisionSection();
     $variables['decision_org_name'] = !$organization_type?->isCouncilOrBoard() ? ($policymaker?->getPolicymakerName() ?? $decision?->getDecisionMakerOrgName()) : NULL;
     $variables['organization_type_name'] = $this->policymakerService->getPolicymakerTypeFromNode($policymaker) ?? NULL;
-    $variables['selected_label'] = $decision ? $this->caseService->formatDecisionLabel($decision, $policymaker) : NULL;
     $variables['selected_class'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');
     $variables['attachments'] = $decision?->getAttachments() ?? [];
-    $variables['all_decisions'] = $case ? $this->caseService->getDecisionsList($case) : NULL;
+
+    // Policymakers are loaded beforehand to prevent N+1 queries in templates.
+    $decisions = $case?->getAllDecisions() ?? [];
+    $variables['all_decisions'] = $decisions;
+    $variables['policymakers'] = $this->caseService->getPolicymakersForDecisions($decisions);
 
     if ($decision && $adjacent = $case?->getNextDecision($decision)) {
       $variables['next_decision'] = $adjacent;
