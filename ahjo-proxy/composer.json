@@ -1,0 +1,52 @@
+{
+    "name": "city-of-helsinki/ahjo-proxy",
+    "description": "Ahjo API proxy (v3).",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.4",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "firebase/php-jwt": "^7.0",
+        "nyholm/psr7": "^1.8",
+        "psr/http-client": "^1.0",
+        "symfony/cache": "^8.1",
+        "symfony/console": "^8.1",
+        "symfony/dotenv": "^8.1",
+        "symfony/filesystem": "^8.1",
+        "symfony/framework-bundle": "^8.1",
+        "symfony/http-client": "^8.1",
+        "symfony/lock": "^8.1",
+        "symfony/monolog-bundle": "^4.1",
+        "symfony/runtime": "^8.1",
+        "symfony/yaml": "^8.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=1G"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.3",
+        "phpunit/phpunit": "^13.4",
+        "symfony/browser-kit": "^8.1"
+    }
+}

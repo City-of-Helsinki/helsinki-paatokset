@@ -1,0 +1,41 @@
+parameters:
+    ahjo_proxy.token_storage_dir: '%env(resolve:TOKEN_STORAGE_DIR)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            string $ahjoEndpoint: '%env(AHJO_ENDPOINT)%'
+            string $apiKey: '%env(AHJO_PROXY_API_KEY)%'
+            string $upstreamProxyUrl: '%env(AHJO_UPSTREAM_PROXY_URL)%'
+            string $upstreamProxyApiKey: '%env(AHJO_UPSTREAM_PROXY_API_KEY)%'
+            string $storageDir: '%ahjo_proxy.token_storage_dir%'
+            string $appSecret: '%kernel.secret%'
+            string $oidcIssuer: '%env(OIDC_ISSUER)%'
+            array $allowedClients: '%env(csv:OIDC_ALLOWED_CLIENTS)%'
+            array $allowedAdGroups: '%env(csv:OIDC_ALLOWED_AD_GROUPS)%'
+            Psr\Cache\CacheItemPoolInterface $oidcCache: '@oidc.cache'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/AhjoOpenId/AhjoAuthToken.php'
+            - '../src/Auth/Admin.php'
+            - '../src/Auth/AccessTokenException.php'
+            - '../src/Auth/RequireAdmin.php'
+            - '../src/Auth/RequireApiKey.php'
+
+    App\AhjoOpenId\Settings:
+        arguments:
+            $authUrl: '%env(AHJO_OPENID_AUTH_URL)%'
+            $tokenUrl: '%env(AHJO_OPENID_TOKEN_URL)%'
+            $clientId: '%env(AHJO_OPENID_CLIENT_ID)%'
+            $scope: '%env(AHJO_OPENID_SCOPE)%'
+            $clientSecret: '%env(AHJO_OPENID_SECRET)%'
+            $redirectUri: '%env(AHJO_OPENID_REDIRECT_URI)%'
+
+when@test:
+    services:
+        App\Tests\MockResponseFactory: ~
