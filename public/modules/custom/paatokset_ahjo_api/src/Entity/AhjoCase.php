@@ -234,7 +234,7 @@ final class AhjoCase extends RemoteEntityBase implements EntityPublishedInterfac
   /**
    * Gets the default decision for this case.
    */
-  public function getDefaultDecision(): Decision {
+  public function getDefaultDecision(): ?Decision {
     return array_first($this->getAllDecisions());
   }
 
