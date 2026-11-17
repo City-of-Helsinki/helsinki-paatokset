@@ -428,3 +428,6 @@ msgstr "Jos kaipaat yhteystietoa, mutta et löytänyt sitä yltä, kokeile yhtey
 msgctxt "Dictionary banner"
 msgid "Helsinki City Contacts"
 msgstr "Kaupungin yhteystietohaku"
+
+msgid "Process history"
+msgstr "Päätöshistoria"

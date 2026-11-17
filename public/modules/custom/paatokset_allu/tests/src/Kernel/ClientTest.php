@@ -5,19 +5,22 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_allu\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\paatokset_allu\AlluException;
+use Drupal\paatokset_allu\ApprovalType;
 use Drupal\paatokset_allu\Client\Client;
 use Drupal\paatokset_allu\Client\Settings;
 use Drupal\paatokset_allu\Client\TokenFactory;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Allu api client test.
  */
 #[Group('paatokset_allu')]
+#[RunTestsInSeparateProcesses]
 class ClientTest extends KernelTestBase {
 
   use ApiTestTrait;
@@ -33,21 +36,21 @@ class ClientTest extends KernelTestBase {
   ];
 
   /**
-   * Tests response streaming.
+   * Tests document fetching.
    */
-  public function testResponseStreaming(): void {
+  public function testDocument(): void {
     $sut = $this->getSut([
       new Response(body: 'Hello, world'),
+      new Response(body: 'Hello, approval'),
+      new Response(404, body: 'Not found'),
     ]);
 
-    $response = $sut->streamDecision('123');
-    $this->assertInstanceOf(StreamedResponse::class, $response);
+    $this->assertEquals('Hello, world', (string) $sut->decisionDocument('123')->getBody());
+    $this->assertEquals('Hello, approval', (string) $sut->approvalDocument('123', ApprovalType::WORK_FINISHED)->getBody());
 
-    ob_start();
-    $response->sendContent();
-    $content = ob_get_clean();
-
-    $this->assertStringContainsString('Hello, world', $content);
+    // API errors are converted to exceptions.
+    $this->expectException(AlluException::class);
+    $sut->decisionDocument('123');
   }
 
   /**

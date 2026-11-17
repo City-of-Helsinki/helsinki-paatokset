@@ -10,13 +10,8 @@ use Drupal\Core\Breadcrumb\ChainBreadcrumbBuilderInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatch;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
-use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -25,26 +20,24 @@ use Symfony\Component\Routing\Route;
 #[Group('paatokset_ahjo_api')]
 class BreadcrumbTest extends AhjoEntityKernelTestBase {
 
-  use UserCreationTrait;
   use NodeCreationTrait;
-  use ProphecyTrait;
 
   /**
    * Tests paatokset_ahjo_api_system_breadcrumb_alter().
    */
   public function testBreadcrumbs(): void {
-    $caseService = $this->prophesize(CaseService::class);
-
-    $case = $this->prophesize(CaseBundle::class);
-    $decision = $this->prophesize(Decision::class);
-    $decision->getDecisionHeading()
-      ->willReturn('dingdong');
-
-    $caseService
-      ->guessDecisionFromPath($case)
-      ->willReturn($decision->reveal());
-
-    $this->container->set('paatokset_ahjo_cases', $caseService->reveal());
+    $case = $this->createNode([
+      'type' => 'case',
+      'langcode' => 'en',
+      'field_diary_number' => '123',
+    ]);
+    $this->createNode([
+      'type' => 'decision',
+      'title' => 'Test decision',
+      'langcode' => 'en',
+      'field_diary_number' => '123',
+      'field_decision_case_title' => 'dingdong',
+    ]);
 
     $builder = $this->container->get(ChainBreadcrumbBuilderInterface::class);
     $builder->addBuilder($this->createBreadcrumbBuilder([
@@ -54,7 +47,7 @@ class BreadcrumbTest extends AhjoEntityKernelTestBase {
     $routeMatch = new RouteMatch(
       '<front>',
       new Route('/{node}', options: ['_admin_route' => FALSE]),
-      ['node' => $case->reveal()],
+      ['node' => $case],
     );
 
     $breadcrumbs = $builder->build($routeMatch);
@@ -66,12 +59,16 @@ class BreadcrumbTest extends AhjoEntityKernelTestBase {
 
   /**
    * Create new breadcrumb builder.
+   *
+   * @phpstan-param \Drupal\Core\Link[] $links
    */
   private function createBreadcrumbBuilder(array $links): BreadcrumbBuilderInterface {
     return new class($links) implements BreadcrumbBuilderInterface {
 
       /**
        * Constructs a new instance.
+       *
+       * @phpstan-param \Drupal\Core\Link[] $links
        */
       public function __construct(private readonly array $links) {}
 

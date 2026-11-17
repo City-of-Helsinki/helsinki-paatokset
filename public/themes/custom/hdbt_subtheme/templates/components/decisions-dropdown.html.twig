@@ -1,9 +1,21 @@
 {#
   Values that should be passed:
-    - Options: array containing title, value and class for an option
-    - Selected: currently selected option
+    - options: list of Decision entities.
+    - policymakers: Policymaker entities keyed by policymaker id.
+    - selectedDecision: currently selected Decision entity.
 #}
 
+{% macro decision_label(decision, policymaker) %}
+  {%- set org_label = (policymaker ? policymaker.getPolicymakerName()) ?: decision.getDecisionMakerOrgName() -%}
+  {%- set meeting_date = decision.field_meeting_date.value ? decision.field_meeting_date.value|date('d.m.Y') -%}
+  {%- set meeting_number = decision.field_meeting_sequence_number.value -%}
+  {%- if meeting_number -%}
+    {%- set meeting_date = meeting_number ~ '/' ~ meeting_date -%}
+  {%- endif -%}
+  {{- [org_label ?: decision.label, meeting_date]|filter(v => v)|join(' ') -}}
+{% endmacro %}
+
+{% import _self as dropdown %}
 
 {% if options %}
 <div class="issue__meetings-container">
@@ -31,6 +43,7 @@
       {% set disabled = false %}
     {% endif %}
     {% if selectedDecision %}
+      {% set selected_label = dropdown.decision_label(selectedDecision, policymakers[selectedDecision.getPolicymakerId()] ?? null) %}
       {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: disabled, label: selected_label, icon_last: true, icon_last_type: 'angle-down' } %}
     {% else %}
       {% include '@hdbt_subtheme/components/button.html.twig' with {type: 'secondary', disabled: false, label: 'Choose a handling'|t, icon_last: true, icon_last_type: 'angle-down' } %}
@@ -38,32 +51,25 @@
     <nav>
       <ul class="issue__meetings-select" aria-expanded='false' tabindex="-1" id='issue__meetings-select'>
         {% for option in options %}
-          {% if selectedDecision.id == option.id %}
-            <li
-              data-styleclass="border-left--{{ option.class }}"
-              data-link="{{ option.native_id }}"
-              aria-selected="true"
-              tabindex="0"
-              class="option selected border-left--{{ option.class }}"
-              title="{{ option.label }}"
-            >
-              <a class="paatokset__link-plain" href="?decision={{option.native_id|url_encode}}">{{ option.label }}</a>
-            </li>
-          {% else %}
-            <li
-              data-styleclass="border-left--{{ option.class }}"
-              data-link="{{ option.native_id }}"
-              aria-selected="false"
-              tabindex="0"
-              class="option border-left--{{ option.class }}"
-              title="{{ option.label }}"
-            >
-              <a class="paatokset__link-plain" href="?decision={{ option.native_id|url_encode }}">{{ option.label }}</a>
-            </li>
-          {% endif %}
+          {% set policymaker = policymakers[option.getPolicymakerId()] ?? null %}
+          {% set option_class = (policymaker ? policymaker.getPolicymakerClass() : 'color-board')|clean_class %}
+          {% set option_label = dropdown.decision_label(option, policymaker) %}
+          {% set option_url = path('entity.node.canonical', {node: option.id}) %}
+          {% set is_selected = selectedDecision.id == option.id %}
+          <li
+            data-styleclass="border-left--{{ option_class }}"
+            data-link="{{ option.getNormalizedNativeId() }}"
+            data-url="{{ option_url }}"
+            aria-selected="{{ is_selected ? 'true' : 'false' }}"
+            tabindex="0"
+            class="option{{ is_selected ? ' selected' }} border-left--{{ option_class }}"
+            title="{{ option_label }}"
+          >
+            <a class="paatokset__link-plain" href="{{ option_url }}">{{ option_label }}</a>
+          </li>
         {% endfor %}
       </ul>
-    <nav>
+    </nav>
   </div>
   <noscript>
     <style>

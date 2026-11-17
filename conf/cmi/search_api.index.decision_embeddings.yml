@@ -26,9 +26,10 @@ field_settings:
         - field.storage.node.field_decision_date
   decision_url:
     label: 'Decision URL'
-    datasource_id: 'entity:node'
-    property_path: decision_url
+    property_path: search_api_url
     type: string
+    configuration:
+      absolute: false
   embeddings_text_embedding_3_large:
     label: 'Embeddings (text-embedding-3-large)'
     property_path: embeddings_text_embedding_3_large
@@ -66,7 +67,6 @@ datasource_settings:
       selected: {  }
 processor_settings:
   add_url: {  }
-  decision_url: {  }
   entity_status: {  }
   entity_type: {  }
   helfi_entity_label: {  }
