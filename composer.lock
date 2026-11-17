@@ -2944,7 +2944,8 @@
             "description": "Provide Content-Security-Policy headers",
             "homepage": "https://www.drupal.org/project/csp",
             "keywords": [
-                "Drupal"
+                "Drupal",
+                "Integrations"
             ],
             "support": {
                 "source": "https://git.drupalcode.org/project/csp",
@@ -4026,6 +4027,10 @@
             ],
             "description": "Allows using remote entities, for example through a REST interface.",
             "homepage": "https://www.drupal.org/project/external_entities",
+            "keywords": [
+                "Actively maintained",
+                "Content editing experience"
+            ],
             "support": {
                 "source": "http://cgit.drupalcode.org/external_entities",
                 "issues": "http://drupal.org/project/issues/external_entities"
@@ -4481,16 +4486,16 @@
         },
         {
             "name": "drupal/hdbt",
-            "version": "6.22.5",
+            "version": "6.22.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-hdbt.git",
-                "reference": "a2e89c3221d46bd9d1b2903c43bd580ccf2a8032"
+                "reference": "292e83942059ff6d839cce5d8f9fa8c7161e11bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/a2e89c3221d46bd9d1b2903c43bd580ccf2a8032",
-                "reference": "a2e89c3221d46bd9d1b2903c43bd580ccf2a8032",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-hdbt/zipball/292e83942059ff6d839cce5d8f9fa8c7161e11bd",
+                "reference": "292e83942059ff6d839cce5d8f9fa8c7161e11bd",
                 "shasum": ""
             },
             "require": {
@@ -4509,11 +4514,11 @@
                 "Drupal"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.22.5",
+                "source": "https://github.com/City-of-Helsinki/drupal-hdbt/tree/6.22.11",
                 "issues": "https://github.com/City-of-Helsinki/drupal-hdbt/issues"
             },
-            "time": "2026-11-13T10:29:06+00:00",
-            "published-time": "2026-11-13T11:31:32+00:00"
+            "time": "2026-11-17T10:17:07+00:00",
+            "published-time": "2026-11-17T10:18:41+00:00"
         },
         {
             "name": "drupal/hdbt_admin",
@@ -4785,16 +4790,16 @@
         },
         {
             "name": "drupal/helfi_platform_config",
-            "version": "5.5.9",
+            "version": "5.5.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config.git",
-                "reference": "2356bb215d5147928cba9dbd00a36d00f36947bb"
+                "reference": "6e3df5030dc97663e99704f02617db2c0f96c104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/2356bb215d5147928cba9dbd00a36d00f36947bb",
-                "reference": "2356bb215d5147928cba9dbd00a36d00f36947bb",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-helfi-platform-config/zipball/6e3df5030dc97663e99704f02617db2c0f96c104",
+                "reference": "6e3df5030dc97663e99704f02617db2c0f96c104",
                 "shasum": ""
             },
             "require": {
@@ -4935,11 +4940,11 @@
             ],
             "description": "HELfi platform config",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/5.5.9",
+                "source": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/tree/5.5.14",
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
-            "time": "2026-11-13T10:55:18+00:00",
-            "published-time": "2026-11-13T10:56:42+00:00"
+            "time": "2026-11-17T09:07:04+00:00",
+            "published-time": "2026-11-17T09:10:07+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -5228,6 +5233,10 @@
             ],
             "description": "Provides an image toolkit to integrate ImageMagick with the Image API.",
             "homepage": "https://www.drupal.org/project/imagemagick",
+            "keywords": [
+                "Media",
+                "Minimally maintained"
+            ],
             "support": {
                 "source": "https://git.drupalcode.org/project/imagemagick"
             },
@@ -6232,6 +6241,7 @@
             "description": "A pluggable client implementation for the OpenID Connect protocol.",
             "homepage": "https://www.drupal.org/project/openid_connect",
             "keywords": [
+                "Access control",
                 "Drupal"
             ],
             "support": {
@@ -6317,6 +6327,10 @@
             ],
             "description": "Enables the creation of Paragraphs entities.",
             "homepage": "https://www.drupal.org/project/paragraphs",
+            "keywords": [
+                "Actively maintained",
+                "Content editing experience"
+            ],
             "support": {
                 "source": "https://git.drupalcode.org/project/paragraphs"
             },
@@ -6717,6 +6731,10 @@
             ],
             "description": "Integrates with Sentry application monitoring and error tracking platform (sentry.io).",
             "homepage": "https://www.drupal.org/project/raven",
+            "keywords": [
+                "Actively maintained",
+                "Administration tools"
+            ],
             "support": {
                 "source": "https://git.drupalcode.org/project/raven",
                 "issues": "https://www.drupal.org/project/issues/raven"
