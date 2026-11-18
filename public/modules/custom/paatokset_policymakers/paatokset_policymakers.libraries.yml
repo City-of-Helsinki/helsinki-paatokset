@@ -8,3 +8,5 @@ policymaker_members:
   dependencies:
     - paatokset_policymakers/vue-js
     - core/drupal
+    - core/drupalSettings
+    - core/jquery
