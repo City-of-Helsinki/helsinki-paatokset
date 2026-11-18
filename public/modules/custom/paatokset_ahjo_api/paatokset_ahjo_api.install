@@ -27,6 +27,17 @@ function paatokset_ahjo_api_update_last_removed(): int {
 }
 
 /**
+ * Implements hook_update_dependencies().
+ */
+function paatokset_ahjo_api_update_dependencies(): array {
+  return [
+    'helfi_base_content' => [
+      9021 => ['paatokset_ahjo_api' => 11007],
+    ],
+  ];
+}
+
+/**
  * Install ahjo_organizations entity.
  */
 function paatokset_ahjo_api_update_9004(): void {
@@ -313,5 +324,27 @@ function paatokset_ahjo_api_update_11006(): void {
     $overrides->getOverride($langcode, $configName)
       ->set('policymakers_search_description.value', $texts[$langcode])
       ->save();
+  }
+}
+
+/**
+ * UHF-13511: Replace removed decision_url processor field with search_api_url.
+ */
+function paatokset_ahjo_api_update_11007(): void {
+  $factory = \Drupal::configFactory();
+  foreach (['decisions' => 'URI', 'decision_embeddings' => 'Decision URL'] as $id => $label) {
+    $config = $factory->getEditable("search_api.index.$id");
+    if ($config->isNew()) {
+      continue;
+    }
+    $config
+      ->set('field_settings.decision_url', [
+        'label' => $label,
+        'property_path' => 'search_api_url',
+        'type' => 'string',
+        'configuration' => ['absolute' => FALSE],
+      ])
+      ->clear('processor_settings.decision_url')
+      ->save(TRUE);
   }
 }
