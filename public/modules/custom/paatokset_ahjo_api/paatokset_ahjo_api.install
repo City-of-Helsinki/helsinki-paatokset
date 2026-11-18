@@ -28,6 +28,8 @@ function paatokset_ahjo_api_update_last_removed(): int {
 
 /**
  * Implements hook_update_dependencies().
+ *
+ * @phpstan-return array<string, array<int, array<string, int>>>
  */
 function paatokset_ahjo_api_update_dependencies(): array {
   return [
