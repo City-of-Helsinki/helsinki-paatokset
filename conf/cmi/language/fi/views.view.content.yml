@@ -6,6 +6,30 @@ display:
     display_options:
       title: Sisältö
       fields:
+        views_bulk_operations_bulk_form:
+          selected_actions:
+            -
+              preconfiguration:
+                label_override: 'Lisää suosikiksi'
+            -
+              preconfiguration:
+                label_override: 'Poista suosikeista'
+            -
+              preconfiguration:
+                label_override: 'Poista sisältö'
+            -
+              preconfiguration:
+                label_override: 'Muokkaa sisältöä'
+            -
+              preconfiguration:
+                label_override: 'Julkaise sisältö'
+            -
+              preconfiguration:
+                label_override: 'Muuta sisältö ei-julkaistuksi'
+            -
+              preconfiguration:
+                label_override: 'Päivitä osoitealias'
+          action_title: Toiminto
         title:
           label: Otsikko
         helfi_favorite:
