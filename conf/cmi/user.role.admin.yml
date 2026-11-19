@@ -111,6 +111,7 @@ permissions:
   - 'administer tpr_unit'
   - 'administer url aliases'
   - 'administer users'
+  - 'allow views bulk operations'
   - 'assign api_user role'
   - 'assign content_producer role'
   - 'assign editor role'
