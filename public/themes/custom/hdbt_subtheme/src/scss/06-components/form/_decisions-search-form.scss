@@ -9,6 +9,11 @@
   padding: $spacing;
 }
 
+.date-filter__predefined-ranges-container .date-filter__predefined-ranges-container__selection-group legend {
+  @include visually-hidden;
+  margin: 0;
+}
+
 .date-filter__inner-control {
   margin-top: $spacing;
   width: 100%;
