@@ -132,7 +132,7 @@ paatokset_ahjo_api.default_texts:
       label: 'Committees and boards URL'
     office_holders_url:
       type: label
-      label: 'Office holders URL'
+      label: 'Public officials URL'
 
 condition.plugin.paatokset_case_or_decision:
   type: condition.plugin

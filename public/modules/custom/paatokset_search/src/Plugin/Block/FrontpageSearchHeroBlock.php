@@ -38,7 +38,7 @@ final class FrontpageSearchHeroBlock extends BlockBase implements ContainerFacto
       '#hero_title' => $this->t("The City's decisions", [], ['context' => 'Decisions search']),
       '#hero_description' =>
       $this->t(
-          "The City of Helsinki uses Finnish in its decision-making. You can browse the service in English, but the decision documents themselves are only available in Finnish. The Decisions service compiles all decision-making by the City of Helsinki in one place. You can find decisions made by the Helsinki City Council, City Board, committees, office holders and other authorities of Helsinki in Finnish.",
+          "The City of Helsinki uses Finnish in its decision-making. You can browse the service in English, but the decision documents themselves are only available in Finnish. The Decisions service compiles all decision-making by the City of Helsinki in one place. You can find decisions made by the Helsinki City Council, City Board, committees, public officials and other authorities of Helsinki in Finnish.",
           [],
           ['context' => 'Decisions search']
       ),

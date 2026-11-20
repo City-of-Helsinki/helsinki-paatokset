@@ -27,7 +27,7 @@ final class PolicymakerSearchHeroBlock extends BlockBase {
     return [
       '#theme' => 'policymaker_search_hero_block',
       '#hero_title' => $this->t('Search decision-makers', [], ['context' => 'Policymaker search']),
-      '#hero_description' => $this->t('Search for a decision-making body, office holder or councillor.', [], ['context' => 'Policymaker search']),
+      '#hero_description' => $this->t('Search for a decision-making body, public official or councillor.', [], ['context' => 'Policymaker search']),
     ];
   }
 

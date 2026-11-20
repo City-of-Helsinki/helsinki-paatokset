@@ -306,7 +306,7 @@ class ThemeHooks {
         'title' => $this->t('Initiation'),
       ],
       '1' => [
-        'title' => $this->t('Office holder decision'),
+        'title' => $this->t('Public official decision'),
         'link' => $office_holders_url,
       ],
       '2' => [
@@ -315,7 +315,7 @@ class ThemeHooks {
     ];
 
     $variables['info_1'] = $this->t('Standard decision-making process');
-    $variables['info_2'] = $this->t('Standard process for office holder decisions');
+    $variables['info_2'] = $this->t('Standard process for public official decisions');
   }
 
   /**

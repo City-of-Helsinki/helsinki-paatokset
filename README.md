@@ -101,7 +101,7 @@ Critical functionality, API content lifecycle and flow and debugging instruction
 
 ### Integrations and features
 #### AHJO API
-The majority of the site's content come from AHJO API: Meetings, motions decisions, policymakers, office holder profiles. Custom modules handle the authentication and aggregation of data.
+The majority of the site's content come from AHJO API: Meetings, motions decisions, policymakers, public official profiles. Custom modules handle the authentication and aggregation of data.
 
 Described in more detail here: https://helsinkisolutionoffice.atlassian.net/wiki/spaces/PP/pages/2688254056/AHJO+API
 
