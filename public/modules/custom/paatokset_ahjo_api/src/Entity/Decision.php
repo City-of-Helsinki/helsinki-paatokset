@@ -318,7 +318,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
    *   URL for PDF.
    */
   public function getDecisionPdf(): ?string {
-    // Check for office holder and trustee decisions for minutes PDF URI first.
+    // Check public official and trustee decisions for minutes PDF URI first.
     if ($minutes_file_uri = $this->getMinutesPdf()) {
       return $minutes_file_uri;
     }

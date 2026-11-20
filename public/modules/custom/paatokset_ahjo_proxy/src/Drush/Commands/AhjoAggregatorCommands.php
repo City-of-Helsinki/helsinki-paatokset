@@ -319,7 +319,7 @@ class AhjoAggregatorCommands extends DrushCommands {
    */
   #[Command(name: 'ahjo-proxy:check-dm-status', aliases: ['ap:cdms'])]
   public function checkDecisionMakerStatus() {
-    $this->logger->info('Checking organization and office holder status.');
+    $this->logger->info('Checking organization and public official status.');
 
     $query = $this->nodeStorage->getQuery()
       ->accessCheck(TRUE)

@@ -39,12 +39,6 @@ msgstr "Kaupunginhallituksen jaostot"
 msgid "Committees and Boards"
 msgstr "Lautakunnat ja johtokunnat"
 
-msgid "Office holders"
-msgstr "Viranhaltijat"
-
-msgid "Office holders: @sector_title"
-msgstr "Viranhaltijat: @sector_title"
-
 msgid "Elected official decisionmakers"
 msgstr "Luottamushenkilöpäättäjät"
 

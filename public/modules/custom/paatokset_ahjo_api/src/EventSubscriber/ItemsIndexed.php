@@ -54,7 +54,7 @@ class ItemsIndexed implements EventSubscriberInterface {
   }
 
   /**
-   * Get cache tags to invalidate for office holder decisions.
+   * Get cache tags to invalidate for public official decisions.
    *
    * @param \Drupal\search_api\Event\ItemsIndexedEvent $event
    *   The ItemsIndexed event.
