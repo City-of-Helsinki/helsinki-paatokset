@@ -166,12 +166,12 @@ msgid "Choose dates"
 msgstr "Valitse ajankohta"
 
 msgctxt "Decisions search"
-msgid "Choose range"
-msgstr "Valitse päivämäärät"
+msgid "Choose custom date range"
+msgstr "Valitse oma aikaväli"
 
 msgctxt "Decisions search"
-msgid "Back"
-msgstr "Takaisin"
+msgid "Show predefined date ranges"
+msgstr "Näytä valmiit aikavälit"
 
 msgctxt "Decisions search"
 msgid "Past week"

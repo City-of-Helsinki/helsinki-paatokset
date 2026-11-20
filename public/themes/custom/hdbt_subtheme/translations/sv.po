@@ -178,12 +178,12 @@ msgid "Choose dates"
 msgstr "Välj tidpunkt"
 
 msgctxt "Decisions search"
-msgid "Choose range"
-msgstr "Välj datum"
+msgid "Choose custom date range"
+msgstr "Välj eget datumintervall"
 
 msgctxt "Decisions search"
-msgid "Back"
-msgstr "Tillbaka"
+msgid "Show predefined date ranges"
+msgstr "Visa färdiga datumintervall"
 
 msgctxt "Decisions search"
 msgid "Past week"

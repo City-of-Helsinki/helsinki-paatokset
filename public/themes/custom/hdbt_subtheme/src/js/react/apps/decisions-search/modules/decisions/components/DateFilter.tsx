@@ -1,6 +1,6 @@
 import { Button, ButtonPresetTheme, Checkbox, DateInput, IconMinus, SelectionGroup } from 'hds-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { type MouseEvent, useState } from 'react';
+import { type MouseEvent, useEffect, useRef, useState } from 'react';
 import Collapsible from '@/react/common/Collapsible';
 import { defaultCheckboxStyle } from '@/react/common/constants/checkboxStyle';
 import { addDays, addMonths, addYears, formatHDSDate } from '@/react/common/helpers/dateUtils';
@@ -16,11 +16,25 @@ export const DateFilter = () => {
   const setTo = useSetAtom(setToAtom);
   const dateSelection = useAtomValue(getDateSelectionAtom);
   const [calendarActive, setCalendarActive] = useState<boolean>(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const prevCalendarActive = useRef(calendarActive);
+
+  // Move focus into the new view when toggling between predefined ranges and
+  // the date range inputs, so screen reader users notice the content changed.
+  useEffect(() => {
+    if (prevCalendarActive.current === calendarActive) {
+      return;
+    }
+    prevCalendarActive.current = calendarActive;
+    contentRef.current?.querySelector<HTMLElement>('input')?.focus();
+  }, [calendarActive]);
 
   const getTitle = () => {
     if (!from && !to) {
       return (
-        <span className='collapsible__title--placeholder'>{Drupal.t('Date', {}, { context: 'Decisions search' })}</span>
+        <span className='collapsible__title--placeholder'>
+          {Drupal.t('All dates', {}, { context: 'Decisions search' })}
+        </span>
       );
     }
 
@@ -68,16 +82,16 @@ export const DateFilter = () => {
       <Collapsible
         className='decisions-search__date-filter-collapsible'
         id='date-filter'
-        title={getTitle()}
         label={Drupal.t('Date', {}, { context: 'Decisions search' })}
+        title={getTitle()}
+        panelLabel={Drupal.t('Choose date', {}, { context: 'React search: date range select' })}
       >
-        <div>
+        <div className='decisions-search__date-filter-content' ref={contentRef}>
           {calendarActive ? (
             <div className='date-filter__datepicker-wrapper'>
               <div className='date-filter__datepicker-container'>
                 <div className='date-filter__fields-container'>
                   <DateInput
-                    autoFocus
                     id={Components.FROM}
                     label={Drupal.t('Start date', {}, { context: 'Decisions search' })}
                     language={drupalSettings.path.currentLanguage}
@@ -101,7 +115,10 @@ export const DateFilter = () => {
           ) : (
             <div className='date-filter__predefined-ranges-wrapper'>
               <div className='date-filter__predefined-ranges-container'>
-                <SelectionGroup>
+                <SelectionGroup
+                  className='date-filter__predefined-ranges-container__selection-group'
+                  label={Drupal.t('Predefined date ranges', {}, { context: 'Decisions search' })}
+                >
                   <Checkbox
                     id={DateSelection.PAST_WEEK}
                     label={Drupal.t('Past week', {}, { context: 'Decisions search' })}
@@ -137,8 +154,8 @@ export const DateFilter = () => {
             theme={ButtonPresetTheme.Black}
           >
             {calendarActive
-              ? Drupal.t('Back', {}, { context: 'Decisions search' })
-              : Drupal.t('Choose range', {}, { context: 'Decisions search' })}
+              ? Drupal.t('Show predefined date ranges', {}, { context: 'Decisions search' })
+              : Drupal.t('Choose custom date range', {}, { context: 'Decisions search' })}
           </Button>
         </div>
       </Collapsible>
