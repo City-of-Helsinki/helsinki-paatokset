@@ -121,19 +121,21 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    *
    * @param string|null $langcode
    *   Link translation. Defaults to current language.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker|null $policymaker
+   *   Preloaded policymaker of this meeting. Loaded if not given.
    *
    * @todo This should use Drupal Links & Route Provider system.
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getMinutesUrl(?string $langcode = NULL): ?Url {
+  public function getMinutesUrl(?string $langcode = NULL, ?Policymaker $policymaker = NULL): ?Url {
     if (!$langcode) {
       $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
     }
 
     // Load policymaker this meeting relates to
     // (Paatokset does not use reference fields).
-    $policymaker = $this->getPolicymaker();
+    $policymaker ??= $this->getPolicymaker();
     if (!$policymaker instanceof Policymaker || $policymaker->isTrustee()) {
       return NULL;
     }
@@ -155,13 +157,15 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    *
    * @param string|null $langcode
    *   Link translation. Defaults to current language.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker|null $policymaker
+   *   Preloaded policymaker of this meeting. Loaded if not given.
    *
    * @todo This should use Drupal Links & Route Provider system.
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getDecisionAnnouncementUrl(?string $langcode = NULL): ?Url {
-    $url = $this->getMinutesUrl($langcode);
+  public function getDecisionAnnouncementUrl(?string $langcode = NULL, ?Policymaker $policymaker = NULL): ?Url {
+    $url = $this->getMinutesUrl($langcode, $policymaker);
 
     if ($url) {
       $langcode = $langcode ?? $url->getOption('language')->getId();

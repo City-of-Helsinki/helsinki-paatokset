@@ -13,17 +13,10 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Service class for retrieving meeting-related data.
- *
- * @package Drupal\paatokset_ahjo_api\Services
  */
 class MeetingService {
 
   use StringTranslationTrait;
-
-  /**
-   * Machine name for meeting node type.
-   */
-  const NODE_TYPE = 'meeting';
 
   /**
    * Constructs MeetingService.
