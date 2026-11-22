@@ -535,12 +535,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
 
 		-
-			message: '#^Parameter \#1 \$content of class Symfony\\Component\\HttpFoundation\\Response constructor expects string\|null, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/MeetingController.php
-
-		-
 			message: '#^Access to an undefined property DOMNameSpaceNode\|DOMNode\:\:\$nextSibling\.$#'
 			identifier: property.notFound
 			count: 1
