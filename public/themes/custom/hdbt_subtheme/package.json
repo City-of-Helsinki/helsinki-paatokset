@@ -37,10 +37,7 @@
     },
     "diff": "^8.0.3",
     "qs": "^6.16.0",
-    "yauzl": "^3.2.1",
-    "svg-sprite": {
-      "glob": "^13.0.0"
-    }
+    "yauzl": "^3.2.1"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.17.1",
