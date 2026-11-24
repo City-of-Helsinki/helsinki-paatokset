@@ -3,8 +3,6 @@ paatokset_helsinki_kanava.settings:
   mapping:
     debug_mode:
       type: boolean
-    city_council_id:
-      type: string
     city_hall_id:
       type: string
     trustee_organization_type_id:

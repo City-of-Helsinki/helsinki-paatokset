@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.paatokset_helsinki_kanava:
+    parent: logger.channel_base
+    arguments: ['paatokset_helsinki_kanava']
+
+  Drupal\paatokset_helsinki_kanava\CouncilMeetings: ~

@@ -3973,12 +3973,6 @@ parameters:
 			path: public/modules/custom/paatokset_helsinki_kanava/src/Form/HelsinkiKanavaForm.php
 
 		-
-			message: '#^Method Drupal\\paatokset_helsinki_kanava\\Form\\HelsinkiKanavaForm\:\:submitForm\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_helsinki_kanava/src/Form/HelsinkiKanavaForm.php
-
-		-
 			message: '#^Method Drupal\\paatokset_helsinki_kanava\\Form\\HelsinkiKanavaForm\:\:submitForm\(\) has parameter \$form with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4067,12 +4061,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_helsinki_kanava/src/Plugin/migrate/source/HelsinkiKanava.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_helsinki_kanava\\Kernel\\AnnouncementBlockTest\:\:assertCacheMaxAge\(\) has parameter \$build with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_helsinki_kanava/tests/src/Kernel/AnnouncementBlockTest.php
 
 		-
 			message: '#^Function paatokset_pdf_listing_preprocess_paragraph__pdf_listing\(\) has no return type specified\.$#'
