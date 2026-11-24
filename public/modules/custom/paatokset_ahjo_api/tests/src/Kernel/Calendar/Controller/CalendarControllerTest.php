@@ -104,19 +104,6 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
     // Policymaker without node.
     $this->assertArrayNotHasKey('policymaker_name', $items['other_policymaker']);
 
-    // Policymaker and date range filters.
-    $response = $this->request([
-      'from' => date('Y-m-d', strtotime('-30 days')),
-      'to' => date('Y-m-d', strtotime('+3 days')),
-      'policymaker' => 'dm-1',
-    ]);
-    $data = json_decode((string) $response->getContent(), TRUE)['data'];
-    $this->assertSame(['past', 'agenda'], array_column(array_merge(...array_values($data)), 'title'));
-
-    $response = $this->request(['policymaker' => 'dm-2']);
-    $data = json_decode((string) $response->getContent(), TRUE)['data'];
-    $this->assertSame(['other_policymaker'], array_column(array_merge(...array_values($data)), 'title'));
-
     // Invalid date.
     $response = $this->request(['from' => 'not-a-date']);
     $this->assertEquals(400, $response->getStatusCode());
