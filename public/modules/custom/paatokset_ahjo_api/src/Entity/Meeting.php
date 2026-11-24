@@ -44,6 +44,55 @@ class Meeting extends Node implements AhjoUpdatableInterface {
   }
 
   /**
+   * Gets the meeting date as a timestamp.
+   */
+  public function getMeetingTimestamp(): ?int {
+    return $this->get('field_meeting_date')->date?->getTimestamp();
+  }
+
+  /**
+   * Gets the original meeting date as a timestamp.
+   */
+  public function getOriginalMeetingTimestamp(): ?int {
+    return $this->get('field_meeting_date_original')->date?->getTimestamp();
+  }
+
+  /**
+   * Gets the meeting status from Ahjo.
+   */
+  public function getStatus(): ?string {
+    return $this->get('field_meeting_status')->value;
+  }
+
+  /**
+   * Returns TRUE if the meeting is cancelled.
+   */
+  public function isCancelled(): bool {
+    return $this->getStatus() === 'peruttu';
+  }
+
+  /**
+   * Returns TRUE if the meeting was moved from its original date.
+   */
+  public function isMoved(): bool {
+    // Cancelled meetings are never considered moved.
+    if ($this->isCancelled()) {
+      return FALSE;
+    }
+
+    $original = $this->getOriginalMeetingTimestamp();
+
+    return $original !== NULL && $original !== $this->getMeetingTimestamp();
+  }
+
+  /**
+   * Gets the Ahjo ID of the related policymaker.
+   */
+  public function getPolicymakerId(): ?string {
+    return $this->get('field_meeting_dm_id')->value;
+  }
+
+  /**
    * Get meeting minutes document from meeting node.
    *
    * @param string $document_type
@@ -104,7 +153,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    * Gets related policymaker.
    */
   public function getPolicymaker(): ?Policymaker {
-    $policymakerId = $this->get('field_meeting_dm_id')->value;
+    $policymakerId = $this->getPolicymakerId();
 
     // Load policymaker this meeting relates to
     // (Paatokset does not use reference fields).

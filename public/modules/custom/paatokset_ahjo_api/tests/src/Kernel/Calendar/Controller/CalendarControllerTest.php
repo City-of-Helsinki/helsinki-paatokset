@@ -30,6 +30,10 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
     $storage = $this->container->get(EntityTypeManagerInterface::class)
       ->getStorage('node');
 
+    // All relative dates are computed from the same base time, so
+    // the test does not break if the clock ticks over mid-test.
+    $now = time();
+
     $storage->create([
       'type' => 'policymaker',
       'status' => 1,
@@ -47,7 +51,7 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
       'agenda' => ['+2 days', 'vahvistettu', [$agenda]],
       'decision' => ['+3 days', 'pidetty', [$agenda], ['field_meeting_decision' => '<p>Decision</p>']],
       'cancelled' => ['+4 days', 'peruttu', [$agenda]],
-      'moved' => ['+5 days', 'vahvistettu', [], ['field_meeting_date_original' => $this->storageDate('+6 days')]],
+      'moved' => ['+5 days', 'vahvistettu', [], ['field_meeting_date_original' => $this->storageDate('+6 days', $now)]],
       'other_policymaker' => ['+6 days', 'vahvistettu', [], ['field_meeting_dm_id' => 'dm-2']],
       'unpublished' => ['+7 days', 'vahvistettu', [], ['status' => 0]],
       'out_of_range_past' => ['-120 days', 'pidetty', []],
@@ -61,7 +65,7 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
         'title' => $title,
         'field_meeting_id' => "meeting-$title",
         'field_meeting_dm_id' => 'dm-1',
-        'field_meeting_date' => $this->storageDate($date),
+        'field_meeting_date' => $this->storageDate($date, $now),
         'field_meeting_status' => $status,
         'field_meeting_documents' => $documents,
         ...($meetings[$title][3] ?? []),
@@ -70,7 +74,7 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
 
     // Range starting from previous month covers all fixtures
     // except the out of range ones regardless of the current date.
-    $response = $this->request(['month' => date('Y-m', strtotime('first day of previous month'))]);
+    $response = $this->request(['month' => date('Y-m', strtotime('first day of previous month', $now))]);
     $this->assertEquals(200, $response->getStatusCode());
     $this->assertInstanceOf(CacheableJsonResponse::class, $response);
     $this->assertContains('node_list:meeting', $response->getCacheableMetadata()->getCacheTags());
@@ -83,29 +87,29 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
     $this->assertSame(['past', 'agenda', 'decision', 'cancelled', 'moved', 'other_policymaker'], array_keys($items));
 
     // Grouped by date.
-    $this->assertSame('past', $data[date('Y-m-d', strtotime('-10 days'))][0]['title']);
+    $this->assertSame('past', $data[date('Y-m-d', strtotime('-10 days', $now))][0]['title']);
 
     $this->assertSame('minutes', $items['past']['phase']);
-    $this->assertSame('lautakunta', $items['past']['policymaker_type']);
-    $this->assertSame('Test policymaker', $items['past']['policymaker_name']);
-    $this->assertStringContainsString('meeting-past', $items['past']['minutes_link']);
+    $this->assertSame('lautakunta', $items['past']['policymakerType']);
+    $this->assertSame('Test policymaker', $items['past']['policymakerName']);
+    $this->assertStringContainsString('meeting-past', $items['past']['minutesLink']);
 
     $this->assertSame('agenda', $items['agenda']['phase']);
-    $this->assertStringContainsString('meeting-agenda', $items['agenda']['motions_list_link']);
+    $this->assertStringContainsString('meeting-agenda', $items['agenda']['motionsListLink']);
 
     $this->assertSame('decision', $items['decision']['phase']);
-    $this->assertStringContainsString('meeting-decision', $items['decision']['decision_link']);
+    $this->assertStringContainsString('meeting-decision', $items['decision']['decisionLink']);
 
-    $this->assertTrue($items['cancelled']['meeting_cancelled']);
-    $this->assertSame('Meeting cancelled', $items['cancelled']['additional_info']);
-    $this->assertArrayNotHasKey('motions_list_link', $items['cancelled']);
+    $this->assertTrue($items['cancelled']['meetingCancelled']);
+    $this->assertSame('Meeting cancelled', $items['cancelled']['additionalInfo']);
+    $this->assertNull($items['cancelled']['motionsListLink']);
 
-    $this->assertTrue($items['moved']['meeting_moved']);
-    $this->assertSame('Meeting moved', $items['moved']['additional_info']);
-    $this->assertSame(date('d.m. H:i', strtotime('+6 days')), $items['moved']['orig_time']);
+    $this->assertTrue($items['moved']['meetingMoved']);
+    $this->assertSame('Meeting moved', $items['moved']['additionalInfo']);
+    $this->assertSame(date('d.m. H:i', strtotime('+6 days', $now)), $items['moved']['origTime']);
 
     // Policymaker without node.
-    $this->assertArrayNotHasKey('policymaker_name', $items['other_policymaker']);
+    $this->assertNull($items['other_policymaker']['policymakerName']);
 
   }
 
@@ -172,9 +176,15 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
 
   /**
    * Gets relative date in datetime field storage format.
+   *
+   * @param string $relative
+   *   Relative date, e.g. '+6 days'.
+   * @param int $now
+   *   Base timestamp the relative date is computed from.
    */
-  private function storageDate(string $relative): string {
-    return (new \DateTime($relative, new \DateTimeZone('UTC')))
+  private function storageDate(string $relative, int $now): string {
+    return (new \DateTimeImmutable('@' . $now))
+      ->modify($relative)
       ->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
   }
 

@@ -12,7 +12,7 @@ use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 /**
  * Meeting calendar item DTO.
  */
-final readonly class MeetingCalendarItem implements \JsonSerializable {
+final readonly class MeetingCalendarItem {
 
   public function __construct(
     public string $title,
@@ -46,16 +46,15 @@ final readonly class MeetingCalendarItem implements \JsonSerializable {
    *   Calendar item or NULL if the meeting has no date.
    */
   public static function fromMeeting(Meeting $meeting, ?Policymaker $policymaker, string $langcode): ?self {
-    $timestamp = $meeting->get('field_meeting_date')->date?->getTimestamp();
+    $timestamp = $meeting->getMeetingTimestamp();
     if ($timestamp === NULL) {
       return NULL;
     }
 
-    $status = $meeting->get('field_meeting_status')->value;
-    $cancelled = $status === 'peruttu';
+    $cancelled = $meeting->isCancelled();
+    $moved = $meeting->isMoved();
 
-    $origTimestamp = $meeting->get('field_meeting_date_original')->date?->getTimestamp();
-    $moved = !$cancelled && $origTimestamp && $origTimestamp !== $timestamp;
+    $origTimestamp = $meeting->getOriginalMeetingTimestamp();
 
     $additionalInfo = match (TRUE) {
       $cancelled => new TranslatableMarkup('Meeting cancelled'),
@@ -80,7 +79,7 @@ final readonly class MeetingCalendarItem implements \JsonSerializable {
     }
 
     $minutesLink = $decisionLink = $motionsListLink = NULL;
-    if (!$cancelled && $policymaker && !$meeting->get('field_meeting_id')->isEmpty()) {
+    if (!$cancelled && $policymaker && $meeting->getAhjoId() !== '') {
       match ($phase) {
         MeetingPhase::MINUTES => $minutesLink = $meeting->getMinutesUrl($langcode, $policymaker)?->toString(),
         MeetingPhase::DECISION => $decisionLink = $meeting->getDecisionAnnouncementUrl($langcode, $policymaker)?->toString(),
@@ -94,11 +93,11 @@ final readonly class MeetingCalendarItem implements \JsonSerializable {
       meetingDate: $timestamp,
       meetingMoved: $moved,
       meetingCancelled: $cancelled,
-      policymaker: $meeting->get('field_meeting_dm_id')->value,
+      policymaker: $meeting->getPolicymakerId(),
       startTime: date('H:i', $timestamp),
       origTime: date('d.m. H:i', $origTimestamp ?: $timestamp),
       phase: $phase?->value,
-      status: $status,
+      status: $meeting->getStatus(),
       additionalInfo: $additionalInfo !== NULL ? (string) $additionalInfo : NULL,
       policymakerType: $policymakerType,
       policymakerName: $policymakerName,
@@ -106,35 +105,6 @@ final readonly class MeetingCalendarItem implements \JsonSerializable {
       decisionLink: $decisionLink,
       motionsListLink: $motionsListLink,
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @return array<string, mixed>
-   *   Meeting data for the calendar.
-   */
-  public function jsonSerialize(): array {
-    $optional = array_filter([
-      'policymaker_type' => $this->policymakerType,
-      'policymaker_name' => $this->policymakerName,
-      'minutes_link' => $this->minutesLink,
-      'decision_link' => $this->decisionLink,
-      'motions_list_link' => $this->motionsListLink,
-    ], static fn (?string $value) => $value !== NULL);
-
-    return [
-      'title' => $this->title,
-      'meeting_date' => $this->meetingDate,
-      'meeting_moved' => $this->meetingMoved,
-      'meeting_cancelled' => $this->meetingCancelled,
-      'policymaker' => $this->policymaker,
-      'start_time' => $this->startTime,
-      'orig_time' => $this->origTime,
-      'phase' => $this->phase,
-      'status' => $this->status,
-      'additional_info' => $this->additionalInfo,
-    ] + $optional;
   }
 
 }
