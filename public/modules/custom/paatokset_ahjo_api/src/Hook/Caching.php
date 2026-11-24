@@ -107,12 +107,17 @@ readonly class Caching {
   public function invalidateMeetingCacheTags(Meeting $entity): void {
     $tags = [];
 
-    if ($entity->hasField('field_meeting_dm_id') && !$entity->get('field_meeting_dm_id')->isEmpty()) {
-      $tags[] = 'meeting_pm:' . $entity->get('field_meeting_dm_id')->value;
+    if ($policymaker_id = $entity->getPolicymakerId()) {
+      $tags[] = Meeting::getPolicymakerCacheTag($policymaker_id);
+    }
+
+    $original = $entity->getOriginal();
+    if ($original instanceof Meeting && ($original_policymaker_id = $original->getPolicymakerId())) {
+      $tags[] = Meeting::getPolicymakerCacheTag($original_policymaker_id);
     }
 
     if (!empty($tags)) {
-      $this->cacheTagsInvalidator->invalidateTags($tags);
+      $this->cacheTagsInvalidator->invalidateTags(array_values(array_unique($tags)));
     }
   }
 

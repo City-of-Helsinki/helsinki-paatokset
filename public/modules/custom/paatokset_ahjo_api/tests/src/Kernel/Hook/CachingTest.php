@@ -81,4 +81,25 @@ class CachingTest extends AhjoEntityKernelTestBase {
     $caching->invalidate($meeting);
   }
 
+  /**
+   * Tests moving a meeting to another policymaker invalidates both.
+   */
+  public function testMeetingPolicymakerChangeInvalidatesCacheTags(): void {
+    $meeting = $this->createNode([
+      'type' => 'meeting',
+      'field_meeting_dm_id' => 'dm-123',
+    ]);
+    $this->assertInstanceOf(Meeting::class, $meeting);
+
+    $invalidator = $this->createMock(CacheTagsInvalidatorInterface::class);
+    $invalidator->expects($this->once())
+      ->method('invalidateTags')
+      ->with(['meeting_pm:dm-456', 'meeting_pm:dm-123']);
+
+    $meeting->setOriginal(clone $meeting);
+    $meeting->set('field_meeting_dm_id', 'dm-456');
+
+    (new Caching($invalidator))->invalidate($meeting);
+  }
+
 }

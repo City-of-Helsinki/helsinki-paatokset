@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Policymaker meeting calendar.
+ *
+ * Available variables:
+ * - meetings: Upcoming \Drupal\paatokset_ahjo_api\Entity\Meeting entities.
+ * - policymaker: \Drupal\paatokset_ahjo_api\Entity\Policymaker.
+ * - description: Section description render array.
+ */
+#}
+<div class="policymaker-calendar">
+  <h2>{{ 'Calendar'|t }}</h2>
+  <div class="section-description">
+    {{ description }}
+  </div>
+  <table class="policymaker-calendar__table">
+    <thead>
+      <tr class="policymaker-calendar__table-header policymaker-calendar__table-row">
+        <th>{{ 'Date'|t }}</th>
+        <th>{{ 'Time'|t }}</th>
+        <th>{{ 'Additional information'|t }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for meeting in meetings %}
+        {% set cancelled = meeting.isCancelled() %}
+        {% set phase = cancelled ? null : (meeting.getMeetingPhase().value ?? null) %}
+        {% set link = null %}
+        {% set label = null %}
+
+        {% if phase == 'minutes' %}
+          {% set link = meeting.getMinutesUrl(null, policymaker) %}
+          {% set label = 'Open minutes'|t %}
+        {% elseif phase == 'decision' %}
+          {% set link = meeting.getDecisionAnnouncementUrl(null, policymaker) %}
+          {% set label = 'Open decision announcement'|t %}
+        {% elseif phase == 'agenda' %}
+          {% set link = meeting.getMinutesUrl(null, policymaker) %}
+          {% set label = 'Open agenda'|t %}
+        {% endif %}
+
+        <tr class="policymaker-calendar__table-row{{ cancelled ? ' policymaker-calendar__table-row--cancelled' }}">
+          <td>{{ meeting.getMeetingTimestamp()|date('d.m.Y') }}</td>
+          <td>{{ meeting.getMeetingTimestamp()|date('H:i') }}</td>
+          <td>
+            {% if cancelled %}
+              {{ 'Meeting cancelled'|t }}
+            {% elseif meeting.isMoved() %}
+              {{ 'Meeting moved'|t }}
+            {% endif %}
+          </td>
+          {% if link %}
+            <td>
+              <a href="{{ link.toString() }}">
+                {{ label }}
+                <i class="hel-icon hel-icon--angle-right"></i>
+              </a>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
