@@ -13,17 +13,17 @@ export const formatDayShort = (date: Date): string => `${date.getDate()}.${date.
 export const formatDayFull = (date: Date): string =>
   `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`;
 
-// Subtracts whole months from a date, clamping to the target month's last day
-// (e.g. 31 July - 3 months = 30 April).
-export const subtractMonthsClamped = (date: Date, months: number): Date => {
-  const targetMonthIndex = date.getMonth() - months;
-  const year = date.getFullYear() + Math.floor(targetMonthIndex / 12);
-  const month = ((targetMonthIndex % 12) + 12) % 12;
-  const lastDayOfTargetMonth = new Date(year, month + 1, 0).getDate();
-  const day = Math.min(date.getDate(), lastDayOfTargetMonth);
-  return new Date(year, month, day);
-};
-
 // Steps a calendar month forward/backward, always landing on the 1st.
 export const addCalendarMonths = (firstOfMonth: Date, delta: number): Date =>
   new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth() + delta, 1);
+
+// Formats a date as 'YYYY-MM'.
+export const formatMonth = (date: Date): string => `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+
+// Number of months loaded by a single meetings API request.
+export const MONTHS_PER_CHUNK = 3;
+
+// First month of the chunk the given month belongs to. Chunks are aligned to
+// calendar quarters so that all clients request the same (cacheable) urls.
+export const getChunkStart = (date: Date): Date =>
+  new Date(date.getFullYear(), Math.floor(date.getMonth() / MONTHS_PER_CHUNK) * MONTHS_PER_CHUNK, 1);
