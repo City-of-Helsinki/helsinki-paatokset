@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Block;
 
 use Drupal\Component\Datetime\TimeInterface;
@@ -11,8 +13,9 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\paatokset_ahjo_api\Service\MeetingService;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
+use Drupal\paatokset_helsinki_kanava\CouncilMeetings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,7 +47,7 @@ final class AnnouncementsBlock extends BlockBase implements ContainerFactoryPlug
     $plugin_definition,
     private readonly ConfigFactoryInterface $config,
     private readonly PolicymakerService $policymakerService,
-    private readonly MeetingService $meetingService,
+    private readonly CouncilMeetings $councilMeetings,
     private readonly DateFormatterInterface $formatter,
     private readonly TimeInterface $time,
   ) {
@@ -61,7 +64,7 @@ final class AnnouncementsBlock extends BlockBase implements ContainerFactoryPlug
       $plugin_definition,
       $container->get('config.factory'),
       $container->get('paatokset_policymakers'),
-      $container->get('paatokset_ahjo_meetings'),
+      $container->get(CouncilMeetings::class),
       $container->get(DateFormatterInterface::class),
       $container->get(TimeInterface::class)
     );
@@ -71,14 +74,13 @@ final class AnnouncementsBlock extends BlockBase implements ContainerFactoryPlug
    * {@inheritdoc}
    */
   public function build(): array {
-    $council_id = $this->config->get('paatokset_helsinki_kanava.settings')->get('city_council_id');
-    $councilNode = $this->policymakerService->getPolicyMaker($council_id);
+    $councilNode = $this->policymakerService->getPolicyMaker(PolicymakerId::CityCouncil->value);
     $ttl = Cache::PERMANENT;
 
     // @todo This should be based on video entities like hook_preprocess_node__policymaker, UHF-9549.
     $announcement = [];
     if ($councilNode) {
-      $nextMeetingTimestamp = (int) $this->meetingService->nextMeetingDate($council_id);
+      $nextMeetingTimestamp = (int) $this->councilMeetings->nextMeetingTimestamp();
       $timeToNextMeeting = max($nextMeetingTimestamp - $this->time->getCurrentTime(), 0);
 
       // Cache until the alert should be shown.

@@ -1,36 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_helsinki_kanava\Plugin\migrate\source;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\migrate\Attribute\MigrateSource;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\paatokset_helsinki_kanava\CouncilMeetings;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Source plugin for retrieving Helsinki Kanava videos.
- *
- * @MigrateSource(
- *  id = "helsinki_kanava"
- * )
  */
+#[MigrateSource(
+  id: 'helsinki_kanava'
+)]
 final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryPluginInterface {
-  /**
-   * The total count.
-   *
-   * @var int
-   */
-  protected int $count = 0;
 
   /**
-   * The http client.
+   * Constructs a new instance.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @phpstan-param array<string, mixed> $configuration
+   * @phpstan-param string $plugin_id
+   * @phpstan-param mixed $plugin_definition
+   *
+   * @throws \Drupal\migrate\MigrateException
    */
-  protected ClientInterface $httpClient;
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    MigrationInterface $migration,
+    protected readonly ClientInterface $httpClient,
+    protected readonly CouncilMeetings $councilMeetings,
+    protected readonly LoggerInterface $logger,
+  ) {
+    if (!isset($configuration['ids'])) {
+      throw new \InvalidArgumentException('The "ids" configuration is missing.');
+    }
+
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+  }
 
   /**
    * {@inheritdoc}
@@ -41,24 +57,22 @@ final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryP
     $plugin_id,
     $plugin_definition,
     ?MigrationInterface $migration = NULL,
-  ) {
-    if ($url = self::getApiUrl($configuration['url'])) {
-      $configuration['url'] = $url;
-    }
-
-    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
-    $instance->httpClient = $container->get('http_client');
-    if (!isset($configuration['ids'])) {
-      throw new \InvalidArgumentException('The "ids" configuration is missing.');
-    }
-
-    return $instance;
+  ): self {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get(ClientInterface::class),
+      $container->get(CouncilMeetings::class),
+      $container->get('logger.channel.paatokset_helsinki_kanava'),
+    );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __toString() {
+  public function __toString(): string {
     return 'HelsinkiKanava';
   }
 
@@ -117,14 +131,10 @@ final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryP
    * @return string|null
    *   Updated URL with correct parameters or NULL if dependencies are missing.
    */
-  protected static function getApiUrl(string $base_url): ?string {
-    $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-
-    /** @var \Drupal\paatokset_ahjo_api\Service\MeetingService $meetingsService */
-    $meetingsService = \Drupal::service('paatokset_ahjo_meetings');
+  protected function getApiUrl(string $base_url): ?string {
     $fromTime = strtotime('-4 months') * 1000;
-    $nextMeetingDate = $meetingsService->nextMeetingDate($council_id);
-    $toTime = $nextMeetingDate ? ((int) $nextMeetingDate) * 1000 : round(microtime(TRUE) * 1000);
+    $nextMeetingTimestamp = $this->councilMeetings->nextMeetingTimestamp();
+    $toTime = $nextMeetingTimestamp ? $nextMeetingTimestamp * 1000 : round(microtime(TRUE) * 1000);
 
     $version = '01';
     $languageId = 'fi_FI';
@@ -134,7 +144,7 @@ final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryP
     $secret = getenv('HELSINKI_KANAVA_SECRET');
 
     if (!$organizationId || !$secret) {
-      \Drupal::logger('HelsinkiKanava')->warning('Helsinki Kanava credentials are not set. Cannot import the latest council meeting recording.');
+      $this->logger->warning('Helsinki Kanava credentials are not set. Cannot import the latest council meeting recording.');
       return NULL;
     }
 
@@ -171,7 +181,11 @@ final class HelsinkiKanava extends SourcePluginBase implements ContainerFactoryP
    * {@inheritdoc}
    */
   protected function initializeIterator() : \Iterator {
-    $content = $this->getContent($this->configuration['url']);
+    if (!$url = $this->getApiUrl($this->configuration['url'])) {
+      return;
+    }
+
+    $content = $this->getContent($url);
 
     foreach ($content as $object) {
       yield $object;
