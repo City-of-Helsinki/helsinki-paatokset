@@ -42,6 +42,30 @@ ahjo_meeting_endpoint:
   requirements:
     _access: 'TRUE'
 
+paatokset_ahjo_api.frontpage_calendar:
+  path: '/api/v1/calendar/frontpage'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Calendar\Controller\FrontpageCalendarController::content'
+  requirements:
+    _permission: 'access content'
+  options:
+    _htmx_route: 'TRUE'
+
+paatokset_ahjo_api.policymaker_calendar:
+  path: '/api/v1/calendar/policymaker/{node}'
+  defaults:
+    _controller: '\Drupal\paatokset_ahjo_api\Calendar\Controller\PolicymakerCalendarController::content'
+  requirements:
+    _entity_access: 'node.view'
+    node: \d+
+  options:
+    _htmx_route: 'TRUE'
+    parameters:
+      node:
+        type: entity:node
+        bundle:
+          - policymaker
+
 paatokset_ahjo_api.subscriber:
   path: 'ahjo_api/subscriber/{id}'
   defaults:

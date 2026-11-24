@@ -32,6 +32,7 @@ services:
       - { name: paramconverter }
 
   Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder: ~
+  Drupal\paatokset_ahjo_api\Calendar\UpcomingMeetings: ~
 
   Drupal\paatokset_ahjo_api\AhjoAdmin\AdminHooks: ~
 

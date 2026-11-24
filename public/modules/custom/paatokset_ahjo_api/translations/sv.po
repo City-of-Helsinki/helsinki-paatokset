@@ -148,3 +148,6 @@ msgstr "Social- och hälsovårdsektorn"
 msgctxt "Sector names"
 msgid "Social Services, Health Care and Rescue Services Division"
 msgstr "Social-, hälsovårds- och räddningssektorn"
+
+msgid "Loading meetings"
+msgstr "Laddar möten"
