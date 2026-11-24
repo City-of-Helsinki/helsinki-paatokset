@@ -8,12 +8,9 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drupal\paatokset_ahjo_api\Entity\Meeting;
-use Drupal\paatokset_ahjo_api\Entity\MeetingPhase;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Calendar\DTO\MeetingCalendarItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,9 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 final class CalendarController extends ControllerBase {
 
   /**
-   * Number of meetings loaded into memory at once.
+   * Number of months returned by a single request.
    */
-  private const int CHUNK_SIZE = 100;
+  private const int MONTHS_PER_REQUEST = 3;
+
+  /**
+   * Hard limit for the number of meetings returned by a single request.
+   */
+  private const int MAX_RESULTS = 1000;
 
   public function __construct(
     private readonly RendererInterface $renderer,
@@ -40,41 +42,49 @@ final class CalendarController extends ControllerBase {
    * Retrieves meetings grouped by date.
    *
    * Supported query parameters:
-   *  - from: (string) date string, for example Y-m-d.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request.
-   *
-   * @return \Symfony\Component\HttpFoundation\Response
-   *   Response with meetings or errors.
+   *  - month: first month of the requested range in YYYY-MM.
+   *    Meetings from self::MONTHS_PER_REQUEST months
+   *    are returned.
    */
   public function query(Request $request) : Response {
+    $month = $request->query->get('month');
+
+    if (
+      !is_string($month) ||
+      !preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $month) ||
+      !($start = \DateTimeImmutable::createFromFormat('!Y-m', $month, new \DateTimeZone('Europe/Helsinki')))
+    ) {
+      return new JsonResponse([
+        'errors' => "Parameter 'month' must be in format YYYY-MM.",
+      ], Response::HTTP_BAD_REQUEST);
+    }
+
+    $end = $start->modify(sprintf('+%d months', self::MONTHS_PER_REQUEST));
+
     $query = $this->entityTypeManager()
       ->getStorage('node')
       ->getQuery()
-      ->accessCheck()
+      ->accessCheck();
+
+    // Only show future cancelled meetings in the calendar, not past ones.
+    $now = \DateTimeImmutable::createFromTimestamp($this->time->getCurrentTime());
+    $notPastCancelled = $query->orConditionGroup()
+      ->notExists('field_meeting_status')
+      ->condition('field_meeting_status', 'peruttu', '<>')
+      ->condition('field_meeting_date', self::toStorageDate($now), '>=');
+
+    $ids = $query
       ->condition('type', 'meeting')
       ->condition('status', 1)
-      ->sort('field_meeting_date');
+      // Padding ensures we can fully display the start and end weeks.
+      ->condition('field_meeting_date', self::toStorageDate($start->modify('-1 week')), '>=')
+      ->condition('field_meeting_date', self::toStorageDate($end->modify('+1 week')), '<')
+      ->condition($notPastCancelled)
+      ->sort('field_meeting_date')
+      ->range(0, self::MAX_RESULTS)
+      ->execute();
 
-    if ($from = $request->query->get('from')) {
-      if (!strtotime($from)) {
-        return new JsonResponse([
-          'errors' => "Parameter 'from' cannot be converted to timestamp.",
-        ], Response::HTTP_BAD_REQUEST);
-      }
-
-      $date = (new DrupalDateTime($from))
-        ->setTimezone(new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE))
-        ->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
-
-      $query->condition('field_meeting_date', $date, '>=');
-    }
-
-    $ids = $query->execute();
-
-    // Url generation bubbles cacheability metadata, which must be
-    // collected for cacheable responses.
+    // Url generation bubbles cacheability metadata.
     $context = new RenderContext();
     $meetings = $this->renderer->executeInRenderContext($context, fn () => $this->loadMeetings($ids));
 
@@ -92,6 +102,15 @@ final class CalendarController extends ControllerBase {
   }
 
   /**
+   * Converts date to datetime field storage format.
+   */
+  private static function toStorageDate(\DateTimeImmutable $date): string {
+    return $date
+      ->setTimezone(new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE))
+      ->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+  }
+
+  /**
    * Loads meetings and builds the response data.
    *
    * @param array<int|string, int|string> $ids
@@ -104,19 +123,16 @@ final class CalendarController extends ControllerBase {
     $storage = $this->entityTypeManager()->getStorage('node');
     $langcode = $this->languageManager()->getCurrentLanguage()->getId();
 
+    /** @var \Drupal\paatokset_ahjo_api\Entity\Meeting[] $meetings */
+    $meetings = $storage->loadMultiple($ids);
+    $policymakers = $this->loadPolicymakers($meetings);
+
     $data = [];
-    foreach (array_chunk($ids, self::CHUNK_SIZE) as $chunk) {
-      $meetings = array_filter($storage->loadMultiple($chunk), static fn ($meeting) => $meeting instanceof Meeting);
-      $policymakers = $this->loadPolicymakers($meetings);
-
-      foreach ($meetings as $meeting) {
-        $policymaker = $policymakers[$meeting->get('field_meeting_dm_id')->value] ?? NULL;
-        if ($item = $this->buildItem($meeting, $policymaker, $langcode)) {
-          $data[date('Y-m-d', $item->meetingDate)][] = $item;
-        }
+    foreach ($meetings as $meeting) {
+      $policymaker = $policymakers[$meeting->get('field_meeting_dm_id')->value] ?? NULL;
+      if ($item = MeetingCalendarItem::fromMeeting($meeting, $policymaker, $langcode)) {
+        $data[date('Y-m-d', $item->meetingDate)][] = $item;
       }
-
-      $storage->resetCache($chunk);
     }
 
     return $data;
@@ -158,87 +174,6 @@ final class CalendarController extends ControllerBase {
     }
 
     return $policymakers;
-  }
-
-  /**
-   * Builds response data for single meeting.
-   *
-   * @param \Drupal\paatokset_ahjo_api\Entity\Meeting $meeting
-   *   The meeting.
-   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker|null $policymaker
-   *   The policymaker of the meeting.
-   * @param string $langcode
-   *   Response language.
-   *
-   * @return \Drupal\paatokset_ahjo_api\Calendar\DTO\MeetingCalendarItem|null
-   *   Meeting data or NULL if the meeting should not be shown.
-   */
-  private function buildItem(Meeting $meeting, ?Policymaker $policymaker, string $langcode): ?MeetingCalendarItem {
-    $timestamp = $meeting->get('field_meeting_date')->date?->getTimestamp();
-    if ($timestamp === NULL) {
-      return NULL;
-    }
-
-    $status = $meeting->get('field_meeting_status')->value;
-    $cancelled = $status === 'peruttu';
-
-    // Only show future cancelled meetings in the calendar, not past ones.
-    if ($cancelled && $timestamp < $this->time->getCurrentTime()) {
-      return NULL;
-    }
-
-    $origTimestamp = $meeting->get('field_meeting_date_original')->date?->getTimestamp();
-    $moved = !$cancelled && $origTimestamp && $origTimestamp !== $timestamp;
-
-    $additionalInfo = match (TRUE) {
-      $cancelled => $this->t('Meeting cancelled'),
-      $moved => $this->t('Meeting moved'),
-      default => NULL,
-    };
-
-    $phase = $meeting->getMeetingPhase();
-
-    $policymakerType = NULL;
-    $policymakerName = NULL;
-    if ($policymaker) {
-      if (!$policymaker->get('field_organization_type')->isEmpty()) {
-        $policymakerType = strtolower($policymaker->get('field_organization_type')->value);
-      }
-
-      if ($policymaker->hasTranslation($langcode)) {
-        $translation = $policymaker->getTranslation($langcode);
-        assert($translation instanceof Policymaker);
-        $policymakerName = $translation->getPolicymakerName();
-      }
-    }
-
-    $minutesLink = $decisionLink = $motionsListLink = NULL;
-    if (!$cancelled && $policymaker && !$meeting->get('field_meeting_id')->isEmpty()) {
-      match ($phase) {
-        MeetingPhase::MINUTES => $minutesLink = $meeting->getMinutesUrl($langcode, $policymaker)?->toString(),
-        MeetingPhase::DECISION => $decisionLink = $meeting->getDecisionAnnouncementUrl($langcode, $policymaker)?->toString(),
-        MeetingPhase::AGENDA => $motionsListLink = $meeting->getMinutesUrl($langcode, $policymaker)?->toString(),
-        default => NULL,
-      };
-    }
-
-    return new MeetingCalendarItem(
-      title: (string) $meeting->label(),
-      meetingDate: $timestamp,
-      meetingMoved: $moved,
-      meetingCancelled: $cancelled,
-      policymaker: $meeting->get('field_meeting_dm_id')->value,
-      startTime: date('H:i', $timestamp),
-      origTime: date('d.m. H:i', $origTimestamp ?: $timestamp),
-      phase: $phase?->value,
-      status: $status,
-      additionalInfo: $additionalInfo !== NULL ? (string) $additionalInfo : NULL,
-      policymakerType: $policymakerType,
-      policymakerName: $policymakerName,
-      minutesLink: $minutesLink,
-      decisionLink: $decisionLink,
-      motionsListLink: $motionsListLink,
-    );
   }
 
 }

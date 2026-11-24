@@ -50,7 +50,8 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
       'moved' => ['+5 days', 'vahvistettu', [], ['field_meeting_date_original' => $this->storageDate('+6 days')]],
       'other_policymaker' => ['+6 days', 'vahvistettu', [], ['field_meeting_dm_id' => 'dm-2']],
       'unpublished' => ['+7 days', 'vahvistettu', [], ['status' => 0]],
-      'out_of_range' => ['-60 days', 'pidetty', []],
+      'out_of_range_past' => ['-120 days', 'pidetty', []],
+      'out_of_range_future' => ['+150 days', 'vahvistettu', []],
     ];
 
     foreach ($meetings as $title => [$date, $status, $documents]) {
@@ -67,7 +68,9 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
       ])->save();
     }
 
-    $response = $this->request(['from' => date('Y-m-d', strtotime('-30 days'))]);
+    // Range starting from previous month covers all fixtures
+    // except the out of range ones regardless of the current date.
+    $response = $this->request(['month' => date('Y-m', strtotime('first day of previous month'))]);
     $this->assertEquals(200, $response->getStatusCode());
     $this->assertInstanceOf(CacheableJsonResponse::class, $response);
     $this->assertContains('node_list:meeting', $response->getCacheableMetadata()->getCacheTags());
@@ -104,9 +107,56 @@ class CalendarControllerTest extends AhjoEntityKernelTestBase {
     // Policymaker without node.
     $this->assertArrayNotHasKey('policymaker_name', $items['other_policymaker']);
 
-    // Invalid date.
-    $response = $this->request(['from' => 'not-a-date']);
-    $this->assertEquals(400, $response->getStatusCode());
+  }
+
+  /**
+   * Tests that the endpoint returns three months padded with a week.
+   */
+  public function testMeetingsEndpointRange(): void {
+    $storage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('node');
+
+    $meetings = [
+      'before_padding' => '2019-12-20T10:00:00',
+      'leading_padding' => '2019-12-28T10:00:00',
+      'first_month' => '2020-01-15T10:00:00',
+      'last_month' => '2020-03-31T10:00:00',
+      'trailing_padding' => '2020-04-05T10:00:00',
+      'after_padding' => '2020-04-12T10:00:00',
+    ];
+
+    foreach ($meetings as $title => $date) {
+      $storage->create([
+        'type' => 'meeting',
+        'status' => 1,
+        'title' => $title,
+        'field_meeting_id' => "meeting-$title",
+        'field_meeting_dm_id' => 'dm-1',
+        'field_meeting_date' => $date,
+        'field_meeting_status' => 'pidetty',
+      ])->save();
+    }
+
+    $response = $this->request(['month' => '2020-01']);
+    $this->assertEquals(200, $response->getStatusCode());
+
+    $data = json_decode((string) $response->getContent(), TRUE)['data'];
+    $titles = array_column(array_merge(...array_values($data)), 'title');
+    $this->assertSame(['leading_padding', 'first_month', 'last_month', 'trailing_padding'], $titles);
+
+    // Missing or invalid month.
+    $invalid = [
+      [],
+      ['from' => '1900-01-01'],
+      ['month' => 'foo'],
+      ['month' => '2020-13'],
+      ['month' => '2020-1'],
+      ['month' => '2020-01-01'],
+    ];
+    foreach ($invalid as $query) {
+      $response = $this->request($query);
+      $this->assertEquals(400, $response->getStatusCode(), json_encode($query) ?: '');
+    }
   }
 
   /**
