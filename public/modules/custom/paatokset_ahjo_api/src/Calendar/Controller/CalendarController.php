@@ -41,10 +41,6 @@ final class CalendarController extends ControllerBase {
    *
    * Supported query parameters:
    *  - from: (string) date string, for example Y-m-d.
-   *  - to: (string) date string, for example Y-m-d.
-   *  - agenda_published: (bool) only meetings with published agenda.
-   *  - minutes_published: (bool) only meetings with published minutes.
-   *  - policymaker: (string) policymaker ID.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request.
@@ -61,32 +57,18 @@ final class CalendarController extends ControllerBase {
       ->condition('status', 1)
       ->sort('field_meeting_date');
 
-    foreach (['from' => '>=', 'to' => '<='] as $param => $operator) {
-      if (!$value = $request->query->get($param)) {
-        continue;
-      }
-
-      if (!strtotime($value)) {
+    if ($from = $request->query->get('from')) {
+      if (!strtotime($from)) {
         return new JsonResponse([
-          'errors' => "Parameter '$param' cannot be converted to timestamp.",
+          'errors' => "Parameter 'from' cannot be converted to timestamp.",
         ], Response::HTTP_BAD_REQUEST);
       }
 
-      $date = (new DrupalDateTime($value))
+      $date = (new DrupalDateTime($from))
         ->setTimezone(new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE))
         ->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
 
-      $query->condition('field_meeting_date', $date, $operator);
-    }
-
-    if ($request->query->get('agenda_published')) {
-      $query->condition('field_meeting_agenda_published', TRUE);
-    }
-    if ($request->query->get('minutes_published')) {
-      $query->condition('field_meeting_minutes_published', TRUE);
-    }
-    if ($policymaker = $request->query->get('policymaker')) {
-      $query->condition('field_meeting_dm_id', $policymaker);
+      $query->condition('field_meeting_date', $date, '>=');
     }
 
     $ids = $query->execute();
