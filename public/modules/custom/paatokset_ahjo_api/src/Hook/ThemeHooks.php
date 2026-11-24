@@ -100,9 +100,10 @@ class ThemeHooks {
         'base hook' => 'entity',
         'template' => 'block/block--decision-tree',
       ],
-      'block__meetings_calendar' => [
-        'base hook' => 'entity',
-        'template' => 'block/block--meetings-calendar',
+      'meetings_calendar' => [
+        'variables' => [
+          'description' => NULL,
+        ],
       ],
       'policymaker_side_navigation' => [
         'variables' => [
@@ -163,46 +164,6 @@ class ThemeHooks {
     foreach (Element::children($variables['elements']) as $key) {
       $variables['content'][$key] = $variables['elements'][$key];
     }
-  }
-
-  /**
-   * Preprocess meetings calendar block.
-   *
-   * @phpstan-param array<string, mixed> $variables
-   */
-  #[Hook('preprocess_block__meetings_calendar')]
-  public function preprocessMeetingsCalendar(array &$variables): void {
-    $variables['#attached']['library'][] = 'hdbt_subtheme/meetings-calendar';
-
-    $params = [
-      'from' => date("Y-m-d"),
-    ];
-
-    // Helpful $content variable for templates.
-    foreach (Element::children($variables['elements']) as $key) {
-      $variables['content'][$key] = $variables['elements'][$key];
-    }
-    if (isset($variables['elements']['#block__meetings_calendar'])) {
-      $variables['entity'] = $variables['elements']['#block__meetings_calendar'];
-    }
-
-    $all_meetings = array_merge(...array_values($this->meetingService->elasticQuery($params)));
-
-    if (count($all_meetings) > 8) {
-      $all_meetings = array_slice($all_meetings, 0, 8);
-    }
-
-    $meeting_calendar_description = $this->configFactory
-      ->get('paatokset_ahjo_api.default_texts')
-      ->get('meeting_calendar_description');
-    if ($meeting_calendar_description !== NULL) {
-      $variables['meeting_calendar_description'] = _paatokset_ahjo_api_render_default_text($meeting_calendar_description);
-    }
-
-    $variables['open_motions'] = $this->t('Open agenda');
-    $variables['open_minutes'] = $this->t('Open minutes');
-    $variables['open_meeting_calendar'] = $this->t('Open meeting calendar');
-    $variables['meetings'] = $all_meetings;
   }
 
   /**

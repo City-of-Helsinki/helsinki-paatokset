@@ -6,7 +6,11 @@ namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Calendar Block.
@@ -16,33 +20,42 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   admin_label: new TranslatableMarkup('Paatokset meetings calendar'),
   category: new TranslatableMarkup('Paatokset custom blocks'),
 )]
-class MeetingsCalendarBlock extends BlockBase {
+final class MeetingsCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The config factory.
+   */
+  protected ConfigFactoryInterface $configFactory;
+
+  /**
+   * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    $instance->configFactory = $container->get(ConfigFactoryInterface::class);
+    return $instance;
+  }
 
   /**
    * {@inheritDoc}
    */
   public function build(): array {
-    return [
-      '#cache' => ['contexts' => ['url.path', 'url.query_args']],
-      'label' => $this->t('Upcoming meetings'),
-      '#attributes' => [
-        'class' => ['meetings-calendar'],
+    $config = $this->configFactory->get('paatokset_ahjo_api.default_texts');
+    $description = $config->get('meeting_calendar_description');
+
+    $build = [
+      '#theme' => 'meetings_calendar',
+      '#description' => $description !== NULL ? _paatokset_ahjo_api_render_default_text($description) : NULL,
+      '#attached' => [
+        'library' => ['hdbt_subtheme/meetings-calendar'],
       ],
     ];
-  }
 
-  /**
-   * Get cache tags.
-   */
-  public function getCacheTags(): array {
-    return ['node_list:meeting'];
-  }
+    CacheableMetadata::createFromObject($config)->applyTo($build);
 
-  /**
-   * Get cache contexts.
-   */
-  public function getCacheContexts(): array {
-    return ['url.path', 'url.query_args'];
+    return $build;
   }
 
 }
