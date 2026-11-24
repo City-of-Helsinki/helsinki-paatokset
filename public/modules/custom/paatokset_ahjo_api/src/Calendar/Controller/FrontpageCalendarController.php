@@ -7,6 +7,7 @@ namespace Drupal\paatokset_ahjo_api\Calendar\Controller;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\paatokset_ahjo_api\Calendar\UpcomingMeetings;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
@@ -75,7 +76,7 @@ final class FrontpageCalendarController extends ControllerBase {
       '#theme' => 'frontpage_calendar',
       '#meetings' => $rows,
       '#calendar_notice' => $config->get('calendar_notice_text'),
-      '#calendar_link' => match ($this->languageManager()->getCurrentLanguage()->getId()) {
+      '#calendar_link' => match ($this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId()) {
         'fi' => '/fi/kokouskalenteri',
         'sv' => '/sv/moteskalender',
         'en' => '/en/meetings-calendar',

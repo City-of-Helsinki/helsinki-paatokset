@@ -8,6 +8,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
@@ -121,7 +122,7 @@ final class CalendarController extends ControllerBase {
    */
   private function loadMeetings(array $ids): array {
     $storage = $this->entityTypeManager()->getStorage('node');
-    $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+    $langcode = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId();
 
     /** @var \Drupal\paatokset_ahjo_api\Entity\Meeting[] $meetings */
     $meetings = $storage->loadMultiple($ids);
