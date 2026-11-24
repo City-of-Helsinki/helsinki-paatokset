@@ -46,16 +46,6 @@ class PolicymakerService {
   ];
 
   /**
-   * City council id in Ahjo.
-   */
-  public const string CITY_COUNCIL_DM_ID = '02900';
-
-  /**
-   * City board id in Ahjo.
-   */
-  public const string CITY_BOARD_DM_ID = '00400';
-
-  /**
    * Policymaker node.
    */
   private ?Policymaker $policymaker = NULL;

@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
@@ -193,8 +194,8 @@ class ThemeHooks {
       $variables['entity'] = $variables['elements']['#block__decision_tree'];
     }
 
-    $municipality_url = $this->policymakerService->getPolicymaker('00400')?->toUrl()->toString();
-    $council_url = $this->policymakerService->getPolicymaker('02900')?->toUrl()->toString();
+    $municipality_url = $this->policymakerService->getPolicymaker(PolicymakerId::CityBoard->value)?->toUrl()->toString();
+    $council_url = $this->policymakerService->getPolicymaker(PolicymakerId::CityCouncil->value)?->toUrl()->toString();
 
     $variables['decision_process'] = [
       '0' => [
