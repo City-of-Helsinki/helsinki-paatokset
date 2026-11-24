@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\AhjoProxy;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\paatokset_ahjo_api\AhjoProxy\AhjoProxyClient;
@@ -19,7 +20,6 @@ use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Decisionmaker;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\OrganizationInfo;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Organization;
 use Drupal\paatokset_ahjo_api\AhjoProxy\DTO\Trustee;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\KernelTestBase;

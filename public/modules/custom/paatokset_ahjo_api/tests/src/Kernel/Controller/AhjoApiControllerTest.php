@@ -43,21 +43,25 @@ class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
     $storage->create([
       'id' => '00001',
       'title' => 'Helsingin kaupunki',
+      'type' => '13',
     ])->save();
     $storage->create([
       'id' => '00002',
       'title' => 'Unpublished test',
+      'type' => '9',
       'organization_above' => '00001',
       'existing' => 0,
     ])->save();
     $storage->create([
       'id' => '02900',
       'title' => 'Kaupunginvaltuusto',
+      'type' => '1',
       'organization_above' => '00001',
     ])->save();
     $storage->create([
       'id' => '00400',
       'title' => 'Kaupunginhallitus',
+      'type' => '2',
       'organization_above' => '02900',
     ])->save();
 
@@ -73,6 +77,7 @@ class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
     $this->assertEquals([
       'id' => '00001',
       'title' => 'Helsingin kaupunki',
+      'type' => 13,
     ], json_decode($response->getContent(), TRUE));
 
     // Not found.
@@ -87,14 +92,17 @@ class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
     $this->assertEquals([
       'id' => '00001',
       'title' => 'Helsingin kaupunki',
+      'type' => 13,
       'children' => [
         [
           'id' => '02900',
           'title' => 'Kaupunginvaltuusto',
+          'type' => 1,
           'children' => [
             [
               'id' => '00400',
               'title' => 'Kaupunginhallitus',
+              'type' => 2,
             ],
           ],
         ],
@@ -121,15 +129,18 @@ class AhjoApiControllerTest extends AhjoEntityKernelTestBase {
     $this->assertEquals([
       'id' => '00001',
       'title' => 'Helsingin kaupunki',
+      'type' => 13,
       'children' => [
         [
           'id' => '02900',
           'title' => 'Kaupunginvaltuusto',
+          'type' => 1,
           'url' => $policymaker->toUrl('canonical', ['absolute' => TRUE])->toString(),
           'children' => [
             [
               'id' => '00400',
               'title' => 'Kaupunginhallitus',
+              'type' => 2,
             ],
           ],
         ],

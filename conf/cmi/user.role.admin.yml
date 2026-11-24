@@ -44,6 +44,7 @@ dependencies:
     - helfi_api_base
     - helfi_search
     - helfi_tpr
+    - helfi_users
     - locale
     - media
     - menu_link_attributes
@@ -110,6 +111,7 @@ permissions:
   - 'administer tpr_unit'
   - 'administer url aliases'
   - 'administer users'
+  - 'allow views bulk operations'
   - 'assign api_user role'
   - 'assign content_producer role'
   - 'assign editor role'
@@ -293,6 +295,7 @@ permissions:
   - 'update media'
   - 'update own tpr_service'
   - 'update own tpr_unit'
+  - 'use favorites'
   - 'use menu link attributes'
   - 'use text format decision_html'
   - 'use text format full_html'

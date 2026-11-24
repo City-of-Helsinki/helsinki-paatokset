@@ -1,3 +1,1 @@
-{
-  "extends": ["@hdbt/theme-builder/biome"]
-}
+{ "extends": ["@hdbt/theme-builder/biome"] }

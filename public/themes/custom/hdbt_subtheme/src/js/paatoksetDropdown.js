@@ -73,8 +73,9 @@ jQuery(function ($) {
      * Load decision content via AJAX and update URL.
      *
      * @param {string} id - The decision ID to load.
+     * @param {string} url - The decision canonical URL.
      */
-    function loadDecision(id) {
+    function loadDecision(id, url) {
       const caseId = $('#case-header').data('caseId');
       const { baseUrl, pathPrefix } = window.drupalSettings.path;
       const path = `${baseUrl}${pathPrefix}ahjo_api/case/${caseId}/${id}`;
@@ -133,22 +134,15 @@ jQuery(function ($) {
         },
       });
 
-      let queryKey = 'paatos';
-      if (window.drupalSettings.path.currentLanguage === 'sv') {
-        queryKey = 'beslut';
-      } else if (window.drupalSettings.path.currentLanguage === 'en') {
-        queryKey = 'decision';
+      if (!url) {
+        return;
       }
 
-      let queryparams = window.location.search;
-      if (queryparams === '') {
-        queryparams = `?${queryKey}=`;
-      }
-      const oldWindowHref = window.location.host + window.location.pathname + queryparams;
+      const oldWindowHref = window.location.host + window.location.pathname + window.location.search;
 
-      window.history.pushState({}, '', `${window.location.pathname}?${queryKey}=${id}`);
+      window.history.pushState({}, '', url);
 
-      socialMedia.each(() => {
+      socialMedia.each(function () {
         const oldHref = $(this).attr('href');
         const newWindowHref = window.location.host + window.location.pathname + window.location.search;
         $(this).attr('href', oldHref.replace(oldWindowHref, newWindowHref));
@@ -171,7 +165,7 @@ jQuery(function ($) {
         closeOptions();
       }
 
-      loadDecision($(selected).data('link'));
+      loadDecision($(selected).data('link'), $(selected).data('url'));
     }
 
     if (defaultSelected.length) {
