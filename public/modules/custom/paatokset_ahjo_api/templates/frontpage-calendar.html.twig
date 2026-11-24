@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * Frontpage calendar listing upcoming meetings.
+ *
+ * Available variables:
+ * - meetings: List of upcoming meetings. Each row has 'meeting' and
+ *   'policymaker' (NULL if not found).
+ * - calendar_notice: Notice text rendered above the meetings.
+ * - calendar_link: Link to the meetings calendar page.
+ */
+#}
+<div class="frontpage-calendar">
+  {% include '@hdbt/misc/koro.twig' with { flip: false } %}
+  <div class="container">
+    <h2>{{ 'Upcoming meetings'|t }}</h2>
+    <div class="frontpage-calendar__notice">
+      {% if calendar_notice %}
+      <p>{{ calendar_notice }}</p>
+      {% endif %}
+    </div>
+    <div class="frontpage-calendar__item-container">
+      {% for row in meetings %}
+        {% include '@paatokset_ahjo_api/component/frontpage-calendar-item.html.twig' with {
+          meeting: row.meeting,
+          policymaker: row.policymaker,
+        } only %}
+      {% endfor %}
+    </div>
+
+    {% if calendar_link %}
+    <div class="frontpage-calendar__link-container">
+      <a href="{{ calendar_link }}">
+        <span>{{ 'Open meeting calendar'|t }}</span>
+        <i class="hel-icon hel-icon--arrow-right"></i>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
