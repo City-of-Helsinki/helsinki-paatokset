@@ -199,11 +199,11 @@ msgstr "Senaste året"
 
 msgctxt "Decisions search"
 msgid "Start date"
-msgstr "Från"
+msgstr "Startdatum"
 
 msgctxt "Decisions search"
 msgid "End date"
-msgstr "Till"
+msgstr "Slutdatum"
 
 msgctxt "Decisions search"
 msgid "All dates"

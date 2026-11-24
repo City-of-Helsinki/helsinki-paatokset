@@ -191,7 +191,7 @@ msgstr "Alkamispäivä"
 
 msgctxt "Decisions search"
 msgid "End date"
-msgstr "Päättymispäivä"
+msgstr "Loppumispäivä"
 
 msgctxt "Decisions search"
 msgid "All dates"
