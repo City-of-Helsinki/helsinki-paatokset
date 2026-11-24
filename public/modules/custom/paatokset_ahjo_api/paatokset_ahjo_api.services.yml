@@ -7,10 +7,6 @@ services:
     parent: logger.channel_base
     arguments: [ 'paatokset_ahjo_api' ]
 
-  paatokset_ahjo_meetings:
-    class: Drupal\paatokset_ahjo_api\Service\MeetingService
-  Drupal\paatokset_ahjo_api\Service\MeetingService: '@paatokset_ahjo_meetings'
-
   paatokset_ahjo_cases:
     class: Drupal\paatokset_ahjo_api\Service\CaseService
   Drupal\paatokset_ahjo_api\Service\CaseService: '@paatokset_ahjo_cases'
