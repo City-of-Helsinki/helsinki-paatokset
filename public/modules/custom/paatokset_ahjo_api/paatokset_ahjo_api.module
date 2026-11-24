@@ -109,18 +109,6 @@ function paatokset_ahjo_api_platform_config_grant_permissions() : array {
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK().
- */
-function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar(array $variables) {
-  $suggestions = [];
-  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
-
-  $suggestions[] = 'block__policymaker_calendar__' . $sanitized_view_mode;
-
-  return $suggestions;
-}
-
-/**
  * Lookup case nodes by case ID.
  *
  * @param string $case_id

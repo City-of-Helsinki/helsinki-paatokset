@@ -101,6 +101,13 @@ class ThemeHooks {
         'base hook' => 'entity',
         'template' => 'block/block--decision-tree',
       ],
+      'policymaker_calendar' => [
+        'variables' => [
+          'meetings' => [],
+          'policymaker' => NULL,
+          'description' => NULL,
+        ],
+      ],
       'meetings_calendar' => [
         'variables' => [
           'description' => NULL,

@@ -15,6 +15,19 @@ use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 class Meeting extends Node implements AhjoUpdatableInterface {
 
   /**
+   * Gets cache tag for meetings of the given policymaker.
+   *
+   * The tag is invalidated whenever a meeting of the policymaker
+   * is created, updated or deleted.
+   *
+   * @param string $policymakerId
+   *   The policymaker ID (field_meeting_dm_id).
+   */
+  public static function getPolicymakerCacheTag(string $policymakerId): string {
+    return 'meeting_pm:' . $policymakerId;
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {
