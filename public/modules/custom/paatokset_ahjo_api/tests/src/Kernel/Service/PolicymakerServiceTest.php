@@ -13,7 +13,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\path_alias\Entity\PathAlias;
@@ -234,7 +233,6 @@ class PolicymakerServiceTest extends KernelTestBase {
       $route_match,
       $this->container->get(AliasManagerInterface::class),
       $this->container->get(AliasCleanerInterface::class),
-      $this->container->get(MeetingService::class),
       $this->container->get(CaseService::class),
     );
 
@@ -357,7 +355,6 @@ class PolicymakerServiceTest extends KernelTestBase {
       $route_match,
       $this->container->get(AliasManagerInterface::class),
       $this->container->get(AliasCleanerInterface::class),
-      $this->container->get(MeetingService::class),
       $this->container->get(CaseService::class),
     );
 
