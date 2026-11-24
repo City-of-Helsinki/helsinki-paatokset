@@ -245,7 +245,7 @@ class PolicymakerController extends ControllerBase {
         continue;
       }
 
-      $meeting_timestamp = $meeting->get('field_meeting_date')->date->getTimeStamp();
+      $meeting_timestamp = $meeting->getMeetingTimestamp();
 
       $transformedResults[] = [
         'link' => $download_link,

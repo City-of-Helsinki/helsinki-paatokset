@@ -38,7 +38,7 @@ const CalendarDay = ({ day, isToday }: CalendarDayProps) => {
       {hasMeetings ? (
         day.meetings.map((meeting) => (
           <MeetingRow
-            key={`${meeting.policymaker}-${meeting.start_time}-${meeting.title}`}
+            key={`${meeting.policymaker}-${meeting.startTime}-${meeting.title}`}
             meeting={meeting}
             date={date}
           />

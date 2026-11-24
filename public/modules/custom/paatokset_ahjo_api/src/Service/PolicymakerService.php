@@ -905,8 +905,8 @@ class PolicymakerService {
 
     // Meeting metadata.
     $metadata = [];
-    if (!$meeting->get('field_meeting_date')->isEmpty()) {
-      $metadata['date'] = date('d.m.Y - H:i', $meeting->get('field_meeting_date')->date->getTimeStamp());
+    if ($meetingTimestamp = $meeting->getMeetingTimestamp()) {
+      $metadata['date'] = date('d.m.Y - H:i', $meetingTimestamp);
     }
     if (!$meeting->get('field_meeting_location')->isEmpty()) {
       $metadata['location'] = $meeting->get('field_meeting_location')->value;
