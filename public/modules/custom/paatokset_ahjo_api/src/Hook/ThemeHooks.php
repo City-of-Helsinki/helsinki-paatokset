@@ -15,7 +15,6 @@ use Drupal\paatokset_ahjo_api\Entity\AhjoCase;
 use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Service\CaseService;
-use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 
 /**
@@ -29,7 +28,6 @@ class ThemeHooks {
     private readonly LanguageManagerInterface $languageManager,
     private readonly ConfigFactoryInterface $configFactory,
     private readonly CaseService $caseService,
-    private readonly MeetingService $meetingService,
     private readonly PolicymakerService $policymakerService,
   ) {
   }
@@ -87,9 +85,12 @@ class ThemeHooks {
         'path' => $path . '/templates/content',
         'base hook' => 'node',
       ],
-      'block__frontpage_calendar' => [
-        'base hook' => 'entity',
-        'template' => 'block/block--frontpage-calendar',
+      'frontpage_calendar' => [
+        'variables' => [
+          'meetings' => [],
+          'calendar_notice' => NULL,
+          'calendar_link' => NULL,
+        ],
       ],
       'committees_and_boards_listing' => [
         'variables' => [
@@ -164,59 +165,6 @@ class ThemeHooks {
     foreach (Element::children($variables['elements']) as $key) {
       $variables['content'][$key] = $variables['elements'][$key];
     }
-  }
-
-  /**
-   * Preprocess frontpage calendar block.
-   *
-   * @phpstan-param array<string, mixed> $variables
-   */
-  #[Hook('preprocess_block__frontpage_calendar')]
-  public function preprocessFrontpageCalendar(array &$variables): void {
-    $currentLanguage = $this->languageManager->getCurrentLanguage()->getId();
-
-    $params = [
-      'from' => date("Y-m-d"),
-      'not_cancelled' => TRUE,
-      'limit' => 8,
-    ];
-
-    // Helpful $content variable for templates.
-    foreach (Element::children($variables['elements']) as $key) {
-      $variables['content'][$key] = $variables['elements'][$key];
-    }
-    if (isset($variables['elements']['#block__policymaker_calendar'])) {
-      $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
-    }
-
-    $all_meetings = array_merge(...array_values($this->meetingService->elasticQuery($params)));
-
-    $meetings_with_color = [];
-    foreach ($all_meetings as $meeting) {
-      $policymaker = $this->policymakerService->getPolicyMaker($meeting['policymaker']);
-      $meeting['organization_color'] = Html::cleanCssIdentifier($policymaker?->getPolicymakerClass() ?? 'color-board');
-      $meetings_with_color[] = $meeting;
-    }
-
-    $variables['open_motions'] = $this->t('Open agenda');
-    $variables['open_decisions'] = $this->t('Open decision announcement');
-    $variables['open_minutes'] = $this->t('Open minutes');
-    $variables['calendar_link'] = match ($currentLanguage) {
-      'fi' => '/fi/kokouskalenteri',
-      'sv' => '/sv/moteskalender',
-      'en' => '/en/meetings-calendar',
-      default => NULL,
-    };
-
-    $calendar_notice = $this->configFactory
-      ->get('paatokset_ahjo_api.default_texts')
-      ->get('calendar_notice_text');
-    if ($calendar_notice !== NULL) {
-      $variables['calendar_notice'] = $calendar_notice;
-    }
-
-    $variables['open_meeting_calendar'] = $this->t('Open meeting calendar');
-    $variables['meetings'] = $meetings_with_color;
   }
 
   /**
