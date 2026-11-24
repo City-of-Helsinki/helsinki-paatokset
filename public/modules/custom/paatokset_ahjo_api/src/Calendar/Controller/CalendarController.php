@@ -7,8 +7,11 @@ namespace Drupal\paatokset_ahjo_api\Calendar\Controller;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
@@ -21,7 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Controller for retrieving meeting data.
  */
-final class CalendarController extends ControllerBase {
+final class CalendarController implements ContainerInjectionInterface {
+
+  use AutowireTrait;
 
   /**
    * Number of months returned by a single request.
@@ -36,6 +41,8 @@ final class CalendarController extends ControllerBase {
   public function __construct(
     private readonly RendererInterface $renderer,
     private readonly TimeInterface $time,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly LanguageManagerInterface $languageManager,
   ) {
   }
 
@@ -62,7 +69,7 @@ final class CalendarController extends ControllerBase {
 
     $end = $start->modify(sprintf('+%d months', self::MONTHS_PER_REQUEST));
 
-    $query = $this->entityTypeManager()
+    $query = $this->entityTypeManager
       ->getStorage('node')
       ->getQuery()
       ->accessCheck();
@@ -121,8 +128,8 @@ final class CalendarController extends ControllerBase {
    *   Meeting data grouped by date (Y-m-d).
    */
   private function loadMeetings(array $ids): array {
-    $storage = $this->entityTypeManager()->getStorage('node');
-    $langcode = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId();
+    $storage = $this->entityTypeManager->getStorage('node');
+    $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId();
 
     /** @var \Drupal\paatokset_ahjo_api\Entity\Meeting[] $meetings */
     $meetings = $storage->loadMultiple($ids);
@@ -161,7 +168,7 @@ final class CalendarController extends ControllerBase {
     }
 
     $policymakers = [];
-    $entities = $this->entityTypeManager()
+    $entities = $this->entityTypeManager
       ->getStorage('node')
       ->loadByProperties([
         'type' => 'policymaker',

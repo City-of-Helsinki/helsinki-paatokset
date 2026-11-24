@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Calendar\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\paatokset_ahjo_api\Calendar\UpcomingMeetings;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
@@ -17,7 +21,9 @@ use Drupal\paatokset_ahjo_api\Entity\Policymaker;
  *
  * @see \Drupal\paatokset_ahjo_api\Plugin\Block\FrontpageCalendarBlock
  */
-final class FrontpageCalendarController extends ControllerBase {
+final class FrontpageCalendarController implements ContainerInjectionInterface {
+
+  use AutowireTrait;
 
   /**
    * Maximum number of meetings to show.
@@ -27,6 +33,9 @@ final class FrontpageCalendarController extends ControllerBase {
   public function __construct(
     private readonly UpcomingMeetings $upcomingMeetings,
     private readonly EntityRepositoryInterface $entityRepository,
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly LanguageManagerInterface $languageManager,
   ) {
   }
 
@@ -37,7 +46,7 @@ final class FrontpageCalendarController extends ControllerBase {
    *   The render array.
    */
   public function content(): array {
-    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config = $this->configFactory->get('paatokset_ahjo_api.default_texts');
 
     $build = [];
     $cache = CacheableMetadata::createFromObject($config)
@@ -76,7 +85,7 @@ final class FrontpageCalendarController extends ControllerBase {
       '#theme' => 'frontpage_calendar',
       '#meetings' => $rows,
       '#calendar_notice' => $config->get('calendar_notice_text'),
-      '#calendar_link' => match ($this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId()) {
+      '#calendar_link' => match ($this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_URL)->getId()) {
         'fi' => '/fi/kokouskalenteri',
         'sv' => '/sv/moteskalender',
         'en' => '/en/meetings-calendar',
@@ -100,7 +109,7 @@ final class FrontpageCalendarController extends ControllerBase {
       return [];
     }
 
-    $storage = $this->entityTypeManager()->getStorage('node');
+    $storage = $this->entityTypeManager->getStorage('node');
     $nids = $storage->getQuery()
       ->accessCheck()
       ->condition('type', 'policymaker')

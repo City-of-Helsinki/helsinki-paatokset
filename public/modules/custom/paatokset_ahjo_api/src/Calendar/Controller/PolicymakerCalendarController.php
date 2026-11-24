@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Calendar\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\paatokset_ahjo_api\Calendar\UpcomingMeetings;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
@@ -17,11 +19,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @see \Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerCalendarBlock
  */
-final class PolicymakerCalendarController extends ControllerBase {
+final class PolicymakerCalendarController implements ContainerInjectionInterface {
+
+  use AutowireTrait;
 
   public function __construct(
     private readonly UpcomingMeetings $upcomingMeetings,
     private readonly EntityRepositoryInterface $entityRepository,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -43,7 +48,7 @@ final class PolicymakerCalendarController extends ControllerBase {
     $policymaker = $this->entityRepository->getTranslationFromContext($node);
     assert($policymaker instanceof Policymaker);
 
-    $config = $this->config('paatokset_ahjo_api.default_texts');
+    $config = $this->configFactory->get('paatokset_ahjo_api.default_texts');
 
     $build = [];
     $cache = CacheableMetadata::createFromObject($config)
