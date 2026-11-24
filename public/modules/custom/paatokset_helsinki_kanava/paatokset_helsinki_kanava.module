@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
@@ -55,9 +56,7 @@ function paatokset_helsinki_kanava_preprocess_node__policymaker(array &$variable
   $node = $variables['node'];
 
   // Only act on council nodes.
-  $council_id = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
-
-  if (!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->value !== $council_id) {
+  if (!$node->hasField('field_policymaker_id') || $node->get('field_policymaker_id')->value !== PolicymakerId::CityCouncil->value) {
     return;
   }
 

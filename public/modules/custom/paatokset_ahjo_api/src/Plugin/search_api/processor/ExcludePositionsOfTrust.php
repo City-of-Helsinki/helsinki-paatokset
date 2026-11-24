@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\Plugin\search_api\processor;
 
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -117,8 +118,8 @@ final class ExcludePositionsOfTrust extends ProcessorPluginBase {
     // Build indexedTrusteeIds when first called.
     if (empty($this->indexedTrusteeIds)) {
       $this->indexedTrusteeIds = [];
-      $this->addPolicymakerTrustees($this->indexedTrusteeIds, PolicymakerService::CITY_COUNCIL_DM_ID);
-      $this->addPolicymakerTrustees($this->indexedTrusteeIds, PolicymakerService::CITY_BOARD_DM_ID);
+      $this->addPolicymakerTrustees($this->indexedTrusteeIds, PolicymakerId::CityCouncil->value);
+      $this->addPolicymakerTrustees($this->indexedTrusteeIds, PolicymakerId::CityBoard->value);
     }
 
     return $this->indexedTrusteeIds;

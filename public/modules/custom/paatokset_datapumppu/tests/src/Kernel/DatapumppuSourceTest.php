@@ -8,6 +8,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
 use Drupal\paatokset_datapumppu\Plugin\migrate\source\DatapumppuStatementsSource;
@@ -94,7 +95,7 @@ class DatapumppuSourceTest extends KernelTestBase {
 
     $trustee = $this->mockTrustee('test-name');
     $this->policymakerService
-      ->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID)
+      ->getTrustees(PolicymakerId::CityCouncil->value)
       ->willReturn([$trustee]);
 
     $plugin = $this->getPlugin([
@@ -125,7 +126,7 @@ class DatapumppuSourceTest extends KernelTestBase {
 
     $trustee = $this->mockTrustee('test-name');
     $this->policymakerService
-      ->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID)
+      ->getTrustees(PolicymakerId::CityCouncil->value)
       ->willReturn([$trustee]);
 
     $logger = $this->prophesize(LoggerInterface::class);

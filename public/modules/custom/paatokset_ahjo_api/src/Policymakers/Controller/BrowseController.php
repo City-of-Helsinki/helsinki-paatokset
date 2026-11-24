@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -117,7 +118,7 @@ class BrowseController extends ControllerBase {
    * a bit.
    */
   public function buildRoot(): array {
-    $rootIds = ['02900'];
+    $rootIds = [PolicymakerId::CityCouncil->value];
 
     $children = $this
       ->entityTypeManager()
