@@ -43,6 +43,6 @@ msgid "Search decision-makers"
 msgstr "Etsi päättäjiä"
 
 msgctxt "Policymaker search"
-msgid "Search for a decision-making body, office holder or councillor."
+msgid "Search for a decision-making body, public official or councillor."
 msgstr "Voit hakea toimielintä, viranhaltijaa tai valtuutettua."
 

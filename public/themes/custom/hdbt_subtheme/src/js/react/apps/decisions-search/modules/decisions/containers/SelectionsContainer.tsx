@@ -98,7 +98,7 @@ export const SelectionsContainer = () => {
             value={
               key === Components.BODIES
                 ? Drupal.t('Decisions of decision-making bodies', {}, { context: 'Decisions search' })
-                : Drupal.t('Decisions of office holders', {}, { context: 'Decisions search' })
+                : Drupal.t('Decisions of public officials', {}, { context: 'Decisions search' })
             }
           />,
         );
