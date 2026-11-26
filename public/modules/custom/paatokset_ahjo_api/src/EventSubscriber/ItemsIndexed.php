@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\IndexInterface;
@@ -54,7 +54,7 @@ class ItemsIndexed implements EventSubscriberInterface {
   }
 
   /**
-   * Get cache tags to invalidate for office holder decisions.
+   * Get cache tags to invalidate for public official decisions.
    *
    * @param \Drupal\search_api\Event\ItemsIndexedEvent $event
    *   The ItemsIndexed event.

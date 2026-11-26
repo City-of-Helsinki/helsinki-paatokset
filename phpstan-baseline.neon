@@ -193,12 +193,6 @@ parameters:
 			path: public/modules/custom/paatokset/tests/src/Unit/Plugin/DebugDataItem/LupapisteApiAvailabilityTest.php
 
 		-
-			message: '#^Function _paatokset_ahjo_api_get_decision_variables\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function _paatokset_ahjo_api_get_existing_value\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -301,31 +295,7 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
 		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__decision_tree\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_block__frontpage_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function paatokset_ahjo_api_preprocess_html\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_node__case__full\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_preprocess_node__decision__full\(\) has parameter \$variables with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
@@ -337,36 +307,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
 
 		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$existing with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$path with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$theme with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) has parameter \$type with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function paatokset_ahjo_api_theme\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
 			message: '#^Function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -374,30 +314,6 @@ parameters:
 
 		-
 			message: '#^Function paatokset_ahjo_api_theme_suggestions_block__policymaker_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_ahjo_case\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_ahjo_initiative\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_block__meetings_calendar\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
-
-		-
-			message: '#^Function template_preprocess_block__meetings_calendar\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/paatokset_ahjo_api.module
@@ -601,12 +517,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/AhjoApiController.php
 
 		-
-			message: '#^Match expression does not handle remaining value\: string$#'
-			identifier: match.unhandled
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseController\:\:renderCaseAttachments\(\) never returns string so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -623,30 +533,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseController.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:case\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:decision\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Controller\\CaseNodeViewController\:\:decisionTitle\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Controller/CaseNodeViewController.php
 
 		-
 			message: '#^Parameter \#1 \$content of class Symfony\\Component\\HttpFoundation\\Response constructor expects string\|null, string\|false given\.$#'
@@ -847,12 +733,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Drush/Commands/DTO/MigrateSettings.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Entity\\AhjoCase\:\:getAhjoId\(\) should return string but returns int\|string\|null\.$#'
 			identifier: return.type
 			count: 1
@@ -874,12 +754,6 @@ parameters:
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Entity\\AhjoCase\:\:label\(\) should return string but returns Drupal\\Core\\StringTranslation\\TranslatableMarkup\|string\|null\.$#'
 			identifier: return.type
 			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Entity/AhjoCase.php
 
 		-
@@ -1441,30 +1315,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/ColorClass.php
 
 		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:addFieldValues\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:addFieldValues\(\) has parameter \$item with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionUrl\:\:create\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/search_api/processor/DecisionUrl.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\search_api\\processor\\DecisionmakerCombinedTitle\:\:addFieldValues\(\) has parameter \$item with no value type specified in iterable type Drupal\\search_api\\Item\\ItemInterface\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1849,24 +1699,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Queue/AhjoQueueWorkerBase.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Routing\\CaseOrDecisionConverter\:\:convert\(\) has parameter \$defaults with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Routing/CaseOrDecisionConverter.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Routing\\DecisionConverter\:\:convert\(\) has parameter \$defaults with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Routing/DecisionConverter.php
-
-		-
-			message: '#^\\Drupal calls should be avoided in classes, use dependency injection instead$#'
-			identifier: globalDrupalDependencyInjection.useDependencyInjection
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Routing/DecisionConverterBase.php
-
-		-
 			message: '#^Argument of an invalid type DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -1885,19 +1717,7 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
 
 		-
-			message: '#^Match expression does not handle remaining value\: string$#'
-			identifier: match.unhandled
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:caseQuery\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:caseQuery\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
@@ -1909,25 +1729,7 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:decisionQuery\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:getDecisionsList\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:query\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Service\\CaseService\:\:query\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
@@ -1946,12 +1748,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$max_length of static method Drupal\\Component\\Utility\\Unicode\:\:truncate\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
-
-		-
-			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Service/CaseService.php
@@ -2335,27 +2131,9 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/EventSubscriber/ItemsIndexedTest.php
 
 		-
-			message: '#^Method Drupal\\Core\\Breadcrumb\\BreadcrumbBuilderInterface@anonymous/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest\.php\:71\:\:__construct\(\) has parameter \$links with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\BreadcrumbTest\:\:createBreadcrumbBuilder\(\) has parameter \$links with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/BreadcrumbTest.php
-
-		-
 			message: '#^Access to an undefined property object\:\:\$links\.$#'
 			identifier: property.notFound
 			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/LanguageSwitcherTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\Hook\\LanguageSwitcherTest\:\:getEntityId\(\) should return string but returns int\|string\|null\.$#'
-			identifier: return.type
-			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Hook/LanguageSwitcherTest.php
 
 		-
@@ -2873,24 +2651,6 @@ parameters:
 			identifier: method.alreadyNarrowedType
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Unit/TopCategoryTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\ExistingSite\\CaseNodeViewControllerTest\:\:canonicalUrlData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/dtt/src/ExistingSite/CaseNodeViewControllerTest.php
-
-		-
-			message: '#^Parameter \#1 \$suffix of method PHPUnit\\Framework\\Assert\:\:assertStringEndsWith\(\) expects non\-empty\-string, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/dtt/src/ExistingSite/CaseNodeViewControllerTest.php
-
-		-
-			message: '#^Parameter \#1 \$url of method Drupal\\Tests\\helfi_api_base\\Functional\\ExistingSiteTestBase\:\:drupalGetWithLanguage\(\) expects Drupal\\Core\\Url\|string, string\|false\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/dtt/src/ExistingSite/CaseNodeViewControllerTest.php
 
 		-
 			message: '#^Access to an undefined property Drupal\\Core\\Entity\\FieldableEntityInterface\:\:\$field_meeting_date\.$#'
@@ -3763,24 +3523,6 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Client/Client.php
 
 		-
-			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Client/Client.php
-
-		-
-			message: '#^Parameter \#1 \$id of method Drupal\\paatokset_allu\\Client\\Client\:\:streamApproval\(\) expects string, int\|string\|null given\.$#'
-			identifier: argument.type
-			count: 2
-			path: public/modules/custom/paatokset_allu/src/Controller/Controller.php
-
-		-
-			message: '#^Parameter \#1 \$id of method Drupal\\paatokset_allu\\Client\\Client\:\:streamDecision\(\) expects string, int\|string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: public/modules/custom/paatokset_allu/src/Controller/Controller.php
-
-		-
 			message: '#^Method Drupal\\paatokset_allu\\Drush\\Commands\\Commands\:\:runMigration\(\) has parameter \$options with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -3871,20 +3613,8 @@ parameters:
 			path: public/modules/custom/paatokset_allu/src/Plugin/migrate/source/AlluSource.php
 
 		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\StreamedResponse'' and Symfony\\Component\\HttpFoundation\\StreamedResponse will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\paatokset_allu\\Kernel\\ClientTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
-
-		-
-			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
 			count: 1
 			path: public/modules/custom/paatokset_allu/tests/src/Kernel/ClientTest.php
 

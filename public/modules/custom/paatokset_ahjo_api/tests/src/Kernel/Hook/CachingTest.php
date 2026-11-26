@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Hook;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
+use Drupal\paatokset_ahjo_api\Entity\CaseBundle;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Hook\Caching;
@@ -39,7 +40,25 @@ class CachingTest extends AhjoEntityKernelTestBase {
     ]);
 
     $this->assertInstanceOf(Decision::class, $decision);
-    $caching->insert($decision);
+    $caching->invalidate($decision);
+  }
+
+  /**
+   * Tests case insert invalidates cache tags.
+   */
+  public function testCaseInsertInvalidatesCacheTags(): void {
+    $invalidator = $this->createMock(CacheTagsInvalidatorInterface::class);
+    $invalidator->expects($this->once())
+      ->method('invalidateTags')
+      ->with(['ahjo_case:HEL-789']);
+
+    $case = $this->createNode([
+      'type' => 'case',
+      'field_diary_number' => 'HEL-789',
+    ]);
+    $this->assertInstanceOf(CaseBundle::class, $case);
+
+    (new Caching($invalidator))->invalidate($case);
   }
 
   /**
@@ -59,7 +78,7 @@ class CachingTest extends AhjoEntityKernelTestBase {
     ]);
 
     $this->assertInstanceOf(Meeting::class, $meeting);
-    $caching->insert($meeting);
+    $caching->invalidate($meeting);
   }
 
 }

@@ -28,6 +28,20 @@ class CaseBundle extends Node implements AhjoUpdatableInterface, Confidentiality
   }
 
   /**
+   * Gets the cache tag for a case.
+   *
+   * Pages that display data from all decisions of a case
+   * should use this tag. It is invalidated when the case
+   * or any of its decisions are created, updated or deleted.
+   *
+   * @param string $diaryNumber
+   *   Case diary number.
+   */
+  public static function getCaseCacheTag(string $diaryNumber): string {
+    return 'ahjo_case:' . strtoupper($diaryNumber);
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {

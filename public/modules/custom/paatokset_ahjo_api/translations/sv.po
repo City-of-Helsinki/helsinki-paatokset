@@ -148,3 +148,9 @@ msgstr "Social- och hälsovårdsektorn"
 msgctxt "Sector names"
 msgid "Social Services, Health Care and Rescue Services Division"
 msgstr "Social-, hälsovårds- och räddningssektorn"
+
+msgid "Public official decision"
+msgstr "Tjänsteinnehavarbeslut"
+
+msgid "Standard process for public official decisions"
+msgstr "Normal process för tjänsteinnehavarbeslut"

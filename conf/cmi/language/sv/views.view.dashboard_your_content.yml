@@ -6,9 +6,32 @@ display:
           content:
             format: full_html
             value: '<p>No pages to display.</p>'
+      title: 'My pages'
       fields:
         views_bulk_operations_bulk_form:
           action_title: Åtgärd
+          selected_actions:
+            -
+              preconfiguration:
+                label_override: 'Lägg till som favorit'
+            -
+              preconfiguration:
+                label_override: 'Ta bort från favoriter'
+            -
+              preconfiguration:
+                label_override: 'Radera innehåll'
+            -
+              preconfiguration:
+                label_override: 'Redigera innehåll'
+            -
+              preconfiguration:
+                label_override: 'Publicera innehåll'
+            -
+              preconfiguration:
+                label_override: 'Avpublicera inlägg'
+            -
+              preconfiguration:
+                label_override: 'Uppdatera URL-alias'
         content_translation_outdated:
           label: 'Översättnign utdaterad'
           settings:
@@ -17,6 +40,8 @@ display:
         title:
           label: Titel
           separator: ', '
+        helfi_favorite:
+          label: Favorit
         type:
           label: Innehållstyp
           separator: ', '

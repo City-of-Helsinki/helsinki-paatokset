@@ -8,6 +8,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\node\Entity\Node;
 use Drupal\paatokset_ahjo_api\Decisions\DecisionParser;
 use Drupal\paatokset_ahjo_api\Decisions\DTO\SignerRole;
@@ -317,7 +318,7 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
    *   URL for PDF.
    */
   public function getDecisionPdf(): ?string {
-    // Check for office holder and trustee decisions for minutes PDF URI first.
+    // Check public official and trustee decisions for minutes PDF URI first.
     if ($minutes_file_uri = $this->getMinutesPdf()) {
       return $minutes_file_uri;
     }

@@ -10,6 +10,7 @@ global-scripting:
     dist/js/paatoksetDropdown.min.js: {}
   dependencies:
     - core/drupal
+    - core/jquery
 
 allu-decisions-search:
   version: HELFI_DEPLOYMENT_IDENTIFIER

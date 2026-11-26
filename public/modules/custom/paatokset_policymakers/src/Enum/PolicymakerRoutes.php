@@ -4,7 +4,7 @@ namespace Drupal\paatokset_policymakers\Enum;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
-use Drupal\paatokset_ahjo_api\Entity\OrganizationType;
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 
 /**
  * Enum class for policymaker routes.

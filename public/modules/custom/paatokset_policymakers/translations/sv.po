@@ -39,12 +39,6 @@ msgstr "Stadsstyrelsens sektioner"
 msgid "Committees and Boards"
 msgstr "Nämnder och direktioner"
 
-msgid "Office holders"
-msgstr "Tjänsteinnehavare"
-
-msgid "Office holders: @sector_title"
-msgstr "Tjänsteinnehavare: @sector_title"
-
 msgid "Elected official decisionmakers"
 msgstr "Förtroendevalda tjänsteinnehavare"
 

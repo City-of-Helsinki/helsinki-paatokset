@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - paatokset_ahjo_api
     - system
   theme:
     - hdbt_subtheme
@@ -22,3 +23,8 @@ visibility:
     id: request_path
     negate: true
     pages: "/asia\r\n/asia/*\r\n/v2/asia/*\r\n/arende\r\n/arende/*\r\n/v2/arende/*\r\n/case\r\n/case/*\r\n/v2/case/*\r\n/paattajat/*/asiakirjat/*\r\n/decisionmakers/*/documents/*\r\n/beslutsfattare/*/dokumenter/*\r\n/paattajat/etsi-paattajia\r\n/beslutsfattare/sok-beslutsfattare\r\n/decisionmakers/search-decisions-makers"
+  paatokset_case_or_decision:
+    id: paatokset_case_or_decision
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'

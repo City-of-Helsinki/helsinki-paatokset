@@ -15,7 +15,7 @@ recording_description:
   value: "<p>You can watch a recording of the latest Council meeting here. The All recordings-link will take you to the City's video service Helsinki-kanava.</p>\r\n"
   format: full_html
 decisions_description:
-  value: "<div class=\"section-description\">\r\n<p>Office holders work for the municipality under a public-service employment relationship.</p>\r\n</div>\r\n"
+  value: "<div class=\"section-description\">\r\n<p>Public officials work for the municipality under a public-service employment relationship.</p>\r\n</div>\r\n"
   format: full_html
 meeting_calendar_description:
   value: ""

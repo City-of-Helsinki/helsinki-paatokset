@@ -134,7 +134,7 @@ msgid "Decisions of decision-making bodies"
 msgstr "Toimielinten päätökset"
 
 msgctxt "Decisions search"
-msgid "Decisions of office holders"
+msgid "Decisions of public officials"
 msgstr "Viranhaltijoiden päätökset"
 
 msgctxt "Decisions search"
@@ -210,7 +210,7 @@ msgid "The City's decisions"
 msgstr "Kaupungin päätökset"
 
 msgctxt "Decisions search"
-msgid "The City of Helsinki uses Finnish in its decision-making. You can browse the service in English, but the decision documents themselves are only available in Finnish. The Decisions service compiles all decision-making by the City of Helsinki in one place. You can find decisions made by the Helsinki City Council, City Board, committees, office holders and other authorities of Helsinki in Finnish."
+msgid "The City of Helsinki uses Finnish in its decision-making. You can browse the service in English, but the decision documents themselves are only available in Finnish. The Decisions service compiles all decision-making by the City of Helsinki in one place. You can find decisions made by the Helsinki City Council, City Board, committees, public officials and other authorities of Helsinki in Finnish."
 msgstr "Päätökset-palvelusta löydät Helsingin kaupunginvaltuuston, kaupunginhallituksen, lautakuntien ja viranhaltijoiden päätökset. Voit myös tutustua kaupungin päätöksenteon kulkuun ja aloittaa muutoksenhaun päätökseen."
 
 msgctxt "Decisions search"
@@ -230,7 +230,7 @@ msgid "Read the instructions for refining your search."
 msgstr "Lue ohjeita haun tarkentamiseen."
 
 msgctxt "Decisions search"
-msgid "You can find the City of Helsinki's decision-making body and office holder decisions starting from 2017 in the search."
+msgid "You can find the City of Helsinki's decision-making body and public official decisions starting from 2017 in the search."
 msgstr "Löydät hausta Helsingin toimielinten ja viranhaltijoiden päätökset vuodesta 2017 alkaen."
 
 msgctxt "Decisions search"
@@ -340,7 +340,7 @@ msgid "No results"
 msgstr "Ei hakutuloksia"
 
 msgctxt "Decisions search"
-msgid "Decisions of office holders"
+msgid "Decisions of public officials"
 msgstr "Viranhaltijoiden päätökset"
 
 msgctxt "Decisions search"
@@ -428,3 +428,6 @@ msgstr "Jos kaipaat yhteystietoa, mutta et löytänyt sitä yltä, kokeile yhtey
 msgctxt "Dictionary banner"
 msgid "Helsinki City Contacts"
 msgstr "Kaupungin yhteystietohaku"
+
+msgid "Process history"
+msgstr "Päätöshistoria"
