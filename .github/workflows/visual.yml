@@ -69,6 +69,7 @@ jobs:
         run: |
           docker compose exec app bash -c '$(drush sql:connect) < dump.sql'
           docker compose exec app bash -c "drush deploy"
+          docker compose exec app bash -c "drush locale:clear-status && drush locale:check && drush locale:update"
           docker compose exec app bash -c "drush en paatokset_test_content -y"
 
       - uses: actions/setup-node@v5
