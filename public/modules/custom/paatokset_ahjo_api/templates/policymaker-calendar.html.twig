@@ -49,15 +49,13 @@
             {% elseif meeting.isMoved() %}
               {{ 'Meeting moved'|t }}
             {% endif %}
-          </td>
-          {% if link %}
-            <td>
+            {% if link %}
               <a href="{{ link.toString() }}">
                 {{ label }}
                 <i class="hel-icon hel-icon--angle-right"></i>
               </a>
-            </td>
-          {% endif %}
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
