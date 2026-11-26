@@ -81,12 +81,17 @@ readonly class LanguageSwitcher {
         try {
           $altUrl = clone $altUrl;
           $altUrl->setOption('language', $link['language']);
-          $links[$langCode]['#override_url'] = $altUrl->toString();
-          $links[$langCode]['#lang_override'] = TRUE;
+          // Make sure the URL can be generated before using it.
+          $altUrl->toString();
+
+          // The language switcher template from hdbt renders a regular link
+          // for translated languages, so the alternative URL replaces the
+          // link URL and the link is no longer marked as untranslated.
+          $links[$langCode]['url'] = $altUrl;
+          $links[$langCode]['#untranslated'] = FALSE;
         }
         // Catch exceptions just in case.
-        catch (\Exception $e) {
-          $links[$langCode]['#lang_override'] = FALSE;
+        catch (\Exception) {
         }
       }
     }
