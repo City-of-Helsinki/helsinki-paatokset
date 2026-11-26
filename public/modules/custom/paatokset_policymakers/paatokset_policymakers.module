@@ -393,7 +393,6 @@ function paatokset_policymakers_preprocess_page(&$variables) {
   // Add template variables on policymaker pages.
   if (_paatokset_policymakers_page_is_pm_subpage($variables)) {
     $variables['has_sidebar_first'] = TRUE;
-    $variables['move_before_content'] = TRUE;
     $variables['has_section_nav'] = TRUE;
 
     // Unset main navigation.
@@ -401,7 +400,6 @@ function paatokset_policymakers_preprocess_page(&$variables) {
   }
   elseif (_paatokset_policymakers_page_is_pm_custom_link($variables)) {
     $variables['has_sidebar_first'] = TRUE;
-    $variables['move_before_content'] = TRUE;
     $variables['has_section_nav'] = TRUE;
 
     // Force policymaker sidebar and mobile navi to be visible.

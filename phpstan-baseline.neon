@@ -4585,12 +4585,6 @@ parameters:
 			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
 
 		-
-			message: '#^Function hdbt_subtheme_preprocess_block\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
-
-		-
 			message: '#^Function hdbt_subtheme_preprocess_container\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4616,12 +4610,6 @@ parameters:
 
 		-
 			message: '#^Function hdbt_subtheme_preprocess_media__view__pdf_listing\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
-
-		-
-			message: '#^Function hdbt_subtheme_preprocess_menu\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme

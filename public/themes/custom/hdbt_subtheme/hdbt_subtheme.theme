@@ -54,18 +54,6 @@ function hdbt_subtheme_theme_suggestions_ahjo_initiative_alter(array &$suggestio
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function hdbt_subtheme_preprocess_block(array &$variables): void {
-  if (
-    $variables['base_plugin_id'] === 'menu_block_current_language' &&
-    str_contains($variables['elements']['#id'], 'main_navigation_level_2')
-  ) {
-    $variables['#attached']['library'][] = 'hdbt/sidebar-menu-toggle';
-  }
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function hdbt_subtheme_theme_suggestions_media_alter(array &$suggestions, array $variables): void {
@@ -117,10 +105,6 @@ function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions, $variables):
 
   $element = $variables['elements'];
 
-  if (isset($element['#configuration']['custom_suggestion'])) {
-    $suggestions[] = $element['#configuration']['custom_suggestion'];
-  }
-
   if (
     isset($element['#id']) &&
     $element['#id'] === 'views_block__news_block_1'
@@ -148,16 +132,8 @@ function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables): 
       'mobile_navigation' => 'menu__mobile',
       'mainnavigation' => 'menu__main__desktop',
       'main_navigation_level_2' => 'menu__main__sidebar',
-      'brandingnavigation' => 'menu__main__branding',
       default => 'menu__' . $variables['attributes']['block_id'],
     };
-  }
-
-  if (
-    !empty($variables['menu_block_configuration']['custom_suggestion']) &&
-    $variables['menu_block_configuration']['custom_suggestion'] === 'block__menu_block__main__desktop'
-  ) {
-    $suggestions[] = 'menu__main__desktop';
   }
 }
 
@@ -447,24 +423,6 @@ function hdbt_subtheme_preprocess_paragraph__news_liftups(array &$variables): vo
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function hdbt_subtheme_preprocess_menu(array &$variables): void {
-  $variables['#attached']['library'][] = 'hdbt/desktop-menu-toggle';
-
-  if (isset($variables['menu_name']) && $variables['menu_name'] === 'main') {
-    $variables['allow_collabsible'] = TRUE;
-
-    if (
-      isset($variables['attributes']['block_id']) &&
-      $variables['attributes']['block_id'] === 'hdbt_subtheme_main_navigation_level_2'
-    ) {
-      $variables['auto_open'] = TRUE;
-    }
-  }
-}
-
-/**
  * Implements hook_preprocess_page().
  */
 function hdbt_subtheme_preprocess_page(array &$variables): void {
@@ -475,23 +433,12 @@ function hdbt_subtheme_preprocess_page(array &$variables): void {
     unset($variables['page']['before_content']['hdbt_subtheme_page_title']);
   }
 
-  // Set a variable to always show sidebar in policymaker pages.
-  // Check by dictionary block appearing to handle untranslated nodes on sv.
-  if (
-    isset($variables['page']['content']) &&
-    array_key_exists('paatoksetdecisionsdictionarybanner', $variables['page']['content'])
-  ) {
-    $variables['main_container'] = TRUE;
-  }
-
   if ($route_name === 'entity.taxonomy_term.canonical') {
     $variables['has_sidebar_second'] = TRUE;
-    $variables['move_before_content'] = TRUE;
   }
 
   if (isset($variables['node']) && $variables['node']->bundle() === 'article') {
     $variables['has_sidebar_second'] = TRUE;
-    $variables['move_before_content'] = TRUE;
   }
 
   // Display navigation side under specific conditions.
@@ -535,7 +482,6 @@ function hdbt_subtheme_preprocess_page(array &$variables): void {
 
     if ($display_sidebar_nav) {
       $variables['has_sidebar_first'] = TRUE;
-      $variables['move_before_content'] = TRUE;
       $variables['has_section_nav'] = TRUE;
     }
   }
