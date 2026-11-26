@@ -482,7 +482,6 @@ function hdbt_subtheme_preprocess_page(array &$variables): void {
 
     if ($display_sidebar_nav) {
       $variables['has_sidebar_first'] = TRUE;
-      $variables['has_section_nav'] = TRUE;
     }
   }
 }

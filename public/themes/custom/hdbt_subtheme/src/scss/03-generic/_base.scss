@@ -2,14 +2,6 @@
   background: transparent;
 }
 
-.has-section-nav .main-content .layout-sidebar-first {
-  display: none;
-
-  @include breakpoint($breakpoint-l) {
-    display: block;
-  }
-}
-
 .page-title h1 {
   @include font(h1);
 }

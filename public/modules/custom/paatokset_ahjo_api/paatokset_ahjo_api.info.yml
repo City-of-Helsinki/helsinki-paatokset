@@ -12,5 +12,6 @@ dependencies:
   - pathauto:pathauto
   - token:token
   - json_field:json_field
+  - menu_block_current_language:menu_block_current_language
 'interface translation project': paatokset_ahjo_api
 'interface translation server pattern': modules/custom/paatokset_ahjo_api/translations/%language.po
