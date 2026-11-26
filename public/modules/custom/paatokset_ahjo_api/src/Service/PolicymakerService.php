@@ -9,12 +9,14 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\path_alias\AliasManagerInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 
@@ -74,6 +76,7 @@ class PolicymakerService {
     private readonly AliasCleanerInterface $pathAliasCleaner,
     private readonly MeetingService $meetingService,
     private readonly CaseService $caseService,
+    private readonly MenuLinkManagerInterface $menuLinkManager,
   ) {
   }
 
@@ -191,6 +194,73 @@ class PolicymakerService {
     if ($node->hasField('field_policymaker_id') && !$node->get('field_policymaker_id')->isEmpty()) {
       $this->policymakerId = $node->get('field_policymaker_id')->value;
     }
+  }
+
+  /**
+   * Set policymaker for the current page.
+   *
+   * The current page belongs to a policymaker if it is under the policymaker
+   * path, or if it is linked from the policymaker navigation as a custom link.
+   *
+   * @return bool
+   *   TRUE if setting pm was successful.
+   */
+  public function setPolicymakerForCurrentPage(): bool {
+    if ($this->setPolicyMakerByPath()) {
+      return TRUE;
+    }
+
+    $node = $this->routeMatch->getParameter('node');
+    return $node instanceof NodeInterface && $this->setPolicymakerByCustomLink($node);
+  }
+
+  /**
+   * Set policymaker from a custom navigation link pointing to the node.
+   *
+   * Policymakers can add links to any content to their navigation with
+   * custom_content_links paragraphs. Nodes that are in a menu are skipped.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The linked node.
+   *
+   * @return bool
+   *   TRUE if setting pm was successful.
+   */
+  public function setPolicymakerByCustomLink(NodeInterface $node): bool {
+    // Don't act if this node is in a menu already.
+    if ($this->menuLinkManager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()])) {
+      return FALSE;
+    }
+
+    $storage = $this->entityTypeManager->getStorage('paragraph');
+
+    // Query for a custom link that has this node as its target.
+    $pids = $storage
+      ->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'custom_content_links')
+      ->condition('field_referenced_content.target_id', $node->id())
+      ->latestRevision()
+      ->execute();
+
+    // Always pick the first one if multiple are found.
+    $paragraph = $pids ? $storage->load(reset($pids)) : NULL;
+    if (!$paragraph instanceof ParagraphInterface) {
+      return FALSE;
+    }
+
+    // Check that the parent node is a policymaker node with an ID.
+    $parent = $paragraph->getParentEntity();
+    if (
+      !$parent instanceof Policymaker ||
+      !$parent->hasField('field_policymaker_id') ||
+      $parent->get('field_policymaker_id')->isEmpty()
+    ) {
+      return FALSE;
+    }
+
+    $this->setPolicyMakerNode($parent);
+    return TRUE;
   }
 
   /**

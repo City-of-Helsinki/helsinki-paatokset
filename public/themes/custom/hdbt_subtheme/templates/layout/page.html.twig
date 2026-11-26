@@ -14,8 +14,8 @@
 {% set page_classes = [
     node.getType() ? 'page-type--' ~ node.getType()|clean_class,
     'wrapper',
-    has_sidebar_first or has_sidebar_second or policymaker_navigation ? 'has-sidebar' : 'no-sidebar',
-    has_sidebar_first or policymaker_navigation ? 'has-sidebar--first' : 'no-sidebar-first',
+    has_sidebar_first or has_sidebar_second ? 'has-sidebar' : 'no-sidebar',
+    has_sidebar_first ? 'has-sidebar--first' : 'no-sidebar-first',
     has_sidebar_second ? 'has-sidebar--second' : 'no-sidebar-second',
     has_section_nav ? 'has-section-nav' : 'no-section-nav',
     is_front ? 'is-front' : '',
@@ -163,17 +163,11 @@
 
     <div class="main-content">
 
-      {% if has_sidebar_first or policymaker_navigation %}
+      {% if has_sidebar_first %}
         <div class="layout-sidebar-first">
           {% block page_sidebar_first %}
             {{ page.sidebar_first }}
           {% endblock page_sidebar_first %}
-
-          {% if policymaker_navigation %}
-            <div class="sidebar-first">
-              {{ drupal_block('policymaker_side_nav') }}
-            </div>
-          {% endif %}
         </div>
       {% endif %}
 

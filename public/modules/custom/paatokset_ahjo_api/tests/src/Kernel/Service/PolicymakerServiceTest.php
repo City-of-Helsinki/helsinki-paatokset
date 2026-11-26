@@ -7,6 +7,7 @@ namespace Drupal\Tests\paatokset_ahjo_api\Kernel\Service;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -236,6 +237,7 @@ class PolicymakerServiceTest extends KernelTestBase {
       $this->container->get(AliasCleanerInterface::class),
       $this->container->get(MeetingService::class),
       $this->container->get(CaseService::class),
+      $this->container->get(MenuLinkManagerInterface::class),
     );
 
     // Test setting policymaker by path.
@@ -359,6 +361,7 @@ class PolicymakerServiceTest extends KernelTestBase {
       $this->container->get(AliasCleanerInterface::class),
       $this->container->get(MeetingService::class),
       $this->container->get(CaseService::class),
+      $this->container->get(MenuLinkManagerInterface::class),
     );
 
     // Test setting policymaker by path with subpages.

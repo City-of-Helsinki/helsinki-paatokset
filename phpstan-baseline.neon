@@ -4111,12 +4111,6 @@ parameters:
 			path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
 
 		-
-			message: '#^Function _paatokset_policymakers_page_is_pm_custom_link\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_policymakers/paatokset_policymakers.module
-
-		-
 			message: '#^Function _paatokset_policymakers_page_is_pm_subpage\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4521,12 +4515,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property Drupal\\Core\\Field\\FieldItemInterface\:\:\$value\.$#'
 			identifier: property.notFound
-			count: 1
-			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
-
-		-
-			message: '#^Cannot access offset ''menu_name'' on array\|Drupal\\Component\\Plugin\\Definition\\PluginDefinitionInterface\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: public/themes/custom/hdbt_subtheme/hdbt_subtheme.theme
 
