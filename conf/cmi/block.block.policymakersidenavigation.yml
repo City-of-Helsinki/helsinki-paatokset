@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - paatokset_ahjo_api
-    - system
   theme:
     - hdbt_subtheme
 id: policymakersidenavigation
@@ -18,8 +17,4 @@ settings:
   label: 'Policymaker side navigation'
   label_display: '0'
   provider: paatokset_ahjo_api
-visibility:
-  request_path:
-    id: request_path
-    negate: false
-    pages: "/paattajat/*\r\n/beslutsfattare/*\r\n/decisionmakers/*"
+visibility: {  }

@@ -440,50 +440,6 @@ function hdbt_subtheme_preprocess_page(array &$variables): void {
   if (isset($variables['node']) && $variables['node']->bundle() === 'article') {
     $variables['has_sidebar_second'] = TRUE;
   }
-
-  // Display navigation side under specific conditions.
-  // Only on node routes and if the second level navi block is present.
-  if (
-    isset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']) &&
-    isset($variables['node']) &&
-    $route_name === 'entity.node.canonical'
-  ) {
-    $node_id = $variables['node']->id();
-    $display_sidebar_nav = FALSE;
-
-    // Check if there are links associated with this node.
-    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
-    $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node_id]);
-    foreach ($links as $link) {
-      $definition = $link->getPluginDefinition();
-
-      // Must be in main menu.
-      if ($definition['menu_name'] !== 'main') {
-        continue;
-      }
-
-      // Show navi if current node has a parent link.
-      if (!empty($definition['parent'])) {
-        $display_sidebar_nav = TRUE;
-        break;
-      }
-
-      // Display navi if current node has children.
-      $menu_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-      $children = $menu_storage->loadByProperties([
-        'menu_name' => 'main',
-        'parent' => $link->getPluginId(),
-      ]);
-      if (!empty($children)) {
-        $display_sidebar_nav = TRUE;
-        break;
-      }
-    }
-
-    if ($display_sidebar_nav) {
-      $variables['has_sidebar_first'] = TRUE;
-    }
-  }
 }
 
 /**

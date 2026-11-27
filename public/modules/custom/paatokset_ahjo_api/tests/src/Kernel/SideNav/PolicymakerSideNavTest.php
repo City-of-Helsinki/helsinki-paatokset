@@ -200,6 +200,51 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
   }
 
   /**
+   * Tests pages linked from the policymaker navigation with custom links.
+   */
+  public function testCustomLinkPage(): void {
+    $routeMatch = $this->prophesize(RouteMatchInterface::class);
+    $routeMatch->getRouteName()->willReturn('entity.node.canonical');
+    $routeMatch->getParameters()->willReturn(new ParameterBag());
+    $routeMatch->getRouteObject()->willReturn(NULL);
+    $routeMatch->getRawParameters()->willReturn(new ParameterBag());
+    $routeMatch->getParameter(Argument::any())->willReturn(NULL);
+    $this->container->set('current_route_match', $routeMatch->reveal());
+
+    // The linked page is not under the policymaker path.
+    $decision = Decision::create(['title' => 'Linked page']);
+    $decision->save();
+    $routeMatch->getParameter('node')->willReturn($decision);
+
+    $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
+    $this->assertEmpty($sut->build());
+
+    $paragraph = Paragraph::create([
+      'type' => 'custom_content_links',
+      'field_link_label' => 'Linked page',
+      'field_referenced_content' => [$decision],
+    ]);
+    $paragraph->save();
+    $policymaker = Policymaker::create([
+      'title' => 'Kaupunginhallitus',
+      'field_organization_type' => 'hallitus',
+      'field_policymaker_id' => 'PM003',
+      'field_custom_menu_links' => [$paragraph],
+    ]);
+    $policymaker->save();
+
+    $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
+    $this->assertMenuItems([
+      // Link to the policymaker.
+      $policymaker->toUrl('canonical')->toString(),
+      // Link to documents page.
+      "/decisionmakers/{$policymaker->id()}/documents",
+      // Custom link.
+      $decision->toUrl('canonical')->toString(),
+    ], $sut->build());
+  }
+
+  /**
    * Tests main menu links under the policymaker.
    */
   public function testPolicymakerMenuLinks(): void {

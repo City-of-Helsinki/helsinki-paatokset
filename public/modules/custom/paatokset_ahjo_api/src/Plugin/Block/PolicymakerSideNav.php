@@ -140,7 +140,7 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    */
   private function getPolicymaker(): ?Policymaker {
     if (!$this->policymakerResolved) {
-      $this->policymakerService->setPolicyMakerByPath();
+      $this->policymakerService->setPolicymakerForCurrentPage();
       $this->policymakerResolved = TRUE;
     }
 

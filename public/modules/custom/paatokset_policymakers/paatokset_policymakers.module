@@ -15,8 +15,6 @@ use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_update().
@@ -390,27 +388,27 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['has_sidebar_second'] = TRUE;
   }
 
-  // Add template variables on policymaker pages.
-  if (_paatokset_policymakers_page_is_pm_subpage($variables)) {
+  // Respect the "Hide sidebar navigation" setting of the page.
+  // @see hdbt_admin_tools_handle_sidebar_visibility()
+  $node = $variables['node'] ?? NULL;
+  if (
+    $node instanceof NodeInterface &&
+    $node->hasField('hide_sidebar_navigation') &&
+    $node->get('hide_sidebar_navigation')->value
+  ) {
+    return;
+  }
+
+  // Policymaker pages and pages linked from the policymaker navigation show
+  // the policymaker navigation instead of the main navigation.
+  if (
+    _paatokset_policymakers_page_is_pm_subpage($variables) ||
+    \Drupal::service(PolicymakerService::class)->setPolicymakerForCurrentPage()
+  ) {
     $variables['has_sidebar_first'] = TRUE;
     $variables['has_section_nav'] = TRUE;
 
-    // Unset main navigation.
     unset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']);
-  }
-  elseif (_paatokset_policymakers_page_is_pm_custom_link($variables)) {
-    $variables['has_sidebar_first'] = TRUE;
-    $variables['has_section_nav'] = TRUE;
-
-    // Force policymaker navigation to be visible.
-    $variables['policymaker_navigation'] = TRUE;
-
-    // Unset main navigation.
-    unset($variables['page']['sidebar_first']['hdbt_subtheme_main_navigation_level_2']);
-  }
-  // Unset policymaker side navi.
-  else {
-    unset($variables['page']['sidebar_first']['policymakersidenavigation']);
   }
 }
 
@@ -474,76 +472,6 @@ function _paatokset_policymakers_page_is_pm_subpage(array $variables): bool {
     $allowed_routes,
     fn (string $allowed) => str_starts_with($route_name, $allowed)
   );
-}
-
-/**
- * Check if node is in a policymaker menu as a custom link.
- *
- * @param array $variables
- *   Node variables.
- *
- * @return bool
- *   Returns TRUE if node is in a pm menu as a custom link.
- */
-function _paatokset_policymakers_page_is_pm_custom_link(array $variables): bool {
-  if (!isset($variables['node'])) {
-    return FALSE;
-  }
-
-  $node = $variables['node'];
-  if (!$node instanceof NodeInterface) {
-    return FALSE;
-  }
-
-  $node_id = $node->id();
-
-  // Don't act if this node is in a menu already.
-  $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
-  $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node_id]);
-
-  if (!empty($links)) {
-    return FALSE;
-  }
-
-  // Query for a custom link that has this node as its target.
-  $paragraph_query = \Drupal::entityTypeManager()
-    ->getStorage('paragraph')
-    ->getQuery()
-    ->accessCheck(TRUE)
-    ->condition('type', 'custom_content_links')
-    ->condition('field_referenced_content.target_id', $node_id)
-    ->latestRevision();
-
-  $pids = $paragraph_query->execute();
-  if (empty($pids)) {
-    return FALSE;
-  }
-
-  // Always pick the first one if multiple are found.
-  $paragraph_id = reset($pids);
-  $paragraph = Paragraph::load($paragraph_id);
-
-  if (!$paragraph instanceof ParagraphInterface) {
-    return FALSE;
-  }
-
-  // Check that the parent node is a policymaker node.
-  $parent = $paragraph->getParentEntity();
-  if (!$parent instanceof NodeInterface) {
-    return FALSE;
-  }
-  if ($parent->bundle() !== 'policymaker') {
-    return FALSE;
-  }
-
-  // Check that the ID value exists.
-  if (!$parent->hasField('field_policymaker_id') || $parent->get('field_policymaker_id')->isEmpty()) {
-    return FALSE;
-  }
-
-  $policymakerService = \Drupal::service(PolicymakerService::class);
-  $policymakerService->setPolicyMakerNode($parent);
-  return TRUE;
 }
 
 /**
