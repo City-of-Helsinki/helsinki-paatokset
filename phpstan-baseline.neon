@@ -835,36 +835,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Entity/Routing/AhjoPathProcessor.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\EventSubscriber\\ItemsIndexed\:\:getCacheTagsForMeetings\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/EventSubscriber/ItemsIndexed.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\EventSubscriber\\ItemsIndexed\:\:getCacheTagsForOfficeHolderDecisions\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/EventSubscriber/ItemsIndexed.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$dm_id_field contains generic class Drupal\\Core\\Field\\FieldItemList but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/src/EventSubscriber/ItemsIndexed.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$org_type_field contains generic class Drupal\\Core\\Field\\FieldItemList but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/EventSubscriber/ItemsIndexed.php
-
-		-
-			message: '#^Parameter \#1 \$item_ids of method Drupal\\search_api\\IndexInterface\:\:loadItemsMultiple\(\) expects list\<string\>, array\<int\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: public/modules/custom/paatokset_ahjo_api/src/EventSubscriber/ItemsIndexed.php
-
-		-
 			message: '#^Cannot call method setText\(\) on Drupal\\Core\\Link\|false\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -1985,18 +1955,6 @@ parameters:
 			identifier: binaryOp.invalid
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/Entity/TrusteeTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\EventSubscriber\\ItemsIndexedTest\:\:formatItemId\(\) has parameter \$node with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/EventSubscriber/ItemsIndexedTest.php
-
-		-
-			message: '#^Parameter \#2 \$processedIds of class Drupal\\search_api\\Event\\ItemsIndexedEvent constructor expects array\<int\>, array\<int, string\> given\.$#'
-			identifier: argument.type
-			count: 3
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/EventSubscriber/ItemsIndexedTest.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$links\.$#'

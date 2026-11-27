@@ -72,5 +72,4 @@ services:
       - { name: path_processor_outbound, priority: 250 }
 
   Drupal\paatokset_ahjo_api\EventSubscriber\PrepareIndex: ~
-  Drupal\paatokset_ahjo_api\EventSubscriber\ItemsIndexed: ~
   Drupal\paatokset_ahjo_api\EventSubscriber\LegacyDecisionQueryRedirect: ~
