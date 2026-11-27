@@ -118,11 +118,14 @@ class LanguageSwitcherTest extends AhjoEntityKernelTestBase {
     $this->assertEqualsCanonicalizing(array_keys($tests), array_keys($links?->links ?? []));
 
     foreach ($links->links as $langcode => $link) {
-      // Alter hook sets #override_url for some links
-      // which is used in hdbt_subtheme templates. Other links
-      // use the current route in the link language.
+      // Alter hook replaces the link URL with a localized URL. The links
+      // must not be marked as untranslated, so that the hdbt language
+      // switcher template renders them as links.
       $this->assertInstanceOf(Url::class, $link['url']);
-      $url = $link['#override_url'] ?? (clone $link['url'])
+      if ($langcode !== $manager->getCurrentLanguage()->getId()) {
+        $this->assertEmpty($link['#untranslated'] ?? FALSE);
+      }
+      $url = (clone $link['url'])
         ->setOption('language', $link['language'])
         ->toString();
 
