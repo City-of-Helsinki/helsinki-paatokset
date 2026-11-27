@@ -11,8 +11,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
-use Drupal\paatokset_ahjo_api\Service\MeetingService;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -43,10 +43,6 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
       'path' => $path . '/templates/content',
       'base hook' => 'node',
     ],
-    'block__policymaker_calendar' => [
-      'base hook' => 'entity',
-      'template' => 'block/block--policymaker-calendar',
-    ],
     'policymaker_minutes' => [
       'render element' => 'elements',
       'template' => 'content/minutes',
@@ -63,55 +59,10 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
 }
 
 /**
- * Prepares variables for paatokset_ahjo templates.
- *
- * Default template: paatokset-meeting.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- */
-function paatokset_policymakers_preprocess_block__policymaker_calendar(array &$variables) {
-  $meetingService = \Drupal::service(MeetingService::class);
-  $policymakerService = \Drupal::service(PolicymakerService::class);
-  $policymakerService->setPolicyMakerByPath();
-  $node = $policymakerService->getPolicyMaker();
-
-  $params = [
-    'policymaker' => $node->get('field_policymaker_id')->value,
-    'from' => date("Y-m-d"),
-  ];
-
-  // Helpful $content variable for templates.
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
-  if (isset($variables['elements']['#block__policymaker_calendar'])) {
-    $variables['entity'] = $variables['elements']['#block__policymaker_calendar'];
-  }
-
-  $variables['date'] = t('Date');
-  $variables['time'] = t('Time');
-  $variables['additional_info'] = t('Additional information');
-  $variables['open_motions'] = t('Open agenda');
-  $variables['open_decisions'] = t('Open decision announcement');
-  $variables['open_minutes'] = t('Open minutes');
-  $variables['meetings'] = $meetingService->elasticQuery($params);
-
-  if ($node->hasField('field_meetings_description') && !$node->get('field_meetings_description')->isEmpty()) {
-    $variables['meetings_description'] = _paatokset_ahjo_api_render_default_text(['value' => $node->get('field_meetings_description')->value]);
-  }
-  else {
-    $variables['meetings_description'] = _paatokset_ahjo_api_render_default_text(\Drupal::config('paatokset_ahjo_api.default_texts')->get('meetings_description'));
-  }
-}
-
-/**
  * Implements preprocess_node hook.
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $policymakerService = \Drupal::service(PolicymakerService::class);
-  $meetingService = \Drupal::service(MeetingService::class);
   $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
   $policymaker = $variables['node'];
@@ -164,13 +115,16 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
       $no_content = FALSE;
     }
 
-    $params = [
-      'policymaker' => $policymaker->get('field_policymaker_id')->value,
-      'from' => date("Y-m-d"),
-    ];
-    $upcomingMeetings = $meetingService->elasticQuery($params);
+    $upcomingMeetings = $storage->getQuery()
+      ->accessCheck()
+      ->condition('status', 1)
+      ->condition('type', 'meeting')
+      ->condition('field_meeting_dm_id', $policymaker->getAhjoId())
+      ->condition('field_meeting_date', date('Y-m-d'), '>=')
+      ->count()
+      ->execute();
 
-    if (!empty($upcomingMeetings)) {
+    if ($upcomingMeetings > 0) {
       $variables['meeting_calendar'] = TRUE;
       $no_content = FALSE;
     }
@@ -208,7 +162,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
 
   // Add custom cache tags for meetings or decisions based on org type.
   if ($variables['is_organization']) {
-    $cache_tags[] = 'meeting_pm:' . $policymaker->get('field_policymaker_id')->value;
+    $cache_tags[] = Meeting::getPolicymakerCacheTag($policymaker->get('field_policymaker_id')->value);
   }
   else {
     $cache_tags[] = 'decision_pm:' . $policymaker->get('field_policymaker_id')->value;

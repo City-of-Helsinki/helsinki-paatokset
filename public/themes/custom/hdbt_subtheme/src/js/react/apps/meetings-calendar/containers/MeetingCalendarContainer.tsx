@@ -1,17 +1,18 @@
 import * as Sentry from '@sentry/react';
 import { LoadingSpinner } from 'hds-react';
-import { useMemo, useState } from 'react';
-import useSWR from 'swr';
+import { useEffect, useMemo, useState } from 'react';
+import useSWR, { preload } from 'swr';
 import { formatHTMLDate } from '@/react/common/helpers/dateUtils';
 import ResultsError from '@/react/common/ResultsError';
 import { CalendarGrid } from '../components/CalendarGrid';
 import { CalendarHeader } from '../components/CalendarHeader';
 import { getCalendarDates } from '../helpers/calendarDays';
-import { addCalendarMonths, subtractMonthsClamped } from '../helpers/date';
+import { addCalendarMonths, formatMonth, getChunkStart, MONTHS_PER_CHUNK } from '../helpers/date';
 import type { CalendarDay, MeetingsByDate } from '../types/Meeting';
 
-const getMeetingsUrl = (fromDate: string): string =>
-  `${window.location.origin}/${drupalSettings.path.currentLanguage}/ahjo_api/meetings?from=${fromDate}`;
+// Each request returns meetings for MONTHS_PER_CHUNK months starting from chunkStart.
+const getMeetingsUrl = (chunkStart: Date): string =>
+  `${window.location.origin}/${drupalSettings.path.currentLanguage}/ahjo_api/meetings?month=${formatMonth(chunkStart)}`;
 
 const fetchMeetings = async (url: string): Promise<MeetingsByDate> => {
   const response = await fetch(url);
@@ -31,19 +32,28 @@ const todayDate = formatHTMLDate(today);
 const initialMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 const originStartMonth = addCalendarMonths(initialMonth, -12);
 
-const recentMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 3)));
-const fullMeetingsUrl = getMeetingsUrl(formatHTMLDate(subtractMonthsClamped(today, 12)));
-
 export const MeetingCalendarContainer = () => {
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
 
-  const { data: recentMeetings, error: recentError } = useSWR(recentMeetingsUrl, fetchMeetings);
-  const { data: fullMeetings, error: fullError } = useSWR(fullMeetingsUrl, fetchMeetings);
-
-  const meetings = fullMeetings ?? recentMeetings;
+  const chunkStart = getChunkStart(selectedMonth);
+  const { data: meetings, error } = useSWR(getMeetingsUrl(chunkStart), fetchMeetings);
   const isReady = Boolean(meetings);
 
-  const error = !meetings ? recentError || fullError : undefined;
+  // Start loading the adjacent chunk when the user reaches the edge of the
+  // current one, so that moving to the next month does not show a spinner.
+  useEffect(() => {
+    const chunk = getChunkStart(selectedMonth);
+    const monthInChunk = selectedMonth.getMonth() - chunk.getMonth();
+
+    if (monthInChunk === MONTHS_PER_CHUNK - 1) {
+      preload(getMeetingsUrl(addCalendarMonths(chunk, MONTHS_PER_CHUNK)), fetchMeetings);
+    }
+
+    // Last month of the previous chunk must be reachable.
+    if (monthInChunk === 0 && addCalendarMonths(chunk, -1) >= originStartMonth) {
+      preload(getMeetingsUrl(addCalendarMonths(chunk, -MONTHS_PER_CHUNK)), fetchMeetings);
+    }
+  }, [selectedMonth]);
 
   const isPreviousDisabled = addCalendarMonths(selectedMonth, -1) < originStartMonth;
 

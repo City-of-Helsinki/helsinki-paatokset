@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Meetings calendar. The calendar itself is rendered by a React app.
+ *
+ * Available variables:
+ * - description: Lead-in text rendered above the calendar.
+ */
+#}
+{% embed "@hdbt/misc/lead-in.twig" with { content: description } %}{% endembed %}
+<div class="meetings-calendar">
+  <div id="meetings-calendar"></div>
+</div>

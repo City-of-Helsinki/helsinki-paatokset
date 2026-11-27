@@ -154,3 +154,6 @@ msgstr "Tjänsteinnehavarbeslut"
 
 msgid "Standard process for public official decisions"
 msgstr "Normal process för tjänsteinnehavarbeslut"
+
+msgid "Loading meetings"
+msgstr "Laddar möten"

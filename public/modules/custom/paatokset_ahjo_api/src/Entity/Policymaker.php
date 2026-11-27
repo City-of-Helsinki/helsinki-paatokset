@@ -72,6 +72,18 @@ class Policymaker extends Node implements AhjoEntityInterface {
   }
 
   /**
+   * Get meetings description.
+   *
+   * @return string|null
+   *   Policymaker specific meetings description, if set.
+   */
+  public function getMeetingsDescription(): ?string {
+    $field = $this->get('field_meetings_description');
+
+    return $field->isEmpty() ? NULL : $field->value;
+  }
+
+  /**
    * Get organization type.
    */
   public function getOrganizationType(): ?OrganizationType {

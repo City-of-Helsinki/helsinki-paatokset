@@ -174,3 +174,6 @@ msgstr "Viranhaltijapäätös"
 
 msgid "Standard process for public official decisions"
 msgstr "Viranhaltijapäätösten tavanomainen prosessi"
+
+msgid "Loading meetings"
+msgstr "Ladataan kokouksia"

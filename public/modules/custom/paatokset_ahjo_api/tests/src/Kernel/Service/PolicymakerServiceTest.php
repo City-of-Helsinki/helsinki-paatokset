@@ -463,6 +463,24 @@ class PolicymakerServiceTest extends KernelTestBase {
       $minutes_field->save();
     }
 
+    $dm_id_field_storage = FieldStorageConfig::load('node.field_meeting_dm_id');
+    if (!$dm_id_field_storage) {
+      $dm_id_field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_meeting_dm_id',
+        'entity_type' => 'node',
+        'type' => 'string',
+      ]);
+      $dm_id_field_storage->save();
+    }
+
+    if (!FieldConfig::load('node.meeting.field_meeting_dm_id')) {
+      FieldConfig::create([
+        'field_storage' => $dm_id_field_storage,
+        'bundle' => 'meeting',
+        'label' => 'Policymaker ID',
+      ])->save();
+    }
+
     // Create a test meeting node with decision announcement.
     $meeting = Node::create([
       'type' => 'meeting',

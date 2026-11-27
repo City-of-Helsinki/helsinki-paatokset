@@ -42,6 +42,24 @@ class CaseBundle extends Node implements AhjoUpdatableInterface, Confidentiality
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getListCacheTagsToInvalidate(): array {
+    $tags = parent::getListCacheTagsToInvalidate();
+
+    if ($diaryNumber = $this->getDiaryNumber()) {
+      $tags[] = self::getCaseCacheTag($diaryNumber);
+    }
+
+    $original = $this->getOriginal();
+    if ($original instanceof self && ($diaryNumber = $original->getDiaryNumber())) {
+      $tags[] = self::getCaseCacheTag($diaryNumber);
+    }
+
+    return array_values(array_unique($tags));
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {

@@ -6,6 +6,7 @@ namespace Drupal\paatokset_ahjo_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Ahjo\OrganizationType;
+use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\search_api\Event\ItemsIndexedEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\IndexInterface;
@@ -122,7 +123,7 @@ class ItemsIndexed implements EventSubscriberInterface {
         continue;
       }
 
-      $tag = 'meeting_pm:' . $dm_id_field->value;
+      $tag = Meeting::getPolicymakerCacheTag($dm_id_field->value);
       if (!in_array($tag, $tags)) {
         $tags[] = $tag;
       }

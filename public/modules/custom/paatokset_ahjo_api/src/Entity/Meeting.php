@@ -15,6 +15,39 @@ use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 class Meeting extends Node implements AhjoUpdatableInterface {
 
   /**
+   * Gets cache tag for meetings of the given policymaker.
+   *
+   * The tag is invalidated whenever a meeting of the policymaker
+   * is created, updated or deleted.
+   *
+   * @param string $policymakerId
+   *   The policymaker ID (field_meeting_dm_id).
+   */
+  public static function getPolicymakerCacheTag(string $policymakerId): string {
+    return 'meeting_pm:' . $policymakerId;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getListCacheTagsToInvalidate(): array {
+    $tags = parent::getListCacheTagsToInvalidate();
+
+    if ($policymakerId = $this->getPolicymakerId()) {
+      $tags[] = self::getPolicymakerCacheTag($policymakerId);
+    }
+
+    // If the meeting was moved to another policymaker,
+    // the meetings of the old policymaker change too.
+    $original = $this->getOriginal();
+    if ($original instanceof self && ($policymakerId = $original->getPolicymakerId())) {
+      $tags[] = self::getPolicymakerCacheTag($policymakerId);
+    }
+
+    return array_values(array_unique($tags));
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {
@@ -41,6 +74,55 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    */
   public static function getAhjoEndpoint(): string {
     return 'meetings';
+  }
+
+  /**
+   * Gets the meeting date as a timestamp.
+   */
+  public function getMeetingTimestamp(): ?int {
+    return $this->get('field_meeting_date')->date?->getTimestamp();
+  }
+
+  /**
+   * Gets the original meeting date as a timestamp.
+   */
+  public function getOriginalMeetingTimestamp(): ?int {
+    return $this->get('field_meeting_date_original')->date?->getTimestamp();
+  }
+
+  /**
+   * Gets the meeting status from Ahjo.
+   */
+  public function getStatus(): ?string {
+    return $this->get('field_meeting_status')->value;
+  }
+
+  /**
+   * Returns TRUE if the meeting is cancelled.
+   */
+  public function isCancelled(): bool {
+    return $this->getStatus() === 'peruttu';
+  }
+
+  /**
+   * Returns TRUE if the meeting was moved from its original date.
+   */
+  public function isMoved(): bool {
+    // Cancelled meetings are never considered moved.
+    if ($this->isCancelled()) {
+      return FALSE;
+    }
+
+    $original = $this->getOriginalMeetingTimestamp();
+
+    return $original !== NULL && $original !== $this->getMeetingTimestamp();
+  }
+
+  /**
+   * Gets the Ahjo ID of the related policymaker.
+   */
+  public function getPolicymakerId(): ?string {
+    return $this->get('field_meeting_dm_id')->value;
   }
 
   /**
@@ -104,7 +186,7 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    * Gets related policymaker.
    */
   public function getPolicymaker(): ?Policymaker {
-    $policymakerId = $this->get('field_meeting_dm_id')->value;
+    $policymakerId = $this->getPolicymakerId();
 
     // Load policymaker this meeting relates to
     // (Paatokset does not use reference fields).
@@ -121,19 +203,21 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    *
    * @param string|null $langcode
    *   Link translation. Defaults to current language.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker|null $policymaker
+   *   Preloaded policymaker of this meeting. Loaded if not given.
    *
    * @todo This should use Drupal Links & Route Provider system.
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getMinutesUrl(?string $langcode = NULL): ?Url {
+  public function getMinutesUrl(?string $langcode = NULL, ?Policymaker $policymaker = NULL): ?Url {
     if (!$langcode) {
       $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
     }
 
     // Load policymaker this meeting relates to
     // (Paatokset does not use reference fields).
-    $policymaker = $this->getPolicymaker();
+    $policymaker ??= $this->getPolicymaker();
     if (!$policymaker instanceof Policymaker || $policymaker->isTrustee()) {
       return NULL;
     }
@@ -155,13 +239,15 @@ class Meeting extends Node implements AhjoUpdatableInterface {
    *
    * @param string|null $langcode
    *   Link translation. Defaults to current language.
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker|null $policymaker
+   *   Preloaded policymaker of this meeting. Loaded if not given.
    *
    * @todo This should use Drupal Links & Route Provider system.
    * Revisit this if these are converted to custom entities.
    * https://www.drupal.org/docs/drupal-apis/entity-api/introduction-to-entity-api-in-drupal-8#s-links-route-provider
    */
-  public function getDecisionAnnouncementUrl(?string $langcode = NULL): ?Url {
-    $url = $this->getMinutesUrl($langcode);
+  public function getDecisionAnnouncementUrl(?string $langcode = NULL, ?Policymaker $policymaker = NULL): ?Url {
+    $url = $this->getMinutesUrl($langcode, $policymaker);
 
     if ($url) {
       $langcode = $langcode ?? $url->getOption('language')->getId();

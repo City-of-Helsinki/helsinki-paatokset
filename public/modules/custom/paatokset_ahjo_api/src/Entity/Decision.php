@@ -423,6 +423,37 @@ class Decision extends Node implements AhjoUpdatableInterface, ConfidentialityIn
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getListCacheTagsToInvalidate(): array {
+    $tags = parent::getListCacheTagsToInvalidate();
+
+    // Adding new decision invalidates case cache.
+    // This allows updating a list of decisions on the
+    // case page as new decisions are added.
+    if ($diaryNumber = $this->getDiaryNumber()) {
+      $tags[] = CaseBundle::getCaseCacheTag($diaryNumber);
+    }
+
+    // If the decision was moved to another case, the
+    // list of decisions on the old case changes too.
+    $original = $this->getOriginal();
+    if ($original instanceof self && ($diaryNumber = $original->getDiaryNumber())) {
+      $tags[] = CaseBundle::getCaseCacheTag($diaryNumber);
+    }
+
+    if ($meetingId = $this->get('field_meeting_id')->value) {
+      $tags[] = 'meeting:' . $meetingId;
+    }
+
+    if ($policymakerId = $this->getPolicymakerId()) {
+      $tags[] = 'decision_pm:' . $policymakerId;
+    }
+
+    return array_values(array_unique($tags));
+  }
+
+  /**
    * Get policymaker.
    */
   public function getPolicymaker(string $langcode): ?Policymaker {
