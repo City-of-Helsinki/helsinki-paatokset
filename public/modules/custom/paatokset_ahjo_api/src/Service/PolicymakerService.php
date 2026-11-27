@@ -62,7 +62,6 @@ class PolicymakerService {
     private readonly RouteMatchInterface $routeMatch,
     private readonly AliasManagerInterface $pathAliasManager,
     private readonly AliasCleanerInterface $pathAliasCleaner,
-    private readonly MeetingService $meetingService,
     private readonly CaseService $caseService,
   ) {
   }
