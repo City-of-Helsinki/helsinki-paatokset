@@ -28,6 +28,26 @@ class Meeting extends Node implements AhjoUpdatableInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getListCacheTagsToInvalidate(): array {
+    $tags = parent::getListCacheTagsToInvalidate();
+
+    if ($policymakerId = $this->getPolicymakerId()) {
+      $tags[] = self::getPolicymakerCacheTag($policymakerId);
+    }
+
+    // If the meeting was moved to another policymaker,
+    // the meetings of the old policymaker change too.
+    $original = $this->getOriginal();
+    if ($original instanceof self && ($policymakerId = $original->getPolicymakerId())) {
+      $tags[] = self::getPolicymakerCacheTag($policymakerId);
+    }
+
+    return array_values(array_unique($tags));
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function getProxyUrl(): Url {
