@@ -52,7 +52,7 @@ final class DefaultTextSettingsForm extends ConfigFormBase {
 
     $form['links']['office_holders_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Office holders URL'),
+      '#title' => $this->t('Public officials URL'),
       '#description' => $this->t('Used on the decision tree page.'),
       '#config_target' => 'paatokset_ahjo_api.default_texts:office_holders_url',
     ];

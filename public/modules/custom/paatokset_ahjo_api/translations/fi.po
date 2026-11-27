@@ -168,3 +168,9 @@ msgstr "Sosiaali- ja terveystoimiala"
 msgctxt "Sector names"
 msgid "Social Services, Health Care and Rescue Services Division"
 msgstr "Sosiaali-, terveys- ja pelastustoimiala"
+
+msgid "Public official decision"
+msgstr "Viranhaltijapäätös"
+
+msgid "Standard process for public official decisions"
+msgstr "Viranhaltijapäätösten tavanomainen prosessi"

@@ -268,7 +268,9 @@ processor_settings:
   trustee_title: {  }
   unique_issue_id: {  }
 tracker_settings:
-  custom_basic_tracker: {  }
+  custom_parallel_tracker:
+    indexing_order: lifo
+    claim_timeout: 60
 options:
   cron_limit: 0
   delete_on_fail: true
