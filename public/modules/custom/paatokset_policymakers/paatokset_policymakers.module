@@ -388,6 +388,17 @@ function paatokset_policymakers_preprocess_page(&$variables) {
     $variables['has_sidebar_second'] = TRUE;
   }
 
+  // Respect the "Hide sidebar navigation" setting of the page.
+  // @see hdbt_admin_tools_handle_sidebar_visibility()
+  $node = $variables['node'] ?? NULL;
+  if (
+    $node instanceof NodeInterface &&
+    $node->hasField('hide_sidebar_navigation') &&
+    $node->get('hide_sidebar_navigation')->value
+  ) {
+    return;
+  }
+
   // Policymaker pages and pages linked from the policymaker navigation show
   // the policymaker navigation instead of the main navigation.
   if (
