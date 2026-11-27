@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\Processor;
 
 use Drupal\paatokset_ahjo_api\Entity\Decision;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Plugin\search_api\processor\SpecialStatus;
-use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Utility\Utility;
 use Drupal\Tests\paatokset_ahjo_api\Kernel\SearchApi\AhjoSearchApiKernelTestBase;
@@ -43,7 +43,7 @@ class SpecialStatusTest extends AhjoSearchApiKernelTestBase {
     $decision = Decision::create([
       'type' => 'decision',
       'title' => 'Test decision',
-      'field_policymaker_id' => PolicymakerService::CITY_COUNCIL_DM_ID,
+      'field_policymaker_id' => PolicymakerId::CityCouncil->value,
     ]);
 
     $id = Utility::createCombinedId('entity:node', $decision->id() . ':' . $decision->language()->getId());
@@ -55,7 +55,7 @@ class SpecialStatusTest extends AhjoSearchApiKernelTestBase {
 
     $this->assertEquals([SpecialStatus::CITY_COUNCIL], $fields['test_special_status']->getValues());
 
-    $decision->set('field_policymaker_id', PolicymakerService::CITY_BOARD_DM_ID);
+    $decision->set('field_policymaker_id', PolicymakerId::CityBoard->value);
     $fields = $this->container
       ->get('search_api.fields_helper')
       ->createItemFromObject($this->index, $decision->getTypedData(), $id)

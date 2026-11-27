@@ -13,6 +13,7 @@ use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 use Drupal\paatokset_ahjo_api\Entity\Meeting;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Service\OrganizationPathBuilder;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -63,7 +64,6 @@ function paatokset_policymakers_theme($existing, $type, $theme, $path): array {
  */
 function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
   $policymakerService = \Drupal::service(PolicymakerService::class);
-  $councilId = \Drupal::config('paatokset_helsinki_kanava.settings')->get('city_council_id');
 
   $policymaker = $variables['node'];
 
@@ -152,7 +152,7 @@ function paatokset_policymakers_preprocess_node__policymaker(&$variables) {
     }
   }
 
-  if ($councilId && ($policymaker->get('field_policymaker_id')->value === $councilId)) {
+  if ($policymaker->get('field_policymaker_id')->value === PolicymakerId::CityCouncil->value) {
     $variables['render_announcement_block'] = TRUE;
     $no_content = FALSE;
 

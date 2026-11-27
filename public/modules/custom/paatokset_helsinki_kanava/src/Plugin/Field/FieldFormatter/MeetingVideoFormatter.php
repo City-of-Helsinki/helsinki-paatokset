@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Drupal\paatokset_helsinki_kanava\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\paatokset_helsinki_kanava\Entity\MeetingVideo;
 
 /**
  * Field formatter to render service maps.
- *
- * @FieldFormatter(
- *   id = "meeting_video_embed",
- *   label = @Translation("Paatokset - Meeting video embed"),
- *   field_types = {
- *     "string"
- *   }
- * )
  */
+#[FieldFormatter(
+  id: 'meeting_video_embed',
+  label: new TranslatableMarkup('Paatokset - Meeting video embed'),
+  field_types: [
+    'string',
+  ]
+)]
 final class MeetingVideoFormatter extends FormatterBase {
 
   /**
@@ -31,7 +32,7 @@ final class MeetingVideoFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
+  public static function defaultSettings(): array {
     return [
       'iframe_title' => 'Meeting video',
       'link_title' => t('View all meeting recordings'),
@@ -42,7 +43,7 @@ final class MeetingVideoFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state): array {
     $elements = parent::settingsForm($form, $form_state);
 
     $elements['iframe_title'] = [
@@ -69,7 +70,7 @@ final class MeetingVideoFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $element = [];
 
     $entity = $items->getEntity();

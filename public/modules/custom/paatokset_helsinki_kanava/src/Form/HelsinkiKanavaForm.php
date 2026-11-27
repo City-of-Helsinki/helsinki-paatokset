@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paatokset_helsinki_kanava\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -13,7 +15,7 @@ class HelsinkiKanavaForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames(): array {
     return [
       'paatokset_helsinki_kanava.settings',
     ];
@@ -22,22 +24,15 @@ class HelsinkiKanavaForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'paatokset_helsinki_kanava_settings';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('paatokset_helsinki_kanava.settings');
-
-    $form['city_council_id'] = [
-      '#type' => 'textfield',
-      '#default_value' => $config->get('city_council_id'),
-      '#title' => $this->t('City Council ID'),
-      '#description' => $this->t('Id for the city council policymaker.'),
-    ];
 
     $form['all_recordings_link'] = [
       '#type' => 'url',
@@ -59,11 +54,10 @@ class HelsinkiKanavaForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     parent::submitForm($form, $form_state);
 
     $this->config('paatokset_helsinki_kanava.settings')
-      ->set('city_council_id', $form_state->getValue('city_council_id'))
       ->set('city_hall_id', $form_state->getValue('city_hall_id'))
       ->set('trustee_organization_type_id', $form_state->getValue('trustee_organization_type_id'))
       ->set('all_recordings_link', $form_state->getValue('all_recordings_link'))

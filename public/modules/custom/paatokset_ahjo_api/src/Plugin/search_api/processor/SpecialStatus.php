@@ -8,7 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
-use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -85,10 +85,10 @@ class SpecialStatus extends ProcessorPluginBase {
 
     $status = NULL;
     $id = $node->get('field_policymaker_id')->value;
-    if ($id === PolicymakerService::CITY_COUNCIL_DM_ID) {
+    if ($id === PolicymakerId::CityCouncil->value) {
       $status = self::CITY_COUNCIL;
     }
-    elseif ($id === PolicymakerService::CITY_BOARD_DM_ID) {
+    elseif ($id === PolicymakerId::CityBoard->value) {
       $status = self::CITY_HALL;
     }
     else {

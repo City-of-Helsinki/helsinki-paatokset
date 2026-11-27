@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\paatokset_ahjo_api\Entity\PolicymakerId;
 use Drupal\paatokset_ahjo_api\Entity\Trustee;
 use Drupal\paatokset_datapumppu\DatapumppuImportOptions;
 use Drupal\paatokset_ahjo_api\Service\PolicymakerService;
@@ -228,7 +229,7 @@ final class DatapumppuStatementsSource extends HttpSourcePluginBase implements C
    *   Iterator of trustee nodes.
    */
   private function getLatestTrusteesIterator(): \Generator {
-    yield from $this->policymakerService->getTrustees(PolicymakerService::CITY_COUNCIL_DM_ID);
+    yield from $this->policymakerService->getTrustees(PolicymakerId::CityCouncil->value);
   }
 
   /**
