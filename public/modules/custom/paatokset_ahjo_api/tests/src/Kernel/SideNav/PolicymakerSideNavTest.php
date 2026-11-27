@@ -8,10 +8,12 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\language\Entity\ContentLanguageSettings;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\paatokset_ahjo_api\Entity\Decision;
 use Drupal\paatokset_ahjo_api\Entity\Policymaker;
 use Drupal\paatokset_ahjo_api\Entity\Organization;
-use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerMobileNav;
 use Drupal\paatokset_ahjo_api\Plugin\Block\PolicymakerSideNav;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -30,6 +32,12 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
   protected static $modules = [
     'paragraphs',
     'entity_reference_revisions',
+    'content_translation',
+    'language',
+    'link',
+    'locale',
+    'menu_link_content',
+    'menu_block_current_language',
   ];
 
   /**
@@ -40,6 +48,13 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
 
     $this->installEntitySchema('paragraph');
     $this->installEntitySchema('ahjo_organization');
+    $this->installEntitySchema('menu_link_content');
+
+    // Menu links are translatable, like on the site.
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+    ContentLanguageSettings::loadByEntityTypeBundle('menu_link_content', 'menu_link_content')
+      ->setThirdPartySetting('content_translation', 'enabled', TRUE)
+      ->save();
 
     ParagraphsType::create([
       'id' => 'custom_content_links',
@@ -185,39 +200,60 @@ class PolicymakerSideNavTest extends AhjoEntityKernelTestBase {
   }
 
   /**
-   * Tests the mobile nav block.
+   * Tests main menu links under the policymaker.
    */
-  public function testPolicymakerMobileNav() {
+  public function testPolicymakerMenuLinks(): void {
     $routeMatch = $this->prophesize(RouteMatchInterface::class);
-    $routeMatch
-      ->getParameter('node')
-      ->willReturn(NULL);
+    $routeMatch->getRouteName()->willReturn(NULL);
     $routeMatch->getParameters()->willReturn(new ParameterBag());
     $routeMatch->getRouteObject()->willReturn(NULL);
-
+    $routeMatch->getRawParameters()->willReturn(new ParameterBag());
+    $routeMatch->getParameter(Argument::any())->willReturn(NULL);
     $this->container->set('current_route_match', $routeMatch->reveal());
 
-    $sut = PolicymakerMobileNav::create($this->container, [], 'policymaker_side_nav_mobile', ['provider' => 'paatokset_ahjo_api']);
-    $build = $sut->build();
-    $this->assertMenuItems([], $build);
-
-    // Inject policymaker to the current route.
     $policymaker = Policymaker::create([
       'title' => 'Kaupunginhallitus',
       'field_organization_type' => 'hallitus',
+      'field_policymaker_id' => 'PM002',
     ]);
     $policymaker->save();
     $routeMatch
       ->getParameter('node')
       ->willReturn($policymaker);
 
-    $sut = PolicymakerMobileNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
+    $policymakerLink = MenuLinkContent::create([
+      'title' => 'Policymaker',
+      'menu_name' => 'main',
+      'link' => ['uri' => 'entity:node/' . $policymaker->id()],
+      'langcode' => 'en',
+    ]);
+    $policymakerLink->save();
+
+    $children = [
+      // Link in the current language.
+      'https://example.com/en' => 'en',
+      // Link that is not translated to the current language.
+      'https://example.com/fi' => 'fi',
+    ];
+    foreach ($children as $uri => $langcode) {
+      MenuLinkContent::create([
+        'title' => $uri,
+        'menu_name' => 'main',
+        'link' => ['uri' => $uri],
+        'parent' => $policymakerLink->getPluginId(),
+        'langcode' => $langcode,
+      ])->save();
+    }
+
+    $sut = PolicymakerSideNav::create($this->container, [], 'policymaker_sidenav', ['provider' => 'paatokset_ahjo_api']);
     $build = $sut->build();
     $this->assertMenuItems([
       // Link to current policymaker.
       $policymaker->toUrl('canonical')->toString(),
       // Link to documents page.
       "/decisionmakers/{$policymaker->id()}/documents",
+      // Translated main menu link under the policymaker.
+      'https://example.com/en',
     ], $build);
   }
 

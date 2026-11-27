@@ -1,56 +1,45 @@
 {#
 /**
  * @file
- * Theme override for a menu block.
+ * Policymaker section navigation.
+ *
+ * Uses the hdbt section navigation markup: a sidebar navigation on desktop
+ * and a collapsible navigation on mobile.
  *
  * Available variables:
- * - plugin_id: The ID of the block implementation.
- * - label: The configured label of the block if visible.
- * - configuration: A list of the block's configuration values.
- *   - label: The configured label for the block.
- *   - label_display: The display settings for the label.
- *   - provider: The module or other provider that provided this block plugin.
- *   - Block plugin specific settings will also be stored here.
- * - content: The content of this block.
- * - attributes: HTML attributes for the containing element.
- *   - id: A valid HTML ID and guaranteed unique.
- * - title_attributes: HTML attributes for the title element.
- * - content_attributes: HTML attributes for the content element.
- * - title_prefix: Additional output populated by modules, intended to be
- *   displayed in front of the main title tag that appears in the template.
- * - title_suffix: Additional output populated by modules, intended to be
- *   displayed after the main title tag that appears in the template.
- *
- * Headings should be used on navigation menus that consistently appear on
- * multiple pages. When this menu block's label is configured to not be
- * displayed, it is automatically made invisible using the 'visually-hidden' CSS
- * class, which still keeps it visible for screen-readers and assistive
- * technology. Headings allow screen-reader and keyboard only users to navigate
- * to or skip the links.
- * See http://juicystudio.com/article/screen-readers-display-none.php and
- * http://www.w3.org/TR/WCAG-TECHS/H42.html for more information.
+ * - items: Navigation items, see menu.html.twig.
+ * - menu_attributes: HTML attributes for the menu element.
+ * - menu_link_parent: The navigation heading link.
+ *   - title: Link title.
+ *   - url: Link URL.
  */
 #}
-{% if menu_link_parent.title and menu_link_parent.url %}
-  {% set link_title = menu_link_parent.title %}
-  {% set link_url = menu_link_parent.url %}
-{% else %}
-  {% set link_title = 'Home'|t %}
-  {% set link_url = 'internal:/' ~ path('<front>') %}
-{% endif %}
+{% set id = 'policymaker-side-navigation' %}
+{% set section_menu_title_link = id ~ '-menu-link' %}
+{% set section_menu_aria_controls = id ~ '-menu-wrapper' %}
+{% set heading_id = id ~ '-menu' %}
 
-{% set link_attributes = {
-  'class': [
-    'sidebar-navigation__title-link',
-  ],
-} %}
-
-{% set heading_id = attributes.id ~ '-menu'|clean_id %}
-<div class="policymaker-side-menu--desktop">
-<nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes|without('role', 'aria-labelledby') }} class="sidebar-navigation">
-  <h2{{ title_attributes.setAttribute('id', heading_id) }} class="sidebar-navigation__title">
-    {{ link(link_title, link_url, link_attributes) }}
-  </h2>
-  {% include '@hdbt/navigation/menu.html.twig' with { attributes: menu_attributes, allow_collabsible: true, auto_open: true } %}
+<nav aria-labelledby="{{ heading_id }}" class="sidebar-navigation sidebar-navigation--section-navigation">
+  <div class="section-navigation__header">
+    <div id="{{ heading_id }}" class="sidebar-navigation__title section-navigation__title">
+      {{ link(menu_link_parent.title, menu_link_parent.url, {
+        'id': section_menu_title_link,
+        'class': ['sidebar-navigation__title-link'],
+      }) }}
+    </div>
+    <span class="section-navigation__toggle-wrapper">
+      <button
+        type="button"
+        aria-expanded="false"
+        aria-controls="{{ section_menu_aria_controls }}"
+        aria-labelledby="{{ section_menu_title_link }}"
+        aria-haspopup="true"
+        class="menu__toggle-button">
+        {% include '@hdbt/misc/icon.twig' with {icon: 'angle-down', class: 'menu__toggle-button-icon'} %}
+      </button>
+    </span>
+  </div>
+  <div class="section-navigation__menu-wrapper" id="{{ section_menu_aria_controls }}">
+    {% include '@hdbt/navigation/menu.html.twig' with { attributes: menu_attributes, allow_collabsible: true, auto_open: true } %}
+  </div>
 </nav>
-</div>

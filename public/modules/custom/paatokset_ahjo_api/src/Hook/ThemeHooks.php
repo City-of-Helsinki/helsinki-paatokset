@@ -111,12 +111,6 @@ class ThemeHooks {
           'menu_link_parent' => NULL,
         ],
       ],
-      'policymaker_side_navigation_mobile' => [
-        'variables' => [
-          'items' => [],
-          'current_option' => NULL,
-        ],
-      ],
       'policymaker_browser' => [
         'variables' => [
           'organization' => NULL,

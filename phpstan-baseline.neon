@@ -985,30 +985,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerDocumentsBlock.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerMobileNav\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerMobileNav.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerMobileNav\:\:isActiveTrail\(\) has parameter \$currentOption with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerMobileNav.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerMobileNav\:\:isActiveTrail\(\) has parameter \$option with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerMobileNav.php
-
-		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerMobileNav\:\:itemsToOptions\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerMobileNav.php
-
-		-
 			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
 			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
 			count: 6
@@ -1039,12 +1015,6 @@ parameters:
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
 
 		-
-			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerSideNav\:\:getItems\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
-
-		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerSideNav\:\:getItems\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1052,12 +1022,6 @@ parameters:
 
 		-
 			message: '#^Method Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerSideNav\:\:getMenuLinks\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
-
-		-
-			message: '#^Property Drupal\\paatokset_ahjo_api\\Plugin\\Block\\PolicymakerSideNav\:\:\$items type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/src/Plugin/Block/PolicymakerSideNav.php
@@ -2583,12 +2547,6 @@ parameters:
 		-
 			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\SideNav\\PolicymakerSideNavTest\:\:assertMenuItems\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/SideNav/PolicymakerSideNavTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\paatokset_ahjo_api\\Kernel\\SideNav\\PolicymakerSideNavTest\:\:testPolicymakerMobileNav\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: public/modules/custom/paatokset_ahjo_api/tests/src/Kernel/SideNav/PolicymakerSideNavTest.php
 

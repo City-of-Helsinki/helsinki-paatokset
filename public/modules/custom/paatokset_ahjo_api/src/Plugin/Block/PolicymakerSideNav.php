@@ -6,11 +6,11 @@ namespace Drupal\paatokset_ahjo_api\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
-use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -25,7 +25,10 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
- * Provides Agendas Submenu Block.
+ * Provides the policymaker section navigation.
+ *
+ * Rendered as a sidebar on desktop and as a collapsible section navigation
+ * on mobile.
  */
 #[Block(
   id: 'policymaker_side_nav',
@@ -35,9 +38,19 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Sidenav links.
+   * The menu where policymaker pages are linked from.
    */
-  protected ?array $items;
+  private const string MENU_NAME = 'main';
+
+  /**
+   * Cacheability of the menu tree used in the navigation.
+   */
+  protected CacheableMetadata $menuCacheability;
+
+  /**
+   * Whether the policymaker has been resolved for the current request.
+   */
+  protected bool $policymakerResolved = FALSE;
 
   /**
    * {@inheritDoc}
@@ -47,40 +60,37 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
     $plugin_id,
     $plugin_definition,
     private readonly MenuLinkTreeInterface $menuTree,
+    private readonly MenuLinkManagerInterface $menuLinkManager,
     private readonly RouteProviderInterface $routeProvider,
     private readonly PolicymakerService $policymakerService,
     #[Autowire(service: 'logger.channel.paatokset_ahjo_api')]
     private readonly LoggerInterface $logger,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly CurrentPathStack $currentPath,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    // Warning: these cause side effects:
-    $this->policymakerService->setPolicyMakerByPath();
-    $this->items = $this->getItems();
+    $this->menuCacheability = new CacheableMetadata();
   }
 
   /**
    * {@inheritDoc}
    */
   public function build(): array {
+    $policymaker = $this->getPolicymaker();
+
     // Skip block if the policymaker can't be found.
-    if ($this->policymakerService->getPolicymaker() === NULL) {
+    if (!$policymaker instanceof Policymaker) {
       return [];
     }
 
-    $policymaker = $this->policymakerService->getPolicymaker();
     $parentOrgId = $policymaker->getOrganization()?->getParentOrganization()?->getAhjoId();
 
     $url = Url::fromRoute('paatokset_ahjo_api.browse_policymakers', ['org' => $parentOrgId], [
       'language' => $this->languageManager->getCurrentLanguage(),
     ]);
 
-    return [
+    $build = [
       '#theme' => 'policymaker_side_navigation',
-      '#items' => $this->items,
-      '#currentPath' => $this->currentPath->getPath(),
+      '#items' => $this->getItems($policymaker),
       '#menu_attributes' => new Attribute(['class' => 'menu']),
       '#menu_link_parent' => [
         'title' => $this->t('Browse policymakers'),
@@ -92,6 +102,10 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
         ],
       ],
     ];
+
+    $this->menuCacheability->applyTo($build);
+
+    return $build;
   }
 
   /**
@@ -99,11 +113,11 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
    */
   public function getCacheTags(): array {
     $cache_tags = [
-      'config:system.menu.main',
+      'config:system.menu.' . self::MENU_NAME,
     ];
 
     // Add cache tag for current node, if set.
-    $policymaker = $this->policymakerService->getPolicymaker();
+    $policymaker = $this->getPolicymaker();
     if ($policymaker instanceof NodeInterface) {
       $cache_tags[] = 'node:' . $policymaker->id();
     }
@@ -119,39 +133,50 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   }
 
   /**
+   * Gets the policymaker for the current request.
+   *
+   * @return \Drupal\paatokset_ahjo_api\Entity\Policymaker|null
+   *   The policymaker, or NULL if the current page is not a policymaker page.
+   */
+  private function getPolicymaker(): ?Policymaker {
+    if (!$this->policymakerResolved) {
+      $this->policymakerService->setPolicyMakerByPath();
+      $this->policymakerResolved = TRUE;
+    }
+
+    $policymaker = $this->policymakerService->getPolicymaker();
+    return $policymaker instanceof Policymaker ? $policymaker : NULL;
+  }
+
+  /**
    * Generate an array of sidenav links.
    *
-   * @return array|null
+   * @param \Drupal\paatokset_ahjo_api\Entity\Policymaker $policymaker
+   *   The policymaker.
+   *
+   * @return array
    *   Array of items:
    *    - title: item title
    *    - url: url of type \Drupal\core\Url
    *    - attributes: element attributes
    */
-  private function getItems(): ?array {
+  private function getItems(Policymaker $policymaker): array {
     $currentPath = Url::fromRoute('<current>')->toString();
-    $items = [];
 
-    // Return empty result if policymaker can't be found.
-    $policymaker = $this->policymakerService->getPolicymaker();
-    if (!$policymaker instanceof NodeInterface || $policymaker->getType() !== 'policymaker') {
-      return $items;
-    }
+    $items = array_merge(
+      $this->getDynamicLinks($policymaker),
+      $this->getMenuLinks($policymaker),
+      $this->getCustomLinks($policymaker),
+    );
 
-    $dynamic_links = $this->getDynamicLinks($policymaker);
-    $menu_links = $this->getMenuLinks($policymaker);
-    $custom_links = $this->getCustomlinks($policymaker);
-    $items = array_merge($dynamic_links, $menu_links, $custom_links);
-
-    foreach ($items as $key => $item) {
+    foreach ($items as &$item) {
       if ($item['url']->toString() === $currentPath) {
-        $items[$key]['in_active_trail'] = TRUE;
-        $items[$key]['is_currentPage'] = TRUE;
+        $item['in_active_trail'] = TRUE;
+        $item['is_currentPage'] = TRUE;
       }
-    }
 
-    // Apply HDBT attributes to navigation items.
-    if (function_exists('_hdbt_menu_item_apply_attributes')) {
-      foreach ($items as &$item) {
+      // Apply HDBT attributes to navigation items.
+      if (function_exists('_hdbt_menu_item_apply_attributes')) {
         _hdbt_menu_item_apply_attributes($item, TRUE);
       }
     }
@@ -220,68 +245,51 @@ class PolicymakerSideNav extends BlockBase implements ContainerFactoryPluginInte
   /**
    * Get menu links for policymaker side navigation.
    *
+   * The links are the children of the policymaker's link in the main menu.
+   *
    * @param \Drupal\node\NodeInterface $policymaker
-   *   Policymaker URL.
+   *   Policymaker node.
    *
    * @return array
    *   Menu links under current policymaker.
    */
   protected function getMenuLinks(NodeInterface $policymaker): array {
-    $policymaker_url = $policymaker->toUrl()->toString();
+    $links = $this->menuLinkManager->loadLinksByRoute(
+      'entity.node.canonical',
+      ['node' => $policymaker->id()],
+      self::MENU_NAME,
+    );
 
-    $localizedDmRoute = 'policymakers.' . $this->languageManager->getCurrentLanguage()->getId();
-    if (!$this->policymakerService->routeExists($localizedDmRoute)) {
-      return [];
-    }
+    foreach ($links as $link) {
+      $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters(self::MENU_NAME);
+      $parameters->setRoot($link->getPluginId())->excludeRoot();
+      // Load the whole subtree, like the main menu sidebar block does.
+      $parameters->expandedParents = [];
 
-    $parameters = new MenuTreeParameters();
-    $main_menu_top_level = $this->menuTree->load('main', $parameters);
-    $dmUrl = Url::fromRoute($localizedDmRoute)->toString();
+      $tree = $this->menuTree->load(self::MENU_NAME, $parameters);
+      if (empty($tree)) {
+        continue;
+      }
 
-    // Get decisionmakers menu link.
-    $dmParentLink = NULL;
-    foreach ($main_menu_top_level as $menuLink) {
-      $linkUrl = $menuLink->link->getUrlObject();
+      $tree = $this->menuTree->transform($tree, [
+        ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+        // Hide links that are not translated to the current language, like
+        // the main menu blocks do.
+        [
+          'callable' => 'menu_block_current_language_tree_manipulator::filterLanguages',
+          'args' => [['menu_link_content']],
+        ],
+      ]);
+      $build = $this->menuTree->build($tree);
+      $this->menuCacheability->addCacheableDependency(CacheableMetadata::createFromRenderArray($build));
 
-      if ($linkUrl && $linkUrl->toString() === $dmUrl) {
-        $dmParentLink = $menuLink;
-        break;
+      if (!empty($build['#items'])) {
+        return array_values($build['#items']);
       }
     }
 
-    // Empty result if parent link can't be found.
-    if ($dmParentLink === NULL) {
-      return [];
-    }
-
-    // Try to find current decisionmaker under decisionmakers item.
-    $dmMenuLink = NULL;
-    foreach ($dmParentLink->subtree as $subMenuLink) {
-      $linkUrl = $subMenuLink->link->getUrlObject();
-
-      if ($linkUrl && $linkUrl->toString() === $policymaker_url) {
-        $dmMenuLink = $subMenuLink;
-        break;
-      }
-    }
-
-    if ($dmMenuLink === NULL || empty($dmMenuLink->subtree)) {
-      return [];
-    }
-
-    // Use manipulators to get correct item order.
-    $subtree = $dmMenuLink->subtree;
-    $manipulators = [
-      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
-      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-    ];
-    $subtree = $this->menuTree->transform($subtree, $manipulators);
-    $build = $this->menuTree->build($subtree);
-
-    if (empty($build['#items'])) {
-      return [];
-    }
-    return $build['#items'];
+    return [];
   }
 
   /**

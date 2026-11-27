@@ -1,25 +1,3 @@
-.policymaker-side-menu--desktop {
-  display: none;
-
-  @include breakpoint($breakpoint-l) {
-    display: block;
-  }
-}
-
-.policymaker-side-menu.policymaker-side-menu--mobile {
-  @include breakpoint($breakpoint-l) {
-    display: none;
-  }
-
-  .sidebar-navigation__title span {
-    align-items: center;
-    display: flex;
-    margin-block: $spacing-half;
-    padding: $spacing;
-  }
-}
-
-.policymaker-side-menu--desktop,
 .sidebar-navigation {
   li {
     width: 100%;
