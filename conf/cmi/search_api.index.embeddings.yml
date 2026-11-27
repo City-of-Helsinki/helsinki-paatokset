@@ -104,9 +104,8 @@ processor_settings:
   trustee_title: {  }
   unique_issue_id: {  }
 tracker_settings:
-  parallel:
+  default:
     indexing_order: fifo
-    claim_timeout: 60
 options:
   cron_limit: 5
   delete_on_fail: true
